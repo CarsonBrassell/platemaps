@@ -54,7 +54,7 @@ import {
   type StrongAspect,
 } from "@/lib/discoverFilters";
 import type { FeedPlace } from "@/lib/feedFilters";
-import type { Coords } from "@/lib/geo";
+import { formatMiles, milesBetween, type Coords } from "@/lib/geo";
 import type { RestaurantView } from "@/data/restaurantTypes";
 import {
   dishMatchesFor,
@@ -84,6 +84,13 @@ const MAX_SHOWN = 240;
  */
 export type DiscoverResult = RestaurantView & {
   aspectScore?: StrongAspect;
+  /**
+   * How far this restaurant is from the visitor, when the request carried a
+   * position. Absent otherwise — and then `distance` is still the seeded
+   * string measured from a fixed downtown origin (see lib/nearby.ts), which a
+   * card should not present as "from you".
+   */
+  milesAway?: number;
   /**
    * The restaurant's plate score, attached for the same reason as above: the
    * card prints it, and the browser has no way to derive it. Always present, and
@@ -196,7 +203,7 @@ export async function getDiscoverPage(
 
   const ctx: FilterContext = { now: new Date(), here, aspects, plates, dishes };
 
-  const matched = applyFilters(restaurants, filters, ctx);
+  const matched = orderResults(applyFilters(restaurants, filters, ctx), filters, here);
   const limit = Math.min(Math.max(shown, PAGE_SIZE), MAX_SHOWN);
 
   return {
@@ -207,7 +214,8 @@ export async function getDiscoverPage(
       // Attached to the page slice, not to the corpus rows: the matched dish
       // is a fact about *this query*, and the corpus outlives it by a minute.
       const dish = dishes?.get(r.id);
-      const base = dish ? { ...r, matchedDish: dish } : r;
+      const withDish = dish ? { ...r, matchedDish: dish } : r;
+      const base = here ? withDistance(withDish, here) : withDish;
       return score === undefined
         ? { ...base, plateScore: plate }
         : { ...base, plateScore: plate, aspectScore: score };
@@ -226,6 +234,37 @@ export async function getDiscoverPage(
       .slice(0, 2)
       .map((r) => ({ ...r, plateScore: plates[r.id] ?? EMPTY_PLATE_SCORE })),
   };
+}
+
+/**
+ * Nearest first, when there is a search term and a position to measure from.
+ *
+ * A name typed into the field is a question about a place, and when six taco
+ * shops answer to it the one you can walk to is the answer — so a search is
+ * ordered by distance from the visitor. A picked neighbourhood overrides that:
+ * it is the reader saying where they mean, and re-sorting North Park by how
+ * far it is from Oceanside would answer a question nobody asked. Browsing with
+ * no term keeps the corpus order too, so the unfiltered grid is not the same
+ * handful of blocks every time.
+ */
+function orderResults(
+  matched: RestaurantView[],
+  f: DiscoverFilters,
+  here: Coords | null,
+): RestaurantView[] {
+  if (!here || !f.q || f.neighborhood) return matched;
+  const miles = new Map(matched.map((r) => [r.id, milesBetween(here, r)]));
+  return [...matched].sort((a, b) => (miles.get(a.id) ?? 0) - (miles.get(b.id) ?? 0));
+}
+
+/**
+ * The seeded `distance` is measured from a fixed downtown origin. With a real
+ * position in hand it is replaced by the real number, in the same format, so
+ * every card that prints it prints the truth without knowing anything changed.
+ */
+function withDistance<T extends RestaurantView>(r: T, here: Coords): T & { milesAway: number } {
+  const milesAway = milesBetween(here, r);
+  return { ...r, milesAway, distance: formatMiles(milesAway) };
 }
 
 /* --- The feed's share of the corpus ------------------------------------ */

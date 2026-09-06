@@ -1,0 +1,605 @@
+[
+  {
+    "restaurantId": "9323",
+    "name": "Labendi cafe & Catering",
+    "sourceUrl": "https://www.doordash.com/store/labendi-cafe-&-catering-san-diego-36550235/",
+    "confidence": "medium",
+    "notes": "DoorDash schema.org Menu JSON-LD under-reported this store (79 items, missing the whole Juice category and undercounting Smoothies/Paninis/Wraps/Salads/Breakfast Sandwiches/Hot Drinks). Read the full 87-item catalog instead from the escaped RSC MenuBookCategory/MenuPageItemList payload on the same page, which matches the live category book counts exactly (Healthy Stars 3, Breakfast Sandwiches 10, Breakfast-Burritos & Omelettes 11, Hot Drinks 16, Iced Drinks 10, Blended Frappe Drinks 7, Salads 7, Wraps 5, Paninis 7, Soup of the Day 1, Smoothies 7, Juice 3). Dropped the 12-item \"Most Ordered\" carousel is NOT dropped here because those 12 items are distinct entries already counted within the 87 (carousel not double counted; carousel itself excluded from this total). Divisor sweep 1.00-1.35 found no clean uniform markup; cents cluster at .20/.70 with consistent modifier deltas (hot vs iced pairs +$1.30-$1.55 every time), reading as genuine cafe pricing. Address matches batch (9665 Chesapeake Dr Ste 102, San Diego).",
+    "dishes": [
+      {
+        "name": "Açaí Bowl",
+        "description": "",
+        "price": "$11.70",
+        "section": "Healthy Stars"
+      },
+      {
+        "name": "Nut Butter Smoothie",
+        "description": "",
+        "price": "$9.20",
+        "section": "Healthy Stars"
+      },
+      {
+        "name": "Açaí Smoothie",
+        "description": "",
+        "price": "$8.00",
+        "section": "Healthy Stars"
+      },
+      {
+        "name": "Mediterranean Avocado",
+        "description": "",
+        "price": "$11.70",
+        "section": "Breakfast Sandwiches"
+      },
+      {
+        "name": "Lox Bagel",
+        "description": "",
+        "price": "$12.70",
+        "section": "Breakfast Sandwiches"
+      },
+      {
+        "name": "Alaska Avocado Toast",
+        "description": "",
+        "price": "$12.70",
+        "section": "Breakfast Sandwiches"
+      },
+      {
+        "name": "Club Bagel",
+        "description": "",
+        "price": "$9.70",
+        "section": "Breakfast Sandwiches"
+      },
+      {
+        "name": "Egg Sandwich",
+        "description": "",
+        "price": "$9.25",
+        "section": "Breakfast Sandwiches"
+      },
+      {
+        "name": "Open Faced Bagel",
+        "description": "",
+        "price": "$9.70",
+        "section": "Breakfast Sandwiches"
+      },
+      {
+        "name": "Ham & Cheese Bagel",
+        "description": "",
+        "price": "$9.25",
+        "section": "Breakfast Sandwiches"
+      },
+      {
+        "name": "Turkey & Cheese Bagel",
+        "description": "",
+        "price": "$9.25",
+        "section": "Breakfast Sandwiches"
+      },
+      {
+        "name": "Veggie Egg Sandwich",
+        "description": "",
+        "price": "$9.25",
+        "section": "Breakfast Sandwiches"
+      },
+      {
+        "name": "Bagel with Cream Cheese",
+        "description": "",
+        "price": "$5.70",
+        "section": "Breakfast Sandwiches"
+      },
+      {
+        "name": "Denver Omelette",
+        "description": "",
+        "price": "$17.70",
+        "section": "Breakfast - Burritos & Omelettes"
+      },
+      {
+        "name": "French Toast Combo",
+        "description": "",
+        "price": "$15.70",
+        "section": "Breakfast - Burritos & Omelettes"
+      },
+      {
+        "name": "Meat Lovers Omelette",
+        "description": "",
+        "price": "$18.70",
+        "section": "Breakfast - Burritos & Omelettes"
+      },
+      {
+        "name": "Atlantic Omelette",
+        "description": "",
+        "price": "$18.70",
+        "section": "Breakfast - Burritos & Omelettes"
+      },
+      {
+        "name": "Spicy Baja Omelette",
+        "description": "",
+        "price": "$17.70",
+        "section": "Breakfast - Burritos & Omelettes"
+      },
+      {
+        "name": "Breakfast Burritos",
+        "description": "",
+        "price": "$12.70",
+        "section": "Breakfast - Burritos & Omelettes"
+      },
+      {
+        "name": "Huevos con Chorizo",
+        "description": "",
+        "price": "$17.70",
+        "section": "Breakfast - Burritos & Omelettes"
+      },
+      {
+        "name": "Breakfast Plate",
+        "description": "",
+        "price": "$13.70",
+        "section": "Breakfast - Burritos & Omelettes"
+      },
+      {
+        "name": "Pancake Combo",
+        "description": "",
+        "price": "$15.70",
+        "section": "Breakfast - Burritos & Omelettes"
+      },
+      {
+        "name": "Chilaquiles",
+        "description": "",
+        "price": "$15.70",
+        "section": "Breakfast - Burritos & Omelettes"
+      },
+      {
+        "name": "Power Breakfast",
+        "description": "",
+        "price": "$14.70",
+        "section": "Breakfast - Burritos & Omelettes"
+      },
+      {
+        "name": "Mexican Mocha",
+        "description": "",
+        "price": "$7.20",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Cinnamon Dolce Latte",
+        "description": "",
+        "price": "$6.75",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Caramel Macchiato",
+        "description": "",
+        "price": "$7.20",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Dirty Chai Tea Latte",
+        "description": "",
+        "price": "$7.20",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "White Chocolate Mocha",
+        "description": "",
+        "price": "$6.75",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Vanilla Latte",
+        "description": "",
+        "price": "$6.75",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Matcha Green Tea Latte",
+        "description": "",
+        "price": "$6.75",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Chai Tea Latte",
+        "description": "",
+        "price": "$6.75",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Praline Hazelnut Latte",
+        "description": "",
+        "price": "$6.75",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Caffè Mocha",
+        "description": "",
+        "price": "$6.75",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Mexican Hot Chocolate",
+        "description": "",
+        "price": "$6.20",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Caffè Latte",
+        "description": "",
+        "price": "$6.20",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Caffè Americano",
+        "description": "",
+        "price": "$5.50",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "",
+        "price": "$4.75",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "House Coffee",
+        "description": "",
+        "price": "$4.50",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$4.50",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Caramel Macchiato",
+        "description": "",
+        "price": "$8.75",
+        "section": "Iced Drinks"
+      },
+      {
+        "name": "Dirty Chai Tea Latte",
+        "description": "",
+        "price": "$8.75",
+        "section": "Iced Drinks"
+      },
+      {
+        "name": "Chai Tea Latte",
+        "description": "",
+        "price": "$8.20",
+        "section": "Iced Drinks"
+      },
+      {
+        "name": "Caffè Mocha",
+        "description": "",
+        "price": "$8.20",
+        "section": "Iced Drinks"
+      },
+      {
+        "name": "White Chocolate Mocha",
+        "description": "",
+        "price": "$8.20",
+        "section": "Iced Drinks"
+      },
+      {
+        "name": "Vanilla Latte",
+        "description": "",
+        "price": "$8.20",
+        "section": "Iced Drinks"
+      },
+      {
+        "name": "Matcha Green Tea Latte",
+        "description": "",
+        "price": "$8.20",
+        "section": "Iced Drinks"
+      },
+      {
+        "name": "Caffè Latte",
+        "description": "",
+        "price": "$7.50",
+        "section": "Iced Drinks"
+      },
+      {
+        "name": "Americano",
+        "description": "",
+        "price": "$6.75",
+        "section": "Iced Drinks"
+      },
+      {
+        "name": "Iced Coffee",
+        "description": "",
+        "price": "$5.75",
+        "section": "Iced Drinks"
+      },
+      {
+        "name": "Dirty Chai Tea",
+        "description": "",
+        "price": "$8.75",
+        "section": "Blended Frappe Drinks"
+      },
+      {
+        "name": "Caramel",
+        "description": "",
+        "price": "$8.20",
+        "section": "Blended Frappe Drinks"
+      },
+      {
+        "name": "Caramel Brûlée",
+        "description": "",
+        "price": "$8.20",
+        "section": "Blended Frappe Drinks"
+      },
+      {
+        "name": "Mocha",
+        "description": "",
+        "price": "$8.20",
+        "section": "Blended Frappe Drinks"
+      },
+      {
+        "name": "Coconut",
+        "description": "",
+        "price": "$8.20",
+        "section": "Blended Frappe Drinks"
+      },
+      {
+        "name": "Matcha Green Tea",
+        "description": "",
+        "price": "$8.20",
+        "section": "Blended Frappe Drinks"
+      },
+      {
+        "name": "Chai Tea",
+        "description": "",
+        "price": "$8.20",
+        "section": "Blended Frappe Drinks"
+      },
+      {
+        "name": "Chicken Cobb Salad",
+        "description": "",
+        "price": "$11.25",
+        "section": "Salads"
+      },
+      {
+        "name": "Chicken Greek Salad",
+        "description": "",
+        "price": "$11.25",
+        "section": "Salads"
+      },
+      {
+        "name": "Chef Salad",
+        "description": "",
+        "price": "$11.25",
+        "section": "Salads"
+      },
+      {
+        "name": "Chicken Berry Savory Salad",
+        "description": "",
+        "price": "$11.25",
+        "section": "Salads"
+      },
+      {
+        "name": "Southwestern Chicken Salad",
+        "description": "",
+        "price": "$11.25",
+        "section": "Salads"
+      },
+      {
+        "name": "Labendi House Salad",
+        "description": "",
+        "price": "$11.25",
+        "section": "Salads"
+      },
+      {
+        "name": "Chicken Caesar Salad",
+        "description": "",
+        "price": "$10.70",
+        "section": "Salads"
+      },
+      {
+        "name": "California Wrap",
+        "description": "",
+        "price": "$9.70",
+        "section": "Wraps"
+      },
+      {
+        "name": "Chicken Caesar Wrap",
+        "description": "",
+        "price": "$9.70",
+        "section": "Wraps"
+      },
+      {
+        "name": "Greek Chicken Wrap",
+        "description": "",
+        "price": "$9.70",
+        "section": "Wraps"
+      },
+      {
+        "name": "Turkey BLT",
+        "description": "",
+        "price": "$9.70",
+        "section": "Wraps"
+      },
+      {
+        "name": "Chicken Pesto",
+        "description": "",
+        "price": "$9.70",
+        "section": "Wraps"
+      },
+      {
+        "name": "Chicken California",
+        "description": "",
+        "price": "$12.70",
+        "section": "Paninis"
+      },
+      {
+        "name": "Turkey Cheddar",
+        "description": "",
+        "price": "$12.70",
+        "section": "Paninis"
+      },
+      {
+        "name": "Tuna Melt",
+        "description": "",
+        "price": "$12.70",
+        "section": "Paninis"
+      },
+      {
+        "name": "Grilled Portobello Mushrooms",
+        "description": "",
+        "price": "$12.70",
+        "section": "Paninis"
+      },
+      {
+        "name": "Club",
+        "description": "",
+        "price": "$12.70",
+        "section": "Paninis"
+      },
+      {
+        "name": "Chicken Gouda",
+        "description": "",
+        "price": "$12.70",
+        "section": "Paninis"
+      },
+      {
+        "name": "Mediterranean Chicken Pesto",
+        "description": "",
+        "price": "$12.70",
+        "section": "Paninis"
+      },
+      {
+        "name": "Soup of the Day",
+        "description": "",
+        "price": "$6.50",
+        "section": "Soup of the Day"
+      },
+      {
+        "name": "Healthy Mango Green Smoothie",
+        "description": "",
+        "price": "$9.20",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Tropical Medley",
+        "description": "",
+        "price": "$8.20",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Healthy Kale Pineapple Smoothie",
+        "description": "",
+        "price": "$9.20",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Organic Fresh Start Smoothie",
+        "description": "",
+        "price": "$9.20",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry Banana Smoothie",
+        "description": "",
+        "price": "$8.20",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Four Berries",
+        "description": "",
+        "price": "$8.20",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Açaí",
+        "description": "",
+        "price": "$8.20",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Green Machine",
+        "description": "",
+        "price": "$9.20",
+        "section": "Juice"
+      },
+      {
+        "name": "Super-7 Energizer",
+        "description": "",
+        "price": "$9.20",
+        "section": "Juice"
+      },
+      {
+        "name": "Green Apple Detox",
+        "description": "",
+        "price": "$9.20",
+        "section": "Juice"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7885",
+    "name": "Taquería Imperial Taco Shop",
+    "sourceUrl": "https://www.google.com/maps",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "No priced source found for this location (4711 Federal Blvd, San Diego 92102, confirmed via Google Maps). Only social-media promo reels (TikTok/Instagram) mentioning $0.99 tacos and a WhatsApp Business catalog link (not fetchable/priced via curl) were found; Yelp/Mapquest/Instagram hits under the same name belong to a different branch at 9664 Campo Rd, Spring Valley. No DoorDash/UberEats/Grubhub storefront located for the Federal Blvd address."
+  },
+  {
+    "restaurantId": "10513",
+    "name": "Las Delicias de Alicia",
+    "sourceUrl": "https://www.yelp.com/biz/las-delicias-de-alicias-vista",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "No priced source found. lasdeliciasdealicia.com is a hijacked/parked domain serving real-estate and personals spam, not the restaurant. DoorDash/UberEats/Grubhub/Fantuan hits under this name belong to unrelated same-named restaurants in Los Angeles, Miami, North Miami and Modesto. Fantuan's own listing for the Vista address renders its menu client-side with no static prices. zmenu is a farm aggregator (ignored per rules)."
+  },
+  {
+    "restaurantId": "4564",
+    "name": "Blue Bowl Superfoods",
+    "sourceUrl": "https://order.mybluebowl.com/locations/blue-bowl",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: ordering platform is Olo (order.mybluebowl.com), a client-side React/Next.js app with no merchant/vendor id or menu data in the static page source or embedded __NEXT_DATA__; only static JS chunk URLs are present. Restaurant's own site (mybluebowl.com) carries no prices either."
+  },
+  {
+    "restaurantId": "12146",
+    "name": "Coastal Coffee - Scripps Memorial Hospital",
+    "sourceUrl": "https://www.scripps.org/patients-and-visitors/dining-services",
+    "confidence": "high",
+    "dishes": [],
+    "blocked": "hospital concession coffee stand inside Scripps Memorial Hospital La Jolla; per standing rule, campus/hospital concessions are blocked, not filed or retired."
+  },
+  {
+    "restaurantId": "8701",
+    "name": "Surf City Squeeze",
+    "sourceUrl": "https://order.surfcitysqueeze.com/menu/surf-city-plaza-bonita-2/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: ordering platform is Olo (order.surfcitysqueeze.com), Next.js app that fetches menu/prices client-side after load; no merchant id or price data present in the static HTML or Next.js props. The restaurant's own static /menu/flavors/* pages describe flavors but list no prices. Address confirmed via page title (National City CA 91950, store 1215) matching batch."
+  },
+  {
+    "restaurantId": "3108",
+    "name": "longball cocktail",
+    "sourceUrl": "https://www.yelp.com/biz/longball-craft-cocktail-san-diego-2",
+    "confidence": "high",
+    "dishes": [],
+    "blocked": "no food menu, hold candidate: Longball is a canned-cocktail brand's tasting room/cocktail club (pool table, dartboard, golf simulator) at 4026 Hawk St, San Diego; Yelp notes only \"snacks at the bar\" with no itemized food menu found anywhere (own site drinklongball.com has no menu/food links, only cart/merch/private-event-inquiry)."
+  },
+  {
+    "restaurantId": "5612",
+    "name": "Sip Fresh",
+    "sourceUrl": "https://order.incentivio.com/c/sipfreshjuice/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: ordering platform is Incentivio (order.incentivio.com), a bare React app shell (\"You need to enable JavaScript\") with no static prices. Restaurant's own site (sipfreshjuice.com) and its /menu page also carry no prices in static HTML."
+  },
+  {
+    "restaurantId": "7088",
+    "name": "Cork N Brew",
+    "sourceUrl": "https://www.corknbrewsd.com/popmenu-order/cork-n-brew/menus/online-ordering",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "corknbrewsd.com returns 404 on every path tried (homepage, /menu, /menus/cork-n-brew, the Popmenu online-ordering menu itself) -- matches the router's earlier fetch-failed 404 finding, so the whole site appears down. A Google-cached snapshot of the Popmenu \"online-ordering\" menu showed prices ($3.12, $5.20, $7.28, $3.64, $2.60) that divide cleanly by 1.04 onto round/half-dollar values ($3.00, $5.00, $7.00, $3.50, $2.50) -- a baked-in online-ordering fee, and with the site down there is no fee-free sibling to check against, so not filed even if the site comes back."
+  },
+  {
+    "restaurantId": "9980",
+    "name": "Las Ranas Lonchera Mariscos",
+    "sourceUrl": "https://www.yelp.com/biz/las-ranas-lonchera-mariscos-san-diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: cash-only seafood food truck (per atly.com) with no website or delivery-platform listing found. Yelp reviews reference menu photos (\"THESE MENU PICTURES\") but the Yelp photo pages are bot-walled against curl (tiny challenge-page response) even with navigation headers."
+  }
+]

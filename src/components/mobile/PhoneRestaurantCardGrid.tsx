@@ -30,10 +30,18 @@ export function PhoneRestaurantCardGrid({
   priority = false,
   matchedCuisine = false,
   aspect = null,
+  distance = null,
 }: {
   restaurant: RestaurantView;
   score?: PlateScore;
   priority?: boolean;
+  /**
+   * How far from the visitor, already formatted ("0.8 mi"), or null when the
+   * position is not known. The card omits the seeded downtown-origin
+   * `distance` on purpose (see above); this is the one number worth the
+   * room, because it is measured from the reader.
+   */
+  distance?: string | null;
   /**
    * The grid is filtered to this restaurant's cuisine, so the line below says
    * why the card is here rather than repeating a fact in muted grey.
@@ -128,21 +136,34 @@ export function PhoneRestaurantCardGrid({
                 {restaurant.matchedDish.price}
               </span>
             )}
+            {distance && (
+              <span className="ml-auto shrink-0 font-mono tabular-nums text-zinc-500">
+                {distance}
+              </span>
+            )}
           </p>
         ) : (
           // Dropped entirely rather than left as an empty line for the ~400
-          // restaurants with no cuisine — see `RestaurantView`.
-          restaurant.cuisine && (
-            <p className="mt-0.5 truncate text-[10px] text-zinc-500">
-              <span
-                className={
-                  matchedCuisine
-                    ? "rounded-full bg-pm-orange-tint px-1.5 py-0.5 font-medium text-pm-orange-text"
-                    : undefined
-                }
-              >
-                {restaurant.cuisine}
-              </span>
+          // restaurants with no cuisine — see `RestaurantView` — unless a live
+          // distance needs the line. Flex so the cuisine absorbs the overflow
+          // and the distance, which is why the card is where it is on a
+          // search, survives it.
+          (restaurant.cuisine || distance) && (
+            <p className="mt-0.5 flex items-center gap-1 text-[10px] text-zinc-500">
+              {restaurant.cuisine && (
+                <span
+                  className={
+                    matchedCuisine
+                      ? "truncate rounded-full bg-pm-orange-tint px-1.5 py-0.5 font-medium text-pm-orange-text"
+                      : "truncate"
+                  }
+                >
+                  {restaurant.cuisine}
+                </span>
+              )}
+              {distance && (
+                <span className="ml-auto shrink-0 font-mono tabular-nums">{distance}</span>
+              )}
             </p>
           )
         )}

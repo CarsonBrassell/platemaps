@@ -1,0 +1,317 @@
+[
+  {
+    "restaurantId": "9842",
+    "name": "Treo Kitchen + Bar",
+    "sourceUrl": "https://www.marriott.com/en-us/hotels/sange-gaylord-pacific-resort-and-convention-center/dining/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "hotel restaurant page and OpenTable listing show only bar/cocktail prices ($17 cocktails); no discoverable food-menu prices on the Marriott dining page, OpenTable, or elsewhere"
+  },
+  {
+    "restaurantId": "9363",
+    "name": "Barakah Coffee House",
+    "sourceUrl": "http://www.barakahcoffeehouse.com/",
+    "confidence": "high",
+    "notes": "read from hardcoded menu data object in the site's compiled JS bundle (assets/index-*.js); server-rendered HTML is an empty SPA shell. Dual-size items (12oz|16oz or 16oz|24oz) split into separate dish entries per size. Modifier/add-on lines with '+$' incremental prices (extra shot, oat/almond milk, cold foam, flavor add) omitted as they are not standalone menu items.",
+    "dishes": [
+      {
+        "name": "Latte (12oz)",
+        "description": "Vanilla, Caramel, Mocha, or White Mocha",
+        "price": "$5.25",
+        "section": "Lattes"
+      },
+      {
+        "name": "Latte (16oz)",
+        "description": "Vanilla, Caramel, Mocha, or White Mocha",
+        "price": "$5.75",
+        "section": "Lattes"
+      },
+      {
+        "name": "Chai Tea Latte (12oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Lattes"
+      },
+      {
+        "name": "Chai Tea Latte (16oz)",
+        "description": "",
+        "price": "$6.25",
+        "section": "Lattes"
+      },
+      {
+        "name": "Biscoff Latte (12oz)",
+        "description": "",
+        "price": "$7.00",
+        "section": "Lattes"
+      },
+      {
+        "name": "Biscoff Latte (16oz)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Lattes"
+      },
+      {
+        "name": "Date Latte (12oz)",
+        "description": "",
+        "price": "$7.00",
+        "section": "Lattes"
+      },
+      {
+        "name": "Date Latte (16oz)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Lattes"
+      },
+      {
+        "name": "Spanish Latte (12oz)",
+        "description": "",
+        "price": "$7.00",
+        "section": "Lattes"
+      },
+      {
+        "name": "Spanish Latte (16oz)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Lattes"
+      },
+      {
+        "name": "Iced Campfire Chai (Halal)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Lattes"
+      },
+      {
+        "name": "Matcha Latte - Unsweetened (12oz)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Matcha Lattes"
+      },
+      {
+        "name": "Matcha Latte - Unsweetened (16oz)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Matcha Lattes"
+      },
+      {
+        "name": "Tea Pot (Serves 3)",
+        "description": "",
+        "price": "$17.00",
+        "section": "Tea"
+      },
+      {
+        "name": "Traditional Spiced Milk Tea (12oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Tea"
+      },
+      {
+        "name": "Traditional Spiced Milk Tea (16oz)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Tea"
+      },
+      {
+        "name": "Herbal Tea (12oz)",
+        "description": "Earl Grey, Blueberry, or Green Tea",
+        "price": "$3.50",
+        "section": "Tea"
+      },
+      {
+        "name": "Herbal Tea (16oz)",
+        "description": "Earl Grey, Blueberry, or Green Tea",
+        "price": "$4.00",
+        "section": "Tea"
+      },
+      {
+        "name": "Pumpkin Pie Latte (12oz)",
+        "description": "Creamy espresso latte with pumpkin cold foam, hot or iced",
+        "price": "$7.00",
+        "section": "Seasonal Specials"
+      },
+      {
+        "name": "Pumpkin Pie Latte (16oz)",
+        "description": "Creamy espresso latte with pumpkin cold foam, hot or iced",
+        "price": "$7.50",
+        "section": "Seasonal Specials"
+      },
+      {
+        "name": "Pumpkin Spiced Chai Tea Latte",
+        "description": "Iced chai with marshmallow syrup and pumpkin cold foam",
+        "price": "$7.50",
+        "section": "Seasonal Specials"
+      },
+      {
+        "name": "Cinnamon Roll Latte",
+        "description": "Cinnamon latte with cinnamon cold foam and a mini cinnamon bun",
+        "price": "$8.00",
+        "section": "Seasonal Specials"
+      },
+      {
+        "name": "Pumpkin Matcha Latte",
+        "description": "Creamy matcha with pumpkin cold foam",
+        "price": "$8.00",
+        "section": "Seasonal Specials"
+      },
+      {
+        "name": "Barakah Refreshers (16oz)",
+        "description": "Mango, Strawberry, Pineapple, Passionfruit, Peach, or Watermelon; choice of base",
+        "price": "$5.50",
+        "section": "Barakah Refreshers"
+      },
+      {
+        "name": "Barakah Refreshers (24oz)",
+        "description": "Mango, Strawberry, Pineapple, Passionfruit, Peach, or Watermelon; choice of base",
+        "price": "$7.50",
+        "section": "Barakah Refreshers"
+      },
+      {
+        "name": "Pistachio Claw Croissant",
+        "description": "",
+        "price": "$5.50",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Almond Croissant",
+        "description": "",
+        "price": "$5.50",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Muffins",
+        "description": "Coffee Cake or Blueberry",
+        "price": "$5.00",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Cheese Danish",
+        "description": "",
+        "price": "$4.75",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Coconut Cake",
+        "description": "",
+        "price": "$5.00",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Date Cake",
+        "description": "",
+        "price": "$6.00",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Milk Cake",
+        "description": "Biscoff, Pistachio, or Caramel",
+        "price": "$6.25",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Banana Bread",
+        "description": "",
+        "price": "$5.00",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Chocolate Chip Cookies",
+        "description": "",
+        "price": "$4.25",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Pumpkin Muffin",
+        "description": "Seasonal Special",
+        "price": "$5.50",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Beef Sambusa",
+        "description": "",
+        "price": "$2.75",
+        "section": "Sambusa"
+      },
+      {
+        "name": "Chicken Sambusa",
+        "description": "",
+        "price": "$2.75",
+        "section": "Sambusa"
+      },
+      {
+        "name": "Lentil Sambusa",
+        "description": "",
+        "price": "$2.00",
+        "section": "Sambusa"
+      },
+      {
+        "name": "Potato Sambusa",
+        "description": "",
+        "price": "$2.00",
+        "section": "Sambusa"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10389",
+    "name": "Queenstage Coffee House",
+    "sourceUrl": "https://www.thecoastnews.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "only priced data point found is a single stale coffee price ($3.25) from a September 2022 Coast News article; Facebook and Wheree listings both unreachable (400/403); no current itemized menu found anywhere"
+  },
+  {
+    "restaurantId": "9841",
+    "name": "Taqueria y mariscos el kiki",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no priced source found; business appears under two differently-named Yelp listings at the same 2295 Main St address (Seafood and Tacos El Kiki / Taqueria y Mariscos El Kiki) plus a conflicting Apple Maps entry for Chula Vista; only aggregator hit was barred zmenu.com; no ordering-platform or first-party menu with prices located"
+  },
+  {
+    "restaurantId": "12022",
+    "name": "Fresh Catch Fish Market & Grill",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own domain (freshcatchfishmarketandgrill site) actually belongs to an unrelated Sarasota, FL business at a different address; the only address-matched priced source is a SinglePlatform listing for 3650 5th Ave Ste 103, San Diego, but Yelp reports a change of ownership and the restaurant's own Facebook shows a vacation closure notice, so it is unclear whether that menu/pricing still reflects current operations; blocking rather than filing a possibly-stale menu"
+  },
+  {
+    "restaurantId": "11553",
+    "name": "My Vegan Pie",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "myveganpie.com/shop is unreachable (connection timeout, confirmed independently of router), an r.jina.ai proxy fetch returned 403, and a Wayback Machine capture of the shop page loaded but contains zero discoverable dollar-amount prices for any product; only other pricing found is thin Facebook promotional text ('$5 slices', '$14.99 mini pies' scoped to a farmers market appearance) which is fewer than 5 items and reads as a temporary special, not a stable menu"
+  },
+  {
+    "restaurantId": "9158",
+    "name": "Espresso Mio",
+    "sourceUrl": "https://www.yelp.com/biz/espresso-mio-san-diego",
+    "confidence": "high",
+    "notes": "confirmed permanently closed at this address: Yelp lists it as closed, MapQuest agrees, and the apparent owner's own Instagram states a reopening would be at a new location (i.e. not this address). Independent, non-venue-site confirmation of closure per not_found rule.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "7995",
+    "name": "PARA",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website exists for this business; the only findable page is a joe.coffee aggregator listing with marketing copy, hours and reviews but zero prices"
+  },
+  {
+    "restaurantId": "5997",
+    "name": "Campus Cafe",
+    "sourceUrl": "http://campuscafeonline.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site has a real menu structure but publishes no base item prices, only modifier upcharges (e.g. bread-bowl add-on); its NetWaiter ordering storefront returns an empty catalog ({\"Groups\":[],\"ExternalType\":null})"
+  },
+  {
+    "restaurantId": "9437",
+    "name": "Seaside Yogurt",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "self-serve froyo shop priced by weight (per ounce/pound); no discrete per-item menu prices exist to file"
+  }
+]

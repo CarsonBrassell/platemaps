@@ -1,0 +1,717 @@
+[
+  {
+    "restaurantId": "7851",
+    "name": "Tijuanero By Tijuanazo - Little Italy",
+    "sourceUrl": "https://www.ubereats.com/store/tijuanero-by-tijuanazomx/irf_ZFQcXHOFgnLJjMIHHg",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Owner's own site taqueriatijuanazo.com is Toast for a different branch (406 University Ave, San Diego), not this Little Italy location (2102 India St). Uber Eats listing matches this address exactly (84 items, 12 sections) but cents are scattered (raw conventional 1/84); dividing by 1.15 lands 67/84 on conventional endings -- Uber Eats markup baked in, not the wall price. Not filed."
+  },
+  {
+    "restaurantId": "8786",
+    "name": "Good Belly Deli (Previously Yogurt Giant)",
+    "sourceUrl": "https://postmates.com/store/good-belly-deli/rlpEnlITXXCADR9o40G6rA",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://order.online/store/good-belly-deli-vista-24243320",
+    "notes": "Own site goodbellydeli.com times out (matches router finding); read from Uber Eats/Postmates schema.org Menu JSON-LD, 27 items across Build Your Own, Customer Favorites, Combos, Salads, Wraps, Customer Creations, Sides. Raw prices are 15/27 conventional and no divisor 1.00-1.36 beats that, so no markup detected. order.online search snippet independently shows Italian Sub $17.00 and Build Your Own Sandwich $13.00 matching exactly (different owner).",
+    "dishes": [
+      {
+        "name": "Build Your Own Sandwich",
+        "description": "Includes choice of 1 meat, 1 cheese and lettuce, tomatoes, and mayo on choice of bread. Additional meat, cheese, spread, and extras for an additional charge.",
+        "price": "$13.00",
+        "section": "Build Your Own Sandwich"
+      },
+      {
+        "name": "Italian Sub",
+        "description": "Salami, ham, pepperoni, provolone, lettuce, tomatoes, red onion, peppercinis, mayo, choice of bread, served hot or cold, Italian dressing on the side.",
+        "price": "$17.00",
+        "section": "Customer Favorites"
+      },
+      {
+        "name": "Turkey Avocado Bacon Sub",
+        "description": "Served with lettuce, tomato, swiss cheese, choice of bread.",
+        "price": "$17.00",
+        "section": "Customer Favorites"
+      },
+      {
+        "name": "Egg Salad",
+        "description": "Served with lettuce, tomato, mayo, cheese, choice of bread.",
+        "price": "$14.00",
+        "section": "Customer Favorites"
+      },
+      {
+        "name": "Club Sub",
+        "description": "Turkey, bacon, Swiss cheese, lettuce, tomato, mayo, choice of bread.",
+        "price": "$16.80",
+        "section": "Customer Favorites"
+      },
+      {
+        "name": "Albacore Tuna",
+        "description": "Served with lettuce, tomato, mayo, choice of bread.",
+        "price": "$14.00",
+        "section": "Customer Favorites"
+      },
+      {
+        "name": "Meatball Sub",
+        "description": "Served with meat sauce, meatballs, provolone cheese, toasted on a sub roll.",
+        "price": "$18.00",
+        "section": "Customer Favorites"
+      },
+      {
+        "name": "Pastrami",
+        "description": "Served hot or cold with provolone cheese, mustard, pickles, choice of bread.",
+        "price": "$12.00",
+        "section": "Customer Favorites"
+      },
+      {
+        "name": "Veggie",
+        "description": "Avocado, tomato, cucumber, olives, sprouts, choice of bread.",
+        "price": "$14.40",
+        "section": "Customer Favorites"
+      },
+      {
+        "name": "Basic Sandwich (1 pc) with Side and Drink Combo",
+        "description": "Choice of meat, cheese, tomato, mayo on choice of bread.",
+        "price": "$16.00",
+        "section": "Combos"
+      },
+      {
+        "name": "Potato Salad",
+        "description": "Cold dish made from seasoned potatoes.",
+        "price": "$7.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Asian Salad",
+        "description": "Mixed greens, chicken, shredded carrots, red onion, cucumbers, avocado, mandarin oranges, crunchy noodles, Asian dressing topped with almonds.",
+        "price": "$16.80",
+        "section": "Salads"
+      },
+      {
+        "name": "Cobb Salad",
+        "description": "Mixed greens, cucumbers, tomatoes, avocado, bacon, egg, bleu cheese crumbles.",
+        "price": "$16.80",
+        "section": "Salads"
+      },
+      {
+        "name": "Garden Salad",
+        "description": "Mixed greens, tomatoes, carrots, cucumbers, and croutons.",
+        "price": "$12.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Chef Salad",
+        "description": "Mixed greens, turkey, ham, cheddar cheese, swiss cheese, tomatoes, cucumbers, and carrots.",
+        "price": "$16.80",
+        "section": "Salads"
+      },
+      {
+        "name": "Antipasta Salad",
+        "description": "Mixed greens, salami, pepperoni, ham, mozzarella, provolone, green, and black olives, artichokes, roasted red peppers, carrots, and tomato.",
+        "price": "$16.80",
+        "section": "Salads"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Mixed greens, chicken, shredded parmesan cheese, croutons, and Caesar dressing.",
+        "price": "$14.40",
+        "section": "Salads"
+      },
+      {
+        "name": "Basic Wrap",
+        "description": "Tortilla, lettuce, tomato, cheese, croutons, and dressing. Add meat, avocado for an additional charge.",
+        "price": "$13.00",
+        "section": "Wraps"
+      },
+      {
+        "name": "Magic Mike",
+        "description": "Turkey ham, bacon, avocado, cucumbers, red onion, pepper jack cheese, lettuce, tomato, chipotle mayo, spicy mustard on wheat bread.",
+        "price": "$17.00",
+        "section": "Customer Creations"
+      },
+      {
+        "name": "Junebugs",
+        "description": "Turkey, avocado, cucumber, red onion, tomato, lettuce, mayo, and mustard on squaw bread.",
+        "price": "$14.40",
+        "section": "Customer Creations"
+      },
+      {
+        "name": "Rick",
+        "description": "Chicken, bacon, avocado, sprouts, banana peppers, tomatoes, honey mustard on a sub. Served hot.",
+        "price": "$16.80",
+        "section": "Customer Creations"
+      },
+      {
+        "name": "Wills Remix",
+        "description": "Chicken, bacon, turkey, avocado, red onion, lettuce, Swiss cheese, mayo, spicy mustard on sourdough bread.",
+        "price": "$16.80",
+        "section": "Customer Creations"
+      },
+      {
+        "name": "Pablo P (6 in.)",
+        "description": "Hot chicken and bacon, avocado, pickles, cucumbers, banana peppers, pepper jack cheese, and olive tompanade, mayo, and mustard.",
+        "price": "$16.80",
+        "section": "Customer Creations"
+      },
+      {
+        "name": "Rustys",
+        "description": "Turkey, avocado, cheddar cheese, lettuce, tomatoes, mayo on sourdough.",
+        "price": "$15.00",
+        "section": "Customer Creations"
+      },
+      {
+        "name": "Angelas Veggie (6 in.)",
+        "description": "Cheddar cheese, avocado, lettuce, tomato, red onion, sprouts, mayo on a sub.",
+        "price": "$14.40",
+        "section": "Customer Creations"
+      },
+      {
+        "name": "Soda",
+        "description": "Bubbly, nonalcoholic soft drink.",
+        "price": "$2.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Chips",
+        "description": "Crispy potato chips.",
+        "price": "$2.00",
+        "section": "Sides"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6003",
+    "name": "Chico's Panaderia",
+    "sourceUrl": "https://m.yelp.com/biz/chicos-panaderia-vista",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "No own website, no confirmed ordering-platform page (DoorDash/UberEats/Grubhub) found for this Mexican bakery. Only hearsay per-basket review mentions (\"$40 for 3 tamales, 5 panes de dulce, 2 atoles\") and a single item price on atly.com (Higo bread $3-4), neither an itemized priced menu. No reachable priced source."
+  },
+  {
+    "restaurantId": "4161",
+    "name": "Linlee's Chinese Cuisine",
+    "sourceUrl": "https://www.yelp.com/biz/linlees-chinese-cuisine-spring-valley",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "No own website. Address confirmed at 501 Sweetwater Rd, Spring Valley CA 91977 (San Diego County). Reviews mention DoorDash delivery but no DoorDash/UberEats/Grubhub store page for this specific restaurant was locatable; DoorDash Spring Valley listing 403'd. Only farm/aggregator domains (restaurants-info.com with blank prices like \"Hunan Beef. $\", wheree.com) and hearsay review prices (\"lunch specials $5-7.50\") found. No reachable priced source."
+  },
+  {
+    "restaurantId": "9760",
+    "name": "Intazza Coffee Mug & Grub",
+    "sourceUrl": "https://www.ubereats.com/store/intazza-mug-%26-grub-golden-hill/bSaXp57uX4Wh2uX5q3YyzA",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Own ordering site (intazza.orderexperience.net) is a Paytronix client-rendered Nuxt shell -- browser-only per playbook, no data in raw HTML. Uber Eats capture (105 items, 14 sections, address confirmed 2999 B St) fails the markup test: raw prices only 21/105 conventional, but dividing by 1.25 lands 72/105 (69%) on conventional endings -- consistent with a ~25% delivery markup baked in. Not filed."
+  },
+  {
+    "restaurantId": "11428",
+    "name": "Mikara Cafe",
+    "sourceUrl": "https://www.ubereats.com/store/mikara-cafe-10330-friars-rd/Pg7MASJhR7ytKK0XE_XAmA",
+    "confidence": "low",
+    "crossCheckedAgainst": "https://www.doordash.com/en/store/mikara-cafe---10330-friars-rd-ste-113-%23-ste-%23ste-113-san-diego-34671173/",
+    "dishes": [],
+    "blocked": "Own site mikaracafe.com 404s. Uber Eats (31 items, 7 sections, address confirmed 10330 Friars Rd) and DoorDash (60 items, 10 sections, same address) both readable, but every overlapping item disagrees in price with no consistent ratio (Avocado Toast $9.50 vs $14.00, Mixed Berries $11.00 vs $6.50, Classic $10.00 vs $16.00, etc.) -- two listings disagreeing is a block per house rules. Uber Eats capture also omits the entire Hot/Iced Drinks and Smoothies sections that DoorDash carries, core for a cafe."
+  },
+  {
+    "restaurantId": "9465",
+    "name": "Somisomi",
+    "sourceUrl": "https://somisomi.com/softserve",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Own site (somisomi.com/softserve, /locations) is a thin client-rendered shell with no prices in raw HTML, matches router finding. No DoorDash/UberEats/Grubhub/Postmates store page found for this UTC location (searched by address and neighborhood). Only a vague third-party estimate (\"$6-8 depending on combination\" on TikTok) exists -- no itemized priced menu located."
+  },
+  {
+    "restaurantId": "8754",
+    "name": "Mi Taco Shop",
+    "sourceUrl": "http://places.singleplatform.com/mi-taco-shop/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "No own website or ordering-platform page found. SinglePlatform listing (also syndicated verbatim to la-parada-taco-shop.hub.biz) confirms the address (220 E Madison Ave, El Cajon 92020) and prices 10 items across 5 sections (Mi Burritos, Mi Nachos, Mi Quesadillas, Mi Crispy Tacos, Mi Chimichangas), but Yelp reviews describe rolled tacos, carne asada fries and enchiladas as core items served here and none of those sections appear anywhere in the feed -- a partial, stale SinglePlatform submission rather than the full menu. Not filed."
+  },
+  {
+    "restaurantId": "9761",
+    "name": "Conchita’s Bakery Restaurant Market",
+    "sourceUrl": "https://order.online/store/conchitas-restaurant-1518934",
+    "confidence": "high",
+    "notes": "Batch website (e-buyinsurance.com) is unrelated/stale, matches router no-platform finding. Found restaurant's own order.online storefront instead (address confirmed 649 W Mission Ave Ste 10, Escondido 92025 in payload). Extracted 36 items across 16 sections (Birria Ramen Soup, Tacos, Tortas, Rolled Tacos, Enchiladas, Gorditas, Chilaquiles, Chile Relleno Burrito, Burritos, Quesadilla, Huarache, Tamales, Camarones, Carne Asada Fries/Nachos, Agua Fresca, Bottled Sodas) from the Next.js RSC flight payload (MenuPageItem/MenuBookCategory). Raw cents already 30/36 (83%) conventional endings with no markup pattern -- this is the restaurant's own direct-order storefront (order.online), not a commission delivery marketplace, consistent with no markup. Yelp shows an ambiguous 'CLOSED -- Now Accepting Reservations' label, but Facebook has recent weekend-special posts, Uber Eats/Postmates/order.online listings are all live, fantuanorder.com shows current open hours, and BBB profile confirms the address -- treated as open, filed as found rather than not_found per house rules (Yelp's own-site status label alone is not independent confirmation of closure).",
+    "dishes": [
+      {
+        "name": "Birria Ramen Soup",
+        "description": "Delicious ramen soup with our tasty birria and consome, cilantro, onions and lime.",
+        "price": "$11.99",
+        "section": "Birria Ramen Soup"
+      },
+      {
+        "name": "Street Taco",
+        "description": "Topped with onion, cilantro, lemon \\u0026 salsa. Choices of protein: Carne Asada, Chorizo and Chicken.",
+        "price": "$2.39",
+        "section": "Tacos"
+      },
+      {
+        "name": "Super Quesa  Taco",
+        "description": "Steak or al pastor meats, handmade corn tortilla, guacamole \\u0026 pico de gallo.",
+        "price": "$4.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Adobada Street Taco",
+        "description": "Carne adobada taco with special beef marinated meat with onions, cilantro, lemon \\u0026 salsa.",
+        "price": "$2.39",
+        "section": "Tacos"
+      },
+      {
+        "name": "Quesabirria Taco",
+        "description": "Birria taco with cheese, tortilla lightly fried on each side, cilantro, onion and salsa.",
+        "price": "$4.29",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Gobernador",
+        "description": "Gobernador shrimp taco with melted cheese, grilled onions, peppers and spices cooked to perfection.",
+        "price": "$4.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Giant Quesabirria",
+        "description": "Giant flour tortilla stuffed with birria, melty cheese, onions, cilantro and a side of consome for dipping.",
+        "price": "$10.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "BIG Torta Cubana",
+        "description": "Torta sandwich with milanesa beef meat, ham, sausage, chorizo, mayo, cheese, tomatoes, avocado, onion, lettuce and chili pepper.",
+        "price": "$12.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Pambazo Torta",
+        "description": "Torta bread lightly dipped in red sauce. Comes with chorizo, cheese, lettuce and sour cream.",
+        "price": "$10.49",
+        "section": "Tortas"
+      },
+      {
+        "name": "Torta Asada or Milanesa",
+        "description": "Torta sandwich with asada or milanesa beef meat, beans, cheese, tomatoes, lettuce \\u0026 onion.",
+        "price": "$11.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Quesatorta of Birria \\u0026 Consome",
+        "description": "Torta sandwich stuffed with our popular birria, cilantro, onions, melty cheese and a side of consome for dipping.",
+        "price": "$11.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "3 Rolled Tacos",
+        "description": "Chicken with lettuce, pico de gallo, guacamole, sour cream \\u0026 cheese.",
+        "price": "$5.99",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "5 Rolled Tacos",
+        "description": "\\\\nChicken with lettuce, pico de gallo, guacamole, sour cream \\u0026 cheese.",
+        "price": "$7.99",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "Chicken Enchiladas",
+        "description": "Two chicken and cheese enchiladas served with a side of rice and beans.",
+        "price": "$11.99",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Chorizo And Papas Gordita",
+        "description": "Made with masa, inside has chorizo, potato, queso fresco, lettuce, sour cream \\u0026 pico de gallo.",
+        "price": "$4.75",
+        "section": "Gorditas"
+      },
+      {
+        "name": "Carne Asada, Adobada Or Chicken Gordita",
+        "description": "Made with masa and stuffed with meat queso fresco, lettuce sour cream \\u0026 pico de gallo.",
+        "price": "$4.75",
+        "section": "Gorditas"
+      },
+      {
+        "name": "Chilaquiles",
+        "description": "Freshly fried tortilla chips topped with green or red salsa, 2 eggs, sour cream \\u0026 cheese.",
+        "price": "$11.99",
+        "section": "Breakfast Chilaquiles"
+      },
+      {
+        "name": "Chile Relleno Burrito",
+        "description": "Flour tortilla with a chile relleno, rice, beans, cheese and sour cream.",
+        "price": "$11.99",
+        "section": "Chile Relleno Burrito"
+      },
+      {
+        "name": "Carne Asada, Adobada Or Chicken Burrito",
+        "description": "Comes with rice, beans, pico de gallo, sour cream, cheese and salsa.",
+        "price": "$11.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Giant Breakfast Burrito",
+        "description": "Choice of (bacon, eggs \\u0026 cheese) or (chorizo, potato, eggs \\u0026 cheese) or (ham, eggs \\u0026 cheese)",
+        "price": "$11.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "California Burrito",
+        "description": "Carne asada with pico de gallo, guacamole, potato, cheese \\u0026 sour cream.",
+        "price": "$12.59",
+        "section": "Burritos"
+      },
+      {
+        "name": "Huge Meat Quesadilla",
+        "description": "Meat choice, carne asada, carne al pastor or chicken. Comes with an extra large flour tortilla with cheese and small scoop of guacamole.",
+        "price": "$10.99",
+        "section": "Quesadilla"
+      },
+      {
+        "name": "Carne Asada Huarache",
+        "description": "Thick masa tortilla stuffed with beans, topped with cheese, sour cream, pico, lettuce and meat.",
+        "price": "$10.25",
+        "section": "Mexico City Huarache"
+      },
+      {
+        "name": "Tamales Oaxaquenos",
+        "description": "Chicken tamales with red or green sauce or tamales de rajas with jalapeno, onion, tomatoes \\u0026 cheese.",
+        "price": "$4.49",
+        "section": "Tamales Oaxaquenos"
+      },
+      {
+        "name": "Camarones A La Diabla",
+        "description": "Sauteed shrimp's in red sauce with rice \\u0026 chips.",
+        "price": "$13.99",
+        "section": "Camarones"
+      },
+      {
+        "name": "Camarones Al Mojo De Ajo",
+        "description": "Garlic Sauce with rice \\u0026 chips.",
+        "price": "$13.99",
+        "section": "Camarones"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "Fries, sour cream, cheese, guacamole and pico de gallo.",
+        "price": "$11.99",
+        "section": "Carne Asada Fries/Nachos"
+      },
+      {
+        "name": "Carne Asada Nachos",
+        "description": "Nachos with guacamole, pico de gallo, sour cream \\u0026 cheese.",
+        "price": "$11.99",
+        "section": "Carne Asada Fries/Nachos"
+      },
+      {
+        "name": "Agua De Horchata",
+        "description": "16oz Rice water flavor drink",
+        "price": "$3.00",
+        "section": "Agua Fresca"
+      },
+      {
+        "name": "Agua De Jamaica",
+        "description": "16oz hibiscus flavor drink",
+        "price": "$3.00",
+        "section": "Agua Fresca"
+      },
+      {
+        "name": "Agua De Tamarindo",
+        "description": "16oz Tamarind flavor drink",
+        "price": "$3.00",
+        "section": "Agua Fresca"
+      },
+      {
+        "name": "12oz Glass Bottle Coke",
+        "description": "",
+        "price": "$2.75",
+        "section": "Bottle Sodas / Refrescos De Botella"
+      },
+      {
+        "name": "12oz Glass Bottle Fanta",
+        "description": "",
+        "price": "$2.75",
+        "section": "Bottle Sodas / Refrescos De Botella"
+      },
+      {
+        "name": "12oz Glass Bottle Jarritos Mandarina",
+        "description": "",
+        "price": "$2.75",
+        "section": "Bottle Sodas / Refrescos De Botella"
+      },
+      {
+        "name": "12oz Glass Bottle Jarritos Tamarido",
+        "description": "",
+        "price": "$2.75",
+        "section": "Bottle Sodas / Refrescos De Botella"
+      },
+      {
+        "name": "12oz Glass Bottle Sprite",
+        "description": "",
+        "price": "$2.75",
+        "section": "Bottle Sodas / Refrescos De Botella"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9759",
+    "name": "Karina's Ceviche Bar 'N Tacos",
+    "sourceUrl": "https://karinasseafood.com/wp-content/uploads/2025/02/WebMenuCevichesBarNTacos.pdf",
+    "confidence": "medium",
+    "notes": "Batch website karinasseafood.com/barrio-logan/ is a WordPress marketing page with no in-page prices (router correctly found no ordering platform); the same page links a PDF menu (WebMenuCevichesBarNTacos.pdf) hosted on the restaurant's own domain, which is used here. Toast ordering page (toasttab.com/karinaslogan, name matches Barrio Logan) is a client-rendered shell with no prices in raw HTML, so not used directly. 42 items across Appetizers, Ceviches, Birria, Sides, Tacos, Burritos, Drinks; ceviche/guacamole plate-vs-tostada and small-vs-large price variants split into separate dish rows. Karina's is a small 5-location chain (Barrio Logan, Bonita, Gaslamp Quarter, Mission Hills, Otay Ranch); this PDF is linked specifically from the Barrio Logan page as its menu, but menu/pricing could be shared across locations rather than unique to this address -- confidence set to medium for that reason rather than a source-quality concern.",
+    "dishes": [
+      {
+        "name": "Campechana",
+        "description": "Combination of shrimp, octopus & scallops",
+        "price": "$19.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Coctel de Camarón",
+        "description": "Shrimp Cocktail",
+        "price": "$19.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mango Tuna Jalapeño Sashimi",
+        "description": "Sliced mango and Ahi Tuna drizzled with a sweet mango sauce and served with spicy jalapeño soy sauce.",
+        "price": "$16.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Ceviche Karina's (Plate)",
+        "description": "Shrimp, cucumber & avocado in Karina's signature green chile sauce.",
+        "price": "$18.00",
+        "section": "Ceviches"
+      },
+      {
+        "name": "Ceviche Karina's (Tostada)",
+        "description": "Shrimp, cucumber & avocado in Karina's signature green chile sauce.",
+        "price": "$7.00",
+        "section": "Ceviches"
+      },
+      {
+        "name": "Pescado (Plate)",
+        "description": "Fish, onion, tomato, cilantro, cucumber & Serrano peppers, marinated in lime juice.",
+        "price": "$16.00",
+        "section": "Ceviches"
+      },
+      {
+        "name": "Pescado (Tostada)",
+        "description": "Fish, onion, tomato, cilantro, cucumber & Serrano peppers, marinated in lime juice.",
+        "price": "$6.00",
+        "section": "Ceviches"
+      },
+      {
+        "name": "Ahi Poke (Tostada Only)",
+        "description": "Ahi tuna tossed with sesame oil, sesame seeds and red chili flakes, topped with crispy onions, pickled red onions, cilantro and spicy mayo.",
+        "price": "$8.00",
+        "section": "Ceviches"
+      },
+      {
+        "name": "Aguachile de Camarón (Plate only)",
+        "description": "Shrimp marinated in lime juice, chilies and salt. Topped with cilantro & cucumbers.",
+        "price": "$18.00",
+        "section": "Ceviches"
+      },
+      {
+        "name": "Birria Burrito",
+        "description": "",
+        "price": "$16.00",
+        "section": "Birria"
+      },
+      {
+        "name": "Birria Taco",
+        "description": "",
+        "price": "$7.00",
+        "section": "Birria"
+      },
+      {
+        "name": "Queso Birria Taco",
+        "description": "Served with flour tortilla",
+        "price": "$8.00",
+        "section": "Birria"
+      },
+      {
+        "name": "Birria Tatemada",
+        "description": "Served with beans",
+        "price": "$18.00",
+        "section": "Birria"
+      },
+      {
+        "name": "Clam Chowder Cup",
+        "description": "",
+        "price": "$8.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Guacamole (Small)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Guacamole (Large)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Chips & Salsa",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Rice",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Beans",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Fish Taco",
+        "description": "Baja Style",
+        "price": "$5.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Shrimp Taco",
+        "description": "Baja Style",
+        "price": "$6.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Camarón Enchilado Taco",
+        "description": "",
+        "price": "$6.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Bacon Wrapped Shrimp Taco",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Gobernador Taco",
+        "description": "",
+        "price": "$6.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Marlín Taco",
+        "description": "",
+        "price": "$6.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Surf & Turf Taco",
+        "description": "Steak & Shrimp",
+        "price": "$8.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Lobster Taco",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Rib Eye Taco",
+        "description": "",
+        "price": "$6.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Al Pastor Taco",
+        "description": "",
+        "price": "$5.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carnitas Taco",
+        "description": "",
+        "price": "$5.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Fish Burrito",
+        "description": "Baja Style",
+        "price": "$15.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shrimp Burrito",
+        "description": "Baja Style",
+        "price": "$16.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Surf & Turf Burrito",
+        "description": "Steak & Shrimp",
+        "price": "$17.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Rib Eye Burrito",
+        "description": "",
+        "price": "$17.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Al Pastor Burrito",
+        "description": "",
+        "price": "$15.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas Burrito",
+        "description": "",
+        "price": "$15.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Draft Beer",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coca Cola",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Jarritos",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Horchata",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Aguas Frescas",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Clamato Mix",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      }
+    ]
+  }
+]

@@ -1,0 +1,258 @@
+[
+  {
+    "restaurantId": "10408",
+    "name": "Kali’s Garden Cafe",
+    "sourceUrl": "https://www.yelp.com/biz/kali-s-garden-julian",
+    "confidence": "high",
+    "notes": "confirmed permanently closed: Yelp listing is titled 'KALI'S GARDEN - CLOSED', HappyCow reports 'Closed for good as of April 30, 2025', and the business's own Facebook page posted a farewell announcing the Julian location's closure due to rent costs.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "12447",
+    "name": "Tacos el Vaquero",
+    "sourceUrl": "https://www.doordash.com/store/tacos-el-vaquero-chula-vista-822949/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://order.online/en-AU/store/tacos-el-vaquero-822949",
+    "notes": "DoorDash JSON-LD (navigation-header curl, address 269 Third Ave / 269 3rd Ave matches). Book category 'Tacos El Vaquero' reports numItems:9; the 9 distinct food items across the 'Most Ordered' carousel and 'Tacos El Vaquero' section are all unique names/prices once deduped, so nothing is missing despite the low raw count — this is a genuinely small food-truck menu. order.online's own storefront (Cloudflare-gated to curl) showed matching prices for Tacos $4.50, Tostadas $4.50, Mulitas $9.00, Quesadillas $16.00, Vampiros $9.00 in its search snippet, corroborating. All round-dollar/half-dollar pricing, no markup pattern.",
+    "dishes": [
+      {
+        "name": "Mulitas",
+        "description": "",
+        "price": "$9.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Vampiros",
+        "description": "",
+        "price": "$9.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Quesadillas",
+        "description": "",
+        "price": "$16.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Tortas",
+        "description": "",
+        "price": "$15.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Ahh Perroooo",
+        "description": "",
+        "price": "$6.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Quesadilla ONLY Cheese",
+        "description": "",
+        "price": "$5.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Hot Dog",
+        "description": "",
+        "price": "$3.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Tacos",
+        "description": "",
+        "price": "$4.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Tostadas",
+        "description": "",
+        "price": "$4.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Can Soda",
+        "description": "",
+        "price": "$2.60",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9440",
+    "name": "Red Cup Yogurt",
+    "sourceUrl": "https://www.doordash.com/store/red-cup-yogurt-oceanside-439639/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://order.online/store/red-cup-yogurt-mission-ave-439639",
+    "notes": "DoorDash JSON-LD (navigation-header curl; address 301 Mission Ave matches). Deduped 28 items exactly matches the page's own menu-book count (Most Ordered 4 + ITEMS 24 = 28), so this is the complete catalog, not a truncated one despite the low count. This is a self-serve frozen-yogurt/candy-bar shop: every row is a yogurt flavor or a per-scoop topping/candy add-on, no separate cup/base charge — that pricing shape (topping-priced, no size tiers) is confirmed by order.online's matching snippet (mango juice poppers $4.75, M&m candy $2.20, Mochi rice cake $2.50, acai roots $2.00+) and by Uber Eats/Postmates showing the same flavor names at $3.00 each in a different capture — prices differ slightly between platforms (candy/topping shop, no markup pattern detected: no consistent divisor, cents are scattered $2.00-$4.75 matching real POS pricing).",
+    "dishes": [
+      {
+        "name": "strawberry juice poppers",
+        "description": "",
+        "price": "$4.75",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "mango juice poppers",
+        "description": "",
+        "price": "$4.75",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "graham cracker crushed",
+        "description": "",
+        "price": "$3.50",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "acai roots",
+        "description": "",
+        "price": "$2.00",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "dark chocolate chips",
+        "description": "",
+        "price": "$2.75",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "cheescake bites",
+        "description": "",
+        "price": "$2.75",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "heath toffee candy broken and crushed",
+        "description": "",
+        "price": "$2.75",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Mochi coloured sweet rice cake",
+        "description": "",
+        "price": "$2.50",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "gummi bear candy",
+        "description": "",
+        "price": "$2.40",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "maraschino cherries no stem no juice",
+        "description": "",
+        "price": "$2.50",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "coconut flakes",
+        "description": "",
+        "price": "$3.25",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Strawberry Yogurt",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      },
+      {
+        "name": "cake batter soft serve ice cream",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      },
+      {
+        "name": "animal frosted cookies",
+        "description": "",
+        "price": "$2.75",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "strawberries",
+        "description": "",
+        "price": "$2.00",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "M&m candy",
+        "description": "",
+        "price": "$2.20",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "cookie dough bites",
+        "description": "",
+        "price": "$2.20",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Reeses peanut butter broken",
+        "description": "",
+        "price": "$2.20",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Chocolate yogurt low fat",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      },
+      {
+        "name": "salted caramel yogurt non fat",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      },
+      {
+        "name": "vanilla yogurt",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      },
+      {
+        "name": "Pineapple Sorbet (Dairy Free)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      },
+      {
+        "name": "chocolate sprinkles",
+        "description": "",
+        "price": "$2.25",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Butterfinger candy broken and crushed",
+        "description": "",
+        "price": "$2.20",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "cookies & cream broken",
+        "description": "",
+        "price": "$2.25",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "rainbow sprinkles",
+        "description": "",
+        "price": "$2.25",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Butterfly Gummies",
+        "description": "",
+        "price": "$2.35",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Cookies & Cream (Frozen Yogurt)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      }
+    ]
+  }
+]

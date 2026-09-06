@@ -1,0 +1,114 @@
+[
+  {
+    "restaurantId": "10257",
+    "name": "Lemon City Taphouse",
+    "sourceUrl": "https://m.yelp.com/biz/lemon-city-taphouse-lemon-grove",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site is Instagram only (login-walled); Yelp shows a menu tab but Yelp cannot be used as sole source; Facebook post (400, unreachable) and Untappd (beer list, no food prices) have no priced food menu; no ordering platform found"
+  },
+  {
+    "restaurantId": "10606",
+    "name": "Backyard Brewery",
+    "sourceUrl": "https://backyardbreweryca.com/store/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site (backyardbreweryca.com) has no food menu anywhere - only a merch Store page and an About page describing beers only; WordPress pages API lists no menu page; no ordering platform found"
+  },
+  {
+    "restaurantId": "9884",
+    "name": "Veranda",
+    "sourceUrl": "https://www.hoteldel.com/dine/veranda-restaurant/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "breakfast is an unpriced buffet; dinner is a la carte (named dishes like Seared Local Ahi Tuna Nicoise, Smash Burger visible on the page) but the site's #menus section is JS-rendered with no prices in the fetched HTML; Hilton's mirror page 403s; no PDF or ordering-platform source found"
+  },
+  {
+    "restaurantId": "7125",
+    "name": "Pizzabilities Santee - Powered by Nicolosis",
+    "sourceUrl": "https://www.pizzabilities.com/menu/",
+    "confidence": "high",
+    "notes": "first-party menu page shared by both locations; address on page (9420 Cuyamaca St #100, Santee, CA 92071) matches batch record exactly; crust upgrades (+$3.25) and topping add-ons (+$0.75) are modifiers, not listed as separate dishes",
+    "dishes": [
+      { "name": "10\" Build Your Own Pizza", "description": "", "price": "$14.75", "section": "Pizza" },
+      { "name": "Buffalo Chicken Pizza (10\")", "description": "", "price": "$15.75", "section": "Specialty Pizzas" },
+      { "name": "Barbeque Chicken Pizza (10\")", "description": "", "price": "$15.75", "section": "Specialty Pizzas" },
+      { "name": "Sicilian Pepperoni Pizza (10\")", "description": "", "price": "$15.75", "section": "Specialty Pizzas" },
+      { "name": "Meat Lovers Pizza (10\")", "description": "", "price": "$17.25", "section": "Specialty Pizzas" },
+      { "name": "Double Deluxe Pizza (10\")", "description": "", "price": "$17.25", "section": "Specialty Pizzas" },
+      { "name": "Hot Meatball Trio", "description": "", "price": "$13.75", "section": "Entrees" },
+      { "name": "Sicilian Mac and Cheese", "description": "", "price": "$13.75", "section": "Entrees" },
+      { "name": "Buffalo Mac and Cheese", "description": "", "price": "$15.75", "section": "Entrees" },
+      { "name": "BBQ Mac and Cheese", "description": "", "price": "$15.75", "section": "Entrees" },
+      { "name": "Wings (7pc)", "description": "", "price": "$11.95", "section": "Entrees" },
+      { "name": "Lasagna", "description": "", "price": "$15.95", "section": "Entrees" },
+      { "name": "Craft Your Own Salad (Small)", "description": "", "price": "$6.95", "section": "Salads" },
+      { "name": "Craft Your Own Salad (Large)", "description": "", "price": "$12.95", "section": "Salads" },
+      { "name": "Caesar Salad (Small)", "description": "", "price": "$6.95", "section": "Salads" },
+      { "name": "Caesar Salad (Large)", "description": "", "price": "$12.95", "section": "Salads" },
+      { "name": "Chicken Caesar Salad (Small)", "description": "", "price": "$8.95", "section": "Specialty Salads" },
+      { "name": "Chicken Caesar Salad (Large)", "description": "", "price": "$13.95", "section": "Specialty Salads" },
+      { "name": "Antipasto Charbroiled Chicken Salad (Small)", "description": "", "price": "$8.95", "section": "Specialty Salads" },
+      { "name": "Antipasto Charbroiled Chicken Salad (Large)", "description": "", "price": "$13.95", "section": "Specialty Salads" },
+      { "name": "Torpedo Sandwich (Half)", "description": "Cotto salami, provolone cheese, sliced onion, diced tomato, iceberg lettuce w/ Italian dressing", "price": "$4.75", "section": "Sandwiches" },
+      { "name": "Torpedo Sandwich (Full)", "description": "Cotto salami, provolone cheese, sliced onion, diced tomato, iceberg lettuce w/ Italian dressing", "price": "$8.75", "section": "Sandwiches" },
+      { "name": "Torpedo Special Sandwich (Half)", "description": "Cotto salami, ham, provolone cheese, sliced onion, diced tomato, iceberg lettuce w/ Italian dressing", "price": "$5.75", "section": "Sandwiches" },
+      { "name": "Torpedo Special Sandwich (Full)", "description": "Cotto salami, ham, provolone cheese, sliced onion, diced tomato, iceberg lettuce w/ Italian dressing", "price": "$10.75", "section": "Sandwiches" },
+      { "name": "Sicilian Sandwich (Half)", "description": "Cotto salami, capicola, provolone, pepperoni, pepperoncini, diced tomatoes & Italian dressing", "price": "$5.75", "section": "Sandwiches" },
+      { "name": "Sicilian Sandwich (Full)", "description": "Cotto salami, capicola, provolone, pepperoni, pepperoncini, diced tomatoes & Italian dressing", "price": "$10.75", "section": "Sandwiches" },
+      { "name": "10\" Cheesy Bread", "description": "", "price": "$8.99", "section": "Other" },
+      { "name": "Cookies", "description": "", "price": "$3.50", "section": "Sweet Treats" },
+      { "name": "Brownies", "description": "", "price": "$3.50", "section": "Sweet Treats" },
+      { "name": "Cannoli", "description": "", "price": "$6.25", "section": "Sweet Treats" },
+      { "name": "Cookie Melt", "description": "", "price": "$6.95", "section": "Sweet Treats" }
+    ]
+  },
+  {
+    "restaurantId": "7546",
+    "name": "El Rinconcito Taco Shop",
+    "sourceUrl": "https://www.yelp.com/biz/el-rinconcito-taco-shop-chula-vista",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no first-party website; Uber Eats listing shows closed as of Apr 2026 and no DoorDash store found at this address; only Yelp/Mapquest/Snapchat directory listings with no prices (Yelp barred as sole source)"
+  },
+  {
+    "restaurantId": "7687",
+    "name": "Panaderia Fuentes",
+    "sourceUrl": "https://www.facebook.com/profile.php?id=100064198323249",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no first-party website; Facebook page returns HTTP 400 on both www and mbasic; only Yelp/Tripadvisor/Mapquest/Waze/restaurantji directory listings, none with prices; small panaderia typical of no published online menu"
+  },
+  {
+    "restaurantId": "4457",
+    "name": "Dr. Juice",
+    "sourceUrl": "https://www.yelp.com/biz/dr-juice-la-jolla",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no first-party website found; no DoorDash/Uber Eats/Grubhub store found for this La Jolla location (a Grubhub Dr. Juice hit was for the Glendale location, a different city); restaurants-hi.com is a barred farm domain; only directory/aggregator listings with no reliable per-item prices for this address"
+  },
+  {
+    "restaurantId": "8626",
+    "name": "Red Ribbon Bakeshop",
+    "sourceUrl": "https://page-service.doordash.com/store/red-ribbon-bakeshop-chula-vista-922325/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "DoorDash JSON-LD for this exact branch (925325, address confirmed matches 285 E Orange Ave) parses to 91 items, but the live menuCategories book lists 12 categories totaling more - it shows Meals:14 vs 10 recovered and an entire 'Utensils and condiments':3 category with zero items in the JSON-LD - a confirmed truncated/partial capture per the known 91-item DoorDash cutoff pattern. Own site (redribbonbakeshop.com) is a nationwide shipping/e-commerce Shopify store with premium-packaging bundle prices, not this store's walk-in menu, so not used. order.redribbonbakeshop.com (Olo) is Cloudflare-challenge gated (403 on the API). Needs the React Query catalog-map path or a browser pass to recover the full catalog."
+  },
+  {
+    "restaurantId": "7048",
+    "name": "Mariscos La Reyna del Sur",
+    "sourceUrl": "https://www.ubereats.com/store/mariscos-la-reyna-del-sur-broadway/ZueouYEnU4SHJ7HWPRcEbQ",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no first-party site; Uber Eats/Postmates JSON-LD for the Broadway location (address confirmed: 943 Broadway, Chula Vista, CA 91911) has 97 priced items, but a divisor sweep found 92/97 land on conventional endings when divided by 1.17 - a clean uniform ~17% markup baked into the delivery price, not the wall price. No other reachable priced source found."
+  },
+  {
+    "restaurantId": "12400",
+    "name": "Audrey's Café",
+    "sourceUrl": "https://www.ucsandiegobookstore.com/audreys",
+    "confidence": "medium",
+    "dishes": [],
+    "blocked": "campus coffee shop inside UCSD's Geisel Library (run by UCSD Bookstore/HDH) selling espresso drinks and prepackaged snacks/sandwiches; no published prices found on the UCSD Bookstore page, the library page, or any other source - a campus concession with no priced menu"
+  }
+]

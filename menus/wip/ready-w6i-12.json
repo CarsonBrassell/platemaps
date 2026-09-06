@@ -1,0 +1,352 @@
+[
+  {
+    "restaurantId": "692",
+    "name": "Capriotti's Sandwich Shop",
+    "sourceUrl": "https://www.sandiegoville.com/2017/10/capriottis-closes-in-san-diego.html",
+    "confidence": "high",
+    "notes": "News source (sandiegoville.com, 2017) confirms this exact location (1620 Camino De La Reina, Mission Valley) closed and was the last SD-area Capriotti's; Yelp lists it CLOSED with the same address; r/Sandwiches thread corroborates closure circa 2017-2018. Chain's current corporate site (capriottis.com) has no San Diego County location.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "8863",
+    "name": "Win Wings",
+    "sourceUrl": "https://www.doordash.com/en/store/winwings-san-diego-30202681",
+    "confidence": "medium",
+    "notes": "Address in DoorDash FAQ block matches batch exactly (4545 La Jolla Village Dr, San Diego 92122). Yelp/Mapquest list this location as CLOSED, but Google Maps carries an active listing at 3.7 stars/59 reviews (matches batch reviewCount) and the restaurant's own Instagram posted in 2026 about winning 'Best Wings in San Diego' and running a weekly 'AYCE Wing Wednesday' - both recent first-party signals the business is open, so the Yelp closure was treated as stale rather than authoritative. Read from DoorDash schema.org Menu JSON-LD (hasMenuSection -> hasMenuItem -> offers.price); dropped the 'Most Ordered' carousel (12 items) as duplicates of the sectioned items below. 19 dishes across Wings/Burgers/Tenders/Sandwiches/Salad/Sides/Drinks/Dips, varied cent endings (.58/.78/.98/.99/.38/.39), no uniform markup detected.",
+    "dishes": [
+      {
+        "name": "Classic",
+        "description": "Classic Chicken Wings\n\nSix to twelve pieces. Choose up to two flavors from a wide selection, including spicy, sweet, and savory options like Original Buffalo, Honey BBQ, and Mango Habanero.",
+        "price": "$12.58",
+        "section": "Wings"
+      },
+      {
+        "name": " Boneless",
+        "description": "Buffalo, hot, BBQ, lemon pepper, Korean, garlic parmesan, and more.",
+        "price": "$8.58",
+        "section": "Wings"
+      },
+      {
+        "name": "Mix & Match",
+        "description": "Mix & match chicken wings. Choose 6, 8, 10, or 12 pieces. Variety of flavors including buffalo, barbecues, garlic parmesan, mango habanero, and more. Boneless and classic options available.",
+        "price": "$12.58",
+        "section": "Wings"
+      },
+      {
+        "name": "All - American Cheeseburger",
+        "description": "Two 100% Angus beef patties (4.5 oz) topped with American cheese, lettuce, tomato, pickle, onions & our signature sauce.",
+        "price": "$13.58",
+        "section": "Flame Burgers"
+      },
+      {
+        "name": "Win Burger",
+        "description": "A 100% Angus beef patty (4.5 oz) topped with cheese, lettuce, tomato, pickle, onions & our signature sauce.",
+        "price": "$10.78",
+        "section": "Flame Burgers"
+      },
+      {
+        "name": "Caramelized Onion Bacon Cheeseburger",
+        "description": "A 100% Angus beef petty (4.5 oz) topped with Turkey bacon, Cheddar cheese, lettuce, tomato, pickle, caramelized onions & our signature sauce.",
+        "price": "$11.98",
+        "section": "Flame Burgers"
+      },
+      {
+        "name": "6 PC",
+        "description": "Crispy, golden-brown chicken tenders, seasoned and fried to perfection, served with a side of honey mustard sauce.",
+        "price": "$10.98",
+        "section": "Chicken Tenders"
+      },
+      {
+        "name": "3 pc",
+        "description": "Crispy breaded chicken tenders served with honey mustard dipping sauce.",
+        "price": "$7.38",
+        "section": "Chicken Tenders"
+      },
+      {
+        "name": "4 PC",
+        "description": "Crispy, golden chicken tenders with a side of honey mustard sauce.",
+        "price": "$8.58",
+        "section": "Chicken Tenders"
+      },
+      {
+        "name": "Deluxe",
+        "description": "Green leaf lettuce, tomato & American cheese & mayo.",
+        "price": "$8.58",
+        "section": "Chicken Sandwiches"
+      },
+      {
+        "name": "Nashville Hot",
+        "description": "Dill pickle chips.",
+        "price": "$8.58",
+        "section": "Chicken Sandwiches"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Croutons, Parmesan cheese & Romaine lettuce with ranch dressing.",
+        "price": "$8.58",
+        "section": "Salad"
+      },
+      {
+        "name": "Fried Chicken Salad",
+        "description": "Tender & Romaine lettuce with ranch dressing.",
+        "price": "$11.58",
+        "section": "Salad"
+      },
+      {
+        "name": "Seasoned Fries",
+        "description": "Fresh potatoes.",
+        "price": "$3.99",
+        "section": "Side"
+      },
+      {
+        "name": "Onion Rings",
+        "description": "With ranch.",
+        "price": "$4.99",
+        "section": "Side"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "AQUAFINA",
+        "price": "$2.59",
+        "section": "Drink"
+      },
+      {
+        "name": "Bottled Drinks",
+        "description": "PEPSI ,DIET PEPSI,PEPSI ZERO,LEMONADE,DR PEPPER,MOUNTAIN DEW,PURE LEAFE(SWEET)",
+        "price": "$3.59",
+        "section": "Drink"
+      },
+      {
+        "name": "Ranch",
+        "description": "Creamy ranch dip with a blend of herbs and spices.",
+        "price": "$0.99",
+        "section": "Dips"
+      },
+      {
+        "name": "Bluecheese",
+        "description": "Rich and creamy blue cheese dip with a tangy flavor, perfect for pairing with vegetables, wings, or chips.",
+        "price": "$0.99",
+        "section": "Dips"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9908",
+    "name": "The Islands Restaurant - Inside the Crowne Plaza",
+    "sourceUrl": "http://web.archive.org/web/20250919123004/https://www.ihg.com/crowneplaza/hotels/us/en/san-diego/sancp/hoteldetail/dining",
+    "confidence": "medium",
+    "notes": "Hotel's own IHG dining page 403s to direct fetch (bot wall); read from a Wayback Machine snapshot dated 2025-09-19 of the same page instead. Address matches batch exactly (2270 Hotel Cir N, Crowne Plaza). The restaurant also offers a $14.95++ per-person breakfast buffet (per hotelplanner.com) which is NOT itemized/priced and was excluded; the 35 dishes filed here are the separately-priced a la carte Breakfast and Dinner menus (accordion sections: Breakfast Specialties, Griddle, Handhelds & Toast, Omelets & Egg Scrambles, Sides, Small Plates, Salads & Soups, Handhelds, Mains, Desserts). Prices ($6-$34) are plausible for current hotel-restaurant pricing; add-on charges (e.g. 'sub steak +$6') were dropped, not filed as separate dishes.",
+    "dishes": [
+      {
+        "name": "Sunrise Breakfast*",
+        "description": "Two 'eggs your way,' roasted mushrooms, roasted tomatoes, potato cake, choice of breakfast meat",
+        "price": "$18.00",
+        "section": "Islands Restaurant / Breakfast Specialties"
+      },
+      {
+        "name": "Eggs Benedict*",
+        "description": "Poached eggs, Canadian bacon, English muffin, hollandaise, breakfast potatoes",
+        "price": "$16.00",
+        "section": "Islands Restaurant / Breakfast Specialties"
+      },
+      {
+        "name": "Bacon Brussels Sprouts Hash*",
+        "description": "Bacon lardons, Brussels sprouts, red potatoes, fried eggs, sambal",
+        "price": "$19.00",
+        "section": "Islands Restaurant / Breakfast Specialties"
+      },
+      {
+        "name": "Chimichurri Steak & Eggs*",
+        "description": "Two 'eggs your way,' flank steak, spinach, chimichurri, hollandaise, potato cake",
+        "price": "$24.00",
+        "section": "Islands Restaurant / Breakfast Specialties"
+      },
+      {
+        "name": "Egg White Veggie Power Bowl",
+        "description": "Quinoa, spinach, scrambled egg white, feta, roasted cherry tomatoes, avocado, multigrain toast",
+        "price": "$19.00",
+        "section": "Islands Restaurant / Breakfast Specialties"
+      },
+      {
+        "name": "Yogurt Parfait Bowl",
+        "description": "Greek yogurt, bananas, strawberries, blueberries, toasted coconut flakes, honey, organic almond butter",
+        "price": "$15.00",
+        "section": "Islands Restaurant / Breakfast Specialties"
+      },
+      {
+        "name": "Grilled Steak & Egg Burrito*",
+        "description": "Flank steak, scrambled eggs, chimichurri, potato cake, cheddar, tortilla, fresh fruit",
+        "price": "$23.00",
+        "section": "Islands Restaurant / Handhelds & Toast"
+      },
+      {
+        "name": "Avocado & Fried Egg Toast*",
+        "description": "Avocado, heirloom tomatoes, fried egg, everything bagel seasoning, sourdough bread",
+        "price": "$15.00",
+        "section": "Islands Restaurant / Handhelds & Toast"
+      },
+      {
+        "name": "Build Your Own Omelet",
+        "description": "Choose 3 from: bacon, sausage, ham, tomatoes, bell peppers, onions, mushrooms, cheddar, Monterey Jack, choice of side",
+        "price": "$19.00",
+        "section": "Islands Restaurant / Omelets & Egg Scrambles"
+      },
+      {
+        "name": "Vegetarian Omelet",
+        "description": "Broccoli, mushrooms, onions, bell peppers, tomatoes, cheddar, choice of side",
+        "price": "$17.00",
+        "section": "Islands Restaurant / Omelets & Egg Scrambles"
+      },
+      {
+        "name": "Selection of Breakfast Meats",
+        "description": "",
+        "price": "$7.00",
+        "section": "Islands Restaurant / Sides"
+      },
+      {
+        "name": "Seasonal Fresh Fruit",
+        "description": "",
+        "price": "$7.00",
+        "section": "Islands Restaurant / Sides"
+      },
+      {
+        "name": "Selection of Cold Cereals",
+        "description": "",
+        "price": "$8.00",
+        "section": "Islands Restaurant / Sides"
+      },
+      {
+        "name": "Bagel w/Cream Cheese",
+        "description": "",
+        "price": "$7.00",
+        "section": "Islands Restaurant / Sides"
+      },
+      {
+        "name": "Baked Goods & Pastries",
+        "description": "",
+        "price": "$6.00",
+        "section": "Islands Restaurant / Sides"
+      },
+      {
+        "name": "Oatmeal",
+        "description": "ask server for today's list of optional add-ons such as berries, bananas or chocolate chips + each",
+        "price": "$8.00",
+        "section": "Islands Restaurant / Sides"
+      },
+      {
+        "name": "Crispy Beef Bao Bun Tacos",
+        "description": "Sweet & spicy beef, sweet chili crunch, bao bun, sweet ginger, cucumber carrot cilantro slaw",
+        "price": "$14.00",
+        "section": "Islands Restaurant / Small Plates"
+      },
+      {
+        "name": "Tuscan Chicken Flatbread",
+        "description": "Grilled Tuscan chicken, pesto, roasted red peppers, caramelized onions, fresh mozzarella, balsamic reduction, alfredo, naan",
+        "price": "$13.00",
+        "section": "Islands Restaurant / Small Plates"
+      },
+      {
+        "name": "Chicken Wings",
+        "description": "Choice of sauce: Sriracha, roasted garlic or Buffalo, blue cheese, veggies",
+        "price": "$15.00",
+        "section": "Islands Restaurant / Small Plates"
+      },
+      {
+        "name": "Chicken Quesadilla",
+        "description": "Mojo seasoned chicken, blended cheese, green chili, fresh pico de gallo, salsa, cilantro-lime crema sub steak + | sub shrimp +",
+        "price": "$13.00",
+        "section": "Islands Restaurant / Small Plates"
+      },
+      {
+        "name": "Soup du Jour",
+        "description": "Ask your server for today's offering",
+        "price": "$8.00",
+        "section": "Islands Restaurant / Salads & Soups"
+      },
+      {
+        "name": "Brussels Sprout & Pear Salad",
+        "description": "Shaved Brussels sprouts, charred onions, pear, burrata, crispy quinoa, lemon vinaigrette",
+        "price": "$17.00",
+        "section": "Islands Restaurant / Salads & Soups"
+      },
+      {
+        "name": "Caesar",
+        "description": "Crisp romaine, shaved Parmesan, croutons, Caesar dressing add chicken + | shrimp + | salmon* + | steak* +",
+        "price": "$15.00",
+        "section": "Islands Restaurant / Salads & Soups"
+      },
+      {
+        "name": "Grilled Italian Vegetable Sandwich",
+        "description": "Grilled eggplant, portabello mushroom, Parmesan, mozzarella, marinara, fresh basil, garlic butter, toasted ciabatta; served with lemon vinaigrette baby kale & spinach salad in place of fries/chips",
+        "price": "$16.00",
+        "section": "Islands Restaurant / Handhelds"
+      },
+      {
+        "name": "Cuban",
+        "description": "Sliced mojo pork, ham, dill pickles, Swiss cheese, mustard, pressed Cuban roll",
+        "price": "$19.00",
+        "section": "Islands Restaurant / Handhelds"
+      },
+      {
+        "name": "Grilled Chicken Bruschetta",
+        "description": "Grilled chicken, fresh mozzarella, tomato bruschetta, roasted garlic aioli, balsamic glaze, Caesar greens, toasted brioche bun",
+        "price": "$18.00",
+        "section": "Islands Restaurant / Handhelds"
+      },
+      {
+        "name": "Turkey Club",
+        "description": "Oven-roasted turkey, avocado, lettuce, tomato, bacon, cheddar cheese, mayo",
+        "price": "$18.00",
+        "section": "Islands Restaurant / Handhelds"
+      },
+      {
+        "name": "House Burger*",
+        "description": "Grilled 8 oz. burger, choice of cheese, house burger sauce, brioche bun",
+        "price": "$22.00",
+        "section": "Islands Restaurant / Handhelds"
+      },
+      {
+        "name": "Pan Seared Salmon*",
+        "description": "Wild-caught salmon, roasted red potatoes, green beans, mushrooms, roasted red peppers, caramelized onions, herb butter",
+        "price": "$28.00",
+        "section": "Islands Restaurant / Mains"
+      },
+      {
+        "name": "Mediterranean Shrimp Pasta",
+        "description": "Jumbo shrimp, bowtie pasta, spinach, mushrooms, tomatoes, light pesto cream",
+        "price": "$25.00",
+        "section": "Islands Restaurant / Mains"
+      },
+      {
+        "name": "Roasted Herb Chicken",
+        "description": "Herbed French-breast chicken, roasted red potatoes, natural jus, green beans, mushrooms, roasted red peppers, caramelized onions",
+        "price": "$26.00",
+        "section": "Islands Restaurant / Mains"
+      },
+      {
+        "name": "Center-Cut Top Sirloin, 10 oz. *",
+        "description": "Choice of topping: Sriracha glaze, melted blue cheese or bourbon demi-glace, roasted red potatoes, green beans, mushrooms, roasted red peppers, caramelized onions",
+        "price": "$34.00",
+        "section": "Islands Restaurant / Mains"
+      },
+      {
+        "name": "Brownie Sundae",
+        "description": "Warm chocolate brownie, chocolate sauce, vanilla ice cream",
+        "price": "$15.00",
+        "section": "Islands Restaurant / Desserts"
+      },
+      {
+        "name": "Cheesecake",
+        "description": "Classic New York-style cheesecake",
+        "price": "$14.00",
+        "section": "Islands Restaurant / Desserts"
+      },
+      {
+        "name": "Buttermilk Pancakes",
+        "description": "Tall stack, butter, warm maple syrup (add-ons: berries, bananas or chocolate chips +$3 each)",
+        "price": "$13.00",
+        "section": "Islands Restaurant / Griddle"
+      }
+    ]
+  }
+]

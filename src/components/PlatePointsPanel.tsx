@@ -3,9 +3,8 @@
 import { useState } from "react";
 import { PlateStarIcon, InfoIcon } from "@/components/icons";
 import { PointsInfoModal } from "@/components/feed/PointsInfoModal";
-import { formatPoints } from "@/lib/points";
-import { RankInsignia } from "@/components/RankInsignia";
-import { RANKS, rankFor } from "@/lib/ranks";
+import { POINT_RULES, formatPoints } from "@/lib/points";
+import { RankRing } from "@/components/RankRing";
 
 /**
  * Your Plate Points, on your own profile — and the one place in the app where
@@ -33,11 +32,10 @@ import { RANKS, rankFor } from "@/lib/ranks";
  *   total is large and bold (34px, semibold — well past the 24px/18.66px-bold
  *   line). The accent must never be used for small type on this panel.
  *
- * It used to restate the earn rules under the total ("+1 UPVOTE · +1
- * COMMENT"). That row is gone — set as a dotted-leader list of amounts it read
- * as a price list, which is the wrong idea about an economy nobody pays into.
- * The rules live in `PointsInfoModal` behind the (i), one tap away and in
- * sentences. `lib/points.ts` is still the single place the economy is stated.
+ * The earn rules read from `POINT_RULES`, so the economy is stated in one
+ * place: change a number in `lib/points.ts` and this row follows. They are set
+ * as type rather than as white pills on purpose — a pill here would wear the
+ * rank-3 control costume and read as something you can press.
  */
 export function PlatePointsPanel({
   points,
@@ -46,15 +44,17 @@ export function PlatePointsPanel({
 }: {
   points: number;
   /**
-   * Renders the rung you are on under the total: your crest, your title,
-   * a track toward the next rung and how far is left, with the rung you are
-   * climbing toward dimmed at the end.
+   * Renders the rung you are on under the rules row as a `RankRing`: your
+   * crest on a white disc, an orange arc for how far along the rung you are,
+   * your title and how far is left. It animates — the arc follows the
+   * roll-call's count-up and a threshold crossing gets a full sequence
+   * (see RankRing.tsx). It replaced a crest + 6px track row (2026-09).
    *
    * Deliberately the *step*, not the ladder. The whole six-rung ladder was
    * the other candidate and it loses here — the panel's job is the total and
    * what it is worth next, and a full ladder turns a four-line panel into the
    * tallest thing on the profile to answer a question nobody asked at their
-   * own total. The (i) above already explains how to climb.
+   * own total. The rules row above already says how to climb.
    *
    * Own-profile surfaces only — the public profile has its own insignia
    * treatment (bigger, beside the avatar, no track, because a stranger is
@@ -68,19 +68,38 @@ export function PlatePointsPanel({
 }) {
   const [infoOpen, setInfoOpen] = useState(false);
 
-  /* Rank reads lifetime points, and `points` here is exactly that — nothing
-     in the app ever subtracts from users.points (see lib/ranks.ts). */
-  const rank = rankFor(points);
-  const next = RANKS[RANKS.findIndex((r) => r.key === rank.key) + 1] ?? null;
-  const trackPct = next
-    ? Math.max(
-        0,
-        Math.min(
-          100,
-          ((points - rank.minPoints) / (next.minPoints - rank.minPoints)) * 100
-        )
-      )
-    : 100;
+  /* No "post" row — publishing pays 0 now, and a "+0 post" chip in a row of
+     rewards reads as a penalty rather than as "points come from what a post
+     earns". The two that remain are both other-people-acted rules, which is
+     the whole shape of the economy. See lib/points.ts. */
+  const rules = [
+    { label: "upvote", value: POINT_RULES.receiveUpvote },
+    { label: "comment", value: POINT_RULES.receiveComment },
+  ];
+
+  if (showRank) {
+    /* The owner's view is the ring and nothing else: crest, arc, title, total
+       and distance, centred, straight on the cream — no card, no tint (Calvin,
+       2026-09: "the same color as the background"). The tint panel below
+       stays for every bare-total caller. The info button is the one control,
+       parked in the corner. */
+    return (
+      <>
+        <div className={`relative pb-2 pt-3 ${className}`}>
+          <button
+            type="button"
+            onClick={() => setInfoOpen(true)}
+            aria-label="How Plate Points work"
+            className="absolute -right-2 -top-1 flex h-11 w-11 items-center justify-center rounded-full text-pm-grey-text transition-colors hover:bg-pm-grey-tint focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+          >
+            <InfoIcon className="h-3.5 w-3.5" />
+          </button>
+          <RankRing points={points} size={116} />
+        </div>
+        {infoOpen && <PointsInfoModal onClose={() => setInfoOpen(false)} />}
+      </>
+    );
+  }
 
   return (
     <>
@@ -102,71 +121,37 @@ export function PlatePointsPanel({
           </button>
         </div>
 
-        {/* The figure alone. It carried a "points" unit beside it and an earn
-            -rules row beneath — "+1 UPVOTE · +1 COMMENT" — which set out the
-            economy as what read like a price list. Both are gone: the header
-            immediately above already says "Plate Points", so the unit was
-            saying it twice, and the rules belong in the info modal behind the
-            (i), which is where someone asking "how do I earn these?" goes.
-            What is left is the number, which is what the panel is for.
-            POINT_RULES is still the single source for the economy — this
-            panel simply no longer restates it. */}
-        <p className="mt-1.5">
+        {/* The total and its unit share a baseline: the number is the value,
+            "points" is what it counts, and a unit set at the same size as the
+            figure competes with it. */}
+        <p className="mt-1.5 flex items-baseline gap-1.5">
           <span className="font-mono text-[34px] font-semibold leading-none tabular-nums text-pm-orange">
             {formatPoints(points)}
           </span>
+          <span className="font-mono text-[11px] text-pm-orange-text">points</span>
         </p>
 
-        {/* The ladder: what the total has earned and how far the next title
-            is. The track fill is the accent as a FILL, which the color rules
-            allow; both small strings are --pm-orange-text (4.55:1 on this
-            tint). At the top rung the right label states the fact instead of
-            counting to a rung that doesn't exist. */}
-        {showRank && (
-          <div className="mt-3 flex items-center gap-3">
-            {/* Both crests are decorative here and hidden from assistive tech:
-                the component labels itself "<title> rank", and the title is
-                already written beside it — announcing both reads "Local rank,
-                Local".
+        {/* The leaderboard's dotted leader, in the warm border token rather
+            than a neutral grey — everything either side of it is warm. */}
+        <div
+          aria-hidden="true"
+          className="mt-3 h-px border-b border-dotted border-pm-orange-border"
+        />
 
-                `showCard` is on because this panel is the case the plaque was
-                built for. Without it the crest is cutlery in --pm-grey-text
-                over a --pm-grey-tint plate ring, and both of those sit within
-                a couple of points of --pm-orange-tint — measured on screen,
-                the mark all but vanished. The white plaque is the component's
-                own answer to a non-white ground, not a box drawn for
-                grouping. */}
-            <span aria-hidden="true" className="shrink-0">
-              <RankInsignia rank={rank.key} size={46} showCard />
-            </span>
-
-            <div className="min-w-0 flex-1">
-              <div className="flex items-baseline justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-pm-orange-text">
-                <span>{rank.title}</span>
-                <span className="tabular-nums">
-                  {next
-                    ? `${formatPoints(next.minPoints - points)} to ${next.title}`
-                    : "Top of the ladder"}
+        <p className="mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[10px] uppercase tracking-[0.12em] text-pm-orange-text">
+          {rules.map((rule, i) => (
+            <span key={rule.label} className="flex items-center gap-2">
+              {i > 0 && (
+                <span aria-hidden="true" className="text-pm-orange-border">
+                  ·
                 </span>
-              </div>
-              <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/60">
-                <div
-                  className="h-full rounded-full bg-pm-orange transition-[width] duration-700 ease-out"
-                  style={{ width: `${trackPct}%` }}
-                />
-              </div>
-            </div>
-
-            {/* The rung being climbed toward, dimmed because it is not yours
-                yet. Absent at the top of the ladder rather than shown as an
-                empty slot — there is nothing above Institution to aim at. */}
-            {next && (
-              <span aria-hidden="true" className="shrink-0">
-                <RankInsignia rank={next.key} size={32} showCard className="opacity-45" />
+              )}
+              <span className="tabular-nums">
+                +{rule.value} {rule.label}
               </span>
-            )}
-          </div>
-        )}
+            </span>
+          ))}
+        </p>
       </div>
 
       {infoOpen && <PointsInfoModal onClose={() => setInfoOpen(false)} />}

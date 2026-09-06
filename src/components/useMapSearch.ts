@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import type { Map as MapLibreMap } from "maplibre-gl";
 import type { RestaurantView } from "@/data/restaurantTypes";
-import type { PlateScore } from "@/lib/plateScore";
+import { foldSearchText } from "@/lib/discoverFilters";
 
 /**
  * Everything map search DOES, with nothing about how it looks.
@@ -49,11 +49,22 @@ import type { PlateScore } from "@/lib/plateScore";
  */
 
 /**
- * A row as /api/restaurants sends it: the projection plus the plate score that
- * route attaches. Declared here rather than imported from lib/db.ts, which is
+ * A hit as `/api/restaurants?q=&fields=map` sends it: the fields the predicate
+ * below reads plus the point `showAll` frames, and nothing else. The map holds
+ * the corpus, so a hit only has to say which restaurant it is and why it
+ * matched. Declared here rather than imported from lib/db.ts, which is
  * server-only — the same local-mirror rule the friends page follows.
+ *
+ * Slim on purpose, because the cap is high: the default `?q=` stops at 60
+ * rows, which is a typeahead's worth and was the whole search's worth here —
+ * "mexican" lit 60 places and dimmed the other few hundred Mexican places as
+ * if they had failed the filter. The map variant returns every match, so it
+ * cannot afford photos and price bands per row.
  */
-export type MapSearchRow = RestaurantView & { plateScore?: PlateScore };
+export type MapSearchHit = Pick<
+  RestaurantView,
+  "id" | "name" | "lat" | "lng" | "cuisine" | "cuisineTags" | "neighborhood" | "matchedDish"
+>;
 
 /**
  * What the field asks the map to light up: the term, and every restaurant the
@@ -99,7 +110,7 @@ export function useMapSearch({
   onMatchesChange?: (matches: MapMatches | null) => void;
 }) {
   const [query, setQuery] = useState("");
-  const [candidates, setCandidates] = useState<MapSearchRow[]>([]);
+  const [candidates, setCandidates] = useState<MapSearchHit[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   /*
@@ -122,9 +133,9 @@ export function useMapSearch({
     let stale = false;
     const timer = setTimeout(async () => {
       try {
-        const res = await fetch(`/api/restaurants?q=${encodeURIComponent(q)}`);
+        const res = await fetch(`/api/restaurants?q=${encodeURIComponent(q)}&fields=map`);
         if (!res.ok) return;
-        const data: { restaurants: MapSearchRow[] } = await res.json();
+        const data: { restaurants: MapSearchHit[] } = await res.json();
         if (stale) return;
         setCandidates(data.restaurants);
         onMatchesChange?.({ query: q, ids: data.restaurants.map((r) => r.id) });
@@ -154,14 +165,19 @@ export function useMapSearch({
    * the previous search's results.
    */
   const matches = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    /* Apostrophe-blind on both sides, the same fold the server and Discover
+       apply — "clems" has to keep "Clem's Station" lit here too. A dish hit
+       counts: the server matched the term against the dish's name, and
+       dropping it here would frame "tacos" as fewer places than it lit. */
+    const q = foldSearchText(query.trim());
     if (!q) return [];
     return candidates.filter(
       (r) =>
-        r.name.toLowerCase().includes(q) ||
-        (r.cuisine ?? "").toLowerCase().includes(q) ||
-        (r.cuisineTags ?? "").toLowerCase().includes(q) ||
-        r.neighborhood.toLowerCase().includes(q),
+        foldSearchText(r.name).includes(q) ||
+        foldSearchText(r.cuisine ?? "").includes(q) ||
+        foldSearchText(r.cuisineTags ?? "").includes(q) ||
+        foldSearchText(r.neighborhood ?? "").includes(q) ||
+        foldSearchText(r.matchedDish?.name ?? "").includes(q),
     );
   }, [query, candidates]);
 
@@ -197,7 +213,7 @@ export function useMapSearch({
    * inset.
    */
   const showAll = useCallback(
-    (rows: MapSearchRow[]) => {
+    (rows: MapSearchHit[]) => {
       const map = mapRef.current;
       if (!map || rows.length === 0) return;
       inputRef.current?.blur();

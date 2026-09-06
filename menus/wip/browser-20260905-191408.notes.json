@@ -1,0 +1,2130 @@
+[
+  {
+    "restaurantId": "8163",
+    "name": "Surf City Squeeze",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.doordash.com/en-CA/search/store/makeup after 366 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6317",
+    "name": "Donut star",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1061 W El Norte Pkwy\" vs our \"675 N Broadway, Escondido, CA 92025\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/donut-star-el-norte-pkwy-escondido-39558587/?srsltid=AfmBOoptdJ5m7f_60NlYWMvcihpJ0T2r7hLb8DLTLl784WZJRvTin7-G"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6333",
+    "name": "Golden Donut",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"4850 South Bradley Road\" vs our \"4041 Governor Dr, San Diego, CA 92122\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en-AU/en-GB/food-delivery/orcutt-ca-restaurants/bakery/?srsltid=AfmBOoq0ZxiHUSKFpwBPezRkNv8jcPB2110CaG7SUyCOYtCMI5XviOG2"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "12337",
+    "name": "Louisiana Charlie's San Diego",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "67 dishes from https://www.doordash.com/store/louisiana-charlies-san-diego-24414011/?srsltid=AfmBOopGTFF5nZ3lUt8NoZTteMx5AxYXauzPhbsuD8Wd0XpFL9b9XCsy",
+    "menuResponses": [
+      "https://www.doordash.com/store/louisiana-charlies-san-diego-24414011/?srsltid=AfmBOopGTFF5nZ3lUt8NoZTteMx5AxYXauzPhbsuD8Wd0XpFL9b9XCsy"
+    ],
+    "curlReproducible": false,
+    "curlNote": "GET https://www.doordash.com/store/louisiana-charlies-san-diego-24414011/; browser sent cookie=false auth=false. curl replay returned HTTP 403"
+  },
+  {
+    "restaurantId": "9665",
+    "name": "Tacos Oasis",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"5620 Paseo Del Norte\" vs our \"5600 Paseo Del Norte #114b, Carlsbad, CA 92008\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/tacos-oasis---5620-paseo-del-norte-carlsbad-33164661/?srsltid=AfmBOoplwiz-bovtbIAf4IR2YacVnRJ4mfFJvILLHh3vjbo2rgY-jQDD"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10495",
+    "name": "Jilberto's",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"336 West Valley Parkway\" vs our \"538 Nordahl Rd, Escondido, CA 92029\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/jilbertos-taco-shop-356036/?srsltid=AfmBOoo4rgNydVVAU7d4_XzNCrzHxRBA9qVmoYOBIQXGwzMlgombfxKl"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6855",
+    "name": "Raymundo's Taco Shop",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.doordash.com/store/raymundo after 344 JSON responses; followed the branch link https://www.doordash.com/home; the followed link had no more prices than https://www.doordash.com/store/raymundo; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9297",
+    "name": "The coffee machine",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"6821 Allen Rd\" vs our \"688 Hollister St, San Diego, CA 92154\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/es/food-delivery/southgate-mi-restaurants/cafe/?srsltid=AfmBOoo-n73LSQs7m3ToJB1Vf_DXgMzuLhv3IUCui491KK2nLdBJ1dky"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "11002",
+    "name": "Bakery",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"3363 Nobel Dr\" vs our \"4130 Regents Park Row, La Jolla, CA 92037\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/la-jolla-ca-restaurants/bakery/?srsltid=AfmBOorMzkbRRbj8JZtB395OAIjExcIUk-YGyMmwD89KeUXKHrjJ9Dj7"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "1222",
+    "name": "Stadium Club",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1697 West Indiantown Road\" vs our \"6065 Fairmount Ave, San Diego, CA 92120\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en-AU/food-delivery/jupiter-fl-restaurants/healthy/?srsltid=AfmBOopaYv08F2Lnq7v0SRrlmaBn2Xpk2nZJ-aiSbRAg6lY5Ao7ggqa4"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "12339",
+    "name": "La Michoacana Ice Cream",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1276 N Lake St\" vs our \"170 Emerald Dr, Vista, CA 92083, United States\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/la-michoacana-ice-cream-aurora-24284276/?srsltid=AfmBOoq0M--GYgGzIB6Wqn_zRvhhdPFQceYqqW-rOJ1vYf65oALk7L7y"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6691",
+    "name": "Rancho Roasters",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1250 Prospect Street\" vs our \"16950 Via De Santa Fe, Rancho Santa Fe, CA 92091\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/rancho-roasters-san-diego-25870759/?srsltid=AfmBOoqlaXddrjbaTqJQu27KKScZJ-ySRl8R2oVc1EzUBeesjVDvIbea"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8060",
+    "name": "Taco de Ojo Sports Cantina",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/order after 81 JSON responses; followed the branch link https://pos.toasttab.com/privacy; the followed link had no more prices than https://order.toasttab.com/online/order; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "11427",
+    "name": "Cali Cafe",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1102 Thomas Road\" vs our \"4119 El Cajon Blvd, San Diego, CA 92105, United States\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/es/food-delivery/west-monroe-la-restaurants/cafe/?srsltid=AfmBOooT_OXbT43hyyBIp7h7-qR5N9MJ5Lyovy7huBSEMNxdTd9bdwPx"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10064",
+    "name": "Tacos puebla",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"2501 W Lake St\" vs our \"127 W San Ysidro Blvd, San Ysidro, CA 92173\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en-CA/en-GB/food-delivery/stone-park-il-restaurants/mexican/?srsltid=AfmBOorhkrIAAyF2eYfHdS8lNFq3OCSnSmBpS5vLqRJiTz2tPEcfvFxt"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10083",
+    "name": "taco de ojo sports cantina",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/order after 79 JSON responses; followed the branch link https://pos.toasttab.com/privacy; the followed link had no more prices than https://order.toasttab.com/online/order; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10187",
+    "name": "Galley",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"13 Main Street\" vs our \"32444 Echo Ln, San Diego, CA 92147\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/endwell-ny-restaurants/restaurantes/?srsltid=AfmBOoo01vkDLeJSuwrfyFZFakwJbouaBW-Zes6Q5PlLrnlIUrsYuded"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10341",
+    "name": "Signature Cafe",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"5705 Rosemead Blvd\" vs our \"10016 Scripps Ranch Blvd, San Diego, CA 92131, United States\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/rosemead-ca-restaurants/cafe/?srsltid=AfmBOorKNWdfbjlFar4gB-oNjrYB9hoNqRlkN0RgYt6NEwuuZSaGlxi3"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10286",
+    "name": "Pink Rose Cafe",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "72 dishes from https://www.doordash.com/store/pink-rose-cafe-san-diego-42791909/?srsltid=AfmBOopyO_JLu_9PA28GLWyCluoPrEcxoosJ-8ViySz95ggdaehkQ5Tu",
+    "menuResponses": [
+      "https://www.doordash.com/store/pink-rose-cafe-san-diego-42791909/?srsltid=AfmBOopyO_JLu_9PA28GLWyCluoPrEcxoosJ-8ViySz95ggdaehkQ5Tu"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/pink-rose-cafe-san-diego-42791909/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "11129",
+    "name": "Bakery",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1420 E Plaza Blvd # Ste\" vs our \"4980 University Ave, San Diego, CA 92105\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/san-diego-ca-restaurants/bakery/%3Fsrsltid%3DAfmBOorh_zdXL8EtVLRQ1gIOqTCAX0ESjwZWeMMVoE1bqWHrWQZUbbKO"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5186",
+    "name": "Galley",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"13 Main Street\" vs our \"845 15th St, Ste 103, San Diego, CA 92101\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/endwell-ny-restaurants/restaurantes/?srsltid=AfmBOoo01vkDLeJSuwrfyFZFakwJbouaBW-Zes6Q5PlLrnlIUrsYuded"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6607",
+    "name": "La Michoacana Elite",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"245 W El Norte Pkwy\" vs our \"675 E Lincoln Ave, Escondido, CA 92026\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/la-michoacana-elite-escondido-29596959/?srsltid=AfmBOorO84cQuzILB0OfYq3DsyFlPMghOg4w7WNQsAly_A2BAA0693sd"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6681",
+    "name": "La Michoacana Ice Cream",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1276 N Lake St\" vs our \"715 E Vista Way, Vista, CA 92084\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/la-michoacana-ice-cream-aurora-24284276/?srsltid=AfmBOoq0M--GYgGzIB6Wqn_zRvhhdPFQceYqqW-rOJ1vYf65oALk7L7y"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2185",
+    "name": "Island Market",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"9039 West National Avenue\" vs our \"500 Sea World Dr, San Diego, CA 92109\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/greendale-wi-restaurants/peruvian/?srsltid=AfmBOoqDe_m2Iw1kkkthHOrX0KoyGeA_zTQBBTwagfphah1ydnXMk-A8"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9084",
+    "name": "Ben & Jerry's",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"859 West Harbor Drive\" vs our \"803 W Harbor Dr, San Diego, CA 92101, United States\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/ben-jerry-s-san-diego-691675?srsltid=AfmBOoovVFS0327MKq2l4jFiid6sLggaBlkRGeO-9mxuSZHZk_AP3TSl"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8122",
+    "name": "Dalat Cafe",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"189 William Street\" vs our \"4738 University Ave # H, San Diego, CA 92105\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/es/food-delivery/beechboro-wa-restaurants/cafe/?srsltid=AfmBOoqxv2LBJ4qWcXcTT1cKxIqdfuPP1PjEuXEljTu7-q5xIlFiCuHe"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6970",
+    "name": "Dalat Cafe",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"189 William Street\" vs our \"4738 University Ave # H, San Diego, CA 92105\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/es/food-delivery/beechboro-wa-restaurants/cafe/?srsltid=AfmBOoqxv2LBJ4qWcXcTT1cKxIqdfuPP1PjEuXEljTu7-q5xIlFiCuHe"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5708",
+    "name": "La Sierra Cafe",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://la-sierra-cafe.wheree.com/ after 11 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7738",
+    "name": "The Best Donuts",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1501 Rosecrans Street\" vs our \"879 W Harbor Dr, San Diego, CA 92101\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/san-diego-ca-restaurants/donuts/?srsltid=AfmBOoqE-r5C2-cdPIIcKU8xgKlhqkJKsBZCuya4G6Edo-9YlbcdE8wT"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8965",
+    "name": "Jeong Won BBQ Buffet",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://jeong-won-bbq-buffet.wheree.com/menu after 12 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9417",
+    "name": "Triple Crown Pub",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://triple-crown-pub.wheree.com/menu after 11 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10265",
+    "name": "Dolche cafe/ Mexifood",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/order after 79 JSON responses; followed the branch link https://pos.toasttab.com/privacy; the followed link had no more prices than https://order.toasttab.com/online/order; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6656",
+    "name": "Terzo Bakery & Cafe",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://terzo-bakery-cafe.wheree.com/menu after 12 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5935",
+    "name": "Stoney's Bar & Grill",
+    "platform": "order.online",
+    "outcome": "filed",
+    "detail": "43 dishes from https://dynamic-values-edge-service.doordash.com/v1/experiments/",
+    "menuResponses": [
+      "https://dynamic-values-edge-service.doordash.com/v1/experiments/"
+    ],
+    "curlReproducible": true,
+    "curlNote": "POST https://dynamic-values-edge-service.doordash.com/v1/experiments/ with a application/json; charset=utf-8 body; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names Body: {\"namespaces\":[],\"legacy_namespaces\":[],\"exposures_enabled\":false,\"context\":{\"consumerId\":\"dx_1a678b37b01c4deebd7fad0fddb1051a\",\"consumer_id\":\"dx_1a678b37b01c4deebd7fad0fddb1051a\",\"submarketId\":\"\",\"submarket_id\":\"\",\"deviceId\":\"dx_1a678b37b01c4deebd7fad0fddb1051a\",\"device_id\":\"dx_1a678b37b01c4deebd7f"
+  },
+  {
+    "restaurantId": "1628",
+    "name": "Cafecito on Palm",
+    "platform": "ubereats",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://def.uber.com/en/challenge?from_service=d2ViLWVhdHMtdjI%3D&q=NjgwZDA5NzZmOGE3MWVmMTQzNTlhOWZhMjY5ZDlmY2E6RGRjQ3NtelZBekUrVzVDMDpJMCtuOWpuRmpqU3dIVDdMTlh3S05HNnNjT0lwZmlDQUZTWlVoalRnbkIzU0NBak44MWVpemZST2l4WHR0a3hyaXpFWGhZVE1jeXM3TWhUMHpDN1BBTkVJRGNRTEpsWXVBU3JuWnNWanNER0U1QUFhTDBpTGU5STZjeUpmMXZwNzh3Ky9lblN6bC8xQUY3RE4xbFF2NkZpa1kxdFNLV084MUZBVUJYdW5rNmRmdkhnWThHM2pnYjF4VjFZclZPY0RlVVhYTFRYY2tFWEFEZFBWRDd4YnJVZ0VFbVpUbmpCdG14K2IwVEJGK1g3eGdCaldyS0pITjRBbHZEaE8wa0paZTR1STc1NEhYdTgySFlTWGk2WExvRlRBYWxyTUNoNkRjS0VIbmxXY3R5OFlhUkJXTmExTEhHVzV3NGtZanF6SEp6NVBJaVFablJ6THVaK3liMFhUbDNSWWdNc0pFUnhpa2o1ZWFDWHpsR2UySlhQRG52cnI6dCtHWVNNTkE3cy94eUN6MmZNejhBZz09 after 13 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6091",
+    "name": "Beijing Express",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.doordash.com/en-CA/search/store/makeup after 364 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9245",
+    "name": "The Salty Frog Bar",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://the-salty-frog-bar.wheree.com/ after 12 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9150",
+    "name": "Elena's French Crepes Cafe & Peet's Coffee",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://elenas-french-crepes-cafe-peets-coffee.wheree.com/menu after 11 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6393",
+    "name": "Wicked Poke",
+    "platform": null,
+    "outcome": "gated",
+    "detail": "only 3 priced items from https://www.doordash.com/store/wicked-poke-oceanside-187550/?srsltid=AfmBOoq5GKahp7zEYJ_eK4YDMzkVXpa-Tst_ZQg2YHwsrAYLKFcg2ht0 at 12:24:59 PM PT - a closed store looks exactly like a small menu, so re-run in daylight; followed the branch link https://www.doordash.com/food-delivery/oceanside-ca-restaurants/; the followed link had no more prices than https://www.doordash.com/store/wicked-poke-oceanside-187550/?srsltid=AfmBOoq5GKahp7zEYJ_eK4YDMzkVXpa-Tst_ZQg2YHwsrAYLKFcg2ht0; went back",
+    "menuResponses": [
+      "https://www.doordash.com/store/wicked-poke-oceanside-187550/?srsltid=AfmBOoq5GKahp7zEYJ_eK4YDMzkVXpa-Tst_ZQg2YHwsrAYLKFcg2ht0"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6050",
+    "name": "Pho Anh & Grill",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://pho-anh-grill.wheree.com/menu after 12 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5781",
+    "name": "Chico's Restaurant",
+    "platform": "ubereats",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://def.uber.com/en/challenge?from_service=d2ViLWVhdHMtdjI%3D&q=ZDAyMTg4YjljZWI5NjVhOWExYTFlODQ1Mzc4MDQ1ZTQ6azJzN2o1WW9uZHV6NXl1SDpOdEZrMmFwY0VDL3E2UHBRYitxTHEvTms0STNqc3pUQWhtandCZ0lyMVppT1dza0ZwR3BwTjNXZ25ycTIrZVZDYjVlcTJRQXJLYmZzY3BMY2Y5T3pWUlhIZDlWdkFabGdGVkJpdGZVREhJbmszR1hrWldKUEM0QXNVWnRXSUhNN0N4T1Nib1F4enRXMjNxdWkxT3VZeGYwRGQxS2IxV3pvRFZDS3J3OGpJVlNnSTJpUG1YRVZFdFRYTVJING9jZEd0M1pONlZFRk0vNm5PU01aaU1KYmJvYnp1ZElmZlZUazJhYmYxdmtHSEZHNVpXT0tYTytBUDQ3bDFQQ0hKaG1WSmwvK01TNXUzTVk1d3dDY3dHdFd1UjJPQTRuSStKVmpEak05MnNJT1YrWjBHaDhkdFFzU3cxVGNWQnVzTjR2RU1seVVML05uYXJnaDJCdjJQd2NGKzhJUFdoTzFVcmNFSWtmZFNyUWZKZTNHNFpJVnR2cXZqQT09OjBORFpoVTI1cFJhN1FWSStFaFlZQkE9PQ%3D%3D after 13 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8027",
+    "name": "Los Reyes Mexican Food",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"3355 Willow Pass Road\" vs our \"4239 Market St, San Diego, CA 92102\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/los-reyes-mexican-food-bay-point-194492/?srsltid=AfmBOoqd-4fQhbqLXtyuaplFp6_ORPNMna0Pxp2wHjJl5WvU2h2gNcTS"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9387",
+    "name": "The Break Room",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"319 Clematis St Ste 101\" vs our \"4365 Convoy St, San Diego, CA 92111\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/west-palm-beach-fl-restaurants/cafe/?srsltid=AfmBOopBge2hke3VHNIviUFed6nDj2b4Okd4_ck7H60b5eWtEF8mMHfu"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5793",
+    "name": "Sunrise Deli & Grill",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"292 Leonard Street\" vs our \"7920 Silverton Ave AB, San Diego, CA 92126\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/greenpoint-ny-restaurants/grocery/?srsltid=AfmBOopGmpTs4BckMJY3wJXfiVA0Qp6cSOV4ZEEPilDX-kps6WATzNe2"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8620",
+    "name": "Pam's Donuts and Frozen Yogurt",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://pam-s-donuts-and-frozen-yogurt.wheree.com/menu after 11 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4600",
+    "name": "Lucky Donuts & Deli",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://lucky-donuts-deli.wheree.com/ after 12 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6075",
+    "name": "Don Lucio's Mexican Grill",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/order after 79 JSON responses; followed the branch link https://pos.toasttab.com/privacy; the followed link had no more prices than https://order.toasttab.com/online/order; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5882",
+    "name": "Rising Dragon Chinese Restaurant",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://rising-dragon-chinese-restaurant.wheree.com/menu after 12 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4097",
+    "name": "The Keep Coffee",
+    "platform": "Square Online storefront",
+    "outcome": "gated",
+    "detail": "only 1 priced items from https://thekeepcoffee.square.site/ at 12:27:27 PM PT - a closed store looks exactly like a small menu, so re-run in daylight; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6474",
+    "name": "Sammy's Mexican Bakery",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://sammys-mexican-bakery.wheree.com/ after 11 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8577",
+    "name": "Desi's Bar & Grill",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/spa after 24 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10330",
+    "name": "Café Matinal",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "42 dishes from https://dynamic-values-edge-service.doordash.com/v1/experiments/",
+    "menuResponses": [
+      "https://dynamic-values-edge-service.doordash.com/v1/experiments/"
+    ],
+    "curlReproducible": true,
+    "curlNote": "POST https://dynamic-values-edge-service.doordash.com/v1/experiments/ with a application/json; charset=utf-8 body; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names Body: {\"namespaces\":[],\"legacy_namespaces\":[],\"exposures_enabled\":false,\"context\":{\"consumerId\":\"dx_9becb9f66f1a4a5cbf7eaf1bbde097da\",\"consumer_id\":\"dx_9becb9f66f1a4a5cbf7eaf1bbde097da\",\"submarketId\":\"\",\"submarket_id\":\"\",\"deviceId\":\"dx_9becb9f66f1a4a5cbf7eaf1bbde097da\",\"device_id\":\"dx_9becb9f66f1a4a5cbf7e"
+  },
+  {
+    "restaurantId": "9130",
+    "name": "Sky Hookah Lounge",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://sky-hookah-lounge.wheree.com/ after 11 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5788",
+    "name": "House of Pizza",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "63 dishes from https://www.doordash.com/store/house-of-pizza-la-jolla-42796219/?src=ac&srsltid=AfmBOor9wKYz6uQSVYyz7OKIFYlwNqrjjf8J-y--RirzgprC_nnyHeBh",
+    "menuResponses": [
+      "https://www.doordash.com/store/house-of-pizza-la-jolla-42796219/?src=ac&srsltid=AfmBOor9wKYz6uQSVYyz7OKIFYlwNqrjjf8J-y--RirzgprC_nnyHeBh"
+    ],
+    "curlReproducible": false,
+    "curlNote": "GET https://www.doordash.com/store/house-of-pizza-la-jolla-42796219/; browser sent cookie=false auth=false. curl replay returned HTTP 200 but only 2/6 sampled dish names - the catalog is session-bound"
+  },
+  {
+    "restaurantId": "3721",
+    "name": "Heavenly Donuts",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1560 15th Avenue\" vs our \"5132 Waring Road\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/heavenly-donuts-longview-634041/?srsltid=AfmBOops4vfrKh2jfcFnqMkyraO9IHWcXGVF0W4_pAjOaIlVkbLkCGmW"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9713",
+    "name": "George's Cafe",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"5505 West 20th Avenue\" vs our \"4012 43rd St, San Diego, CA 92105\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/edgewater-co-restaurants/greek/?srsltid=AfmBOopqx9rWS59YiQ19A1AK2eRciv7MmsC-HdlpcyxFYit_gfaepRhr"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7147",
+    "name": "R&B Tea San Carlos",
+    "platform": null,
+    "outcome": "screened-out",
+    "detail": "prices are not shaped like a menu: 1% of 91 land on a conventional ending as published and 68% do after dividing by 1.1500 - a fee is baked into every price - https://www.doordash.com/store/r%26b-tea-san-carlos-san-diego-24714790/?srsltid=AfmBOoplRjGr61ZelBsdx8rFKIT0w1sw5aqtwJIiuCYRzY00brVzJBRr",
+    "menuResponses": [
+      "https://www.doordash.com/store/r%26b-tea-san-carlos-san-diego-24714790/?srsltid=AfmBOoplRjGr61ZelBsdx8rFKIT0w1sw5aqtwJIiuCYRzY00brVzJBRr"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "1095",
+    "name": "Chico Club",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "the page prints only NY addresses, not California (https://toast.app/r/urumbamba-pisco-bar-286-new-york-avenue/order/item-topo-chico-club-soda_f9e85c12-c7bb-4032-8562-3a70c15ce8b4?utm_medium=redirect) - not filed; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7658",
+    "name": "La Dama y Sus Takonez",
+    "platform": null,
+    "outcome": "screened-out",
+    "detail": "markup or platform fee: 46/65 prices divide by 1.2000 onto round dollars - https://www.doordash.com/store/la-dama-y-sus-takonez-san-diego-35897995/?srsltid=AfmBOooP1p4ivw2TWEIGgZsMkzUZIuKtGQXLm_j7GkzyPSEtvimlQcOJ",
+    "menuResponses": [
+      "https://www.doordash.com/store/la-dama-y-sus-takonez-san-diego-35897995/?srsltid=AfmBOooP1p4ivw2TWEIGgZsMkzUZIuKtGQXLm_j7GkzyPSEtvimlQcOJ"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5927",
+    "name": "Caffe Positano, Village",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://caffe-positano-village.wheree.com/menu after 11 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7856",
+    "name": "Best Donuts",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"7550 El Cajon Boulevard\" vs our \"4636 Avocado Blvd, La Mesa, CA 91941\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/la-mesa-ca-restaurants/doughnuts/?srsltid=AfmBOopbE7rTVmtEOvy92-KxCfGYOYMpjwu2_ZjWC7eCHPHGgbNz04mE"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "12165",
+    "name": "Sweet Shoppe",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1919 Fruitville Pike\" vs our \"3146 Mission Blvd # C, San Diego, CA 92109, United States\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/es/food-delivery/line-lexington-pa-restaurants/bakery/?srsltid=AfmBOooAG3sKEY9Dvk7i-pAn8oLtUn7nwPoXH-ng_rMzEBWteNLtg0Q4"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9144",
+    "name": "BALBOA PERK, Coffee & Tea",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://balboa-perk-coffee-tea.wheree.com/menu after 12 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3464",
+    "name": "Banh Mi Express",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"140 East Leland Road\" vs our \"9353 Clairemont Mesa Boulevard #H\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/pittsburg-ca-restaurants/vietnamese/?srsltid=AfmBOoph9cFTBBhLT2RyDM6Hs8RKmmiD9bSMIV4PSQradthlPCHZ1m1-"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9757",
+    "name": "Express Pizza 'N Wings",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://express-pizza-n-wings.wheree.com/menu after 12 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4500",
+    "name": "Seaside Surf Cafe",
+    "platform": "Square Online storefront",
+    "outcome": "filed",
+    "detail": "28 dishes from https://seaside-smoothie-and-juice-bar.square.site/; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://seaside-smoothie-and-juice-bar.square.site/; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 200 but only 0/6 sampled dish names - the catalog is session-bound"
+  },
+  {
+    "restaurantId": "8754",
+    "name": "Mi Taco Shop",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://mi-taco-shop.wheree.com/menu after 10 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6611",
+    "name": "Yummy House",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "91 dishes from https://www.doordash.com/store/yummy-house-san-diego-24568102/?srsltid=AfmBOoqZcUbzmLK0Snnkn7fZ8Q2WzXz8kMlWd9vKAGQNlA2y72ofyXAo",
+    "menuResponses": [
+      "https://www.doordash.com/store/yummy-house-san-diego-24568102/?srsltid=AfmBOoqZcUbzmLK0Snnkn7fZ8Q2WzXz8kMlWd9vKAGQNlA2y72ofyXAo"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/yummy-house-san-diego-24568102/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "5887",
+    "name": "El Huarache Taco Shop",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://el-huarache-taco-shop.wheree.com/menu after 11 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7380",
+    "name": "Bonsall Donut House",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.doordash.com/store/28730737 after 347 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8582",
+    "name": "Supreme Donuts",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"819 Caldwell Blvd\" vs our \"208 W San Marcos Blvd Unit 103, San Marcos, CA 92069\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/es/food-delivery/middleton-id-restaurants/bakery/?srsltid=AfmBOopAIm5akAQlUxYF-DIoLQOqZk9o0lhWZhsh42RI9BiBj72sFOuk"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7472",
+    "name": "Paleteria La Michoacana",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"6501 Central Avenue Northwest\" vs our \"3558 National Ave, San Diego, CA 92113\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/albuquerque-nm-restaurants/elote/?srsltid=AfmBOorIAXuLLb5Wp3ZGH7YrVUTR9NWqWpTow9DMjYvlBH00OJ1IBYSs"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5885",
+    "name": "Jack's Donuts",
+    "platform": "order.online",
+    "outcome": "filed",
+    "detail": "42 dishes from https://dynamic-values-edge-service.doordash.com/v1/experiments/",
+    "menuResponses": [
+      "https://dynamic-values-edge-service.doordash.com/v1/experiments/"
+    ],
+    "curlReproducible": true,
+    "curlNote": "POST https://dynamic-values-edge-service.doordash.com/v1/experiments/ with a application/json; charset=utf-8 body; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names Body: {\"namespaces\":[],\"legacy_namespaces\":[],\"exposures_enabled\":false,\"context\":{\"consumerId\":\"dx_32c20a5a1c784d1a81524402fd15e5b4\",\"consumer_id\":\"dx_32c20a5a1c784d1a81524402fd15e5b4\",\"submarketId\":\"\",\"submarket_id\":\"\",\"deviceId\":\"dx_32c20a5a1c784d1a81524402fd15e5b4\",\"device_id\":\"dx_32c20a5a1c784d1a8152"
+  },
+  {
+    "restaurantId": "5648",
+    "name": "Panda Restaurant",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"3206 Sycamore Road\" vs our \"7816 Broadway\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/fr-CA/food-delivery/burlington-il-restaurants/pad-tha-?srsltid=AfmBOoowpGuM7HDfwZKl92n5KGCPFNPSFdEMmpRWvWGTDNY0X_djMhP6"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9795",
+    "name": "Casa Brava",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "86 dishes from https://www.doordash.com/store/casa-brava-national-city-42054061/?srsltid=AfmBOoor3ioG5jO-nWXLC9RYBKPb5IB3R_D0fafOr_1s-jTo99iTqbBs",
+    "menuResponses": [
+      "https://www.doordash.com/store/casa-brava-national-city-42054061/?srsltid=AfmBOoor3ioG5jO-nWXLC9RYBKPb5IB3R_D0fafOr_1s-jTo99iTqbBs"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/casa-brava-national-city-42054061/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "7920",
+    "name": "Sizzling Saigon",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "88 dishes from https://www.doordash.com/store/sizzling-saigon-santee-36957016/?srsltid=AfmBOor5dGsjkmyCrMwhmp-9kqm35VHxR8hv0gAmdzQXMqICphutrhrY",
+    "menuResponses": [
+      "https://www.doordash.com/store/sizzling-saigon-santee-36957016/?srsltid=AfmBOor5dGsjkmyCrMwhmp-9kqm35VHxR8hv0gAmdzQXMqICphutrhrY"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/sizzling-saigon-santee-36957016/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "7973",
+    "name": "Dubai Loco",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "88 dishes from https://www.doordash.com/store/dubai-loco-el-cajon-46875886/; store picked by street number 291 in the link; opened the branch link carrying street number 291",
+    "menuResponses": [
+      "https://www.doordash.com/store/dubai-loco-el-cajon-46875886/"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/dubai-loco-el-cajon-46875886/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "9295",
+    "name": "De corazon coffee bar",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "18 dishes from https://www.doordash.com/store/de-corazon-coffee-bar-san-diego-34792781/?srsltid=AfmBOoo94NSurfJhQAj5QeI7gb9r8fKYNaDLd66RD43pkHnaEBUauz-r",
+    "menuResponses": [
+      "https://www.doordash.com/store/de-corazon-coffee-bar-san-diego-34792781/?srsltid=AfmBOoo94NSurfJhQAj5QeI7gb9r8fKYNaDLd66RD43pkHnaEBUauz-r"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/de-corazon-coffee-bar-san-diego-34792781/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "5774",
+    "name": "Fresh Donuts",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"401 West A Street\" vs our \"2295 Palm Ave A, San Diego, CA 92154\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/san-diego-ca-restaurants/donut-shop/?srsltid=AfmBOorbV8ahnlaketa7ErONzGK5eIKhLia8HJODdFdOWgBqd8BEemh7"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5798",
+    "name": "Summer's Deli & Catering",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://summers-deli-catering.wheree.com/ after 11 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5759",
+    "name": "First Chinese Express",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "91 dishes from https://www.doordash.com/store/first-chinese-express-lemon-grove-33785837/?srsltid=AfmBOoo_bOouL6MD5aO-FMs8qHa-c9zJhQlPEfggsCdM8H4R4SPD-Qyw",
+    "menuResponses": [
+      "https://www.doordash.com/store/first-chinese-express-lemon-grove-33785837/?srsltid=AfmBOoo_bOouL6MD5aO-FMs8qHa-c9zJhQlPEfggsCdM8H4R4SPD-Qyw"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/first-chinese-express-lemon-grove-33785837/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "6324",
+    "name": "Salies Place",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "43 dishes from https://dynamic-values-edge-service.doordash.com/v1/experiments/",
+    "menuResponses": [
+      "https://dynamic-values-edge-service.doordash.com/v1/experiments/"
+    ],
+    "curlReproducible": true,
+    "curlNote": "POST https://dynamic-values-edge-service.doordash.com/v1/experiments/ with a application/json; charset=utf-8 body; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names Body: {\"namespaces\":[],\"legacy_namespaces\":[],\"exposures_enabled\":false,\"context\":{\"consumerId\":\"dx_8d98d191cf864341aa56f3c6d2602891\",\"consumer_id\":\"dx_8d98d191cf864341aa56f3c6d2602891\",\"submarketId\":\"\",\"submarket_id\":\"\",\"deviceId\":\"dx_8d98d191cf864341aa56f3c6d2602891\",\"device_id\":\"dx_8d98d191cf864341aa56"
+  },
+  {
+    "restaurantId": "9276",
+    "name": "Finjan Shop & Cafe",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "38 dishes from https://dynamic-values-edge-service.doordash.com/v1/experiments/",
+    "menuResponses": [
+      "https://dynamic-values-edge-service.doordash.com/v1/experiments/"
+    ],
+    "curlReproducible": true,
+    "curlNote": "POST https://dynamic-values-edge-service.doordash.com/v1/experiments/ with a application/json; charset=utf-8 body; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names Body: {\"namespaces\":[],\"legacy_namespaces\":[],\"exposures_enabled\":false,\"context\":{\"consumerId\":\"dx_6a7d0f90022a4b46924739d7daabcdbe\",\"consumer_id\":\"dx_6a7d0f90022a4b46924739d7daabcdbe\",\"submarketId\":\"\",\"submarket_id\":\"\",\"deviceId\":\"dx_6a7d0f90022a4b46924739d7daabcdbe\",\"device_id\":\"dx_6a7d0f90022a4b469247"
+  },
+  {
+    "restaurantId": "9831",
+    "name": "Tacos TiaJuana",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "91 dishes from https://www.doordash.com/store/tacos-tiajuana-chula-vista-23578277/?srsltid=AfmBOoqPojhvrWKKVb1ebcpzMaLNZSRlKHKYwev1_uT0tj3p7v1h6CV5",
+    "menuResponses": [
+      "https://www.doordash.com/store/tacos-tiajuana-chula-vista-23578277/?srsltid=AfmBOoqPojhvrWKKVb1ebcpzMaLNZSRlKHKYwev1_uT0tj3p7v1h6CV5"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/tacos-tiajuana-chula-vista-23578277/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "9834",
+    "name": "Mi Pastor Town",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "73 dishes from https://www.doordash.com/store/mi-pastor-town-national-city-1691787/?srsltid=AfmBOop82SWwroJZj1crTT0C25BHQEWcxti5ccdn0y-0RTPkLQ7UXKly",
+    "menuResponses": [
+      "https://www.doordash.com/store/mi-pastor-town-national-city-1691787/?srsltid=AfmBOop82SWwroJZj1crTT0C25BHQEWcxti5ccdn0y-0RTPkLQ7UXKly"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/mi-pastor-town-national-city-1691787/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "9837",
+    "name": "Cacio San Diego",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "90 dishes from https://www.doordash.com/store/cacio-san-diego-national-city-33193309/?srsltid=AfmBOopIN9Sc2vj9AZVHJXg2INMh6xyV_BKoHqhYTidc8p1cMiOPAsIk",
+    "menuResponses": [
+      "https://www.doordash.com/store/cacio-san-diego-national-city-33193309/?srsltid=AfmBOopIN9Sc2vj9AZVHJXg2INMh6xyV_BKoHqhYTidc8p1cMiOPAsIk"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/cacio-san-diego-national-city-33193309/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "6636",
+    "name": "La Michoacana Ice Cream Shop",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1405 Forge Ave\" vs our \"51 N Highland Ave Suite: H, National City, CA 91950\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/baltimore-md-restaurants/persian-ice-cream?srsltid=AfmBOorzRwCwo8WJbiOwtQfovIuDMzIOHRI8GpGqeQPZOMJjsZrswduv"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5829",
+    "name": "Tasty Bakery",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"3450 W Chandler Blvd\" vs our \"4344 Convoy St D, San Diego, CA 92111\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/mesa-az-restaurants/bakery/?srsltid=AfmBOorz-5IPCeVkbiuY5hrWCuRULFu4IRpmd3LNVOPd-m-fiEWW5Rp2"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7995",
+    "name": "PARA",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"2081 San Elijo Ave\" vs our \"949 2nd St, Encinitas, CA 92024\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/es-US/food-delivery/encinitas-ca-restaurants/7/?srsltid=AfmBOopQVKGv5hHGZ6G1YZob3Xu8UL4dP6ShE3nljZHFSyVDrdwZyTpJ"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5530",
+    "name": "Asian Kitchen",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"13510 Sabre Springs Pkwy\" vs our \"3225 N Harbor Dr, San Diego, CA 92101\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/mein-st.-asian-kitchen-san-diego-534470/?srsltid=AfmBOornYscDP9tvL6B3suWF7Ix_ONC0HxDilZ69VFKk60_SQG9YxNhl"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "12185",
+    "name": "The Iconic Coffee Club",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://toast.app/r/the-iconic-coffee-club-2722-fifth-ave?utm_medium=redirect after 45 JSON responses; store picked by street number 2722; clicked a branch matching street number 2722",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8900",
+    "name": "CORAL SPORTS BAR",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/place/995+Palm+Ave,+Imperial+Beach,+CA+91932/@32.5836418,-117.1146416,17z/data=!3m1!4b1!4m6!3m5!1s0x80d94c430b4c6d43:0xc54c0b5b466dc1ca!8m2!3d32.5836418!4d-117.1120667!16s%2Fg%2F11bw4lxv3d?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D after 71 JSON responses; store picked by street number 995 in the link; opened the branch link carrying street number 995",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9118",
+    "name": "Harbor Island Deli & Spirits",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://harbor-island-deli-spirits.wheree.com/ after 11 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9038",
+    "name": "Bedda",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"3603 E 10th St\" vs our \"3015 Juniper St, San Diego, CA 92104, United States\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en/food-delivery/sioux-falls-sd-restaurants/mexican/?srsltid=AfmBOooDKGN6mSRgbS6coCa2tlY_AHTsDwSlYpJkaNHMReVWTl8fTijf"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8088",
+    "name": "Very Tasty Coffee",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1424 Northwest Sheridan Road\" vs our \"3400 E 8th St #114, National City, CA 91950\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en/food-delivery/lawton-ok-restaurants/?srsltid=AfmBOoqLR1gx-K8M8nz2rtVj3GrZTFD7wU5xPHVQW09DEW1Ftty15hyT"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9066",
+    "name": "Bean Me Up Coffee",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"408 S Thompson St\" vs our \"2231 Sunset Cliffs Blvd, San Diego, CA 92107\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/springdale-nl-restaurants/cafe/?srsltid=AfmBOopYk0cndlDBgtKSAQc6wM_kUfzo7rIPhRkRcdl2UaEWUjpPnaK2"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9907",
+    "name": "Frutas Frescas",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1321 Springs Road\" vs our \"9511 Jamacha Blvd B, Spring Valley, CA 91977\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/vallejo-ca-restaurants/mexican/?srsltid=AfmBOooGjd97lEiCenYEBmJQbbyhQvXED5h1I-wFLFJ20MgbyBUoHuoI"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10767",
+    "name": "The Tin Scoop",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://the-tin-scoop-cafe.wheree.com/ after 11 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7971",
+    "name": "Blend & Bite Cafe",
+    "platform": null,
+    "outcome": "screened-out",
+    "detail": "markup or platform fee: 38/60 prices divide by 1.2000 onto round dollars - https://www.doordash.com/store/41266585?srsltid=AfmBOopoLdjh1ojxmhLUiMbAqiR1n_PBTGIezcPNQfyPf6sjFOkiOaQa",
+    "menuResponses": [
+      "https://www.doordash.com/store/41266585?srsltid=AfmBOopoLdjh1ojxmhLUiMbAqiR1n_PBTGIezcPNQfyPf6sjFOkiOaQa"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5678",
+    "name": "Saigon Corner",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"300 Lackawanna Avenue\" vs our \"10550 Camino Ruiz Ste A, San Diego, CA 92126\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en-AU/food-delivery/dickson-city-pa-restaurants/vietnamese/?srsltid=AfmBOopyrMyV74ktlxVLHGcX7sXmumLxlj-A30DnsqUm6XfWjorbEXAm"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7582",
+    "name": "Tokyo Express",
+    "platform": null,
+    "outcome": "screened-out",
+    "detail": "prices are not shaped like a menu: 18% of 91 land on a conventional ending as published and 89% do after dividing by 1.0800 - a fee is baked into every price - https://www.doordash.com/store/tokyo-express-escondido-33388069/?srsltid=AfmBOorXGUXeDSt_KgCMby5ghIfRWSGtN-EijMYjm2do5LoLZzIcZ5gQ",
+    "menuResponses": [
+      "https://www.doordash.com/store/tokyo-express-escondido-33388069/?srsltid=AfmBOorXGUXeDSt_KgCMby5ghIfRWSGtN-EijMYjm2do5LoLZzIcZ5gQ"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7209",
+    "name": "Honey Banana",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1158 Baltimore Pike # A\" vs our \"443 Highland Ave, National City, CA 91950\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/boothwyn-pa-restaurants/taro-smoothie?srsltid=AfmBOooFb0I3aI2L_9yWaTlkCiT6a7DR9tkPG39e2cVZiDzarVLUnb-U"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9316",
+    "name": "Daboba Las Americas",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "81 dishes from https://www.doordash.com/store/45092577?src=yp&pickup=true&utm_source_id=e080d4d6-525c-4091-9088-a87fef78fcd8&srsltid=AfmBOopfN8EKR_bGasH6bsMZjMoxhvwJkXTVILyncuwS6d3y3-9FADUG",
+    "menuResponses": [
+      "https://www.doordash.com/store/45092577?src=yp&pickup=true&utm_source_id=e080d4d6-525c-4091-9088-a87fef78fcd8&srsltid=AfmBOopfN8EKR_bGasH6bsMZjMoxhvwJkXTVILyncuwS6d3y3-9FADUG"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/45092577; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "9933",
+    "name": "Yareli’s Tacos",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "61 dishes from https://www.doordash.com/store/yareli%E2%80%99s-tacos-vista-25012733/?srsltid=AfmBOooH0PPSyfs711E0yEvcLa_wyXJ9jvRg4EUZYxLU2xIUtrTFy7Xy",
+    "menuResponses": [
+      "https://www.doordash.com/store/yareli%E2%80%99s-tacos-vista-25012733/?srsltid=AfmBOooH0PPSyfs711E0yEvcLa_wyXJ9jvRg4EUZYxLU2xIUtrTFy7Xy"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/yareli%E2%80%99s-tacos-vista-25012733/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "4455",
+    "name": "Sandwich Co.",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"6904 Miramar Road\" vs our \"4 Front St, San Diego, CA 92101\" - not filed; store picked by street number 4 in the link; opened the branch link carrying street number 4",
+    "menuResponses": [
+      "https://www.doordash.com/store/the-philadelphia-sandwich-co-san-diego-63566/?srsltid=AfmBOop4zj6VPEnh3cKt7JHdDy99EkHdJKdquCvF6bq_DB873_B5y9PJ"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "12141",
+    "name": "The Library Coffee Shop",
+    "platform": "HungerRush",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://order.menufy.com/CA/EL%20CAJON that this script could not drive (tried: typed ZIP 92019 into the store search); store searched by ZIP; typed ZIP 92019 into the store search",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9938",
+    "name": "Shelly's Deli",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1485 New York 9D\" vs our \"1389-1410 Piper Ranch Rd, San Diego, CA 92154\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/wappingers-falls-ny-restaurants/healthy/?srsltid=AfmBOopEhryQR3qKyjUPUjGrRv2tIQt8wCutCFcWJTCWfu9ZkAp_tza8"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9048",
+    "name": "Seoul Street",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"732 Caldwell Boulevard\" vs our \"4463 Camino De La Plaza #117, San Ysidro, CA 92173, United States\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/star-id-restaurants/pho/?srsltid=AfmBOopU9nkVjkeE_VPZvLNe3zD7g_UQZtyvh_gWVWqCBbjf_LYUFOMR"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "1179",
+    "name": "Over The Border",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1731 S Macarthur Blvd\" vs our \"3008 Main Street\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/springfield-il-restaurants/filipino/?srsltid=AfmBOopLYkbhdUGCcWQsmXE2rIubhdeaxKatwyakHM142JU-EAbFIpfj"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "11451",
+    "name": "Old Town Ice Cream",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"2105 Louisiana Blvd NE\" vs our \"2611 San Diego Ave, San Diego, CA 92110\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/es/food-delivery/albuquerque-nm-restaurants/sports-bar/?srsltid=AfmBOorfe3gzq3Wq0Vssv0iOyu6YgL60ZPD5caO8AVeVtxuqLyt7lHY9"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4311",
+    "name": "SIP Wine Bar",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "41 dishes from https://dynamic-values-edge-service.doordash.com/v1/experiments/",
+    "menuResponses": [
+      "https://dynamic-values-edge-service.doordash.com/v1/experiments/"
+    ],
+    "curlReproducible": true,
+    "curlNote": "POST https://dynamic-values-edge-service.doordash.com/v1/experiments/ with a application/json; charset=utf-8 body; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names Body: {\"namespaces\":[],\"legacy_namespaces\":[],\"exposures_enabled\":false,\"context\":{\"consumerId\":\"dx_d28910c6651d419c9e52d522d13aab42\",\"consumer_id\":\"dx_d28910c6651d419c9e52d522d13aab42\",\"submarketId\":\"\",\"submarket_id\":\"\",\"deviceId\":\"dx_d28910c6651d419c9e52d522d13aab42\",\"device_id\":\"dx_d28910c6651d419c9e52"
+  },
+  {
+    "restaurantId": "7530",
+    "name": "Isabela’s Mexican food",
+    "platform": null,
+    "outcome": "screened-out",
+    "detail": "prices are not shaped like a menu: 8% of 91 land on a conventional ending as published and 86% do after dividing by 1.2000 - a fee is baked into every price - https://www.doordash.com/store/isabela%E2%80%99s-mexican-food-san-diego-30842100/?srsltid=AfmBOoq89q-pRFiitaCPDEBwulwMiqIMYK0en8rnneXoaDcD9NYvra93",
+    "menuResponses": [
+      "https://www.doordash.com/store/isabela%E2%80%99s-mexican-food-san-diego-30842100/?srsltid=AfmBOoq89q-pRFiitaCPDEBwulwMiqIMYK0en8rnneXoaDcD9NYvra93"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9091",
+    "name": "Water Store",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"5375 Kearny Villa Rd Ste 111\" vs our \"1215 Broadway, Chula Vista, CA 91911\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en-GB/food-delivery/clairemont-ca-restaurants/vietnamese/?srsltid=AfmBOorCUqAdF0jVC-xXL1Wy5qpMGbR3NJWonNM74gm_p4IDyjU3KNZd"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "11118",
+    "name": "Acai Roots",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1143 Sixth Avenue\" vs our \"1515 Highland Ave, National City, CA 91950, United States\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/469269/?srsltid=AfmBOopHF16SC1DzQlDMDUPiiY7pJTrvspuo-rKC5VpeyR0ewo42Rd6n"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6812",
+    "name": "Lizs Cocina",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1435 Sixth Avenue\" vs our \"3383 El Cajon Blvd, San Diego, CA 92104\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/cocina-35-san-diego-63482/?srsltid=AfmBOoqar4Bh_t3wVpFMMTdA18mjkKElHlcaqesB9RiuD4wc1otWfPuI"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2253",
+    "name": "Pines",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"11011 N Torrey Pines Rd\" vs our \"9500 Gilman Dr, La Jolla, CA 92093\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/playa-kitchen-at-torrey-pines-science-park-la-jolla-40776183/?srsltid=AfmBOoqeJnQV6xoJEYetXrzQ5d5v82RJb1ETvlMvK2JHQzaDOWuwTyxK"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10513",
+    "name": "Las Delicias de Alicia",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"5317 East Sligh Avenue\" vs our \"4388 Gopher Canyon Rd, Vista, CA 92084\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/las-delicias-de-alicia-tampa-1300631/?srsltid=AfmBOooo7Avzv5E09XA1h7pdluO5hc8DFY3uX8Hqw9ZsMM9n9ejCWXUb"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3271",
+    "name": "Wow Donuts",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"700 E Whitestone Blvd\" vs our \"10205 Lake Jennings Park Road\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/lago-vista-tx-restaurants/bakery/?srsltid=AfmBOoodaYCa090kB_Yb9i9eLrdvfIiN1Xu6Hd_1V6N0Kp6305koJpbB"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9360",
+    "name": "Muscle Lounge",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "20 dishes from https://toast.app/r/muscle-lounge-13727-camino-canada-a1-mvras/order/item-muscle-mangos-cream_7d5429d4-03fa-4d55-9ae1-ace7f90ed447?utm_medium=redirect",
+    "menuResponses": [
+      "https://toast.app/r/muscle-lounge-13727-camino-canada-a1-mvras/order/item-muscle-mangos-cream_7d5429d4-03fa-4d55-9ae1-ace7f90ed447?utm_medium=redirect"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://toast.app/r/muscle-lounge-13727-camino-canada-a1-mvras/order/item-muscle-mangos-cream_7d5429d4-03fa-4d55-9ae1-ace7f90ed447; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "8852",
+    "name": "Cacio",
+    "platform": null,
+    "outcome": "screened-out",
+    "detail": "catalog looks doubled: 12 of 32 rows repeat by name and price across differently-named sections - https://www.doordash.com/store/cacio-carlsbad-22932336/?srsltid=AfmBOooKsU9KoaqqOyeWhfw2ShFPsTBcCQ2oBP3HCnr6Ylra96cM900i",
+    "menuResponses": [
+      "https://www.doordash.com/store/cacio-carlsbad-22932336/?srsltid=AfmBOooKsU9KoaqqOyeWhfw2ShFPsTBcCQ2oBP3HCnr6Ylra96cM900i"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2147",
+    "name": "Rising Sun Sushi",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"420 Queen Street West\" vs our \"4545 La Jolla Village Dr, San Diego, CA 92122\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/toronto-on-restaurants/hawaiian/?srsltid=AfmBOorf95hSG3QtEYBlCQPaqtv0FmJkC2oisVVes21Sa_W1D8gtPZLM"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9993",
+    "name": "Tus Chefs Favoritas",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://toast.app/ after 46 JSON responses; store picked by street number 2326; clicked a branch matching street number 2326",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9418",
+    "name": "Koakai Brewing Co.",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/order after 80 JSON responses; followed the branch link https://pos.toasttab.com/privacy; the followed link had no more prices than https://order.toasttab.com/online/order; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10004",
+    "name": "Fruit",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1290 Hollister Street\" vs our \"2036 Dairy Mart Rd, San Diego, CA 92173\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/fruit-palace-san-diego-2643036/?srsltid=AfmBOoqlrWOcwCLIBwFXyYq2zJQhJqfaXotFJesTjwuWBShgwaPnGfd0"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10011",
+    "name": "Kitchen 46",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "91 dishes from https://www.doordash.com/store/kitchen-46---2556-laning-rd-san-diego-41454965/?srsltid=AfmBOoocGF0QhjLfOssRHaKY9Nu3kE4hQ4M_BsaU23u6LfqeCxB9fGAP; store picked by street number 2556 in the link; opened the branch link carrying street number 2556",
+    "menuResponses": [
+      "https://www.doordash.com/store/kitchen-46---2556-laning-rd-san-diego-41454965/?srsltid=AfmBOoocGF0QhjLfOssRHaKY9Nu3kE4hQ4M_BsaU23u6LfqeCxB9fGAP"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/kitchen-46---2556-laning-rd-san-diego-41454965/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "6134",
+    "name": "La Flor Bakery",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"290 Kenmore Ave\" vs our \"1839 W Vista Way, Vista, CA 92083\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en/food-delivery/grand-island-ny-restaurants/modern_european/?srsltid=AfmBOorNgbsmAfJMQndjSGYnYZvjYxMmyLwU1yYrFolf2P_l9f-HU5WR"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5596",
+    "name": "Coffee Shop",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"3016 Carlsbad Boulevard\" vs our \"890 Palomar Airport Rd, Carlsbad, CA 92011\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/carlsbad-ca-restaurants/coffee/?srsltid=AfmBOor8gixjcHtqumhVYid3VQzJGoYOqTo2I6VIRoseq2LiwVkt-7K8"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9105",
+    "name": "D's Coffee",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"5830 North Classen Boulevard\" vs our \"17140 Bernardo Center Dr, San Diego, CA 92128, United States\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/nicoma-park-ok-restaurants/gastropub?srsltid=AfmBOopH4gs7KCrATomxRDwsudwWaGKCyrTPdLQ-ybOn21qrSr6C7eTJ"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10025",
+    "name": "ABU HALAB - ابو حلب",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "16 dishes from https://www.doordash.com/store/abu-halab-el-cajon-44159685/?srsltid=AfmBOop79j7FwoY0R8DshoG65lCSWccl46VoeE8I2yw8HaUnozTPaK_f",
+    "menuResponses": [
+      "https://www.doordash.com/store/abu-halab-el-cajon-44159685/?srsltid=AfmBOop79j7FwoY0R8DshoG65lCSWccl46VoeE8I2yw8HaUnozTPaK_f"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/abu-halab-el-cajon-44159685/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "9024",
+    "name": "Sapphire Bar & Lounge",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "44 dishes from https://www.doordash.com/en-CA/store/sapphire-bar-&-lounge-escondido-46472443/?srsltid=AfmBOop0xO234UDknxj5sbd-X-xGFlmaLXb-pnPuBe4Kj4LwFIrs9b12",
+    "menuResponses": [
+      "https://www.doordash.com/en-CA/store/sapphire-bar-&-lounge-escondido-46472443/?srsltid=AfmBOop0xO234UDknxj5sbd-X-xGFlmaLXb-pnPuBe4Kj4LwFIrs9b12"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/en-CA/store/sapphire-bar-&-lounge-escondido-46472443/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "1168",
+    "name": "The Meantime",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1191 Beville Road\" vs our \"301 Pier View Way\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en/food-delivery/south-daytona-fl-restaurants/grocery/?srsltid=AfmBOoquglFQZo0OcEUlMWwMFMyc9h5gUv5_gO1x6g43T2BambeA-Pko"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10040",
+    "name": "Bayside Bar",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "the page prints only MD addresses, not California (https://toast.app/r/higgins-crab-house-south-31st-st/order/item-wine-glass_f774bd77-9004-45ca-8f16-5a674ec1ef92?utm_medium=redirect) - not filed; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10051",
+    "name": "Chinese Cuisine",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "133 dishes from https://www.doordash.com/food-delivery/el-cajon-ca-restaurants/chinese/?srsltid=AfmBOoryuyzWxSzKdlAHLt0DOG_4n2yzV0weKTT7KV3MS382ojBVxKTP",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/el-cajon-ca-restaurants/chinese/?srsltid=AfmBOoryuyzWxSzKdlAHLt0DOG_4n2yzV0weKTT7KV3MS382ojBVxKTP"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/food-delivery/el-cajon-ca-restaurants/chinese/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "10066",
+    "name": "Taco truck",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"77 Broadway\" vs our \"495 Telegraph Canyon Rd, Chula Vista, CA 91910\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/chula-vista-ca-restaurants/cevicheria/?srsltid=AfmBOorRTn9cK7h6CIV4ICEKcZSB0a9MorSaaHpsiW-NDmqKYdRXQS2b"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10085",
+    "name": "Kyrios Mariscos #2",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "91 dishes from https://www.doordash.com/store/kyrios-mariscos-%232-san-diego-39129653/?srsltid=AfmBOorGFgYAhXSrcwzlJz-i0-ZCbeBb1jUF-eDK37rea5PZmsFbdJdi",
+    "menuResponses": [
+      "https://www.doordash.com/store/kyrios-mariscos-%232-san-diego-39129653/?srsltid=AfmBOorGFgYAhXSrcwzlJz-i0-ZCbeBb1jUF-eDK37rea5PZmsFbdJdi"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/kyrios-mariscos-%232-san-diego-39129653/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "10098",
+    "name": "701 FOOD",
+    "platform": null,
+    "outcome": "gated",
+    "detail": "only 2 priced items from https://dynamic-values-edge-service.doordash.com/v1/experiments/ at 12:50:45 PM PT - a closed store looks exactly like a small menu, so re-run in daylight; followed the branch link https://identity.doordash.com/auth?client_id=1666519390426295040&intl=en-US&layout=consumer_web&prompt=none&redirect_uri=https%3A%2F%2Fwww.doordash.com%2Fpost-login%2F&response_type=code&scope=%2A&state=%2Fstore%2F701-food-encinitas-27964673%2F%3Fsrsltid%3DAfmBOorvh2MGXIofJud3ozR5v9tQs0UBrVD3c_nLAyyj3RYqvc9lELl-%7C%7Cc4ca0949-4374-4c79-b26e-f6d1b891c9fd; the followed link had no more prices than https://www.doordash.com/store/701-food-encinitas-27964673/33766747/?srsltid=AfmBOorvh2MGXIofJud3ozR5v9tQs0UBrVD3c_nLAyyj3RYqvc9lELl-; went back",
+    "menuResponses": [
+      "https://dynamic-values-edge-service.doordash.com/v1/experiments/"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10113",
+    "name": "Food Truck",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"4637 Market St\" vs our \"1518 Lancaster Point Way, San Diego, CA 92154\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/30989666?srsltid=AfmBOopUh-HhQ95XJ1_70q1s1JxLdbRoAh_p05w1N2hkIphEmo8-7Xy4"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10103",
+    "name": "Taco Stand",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "160 dishes from https://www.doordash.com/es/food-delivery/el-cajon-ca-restaurants/taco-stand/?srsltid=AfmBOooBGD48Y-kZAH40gH8IJxR2LDpTsgdq9V-C-U-B6kl0T0tOfs8s",
+    "menuResponses": [
+      "https://www.doordash.com/es/food-delivery/el-cajon-ca-restaurants/taco-stand/?srsltid=AfmBOooBGD48Y-kZAH40gH8IJxR2LDpTsgdq9V-C-U-B6kl0T0tOfs8s"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/es/food-delivery/el-cajon-ca-restaurants/taco-stand/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "10111",
+    "name": "Comida China",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"789 West Harbor Drive\" vs our \"342 W San Ysidro Blvd, San Ysidro, CA 92173\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/es-US/food-delivery/san-diego-ca-restaurants/?srsltid=AfmBOop8mu4wyKkhpWOxtBD8GljaIPstMTVe3TCUdkb6OkQit3BLI6wN"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10127",
+    "name": "Ocean fire cuisine",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "91 dishes from https://toast.app/r/ocean-fire-cuisine-2490-main-st-ste-a/order/r-f625ae7e-28ad-43c7-9622-28ca8813c67c?utm_medium=redirect; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": true,
+    "curlNote": "GET https://toast.app/r/ocean-fire-cuisine-2490-main-st-ste-a/order/r-f625ae7e-28ad-43c7-9622-28ca8813c67c; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "10142",
+    "name": "El SANTO DOGGO",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "42 dishes from https://dynamic-values-edge-service.doordash.com/v1/experiments/",
+    "menuResponses": [
+      "https://dynamic-values-edge-service.doordash.com/v1/experiments/"
+    ],
+    "curlReproducible": true,
+    "curlNote": "POST https://dynamic-values-edge-service.doordash.com/v1/experiments/ with a application/json; charset=utf-8 body; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names Body: {\"namespaces\":[],\"legacy_namespaces\":[],\"exposures_enabled\":false,\"context\":{\"consumerId\":\"dx_be4c060d83b84c8c82a19bc275489dda\",\"consumer_id\":\"dx_be4c060d83b84c8c82a19bc275489dda\",\"submarketId\":\"\",\"submarket_id\":\"\",\"deviceId\":\"dx_be4c060d83b84c8c82a19bc275489dda\",\"device_id\":\"dx_be4c060d83b84c8c82a1"
+  },
+  {
+    "restaurantId": "10162",
+    "name": "Tacos \"El Moy\"",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"528 5th Ave\" vs our \"129 Cypress Dr, San Diego, CA 92173\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/san-diego-ca-restaurants/tacos/?srsltid=AfmBOoo_iCKjpQKjQ85_z5xQHMFRCJJ3o927GueXLKQlqg9GXkjfMcsh"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10190",
+    "name": "Sushi Love",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "174 dishes from https://www.doordash.com/en-GB/food-delivery/surprise-az-restaurants/sushi/?srsltid=AfmBOorg7OOYeuIpV5enRtjNRkpU4JxNWqWXdPTR1nIoYt55gb15QLfa",
+    "menuResponses": [
+      "https://www.doordash.com/en-GB/food-delivery/surprise-az-restaurants/sushi/?srsltid=AfmBOorg7OOYeuIpV5enRtjNRkpU4JxNWqWXdPTR1nIoYt55gb15QLfa"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/en-GB/food-delivery/surprise-az-restaurants/sushi/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "12167",
+    "name": "Mesa Cafe",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "163 dishes from https://www.doordash.com/food-delivery/mesa-az-restaurants/cafe/?srsltid=AfmBOoqHldg6MpHN__Dyl-Vg4Riyd8oUmteMn8AckxiIBx62g3HCVImh",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/mesa-az-restaurants/cafe/?srsltid=AfmBOoqHldg6MpHN__Dyl-Vg4Riyd8oUmteMn8AckxiIBx62g3HCVImh"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/food-delivery/mesa-az-restaurants/cafe/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "12289",
+    "name": "La delicia",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"301 Sturgis Road\" vs our \"2498 Roll Dr, San Diego, CA 92154, United States\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/marion-ky-restaurants/mexican/?srsltid=AfmBOorYytjRJTVWD_Lx0hYc8DP-EXjsQG9xU8wZ8Wm-Q_Z2WhNPDdrh"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "12375",
+    "name": "Bakery 7",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"20 Central Court\" vs our \"5312 Blackberry Way, Oceanside, CA 92057\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/genovese-pizzeria-valley-stream-112294/?srsltid=AfmBOoorOZ-cMvL3L9puCoiB2Tvzav4eO-xbExxoQNRzejfgJFENWY9S"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "12368",
+    "name": "Sweet Street",
+    "platform": "order.online",
+    "outcome": "filed",
+    "detail": "42 dishes from https://dynamic-values-edge-service.doordash.com/v1/experiments/",
+    "menuResponses": [
+      "https://dynamic-values-edge-service.doordash.com/v1/experiments/"
+    ],
+    "curlReproducible": true,
+    "curlNote": "POST https://dynamic-values-edge-service.doordash.com/v1/experiments/ with a application/json; charset=utf-8 body; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names Body: {\"namespaces\":[],\"legacy_namespaces\":[],\"exposures_enabled\":false,\"context\":{\"consumerId\":\"dx_c5e70aef7d92494fa367720a85a1c023\",\"consumer_id\":\"dx_c5e70aef7d92494fa367720a85a1c023\",\"submarketId\":\"\",\"submarket_id\":\"\",\"deviceId\":\"dx_c5e70aef7d92494fa367720a85a1c023\",\"device_id\":\"dx_c5e70aef7d92494fa367"
+  },
+  {
+    "restaurantId": "13631",
+    "name": "The Coop",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"844 West San Marcos Boulevard\" vs our \"120 Hunter St, Ramona, CA 92065\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/meadow-vista-ca-restaurants/?srsltid=AfmBOoprjIUc7mbdK525d7vKus-vQMWCdxKYMtCgW8A-sMITrQqbAMHo"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "1217",
+    "name": "The Place",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"555 Broadway\" vs our \"405 Palomar St, Chula Vista, CA 91911\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en/food-delivery/chula-vista-ca-restaurants/?srsltid=AfmBOoqBjNV1NMtzLYKFjNsOeo_hVl1O7MePMeRtBfSn7yqWmnVL-G_Y"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2977",
+    "name": "The Cove",
+    "platform": "order.online",
+    "outcome": "gated",
+    "detail": "only 2 priced items from https://dynamic-values-edge-service.doordash.com/v1/experiments/ at 12:54:20 PM PT - a closed store looks exactly like a small menu, so re-run in daylight; followed the branch link https://identity.doordash.com/auth?client_id=1666519390426295040&intl=en-US&layout=consumer_web&prompt=none&redirect_uri=https%3A%2F%2Fwww.doordash.com%2Fpost-login%2F&response_type=code&scope=%2A&state=%2Fstore%2Fthe-cove-house-san-diego-866840%2F%3Fsrsltid%3DAfmBOorexWF3YEZm5K9xj9GAobM90A5KmDMM2bUm_BSJ4TNpXMliwoZD%7C%7C3c14d9b0-a9db-49c9-82c1-ee77e19d4320; the followed link had no more prices than https://www.doordash.com/store/the-cove-house-san-diego-866840/?srsltid=AfmBOorexWF3YEZm5K9xj9GAobM90A5KmDMM2bUm_BSJ4TNpXMliwoZD; went back",
+    "menuResponses": [
+      "https://dynamic-values-edge-service.doordash.com/v1/experiments/"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10443",
+    "name": "Café VERA",
+    "platform": "HungerRush",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://order.menufy.com/CA/Chula%20Vista that this script could not drive (tried: typed ZIP 91915 into the store search); store searched by ZIP; typed ZIP 91915 into the store search",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5397",
+    "name": "Speak Easy",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1207 Grand Avenue\" vs our \"1130 Broadway\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/valley-stream-ny-restaurants/spanish/?srsltid=AfmBOooMqT4OkkMCwpqGASfgpyPKzHTE9A3P4tWYcPBOXK6ffhvrPKmF"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3786",
+    "name": "Cafe Europe",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/sites-api after 24 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10572",
+    "name": "Pizzeria",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"13034 Campo Rd\" vs our \"14145 Campo Rd, Jamul, CA 91935\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/jamul-ca-restaurants/italian/?srsltid=AfmBOorOSrPuEA7n2TBI9oR57Hhyeg7IDmCNARqtwP0CqqwtV-0I36wQ"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10607",
+    "name": "Industry tap room",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "16 dishes from https://toast.app/r/industry-tap-room-157-east-grand-avenue/order/item-pacifico-6-pk_43c67b51-6fc0-4ed5-9e99-cc0b2112cc6d?utm_medium=redirect; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": true,
+    "curlNote": "GET https://toast.app/r/industry-tap-room-157-east-grand-avenue/order/item-pacifico-6-pk_43c67b51-6fc0-4ed5-9e99-cc0b2112cc6d; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "10621",
+    "name": "The Taco Stop",
+    "platform": null,
+    "outcome": "screened-out",
+    "detail": "markup or platform fee: 39/59 prices divide by 1.1000 onto round dollars - https://www.doordash.com/store/the-taco-stop-oceanside-44092853/%3Fsrsltid%3DAfmBOopJRibC6j406NpUT1yS57wMyTStUNDQCRamBC98YORLMEusflMK",
+    "menuResponses": [
+      "https://www.doordash.com/store/the-taco-stop-oceanside-44092853/%3Fsrsltid%3DAfmBOopJRibC6j406NpUT1yS57wMyTStUNDQCRamBC98YORLMEusflMK"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10614",
+    "name": "K-Bakery",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"11107 Pacific Highway Southwest\" vs our \"3860 Convoy St #112, San Diego, CA 92111, United States\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en/food-delivery/university-place-wa-restaurants/bakery/?srsltid=AfmBOor7i0jYjy2geMCNMFCEY55JqYZYUTjqfVnVdjgiNKNj8KbbaFGQ"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10704",
+    "name": "Seafood San Diego",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"646 University Ave\" vs our \"350 Tenth Ave suite 1000, San Diego, CA 92101\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/oscars-mexican-seafood-san-diego-36257117/?srsltid=AfmBOoq_X3YCDq1aqrqiJqH3DdcT7phC6CrdLHnaxouAvHVP9yDYweP_"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10740",
+    "name": "Pizza",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "154 dishes from https://www.doordash.com/food-delivery/san-diego-ca-restaurants/pizza/?srsltid=AfmBOor6blBCD8LGcIHNJ_5S07HnmpfDCZjanbLSyW5F9Sb-yV-ot0CN",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/san-diego-ca-restaurants/pizza/?srsltid=AfmBOor6blBCD8LGcIHNJ_5S07HnmpfDCZjanbLSyW5F9Sb-yV-ot0CN"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/food-delivery/san-diego-ca-restaurants/pizza/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "10992",
+    "name": "Taco Lovers",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"2200 Southwest 87th Avenue\" vs our \"3020 Clairemont Dr, San Diego, CA 92117\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/university-park-fl-restaurants/mexican/%3Fsrsltid%3DAfmBOoo7SEJO2bDOFXtCbR6xOkYHz3ZBfrhFTa1NibD0zh5ifreL1vCL"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10998",
+    "name": "Tacos",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"8785 Villa La Jolla Drive\" vs our \"3233 La Jolla Village Dr, La Jolla, CA 92037, United States\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en/food-delivery/la-jolla-ca-restaurants/?srsltid=AfmBOor0gYxMAA2DVXsE8qb3lVUzKv6aaaEFpX2v765NE6K3A8gS2Nqh"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4100",
+    "name": "Mimosa",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/order after 81 JSON responses; followed the branch link https://pos.toasttab.com/privacy; the followed link had no more prices than https://order.toasttab.com/online/order; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "11091",
+    "name": "Sweet Bean Cafe",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "162 dishes from https://www.doordash.com/food-delivery/southampton-pa-restaurants/grocery?srsltid=AfmBOorTxXF_JQfS02jLC3ML3ZcwNAAlslG1nEDrBUq6aDSUKx78fPqR",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/southampton-pa-restaurants/grocery?srsltid=AfmBOorTxXF_JQfS02jLC3ML3ZcwNAAlslG1nEDrBUq6aDSUKx78fPqR"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/food-delivery/southampton-pa-restaurants/grocery; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "11165",
+    "name": "East County Food Court",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "91 dishes from https://www.doordash.com/store/east-county-food-court-santee-40254564/?srsltid=AfmBOooi6r_QQwtnNYSJzHwuOuUl1dM-GCk46tyDsOR_kSjjhc75zAvC; store searched by ZIP; typed ZIP 92071 into the store search",
+    "menuResponses": [
+      "https://www.doordash.com/store/east-county-food-court-santee-40254564/?srsltid=AfmBOooi6r_QQwtnNYSJzHwuOuUl1dM-GCk46tyDsOR_kSjjhc75zAvC"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/east-county-food-court-santee-40254564/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "11199",
+    "name": "1935 Artisan Desserts & Kitchen",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "8 dishes from https://order.online/store/1935-artisan-desserts-kitchen-1481132; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": true,
+    "curlNote": "GET https://order.online/store/1935-artisan-desserts-kitchen-1481132; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "11434",
+    "name": "Trolley",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"5500 Grossmont Center Drive\" vs our \"1107 Orange Ave, Coronado, CA 92118, United States\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/lemon-grove-ca-restaurants/?srsltid=AfmBOor0c-tTl0L9a4MTHfpq7Q8FuEYSbsGisHI3IsnNaAjYGPosZ8B-"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "11547",
+    "name": "Cafe Pho",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"4310 Genesee Ave\" vs our \"4776 El Cajon Blvd Ste 101, San Diego, CA 92115\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/37196500/?srsltid=AfmBOoplTPinW-HCrzzF5eW8jcdYIE9dZ4j2YwkDX5znCZ2DAkakvioB"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "11550",
+    "name": "Bread of Life Bakes",
+    "platform": "Square Online storefront",
+    "outcome": "filed",
+    "detail": "13 dishes from https://breadoflifebakes.square.site/; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://breadoflifebakes.square.site/; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 200 but only 0/6 sampled dish names - the catalog is session-bound"
+  },
+  {
+    "restaurantId": "11751",
+    "name": "Coffee & Smoothies",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"3 Sundew Rise\" vs our \"2567 Morena Blvd, San Diego, CA 92110\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/es/food-delivery/heathridge-wa-restaurants/cafe/?srsltid=AfmBOorjs_ILKNI6tstlEQFhvudekk6V8WnuVP4lX1Bfr2ipwt2to_LJ"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "12148",
+    "name": "Taco’s El Chaparro",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"3106 Pleasanton Rd\" vs our \"1770 Palm Ave B, San Diego, CA 92154\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/store/minitacos-el-chaparro-san-antonio-33535773/?srsltid=AfmBOoqQyaVYEWqoUNpeu4NJrJkH3KFkbFsov3-FktynnvcqsMIs11gV"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2300",
+    "name": "Tides",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"107 N Shore Dr\" vs our \"111 West Harbor Dr, San Diego, CA 92101\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/surf-city-nc-restaurants/dinner?srsltid=AfmBOopb32MQj5EYr1aVUubHO_1K0Qa5_tQ0Sjk9tJEJ6we54DjSm4_z"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10464",
+    "name": "Happy Life Organics Veggie Deli",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "37 dishes from https://dynamic-values-edge-service.doordash.com/v1/experiments/",
+    "menuResponses": [
+      "https://dynamic-values-edge-service.doordash.com/v1/experiments/"
+    ],
+    "curlReproducible": true,
+    "curlNote": "POST https://dynamic-values-edge-service.doordash.com/v1/experiments/ with a application/json; charset=utf-8 body; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names Body: {\"namespaces\":[],\"legacy_namespaces\":[],\"exposures_enabled\":false,\"context\":{\"consumerId\":\"dx_122cf674a50d494090614743a8d414bb\",\"consumer_id\":\"dx_122cf674a50d494090614743a8d414bb\",\"submarketId\":\"\",\"submarket_id\":\"\",\"deviceId\":\"dx_122cf674a50d494090614743a8d414bb\",\"device_id\":\"dx_122cf674a50d49409061"
+  },
+  {
+    "restaurantId": "9287",
+    "name": "Hawaiian Shaved Ice",
+    "platform": "HungerRush",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://www.menufy.com/CA/San%20Diego that this script could not drive (tried: typed ZIP 92109 into the store search); store searched by ZIP; typed ZIP 92109 into the store search",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2246",
+    "name": "The Dining Room",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "91 dishes from https://www.doordash.com/food-delivery/pitman-pa-restaurants?srsltid=AfmBOorP516KZPFzJmeM2uVBlRDqQz3eIuNYEdfldrYzaJ4URuSxgHFA",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/pitman-pa-restaurants?srsltid=AfmBOorP516KZPFzJmeM2uVBlRDqQz3eIuNYEdfldrYzaJ4URuSxgHFA"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/food-delivery/pitman-pa-restaurants; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "4468",
+    "name": "Spicy Duck",
+    "platform": null,
+    "outcome": "screened-out",
+    "detail": "markup or platform fee: 38/47 prices divide by 1.1000 onto round dollars - https://www.doordash.com/store/spicy-duck%E7%8E%8B%E8%BE%A3%E9%B8%AD-san-diego-50543183/?srsltid=AfmBOoq8NrFsGsPTcR59i9p9T2jAp-2KciZXUWDBE15IKGXhA4StJtXL",
+    "menuResponses": [
+      "https://www.doordash.com/store/spicy-duck%E7%8E%8B%E8%BE%A3%E9%B8%AD-san-diego-50543183/?srsltid=AfmBOoq8NrFsGsPTcR59i9p9T2jAp-2KciZXUWDBE15IKGXhA4StJtXL"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4306",
+    "name": "JT Bros",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "138 dishes from https://www.doordash.com/food-delivery/somerton-az-restaurants/mexican/?srsltid=AfmBOoqSBqVmtPBM7fU4lqM3-ZP0vhNNtvoS0OtWBh4qpuwFJG-JB6YR",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/somerton-az-restaurants/mexican/?srsltid=AfmBOoqSBqVmtPBM7fU4lqM3-ZP0vhNNtvoS0OtWBh4qpuwFJG-JB6YR"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/food-delivery/somerton-az-restaurants/mexican/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "9032",
+    "name": "goop Kitchen",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "84 dishes from https://www.doordash.com/en-US/store/goop-kitchen-san-diego-50947367/?srsltid=AfmBOoq3hrXoewgJl66zOsMFr5ggcOhExENvT8GlYc6MKJdU4bO61_QF",
+    "menuResponses": [
+      "https://www.doordash.com/en-US/store/goop-kitchen-san-diego-50947367/?srsltid=AfmBOoq3hrXoewgJl66zOsMFr5ggcOhExENvT8GlYc6MKJdU4bO61_QF"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/en-US/store/goop-kitchen-san-diego-50947367/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "6993",
+    "name": "La Sirena",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"17951 Sky Park Circle\" vs our \"4286 University Ave, San Diego, CA 92105\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/food-delivery/tustin-ca-restaurants/norteamericana--nueva-/?srsltid=AfmBOoq9Hqggk14gz_8aDTuas3wEDfi6CZdnA91m_F2jJmEa4U6oMq27"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7966",
+    "name": "Rio escondido mexican seafood",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "38 dishes from https://dynamic-values-edge-service.doordash.com/v1/experiments/",
+    "menuResponses": [
+      "https://dynamic-values-edge-service.doordash.com/v1/experiments/"
+    ],
+    "curlReproducible": true,
+    "curlNote": "POST https://dynamic-values-edge-service.doordash.com/v1/experiments/ with a application/json; charset=utf-8 body; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names Body: {\"namespaces\":[],\"legacy_namespaces\":[],\"exposures_enabled\":false,\"context\":{\"consumerId\":\"dx_949062cf2c6f4a7d873f4d637edb1617\",\"consumer_id\":\"dx_949062cf2c6f4a7d873f4d637edb1617\",\"submarketId\":\"\",\"submarket_id\":\"\",\"deviceId\":\"dx_949062cf2c6f4a7d873f4d637edb1617\",\"device_id\":\"dx_949062cf2c6f4a7d873f"
+  },
+  {
+    "restaurantId": "9304",
+    "name": "Baked & Blended",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/place/3146+Mission+Blvd,+San+Diego,+CA+92109/@32.7709481,-117.2545622,17z/data=!3m1!4b1!4m6!3m5!1s0x80deaa0ec457eebb:0xd11b0172c170e62e!8m2!3d32.7708927!4d-117.2518122!16s%2Fg%2F11jjtrq1jq?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D after 72 JSON responses; store picked by street number 3146 in the link; opened the branch link carrying street number 3146",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9296",
+    "name": "Sweet Bee Desserts",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.doordash.com/en-CA/search/store/makeup after 366 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9184",
+    "name": "Duke's Hawaiian Coffee",
+    "platform": "HungerRush",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://www.menufy.com/CA/San%20Marcos that this script could not drive (tried: typed ZIP 92078 into the store search); store searched by ZIP; typed ZIP 92078 into the store search",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6615",
+    "name": "RB Deli",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "71 dishes from https://www.doordash.com/store/rb-deli-san-diego-1525747/?srsltid=AfmBOoqqs24gNVhPzK9dYxmUz9IpqqGoCwuMkhkezEorqj4A86RorhPj",
+    "menuResponses": [
+      "https://www.doordash.com/store/rb-deli-san-diego-1525747/?srsltid=AfmBOoqqs24gNVhPzK9dYxmUz9IpqqGoCwuMkhkezEorqj4A86RorhPj"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.doordash.com/store/rb-deli-san-diego-1525747/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "5965",
+    "name": "Eva's Bakery",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"250 South 300 East\" vs our \"4184 Beyer Blvd, San Diego, CA 92173\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en/food-delivery/salt-lake-city-ut-restaurants/bakery/?srsltid=AfmBOorjeGbAcRp1N6gbW7C28rSTVq67Crv4KFEXONa5eSbT_anUnLMe"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7729",
+    "name": "National Burrito",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/sites-api after 24 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9056",
+    "name": "Dolce Cafe",
+    "platform": null,
+    "outcome": "wrong-branch",
+    "detail": "payload address \"2430 S Oneida St\" vs our \"4545 La Jolla Village Dr FC7, San Diego, CA 92122\" - not filed",
+    "menuResponses": [
+      "https://www.doordash.com/en/food-delivery/ashwaubenon-wi-restaurants/cafe/?srsltid=AfmBOooT6eAjBhawOPzgxoX9dtVKNMODN6xS3oB3IAtcPWtI7jiHCZJm"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  }
+]

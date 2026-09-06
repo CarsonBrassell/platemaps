@@ -116,6 +116,32 @@ const NAME_CONFIDENT = 0.8;
  */
 const MIN_REVIEWS = 20;
 
+/**
+ * Last line of defence against the same bug `sweep-serper.mjs` had: Serper's
+ * `/maps` (reached there via `resolve-places.mjs --via serper` too) sometimes
+ * ignores the area in the query and returns a place anywhere - Cardiff
+ * (Wales), London, Los Angeles, Tijuana. Added 2026-09-05, same box as
+ * `sweep-serper.mjs`'s `SD_COUNTY_BBOX` (kept in sync by hand, same reason
+ * the money constants above are copied rather than imported). An entry with
+ * no coordinates is a different, pre-existing case and is left alone - see
+ * the `p.lat == null` check below, unchanged.
+ */
+const SD_COUNTY_BBOX = { minLat: 32.5, maxLat: 33.55, minLng: -117.65, maxLng: -116.0 };
+function inCounty(lat, lng) {
+  return (
+    typeof lat === "number" &&
+    typeof lng === "number" &&
+    lat >= SD_COUNTY_BBOX.minLat &&
+    lat <= SD_COUNTY_BBOX.maxLat &&
+    lng >= SD_COUNTY_BBOX.minLng &&
+    lng <= SD_COUNTY_BBOX.maxLng &&
+    // The box's north-west corner is Orange County (San Clemente, Dana Point);
+    // the county line meets the coast at San Mateo Point, 33.39N. Camp Pendleton
+    // (62 Area, -117.56) stays inside.
+    !(lat > 33.39 && lng < -117.58)
+  );
+}
+
 /** `serper{}` off a resolved entry -> the three fields import-deh writes. */
 function serperFields(entry) {
   const s = entry.serper;
@@ -283,6 +309,9 @@ const reclassified = [];
  */
 const collisions = [];
 const claimedRows = new Set();
+/** Coordinates present but outside the county (or a Mexico address) - see
+ * `SD_COUNTY_BBOX` above. */
+let skippedOutsideCounty = 0;
 
 for (const r of buckets.import.slice(0, LIMIT === Infinity ? undefined : LIMIT)) {
   if (knownSourceKeys.has(r.sourceKey)) {
@@ -294,6 +323,10 @@ for (const r of buckets.import.slice(0, LIMIT === Infinity ? undefined : LIMIT))
   const p = r.place;
   if (p.lat == null || p.lng == null) {
     alreadyPresent.push({ ...r, why: "no coordinates" });
+    continue;
+  }
+  if (!inCounty(p.lat, p.lng) || /,\s*Mexico\b/i.test(p.formattedAddress ?? "")) {
+    skippedOutsideCounty += 1;
     continue;
   }
 
@@ -354,6 +387,7 @@ console.log(`\nrows to insert: ${inserts.length}`);
 if (alreadyPresent.length) {
   console.log(`  ${alreadyPresent.length} import-verdict rows skipped (source_key already in the table, or no coordinates)`);
 }
+console.log(`skipped, outside San Diego County: ${skippedOutsideCounty}`);
 console.log(`ids that would be assigned: ${inserts.length ? `${inserts[0].id}..${inserts[inserts.length - 1].id}` : "none"}`);
 console.log(`rows to stamp with a permit id (duplicate verdict, exact place id): ${buckets.duplicate.length}`);
 

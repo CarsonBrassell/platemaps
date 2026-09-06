@@ -1,0 +1,321 @@
+[
+  {
+    "restaurantId": "8830",
+    "name": "Marathon Coffee",
+    "sourceUrl": "https://joe.coffee/locations/ca/la-mesa/marathon-coffee-la-mesa-b774998d-1571-4689-97de-faf900d991ea/",
+    "confidence": "low",
+    "notes": "checked joe.coffee listing, restaurant's own mailchi.mp menu newsletter, and marathon-coffee.wheree.com — none carry prices, only drink names. Yelp bot-walled (776-byte response). No priced source found.",
+    "dishes": [],
+    "blocked": "no priced source found: drink names exist (Grossmont Center page, Facebook 'new menu' post, joe.coffee listing) but no page publishes prices"
+  },
+  {
+    "restaurantId": "10408",
+    "name": "Kali’s Garden Cafe",
+    "sourceUrl": "https://www.yelp.com/biz/kali-s-garden-julian",
+    "confidence": "high",
+    "notes": "confirmed permanently closed: Yelp listing is titled 'KALI'S GARDEN - CLOSED', HappyCow reports 'Closed for good as of April 30, 2025', and the business's own Facebook page posted a farewell announcing the Julian location's closure due to rent costs.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "8579",
+    "name": "Juice Adventure",
+    "sourceUrl": "https://www.doordash.com/store/juice-adventure-chula-vista-24998763/",
+    "confidence": "low",
+    "notes": "DoorDash JSON-LD read via navigation headers, 79 raw/deduped items landed on the flagged truncation count. Cross-checked against the page's own MenuBookCategory counts: Sandwich 9 (captured 5), Smoothies 29 (captured 24), Acai Bowls 8 (captured 6), Fresh Juices 12 (captured 11), Drinks 10 (captured 8) — every core section is undercounted, so the capture is a confirmed partial, not filed. Restaurant's own juiceadventure.com timed out on every fetch attempt; Grubhub and Uber Eats are JS-walled to curl.",
+    "dishes": [],
+    "blocked": "needs-browser or repeat-fetch: DoorDash JSON-LD truncated within every section per the page's own menu-book counts; own site (juiceadventure.com) unreachable (connect timeout); Grubhub/Uber Eats render nothing to curl"
+  },
+  {
+    "restaurantId": "12447",
+    "name": "Tacos el Vaquero",
+    "sourceUrl": "https://www.doordash.com/store/tacos-el-vaquero-chula-vista-822949/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://order.online/en-AU/store/tacos-el-vaquero-822949",
+    "notes": "DoorDash JSON-LD (navigation-header curl, address 269 Third Ave / 269 3rd Ave matches). Book category 'Tacos El Vaquero' reports numItems:9; the 9 distinct food items across the 'Most Ordered' carousel and 'Tacos El Vaquero' section are all unique names/prices once deduped, so nothing is missing despite the low raw count — this is a genuinely small food-truck menu. order.online's own storefront (Cloudflare-gated to curl) showed matching prices for Tacos $4.50, Tostadas $4.50, Mulitas $9.00, Quesadillas $16.00, Vampiros $9.00 in its search snippet, corroborating. All round-dollar/half-dollar pricing, no markup pattern.",
+    "dishes": [
+      {
+        "name": "Mulitas",
+        "description": "",
+        "price": "$9.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Vampiros",
+        "description": "",
+        "price": "$9.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Quesadillas",
+        "description": "",
+        "price": "$16.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Tortas",
+        "description": "",
+        "price": "$15.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Ahh Perroooo",
+        "description": "",
+        "price": "$6.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Quesadilla ONLY Cheese",
+        "description": "",
+        "price": "$5.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Hot Dog",
+        "description": "",
+        "price": "$3.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Tacos",
+        "description": "",
+        "price": "$4.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Tostadas",
+        "description": "",
+        "price": "$4.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Can Soda",
+        "description": "",
+        "price": "$2.60",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "13250",
+    "name": "Volcan Mountain Winery",
+    "sourceUrl": "http://www.volcanmountainwinery.com/about",
+    "confidence": "low",
+    "notes": "wine-tasting room in Julian; own site (home + about pages) prices only wine tastings/glasses/bottles ($15/$12/$14/$5 tasting flights), no food menu. Yelp reviews mention 'food vendors' present on-site but describe them as outside vendors, not the winery's own kitchen. Food status unclear.",
+    "dishes": [],
+    "blocked": "food status unclear: this is a wine-tasting room whose own site prices only wine, not food; any food on-site appears to be third-party vendors"
+  },
+  {
+    "restaurantId": "10347",
+    "name": "Frank's Bakery - Gibaldi's Italian Bread",
+    "sourceUrl": "https://franksbakerysandiego.com/",
+    "confidence": "low",
+    "notes": "own site (home, in-store-breads, italian-cookies pages, and /wp-json/wp/v2/pages API) lists bread/cookie names with no prices anywhere; the only dollar figure found was a '$20 Minimum Order' wholesale notice, not an item price. A 2022 mmm-yoso.com blog review quotes prices (Squaw bread $4, Bear Claw $2, rye $4, rolls $4/dozen) but that is a review, not a source — hearsay per project rules. Cash-only per Yelp.",
+    "dishes": [],
+    "blocked": "no priced source found: own site and API publish no prices; only price mentions found are inside a third-party blog review (hearsay)"
+  },
+  {
+    "restaurantId": "9440",
+    "name": "Red Cup Yogurt",
+    "sourceUrl": "https://www.doordash.com/store/red-cup-yogurt-oceanside-439639/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://order.online/store/red-cup-yogurt-mission-ave-439639",
+    "notes": "DoorDash JSON-LD (navigation-header curl; address 301 Mission Ave matches). Deduped 28 items exactly matches the page's own menu-book count (Most Ordered 4 + ITEMS 24 = 28), so this is the complete catalog, not a truncated one despite the low count. This is a self-serve frozen-yogurt/candy-bar shop: every row is a yogurt flavor or a per-scoop topping/candy add-on, no separate cup/base charge — that pricing shape (topping-priced, no size tiers) is confirmed by order.online's matching snippet (mango juice poppers $4.75, M&m candy $2.20, Mochi rice cake $2.50, acai roots $2.00+) and by Uber Eats/Postmates showing the same flavor names at $3.00 each in a different capture — prices differ slightly between platforms (candy/topping shop, no markup pattern detected: no consistent divisor, cents are scattered $2.00-$4.75 matching real POS pricing).",
+    "dishes": [
+      {
+        "name": "strawberry juice poppers",
+        "description": "",
+        "price": "$4.75",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "mango juice poppers",
+        "description": "",
+        "price": "$4.75",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "graham cracker crushed",
+        "description": "",
+        "price": "$3.50",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "acai roots",
+        "description": "",
+        "price": "$2.00",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "dark chocolate chips",
+        "description": "",
+        "price": "$2.75",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "cheescake bites",
+        "description": "",
+        "price": "$2.75",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "heath toffee candy broken and crushed",
+        "description": "",
+        "price": "$2.75",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Mochi coloured sweet rice cake",
+        "description": "",
+        "price": "$2.50",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "gummi bear candy",
+        "description": "",
+        "price": "$2.40",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "maraschino cherries no stem no juice",
+        "description": "",
+        "price": "$2.50",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "coconut flakes",
+        "description": "",
+        "price": "$3.25",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Strawberry Yogurt",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      },
+      {
+        "name": "cake batter soft serve ice cream",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      },
+      {
+        "name": "animal frosted cookies",
+        "description": "",
+        "price": "$2.75",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "strawberries",
+        "description": "",
+        "price": "$2.00",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "M&m candy",
+        "description": "",
+        "price": "$2.20",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "cookie dough bites",
+        "description": "",
+        "price": "$2.20",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Reeses peanut butter broken",
+        "description": "",
+        "price": "$2.20",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Chocolate yogurt low fat",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      },
+      {
+        "name": "salted caramel yogurt non fat",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      },
+      {
+        "name": "vanilla yogurt",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      },
+      {
+        "name": "Pineapple Sorbet (Dairy Free)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      },
+      {
+        "name": "chocolate sprinkles",
+        "description": "",
+        "price": "$2.25",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Butterfinger candy broken and crushed",
+        "description": "",
+        "price": "$2.20",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "cookies & cream broken",
+        "description": "",
+        "price": "$2.25",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "rainbow sprinkles",
+        "description": "",
+        "price": "$2.25",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Butterfly Gummies",
+        "description": "",
+        "price": "$2.35",
+        "section": "Toppings & Flavors"
+      },
+      {
+        "name": "Cookies & Cream (Frozen Yogurt)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Yogurt Flavors"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7759",
+    "name": "Mi Amigo Mexican Food & Sea",
+    "sourceUrl": "https://www.doordash.com/store/mi-amigo-mexican-food-san-diego-766710/",
+    "confidence": "low",
+    "notes": "DoorDash JSON-LD (navigation-header curl; address 4408 University Ave matches). Severely truncated against the page's own menu-book: 9 whole core sections present in the book are entirely missing from the capture, including 'Seafood' (10 items) — a core section for a restaurant whose own name is 'Mexican Food & Sea[food]'. Partial sections too: Amigo Specials 4/5, Breakfast Burritos 7/8, Burritos 17/19, Rolled Tacos 4/6, Nachos and Fries 3/5, Quesadillas 7/8, Combinations 6/15. Not filed as complete; router's own website (ms-baugesellschaftmbh.de, unrelated German domain) was already dead per the batch record.",
+    "dishes": [],
+    "blocked": "needs full category walk: DoorDash JSON-LD is missing the Seafood section entirely (core to this restaurant's name) plus 8 other whole sections and multiple partial sections, per the page's own menu-book counts"
+  },
+  {
+    "restaurantId": "11122",
+    "name": "Snow Pops San Diego - Snow Pops SD",
+    "sourceUrl": "http://www.snowpopssd.com/menu",
+    "confidence": "low",
+    "notes": "own site is a Wix menu page listing item names with priceVariants structure present, but every price in the underlying priceInfo/formattedPrice JSON is stripped to $0.00 (documented Wix server-side price-stripping failure mode, not fixable by re-fetching). Yelp reviews mention pricing only in review text ('One topping is 50 cents while unlimited toppings is $1') which is hearsay, not a filable source. No DoorDash/Grubhub/UberEats listing found for this specific business; searches for a delivery platform surfaced unrelated businesses (Pop Pops, Cabetos Pops) instead.",
+    "dishes": [],
+    "blocked": "no priced source found: own Wix menu page has all prices stripped to $0.00; only price mentions are inside Yelp review text (hearsay); no delivery-platform listing found"
+  },
+  {
+    "restaurantId": "8885",
+    "name": "Carruth Cellars Tasting Room",
+    "sourceUrl": "https://carruthcellars.com/experiences/tasting-rooms/",
+    "confidence": "low",
+    "notes": "carruthcellars.com is bot-walled on every page tried (home, /experiences/tasting-rooms/, /we-opened-a-kitchen-at-carruth-carlsbad/, happy-hour post) via a captcha redirect (/.well-known/sgcaptcha/). A Wayback Machine snapshot of the tasting-rooms page confirms a 'Food Menu' link exists specifically for the Carlsbad Tasting Room & Kitchen (2727 State St #110, matching this restaurant's address), separate from the Oceanside Hangar76 pizzeria food menu link on the same page, but the Carlsbad-specific food menu page itself was not separately archived and could not be fetched directly (same bot wall). Blog/Yelp/Instagram posts confirm the Carlsbad kitchen is real and serves food (pizzas, appetizers, salads) but only price a wine-and-pizza happy-hour package, not itemized food prices.",
+    "dishes": [],
+    "blocked": "bot-walled: carruthcellars.com redirects every page to a captcha wall; Wayback snapshot confirms a Carlsbad-specific Food Menu link exists but its content is unreachable; no independently priced food-item source found"
+  }
+]

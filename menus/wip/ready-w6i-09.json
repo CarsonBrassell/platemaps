@@ -1,0 +1,572 @@
+[
+  {
+    "restaurantId": "7285",
+    "name": "Bread & Cheese Sandwich Shop",
+    "sourceUrl": "https://breadandcheeseeatery.com/",
+    "confidence": "high",
+    "notes": "read from the Oceanside location's first-party PDF menu (linked from the homepage), extracted with pdftotext -layout; sandwiches split into Half/Whole entries and the Coconut Curry Tomato Soup split into Cup/Bowl; Pineapple Crush smoothie split into Small $9/Large $12; Coffee/Frappes and Drinks sections were printed twice on the PDF (once per page) and de-duplicated; gluten-free bread upcharge and burrito add-ons filed under Add-Ons",
+    "dishes": [
+      {
+        "name": "Pastrami",
+        "description": "Pastrami, Swiss, Sauerkraut, 1000 Island",
+        "price": "$7.00",
+        "section": "Toasted Subs (Half)"
+      },
+      {
+        "name": "Pastrami",
+        "description": "Pastrami, Swiss, Sauerkraut, 1000 Island",
+        "price": "$13.00",
+        "section": "Toasted Subs (Whole)"
+      },
+      {
+        "name": "Chicken Pesto",
+        "description": "Chicken, Provolone, Pesto, Red Peppers, Arugula",
+        "price": "$13.50",
+        "section": "Toasted Subs"
+      },
+      {
+        "name": "Ham and Swiss",
+        "description": "Ham, Swiss, Sweet Pickles, Garlic Spread",
+        "price": "$7.00",
+        "section": "Toasted Subs (Half)"
+      },
+      {
+        "name": "Ham and Swiss",
+        "description": "Ham, Swiss, Sweet Pickles, Garlic Spread",
+        "price": "$13.00",
+        "section": "Toasted Subs (Whole)"
+      },
+      {
+        "name": "Hot Italian",
+        "description": "Salami, Pepperoni, Provolone, Banana Peppers, Pickled Red Onion, Lettuce, Marinara Aioli, Oil/Vinegar",
+        "price": "$7.00",
+        "section": "Toasted Subs (Half)"
+      },
+      {
+        "name": "Hot Italian",
+        "description": "Salami, Pepperoni, Provolone, Banana Peppers, Pickled Red Onion, Lettuce, Marinara Aioli, Oil/Vinegar",
+        "price": "$13.00",
+        "section": "Toasted Subs (Whole)"
+      },
+      {
+        "name": "Greek Chicken",
+        "description": "Chicken, Whipped Feta, Kalamata Olives, Pickled Red Onion, Med Spread, Arugula",
+        "price": "$7.00",
+        "section": "Toasted Subs (Half)"
+      },
+      {
+        "name": "Greek Chicken",
+        "description": "Chicken, Whipped Feta, Kalamata Olives, Pickled Red Onion, Med Spread, Arugula",
+        "price": "$13.00",
+        "section": "Toasted Subs (Whole)"
+      },
+      {
+        "name": "The Mediterranean",
+        "description": "Avocado, Kalamata Olives, Whipped Feta, Pickled Red Onion, Med Spread, Arugula, Oil/Vinegar",
+        "price": "$7.00",
+        "section": "Toasted Subs (Half)"
+      },
+      {
+        "name": "The Mediterranean",
+        "description": "Avocado, Kalamata Olives, Whipped Feta, Pickled Red Onion, Med Spread, Arugula, Oil/Vinegar",
+        "price": "$13.00",
+        "section": "Toasted Subs (Whole)"
+      },
+      {
+        "name": "Chipotle Turkey Bacon Avo",
+        "description": "Turkey, Bacon, Pepper Jack, Avocado, Lettuce, Chipotle Spread, Oil/Vinegar",
+        "price": "$7.00",
+        "section": "Toasted Subs (Half)"
+      },
+      {
+        "name": "Chipotle Turkey Bacon Avo",
+        "description": "Turkey, Bacon, Pepper Jack, Avocado, Lettuce, Chipotle Spread, Oil/Vinegar",
+        "price": "$13.00",
+        "section": "Toasted Subs (Whole)"
+      },
+      {
+        "name": "Turkey Bacon Avo",
+        "description": "Turkey, Bacon, Avocado, Lettuce, Italian Spread, Oil/Vinegar",
+        "price": "$7.00",
+        "section": "Toasted Subs (Half)"
+      },
+      {
+        "name": "Turkey Bacon Avo",
+        "description": "Turkey, Bacon, Avocado, Lettuce, Italian Spread, Oil/Vinegar",
+        "price": "$13.00",
+        "section": "Toasted Subs (Whole)"
+      },
+      {
+        "name": "The Classic",
+        "description": "Cheddar & Provolone on Garlic Grilled Sourdough",
+        "price": "$9.50",
+        "section": "Gourmet Grilled Cheese"
+      },
+      {
+        "name": "Pizza-Grill-Zoni",
+        "description": "Provolone with Pepperoni on Parmesan Marinara Grilled Sourdough",
+        "price": "$12.00",
+        "section": "Gourmet Grilled Cheese"
+      },
+      {
+        "name": "Half Combo",
+        "description": "Half of any Grilled Cheese & Small Soup",
+        "price": "$10.00",
+        "section": "Gourmet Grilled Cheese"
+      },
+      {
+        "name": "Cali-Gold",
+        "description": "Cheddar & Pepper Jack with Roasted Red Peppers & Arugula on Pesto Grilled Sourdough",
+        "price": "$11.00",
+        "section": "Gourmet Grilled Cheese"
+      },
+      {
+        "name": "Turkey Delight",
+        "description": "Swiss & Provolone with Turkey, Sun Dried Tomato Spread & Arugula on Balsamic Reduction Grilled Sourdough",
+        "price": "$13.50",
+        "section": "Gourmet Grilled Cheese"
+      },
+      {
+        "name": "Gluten-Free Bread",
+        "description": "Substitute gluten-free bread on any sandwich",
+        "price": "$2.00",
+        "section": "Add-Ons"
+      },
+      {
+        "name": "Grilled Cheese and Fries",
+        "description": "",
+        "price": "$7.50",
+        "section": "Kids Meal"
+      },
+      {
+        "name": "Coconut Curry Tomato Soup",
+        "description": "GF, Vegan",
+        "price": "$4.00",
+        "section": "Soup/Fries (Cup)"
+      },
+      {
+        "name": "Coconut Curry Tomato Soup",
+        "description": "GF, Vegan",
+        "price": "$5.50",
+        "section": "Soup/Fries (Bowl)"
+      },
+      {
+        "name": "Fries",
+        "description": "Vegan",
+        "price": "$4.00",
+        "section": "Soup/Fries"
+      },
+      {
+        "name": "Pineapple Crush Fruit Smoothie",
+        "description": "Pineapple, Mango, Banana, Yogurt, Vanilla, Coconut Cream, Honey & OJ",
+        "price": "$9.00",
+        "section": "Smoothies (Small)"
+      },
+      {
+        "name": "Pineapple Crush Fruit Smoothie",
+        "description": "Pineapple, Mango, Banana, Yogurt, Vanilla, Coconut Cream, Honey & OJ",
+        "price": "$12.00",
+        "section": "Smoothies (Large)"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$3.50",
+        "section": "Coffee/Frappes"
+      },
+      {
+        "name": "Nitro Cold Brew",
+        "description": "",
+        "price": "$4.00",
+        "section": "Coffee/Frappes"
+      },
+      {
+        "name": "Hot Nitro",
+        "description": "",
+        "price": "$4.00",
+        "section": "Coffee/Frappes"
+      },
+      {
+        "name": "Cold Brew Frappe",
+        "description": "",
+        "price": "$6.00",
+        "section": "Coffee/Frappes"
+      },
+      {
+        "name": "Mocha Frappe",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee/Frappes"
+      },
+      {
+        "name": "Caramel Frappe",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee/Frappes"
+      },
+      {
+        "name": "Fountain Soda",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Topo Chico",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$2.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Orange Juice",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coconut Water",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bacon Surprise",
+        "description": "Eggs, Cheese, Garlic Tots, Bacon",
+        "price": "$11.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Pastrami Time",
+        "description": "Eggs, Cheese, Garlic Tots, Pastrami",
+        "price": "$11.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "The Classic Burrito",
+        "description": "Eggs, Cheese, Garlic Tots",
+        "price": "$9.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Sausage Delight",
+        "description": "Eggs, Cheese, Garlic Tots, Sausage",
+        "price": "$11.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Hammy Whammy",
+        "description": "Eggs, Cheese, Garlic Tots, Ham",
+        "price": "$11.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Meatless Wonder",
+        "description": "Eggs, Cheese, Garlic Tots, Vegan Sausage",
+        "price": "$11.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Turkey Dude",
+        "description": "Eggs, Cheese, Garlic Tots, Turkey",
+        "price": "$11.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Double Trouble",
+        "description": "Eggs, Cheese, Garlic Tots, any Two Meats",
+        "price": "$14.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Avocado",
+        "description": "burrito add-on",
+        "price": "$2.50",
+        "section": "Add-Ons"
+      },
+      {
+        "name": "Sour Cream",
+        "description": "burrito add-on",
+        "price": "$0.75",
+        "section": "Add-Ons"
+      },
+      {
+        "name": "Jalapeno Relish",
+        "description": "burrito add-on",
+        "price": "$1.50",
+        "section": "Add-Ons"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7680",
+    "name": "Vici Café",
+    "sourceUrl": "https://www.ubereats.com/store/vici-cafe-2341-ulric-st-san-diego/EAbakD9_XNmtIHEvT70U4w",
+    "confidence": "medium",
+    "notes": "read from UberEats JSON-LD hasMenu payload (47 items across 6 sections); cross-checked the section list against the rendered catalogSectionsMap category nav, identical, so no truncation; cent-ending distribution across all prices is scattered/non-uniform, consistent with genuine POS pricing (no markup divisor found). 5 Sandwiches/Chips items (Prosciutto & Fig, Tuscan Truffle, Turkey Aioli, Prime Rib, Ham & Salami) are flagged hasCustomizations:true with price:0 and priceTagline Priced by add-ons in both the JSON-LD and catalogSectionsMap; no base or starting price is published for them anywhere on the page, so they were dropped rather than invented; 42 items with real prices were filed",
+    "dishes": [
+      {
+        "name": "Ceremonial Matcha 16oz",
+        "description": "Ceremonial Matcha",
+        "price": "$7.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Chai Tea Latte 16oz",
+        "description": "",
+        "price": "$7.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Single Espresso Shot",
+        "description": "",
+        "price": "$3.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$4.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Americano 8oz",
+        "description": "",
+        "price": "$4.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cappuccino 8oz",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Iced Americano 16oz",
+        "description": "",
+        "price": "$5.25",
+        "section": "Coffee"
+      },
+      {
+        "name": "Drip",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Tea 16oz",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Latte 16oz",
+        "description": "Espresso with steamed milk and light foam. 8oz or 16oz.",
+        "price": "$6.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Iced Strawberry Matcha",
+        "description": "",
+        "price": "$7.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Iced Toasted Marshmallow Latte 16oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Caramel Latte",
+        "description": "",
+        "price": "$7.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Affogato Latte 16oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Iced Honey Cinnamon Latte",
+        "description": "",
+        "price": "$7.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Cheese Danish",
+        "description": "",
+        "price": "$6.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Raspberry Danish",
+        "description": "",
+        "price": "$6.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Plain Croissant",
+        "description": "",
+        "price": "$4.80",
+        "section": "Pastries"
+      },
+      {
+        "name": "Chocolate Chip Cookie",
+        "description": "Classic cookie loaded with chocolate chips.",
+        "price": "$4.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "Chocolate Croissant",
+        "description": "",
+        "price": "$5.10",
+        "section": "Pastries"
+      },
+      {
+        "name": "Coffee Cake",
+        "description": "",
+        "price": "$4.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "",
+        "price": "$11.00",
+        "section": "Breakfast Items"
+      },
+      {
+        "name": "Bagel & Cream Cheese",
+        "description": "",
+        "price": "$7.50",
+        "section": "Breakfast Items"
+      },
+      {
+        "name": "Alkal8 Water Bottle 20 fl oz",
+        "description": "",
+        "price": "$2.99",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Fiji Water Bottle 1L",
+        "description": "",
+        "price": "$3.99",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Organic Coconut Water 330 mL",
+        "description": "",
+        "price": "$3.89",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "S. Pellegrino Sparkling Water 8.45 fl oz",
+        "description": "",
+        "price": "$3.49",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Sanpellegrino Flavored Sparkling Water 11.15 fl oz",
+        "description": "",
+        "price": "$3.17",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Bloom Sparkling Energy Drink 12 fl oz",
+        "description": "",
+        "price": "$4.85",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Bundaberg Ginger Beer 12.7 fl oz",
+        "description": "",
+        "price": "$4.89",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Celcius Sparkling Energy Drink 12 fl oz",
+        "description": "",
+        "price": "$3.89",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Kern's Nectar 340 mL",
+        "description": "",
+        "price": "$1.99",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Martinelli's Apple Juice 10 fl oz",
+        "description": "",
+        "price": "$3.89",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Organic Yerba Madre 15.5 fl oz",
+        "description": "",
+        "price": "$5.00",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Poppi 12 fl oz",
+        "description": "",
+        "price": "$3.85",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Pepsi 12oz",
+        "description": "",
+        "price": "$2.99",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Canada Dry 12oz",
+        "description": "",
+        "price": "$2.99",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Immunity Shots",
+        "description": "",
+        "price": "$4.15",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Pressed Juice 10oz",
+        "description": "",
+        "price": "$4.10",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Coco Cola",
+        "description": "",
+        "price": "$2.99",
+        "section": "Open Fridge"
+      },
+      {
+        "name": "Chocolate Milk",
+        "description": "",
+        "price": "$4.15",
+        "section": "Open Fridge"
+      }
+    ]
+  }
+]

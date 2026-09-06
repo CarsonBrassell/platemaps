@@ -82,6 +82,16 @@ reports once; the completions then land in its context, not the main one.
 Compacting earlier is only a win once a resume costs 2K instead of 100K+.
 Leave `opus[1m]` alone; that was measured and kept on purpose.
 
+### 6. Cost plan 2026-09-08 covers the OTHER lever: per-agent extraction cost
+
+Everything above is coordinator round-trip cost. A 10-restaurant Sonnet
+extraction batch was separately costing 73K-161K tokens and 54-209 tool
+calls for ~3/10 `found` — router-first (serper fallback for no-website rows),
+`probe/AGENT-BRIEF-LITE.md` (budget-capped brief, replaces the 26KB one for
+spawned agents), haiku/sonnet tiering per batch, and `process-result.sh`
+(one round trip per batch instead of four) target that side. See RUNBOOK
+"Cost plan 2026-09-08" and RESUME.md "The loop".
+
 ## Not worth doing
 
 - Trimming SQL output, shrinking STATE.md, or a "smarter" way to evaluate

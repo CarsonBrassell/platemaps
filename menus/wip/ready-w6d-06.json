@@ -1,0 +1,1216 @@
+[
+  {
+    "restaurantId": "9181",
+    "name": "The Cordova Bar",
+    "sourceUrl": "https://www.thecordovabar.com/menu/",
+    "confidence": "high",
+    "notes": "Cocktail bar, no food service found anywhere on site or in nav (About/Contact/Events only) - drinks are the whole menu. Happy hour specials ($10 martinis, $5 wells/beers/wines) are generic categories, not named items, so excluded.",
+    "dishes": [
+      {
+        "name": "Award-Winning Old Fashioned",
+        "description": "Wild Turkey Bourbon, brown butter syrup, orange bitters",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Black Bird Espresso Martini",
+        "description": "vanilla vodka, Kahlua, vanilla, Ryan Brothers nitro coffee, coconut foam",
+        "price": "$15.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Velvet Dragon",
+        "description": "dragon berry vodka, coconut rum, lime, pineapple juice, passionfruit puree",
+        "price": "$15.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Seasalt Caramel Coffee White Russian",
+        "description": "Skyy vodka, Kahlua, Ryan Brothers nitro coffee, cream, coconut foam, sea salt, caramel drizzle",
+        "price": "$15.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Have A Nice Trip",
+        "description": "gin, vanilla vodka, lemon, orgeat, pineapple juice, nutmeg",
+        "price": "$15.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Spicy Passionfruit Daiquiri",
+        "description": "Rum or Amaras mezcal, pineapple juice, passionfruit puree, lime, firewater tincture",
+        "price": "$16.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Naked & Famous",
+        "description": "Amaras Mezcal, chartreuse, aperol, lime",
+        "price": "$16.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Oaxacan Old Fashioned",
+        "description": "Espolon reposado, Amaras mezcal, agave nectar, mole bitters",
+        "price": "$15.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Bay Hoooo!",
+        "description": "Cucumber vodka, elderflower, mint, lime, soda",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Cordova Mule",
+        "description": "Skyy vodka, seasonal puree, lime, angostura bitters, ginger beer",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "EZ Does It",
+        "description": "Wild Turkey 101 Rye, cognac, sweet vermouth, benedictine, orange bitters, orange",
+        "price": "$15.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Cordova Paloma",
+        "description": "Espolon reposado, campari, ginger syrup, lime, grapefruit beer, tajin rim",
+        "price": "$15.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Whiskey Sour",
+        "description": "Wild Turkey Bourbon, lemon, simple syrup, egg white, cinnamon dust",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Oklahoma Smoke Show",
+        "description": "Amaras mezcal, basil, lemon, simple syrup, angostura bitters",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Pretty & Picante",
+        "description": "Espolon reposado, lime, agave, raspberry puree, firewater tincture",
+        "price": "$15.00",
+        "section": "Cocktails"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9185",
+    "name": "James Coffee Co.",
+    "sourceUrl": "https://order.online/store/james-coffee-san-diego-24807756",
+    "confidence": "medium",
+    "notes": "Own domain (jamescoffeeco.com) has no priced menu page - only Shopify retail catalog (correctly screened out) and a Square/Weebly instore.jamescoffeeco.com ordering site that is client-rendered with no embedded JSON. Filed from DoorDash white-label order.online RSC payload, address confirmed as 4379 30th Street matching the work list. 28 items across 7 categories (Coffee & Cold Brew 2, Seasonal Drinks 1, Espresso 6, Specialty Espresso 7, Not-Coffee Drinks 3, Tea & Sodas 5, Pastries 4) matches the page's own MenuBookCategory counts exactly - not truncated. Deduped against the Most Ordered carousel by name. Cent endings are mostly .00/.25/.50/.75 (typical coffee-shop pricing), no consistent divisor found on a markup sweep. A Grubhub search snippet (different owner) showed several items 4-9% higher (Latte $6.50 vs $6.25 here, Espresso $4.50 vs $4.25) but Grubhub's own page returned no client data on fetch so it could not be independently verified either way - not used as a cross-check.",
+    "dishes": [
+      {
+        "name": "Honey Cinnamon Latte",
+        "description": "Espresso, milk, honey, and cinnamon. Hot or Iced.",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Condensed Milk & Nutmeg Latte",
+        "description": "Espresso, milk, condensed milk, and nutmeg. Hot or Iced.",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Vanilla Latte",
+        "description": "Espresso, milk, and house-made vanilla bean syrup.",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Latte",
+        "description": "Espresso and milk. Hot or Iced.",
+        "price": "$6.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Mocha",
+        "description": "Espresso, milk, and chocolate. Hot or Iced.",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "Espresso and Milk. 8oz.",
+        "price": "$5.75",
+        "section": "Menu"
+      },
+      {
+        "name": "Cortado",
+        "description": "Espresso and Milk. 5oz.",
+        "price": "$5.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Macchiato",
+        "description": "Rich espresso topped with a dollop of steamed milk and a touch of foam.",
+        "price": "$5.05",
+        "section": "Menu"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "Matcha Latte with Rishi Matcha Tea",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Mexican Mocha",
+        "description": "Espresso, milk, spiced chocolate. Hot or Iced.",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Salted Caramel",
+        "description": "salted caramel + cold brew concentrate",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Americano",
+        "description": "Hot or Iced.",
+        "price": "$4.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Espresso",
+        "description": "Double Shot.",
+        "price": "$4.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "16oz cold brew of shop blend or rotating single origin",
+        "price": "$5.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Batch Brew",
+        "description": "James Coffee's batch brew - shop blend or single origin",
+        "price": "$4.25",
+        "section": "Menu"
+      },
+      {
+        "name": "The Rancher",
+        "description": "Bourbon barrel maple syrup + cold brew concentrate shaken with ice and topped with milk. Available iced or hot",
+        "price": "$7.00",
+        "section": "Menu"
+      },
+      {
+        "name": "The Neapolitan",
+        "description": "Strawberry Mocha - Hot or iced available",
+        "price": "$7.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "12 oz hot chocolate with house made chocolate syrup with chocolate from Nibble Chocolate",
+        "price": "$4.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Kid's Hot Chocolate",
+        "description": "Kid's Hot Chocolate - 8oz.",
+        "price": "$3.80",
+        "section": "Menu"
+      },
+      {
+        "name": "Vanilla Steamer",
+        "description": "Steamed milk with house made vanilla syrup",
+        "price": "$3.80",
+        "section": "Menu"
+      },
+      {
+        "name": "Chai",
+        "description": "House-made chai concentrate, and cinnamon.",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "Two iced tea variations: English Breakfast, Orange Blossom Green.",
+        "price": "$4.75",
+        "section": "Menu"
+      },
+      {
+        "name": "Sodas",
+        "description": "Selection of carbonated beverages including Coffee, Vanilla Cream, and Chai sodas.",
+        "price": "$6.05",
+        "section": "Menu"
+      },
+      {
+        "name": "Tea",
+        "description": "Jasmine, Earl Grey, Masala Chai, Chamomile, Hibiscus Berry, and English Breakfast teas.",
+        "price": "$4.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Chocolate Croissant",
+        "description": "Chocolate Croissant made with European butter",
+        "price": "$6.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Ham and Cheese Croissant",
+        "description": "ham and cheese croissant made with laminated dough",
+        "price": "$7.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Pumpkin Spice Muffin",
+        "description": "",
+        "price": "$5.75",
+        "section": "Menu"
+      },
+      {
+        "name": "Apple Cinnamon Cruffin",
+        "description": "",
+        "price": "$6.50",
+        "section": "Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2838",
+    "name": "Creme De La Crepe",
+    "sourceUrl": "https://www.yelp.com/biz/creme-de-la-crepe-san-diego-san-diego",
+    "confidence": "high",
+    "dishes": [],
+    "notes": "not_found: Yelp lists this location's own page title as \"CREME DE LA CREPE - SAN DIEGO - CLOSED\" (142 University Ave Ste C). Google Maps confirms a different business, \"Taste of Denmark\", now operating at 142 University Ave. The chain's own site (cremedelacrepe.com) still links a /san-diego page but it 404s and San Diego is absent from the site's current location list (Hermosa Beach, Redondo Beach, Long Beach, Huntington Beach, Rolling Hills Estate only) - consistent with the branch having closed."
+  },
+  {
+    "restaurantId": "2240",
+    "name": "Shozen BBQ",
+    "sourceUrl": "https://www.ubereats.com/store/shozen-%26-manpo/GDzHzKToSN2--3Ow231aUg",
+    "confidence": "medium",
+    "notes": "Own site (shozenmanpo.com) is SG-Captcha bot-walled on every page tried, same as Athens Market Taverna. Grubhub page returns an empty client-rendered shell (platform-wide limitation, confirmed again here). Filed from Uber Eats catalogSectionsMap/catalogItems JSON (no schema.org hasMenu present on this page), address 9906 Mira Mesa Blvd confirmed in page content matching the work-list address. 31 raw item blocks found matching the uuid+title pattern, 30 unique after removing one exact duplicate - matches the page's own 3 catalogSectionsMap sections (Appetizer, Korean Special, Korean B.B.Q special) with no truncation signal. A MapQuest listing mentions a $34 all-you-can-eat BBQ option coexisting with this itemized a-la-carte menu, so this is not a buffet-only situation. Grubhub and SinglePlatform search snippets show some items at different prices (e.g. Sweet & Sour Pork $35.92 vs $33.00 here, Bool go gi Special $24.95 on SinglePlatform vs Bool go gi $37.95 here likely a different/smaller portion) - not used as cross-check per tier-5 aggregator rule, Uber Eats filed as sole source.",
+    "dishes": [
+      {
+        "name": "Gyoza",
+        "description": "Pan-fried Japanese dumplings with a savory filling, served with dipping sauce.",
+        "price": "$12.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Shrimp & Veg Tempura",
+        "description": "Lightly battered shrimp and vegetables, crispy and golden.",
+        "price": "$17.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Jopchae",
+        "description": "Stir-fried glass noodles with vegetables.",
+        "price": "$30.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Edmame",
+        "description": "Boiled soybeans in their pods, a popular Japanese appetizer.",
+        "price": "$9.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Seafood pancake",
+        "description": "Crispy pancake filled with seafood.",
+        "price": "$30.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Sweet & Sour Pork",
+        "description": "Tender pork in a tangy sweet and sour sauce.",
+        "price": "$33.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Yukge Jang ( Spicy soup)",
+        "description": "Comes with rice, side dishes",
+        "price": "$21.95",
+        "section": "Korean Special"
+      },
+      {
+        "name": "Galbitang (Short Rib)",
+        "description": "Comes with rice, side dishes",
+        "price": "$24.00",
+        "section": "Korean Special"
+      },
+      {
+        "name": "Spicy Rice Cake",
+        "description": "Comes with rice, side dishes",
+        "price": "$24.95",
+        "section": "Korean Special"
+      },
+      {
+        "name": "Bybimbob",
+        "description": "Comes with rice, side dishes",
+        "price": "$21.95",
+        "section": "Korean Special"
+      },
+      {
+        "name": "Cold Noodle",
+        "description": "Comes with rice, side dishes",
+        "price": "$21.95",
+        "section": "Korean Special"
+      },
+      {
+        "name": "UgeoJi Galbitang",
+        "description": "Comes with rice, side dishes",
+        "price": "$21.95",
+        "section": "Korean Special"
+      },
+      {
+        "name": "Mixed Tofu Soup",
+        "description": "Comes with rice, side dishes",
+        "price": "$21.95",
+        "section": "Korean Special"
+      },
+      {
+        "name": "Seafood Tofu soup",
+        "description": "Comes with rice, side dishes",
+        "price": "$21.95",
+        "section": "Korean Special"
+      },
+      {
+        "name": "Stone cook bybimbob",
+        "description": "Comes with rice, side dishes",
+        "price": "$24.00",
+        "section": "Korean Special"
+      },
+      {
+        "name": "Spicy Cold Noodle",
+        "description": "Comes with rice, side dishes",
+        "price": "$21.95",
+        "section": "Korean Special"
+      },
+      {
+        "name": "Spicy Mongfish",
+        "description": "Comes with rice, side dishes",
+        "price": "$54.00",
+        "section": "Korean Special"
+      },
+      {
+        "name": "Spicy Squid",
+        "description": "Comes with rice, side dishes",
+        "price": "$48.00",
+        "section": "Korean Special"
+      },
+      {
+        "name": "Spicy Chix Stew",
+        "description": "Comes with rice, side dishes",
+        "price": "$54.00",
+        "section": "Korean Special"
+      },
+      {
+        "name": "Shrimp Fried Rice",
+        "description": "Savory shrimp and rice dish with a Korean twist.",
+        "price": "$24.00",
+        "section": "Korean Special"
+      },
+      {
+        "name": "Beef Brisket",
+        "description": "Comes with salad, rice and side dishes",
+        "price": "$37.95",
+        "section": "Korean B.B.Q special"
+      },
+      {
+        "name": "Bool go gi",
+        "description": "Comes with salad, rice and side dishes",
+        "price": "$37.95",
+        "section": "Korean B.B.Q special"
+      },
+      {
+        "name": "Pork Belly",
+        "description": "Comes with salad, rice and side dishes",
+        "price": "$37.95",
+        "section": "Korean B.B.Q special"
+      },
+      {
+        "name": "Pork Boolgogi",
+        "description": "Comes with salad, rice and side dishes",
+        "price": "$37.95",
+        "section": "Korean B.B.Q special"
+      },
+      {
+        "name": "Shrimp",
+        "description": "Comes with salad, rice and side dishes",
+        "price": "$42.00",
+        "section": "Korean B.B.Q special"
+      },
+      {
+        "name": "Seafood mix",
+        "description": "Comes with salad, rice and side dishes",
+        "price": "$54.00",
+        "section": "Korean B.B.Q special"
+      },
+      {
+        "name": "Beef Tongue",
+        "description": "Comes with salad, rice and side dishes",
+        "price": "$45.00",
+        "section": "Korean B.B.Q special"
+      },
+      {
+        "name": "Seasoned Short Rib",
+        "description": "Comes with salad, rice and side dishes",
+        "price": "$54.00",
+        "section": "Korean B.B.Q special"
+      },
+      {
+        "name": "Chix Boolgogi",
+        "description": "Comes with salad, rice and side dishes",
+        "price": "$37.95",
+        "section": "Korean B.B.Q special"
+      },
+      {
+        "name": "Seasoned Rib eye",
+        "description": "Comes with salad, rice and side dishes",
+        "price": "$48.00",
+        "section": "Korean B.B.Q special"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4921",
+    "name": "Mexico Lindo Restaurant",
+    "sourceUrl": "https://mexicolindo.smartonlineorder.com/wp-json/moo-clover/v1/categories",
+    "confidence": "high",
+    "notes": "Own domain mexicolindoresturant.com (note the typo in the domain, matching the batch listing) is a marketing-only landing page with no priced menu, but links to a first-party Clover POS online-ordering site (mexicolindo.smartonlineorder.com) whose public WordPress REST API (wp-json/moo-clover/v1) was queried directly for all 17 categories and their items - this is the restaurant's live POS-synced menu data, not a third-party aggregator. 127 raw items returned across 17 categories; 4 dropped for zero/missing price (Aguas Frescas, Soda Bottle, Huraches, Vaso de Salsa - likely priced only via in-store modifiers not exposed here), leaving 123 priced dishes, all price_type FIXED, none out of stock. Address 169 S Juniper St, Escondido, CA 92025 confirmed on the site, in San Diego County. Prices range $0.75-$22.50, consistent with a full-service Mexican restaurant a-la-carte menu (breakfast items, burritos, tortas, seafood, tacos, sides) - no markup pattern since this is the operator's own ordering backend, not a delivery marketplace.",
+    "dishes": [
+      {
+        "name": "Chorizo & Egg, Chorizo con Huevo",
+        "description": "two egg scrambled with mexican sausage",
+        "price": "$11.90",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Ham & Egg, Jamon con Huevo",
+        "description": "",
+        "price": "$11.90",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Machaca",
+        "description": "",
+        "price": "$11.90",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Bacon & Egg, Tocino con Huevo",
+        "description": "",
+        "price": "$11.90",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Potato & Egg, Papas con Huevo",
+        "description": "",
+        "price": "$11.90",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Bacon & Eggs, Tocino con Huevo",
+        "description": "Bacon & Eggs, Tecino con Huevo.",
+        "price": "$16.75",
+        "section": "Breakfast Combinations"
+      },
+      {
+        "name": "Huevos a la Mexicana",
+        "description": "two large eggs scrambled with bell peppers onions, tomatoes",
+        "price": "$16.75",
+        "section": "Breakfast Combinations"
+      },
+      {
+        "name": "Chilaquiles with Eggs, Chilaquiles con Huevo",
+        "description": "tortilla chip covered with our special sauce choice of green or red topped with melted cheese and sour cream",
+        "price": "$16.75",
+        "section": "Breakfast Combinations"
+      },
+      {
+        "name": "Ham & Eggs, Jamon con Huevo",
+        "description": "",
+        "price": "$16.75",
+        "section": "Breakfast Combinations"
+      },
+      {
+        "name": "Chorizo & Eggs, Chorizo con Huevo",
+        "description": "two egg scrambled with mexican sausage",
+        "price": "$16.75",
+        "section": "Breakfast Combinations"
+      },
+      {
+        "name": "Any Style Eggs, Huevos al Gusto",
+        "description": "",
+        "price": "$16.75",
+        "section": "Breakfast Combinations"
+      },
+      {
+        "name": "Chilaquiles with Steak, Chilaquiles con Bistec",
+        "description": "tortilla chip covered with our special sauce choice of green or red topped with melted cheese and sour cream",
+        "price": "$17.80",
+        "section": "Breakfast Combinations"
+      },
+      {
+        "name": "Rancheros Eggs, Huevos Rancheros",
+        "description": "two large fried eggs simmered in our special sauce",
+        "price": "$16.75",
+        "section": "Breakfast Combinations"
+      },
+      {
+        "name": "Birria Burrito",
+        "description": "",
+        "price": "$13.15",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chicken, Pollo Burrito",
+        "description": "",
+        "price": "$11.75",
+        "section": "Burritos"
+      },
+      {
+        "name": "Buche Burrito",
+        "description": "",
+        "price": "$11.90",
+        "section": "Burritos"
+      },
+      {
+        "name": "Beef Head, Cabeza Burrito",
+        "description": "",
+        "price": "$11.90",
+        "section": "Burritos"
+      },
+      {
+        "name": "Tripas Burrito",
+        "description": "",
+        "price": "$16.15",
+        "section": "Burritos"
+      },
+      {
+        "name": "California Burrito",
+        "description": "",
+        "price": "$13.25",
+        "section": "Burritos"
+      },
+      {
+        "name": "Beef Marinade, Carne Asada Burrito",
+        "description": "made with whole beans, rice, onion, cilantro and salsa",
+        "price": "$11.90",
+        "section": "Burritos"
+      },
+      {
+        "name": "BBQ Pork, Adobada Burrito",
+        "description": "",
+        "price": "$11.90",
+        "section": "Burritos"
+      },
+      {
+        "name": "Veggie, Vegetariano Burrito",
+        "description": "",
+        "price": "$10.75",
+        "section": "Burritos"
+      },
+      {
+        "name": "Fish, Pescado Burrito",
+        "description": "",
+        "price": "$11.90",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chile Stuffed w/ Cheese Chile Relleno Burrito",
+        "description": "Chile Stuffed W/Cheese Chile Relleno Burrito",
+        "price": "$11.70",
+        "section": "Burritos"
+      },
+      {
+        "name": "Beans & Cheese Burrito",
+        "description": "",
+        "price": "$8.55",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shrimp, Camaron Burrito",
+        "description": "",
+        "price": "$14.45",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pork Carnitas Burrito",
+        "description": "",
+        "price": "$11.90",
+        "section": "Burritos"
+      },
+      {
+        "name": "Beef Tongue, Lengua Burrito",
+        "description": "",
+        "price": "$16.15",
+        "section": "Burritos"
+      },
+      {
+        "name": "Steak Ranchero",
+        "description": "",
+        "price": "$19.50",
+        "section": "Combinations"
+      },
+      {
+        "name": "Milanesa de Res",
+        "description": "",
+        "price": "$19.50",
+        "section": "Combinations"
+      },
+      {
+        "name": "Carne Asada Plate",
+        "description": "",
+        "price": "$19.50",
+        "section": "Combinations"
+      },
+      {
+        "name": "(2 Chile Rellenos) Ranchera o Mole",
+        "description": "Chile Rellenos - Ranchero o Mole",
+        "price": "$17.25",
+        "section": "Combinations"
+      },
+      {
+        "name": "3 Rolled Tacos, Beef, Chicken, Fish",
+        "description": "3 Rolled Tacos, Beef, Chicken Fish.",
+        "price": "$14.25",
+        "section": "Combinations"
+      },
+      {
+        "name": "2 Enchiladas Cheese, Chiken, (Mole)",
+        "description": "2 Enchiladas, Cheese Chicken (Mole)",
+        "price": "$17.25",
+        "section": "Combinations"
+      },
+      {
+        "name": "Lengua Or Tripa Plate",
+        "description": "",
+        "price": "$19.80",
+        "section": "Combinations"
+      },
+      {
+        "name": "Any Style Meat, Carne a su Gusto",
+        "description": "",
+        "price": "$17.25",
+        "section": "Combinations"
+      },
+      {
+        "name": "2 Chiles Stuffed w/ Cheese",
+        "description": "2 Chile Stuffed W/Cheese.",
+        "price": "$17.25",
+        "section": "Combinations"
+      },
+      {
+        "name": "Water",
+        "description": "",
+        "price": "$2.25",
+        "section": "Drinks/Bbidas"
+      },
+      {
+        "name": "Soda can",
+        "description": "",
+        "price": "$2.55",
+        "section": "Drinks/Bbidas"
+      },
+      {
+        "name": "Coffee",
+        "description": "",
+        "price": "$2.95",
+        "section": "Drinks/Bbidas"
+      },
+      {
+        "name": "Caldo de Res",
+        "description": "",
+        "price": "$15.75",
+        "section": "Especiales/Special"
+      },
+      {
+        "name": "Tacos dorados de Papa",
+        "description": "",
+        "price": "$9.99",
+        "section": "Especiales/Special"
+      },
+      {
+        "name": "Plato chicharron c/ nopales",
+        "description": "Plat Chicharron C/Nopales",
+        "price": "$15.75",
+        "section": "Especiales/Special"
+      },
+      {
+        "name": "Taco Tuesday",
+        "description": "",
+        "price": "$1.99",
+        "section": "Especiales/Special"
+      },
+      {
+        "name": "Torta de Pierna",
+        "description": "",
+        "price": "$9.60",
+        "section": "Especiales/Special"
+      },
+      {
+        "name": "Bistec Ranchero",
+        "description": "",
+        "price": "$15.25",
+        "section": "Especiales/Special"
+      },
+      {
+        "name": "Plato camarones empanizados",
+        "description": "",
+        "price": "$13.75",
+        "section": "Especiales/Special"
+      },
+      {
+        "name": "Plato chile verde",
+        "description": "",
+        "price": "$14.75",
+        "section": "Especiales/Special"
+      },
+      {
+        "name": "1 Huevo, Egg",
+        "description": "",
+        "price": "$3.00",
+        "section": "Extras"
+      },
+      {
+        "name": "Beans, Rice on Taco",
+        "description": "Beans, Rico on Taco.",
+        "price": "$0.75",
+        "section": "Extras"
+      },
+      {
+        "name": "Salsa Ranchera",
+        "description": "",
+        "price": "$4.25",
+        "section": "Extras"
+      },
+      {
+        "name": "Bacon",
+        "description": "",
+        "price": "$4.25",
+        "section": "Extras"
+      },
+      {
+        "name": "Meat",
+        "description": "",
+        "price": "$7.99",
+        "section": "Extras"
+      },
+      {
+        "name": "Beans, Rice on Burrito",
+        "description": "",
+        "price": "$2.25",
+        "section": "Extras"
+      },
+      {
+        "name": "6 pc Camarones",
+        "description": "",
+        "price": "$9.50",
+        "section": "Extras"
+      },
+      {
+        "name": "Tripa Dorado Taco",
+        "description": "",
+        "price": "$1.25",
+        "section": "Extras"
+      },
+      {
+        "name": "Milanesa",
+        "description": "",
+        "price": "$8.99",
+        "section": "Extras"
+      },
+      {
+        "name": "6 pc Camarones Costa Azul",
+        "description": "",
+        "price": "$15.00",
+        "section": "Extras"
+      },
+      {
+        "name": "Tripa Dorado Burrito",
+        "description": "",
+        "price": "$3.00",
+        "section": "Extras"
+      },
+      {
+        "name": "Tripa",
+        "description": "",
+        "price": "$9.15",
+        "section": "Extras"
+      },
+      {
+        "name": "Lengua",
+        "description": "",
+        "price": "$9.25",
+        "section": "Extras"
+      },
+      {
+        "name": "Pulpo",
+        "description": "",
+        "price": "$8.70",
+        "section": "Extras"
+      },
+      {
+        "name": "Quesadillas w/Meat (C/Asada Quesadilla",
+        "description": "Quesadillas W/Meat (Carne Asada Quesadilla)",
+        "price": "$11.80",
+        "section": "Quesadillas/Fries"
+      },
+      {
+        "name": "Quesa Birria w/Consome Quesadilla",
+        "description": "",
+        "price": "$14.50",
+        "section": "Quesadillas/Fries"
+      },
+      {
+        "name": "Veggie, Vegetariana Quesadilla",
+        "description": "",
+        "price": "$10.95",
+        "section": "Quesadillas/Fries"
+      },
+      {
+        "name": "Supreme Quesadilla",
+        "description": "",
+        "price": "$14.25",
+        "section": "Quesadillas/Fries"
+      },
+      {
+        "name": "Asada Fries/ Nachos",
+        "description": "topped with cheese tomatoes, onions and jalapeno peppers.",
+        "price": "$16.50",
+        "section": "Quesadillas/Fries"
+      },
+      {
+        "name": "Chicken Salad",
+        "description": "",
+        "price": "$12.95",
+        "section": "Quesadillas/Fries"
+      },
+      {
+        "name": "Cheese Quesadilla",
+        "description": "",
+        "price": "$7.55",
+        "section": "Quesadillas/Fries"
+      },
+      {
+        "name": "Taco Salad",
+        "description": "",
+        "price": "$12.90",
+        "section": "Quesadillas/Fries"
+      },
+      {
+        "name": "3 Rolled Tacos",
+        "description": "",
+        "price": "$9.65",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "5 Rolled Tacos",
+        "description": "",
+        "price": "$11.40",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "Campechana Shrimp, Octopus",
+        "description": "",
+        "price": "$21.50",
+        "section": "Seafood/Mariscos"
+      },
+      {
+        "name": "Camarones Empanizados",
+        "description": "",
+        "price": "$16.99",
+        "section": "Seafood/Mariscos"
+      },
+      {
+        "name": "Mojarra, Tilapia",
+        "description": "Mojarra, Tilapa",
+        "price": "$18.50",
+        "section": "Seafood/Mariscos"
+      },
+      {
+        "name": "Caldo de Pescado",
+        "description": "",
+        "price": "$16.25",
+        "section": "Seafood/Mariscos"
+      },
+      {
+        "name": "Coctel de Camaron",
+        "description": "served with chopped onions tomatoes cilantro, avocado and our special sauce",
+        "price": "$19.85",
+        "section": "Seafood/Mariscos"
+      },
+      {
+        "name": "Costa Azul",
+        "description": "",
+        "price": "$21.50",
+        "section": "Seafood/Mariscos"
+      },
+      {
+        "name": "Fish Fillet",
+        "description": "",
+        "price": "$17.45",
+        "section": "Seafood/Mariscos"
+      },
+      {
+        "name": "Aguachile Shrimp",
+        "description": "",
+        "price": "$19.90",
+        "section": "Seafood/Mariscos"
+      },
+      {
+        "name": "Shrimp Any Style",
+        "description": "",
+        "price": "$19.55",
+        "section": "Seafood/Mariscos"
+      },
+      {
+        "name": "Ceviche Tostada",
+        "description": "",
+        "price": "$6.99",
+        "section": "Seafood/Mariscos"
+      },
+      {
+        "name": "7 Mares",
+        "description": "",
+        "price": "$22.50",
+        "section": "Seafood/Mariscos"
+      },
+      {
+        "name": "Caldo de Camaron",
+        "description": "",
+        "price": "$18.25",
+        "section": "Seafood/Mariscos"
+      },
+      {
+        "name": "Sour Cream",
+        "description": "",
+        "price": "$3.50",
+        "section": "Side"
+      },
+      {
+        "name": "Beans",
+        "description": "",
+        "price": "$3.80",
+        "section": "Side"
+      },
+      {
+        "name": "Fries",
+        "description": "",
+        "price": "$4.50",
+        "section": "Side"
+      },
+      {
+        "name": "4 Tortillas",
+        "description": "",
+        "price": "$3.50",
+        "section": "Side"
+      },
+      {
+        "name": "Rice",
+        "description": "",
+        "price": "$3.80",
+        "section": "Side"
+      },
+      {
+        "name": "Guacamole",
+        "description": "",
+        "price": "$4.55",
+        "section": "Side"
+      },
+      {
+        "name": "Chips",
+        "description": "",
+        "price": "$4.80",
+        "section": "Side"
+      },
+      {
+        "name": "Chiles Toreados",
+        "description": "",
+        "price": "$3.25",
+        "section": "Side"
+      },
+      {
+        "name": "Rabanos",
+        "description": "",
+        "price": "$3.50",
+        "section": "Side"
+      },
+      {
+        "name": "2 Tortillas",
+        "description": "",
+        "price": "$2.99",
+        "section": "Side"
+      },
+      {
+        "name": "Cheese",
+        "description": "",
+        "price": "$3.90",
+        "section": "Side"
+      },
+      {
+        "name": "Side Salad",
+        "description": "",
+        "price": "$5.99",
+        "section": "Side"
+      },
+      {
+        "name": "Menudo Sabados y Domingos, SAT & SUN",
+        "description": "menudo Sabados y Domingos, SAT & Sunday.",
+        "price": "$15.25",
+        "section": "Soup/Caldos"
+      },
+      {
+        "name": "Consome",
+        "description": "",
+        "price": "$6.99",
+        "section": "Soup/Caldos"
+      },
+      {
+        "name": "Albondigas",
+        "description": "",
+        "price": "$17.25",
+        "section": "Soup/Caldos"
+      },
+      {
+        "name": "Birria",
+        "description": "",
+        "price": "$17.25",
+        "section": "Soup/Caldos"
+      },
+      {
+        "name": "Taco camaron con pulpo",
+        "description": "",
+        "price": "$9.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "BBQ Pork, Adobada Taco",
+        "description": "",
+        "price": "$3.40",
+        "section": "Tacos"
+      },
+      {
+        "name": "Chicken, Pollo Taco",
+        "description": "",
+        "price": "$3.40",
+        "section": "Tacos"
+      },
+      {
+        "name": "Beef Tongue, Lengua Taco",
+        "description": "",
+        "price": "$4.40",
+        "section": "Tacos"
+      },
+      {
+        "name": "Shrimp Taco",
+        "description": "",
+        "price": "$5.75",
+        "section": "Tacos"
+      },
+      {
+        "name": "Buche Taco",
+        "description": "",
+        "price": "$3.40",
+        "section": "Tacos"
+      },
+      {
+        "name": "Tripa Taco",
+        "description": "",
+        "price": "$4.15",
+        "section": "Tacos"
+      },
+      {
+        "name": "Birria Taco",
+        "description": "",
+        "price": "$3.40",
+        "section": "Tacos"
+      },
+      {
+        "name": "Fish, Pescado Taco",
+        "description": "",
+        "price": "$4.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Beef Marinade, Carne Asada Taco",
+        "description": "two tacos topped with onions cilantro and whole beans.",
+        "price": "$3.40",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pork, Carnitas Taco",
+        "description": "",
+        "price": "$3.40",
+        "section": "Tacos"
+      },
+      {
+        "name": "Beef Head, Cabeza Taco",
+        "description": "",
+        "price": "$3.40",
+        "section": "Tacos"
+      },
+      {
+        "name": "Ham, Jamon Torta",
+        "description": "",
+        "price": "$11.75",
+        "section": "Tortas"
+      },
+      {
+        "name": "Torta Con Carne",
+        "description": "",
+        "price": "$12.25",
+        "section": "Tortas"
+      },
+      {
+        "name": "Tripa, Lengua Torta",
+        "description": "",
+        "price": "$14.25",
+        "section": "Tortas"
+      },
+      {
+        "name": "Milanesa Torta",
+        "description": "",
+        "price": "$12.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Frijoles con Queso Tostada",
+        "description": "",
+        "price": "$5.55",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Tripa, Lengua Tostada",
+        "description": "",
+        "price": "$11.45",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Tostada w/Meat",
+        "description": "",
+        "price": "$8.55",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Flan",
+        "description": "",
+        "price": "$5.60",
+        "section": "Ala Cart"
+      },
+      {
+        "name": "Ala Cart Enchilada",
+        "description": "",
+        "price": "$3.55",
+        "section": "Ala Cart"
+      },
+      {
+        "name": "Ala Cart Chille Relleno",
+        "description": "",
+        "price": "$5.75",
+        "section": "Ala Cart"
+      }
+    ]
+  }
+]

@@ -1,52 +1,3223 @@
 [
-  {
-    "restaurantId": "9448",
-    "name": "Crumbl Cookies",
-    "sourceUrl": "https://www.ubereats.com/store/crumbl-point-loma-ca/hFupRdkpUsqPs32N6D8h0g",
-    "confidence": "medium",
-    "notes": "Point Loma location confirmed by address (2990 Midway Dr Suite B). Crumbl sells cookies only by pack size (flavors rotate weekly and are not individually priced/named); the 4 pack-size items are the complete catalog structure, not a truncated carousel. Prices are Uber Eats delivery prices (marketplace), not verified in-store prices.",
-    "dishes": [
-      { "name": "Single", "description": "One large gourmet cookie.", "price": "$6.29", "section": "Large Desserts" },
-      { "name": "4-Pack", "description": "", "price": "$23.79", "section": "Large Desserts" },
-      { "name": "6-Pack", "description": "", "price": "$31.29", "section": "Large Desserts" },
-      { "name": "12-Pack", "description": "", "price": "$52.49", "section": "Large Desserts" }
-    ]
-  },
-  {
-    "restaurantId": "9081",
-    "name": "Ghirardelli Ice Cream & Chocolate Shop",
-    "sourceUrl": "https://www.ghirardelli.com/stores/san-diego",
-    "confidence": "low",
-    "dishes": [],
-    "blocked": "Store page lists sundae/dessert names (World Famous Hot Fudge Sundae, Chocolate Lover's Hot Fudge Sundae, Gold Rush Caramel Almond Sundae, Golden Gate Banana Split, Mint Bliss Hot Fudge Sundae, Ocean Beach Sea Salt Caramel Sundae, Treasure Island Warm Brownie Sundae, Waffle Bowl, Cookie Crumble Boat, Lands End Boat) but no prices anywhere on the page. No DoorDash/Uber Eats listing exists for the in-store ice cream shop (only unrelated grocery-product delivery listings for packaged Ghirardelli chocolate found). Yelp/Tripadvisor mention a $7.25 sundae special and 'sundae is approx $14.50 and upwards' but that is review hearsay, not a priced source."
-  },
-  {
-    "restaurantId": "9504",
-    "name": "Belly Up Tavern",
-    "sourceUrl": "https://bellyup.com/belly-up-bar-menu/",
-    "confidence": "high",
-    "notes": "First-party bar menu on the venue's own domain. An older page at bellyup.com/food/ shows the same items at lower prices (e.g. Sweet Potato Fries $8.50 vs $10.50, Chicken Tenders & Fries $12.50 vs $14.50) - appears to be a stale/outdated cached page; filed from the dedicated /belly-up-bar-menu/ page as the current menu. Prices end in .50 consistent with a printed bar menu.",
-    "dishes": [
-      { "name": "Tavern Chicken Wings", "description": "Buffalo or Asian BBQ sauce, fries", "price": "$16.50", "section": "Bar Menu" },
-      { "name": "Salted Warm Pretzel Bites", "description": "jalapeno cheese, yellow mustard dipping sauces", "price": "$14.50", "section": "Bar Menu" },
-      { "name": "Chips & Guacamole", "description": "salsa fresca", "price": "$14.50", "section": "Bar Menu" },
-      { "name": "Chicken Tenders & Fries", "description": "with house dill ranch & BBQ sauce", "price": "$14.50", "section": "Bar Menu" },
-      { "name": "Soy Chorizo Empanadas", "description": "", "price": "$15.50", "section": "Bar Menu" },
-      { "name": "Sea Salt Truffle Fries", "description": "Reggiano parmesan", "price": "$13.50", "section": "Bar Menu" },
-      { "name": "Sweet Potato Fries", "description": "house-dill ranch", "price": "$10.50", "section": "Bar Menu" },
-      { "name": "1/2 lb Sterling Beef Burger", "description": "charbroiled medium served with fries", "price": "$15.50", "section": "Bar Menu" },
-      { "name": "Wagyu Beef Sliders", "description": "Tillamook cheddar, lettuce, tomato with truffle fries", "price": "$18.50", "section": "Bar Menu" },
-      { "name": "Rolled Chicken Tacos", "description": "sour cream, guacamole, salsa fresca, cotija", "price": "$16.50", "section": "Bar Menu" },
-      { "name": "Grilled Mahi Mahi Fish Tacos", "description": "", "price": "$17.50", "section": "Bar Menu" },
-      { "name": "Chile-Lime Steak Street Tacos", "description": "", "price": "$16.50", "section": "Bar Menu" },
-      { "name": "Blackened Chicken Quesadilla", "description": "jack & cheddar, tomatoes, green onions & jalapenos", "price": "$16.50", "section": "Bar Menu" }
-    ]
-  },
-  {
-    "restaurantId": "8598",
-    "name": "China Super Buffet",
-    "sourceUrl": "https://chinasuperbuffetsd.com/menu",
-    "confidence": "high",
-    "dishes": []
-  }
+ {
+  "restaurantId": "9448",
+  "name": "Crumbl Cookies",
+  "sourceUrl": "https://www.ubereats.com/store/crumbl-point-loma-ca/hFupRdkpUsqPs32N6D8h0g",
+  "confidence": "medium",
+  "notes": "Point Loma location confirmed by address (2990 Midway Dr Suite B). Crumbl sells cookies only by pack size (flavors rotate weekly and are not individually priced/named); the 4 pack-size items are the complete catalog structure, not a truncated carousel. Prices are Uber Eats delivery prices (marketplace), not verified in-store prices.",
+  "dishes": [
+   {
+    "name": "Single",
+    "description": "One large gourmet cookie.",
+    "price": "$6.29",
+    "section": "Large Desserts"
+   },
+   {
+    "name": "4-Pack",
+    "description": "",
+    "price": "$23.79",
+    "section": "Large Desserts"
+   },
+   {
+    "name": "6-Pack",
+    "description": "",
+    "price": "$31.29",
+    "section": "Large Desserts"
+   },
+   {
+    "name": "12-Pack",
+    "description": "",
+    "price": "$52.49",
+    "section": "Large Desserts"
+   }
+  ]
+ },
+ {
+  "restaurantId": "9081",
+  "name": "Ghirardelli Ice Cream & Chocolate Shop",
+  "sourceUrl": "https://www.ghirardelli.com/stores/san-diego",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "Store page lists sundae/dessert names (World Famous Hot Fudge Sundae, Chocolate Lover's Hot Fudge Sundae, Gold Rush Caramel Almond Sundae, Golden Gate Banana Split, Mint Bliss Hot Fudge Sundae, Ocean Beach Sea Salt Caramel Sundae, Treasure Island Warm Brownie Sundae, Waffle Bowl, Cookie Crumble Boat, Lands End Boat) but no prices anywhere on the page. No DoorDash/Uber Eats listing exists for the in-store ice cream shop (only unrelated grocery-product delivery listings for packaged Ghirardelli chocolate found). Yelp/Tripadvisor mention a $7.25 sundae special and 'sundae is approx $14.50 and upwards' but that is review hearsay, not a priced source."
+ },
+ {
+  "restaurantId": "9504",
+  "name": "Belly Up Tavern",
+  "sourceUrl": "https://bellyup.com/belly-up-bar-menu/",
+  "confidence": "high",
+  "notes": "First-party bar menu on the venue's own domain. An older page at bellyup.com/food/ shows the same items at lower prices (e.g. Sweet Potato Fries $8.50 vs $10.50, Chicken Tenders & Fries $12.50 vs $14.50) - appears to be a stale/outdated cached page; filed from the dedicated /belly-up-bar-menu/ page as the current menu. Prices end in .50 consistent with a printed bar menu.",
+  "dishes": [
+   {
+    "name": "Tavern Chicken Wings",
+    "description": "Buffalo or Asian BBQ sauce, fries",
+    "price": "$16.50",
+    "section": "Bar Menu"
+   },
+   {
+    "name": "Salted Warm Pretzel Bites",
+    "description": "jalapeno cheese, yellow mustard dipping sauces",
+    "price": "$14.50",
+    "section": "Bar Menu"
+   },
+   {
+    "name": "Chips & Guacamole",
+    "description": "salsa fresca",
+    "price": "$14.50",
+    "section": "Bar Menu"
+   },
+   {
+    "name": "Chicken Tenders & Fries",
+    "description": "with house dill ranch & BBQ sauce",
+    "price": "$14.50",
+    "section": "Bar Menu"
+   },
+   {
+    "name": "Soy Chorizo Empanadas",
+    "description": "",
+    "price": "$15.50",
+    "section": "Bar Menu"
+   },
+   {
+    "name": "Sea Salt Truffle Fries",
+    "description": "Reggiano parmesan",
+    "price": "$13.50",
+    "section": "Bar Menu"
+   },
+   {
+    "name": "Sweet Potato Fries",
+    "description": "house-dill ranch",
+    "price": "$10.50",
+    "section": "Bar Menu"
+   },
+   {
+    "name": "1/2 lb Sterling Beef Burger",
+    "description": "charbroiled medium served with fries",
+    "price": "$15.50",
+    "section": "Bar Menu"
+   },
+   {
+    "name": "Wagyu Beef Sliders",
+    "description": "Tillamook cheddar, lettuce, tomato with truffle fries",
+    "price": "$18.50",
+    "section": "Bar Menu"
+   },
+   {
+    "name": "Rolled Chicken Tacos",
+    "description": "sour cream, guacamole, salsa fresca, cotija",
+    "price": "$16.50",
+    "section": "Bar Menu"
+   },
+   {
+    "name": "Grilled Mahi Mahi Fish Tacos",
+    "description": "",
+    "price": "$17.50",
+    "section": "Bar Menu"
+   },
+   {
+    "name": "Chile-Lime Steak Street Tacos",
+    "description": "",
+    "price": "$16.50",
+    "section": "Bar Menu"
+   },
+   {
+    "name": "Blackened Chicken Quesadilla",
+    "description": "jack & cheddar, tomatoes, green onions & jalapenos",
+    "price": "$16.50",
+    "section": "Bar Menu"
+   }
+  ]
+ },
+ {
+  "restaurantId": "8675",
+  "name": "Dave & Buster's Carlsbad",
+  "sourceUrl": "https://page-service.doordash.com/store/dave-%26-busters-carlsbad-1227052/",
+  "confidence": "high",
+  "notes": "DoorDash JSON-LD Menu block returned exactly 91 items and omitted the 'Kids Menu' category entirely (a known truncation signature) - confirmed via the underlying catalog data (category id 24914112, numItems:8) which lists all 8 kids items. Recovered the 6 missing kids item prices directly from the embedded catalog JSON in the page HTML (displayPrice fields) and added them as a 'Kids Menu' section; 2 of the 8 kids items (Kids Cheeseburger, Kids Mac & Cheese) were already present in the JSON-LD under 'Most Ordered' and are also listed there. Prices are DoorDash delivery marketplace prices, not verified in-store prices. Menu name has trademark/registration symbols in the underlying data; item names with '*' denote items that may be served raw/undercooked per venue disclosure.",
+  "dishes": [
+   {
+    "name": "Pretzel Dogs",
+    "description": "",
+    "price": "$17.19",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Double Pepperoni Flatbread",
+    "description": "",
+    "price": "$18.39",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Bone-In Wings",
+    "description": "",
+    "price": "$19.49",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Boneless Wings",
+    "description": "",
+    "price": "$17.79",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Fries GPT",
+    "description": "",
+    "price": "$7.29",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Kids Mac & Cheese",
+    "description": "",
+    "price": "$9.49",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Cheese Stick Stack",
+    "description": "",
+    "price": "$17.19",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Smokehouse BBQ Ribs",
+    "description": "",
+    "price": "$23.89",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Funnel Cake Fries",
+    "description": "",
+    "price": "$12.19",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Kids Cheeseburger",
+    "description": "",
+    "price": "$11.09",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Ultimate Mac & Cheese",
+    "description": "",
+    "price": "$20.59",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Diet Coke",
+    "description": "",
+    "price": "$4.49",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "The Triple Play*",
+    "description": "",
+    "price": "$36.09",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Bar Burgers & Wings Platter*",
+    "description": "",
+    "price": "$23.89",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Smokehouse BBQ Ribs & Wings",
+    "description": "",
+    "price": "$28.29",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Philly Cheesesteak Egg Rolls",
+    "description": "",
+    "price": "$16.69",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Cheesy Spinach Dip",
+    "description": "",
+    "price": "$12.79",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Soft Pretzel Sticks",
+    "description": "",
+    "price": "$17.19",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Fries GPT",
+    "description": "",
+    "price": "$14.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Chips & Guac",
+    "description": "",
+    "price": "$14.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Fried Pickles",
+    "description": "",
+    "price": "$12.79",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Grilled Chicken Quesadilla",
+    "description": "",
+    "price": "$17.19",
+    "section": "Appetizers"
+   },
+   {
+    "name": "5:15",
+    "description": "",
+    "price": "$37.79",
+    "section": "Appetizers"
+   },
+   {
+    "name": "The Caveman Combo*",
+    "description": "",
+    "price": "$29.49",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Cheese Stick Stack",
+    "description": "",
+    "price": "$17.19",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Pretzel Dogs",
+    "description": "",
+    "price": "$17.19",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Mountain O' Nachos",
+    "description": "",
+    "price": "$19.49",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Double Pepperoni Flatbread",
+    "description": "",
+    "price": "$18.39",
+    "section": "Flatbreads"
+   },
+   {
+    "name": "BBQ Chicken Flatbread",
+    "description": "",
+    "price": "$19.49",
+    "section": "Flatbreads"
+   },
+   {
+    "name": "5-Cheese Flatbread",
+    "description": "",
+    "price": "$16.09",
+    "section": "Flatbreads"
+   },
+   {
+    "name": "Bone-In Wings",
+    "description": "",
+    "price": "$19.49",
+    "section": "Wings"
+   },
+   {
+    "name": "Boneless Wings",
+    "description": "",
+    "price": "$17.79",
+    "section": "Wings"
+   },
+   {
+    "name": "10oz Sirloin*",
+    "description": "",
+    "price": "$28.89",
+    "section": "Entrees"
+   },
+   {
+    "name": "Teriyaki Steak*",
+    "description": "",
+    "price": "$29.99",
+    "section": "Entrees"
+   },
+   {
+    "name": "Fish & Shrimp Basket",
+    "description": "",
+    "price": "$22.79",
+    "section": "Entrees"
+   },
+   {
+    "name": "Fish & Chips",
+    "description": "",
+    "price": "$22.19",
+    "section": "Entrees"
+   },
+   {
+    "name": "Honey BBQ Chicken",
+    "description": "",
+    "price": "$20.59",
+    "section": "Entrees"
+   },
+   {
+    "name": "Classic Goldfingers",
+    "description": "",
+    "price": "$17.79",
+    "section": "Entrees"
+   },
+   {
+    "name": "Lacy's Chicken",
+    "description": "",
+    "price": "$23.29",
+    "section": "Entrees"
+   },
+   {
+    "name": "Smokehouse BBQ Ribs",
+    "description": "",
+    "price": "$23.89",
+    "section": "Entrees"
+   },
+   {
+    "name": "Fire-Grilled Salmon*",
+    "description": "",
+    "price": "$24.99",
+    "section": "Entrees"
+   },
+   {
+    "name": "Crispy Fried Shrimp Platter",
+    "description": "",
+    "price": "$22.19",
+    "section": "Entrees"
+   },
+   {
+    "name": "Ultimate Mac & Cheese",
+    "description": "",
+    "price": "$20.59",
+    "section": "Pastas"
+   },
+   {
+    "name": "Cajun Shrimp Pasta",
+    "description": "",
+    "price": "$23.89",
+    "section": "Pastas"
+   },
+   {
+    "name": "Chicken Parmesan Alfredo",
+    "description": "",
+    "price": "$21.69",
+    "section": "Pastas"
+   },
+   {
+    "name": "Bistro Steak & Shrimp Alfredo Linguine*",
+    "description": "",
+    "price": "$28.89",
+    "section": "Pastas"
+   },
+   {
+    "name": "Blackened Chicken Alfredo",
+    "description": "",
+    "price": "$20.59",
+    "section": "Pastas"
+   },
+   {
+    "name": "Sweet Apple Pecan Salad with Grilled Chicken",
+    "description": "",
+    "price": "$19.99",
+    "section": "Salads"
+   },
+   {
+    "name": "Crisp Apple Pecan Salad - Side",
+    "description": "",
+    "price": "$7.29",
+    "section": "Salads"
+   },
+   {
+    "name": "Fresh Garden Salad - Side",
+    "description": "",
+    "price": "$7.29",
+    "section": "Salads"
+   },
+   {
+    "name": "Parmesan Caesar Salad - Side",
+    "description": "",
+    "price": "$7.29",
+    "section": "Salads"
+   },
+   {
+    "name": "Grilled Steak Salad*",
+    "description": "",
+    "price": "$23.29",
+    "section": "Salads"
+   },
+   {
+    "name": "Parmesan Garlic Chicken Caesar Salad",
+    "description": "",
+    "price": "$18.39",
+    "section": "Salads"
+   },
+   {
+    "name": "Daves Double Cheeseburger*",
+    "description": "",
+    "price": "$18.39",
+    "section": "Burgers & Handhelds"
+   },
+   {
+    "name": "Crispy Chicken Sandwich",
+    "description": "",
+    "price": "$19.49",
+    "section": "Burgers & Handhelds"
+   },
+   {
+    "name": "The Philly Cheesesteak",
+    "description": "",
+    "price": "$20.59",
+    "section": "Burgers & Handhelds"
+   },
+   {
+    "name": "Smokehouse BBQ Smash Burger*",
+    "description": "",
+    "price": "$19.99",
+    "section": "Burgers & Handhelds"
+   },
+   {
+    "name": "Black Bean Burger",
+    "description": "",
+    "price": "$17.19",
+    "section": "Burgers & Handhelds"
+   },
+   {
+    "name": "Bar Burgers*",
+    "description": "",
+    "price": "$18.89",
+    "section": "Burgers & Handhelds"
+   },
+   {
+    "name": "The Boss Chicken Club",
+    "description": "",
+    "price": "$19.49",
+    "section": "Burgers & Handhelds"
+   },
+   {
+    "name": "Buffalo Wing Burger*",
+    "description": "",
+    "price": "$19.99",
+    "section": "Burgers & Handhelds"
+   },
+   {
+    "name": "Busters Bacon Burger*",
+    "description": "",
+    "price": "$21.69",
+    "section": "Burgers & Handhelds"
+   },
+   {
+    "name": "Fries GPT",
+    "description": "",
+    "price": "$7.29",
+    "section": "Sides"
+   },
+   {
+    "name": "Loaded Mashed Potatoes",
+    "description": "",
+    "price": "$6.09",
+    "section": "Sides"
+   },
+   {
+    "name": "Alfredo Linguine",
+    "description": "",
+    "price": "$8.39",
+    "section": "Sides"
+   },
+   {
+    "name": "Sweet Potato Fries",
+    "description": "",
+    "price": "$6.09",
+    "section": "Sides"
+   },
+   {
+    "name": "Sautéed Green Beans",
+    "description": "",
+    "price": "$6.09",
+    "section": "Sides"
+   },
+   {
+    "name": "Mac & Cheese",
+    "description": "",
+    "price": "$8.39",
+    "section": "Sides"
+   },
+   {
+    "name": "Seasoned French Fries",
+    "description": "",
+    "price": "$4.99",
+    "section": "Sides"
+   },
+   {
+    "name": "Frazzled Onions",
+    "description": "",
+    "price": "$4.49",
+    "section": "Sides"
+   },
+   {
+    "name": "Rice Pilaf",
+    "description": "",
+    "price": "$4.49",
+    "section": "Sides"
+   },
+   {
+    "name": "Coleslaw",
+    "description": "",
+    "price": "$4.99",
+    "section": "Sides"
+   },
+   {
+    "name": "Grape Tomato Salad",
+    "description": "",
+    "price": "$7.29",
+    "section": "Sides"
+   },
+   {
+    "name": "6 Fried Shrimp",
+    "description": "",
+    "price": "$8.39",
+    "section": "Sides"
+   },
+   {
+    "name": "6 Grilled Shrimp",
+    "description": "",
+    "price": "$8.39",
+    "section": "Sides"
+   },
+   {
+    "name": "Bananas Foster Pie",
+    "description": "",
+    "price": "$13.39",
+    "section": "Desserts"
+   },
+   {
+    "name": "Funnel Cake Fries",
+    "description": "",
+    "price": "$12.19",
+    "section": "Desserts"
+   },
+   {
+    "name": "Triple Layer Chocolate Cake",
+    "description": "",
+    "price": "$14.49",
+    "section": "Desserts"
+   },
+   {
+    "name": "Brookie Sundae Tower",
+    "description": "",
+    "price": "$14.49",
+    "section": "Desserts"
+   },
+   {
+    "name": "ICEE COLA",
+    "description": "",
+    "price": "$6.09",
+    "section": "Drinks"
+   },
+   {
+    "name": "ICEE BLUE RASP",
+    "description": "",
+    "price": "$6.09",
+    "section": "Drinks"
+   },
+   {
+    "name": "Mango Flavored Tea",
+    "description": "",
+    "price": "$5.59",
+    "section": "Drinks"
+   },
+   {
+    "name": "Blue Raspberry Lemonade",
+    "description": "",
+    "price": "$5.59",
+    "section": "Drinks"
+   },
+   {
+    "name": "Dr. Pepper",
+    "description": "",
+    "price": "$4.49",
+    "section": "Drinks"
+   },
+   {
+    "name": "ICEE CHERRY",
+    "description": "",
+    "price": "$6.09",
+    "section": "Drinks"
+   },
+   {
+    "name": "Fanta Orange",
+    "description": "",
+    "price": "$4.49",
+    "section": "Drinks"
+   },
+   {
+    "name": "Iced Tea",
+    "description": "",
+    "price": "$4.99",
+    "section": "Drinks"
+   },
+   {
+    "name": "Sugar Free Red Bull",
+    "description": "",
+    "price": "$4.99",
+    "section": "Drinks"
+   },
+   {
+    "name": "Red Bull Watermelon",
+    "description": "",
+    "price": "$4.99",
+    "section": "Drinks"
+   },
+   {
+    "name": "D&B Teamonade",
+    "description": "",
+    "price": "$5.59",
+    "section": "Drinks"
+   },
+   {
+    "name": "Strawberry Lemonade",
+    "description": "",
+    "price": "$5.59",
+    "section": "Drinks"
+   },
+   {
+    "name": "Kids Pizza",
+    "description": "",
+    "price": "$10.59",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Kids Fish & Chips",
+    "description": "",
+    "price": "$11.09",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Kids Cheese Quesadilla",
+    "description": "",
+    "price": "$11.09",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Kids Pretzel Dogs",
+    "description": "",
+    "price": "$10.59",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Kids Goldfingers",
+    "description": "",
+    "price": "$11.09",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Kids Grilled Chicken & Rice",
+    "description": "",
+    "price": "$11.09",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Kids Cheeseburger",
+    "description": "",
+    "price": "$11.09",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Kids Mac & Cheese",
+    "description": "",
+    "price": "$9.49",
+    "section": "Kids Menu"
+   }
+  ]
+ },
+ {
+  "restaurantId": "9165",
+  "name": "Salt & Straw",
+  "sourceUrl": "https://www.ubereats.com/store/salt-%26-straw-ice-cream-little-italy/9269d1e4-ec23-462e-a893-23ed520a40c4",
+  "confidence": "medium",
+  "notes": "Little Italy location. Prices extracted from Uber Eats catalog JSON embedded in the page (priceTagline fields), not full JSON.parse (a nested metaJson field breaks strict parsing) - used targeted regex extraction instead. Menu has two overlapping pint tiers with different prices for what appear to be the same or similar flavors: 'Classic Pints' at $14.75 (11 core flavors) and a second 'Ice Cream Pints' section listing additional pie-collaboration flavors plus 3 items - Salted Malted Chocolate Chip Cookie Dough, Sea Salt with Caramel Ribbons, Coffee and Love Nuts - priced at $11.80 with slightly different item-name text/capitalization than their $14.75 Classic Pints counterparts. Per standing rule, these were kept as distinct line items rather than merged since exact captured text and price differ; exact duplicate name+price captures (from the same items appearing twice in the underlying page data) were excluded rather than double-counted. Prices are Uber Eats delivery marketplace prices, not verified in-store prices.",
+  "dishes": [
+   {
+    "name": "Sea Salt w/ Caramel Ribbons",
+    "description": "",
+    "price": "$14.75",
+    "section": "Classic Pints"
+   },
+   {
+    "name": "Double Fold Vanilla",
+    "description": "",
+    "price": "$14.75",
+    "section": "Classic Pints"
+   },
+   {
+    "name": "Chocolate Gooey Brownie",
+    "description": "",
+    "price": "$14.75",
+    "section": "Classic Pints"
+   },
+   {
+    "name": "Salted, Malted, Chocolate Chip Cookie dough",
+    "description": "",
+    "price": "$14.75",
+    "section": "Classic Pints"
+   },
+   {
+    "name": "Honey Lavender",
+    "description": "",
+    "price": "$14.75",
+    "section": "Classic Pints"
+   },
+   {
+    "name": "Strawberry Honey Balsamic w/ Black Pepper",
+    "description": "",
+    "price": "$14.75",
+    "section": "Classic Pints"
+   },
+   {
+    "name": "Arbequina Olive Oil",
+    "description": "",
+    "price": "$14.75",
+    "section": "Classic Pints"
+   },
+   {
+    "name": "Freckled Mint Chocolate Chip (v)",
+    "description": "",
+    "price": "$14.75",
+    "section": "Classic Pints"
+   },
+   {
+    "name": "Strawberry Coconut Water Sherbet (v)",
+    "description": "",
+    "price": "$14.75",
+    "section": "Classic Pints"
+   },
+   {
+    "name": "Cinnamon Snickerdoodle",
+    "description": "",
+    "price": "$14.75",
+    "section": "Classic Pints"
+   },
+   {
+    "name": "Pear & Blue Cheese",
+    "description": "",
+    "price": "$14.75",
+    "section": "Classic Pints"
+   },
+   {
+    "name": "The Summer Pies Series 5-Pack",
+    "description": "",
+    "price": "$73.75",
+    "section": "Ice Cream Pints"
+   },
+   {
+    "name": "Wild-Foraged Berry Slab Pie",
+    "description": "",
+    "price": "$14.75",
+    "section": "Ice Cream Pints"
+   },
+   {
+    "name": "Wildflower Honey & Lemon Chess Pie",
+    "description": "",
+    "price": "$14.75",
+    "section": "Ice Cream Pints"
+   },
+   {
+    "name": "Gruyère & Tomato Custard Tart",
+    "description": "",
+    "price": "$14.75",
+    "section": "Ice Cream Pints"
+   },
+   {
+    "name": "Salted, Malted, Chocolate Chip Cookie Dough",
+    "description": "",
+    "price": "$11.80",
+    "section": "Ice Cream Pints"
+   },
+   {
+    "name": "Sea Salt with Caramel Ribbons",
+    "description": "",
+    "price": "$11.80",
+    "section": "Ice Cream Pints"
+   },
+   {
+    "name": "Hazelnut Cookies and Cream (v)",
+    "description": "",
+    "price": "$14.75",
+    "section": "Ice Cream Pints"
+   },
+   {
+    "name": "Coffee and Love Nuts",
+    "description": "",
+    "price": "$11.80",
+    "section": "Ice Cream Pints"
+   },
+   {
+    "name": "House Made Waffle Cone (on the side)",
+    "description": "",
+    "price": "$1.95",
+    "section": "Waffle Cones & More"
+   },
+   {
+    "name": "Open Water Bottled Water (16 fl oz)",
+    "description": "",
+    "price": "$2.40",
+    "section": "Beverages"
+   },
+   {
+    "name": "Open Water Sparkling",
+    "description": "",
+    "price": "$4.15",
+    "section": "Beverages"
+   },
+   {
+    "name": "The Cake",
+    "description": "",
+    "price": "$93.25",
+    "section": "Ice Cream Cakes"
+   },
+   {
+    "name": "Pup Cup",
+    "description": "",
+    "price": "$4.45",
+    "section": "Pup Cups"
+   },
+   {
+    "name": "The Tacolate",
+    "description": "",
+    "price": "$7.52",
+    "section": "Featured"
+   }
+  ]
+ },
+ {
+  "restaurantId": "8886",
+  "name": "Rockin' Baja Lobster - Gaslamp",
+  "sourceUrl": "https://rockinbaja.com/menus/ (PDF menu, Gaslamp location)",
+  "confidence": "medium",
+  "notes": "PDF menu is a scrambled multi-column layout (plain pdftotext, no -layout, misattributes some columns' trailing prices to the wrong item). Cross-verified every filed name/price pair against the pdftotext -layout column positions to confirm correct pairing before filing. Filed only the 3 sections where every item's price could be confirmed via matching column position: Starters & Buckets (12 items), Baja Buns & Bowls (6 items), Soup/Salad/Sides (8 items) = 26 items. Deliberately excluded the Signature Baja Buckets, Palapa Platters, Tacos/Burritos, and Beverages/Cocktails sections - their columns interleave unpredictably (confirmed one clear cross-column misattribution: a bucket's $89-for-2 price nearly got attached to 'Mexican Crab Raggoons') and prices could not be paired with confidence. Some items have optional add-on upcharges (e.g. Rockin' Works Burger $21, +$2 for sliced avocado; Caesar Salad $13, +$6 to add chicken) - only the base price was filed, add-ons omitted.",
+  "dishes": [
+   {
+    "name": "Salsa & Queso Flight",
+    "description": "",
+    "price": "$10.00",
+    "section": "Starters & Buckets"
+   },
+   {
+    "name": "Hot Wings \"Alitas de Bufalo\"",
+    "description": "",
+    "price": "$21.00",
+    "section": "Starters & Buckets"
+   },
+   {
+    "name": "Fresh Guacamole & Chips",
+    "description": "",
+    "price": "$16.00",
+    "section": "Starters & Buckets"
+   },
+   {
+    "name": "Carne Asada Fries",
+    "description": "",
+    "price": "$22.00",
+    "section": "Starters & Buckets"
+   },
+   {
+    "name": "Fried Lobster & Shrimp Bites",
+    "description": "",
+    "price": "$22.00",
+    "section": "Starters & Buckets"
+   },
+   {
+    "name": "Crispy Calamari & Shrimp",
+    "description": "",
+    "price": "$20.00",
+    "section": "Starters & Buckets"
+   },
+   {
+    "name": "Mexican Crab Raggoons",
+    "description": "",
+    "price": "$17.00",
+    "section": "Starters & Buckets"
+   },
+   {
+    "name": "Mexican Corn Ribs",
+    "description": "",
+    "price": "$15.00",
+    "section": "Starters & Buckets"
+   },
+   {
+    "name": "Tequila Lime Shrimp",
+    "description": "",
+    "price": "$17.00",
+    "section": "Starters & Buckets"
+   },
+   {
+    "name": "Ceviche Stack",
+    "description": "",
+    "price": "$18.00",
+    "section": "Starters & Buckets"
+   },
+   {
+    "name": "Campechana",
+    "description": "",
+    "price": "$26.00",
+    "section": "Starters & Buckets"
+   },
+   {
+    "name": "Octo-Birria Taco",
+    "description": "",
+    "price": "$13.00",
+    "section": "Starters & Buckets"
+   },
+   {
+    "name": "Rockin' Works Burger",
+    "description": "",
+    "price": "$21.00",
+    "section": "Baja Buns & Bowls"
+   },
+   {
+    "name": "Ahi Poke Bowl",
+    "description": "",
+    "price": "$25.00",
+    "section": "Baja Buns & Bowls"
+   },
+   {
+    "name": "Fajita Bowl",
+    "description": "",
+    "price": "$25.00",
+    "section": "Baja Buns & Bowls"
+   },
+   {
+    "name": "California Burrito Bowl",
+    "description": "",
+    "price": "$25.00",
+    "section": "Baja Buns & Bowls"
+   },
+   {
+    "name": "Surf & Turf Bowl",
+    "description": "",
+    "price": "$25.00",
+    "section": "Baja Buns & Bowls"
+   },
+   {
+    "name": "Baja Fish Bowl",
+    "description": "",
+    "price": "$25.00",
+    "section": "Baja Buns & Bowls"
+   },
+   {
+    "name": "Mexican Street Corn",
+    "description": "",
+    "price": "$6.00",
+    "section": "Soup, Salad & Sides"
+   },
+   {
+    "name": "Chili Güeros & Onions",
+    "description": "",
+    "price": "$6.00",
+    "section": "Soup, Salad & Sides"
+   },
+   {
+    "name": "Ranchero Beans",
+    "description": "",
+    "price": "$5.00",
+    "section": "Soup, Salad & Sides"
+   },
+   {
+    "name": "Black Beans",
+    "description": "",
+    "price": "$5.00",
+    "section": "Soup, Salad & Sides"
+   },
+   {
+    "name": "Cilantro Lime Rice",
+    "description": "",
+    "price": "$5.00",
+    "section": "Soup, Salad & Sides"
+   },
+   {
+    "name": "Caesar Salad",
+    "description": "",
+    "price": "$13.00",
+    "section": "Soup, Salad & Sides"
+   },
+   {
+    "name": "Lobster Corn Chowder Cup",
+    "description": "",
+    "price": "$7.00",
+    "section": "Soup, Salad & Sides"
+   },
+   {
+    "name": "Lobster Corn Chowder Bowl",
+    "description": "",
+    "price": "$10.00",
+    "section": "Soup, Salad & Sides"
+   }
+  ]
+ },
+ {
+  "restaurantId": "8685",
+  "name": "The Cheesecake Factory",
+  "sourceUrl": "https://page-service.doordash.com/store/the-cheesecake-factory-carlsbad-154756/",
+  "confidence": "medium",
+  "notes": "DoorDash JSON-LD for this store is severely truncated (only 91 of ~423 catalog items serialize into the standard ld+json Menu block, missing ~23 of 31 real menu categories per the embedded menuCategories metadata). Full item list recovered via regex extraction of the raw HTML's inline escaped JSON catalog blob (name/description/displayPrice fields plus each item's logging.fieldsMap container_name), matched against menuCategories section counts. Section-header false positives (item name equal to its own container_name) were filtered out. A residual ~26-item bucket lacking a nearby container_name was cross-checked against all sectioned items: ~22 were exact name+price duplicates of items already filed under their real section (dropped as redundant) or non-item JSON-parsing artifacts (dropped: a corrupted \"$14.50 All Day...\" fragment that was actually a slice of the menuList/menuCategories metadata block, and a garbage \"The Cheesecake Factory $19.95\" self-referential match). The remaining 4 (Fettuccini Alfredo with Chicken $33.95, Chicken Madeira $30.95, Cajun Salmon* $34.95, Steak Diane $33.95) were confirmed real items appearing a second time elsewhere in the page with an intact logging block, from which their true section was recovered directly (Pastas, Specialties, Fish & Seafood, Steaks respectively) rather than inferred by name. Confidence set to medium (marketplace source, not first-party) despite the unusually large recovery effort; no prices were invented, merged, or divided — every price is a displayPrice value read directly from the page.",
+  "dishes": [
+   {
+    "name": "Oreo® Dream Extreme Cheesecake",
+    "price": "$13.95",
+    "section": "Most Ordered",
+    "description": "Creamy Cheesecake Layered with Oreo® Cookies, Topped with Oreo® Cookie Mousse and Chocolate Icing"
+   },
+   {
+    "name": "Carrot Cake",
+    "price": "$13.50",
+    "section": "Most Ordered",
+    "description": "Deliciously Moist Layers of Carrot Cake and Our Famous Cream Cheese Icing"
+   },
+   {
+    "name": "Brownie Crunch Choc-A-Lot Cheesecake",
+    "price": "$13.95",
+    "section": "Most Ordered",
+    "description": "Milk and White Chocolate Marbled Cheesecake On a Crunchy Toffee Brownie"
+   },
+   {
+    "name": "Linda's Fudge Cake",
+    "price": "$13.50",
+    "section": "Most Ordered",
+    "description": "Layers of Rich Chocolate Cake and Fudge Frosting"
+   },
+   {
+    "name": "Key Lime Cheesecake",
+    "price": "$12.95",
+    "section": "Most Ordered",
+    "description": "Key Lime Pie in a Cheesecake! Deliciously Tart and Creamy on a Vanilla Crumb Crust"
+   },
+   {
+    "name": "Fried Macaroni and Cheese",
+    "price": "$19.95",
+    "section": "Most Ordered",
+    "description": "Crispy Crumb Coated Macaroni and Cheese Balls. Served over a Creamy Marinara Sauce"
+   },
+   {
+    "name": "Godiva® Chocolate Cheesecake",
+    "price": "$13.95",
+    "section": "Most Ordered",
+    "description": "Flourless Godiva® Chocolate Cake, Topped with Godiva® Chocolate Cheesecake and Chocolate Mousse"
+   },
+   {
+    "name": "Chocolate Tower Truffle Cake™",
+    "price": "$13.95",
+    "section": "Most Ordered",
+    "description": "Layers and Layers of Fudge Cake with Chocolate Truffle Cream and Chocolate Mousse"
+   },
+   {
+    "name": "Ultimate Red Velvet Cake Cheesecake™",
+    "price": "$13.95",
+    "section": "Most Ordered",
+    "description": "Layers of Red Velvet Cake and Cheesecake Covered in Cream Cheese Frosting. Finished with White Chocolate"
+   },
+   {
+    "name": "Reese's® Peanut Butter Chocolate Cake Cheesecake",
+    "price": "$13.95",
+    "section": "Most Ordered",
+    "description": "Reese's Peanut Butter Cups in Our Original Cheesecake with Layers of Delicious Fudge Cake and Caramel"
+   },
+   {
+    "name": "Chicken Piccata",
+    "price": "$30.95",
+    "section": "Most Ordered",
+    "description": "Sauteed Chicken Breast with Lemon Sauce, Mushrooms and Capers. Served with Angel Hair Pasta"
+   },
+   {
+    "name": "Parmesan Truffle Fries",
+    "price": "$12.50",
+    "section": "New Menu - Bites",
+    "description": "Served with Truffle Aioli"
+   },
+   {
+    "name": "Chicken & Biscuits",
+    "price": "$11.50",
+    "section": "New Menu - Bites",
+    "description": "Our Housemade Buttermilk Biscuits with Southern Fried Chicken, Sausage Gravy and Hot Honey Butter"
+   },
+   {
+    "name": "Baked Brie With Truffle-Honey Butter",
+    "price": "$10.50",
+    "section": "New Menu - Bites",
+    "description": "Warm Bread with Brie Cheese Drizzled with Truffle-Honey Butter and Housemade Orange Marmalade"
+   },
+   {
+    "name": "Pickle Fries",
+    "price": "$8.95",
+    "section": "New Menu - Bites",
+    "description": "Hand Breaded and Fried Crisp. Served with Spicy Ranch"
+   },
+   {
+    "name": "Spicy Jambalaya Arancini",
+    "price": "$8.95",
+    "section": "New Menu - Bites",
+    "description": "Spicy Creole Rice Fried Crisp with Andouille Sausage, Peppers and Onions"
+   },
+   {
+    "name": "Pigs in a Blanket",
+    "price": "$11.50",
+    "section": "New Menu - Bites",
+    "description": "Pastry Wrapped All-Beef Hot Dogs Served with Honey Mustard"
+   },
+   {
+    "name": "BBQ Pork Belly Buns",
+    "price": "$10.50",
+    "section": "New Menu - Bites",
+    "description": "Tender Pork Served on Warm, Soft Rolls with Cole Slaw, Crispy Onions and Pickles"
+   },
+   {
+    "name": "Sweet-Soy Glazed Ribs",
+    "price": "$11.50",
+    "section": "New Menu - Bites",
+    "description": "Tender Ribs with Our Soy-Garlic Chili Sauce and Sesame Seeds"
+   },
+   {
+    "name": "Meatball Sliders",
+    "price": "$10.95",
+    "section": "New Menu - Bites",
+    "description": "Our Housemade Meatballs Covered with Vodka Sauce, Melted Mozzarella and Parmesan Cheese on Toasted Ciabatta Bread"
+   },
+   {
+    "name": "Asian Chicken Nachos",
+    "price": "$10.50",
+    "section": "New Menu - Bites",
+    "description": "Wonton Chips, Melted Cheese, Thai Peanut Sauce, Green Onion, Sesame and Wasabi Cream"
+   },
+   {
+    "name": "New Orleans Cajun Shrimp",
+    "price": "$10.50",
+    "section": "New Menu - Bites",
+    "description": "With Creole Sauce Over Toasted Bread"
+   },
+   {
+    "name": "Teriyaki Salmon",
+    "price": "$22.50",
+    "section": "New Menu - Bowls",
+    "description": "Charbroiled and Served Over White Rice with Pineapple, Sauteed Vegetables and Sesame Seeds"
+   },
+   {
+    "name": "Baja Bowl with Grilled Chicken",
+    "price": "$18.95",
+    "section": "New Menu - Bowls",
+    "description": "With Rice, Beans, Roasted Corn Salsa, Guacamole, Sour Cream and Crispy Tortilla Strips"
+   },
+   {
+    "name": "Chicken Katsu",
+    "price": "$16.95",
+    "section": "New Menu - Bowls",
+    "description": "Crispy Chicken with Teriyaki Glaze, Edamame, Mushrooms, Cucumber and Sesame Seeds with White Rice"
+   },
+   {
+    "name": "Ahi Tuna Poke with White Rice*",
+    "price": "$22.50",
+    "section": "New Menu - Bowls",
+    "description": "Sushi Grade Ahi Tuna with Soy, Sesame and Garlic with Edamame, Avocado, Cucumber, Carrot, Onion and Ginger"
+   },
+   {
+    "name": "Mediterranean Bowl",
+    "price": "$17.95",
+    "section": "New Menu - Bowls",
+    "description": "Charbroiled Chicken Kabobs with Rice, Tomato-Cucumber Salad, Cilantro and Pita Bread"
+   },
+   {
+    "name": "Asian Tenderloin",
+    "price": "$22.50",
+    "section": "New Menu - Bowls",
+    "description": "Tender Pieces of Steak with Snow Peas, Broccoli, Peppers, Onion and Sesame. Served Over Garlic Noodles"
+   },
+   {
+    "name": "Ahi Tuna Poke with Mixed Greens*",
+    "price": "$22.50",
+    "section": "New Menu - Bowls",
+    "description": "Sushi Grade Ahi Tuna with Soy, Sesame and Garlic with Edamame, Avocado, Cucumber, Carrot, Onion and Ginger"
+   },
+   {
+    "name": "Baja Bowl with Chipotle-Honey Shrimp",
+    "price": "$18.95",
+    "section": "New Menu - Bowls",
+    "description": "With Rice, Beans, Roasted Corn Salsa, Guacamole, Sour Cream and Crispy Tortilla Strips"
+   },
+   {
+    "name": "Baja Bowl with Pork Carnitas",
+    "price": "$18.95",
+    "section": "New Menu - Bowls",
+    "description": "With Rice, Beans, Roasted Corn Salsa, Guacamole, Sour Cream and Crispy Tortilla Strips"
+   },
+   {
+    "name": "Street Corn",
+    "price": "$12.50",
+    "section": "Small Plates & Snacks",
+    "description": "Fire Roasted Corn “Ribs” with Parmesan, Chile-Lime Mayonnaise and Cilantro."
+   },
+   {
+    "name": "Korean Fried Cauliflower",
+    "price": "$14.50",
+    "section": "Small Plates & Snacks",
+    "description": "Crispy Cauliflower Tossed with a Sweet and Spicy Sauce, Toasted Sesame Seeds and Green Onion"
+   },
+   {
+    "name": "Crispy Fried Cheese",
+    "price": "$16.50",
+    "section": "Small Plates & Snacks",
+    "description": "Mozzarella and Fontina Cheeses with Marinara Sauce"
+   },
+   {
+    "name": "Chicken Taquitos",
+    "price": "$13.50",
+    "section": "Small Plates & Snacks",
+    "description": "Crispy Corn Tortillas Filled with Grilled Chicken, Green Chile, Corn, Onion, Cilantro and Cheese. Served with Avocado Cream and Salsa Verde"
+   },
+   {
+    "name": "Stuffed Mushrooms",
+    "price": "$15.50",
+    "section": "Small Plates & Snacks",
+    "description": "Fontina and Parmesan Cheese, Garlic and Herbs in a Wine Sauce"
+   },
+   {
+    "name": "Fried Zucchini",
+    "price": "$14.50",
+    "section": "Small Plates & Snacks",
+    "description": "Lightly Breaded and Topped with Parmesan Cheese. Served with Ranch Dressing"
+   },
+   {
+    "name": "Crispy Crab Bites",
+    "price": "$15.50",
+    "section": "Small Plates & Snacks",
+    "description": "Bite-Sized Little Crab Cakes Served with Mustard Sauce"
+   },
+   {
+    "name": "Crispy Brussels Sprouts",
+    "price": "$13.95",
+    "section": "Small Plates & Snacks",
+    "description": "Roasted Brussels Sprouts and Crispy Leaves Tossed with Bacon and Maple-Butter Glaze"
+   },
+   {
+    "name": "Crab Wontons",
+    "price": "$16.50",
+    "section": "Small Plates & Snacks",
+    "description": "Classic “Crab Rangoon” with Crab, Cream Cheese and Green Onion Fried Crisp and Served with Sweet Chili Sauce"
+   },
+   {
+    "name": "Beet and Avocado Salad",
+    "price": "$15.50",
+    "section": "Small Plates & Snacks",
+    "description": "Glazed Beets, Quinoa, Avocado, Fresh Orange, Arugula and Honey-Yogurt Sauce"
+   },
+   {
+    "name": "Little House Salad",
+    "price": "$10.50",
+    "section": "Small Plates & Snacks",
+    "description": "Tossed in Our Vinaigrette"
+   },
+   {
+    "name": "Pepperoni",
+    "price": "$16.95",
+    "section": "Flatbread Pizzas",
+    "description": "Pepperoni, cheese & sauce."
+   },
+   {
+    "name": "Margherita",
+    "price": "$15.50",
+    "section": "Flatbread Pizzas",
+    "description": "Fresh Mozzarella, Basil and Tomato Sauce"
+   },
+   {
+    "name": "Cheese",
+    "price": "$14.95",
+    "section": "Flatbread Pizzas",
+    "description": "Mozzarella and Tomato Sauce"
+   },
+   {
+    "name": "Fresh Basil, Tomato & Cheese",
+    "price": "$15.95",
+    "section": "Flatbread Pizzas",
+    "description": "With Mozzarella, Fontina and Parmesan"
+   },
+   {
+    "name": "Avocado Eggrolls",
+    "price": "$19.50",
+    "section": "Appetizers",
+    "description": "Avocado, Sun-Dried Tomato, Red Onion and Cilantro Fried in a Crisp Wrapper. Served with a Tamarind-Cashew Dipping Sauce"
+   },
+   {
+    "name": "(Full Portion) Thai Lettuce Wraps with Chicken",
+    "price": "$22.50",
+    "section": "Appetizers",
+    "description": "Create Your Own Thai Lettuce Rolls! Satay Chicken Strips, Carrots, Bean Sprouts, Coconut Curry Noodles and Lettuce Leaves with Three Delicious Spicy Thai Sauces – Peanut, Sweet Red Chili and Tamarind-Cashew"
+   },
+   {
+    "name": "Fried Calamari",
+    "price": "$21.50",
+    "section": "Appetizers",
+    "description": "Fried Light and Crisp. Served with Garlic Dip and Cocktail Sauce"
+   },
+   {
+    "name": "Eggroll Sampler",
+    "price": "$19.95",
+    "section": "Appetizers",
+    "description": "A Variety of All of Our Rolls with Avocado, Tex Mex, Cheeseburger Spring Rolls and Chicken Taquitos"
+   },
+   {
+    "name": "Buffalo Blasts®",
+    "price": "$20.50",
+    "section": "Appetizers",
+    "description": "Chicken, Cheese and Our Spicy Buffalo Sauce all Stuffed in a Spiced Wrapper and Fried until Crisp. Served with Celery Sticks and Blue Cheese Dressing"
+   },
+   {
+    "name": "Hot Spinach and Cheese Dip",
+    "price": "$20.50",
+    "section": "Appetizers",
+    "description": "Spinach, Artichoke Hearts, Shallots, Garlic and a Mixture of Cheeses Served Warm with Tortilla Chips and Salsa. Enough for Two"
+   },
+   {
+    "name": "Tex Mex Eggrolls",
+    "price": "$16.95",
+    "section": "Appetizers",
+    "description": "Spicy Chicken, Corn, Black Beans, Peppers, Onions and Melted Cheese. Served with Avocado Cream and Salsa"
+   },
+   {
+    "name": "Spicy Tuna*",
+    "price": "$22.50",
+    "section": "Appetizers",
+    "description": "Ahi Tuna on Crispy Sushi Rice with Ginger and Green Onion."
+   },
+   {
+    "name": "Warm Crab Dip",
+    "price": "$18.95",
+    "section": "Appetizers",
+    "description": "A Delicious Blend of Crab, Artichokes and Creamy Cheese Served with Fresh Baked Crostini"
+   },
+   {
+    "name": "Ahi Poke Nachos*",
+    "price": "$22.50",
+    "section": "Appetizers",
+    "description": "Crispy Wontons Covered with Hawaiian Style Ahi Tuna Poke, Avocado, Green Onion, Chiles, Sesame Seeds and Sriracha Aioli."
+   },
+   {
+    "name": "Thai Chili Shrimp",
+    "price": "$17.50",
+    "section": "Appetizers",
+    "description": "Crispy Shrimp Tossed with Spicy Aioli"
+   },
+   {
+    "name": "Chicken Pot Stickers",
+    "price": "$18.95",
+    "section": "Appetizers",
+    "description": "Asian Dumplings Pan-Fried in the Classic Tradition. Served with Our Soy-Ginger Sesame Sauce"
+   },
+   {
+    "name": "Pretzel Bites with Cheddar Cheese Fondue",
+    "price": "$17.95",
+    "section": "Appetizers",
+    "description": "Baked Soft and Warm with Cheddar Cheese Sauce"
+   },
+   {
+    "name": "Quesadilla with Chicken",
+    "price": "$20.50",
+    "section": "Appetizers",
+    "description": "Grilled Flour Tortilla Filled with Melted Cheese, Green Onions and Chiles. Garnished with Guacamole, Salsa and Sour Cream"
+   },
+   {
+    "name": "Bowl of Housemade Soup",
+    "price": "$12.50",
+    "section": "Appetizers",
+    "description": "Your choice of: Mexican Chicken and Tortilla Soup (Served Daily), Cream of Chicken with Artichoke Hearts and Mushrooms (Served Daily EXCEPT Friday) or Clam Chowder (Served Fridays Only)"
+   },
+   {
+    "name": "Buffalo Chicken Strips With French Fries",
+    "price": "$20.50",
+    "section": "Appetizers",
+    "description": "Fried Chicken Strips Covered in Hot Sauce and Served with Blue Cheese Dressing and Celery Sticks"
+   },
+   {
+    "name": "Factory Nachos with Spicy Chicken",
+    "price": "$23.95",
+    "section": "Appetizers",
+    "description": "Crisp Tortilla Chips Covered with Melted Cheeses, Guacamole, Red Chile Sauce, Sour Cream, Jalapeños, Green Onions and Salsa"
+   },
+   {
+    "name": "(Smaller Portion) Thai Lettuce Wraps with Chicken",
+    "price": "$16.50",
+    "section": "Appetizers",
+    "description": "Create Your Own Thai Lettuce Rolls! Satay Chicken Strips, Carrots, Bean Sprouts, Coconut Curry Noodles and Lettuce Leaves with Three Delicious Spicy Thai Sauces – Peanut, Sweet Red Chili and Tamarind-Cashew"
+   },
+   {
+    "name": "Factory Nachos",
+    "price": "$19.95",
+    "section": "Appetizers",
+    "description": "Crisp Tortilla Chips Covered with Melted Cheeses, Guacamole, Red Chile Sauce, Sour Cream, Jalapeños, Green Onion and Salsa"
+   },
+   {
+    "name": "Roadside Sliders With French Fries*",
+    "price": "$19.95",
+    "section": "Appetizers",
+    "description": "Bite-Sized Burgers on Mini-Buns Served with Grilled Onions, Pickles and Ketchup"
+   },
+   {
+    "name": "Roadside Sliders*",
+    "price": "$17.95",
+    "section": "Appetizers",
+    "description": "Bite-Sized Burgers on Mini-Buns Served with Grilled Onions, Pickles and Ketchup"
+   },
+   {
+    "name": "Quesadilla",
+    "price": "$16.95",
+    "section": "Appetizers",
+    "description": "Grilled Flour Tortilla Filled with Melted Cheese, Green Onions and Chiles. Garnished with Guacamole, Salsa and Sour Cream"
+   },
+   {
+    "name": "Buffalo Wings",
+    "price": "$22.50",
+    "section": "Appetizers",
+    "description": "Fried Wings Covered in Hot Sauce and Served with Blue Cheese Dressing and Celery Sticks"
+   },
+   {
+    "name": "Buffalo Chicken Strips",
+    "price": "$18.50",
+    "section": "Appetizers",
+    "description": "Fried Chicken Strips Covered in Hot Sauce and Served with Blue Cheese Dressing and Celery Sticks"
+   },
+   {
+    "name": "Buffalo Wings With French Fries",
+    "price": "$24.95",
+    "section": "Appetizers",
+    "description": "Fried Wings Covered in Hot Sauce and Served with Blue Cheese Dressing and Celery Sticks"
+   },
+   {
+    "name": "(Smaller Portion) Thai Lettuce Wraps with Grilled Avocado",
+    "price": "$16.50",
+    "section": "Appetizers",
+    "description": "Create Your Own Thai Lettuce Rolls! Grilled Avocado, Carrots, Bean Sprouts, Coconut Curry Noodles and Lettuce Leaves with Three Delicious Spicy Thai Sauces – Peanut, Sweet Red Chili and Tamarind-Cashew"
+   },
+   {
+    "name": "(Full Portion) Thai Lettuce Wraps with Grilled Avocado",
+    "price": "$22.50",
+    "section": "Appetizers",
+    "description": "Create Your Own Thai Lettuce Rolls! Grilled Avocado, Carrots, Bean Sprouts, Coconut Curry Noodles and Lettuce Leaves with Three Delicious Spicy Thai Sauces – Peanut, Sweet Red Chili and Tamarind-Cashew"
+   },
+   {
+    "name": "Smokehouse BBQ Burger",
+    "price": "$23.95",
+    "section": "Glamburgers",
+    "description": "Smoked Bacon and Melted Cheddar with Crispy Onion Strings, B.B.Q. Ranch Sauce and Lettuce"
+   },
+   {
+    "name": "Double Smash Cheeseburger*",
+    "price": "$21.50",
+    "section": "Glamburgers",
+    "description": "Double Patties, Double Cheese, Grilled Onions and Special Sauce on a Toasted Brioche Roll"
+   },
+   {
+    "name": "French Dip Cheeseburger",
+    "price": "$23.95",
+    "section": "Glamburgers",
+    "description": "Charbroiled Cheeseburger Served on a Toasted Brioche Roll with Grilled Onions, Sriracha Mayo and Au Jus for Dipping"
+   },
+   {
+    "name": "Old Fashioned Burger",
+    "price": "$20.50",
+    "section": "Glamburgers",
+    "description": "Charbroiled on a Toasted Brioche Bun Topped with Lettuce, Tomato, Onion, Pickles and Mayonnaise"
+   },
+   {
+    "name": "Macaroni and Cheese Burger",
+    "price": "$23.95",
+    "section": "Glamburgers",
+    "description": "Charbroiled and Topped with Our Creamy Fried Macaroni and Cheese Balls and Cheddar Cheese Sauce. Topped with Lettuce, Tomato, Pickles and Onion"
+   },
+   {
+    "name": "Classic Burger",
+    "price": "$22.50",
+    "section": "Glamburgers",
+    "description": "A Chop House Hamburger. Topped with a Slice of Grilled Onion, Lettuce and Tomato"
+   },
+   {
+    "name": "Americana Cheeseburger",
+    "price": "$23.95",
+    "section": "Glamburgers",
+    "description": "Topped with American and Cheddar Cheese, Crunchy Potato Crisps, Lettuce, Tomato, Grilled Onions, Pickles and Secret Sauce"
+   },
+   {
+    "name": "Bistro Burger*",
+    "price": "$22.50",
+    "section": "Glamburgers",
+    "description": "Topped with Bacon, Caramelized Onion, Arugula, Housemade Steak Sauce and Garlic Aioli on a Toasted Roll"
+   },
+   {
+    "name": "Factory Turkey Burger",
+    "price": "$23.95",
+    "section": "Glamburgers",
+    "description": "Combined with Fresh Mushrooms, Garlic and Spices. Charbroiled with Fontina Cheese, Avocado, Tomato, Arugula and Marinated Onion. Served on Our \\\\\"Brown Bread\\\\\" Bun with Garlic Aioli"
+   },
+   {
+    "name": "Veggie Burger",
+    "price": "$21.50",
+    "section": "Glamburgers",
+    "description": "Crisp Lettuce, Grilled Asparagus, Avocado, Roasted Beets, Green Beans, Tomato, Cucumber, Carrot, White Beans, Quinoa, Farro, Almonds and Toasted Pepitas with House Vinaigrette"
+   },
+   {
+    "name": "Chicken Parmesan Sandwich",
+    "price": "$23.50",
+    "section": "Sandwiches",
+    "description": "Tender Chicken Lightly Coated in Parmesan Breadcrumbs, Tomato Sauce and Melted Cheese on a Freshly Grilled French Roll"
+   },
+   {
+    "name": "Grilled Chicken and Avocado Club",
+    "price": "$22.50",
+    "section": "Sandwiches",
+    "description": "Grilled Chicken Breast with Avocado, Bacon, Tomato, Melted Swiss and Herb Mayonnaise"
+   },
+   {
+    "name": "Chicken Shawarma",
+    "price": "$20.50",
+    "section": "Sandwiches",
+    "description": "Pita Bread Filled with Grilled Chicken, Tomato, Housemade Pickles, Onion, Garlic and Cilantro"
+   },
+   {
+    "name": "Cuban Sandwich",
+    "price": "$21.95",
+    "section": "Sandwiches",
+    "description": "Slow Roasted Pork, Ham, Swiss Cheese, Pickles, Mustard and Mayonnaise on a Grilled and Pressed Roll"
+   },
+   {
+    "name": "Spicy Chipotle Mayo Crispy Chicken Sandwich",
+    "price": "$21.95",
+    "section": "Sandwiches",
+    "description": "Crispy Chicken Breast with Cheese Served on a Brioche Bun"
+   },
+   {
+    "name": "Modern Cheesesteak",
+    "price": "$27.50",
+    "section": "Sandwiches",
+    "description": "With Melted Cheese and Grilled Onion on a Toasted Sesame Roll"
+   },
+   {
+    "name": "Chicken Salad Sandwich",
+    "price": "$20.50",
+    "section": "Sandwiches",
+    "description": "Housemade with Roasted Almonds, Lettuce, Tomato and Mayonnaise. Served on Grilled Brioche Bread"
+   },
+   {
+    "name": "Spicy Buffalo Sauce Crispy Chicken Sandwich",
+    "price": "$21.95",
+    "section": "Sandwiches",
+    "description": "Crispy Chicken Breast with Cheese Served on a Brioche Bun"
+   },
+   {
+    "name": "Crispy Factory Fish Sandwich",
+    "price": "$21.50",
+    "section": "Sandwiches",
+    "description": "Fried Pacific Swordfish, Cheese, Coleslaw and Tartar Sauce on a Toasted Sesame Seed Bun"
+   },
+   {
+    "name": "Renee's Chicken-Almond Salad Sandwich Special",
+    "price": "$19.50",
+    "section": "Sandwiches",
+    "description": "One-Half of a Chicken-Almond Salad Sandwich, a Cup of Our Soup and a Small Green Salad"
+   },
+   {
+    "name": "Blackened Factory Fish Sandwich",
+    "price": "$21.50",
+    "section": "Sandwiches",
+    "description": "Blackened Pacific Swordfish, Cheese, Coleslaw and Tartar Sauce on a Toasted Sesame Seed Bun"
+   },
+   {
+    "name": "Renee's Fresh Turkey Sandwich Special",
+    "price": "$19.50",
+    "section": "Sandwiches",
+    "description": "One-Half of a Freshly Roasted Turkey Sandwich, a Cup of Our Soup and a Small Green Salad"
+   },
+   {
+    "name": "Thai Chicken Salad",
+    "price": "$22.50",
+    "section": "Salads",
+    "description": "Satay Chicken Strips, Lettuce, Carrots, Rice Noodles, Cucumbers, Bean Sprouts, Cilantro, Peanuts and Sesame Seeds Tossed with Thai Vinaigrette"
+   },
+   {
+    "name": "Cobb Salad",
+    "price": "$24.50",
+    "section": "Salads",
+    "description": "Chicken Breast, Avocado, Blue Cheese, Bacon, Tomato, Egg and Mixed Greens Tossed in Our Vinaigrette"
+   },
+   {
+    "name": "Barbeque Ranch Chicken Salad",
+    "price": "$23.95",
+    "section": "Salads",
+    "description": "Avocado, Tomato, Grilled Corn, Black Beans, Cucumber and Romaine All Tossed with Our Barbeque Ranch Dressing. Topped with Lots of Crispy Fried Onion Strings for Crunch"
+   },
+   {
+    "name": "Caesar Salad",
+    "price": "$17.50",
+    "section": "Salads",
+    "description": "The Almost Traditional Recipe with Croutons, Parmesan Cheese and Our Special Caesar Dressing"
+   },
+   {
+    "name": "Santa Fe Salad",
+    "price": "$24.50",
+    "section": "Salads",
+    "description": "Marinated Chicken, Fresh Corn, Black Beans, Cheese, Tortilla Strips, Tomato and Romaine with a Spicy Peanut-Cilantro Vinaigrette"
+   },
+   {
+    "name": "Caesar Salad with Chicken",
+    "price": "$24.95",
+    "section": "Salads",
+    "description": "The almost traditional recipe with croutons, parmesan cheese and our special caesar dressing, with chicken."
+   },
+   {
+    "name": "Vegan Cobb Salad",
+    "price": "$21.95",
+    "section": "Salads",
+    "description": "Crisp Lettuce, Grilled Asparagus, Avocado, Roasted Beets, Green Beans, Tomato, Cucumber, Carrot, Quinoa, Farro, Almonds and Toasted Pepitas with House Vinaigrette"
+   },
+   {
+    "name": "Fried Chicken Club Salad",
+    "price": "$21.50",
+    "section": "Salads",
+    "description": "Crispy Fried Chicken, Mixed Greens, Bacon, Blue Cheese, Tomato, Cucumber and Onion with Our Honey-Dijon Vinaigrette"
+   },
+   {
+    "name": "Factory Chopped Salad",
+    "price": "$20.50",
+    "section": "Salads",
+    "description": "A Delicious Blend of Julienne Romaine, Chicken Breast, Tomato, Avocado, Corn, Bacon, Blue Cheese and Apple with Our Vinaigrette"
+   },
+   {
+    "name": "Sheila's Chicken and Avocado Salad",
+    "price": "$23.95",
+    "section": "Salads",
+    "description": "Grilled Chicken, Fresh Avocado, Mixed Greens, Crisp Tortilla Strips, Carrots, Cilantro and Cashews Tossed in a Citrus-Honey-Peanut Vinaigrette"
+   },
+   {
+    "name": "Tossed Green Salad",
+    "price": "$13.50",
+    "section": "Salads",
+    "description": "Mixed Greens, Assorted Vegetables, Tomato and Croutons with Your Choice of Dressing"
+   },
+   {
+    "name": "Seared Tuna Tataki Salad*",
+    "price": "$29.95",
+    "section": "Salads",
+    "description": "Sushi Grade Ahi Seared Rare, Avocado, Tomato, Sesame, Soy and Cilantro\\\\nwith Mixed Greens Tossed in Shallot Vinaigrette"
+   },
+   {
+    "name": "Chicken Piccata",
+    "price": "$30.95",
+    "section": "Specialties",
+    "description": "Sauteed Chicken Breast with Lemon Sauce, Mushrooms and Capers. Served with Angel Hair Pasta"
+   },
+   {
+    "name": "Crispy Chicken Costoletta",
+    "price": "$30.95",
+    "section": "Specialties",
+    "description": "Chicken Breast Lightly Breaded and Sauteed to a Crisp Golden Brown. Served with Lemon Sauce, Mashed Potatoes and Fresh Asparagus"
+   },
+   {
+    "name": "Chicken Bellagio",
+    "price": "$29.95",
+    "section": "Specialties",
+    "description": "Crispy Coated Chicken Breast over Basil Pasta and Parmesan Cream Sauce Topped with Prosciutto and Arugula Salad"
+   },
+   {
+    "name": "Parmesan-Herb Crusted Chicken",
+    "price": "$30.95",
+    "section": "Specialties",
+    "description": "Sauteed Chicken Breasts Coated with Parmesan-Garlic Breadcrumbs and Herbs. Served with Mashed Potatoes and Green Beans"
+   },
+   {
+    "name": "Famous Factory Meatloaf",
+    "price": "$29.95",
+    "section": "Specialties",
+    "description": "Served with Mashed Potatoes, Mushroom Gravy, Grilled Onions and Fresh Buttered Corn"
+   },
+   {
+    "name": "Crusted Chicken Romano",
+    "price": "$29.95",
+    "section": "Specialties",
+    "description": "\\\\\"Breast of Chicken Coated with a Romano-Parmesan Cheese Crust. Served with Pasta in a Light Tomato Sauce\\\\\""
+   },
+   {
+    "name": "Shepherd's Pie",
+    "price": "$28.50",
+    "section": "Specialties",
+    "description": "Ground Beef, Carrots, Peas, Zucchini and Onions in a Delicious Mushroom Gravy Covered with a Mashed Potato-Parmesan Cheese Crust"
+   },
+   {
+    "name": "Truffle-Honey Chicken",
+    "price": "$29.95",
+    "section": "Specialties",
+    "description": "Fried Chicken Breast with Truffle-Honey, Asparagus and Mashed Potatoes"
+   },
+   {
+    "name": "Chicken Parmesan \\\\\"Pizza Style\\\\\"",
+    "price": "$28.95",
+    "section": "Specialties",
+    "description": "Chopped Chicken Breast Coated with Breadcrumbs, Covered with Marinara Sauce and Lots of Melted Cheese. Topped with Angel Hair Pasta in an Alfredo Cream Sauce"
+   },
+   {
+    "name": "Bang-Bang Chicken and Shrimp",
+    "price": "$30.95",
+    "section": "Specialties",
+    "description": "A Spicy Thai Dish with the Flavors of Curry, Peanut, Chile and Coconut. Sautéed with Vegetables and Served over Steamed White Rice"
+   },
+   {
+    "name": "Orange Chicken",
+    "price": "$28.95",
+    "section": "Specialties",
+    "description": "Deep Fried Pieces of Chicken Breast Covered in a Sweet and Spicy Orange Sauce. Served with White Rice and Vegetables"
+   },
+   {
+    "name": "Chicken Tenders",
+    "price": "$25.95",
+    "section": "Specialties",
+    "description": "Chicken Tenders Breaded and Fried Crisp. Served with Mashed Potatoes, Fresh Buttered Corn and Dipping Sauces"
+   },
+   {
+    "name": "Korean Fried Chicken",
+    "price": "$24.95",
+    "section": "Specialties",
+    "description": "Crispy Chicken Tossed with Our Spicy Korean B.B.Q. Sauce. With Avocado, Kimchi, Mushrooms, Cilantro and Sesame Seeds Served Over Steamed Rice"
+   },
+   {
+    "name": "Grilled Steak Tacos",
+    "price": "$28.50",
+    "section": "Specialties",
+    "description": "Soft Corn Tortillas, Chargrilled Steak, Avocado Cream Sauce, Tomato, Chipotle Sauce, Cheese, Onions and Cilantro. Served with Rice and Beans"
+   },
+   {
+    "name": "Baja Chicken Tacos",
+    "price": "$23.50",
+    "section": "Specialties",
+    "description": "Soft Corn Tortillas Filled with Mildly Spicy Chicken, Cheese, Onion, Chipotle and Cilantro. Served with Rice and Beans"
+   },
+   {
+    "name": "Green Chile Chicken Enchiladas",
+    "price": "$20.50",
+    "section": "Specialties",
+    "description": "Corn Tortillas Filled with Chicken, Cheese, Chile and Onion, Covered with Salsa Verde and Sour Cream. Served with Rice and Beans"
+   },
+   {
+    "name": "Crispy Pineapple Chicken and Shrimp",
+    "price": "$25.95",
+    "section": "Specialties",
+    "description": "Crispy Chicken and Shrimp with Snow Peas, Mushrooms, Onion, Garlic, Peppers and Cilantro in a Sweet and Spicy Sauce. Served with White Rice"
+   },
+   {
+    "name": "Crispy Beer Battered Fish Tacos",
+    "price": "$25.50",
+    "section": "Specialties",
+    "description": "Soft Corn Tortillas Filled with Crispy Hand Battered Fish, Guacamole, Chipotle Sauce, Marinated Onions and Cilantro. Served with Rice and Beans"
+   },
+   {
+    "name": "Grilled Fish Tacos",
+    "price": "$25.50",
+    "section": "Specialties",
+    "description": "Soft Corn Tortillas Filled with Grilled Fish, Guacamole, Chipotle Sauce, Marinated Onions and Cilantro. Served with Rice and Beans"
+   },
+   {
+    "name": "Orange Cauliflower",
+    "price": "$16.50",
+    "section": "Specialties",
+    "description": "Crispy Cauliflower, Snow Peas, Carrots and Mushrooms Tossed In Our Sweet and Spicy Orange Sauce. Served Over White Rice"
+   },
+   {
+    "name": "Louisiana Chicken Pasta",
+    "price": "$30.95",
+    "section": "Pastas",
+    "description": "Parmesan Crusted Chicken Served Over Pasta with Mushrooms, Peppers and Onions in a Spicy New Orleans Sauce"
+   },
+   {
+    "name": "Pasta da Vinci",
+    "price": "$29.95",
+    "section": "Pastas",
+    "description": "Sautéed Chicken, Mushrooms and Onions in a Delicious Madeira Wine Sauce Tossed with Penne Pasta"
+   },
+   {
+    "name": "Farfalle with Chicken and Roasted Garlic",
+    "price": "$30.95",
+    "section": "Pastas",
+    "description": "Bow-Tie Pasta, Chicken, Mushrooms, Tomato, Pancetta, Peas and Caramelized Onions in a Roasted Garlic-Parmesan Cream Sauce"
+   },
+   {
+    "name": "Spicy Rigatoni Vodka",
+    "price": "$27.95",
+    "section": "Pastas",
+    "description": "Rigatoni Pasta, Italian Cherry Tomatoes, Parmesan, Pancetta and Fresh Basil Tossed with Spicy Vodka Sauce"
+   },
+   {
+    "name": "Fettuccini Alfredo",
+    "price": "$26.95",
+    "section": "Pastas",
+    "description": "A Rich Parmesan Cream Sauce"
+   },
+   {
+    "name": "Spaghetti and Meatballs",
+    "price": "$30.95",
+    "section": "Pastas",
+    "description": "Housemade Meatballs Made with Beef, Italian Sausage and Parmesan with Our Tomato Sauce and Basil"
+   },
+   {
+    "name": "Four Cheese Pasta",
+    "price": "$26.95",
+    "section": "Pastas",
+    "description": "Penne Pasta, Mozzarella, Ricotta, Romano and Parmesan Cheese with Marinara Sauce and Fresh Basil"
+   },
+   {
+    "name": "Four Cheese Pasta with Chicken",
+    "price": "$33.95",
+    "section": "Pastas",
+    "description": "Penne pasta, mozzarella, ricotta, romano and parmesan cheeses, marinara sauce and fresh basil"
+   },
+   {
+    "name": "Spicy Chicken Chipotle Pasta",
+    "price": "$28.95",
+    "section": "Pastas",
+    "description": "Penne Pasta, Honey Glazed Chicken, Asparagus, Red and Yellow Peppers, Peas, Garlic and Onion in a Spicy Chipotle Parmesan Cream Sauce"
+   },
+   {
+    "name": "Pasta Carbonara",
+    "price": "$26.95",
+    "section": "Pastas",
+    "description": "Spaghetti with Smoked Bacon, Green Peas and a Garlic-Parmesan Cream Sauce"
+   },
+   {
+    "name": "Tomato Basil Pasta",
+    "price": "$23.95",
+    "section": "Pastas",
+    "description": "Grilled chicken, fresh mozzarella, a touch of garlic and penne pasta. Light and fresh (full-size portion only)"
+   },
+   {
+    "name": "Cajun Jambalaya Pasta",
+    "price": "$31.95",
+    "section": "Pastas",
+    "description": "Shrimp and Chicken Sauteed with Tomato, Onions and Peppers in a Very Spicy Cajun Sauce. All on Top of Fresh Linguini (Full-size portion only)"
+   },
+   {
+    "name": "Fettuccini Alfredo with Shrimp",
+    "price": "$35.45",
+    "section": "Pastas"
+   },
+   {
+    "name": "Pasta Carbonara with Chicken",
+    "price": "$33.95",
+    "section": "Pastas",
+    "description": "Spaghetti with smoked bacon, green peas and a garlic-parmesan cream sauce"
+   },
+   {
+    "name": "Evelyn's Favorite Pasta",
+    "price": "$27.50",
+    "section": "Pastas",
+    "description": "Broccoli, Zucchini, Asparagus, Peppers, Tomato, Onion, Garlic and Fresh Herbs. Tossed with Parmesan"
+   },
+   {
+    "name": "Miso Salmon",
+    "price": "$34.95",
+    "section": "Fish & Seafood",
+    "description": "Miso Marinated Salmon Served with Snow Peas, White Rice and a Delicious Miso Sauce"
+   },
+   {
+    "name": "Shrimp Scampi",
+    "price": "$31.95",
+    "section": "Fish & Seafood",
+    "description": "\\\\\"Paris Bistro-Style! Sauteed with Whole Cloves of Garlic, White Wine, Fresh Basil and Tomato. Served with Angel Hair Pasta\\\\\""
+   },
+   {
+    "name": "Herb Crusted Filet of Salmon",
+    "price": "$34.95",
+    "section": "Fish & Seafood",
+    "description": "Served with a Delicious Lemon Sauce, Asparagus and Mashed Potatoes"
+   },
+   {
+    "name": "Grilled Salmon",
+    "price": "$32.95",
+    "section": "Fish & Seafood",
+    "description": "Served with Mashed Potatoes and Broccoli"
+   },
+   {
+    "name": "Fish & Chips",
+    "price": "$29.95",
+    "section": "Fish & Seafood",
+    "description": "Hand Battered and Fried Crisp. Served with Cole Slaw, French Fries and Tartar Sauce"
+   },
+   {
+    "name": "Shrimp and Chicken Gumbo",
+    "price": "$30.95",
+    "section": "Fish & Seafood",
+    "description": "Shrimp, Chicken, Andouille Sausage, Tomatoes, Peppers, Onions and Garlic Simmered in a Spicy Cajun Style Broth with Cream. Topped with Steamed White Rice"
+   },
+   {
+    "name": "Jamaican Black Pepper Chicken & Shrimp",
+    "price": "$29.95",
+    "section": "Fish & Seafood",
+    "description": "Sautéed Shrimp & Chicken with a Very Spicy Jamaican Black Pepper Sauce. Served with Rice, Black Beans, Plantains and Marinated Pineapple"
+   },
+   {
+    "name": "Grilled Branzino",
+    "price": "$32.95",
+    "section": "Fish & Seafood",
+    "description": "Charbroiled with Lemon and Fresh Herbs.  Served with Mashed Potatoes and Green Beans"
+   },
+   {
+    "name": "Jamaican Black Pepper Chicken",
+    "price": "$28.95",
+    "section": "Fish & Seafood",
+    "description": "Chicken with a Very Spicy Jamaican Black Pepper Sauce. Served with Rice, Black Beans, Plantains and Marinated Pineapple"
+   },
+   {
+    "name": "Jamaican Black Pepper Shrimp",
+    "price": "$29.95",
+    "section": "Fish & Seafood",
+    "description": "Sautéed Shrimp with a Very Spicy Jamaican Black Pepper Sauce. Served with Rice, Black Beans, Plantains and Marinated Pineapple"
+   },
+   {
+    "name": "Filet Mignon",
+    "price": "$52.95",
+    "section": "Steaks",
+    "description": "Our Most Tender Steak. Served with Mashed Potatoes and Green Beans"
+   },
+   {
+    "name": "Grilled Rib-Eye Steak",
+    "price": "$48.95",
+    "section": "Steaks",
+    "description": "Served with Mashed Potatoes and Green Beans"
+   },
+   {
+    "name": "Carne Asada Steak",
+    "price": "$30.50",
+    "section": "Steaks",
+    "description": "Steak Medallions Covered with Sauteed Peppers, Onions and Cilantro.  Served with Creamy Ranchero Sauce, Fresh Corn and White Rice"
+   },
+   {
+    "name": "Steak Frites*",
+    "price": "$34.95",
+    "section": "Steaks",
+    "description": "Charbroiled Rib-Eye Steak with Red Wine Sauce, Grilled Onions, Garlic-Herb Butter and Parmesan French Fries"
+   },
+   {
+    "name": "Grilled Asparagus",
+    "price": "$8.95",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "French Fries",
+    "price": "$7.95",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "Mashed Potatoes",
+    "price": "$8.95",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "Broccoli",
+    "price": "$8.95",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "Sweet Potato Fries",
+    "price": "$8.50",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "Green Beans",
+    "price": "$8.50",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "Fresh Corn",
+    "price": "$8.95",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "Sautéed Spinach",
+    "price": "$8.95",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "Shakshuka Omelette",
+    "price": "$18.95",
+    "section": "Eggs* & Omelettes",
+    "description": "Roasted Peppers and Onion, Spinach, Feta Cheese and Spicy Tomato Sauce. Served with Pita Bread"
+   },
+   {
+    "name": "Brioche Breakfast Sandwich",
+    "price": "$18.50",
+    "section": "Eggs* & Omelettes",
+    "description": "Scrambled Egg, Smoked Bacon, Ham, Grilled Tomato, Melted Cheddar Cheese and Mayonnaise on Grilled Brioche Bread. Served with Potatoes"
+   },
+   {
+    "name": "Factory Create an Omelette",
+    "price": "$19.95",
+    "section": "Eggs* & Omelettes",
+    "description": "Select Any Four of the Following: Bacon, Ham, Cheddar, Jack, Swiss, Fontina, Avocado, Roasted Peppers, Fresh Mushrooms, Asparagus, Spinach, Bell Peppers, Fresh Tomato, Red Onions or Green Onions"
+   },
+   {
+    "name": "Farm Fresh Eggs with Old Smokehouse® Bacon",
+    "price": "$19.50",
+    "section": "Eggs* & Omelettes",
+    "description": "Two Farm Fresh Cage Free Eggs Served with Potatoes or Tomatoes, Toast, Bagel or English Muffin"
+   },
+   {
+    "name": "Spinach, Mushroom, Bacon and Cheese Omelette",
+    "price": "$20.50",
+    "section": "Eggs* & Omelettes",
+    "description": "Fresh Spinach, Smoked Bacon, Sauteed Mushrooms, Green Onion and Melted Cheese"
+   },
+   {
+    "name": "California Omelette",
+    "price": "$20.50",
+    "section": "Eggs* & Omelettes",
+    "description": "Avocado, Mushrooms, Green Onion, Tomato, Garlic, Shallots, Jack, Cheddar and Swiss Cheeses. Topped with Sour Cream"
+   },
+   {
+    "name": "Farm Fresh Eggs with Grilled Ham",
+    "price": "$19.50",
+    "section": "Eggs* & Omelettes",
+    "description": "Two Farm Fresh Cage Free Eggs Served with Potatoes or Tomatoes, Toast, Bagel or English Muffin"
+   },
+   {
+    "name": "Farm Fresh Eggs* with Chicken Sausage",
+    "price": "$19.50",
+    "section": "Eggs* & Omelettes"
+   },
+   {
+    "name": "Farm Fresh Eggs",
+    "price": "$14.95",
+    "section": "Eggs* & Omelettes",
+    "description": "Two Farm Fresh Cage Free Eggs Served with Potatoes or Tomatoes, Toast, Bagel or English Muffin"
+   },
+   {
+    "name": "Bagel with Cream Cheese",
+    "price": "$4.95",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Bacon",
+    "price": "$6.95",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Chicken Sausage",
+    "price": "$6.95",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Breakfast Potatoes",
+    "price": "$5.95",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "English Muffin",
+    "price": "$3.50",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Toast",
+    "price": "$2.95",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Fresh Strawberry Cheesecake",
+    "price": "$14.50",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "The Original Topped with Glazed Fresh Strawberries. Our Most Popular Flavor for over 45 Years!"
+   },
+   {
+    "name": "Chocolate Tower Truffle Cake™",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Layers and Layers of Fudge Cake with Chocolate Truffle Cream and Chocolate Mousse"
+   },
+   {
+    "name": "Godiva® Chocolate Cheesecake",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Flourless Godiva® Chocolate Cake, Topped with Godiva® Chocolate Cheesecake and Chocolate Mousse"
+   },
+   {
+    "name": "Brownie Crunch Choc-A-Lot Cheesecake",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Milk and White Chocolate Marbled Cheesecake On a Crunchy Toffee Brownie"
+   },
+   {
+    "name": "Oreo® Dream Extreme Cheesecake",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Creamy Cheesecake Layered with Oreo® Cookies, Topped with Oreo® Cookie Mousse and Chocolate Icing"
+   },
+   {
+    "name": "Reese's® Peanut Butter Chocolate Cake Cheesecake",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Reese's Peanut Butter Cups in Our Original Cheesecake with Layers of Delicious Fudge Cake and Caramel"
+   },
+   {
+    "name": "Pineapple Upside-Down Cheesecake",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Pineapple Cheesecake Between Two Layers of Moist Buttery Pineapple Upside-Down Cake"
+   },
+   {
+    "name": "Cinnabon® Cinnamon Swirl Cheesecake",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Layers of Cinnabon® Cinnamon Cheesecake and Vanilla Crunch Cake Topped with Cream Cheese Frosting and Caramel"
+   },
+   {
+    "name": "Carrot Cake",
+    "price": "$13.50",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Deliciously Moist Layers of Carrot Cake and Our Famous Cream Cheese Icing"
+   },
+   {
+    "name": "Ultimate Red Velvet Cake Cheesecake™",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Layers of Red Velvet Cake and Cheesecake Covered in Cream Cheese Frosting. Finished with White Chocolate"
+   },
+   {
+    "name": "Tiramisu Cheesecake",
+    "price": "$12.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Our Wonderful Cheesecake and Tiramisu Combined into one Amazing Dessert!"
+   },
+   {
+    "name": "White Chocolate Raspberry Truffle® Cheesecake",
+    "price": "$12.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Creamy Cheesecake Swirled with White Chocolate and Raspberry"
+   },
+   {
+    "name": "Tiramisu Cake",
+    "price": "$14.50",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Italian Custard Made with Mascarpone, Whipped Cream, Lady Fingers, Chocolate, Marsala and Coffee Liqueur"
+   },
+   {
+    "name": "Original Cheesecake",
+    "price": "$11.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "The One that Started it All! Our Famous Creamy Cheesecake with a Graham Cracker Crust and Sour Cream Topping"
+   },
+   {
+    "name": "Lemon Raspberry Cream Cheesecake",
+    "price": "$13.50",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Raspberry-Vanilla Cake, Creamy Lemon Cheesecake, Raspberry Lady Fingers and Lemon Mousse"
+   },
+   {
+    "name": "Salted Caramel Cheesecake",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Caramel Cheesecake and Creamy Caramel Mousse on a Blonde Brownie all Topped with Salted Caramel"
+   },
+   {
+    "name": "Chocolate Tuxedo Cream® Cheesecake",
+    "price": "$13.50",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Layers of Our Fudge Cake, Chocolate Cheesecake, Vanilla Mascarpone Mousse and Chocolate"
+   },
+   {
+    "name": "Adam's Peanut Butter Cup Fudge Ripple Cheesecake",
+    "price": "$13.50",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Creamy Cheesecake Swirled with Caramel, Peanut Butter, Butterfingers® and Reese’s Peanut Butter Cups"
+   },
+   {
+    "name": "Cookie Dough Lover’s Cheesecake with Pecans",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Creamy Cheesecake Loaded with Our Chocolate Chip Pecan Cookie Dough, Topped with Cookie Dough Frosting"
+   },
+   {
+    "name": "Toasted Marshmallow S'mores Galore™ Cheesecake",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Hershey’s® Cheesecake Topped with Housemade Marshmallow and Honey Maid® Graham Crackers"
+   },
+   {
+    "name": "Key Lime Cheesecake",
+    "price": "$12.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Key Lime Pie in a Cheesecake! Deliciously Tart and Creamy on a Vanilla Crumb Crust"
+   },
+   {
+    "name": "Celebration Cheesecake",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Layers of Vanilla Cake, Cheesecake, Strawberry, Chocolate and Vanilla Mousse with Cream Cheese Frosting"
+   },
+   {
+    "name": "Coconut Cream Pie Cheesecake",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Coconut Cheesecake, Vanilla Custard and a Layer of Chocolate all on a Coconut Macaroon Crust"
+   },
+   {
+    "name": "Chocolate Mousse Cheesecake",
+    "price": "$12.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Silky Chocolate Cheesecake Topped with a Layer of Belgian Chocolate Mousse"
+   },
+   {
+    "name": "Lemon Meringue Cheesecake",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Lemon Cream Cheesecake Topped with Layers of Lemon Mousse and Meringue"
+   },
+   {
+    "name": "Warm Apple Crisp",
+    "price": "$14.50",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Our Delicious Crispy Nutty Topping and Vanilla Ice Cream"
+   },
+   {
+    "name": "Mango Key Lime Cheesecake",
+    "price": "$13.50",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Topped with Mango Mousse on a Vanilla Coconut Macaroon Crust"
+   },
+   {
+    "name": "Peach Perfect with Raspberry Drizzle",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Peach Cheesecake Swirled with Peaches, Finished with Raspberry Sauce"
+   },
+   {
+    "name": "Vanilla Bean Cheesecake",
+    "price": "$12.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Creamy Vanilla Bean Cheesecake, Topped with Vanilla Mousse and Whipped Cream"
+   },
+   {
+    "name": "Hershey's® Chocolate Bar Cheesecake",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Hershey's Cheesecake Between Moist Chocolate Cake with Creamy Chocolate Frosting and Chocolate Chips"
+   },
+   {
+    "name": "Chocolate Caramelicious Cheesecake Made with Snickers®",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Original Cheesecake Swirled with Snickers® on a Brownie Crust with Chocolate, Caramel and Peanuts"
+   },
+   {
+    "name": "Dulce de Leche Caramel Cheesecake",
+    "price": "$12.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Caramel Cheesecake Topped with Caramel Mousse and Almond Brickle on a Vanilla Crust"
+   },
+   {
+    "name": "Triple Berry Bliss",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Creamy Cheesecake Layered with Vanilla Cake, Three Kinds of Berries and a Kiss of Citrus!"
+   },
+   {
+    "name": "Caramel Pecan Turtle Cheesecake",
+    "price": "$13.50",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Pecan Brownie and Caramel-Fudge Swirl Cheesecake, Topped with Caramel Turtle Pecans and Chocolate"
+   },
+   {
+    "name": "Low-Licious Cheesecake with Strawberries",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Low Carb, No Sugar Added and Gluten Free, With Fresh Strawberries"
+   },
+   {
+    "name": "Pumpkin Pecan Cheesecake",
+    "price": "$13.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "A Layer of Pecan Pie Topped with a Layer of Pumpkin Cheesecake and Finished with Caramel and Pecans - All in a Pastry Crust"
+   },
+   {
+    "name": "Low-Licious Cheesecake",
+    "price": "$11.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Low Carb, No Sugar Added and Gluten Free Cheesecake – Too Good to be True!"
+   },
+   {
+    "name": "Pumpkin Cheesecake",
+    "price": "$12.95",
+    "section": "Cheesecakes / Specialty Desserts",
+    "description": "Creamy Pumpkin Cheesecake Baked in a Graham Cracker Crust"
+   },
+   {
+    "name": "Bowl of Fresh Strawberries",
+    "price": "$11.50",
+    "section": "Cheesecakes / Specialty Desserts"
+   },
+   {
+    "name": "Bowl of Vanilla Ice Cream",
+    "price": "$9.50",
+    "section": "Ice Cream Delights"
+   },
+   {
+    "name": "Hot Fudge Sundae",
+    "price": "$13.95",
+    "section": "Ice Cream Delights",
+    "description": "The Best Hot Fudge Anywhere. Topped with Whipped Cream and Almonds"
+   },
+   {
+    "name": "Strawberry Shake",
+    "price": "$11.95",
+    "section": "Creamy Milkshakes",
+    "description": "Our Classic Creamy Shakes"
+   },
+   {
+    "name": "Vanilla Shake",
+    "price": "$11.95",
+    "section": "Creamy Milkshakes",
+    "description": "Our Classic Creamy Shakes"
+   },
+   {
+    "name": "Chocolate Shake",
+    "price": "$11.95",
+    "section": "Creamy Milkshakes",
+    "description": "Our Classic Creamy Shakes"
+   },
+   {
+    "name": "Peach Smoothie",
+    "price": "$10.50",
+    "section": "Iced & Frozen Drinks",
+    "description": "Crushed Peaches and Juice All Blended with Ice and Swirled with Raspberry"
+   },
+   {
+    "name": "Strawberry Fruit Smoothie",
+    "price": "$10.50",
+    "section": "Iced & Frozen Drinks",
+    "description": "Strawberries, Orange and Pineapple Juices, Coconut and Banana All Blended with Ice"
+   },
+   {
+    "name": "Frozen Iced Mango",
+    "price": "$10.50",
+    "section": "Iced & Frozen Drinks",
+    "description": "Mango, Tropical Juices and a Hint of Coconut Blended with Ice and Swirled with Raspberry Purée"
+   },
+   {
+    "name": "Caramel Royale Macchiato",
+    "price": "$6.95",
+    "section": "Hot Drinks & Espresso",
+    "description": "Double Espresso, Hot Caramel, Vanilla and Steamed Milk"
+   },
+   {
+    "name": "Double Espresso",
+    "price": "$4.95",
+    "section": "Hot Drinks & Espresso"
+   },
+   {
+    "name": "Café Mocha",
+    "price": "$7.95",
+    "section": "Hot Drinks & Espresso",
+    "description": "Espresso, Chocolate, Steamed Milk, Whipped Cream"
+   },
+   {
+    "name": "Factory Hot Chocolate",
+    "price": "$6.95",
+    "section": "Hot Drinks & Espresso"
+   },
+   {
+    "name": "Matcha Latte",
+    "price": "$6.95",
+    "section": "Hot Drinks & Espresso",
+    "description": "Matcha Powder, Vanilla and Steamed Milk"
+   },
+   {
+    "name": "Café Latte",
+    "price": "$6.50",
+    "section": "Hot Drinks & Espresso",
+    "description": "Double Espresso, Extra Steamed Milk"
+   },
+   {
+    "name": "Fiji Natural Artesian Water",
+    "price": "$6.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "San Pellegrino Water",
+    "price": "$6.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Fresh Orange Juice",
+    "price": "$8.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Soft Drink",
+    "price": "$3.95",
+    "section": "Beverages",
+    "description": "Coca-Cola, Diet Coke, Coca-Cola® Zero Sugar, Barq's Root Beer, Sprite and Dr. Pepper"
+   },
+   {
+    "name": "Strawberry Lemonade",
+    "price": "$5.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Passion Mint Fizz",
+    "price": "$6.95",
+    "section": "Beverages",
+    "description": "Passion Fruit, Agave Nectar and Fresh Mint"
+   },
+   {
+    "name": "Pineapple Cherry Limeade",
+    "price": "$6.95",
+    "section": "Beverages",
+    "description": "Pineapple, Cherry and Fresh Lime"
+   },
+   {
+    "name": "Pineapple Coconut Dream",
+    "price": "$6.95",
+    "section": "Beverages",
+    "description": "Our “Dirty Soda” with Pineapple, Coconut and Sweet Cream"
+   },
+   {
+    "name": "Cucumber Lemonade",
+    "price": "$5.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Cold Brew Iced Coffee",
+    "price": "$6.50",
+    "section": "Beverages",
+    "description": "Our Signature Blend, Cold Brewed to Perfection"
+   },
+   {
+    "name": "Coconut Limeade",
+    "price": "$6.95",
+    "section": "Beverages",
+    "description": "Tropical Coconut with Fresh Lemon and Lime"
+   },
+   {
+    "name": "Peach Lemonade",
+    "price": "$5.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Tropical Ginger Cooler",
+    "price": "$6.95",
+    "section": "Beverages",
+    "description": "Island Juices and Ginger"
+   },
+   {
+    "name": "Apple Juice",
+    "price": "$6.95",
+    "section": "Beverages"
+   },
+   {
+    "name": "Arnold Palmer",
+    "price": "$4.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Freshly Brewed Coffee",
+    "price": "$4.25",
+    "section": "Beverages",
+    "description": "Our Signature Blend of Robust Central American Arabica Coffee Beans Richly Roasted and Freshly Brewed"
+   },
+   {
+    "name": "Certified Organic Black Tea",
+    "price": "$3.75",
+    "section": "Beverages"
+   },
+   {
+    "name": "Freshly Brewed Tropical Iced Tea",
+    "price": "$3.75",
+    "section": "Beverages"
+   },
+   {
+    "name": "Freshly Brewed Black Tea",
+    "price": "$4.25",
+    "section": "Beverages"
+   },
+   {
+    "name": "Freshly Brewed Green Tea",
+    "price": "$4.25",
+    "section": "Beverages"
+   },
+   {
+    "name": "The Cheesecake Factory Special Lemonade",
+    "price": "$4.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Fever-Tree® Ginger Ale",
+    "price": "$5.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Sparkling Yuzu Lemonade",
+    "price": "$6.95",
+    "section": "Beverages",
+    "description": "Yuzu and Fresh Lemon"
+   },
+   {
+    "name": "Chicken Pot Stickers",
+    "price": "$18.95",
+    "section": "SkinnyLicious® Small Plates & Appetizers",
+    "description": "Asian Dumplings Pan-Fried in the Classic Tradition. Served with Our Soy-Ginger Sesame Sauce"
+   },
+   {
+    "name": "Crispy Brussels Sprouts",
+    "price": "$13.95",
+    "section": "SkinnyLicious® Small Plates & Appetizers",
+    "description": "Roasted Brussels Sprouts and Crispy Leaves Tossed with Bacon and Maple-Butter Glaze"
+   },
+   {
+    "name": "Chicken Taquitos",
+    "price": "$13.50",
+    "section": "SkinnyLicious® Small Plates & Appetizers",
+    "description": "Crispy Corn Tortillas Filled with Grilled Chicken, Green Chile, Corn, Onion, Cilantro and Cheese. Served with Avocado Cream and Salsa Verde"
+   },
+   {
+    "name": "Crispy Crab Bites",
+    "price": "$15.50",
+    "section": "SkinnyLicious® Small Plates & Appetizers",
+    "description": "Bite-Sized Little Crab Cakes Served with Mustard Sauce"
+   },
+   {
+    "name": "Crab Wontons",
+    "price": "$16.50",
+    "section": "SkinnyLicious® Small Plates & Appetizers",
+    "description": "Classic “Crab Rangoon” with Crab, Cream Cheese and Green Onion Fried Crisp and Served with Sweet Chili Sauce"
+   },
+   {
+    "name": "Spicy Tuna*",
+    "price": "$22.50",
+    "section": "SkinnyLicious® Small Plates & Appetizers",
+    "description": "Ahi Tuna on Crispy Sushi Rice with Ginger and Green Onion"
+   },
+   {
+    "name": "Beet And Avocado Salad",
+    "price": "$15.50",
+    "section": "Skinnylicious® Salads",
+    "description": "Glazed Beets, Quinoa, Avocado, Fresh Orange, Arugula and Honey-Yogurt Sauce"
+   },
+   {
+    "name": "SkinnyLicious® Factory Chopped Salad",
+    "price": "$20.50",
+    "section": "Skinnylicious® Salads",
+    "description": "A Delicious Blend of Julienne Romaine, Grilled Chicken, Tomato, Avocado, Corn, Bacon, Blue Cheese and Apple with Our SkinnyLicious® Vinaigrette"
+   },
+   {
+    "name": "Mexican Tortilla Salad",
+    "price": "$20.50",
+    "section": "Skinnylicious® Salads",
+    "description": "Crispy Corn Tortilla Topped with Chicken Breast and Black Beans with Mixed Greens, Fresh Corn, Green Onion and Cilantro. All Tossed in Our Skinny Vinaigrette and Garnished with a little Avocado Cream Sauce, Salsa and Sour Cream"
+   },
+   {
+    "name": "SkinnyLicious® Asian Chicken Salad",
+    "price": "$19.95",
+    "section": "Skinnylicious® Salads",
+    "description": "Grilled Chicken, Romaine, Carrots, Bean Sprouts, Green Onions, Cilantro, Rice Noodles, Wontons, Almonds and Sesame Seeds Served with Our SkinnyLicious® Sesame-Soy Dressing"
+   },
+   {
+    "name": "Little House Salad",
+    "price": "$10.50",
+    "section": "Skinnylicious® Salads",
+    "description": "Tossed in Our Vinaigrette"
+   },
+   {
+    "name": "Tossed Green Salad",
+    "price": "$13.50",
+    "section": "Skinnylicious® Salads",
+    "description": "Mixed Greens, Assorted Vegetables, Tomato and Croutons with Your Choice of Dressing"
+   },
+   {
+    "name": "Skinnylicious® Veggie Burger",
+    "price": "$19.95",
+    "section": "SkinnyLicious® Burgers & Sandwiches",
+    "description": "Our Housemade Veggie “Burger” with Avocado, Lettuce, Tomato, Pickles and Onions on a Toasted Bun. Served with a Green Salad"
+   },
+   {
+    "name": "Skinnylicious® Grilled Turkey Burger",
+    "price": "$20.50",
+    "section": "SkinnyLicious® Burgers & Sandwiches",
+    "description": "Combined with Fresh Mushrooms, Garlic and Spices. Served with Grilled Onions, Lettuce, Tomato, Mayo and a Green Salad"
+   },
+   {
+    "name": "Skinnylicious® Crispy Chicken Sandwich with Spicy Sirracha Mayo",
+    "price": "$20.50",
+    "section": "SkinnyLicious® Burgers & Sandwiches",
+    "description": "Chicken Breast Fried Crisp with Lettuce, Pickles and Onions on a Toasted Bun. Served with a Green Salad"
+   },
+   {
+    "name": "Skinnylicious® Hamburger",
+    "price": "$19.95",
+    "section": "SkinnyLicious® Burgers & Sandwiches",
+    "description": "Our Hamburger on a Toasted Bun with Lettuce, Tomato, Onion, Pickles and Mayonnaise. Served with a Green Salad"
+   },
+   {
+    "name": "Skinnylicious® Crispy Chicken Sandwich with Ranch",
+    "price": "$20.50",
+    "section": "SkinnyLicious® Burgers & Sandwiches",
+    "description": "Chicken Breast Fried Crisp with Lettuce, Pickles and Onions on a Toasted Bun. Served with a Green Salad"
+   },
+   {
+    "name": "SkinnyLicious® Shrimp Soft Tacos",
+    "price": "$21.95",
+    "section": "SkinnyLicious® Tacos",
+    "description": "Three Soft Corn Tortillas Filled with Shrimp, Avocado, Tomato, Onions, Cilantro and Crema. Served with Escabeche Vegetable Salad"
+   },
+   {
+    "name": "SkinnyLicious® Chicken Soft Tacos",
+    "price": "$18.95",
+    "section": "SkinnyLicious® Tacos",
+    "description": "Three Soft Corn Tortillas Filled with Spicy Chicken, Avocado, Tomato, Onions, Cilantro and Crema. Served with Escabeche Vegetable Salad"
+   },
+   {
+    "name": "Lemon-Garlic Shrimp",
+    "price": "$27.95",
+    "section": "Skinnylicious® Specialties",
+    "description": "Sautéed Shrimp, Basil, Tomato and Lemon-Garlic Sauce. Served with Asparagus and Angel Hair Pasta"
+   },
+   {
+    "name": "SkinnyLicious® Chicken Pasta",
+    "price": "$23.95",
+    "section": "Skinnylicious® Specialties",
+    "description": "Penne Pasta with Sauteed Chicken, Fresh Tomato, Marinara Sauce and Fresh Basil"
+   },
+   {
+    "name": "Tuscan Chicken",
+    "price": "$26.95",
+    "section": "Skinnylicious® Specialties",
+    "description": "Grilled Chicken Breast with Tomatoes, Artichokes, Capers, Fresh Basil and Balsamic Vinaigrette. Served over Fresh Vegetables and Farro"
+   },
+   {
+    "name": "Skinnylicious® Grilled Branzino",
+    "price": "$29.95",
+    "section": "Skinnylicious® Specialties",
+    "description": "With Tomato, Basil, Shallots and Garlic.  Served with Mashed Potatoes and Green Beans"
+   },
+   {
+    "name": "SkinnyLicious® Grilled Salmon",
+    "price": "$31.95",
+    "section": "Skinnylicious® Specialties",
+    "description": "Served with Assorted Fresh Vegetables"
+   },
+   {
+    "name": "Sesame Ginger Chicken",
+    "price": "$25.95",
+    "section": "Skinnylicious® Specialties",
+    "description": "Soy Glazed Chicken Breast Served with Quinoa, Sauteed Snow Peas, Asparagus, Mushrooms, Onion and Garlic"
+   },
+   {
+    "name": "Kids' Roadside Sliders",
+    "price": "$11.50",
+    "section": "Kids' Menu",
+    "description": "Two Bite-Sized Burgers on Mini-Buns. Served with Fries or Fresh Fruit"
+   },
+   {
+    "name": "Kids' Cheese Flatbread Pizza",
+    "price": "$11.50",
+    "section": "Kids' Menu"
+   },
+   {
+    "name": "Kids' Grilled Salmon",
+    "price": "$16.50",
+    "section": "Kids' Menu",
+    "description": "Served with Mashed Potatoes and Broccoli"
+   },
+   {
+    "name": "Kids' Macaroni and Cheese",
+    "price": "$11.50",
+    "section": "Kids' Menu",
+    "description": "Kids' macaroni and cheese"
+   },
+   {
+    "name": "Kids' Pasta With Alfredo Sauce",
+    "price": "$12.50",
+    "section": "Kids' Menu"
+   },
+   {
+    "name": "Kids' Pasta with Butter and Parmesan",
+    "price": "$9.95",
+    "section": "Kids' Menu"
+   },
+   {
+    "name": "Kids' Fried Chicken Strips",
+    "price": "$11.50",
+    "section": "Kids' Menu",
+    "description": "Served with Fries or Fresh Fruit"
+   },
+   {
+    "name": "Kids' Pepperoni Flatbread Pizza",
+    "price": "$12.50",
+    "section": "Kids' Menu"
+   },
+   {
+    "name": "Kids' Grilled Chicken",
+    "price": "$12.95",
+    "section": "Kids' Menu",
+    "description": "Served with Mashed Potatoes and Broccoli"
+   },
+   {
+    "name": "Kids' Pasta with Marinara Sauce",
+    "price": "$10.95",
+    "section": "Kids' Menu"
+   },
+   {
+    "name": "Kids' Quesadilla",
+    "price": "$10.95",
+    "section": "Kids' Menu",
+    "description": "Grilled Flour Tortilla Filled with Melted Cheese"
+   },
+   {
+    "name": "Kids' Grilled Cheese Sandwich",
+    "price": "$10.95",
+    "section": "Kids' Menu",
+    "description": "Served with Fries or Fresh Fruit"
+   },
+   {
+    "name": "Kids' Quesadilla with Chicken",
+    "price": "$12.95",
+    "section": "Kids' Menu",
+    "description": "Grilled flour tortilla filled with melted cheese."
+   },
+   {
+    "name": "Kids’ Strawberry Shortcake",
+    "price": "$7.50",
+    "section": "Kids' Menu"
+   },
+   {
+    "name": "Kids' Mini Hot Fudge Sundae",
+    "price": "$7.50",
+    "section": "Kids' Menu"
+   },
+   {
+    "name": "Kids' Pigs in a Blanket",
+    "price": "$11.95",
+    "section": "Kids' Menu",
+    "description": "Pastry Wrapped All-Beef Hot Dogs. Served with Fries or Fresh Fruit"
+   },
+   {
+    "name": "Kids' Strawberries",
+    "price": "$6.50",
+    "section": "Kids' Menu"
+   },
+   {
+    "name": "Kids' Scoop of Ice Cream",
+    "price": "$4.50",
+    "section": "Kids' Menu"
+   },
+   {
+    "name": "Kids' Milk",
+    "price": "$2.25",
+    "section": "Kids' Menu"
+   },
+   {
+    "name": "Kids' Lemonade",
+    "price": "$2.50",
+    "section": "Kids' Menu"
+   },
+   {
+    "name": "Kids' Apple Juice",
+    "price": "$2.25",
+    "section": "Kids' Menu"
+   },
+   {
+    "name": "Kids' Soft Drink",
+    "price": "$2.25",
+    "section": "Kids' Menu"
+   },
+   {
+    "name": "Pint of Ranch Dressing",
+    "price": "$8.25",
+    "section": "Dressings and Sauces"
+   },
+   {
+    "name": "Pint of Blue Cheese Dressing",
+    "price": "$13.50",
+    "section": "Dressings and Sauces"
+   },
+   {
+    "name": "Pint of Caesar Dressing",
+    "price": "$10.50",
+    "section": "Dressings and Sauces"
+   },
+   {
+    "name": "Pint of Spicy Peanut Vinaigrette",
+    "price": "$9.00",
+    "section": "Dressings and Sauces"
+   },
+   {
+    "name": "Pint of Santa Fe Spicy Peanut Cilantro Dressing",
+    "price": "$11.50",
+    "section": "Dressings and Sauces"
+   },
+   {
+    "name": "Pint of Thai Peanut Sauce",
+    "price": "$9.95",
+    "section": "Dressings and Sauces"
+   },
+   {
+    "name": "Pint of Balsamic Vinaigrette",
+    "price": "$9.95",
+    "section": "Dressings and Sauces"
+   },
+   {
+    "name": "Tray of Tiramisu Cake",
+    "price": "$75.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Cookie Dough Lover’s Cheesecake with Pecans",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Peach Perfect with Raspberry Drizzle",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Low-Licious Cheesecake with Strawberries",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Godiva® Chocolate Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Reese’s® Peanut Butter Chocolate Cake Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Mango Key Lime Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Lemon Raspberry Cream Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Chocolate Tuxedo Cream® Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Chocolate Caramelicious Cheesecake Made with Snickers®",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Lemon Meringue Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Hershey’s® Chocolate Bar Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Pumpkin Pecan Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Caramel Pecan Turtle Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch White Chocolate Raspberry Truffle®",
+    "price": "$73.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Chocolate Mousse Cheesecake",
+    "price": "$73.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Pumpkin Cheesecake",
+    "price": "$73.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Vanilla Bean Cheesecake",
+    "price": "$73.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Key Lime Cheesecake",
+    "price": "$73.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Cinnabon® Cinnamon Swirl Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Ultimate Red Velvet Cake Cheesecake™",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Fresh Strawberry",
+    "price": "$77.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Triple Berry Bliss",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Fresh Strawberry Pre-Sliced Cheesecake",
+    "price": "$77.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Salted Caramel Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Adam’s Peanut Butter Cup Fudge Ripple",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Coconut Cream Pie Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes",
+    "description": "White chocolate cheesecake swirled with chunks of chocolate peppermint bark and topped with white chocolate mousse."
+   },
+   {
+    "name": "10 Inch Carrot Cake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Original Pre-Sliced Cheesecake",
+    "price": "$71.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "6 Inch Fresh Strawberry",
+    "price": "$39.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Tiramisu Cheesecake",
+    "price": "$73.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "7 Inch Salted Caramel Cheesecake",
+    "price": "$45.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Original",
+    "price": "$71.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Low-Licious Cheesecake",
+    "price": "$71.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "7 Inch White Chocolate Raspberry Truffle®",
+    "price": "$43.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "7 Inch Pumpkin Cheesecake",
+    "price": "$43.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "7 Inch Original",
+    "price": "$43.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Oreo® Dream Extreme Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Toasted Marshmallow S’Mores Galore™",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Chocolate Tower Truffle Cake™",
+    "price": "$75.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "6 Inch White Chocolate Raspberry Truffle®",
+    "price": "$37.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "7 Inch Chocolate Mousse Cheesecake",
+    "price": "$43.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "7 Inch Fresh Banana Cream Cheesecake",
+    "price": "$44.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "7 Inch Godiva® Chocolate Cheesecake",
+    "price": "$45.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Celebration Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "7 Inch Lemon Raspberry Cream Cheesecake",
+    "price": "$44.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "7 Inch Fresh Strawberry",
+    "price": "$46.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "6 Inch Chocolate Mousse Cheesecake",
+    "price": "$37.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "7 Inch Dulce De Leche Caramel Cheesecake",
+    "price": "$43.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "6 Inch Original",
+    "price": "$35.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Pineapple Upside-Down Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "7 Inch Adam’s Peanut Butter Cup Fudge Ripple",
+    "price": "$44.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "7 Inch Ultimate Red Velvet Cake Cheesecake™",
+    "price": "$45.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Dulce De Leche Caramel Cheesecake",
+    "price": "$73.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Brownie Crunch Choc-A-Lot Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "10 Inch Fresh Banana Cream Cheesecake",
+    "price": "$74.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "7 Inch Celebration Cheesecake",
+    "price": "$45.95",
+    "section": "Whole Cheesecakes & Specialty Cakes"
+   },
+   {
+    "name": "Fettuccini Alfredo with Chicken",
+    "price": "$33.95",
+    "section": "Pastas"
+   },
+   {
+    "name": "Chicken Madeira",
+    "price": "$30.95",
+    "section": "Specialties"
+   },
+   {
+    "name": "Cajun Salmon*",
+    "price": "$34.95",
+    "section": "Fish & Seafood"
+   },
+   {
+    "name": "Steak Diane",
+    "price": "$33.95",
+    "section": "Steaks"
+   }
+  ]
+ },
+ {
+  "restaurantId": "8910",
+  "name": "Rodizio Grill Brazilian Steakhouse San Diego",
+  "sourceUrl": "https://www.rodiziogrill.com/san-diego/",
+  "confidence": "high",
+  "notes": "Rodizio-style Brazilian steakhouse: unlimited rotisserie meats and gourmet salad bar served per-person, not itemized by dish. This location's own official page publishes fixed per-person tier pricing (Full Rodizio, Salad-bar-only, Children), split by lunch/dinner daypart, which is treated as the priced menu. The national rodiziogrill.com/menu.aspx page explicitly defers to per-location pages for pricing (\"For pricing, click here and choose your favorite location\"), confirming the location page is the authoritative first-party price source. Children 0-2 yrs are free with a paying adult (no price to record).",
+  "dishes": [
+   {
+    "name": "Full Rodizio - Lunch",
+    "description": "Unlimited Brazilian sides, gourmet salads, and rotisserie grilled meats.",
+    "price": "$39.99",
+    "section": "Pricing"
+   },
+   {
+    "name": "Full Rodizio - Dinner",
+    "description": "Unlimited Brazilian sides, gourmet salads, and rotisserie grilled meats.",
+    "price": "$54.99",
+    "section": "Pricing"
+   },
+   {
+    "name": "Unlimited Gourmet Salads - Lunch",
+    "description": "Unlimited Brazilian sides and gourmet salads (no rotisserie meats).",
+    "price": "$24.99",
+    "section": "Pricing"
+   },
+   {
+    "name": "Unlimited Gourmet Salads - Dinner",
+    "description": "Unlimited Brazilian sides and gourmet salads (no rotisserie meats).",
+    "price": "$29.99",
+    "section": "Pricing"
+   },
+   {
+    "name": "Children (3-11 yrs) - Lunch",
+    "price": "$10.99",
+    "section": "Pricing"
+   },
+   {
+    "name": "Children (3-11 yrs) - Dinner",
+    "price": "$15.99",
+    "section": "Pricing"
+   }
+  ]
+ },
+ {
+  "restaurantId": "9427",
+  "name": "Yogurt Mill",
+  "sourceUrl": "https://yogurt-mill.com/yogurt-menu/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "The restaurant's own priced menu page (yogurt-mill.com/yogurt-menu/) returns HTTP 403 on every fetch attempt (plain browser headers, full browser header set with referer, and Googlebot user-agent all blocked identically) - a bot wall, not a missing/removed page. Confirmed the menu is not a no-price venue: the shop's own blog states verbatim \"we don't weigh your yogurt and charge you $15 dollars for one yogurt, we have set affordable prices for you\" (fixed pricing, not pay-by-weight), and a Google search snippet of the live menu page shows real priced line items (e.g. \"$13.25\", \"$12.75\", \"$7.75\" against item names including \"Banana [Split]\" and \"Yogurt Shake\"), but the snippet is truncated and reorders content, so item/price pairing cannot be trusted without invented interpretation - per the never-merge/never-invent rule these were not recorded as dishes. No DoorDash/Uber Eats/Grubhub listing for this specific El Cajon location (935 Broadway) was found; the Yelp business page also returns 403. Re-attempt when the bot wall can be bypassed or a marketplace listing appears."
+ }
 ]

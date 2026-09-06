@@ -1,0 +1,925 @@
+[
+  {
+    "restaurantId": "7692",
+    "name": "Madi Pacific Beach",
+    "sourceUrl": "https://brunchlikemadi.com/menu-1",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "core-unpriced: menu is served as photo images (Squarespace CDN); core sections (Shares, Madi Faves, Griddle Game / brunch mains) carry no prices at all, only secondary sections (Lunch, Mimosas, Coffee, Juice, Beverages) are priced; per playbook rule, a core section with no prices is blocked not filed. Also note: this location (910 Grand Ave, Pacific Beach) shares one site/menu with the Normal Heights location; router flagged wrong-branch Toast payload for 3737 Adams Ave, which is the other branch, not this one."
+  },
+  {
+    "restaurantId": "5522",
+    "name": "PGA Tour Grill",
+    "sourceUrl": "https://www.hmshost.com/brands/pga-tour-grill",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-published-prices: HMSHost-operated airport concession at San Diego Intl (Terminal 2); Yelp, TripAdvisor, OpenTable, PriorityPass and HMSHost's own brand page name dishes but publish no itemized prices anywhere online, matching the airport-concession-with-no-published-pricing block category."
+  },
+  {
+    "restaurantId": "6393",
+    "name": "Wicked Poke",
+    "sourceUrl": "https://sf-classic.order.online/store/wicked-poke-187550",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "too-few-items: DoorDash order.online storefront's own RSC-embedded menuBook confirms the complete menu (numItems:3, cross-checked against Uber Eats) is only 3 priced items (Regular Bowl $17.99, Large Bowl $19.99, Spam Musubi $3.50) - genuine and complete, but below the 5-item minimum to count as a filed menu."
+  },
+  {
+    "restaurantId": "9051",
+    "name": "Mahtab Mediterranean Cuisine",
+    "sourceUrl": "https://www.doordash.com/store/mahtab-mefiternean-cusine-la-jolla-41538031/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://postmates.com/store/mahtab-mediterranean-cusine/fpH_vKJiS4mTCFbHUXWgcQ",
+    "notes": "extracted from DoorDash's Next.js RSC-embedded item data (displayPrice fields); address on the DoorDash page (3211 Holiday Ct, La Jolla) matches the batch record exactly; two prices (Beef Koobideh Kabob $20.99, Chicken Kabab $20.49) independently corroborated by a Postmates featured-items snippet found via search.",
+    "dishes": [
+      {
+        "name": "Filet Kabab",
+        "description": "",
+        "price": "$27.49",
+        "section": "Kabobs"
+      },
+      {
+        "name": "Soltani Kabob",
+        "description": "",
+        "price": "$38.99",
+        "section": "Kabobs"
+      },
+      {
+        "name": "Fish Kabab",
+        "description": "",
+        "price": "$25.99",
+        "section": "Kabobs"
+      },
+      {
+        "name": "Filet Kabab Skewer",
+        "description": "",
+        "price": "$24.49",
+        "section": "Kabobs"
+      },
+      {
+        "name": "Beef Koobideh Kabob",
+        "description": "",
+        "price": "$20.99",
+        "section": "Kabobs"
+      },
+      {
+        "name": "Fish Kabab Skewer",
+        "description": "",
+        "price": "$20.99",
+        "section": "Kabobs"
+      },
+      {
+        "name": "Shish Kabob",
+        "description": "",
+        "price": "$25.99",
+        "section": "Kabobs"
+      },
+      {
+        "name": "Beef Koobideh Wrap",
+        "description": "",
+        "price": "$16.99",
+        "section": "Kabobs"
+      },
+      {
+        "name": "Chicken Kabab",
+        "description": "",
+        "price": "$20.49",
+        "section": "Kabobs"
+      },
+      {
+        "name": "Chicken Kabab Wrap",
+        "description": "",
+        "price": "$16.99",
+        "section": "Kabobs"
+      },
+      {
+        "name": "Chicken Skewer",
+        "description": "",
+        "price": "$11.49",
+        "section": "Kabobs"
+      },
+      {
+        "name": "Beef Koobideh Skewer",
+        "description": "",
+        "price": "$11.49",
+        "section": "Kabobs"
+      },
+      {
+        "name": "Halim",
+        "description": "",
+        "price": "$12.99",
+        "section": "Kabobs"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9150",
+    "name": "Elena's French Crepes Cafe & Peet's Coffee",
+    "sourceUrl": "https://www.yelp.com/biz/elenas-cafe-french-crepes-oceanside",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-priced-source: no first-party site, no DoorDash/Uber Eats/Grubhub listing found; only barred farm/photo-aggregator domains (top-cafes.com, wheree.com) claim to have menu/pricing and are excluded per playbook; a same-named 'Cafe Elena' in Columbus, OH is a different, unrelated restaurant chain, not this one."
+  },
+  {
+    "restaurantId": "9191",
+    "name": "Meshuggah Shack",
+    "sourceUrl": "https://www.yelp.com/biz/meshuggah-shack-san-diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-priced-source: no first-party menu site or delivery-platform listing found; only a barred photo-aggregator (wheree.com) and stale hearsay (a 2014 UCSD Guardian article, scattered Yelp review price mentions) exist, none of which is a citable itemized menu."
+  },
+  {
+    "restaurantId": "10617",
+    "name": "Mesa Pizza",
+    "sourceUrl": "https://www.facebook.com/mesapizza/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-priced-source: Uber Eats listing closed since Oct 2023; Facebook page fetched directly renders no visible menu/price content (client-side/login-gated); only inconsistent hearsay prices from Yelp/Mapquest/Mindtrip snippets spanning several years (values conflict: $4.69-$12.99 for the same large pizza across sources/time), none a stable citable source."
+  },
+  {
+    "restaurantId": "4437",
+    "name": "Bravo's Taco Shop",
+    "sourceUrl": "https://www.grubhub.com/restaurant/bravos-mexican-food-3815-euclid-ave-san-diego/15485384",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "bot-wall: Grubhub page confirmed bot-walled on two separate direct fetches (with full desktop-Chrome navigation headers) - server always returns a 13.6KB client-render shell with no embedded price data, even though Google's own index of the same URL shows real priced dishes (e.g. Chimichanga Beef $13.99) in its snippet; no DoorDash or Uber Eats listing could be located via search despite an Instagram post claiming availability on both."
+  },
+  {
+    "restaurantId": "9261",
+    "name": "Encanto Cafe",
+    "sourceUrl": "https://www.toasttab.com/local/order/encanto-1261-prospect-st",
+    "confidence": "high",
+    "notes": "read from the restaurant's own Toast storefront (window.__OO_STATE__ embedded catalog), which is a different, previously-unfound URL from the router's screened site (theencantocafe.com, a client-rendered SPA); address matches batch record (1261 Prospect St) exactly.",
+    "dishes": [
+      {
+        "name": "Espresso",
+        "description": "Classic Espresso",
+        "price": "$4.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Americano Hot 12 oz",
+        "description": "",
+        "price": "$5.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Americano Iced 16 oz",
+        "description": "Water & Espresso",
+        "price": "$5.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Macchiato 2.5 oz",
+        "description": "Foam & Espresso",
+        "price": "$5.00",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Cortado 4 oz",
+        "description": "Foam, Milk & Espresso",
+        "price": "$5.00",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Cappuccino 8 oz",
+        "description": "Foam, Milk & Espresso",
+        "price": "$5.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Flat White",
+        "description": "",
+        "price": "$5.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Housemade Cold Brew 16 oz",
+        "description": "",
+        "price": "$8.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Latte Hot 12 oz",
+        "description": "Foam, Milk & Espresso",
+        "price": "$6.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Latte Iced 16 oz",
+        "description": "Foam, Milk & Espresso",
+        "price": "$6.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Mexican Mocha Hot 12 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Mexican Mocha Iced 16 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Mexican Espresso Cold Foam",
+        "description": "",
+        "price": "$8.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Hazelnut Mocha Hot 12 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Hazelnut Mocha Iced 16 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "White Mocha Hot 12 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "White Mocha Iced 16 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Horchata Latte Hot 12 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Horchata Latte Iced 16 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Encanto Hot 12 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Encanto Iced 16 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Caramelo Blanco Hot 12 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Caramelo Blanco Iced 16 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Caramelo Chocolat Hot 12 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Caramelo Chocolat Iced 16 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Pistachio Hot 12 oz",
+        "description": "",
+        "price": "$9.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Pistachio Iced 16 oz",
+        "description": "",
+        "price": "$9.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Chocolate Pistachio Hot 12 oz",
+        "description": "",
+        "price": "$9.00",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Chocolate Pistachio Iced 16 oz",
+        "description": "",
+        "price": "$9.00",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Golden Milk Hot 12 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Golden Milk Iced 16 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Dirty Chai Hot 12 oz",
+        "description": "Chai, Espresso $ Milk",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Dirty Chai Iced 16 oz",
+        "description": "Chai, Espresso $ Milk",
+        "price": "$7.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Matcha Latte Hot 12 oz",
+        "description": "Matcha, Water & Milk",
+        "price": "$7.00",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Matcha Latte Iced 16 oz",
+        "description": "Matcha, Water & Milk",
+        "price": "$7.00",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Dirty Matcha Hot 12 oz",
+        "description": "",
+        "price": "$8.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Dirty Matcha Iced 16 oz",
+        "description": "",
+        "price": "$8.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Strawberry Matcha",
+        "description": "",
+        "price": "$8.00",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Chocolate Matcha",
+        "description": "",
+        "price": "$8.00",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Extra Pistachio",
+        "description": "",
+        "price": "$2.00",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Extra Matcha",
+        "description": "",
+        "price": "$1.50",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Donut Special + Americano",
+        "description": "",
+        "price": "$9.00",
+        "section": "Encanto / Menu"
+      },
+      {
+        "name": "Chai Hot 12 oz",
+        "description": "Chai & Milk",
+        "price": "$6.50",
+        "section": "Encanto / Non - Coffee Hot Beverages"
+      },
+      {
+        "name": "Chai Iced 16 oz",
+        "description": "",
+        "price": "$6.50",
+        "section": "Encanto / Non - Coffee Hot Beverages"
+      },
+      {
+        "name": "Mexican Chai Hot 12 oz",
+        "description": "",
+        "price": "$6.50",
+        "section": "Encanto / Non - Coffee Hot Beverages"
+      },
+      {
+        "name": "Mexican Chai Iced 16 oz",
+        "description": "",
+        "price": "$6.50",
+        "section": "Encanto / Non - Coffee Hot Beverages"
+      },
+      {
+        "name": "Hot Chocolate Hot 12 oz",
+        "description": "Chocolate & Milk",
+        "price": "$6.75",
+        "section": "Encanto / Non - Coffee Hot Beverages"
+      },
+      {
+        "name": "Hot Chocolate (Iced) 16 oz",
+        "description": "",
+        "price": "$6.75",
+        "section": "Encanto / Non - Coffee Hot Beverages"
+      },
+      {
+        "name": "Matcha Tea Hot 12 oz",
+        "description": "Matcha & Water",
+        "price": "$6.50",
+        "section": "Encanto / Non - Coffee Hot Beverages"
+      },
+      {
+        "name": "Matcha Tea Iced 16 oz",
+        "description": "",
+        "price": "$6.50",
+        "section": "Encanto / Non - Coffee Hot Beverages"
+      },
+      {
+        "name": "Golden Milk Hot 12 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Non - Coffee Hot Beverages"
+      },
+      {
+        "name": "Golden Milk Iced 16 oz",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Non - Coffee Hot Beverages"
+      },
+      {
+        "name": "Peppermint Hot 12 oz",
+        "description": "",
+        "price": "$5.00",
+        "section": "Encanto / Tea Infusions"
+      },
+      {
+        "name": "Peppermint Iced 16 oz",
+        "description": "",
+        "price": "$5.00",
+        "section": "Encanto / Tea Infusions"
+      },
+      {
+        "name": "Hibbiscus Hot 12 oz",
+        "description": "",
+        "price": "$5.00",
+        "section": "Encanto / Tea Infusions"
+      },
+      {
+        "name": "Hibbiscus Iced 16 oz",
+        "description": "",
+        "price": "$5.00",
+        "section": "Encanto / Tea Infusions"
+      },
+      {
+        "name": "Chamomille Hot 12 oz",
+        "description": "",
+        "price": "$5.00",
+        "section": "Encanto / Tea Infusions"
+      },
+      {
+        "name": "Chamomille Iced 16 oz",
+        "description": "",
+        "price": "$5.00",
+        "section": "Encanto / Tea Infusions"
+      },
+      {
+        "name": "Green Tea\\u002FOolong Hot 12 oz",
+        "description": "Tea & Water",
+        "price": "$5.00",
+        "section": "Encanto / Tea Infusions"
+      },
+      {
+        "name": "Green Tea\\u002FOolong Iced 16 oz",
+        "description": "",
+        "price": "$5.00",
+        "section": "Encanto / Tea Infusions"
+      },
+      {
+        "name": "Black Tea\\u002FEarl Gray Hot 12 oz",
+        "description": "Tea & Water",
+        "price": "$5.00",
+        "section": "Encanto / Tea Infusions"
+      },
+      {
+        "name": "Black Tea\\u002FEarl Gray Iced 16 oz",
+        "description": "",
+        "price": "$5.00",
+        "section": "Encanto / Tea Infusions"
+      },
+      {
+        "name": "London Fog",
+        "description": "",
+        "price": "$5.25",
+        "section": "Encanto / Tea Infusions"
+      },
+      {
+        "name": "Queen Smoothie",
+        "description": "Blueberries, banana, acai, plant-based protein powder, coconut milk & coc flakes",
+        "price": "$12.00",
+        "section": "Encanto / Smoothies 16 oz"
+      },
+      {
+        "name": "O.G. Strawberry Smoothie",
+        "description": "",
+        "price": "$11.00",
+        "section": "Encanto / Smoothies 16 oz"
+      },
+      {
+        "name": "Go Green Smoothie",
+        "description": "Spinach, Parsley, Dates, Avocado, Green Apple, Banana, Almond Milk & Cacao Nibs",
+        "price": "$13.00",
+        "section": "Encanto / Smoothies 16 oz"
+      },
+      {
+        "name": "Blue Moon Spirulina Smoothie",
+        "description": "",
+        "price": "$14.00",
+        "section": "Encanto / Smoothies 16 oz"
+      },
+      {
+        "name": "Sunny Smoothie",
+        "description": "Pineapple, Turmeric, Coconut Milk, Oatmeal, Plant-Based Protein, Mango, Raspberries & Honey",
+        "price": "$12.00",
+        "section": "Encanto / Smoothies 16 oz"
+      },
+      {
+        "name": "Cacao Lover Smoothie",
+        "description": "Banana, Cacao Powder, Vanilla, Cinnamon, Honey, Dates, Almond Butter & Almond Milk",
+        "price": "$13.00",
+        "section": "Encanto / Smoothies 16 oz"
+      },
+      {
+        "name": "Protein Boost Smoothie",
+        "description": "Chocolate Plant Based Protein Powder, banana, peanut butter, coconut butter, almond milk, vanilla, honey & cinnamon",
+        "price": "$13.00",
+        "section": "Encanto / Smoothies 16 oz"
+      },
+      {
+        "name": "Bliss Smoothie",
+        "description": "",
+        "price": "$13.00",
+        "section": "Encanto / Smoothies 16 oz"
+      },
+      {
+        "name": "Haven Smoothie",
+        "description": "",
+        "price": "$13.00",
+        "section": "Encanto / Smoothies 16 oz"
+      },
+      {
+        "name": "Very Green Juice",
+        "description": "Pineapple, Celery, Green Apple, Kale, Parsley, Spinach, Flex Seeds & Coconut Water",
+        "price": "$13.00",
+        "section": "Encanto / Freshly Squeezed Juice 16 oz"
+      },
+      {
+        "name": "Cleo Juice (Beets & Carrots)",
+        "description": "Beets & Carrots",
+        "price": "$14.00",
+        "section": "Encanto / Freshly Squeezed Juice 16 oz"
+      },
+      {
+        "name": "Just Orange Juice",
+        "description": "Orange Only",
+        "price": "$13.00",
+        "section": "Encanto / Freshly Squeezed Juice 16 oz"
+      },
+      {
+        "name": "Heavenly Juice (Carrots & Oranges)",
+        "description": "Carrots, Oranges & Kale",
+        "price": "$13.00",
+        "section": "Encanto / Freshly Squeezed Juice 16 oz"
+      },
+      {
+        "name": "Blush Juice (Beets & Pineapple)",
+        "description": "",
+        "price": "$14.00",
+        "section": "Encanto / Freshly Squeezed Juice 16 oz"
+      },
+      {
+        "name": "Just Celery Juice",
+        "description": "",
+        "price": "$13.00",
+        "section": "Encanto / Freshly Squeezed Juice 16 oz"
+      },
+      {
+        "name": "DPA Juice",
+        "description": "",
+        "price": "$13.00",
+        "section": "Encanto / Freshly Squeezed Juice 16 oz"
+      },
+      {
+        "name": "Power Green Juice",
+        "description": "",
+        "price": "$14.00",
+        "section": "Encanto / Freshly Squeezed Juice 16 oz"
+      },
+      {
+        "name": "Vera Juice",
+        "description": "",
+        "price": "$13.00",
+        "section": "Encanto / Freshly Squeezed Juice 16 oz"
+      },
+      {
+        "name": "Glow Juice",
+        "description": "",
+        "price": "$13.00",
+        "section": "Encanto / Freshly Squeezed Juice 16 oz"
+      },
+      {
+        "name": "The Classic",
+        "description": "",
+        "price": "$21.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Egg, Bacon & Spinach",
+        "description": "Sliced Turkey, Omelette, Avocado, Garlic Aioli on a Croissant",
+        "price": "$18.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Egg, Tomato & Spinach",
+        "description": "",
+        "price": "$15.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Chilaquiles Encantados",
+        "description": "",
+        "price": "$21.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Traditional Waffle",
+        "description": "Nutella, Coconut Cream, Banana, Strawberries, Raspberries & Maple",
+        "price": "$17.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Cacao Waffle",
+        "description": "Creamy Coconut Yoghurt, Banana, Strawberries, Raspberries, Blueberries, Maple & Cinnamon",
+        "price": "$17.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Banana Bliss Pancakes GF",
+        "description": "",
+        "price": "$18.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Garden Omelette",
+        "description": "",
+        "price": "$21.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Smoky Sunrise Omelette",
+        "description": "",
+        "price": "$22.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Molletes",
+        "description": "Bolillo Bread, Beans, Mozzarella & Pico de Gallo",
+        "price": "$17.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Chori Breakfast Burrito",
+        "description": "",
+        "price": "$15.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Bean & Cheese Burrito",
+        "description": "",
+        "price": "$8.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "La Dorada",
+        "description": "",
+        "price": "$16.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Artisan Sliced Bread",
+        "description": "Sourdough Slice",
+        "price": "$5.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Scrambled Eggs",
+        "description": "",
+        "price": "$7.50",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Bacon",
+        "description": "",
+        "price": "$4.50",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Beans",
+        "description": "",
+        "price": "$4.50",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Pico de Gallo",
+        "description": "",
+        "price": "$3.50",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Nutella",
+        "description": "",
+        "price": "$2.50",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Maple",
+        "description": "",
+        "price": "$1.25",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Coconut Yogurt",
+        "description": "",
+        "price": "$1.50",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Chorizo",
+        "description": "",
+        "price": "$3.50",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Avocado",
+        "description": "",
+        "price": "$4.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Chicken",
+        "description": "",
+        "price": "$6.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Salmon",
+        "description": "",
+        "price": "$7.00",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Special Latte Upgrade",
+        "description": "",
+        "price": "$1.50",
+        "section": "Encanto / Breakfast"
+      },
+      {
+        "name": "Acai Signature",
+        "description": "Acai, Banana, Granola, Berries, Raspberies, Strawberries, Coconut Flakes, Honey, Chia Seeds & Cinnamon",
+        "price": "$16.00",
+        "section": "Encanto / Acai & Bowls"
+      },
+      {
+        "name": "Yogurt Bowl",
+        "description": "",
+        "price": "$13.00",
+        "section": "Encanto / Acai & Bowls"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Romaine Lettuce, Parmesan Cheese, Croutons, Pumpkin Seeds & Caesar Dressing",
+        "price": "$15.00",
+        "section": "Encanto / Salads & Bowls"
+      },
+      {
+        "name": "Honey Mustard Spinach Salad",
+        "description": "Baby Spinach, Gorgonzola Cheese, Almonds, Sliced Apples, Cranberries & Honey Mustard Dressing",
+        "price": "$15.00",
+        "section": "Encanto / Salads & Bowls"
+      },
+      {
+        "name": "Chips & Guac",
+        "description": "",
+        "price": "$10.00",
+        "section": "Encanto / Salads & Bowls"
+      },
+      {
+        "name": "Turkey Pesto Sandwich",
+        "description": "Basil Pesto, Turkey, Mozzarella, Arugula, Tomato, Olive Oil on Ciabatta Bread",
+        "price": "$15.00",
+        "section": "Encanto / Sandwiches"
+      },
+      {
+        "name": "Chicken Mozzarella Sandwich",
+        "description": "Grilled Chicken, Mozzarella, Avocado, Lettuce, Tomato, Olive Oil & Herb Spread",
+        "price": "$17.00",
+        "section": "Encanto / Sandwiches"
+      },
+      {
+        "name": "Chicken Maple Glazed",
+        "description": "",
+        "price": "$18.00",
+        "section": "Encanto / Sandwiches"
+      },
+      {
+        "name": "Prosciutto Brie Sandwhich",
+        "description": "Prosciutto, Brie, Arugula, Olive Oil & Vegannaise on Ciabatta Bread",
+        "price": "$19.00",
+        "section": "Encanto / Sandwiches"
+      },
+      {
+        "name": "Encanto Tuna Sandwich",
+        "description": "Tuna, Greek Yoghurt, Celery, Almonds on a Honey Multigrain Wheat bread w Jalapenos",
+        "price": "$15.00",
+        "section": "Encanto / Sandwiches"
+      },
+      {
+        "name": "Veggie Sandwich",
+        "description": "Tomato, Avocado, Red Onion, Panela Cheese, Dijon Mustard, Chipotle Spread on Honey Multigrain Wheat w Jalapenos",
+        "price": "$16.00",
+        "section": "Encanto / Sandwiches"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "Avocado, Hemp Seeds, Pepper & Tahini Sauce on a Sourdough Bread",
+        "price": "$14.00",
+        "section": "Encanto / Toasts"
+      },
+      {
+        "name": "Caprese Toast",
+        "description": "Avocado, Mozzarella, Cherry Tomatoes, Basil Pesto Spread, Balsamic & Olive Oil on a Sourdough Bread",
+        "price": "$16.00",
+        "section": "Encanto / Toasts"
+      },
+      {
+        "name": "Salmon Toast",
+        "description": "Smoked Salmon, Tabasco, Red Onions, Capers, Dill, Olive Oil, Pink Salt on a Sourdough Bread",
+        "price": "$18.00",
+        "section": "Encanto / Toasts"
+      },
+      {
+        "name": "Pizza Flatbread",
+        "description": "Tomato Sauce, Mozzarella, Basil and Pepperoni",
+        "price": "$17.00",
+        "section": "Encanto / Toasts"
+      },
+      {
+        "name": "Pico De Gallo",
+        "description": "",
+        "price": "$3.00",
+        "section": "Encanto / Side Orders"
+      },
+      {
+        "name": "Beans",
+        "description": "",
+        "price": "$4.50",
+        "section": "Encanto / Side Orders"
+      },
+      {
+        "name": "Chips",
+        "description": "",
+        "price": "$4.50",
+        "section": "Encanto / Side Orders"
+      },
+      {
+        "name": "Burrito Salsa",
+        "description": "",
+        "price": "$3.00",
+        "section": "Encanto / Side Orders"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5616",
+    "name": "La Colombe Coffee Roasters",
+    "sourceUrl": "https://www.lacolombe.com/pages/cafes/la-jolla",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-priced-source: confirms router's own finding - the only online catalog (Shopify /products.json) is retail bagged coffee/merchandise, not the in-cafe drink menu; no separate itemized cafe menu with prices found via search (Yelp/Tripaadvisor mention drinks by name only, no prices)."
+  }
+]

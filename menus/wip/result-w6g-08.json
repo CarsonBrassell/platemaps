@@ -1,0 +1,1009 @@
+[
+ {
+  "restaurantId": "7169",
+  "name": "Yas Lounge",
+  "sourceUrl": "https://www.yelp.com/biz/yas-lounge-lakeside-5",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "hookah lounge; Yelp notes they allow outside food and drink, atly.com describes only 'appetizers and drinks, no full meals'; no priced menu found specific to this business (an Uber Eats hit under a similar hookah-lounge search was a different business, Lemon Hookah Lounge) - food status unclear"
+ },
+ {
+  "restaurantId": "2245",
+  "name": "Olive Oil Cafe",
+  "sourceUrl": "https://www.eatatsdsu.com/Menu/Our-Menus",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "SDSU campus sandwich/dessert cafe; SDSU Dining's own menu page lists it as a 'third-party owned-and-operated unit' with 'please contact location directly' and no prices; owner's Facebook post gives only a vague range ('Prices are around $4-$7.50 per item'), not an itemized menu; no listing found on any delivery platform under this name"
+ },
+ {
+  "restaurantId": "3861",
+  "name": "Yomie's Rice x Yogurt",
+  "sourceUrl": "https://www.fantuanorder.com/en-US/store/yomie's-rice-x-yogurt-/us-1073123852",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "multi-branch chain; this business's own domain (yomiesricexyogurt.us) is branded for the Arcadia, CA location, and the Uber Eats listing found is for Rancho Santa Margarita (Orange County) - both wrong branches. The one source confirmed at 4688 Convoy St, San Diego (fantuanorder.com, matching address exactly) is a client-rendered React app with no prices in the fetched HTML - needs browser or an API path"
+ },
+ {
+  "restaurantId": "7000",
+  "name": "Mochinut",
+  "sourceUrl": "https://www.doordash.com/store/mochinut-national-city-24782041/",
+  "confidence": "medium",
+  "notes": "read from DoorDash schema.org Menu JSON-LD (hasMenuSection was doubly nested, flattened); dropped the 'Most Ordered' carousel and deduped on name+price; 38 items across Rice Hotdogs, Drinks, Mochinut (sold only by 3pc/half-dozen/dozen, no single-piece price published)",
+  "dishes": [
+   {
+    "name": "Hot Cheetos Mozzarella",
+    "description": "Mozzarella coated in hot cheetos",
+    "price": "$6.75",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Potato Mozzarella",
+    "description": "Mozzarella coated in potato",
+    "price": "$6.75",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Hot Cheetos Half & Half",
+    "description": "All beef hotdog with mozzarella coated in hot cheetos",
+    "price": "$6.75",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Potato Half & Half",
+    "description": "All beef hotdog with mozzarella coated in potato",
+    "price": "$6.75",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Original",
+    "description": "All beef hotdog",
+    "price": "$6.50",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Crunch Cereal Mozarella",
+    "description": "mozzarella coated in cereal",
+    "price": "$6.75",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Potato Original",
+    "description": "All beef hotdog coated in potato",
+    "price": "$6.75",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Original Half & Half",
+    "description": "All beef hotdog with mozzarella",
+    "price": "$6.50",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Crispy Ramen Half&Half",
+    "description": "Half mozzarella and half all beef coated in ramen",
+    "price": "$6.75",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Crunch Cereal Half & Half",
+    "description": "All beef hotdog with mozzarella coated in cereal",
+    "price": "$6.75",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Hot Cheetos Original",
+    "description": "All beef hotdog coated in hot cheetos",
+    "price": "$6.75",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Original Mozzarella",
+    "description": "Mozzarella",
+    "price": "$6.50",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Crispy Ramen Original",
+    "description": "All beef hotdog coated in ramen",
+    "price": "$6.75",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Fries",
+    "description": "Crispy golden potato strips, perfectly seasoned and fried to a mouthwatering perfection.",
+    "price": "$4.75",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Crispy Ramen Mozarella",
+    "description": " mozzarella coated in ramen",
+    "price": "$6.75",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Crunch Cereal Original",
+    "description": "All beef hotdog coated in cereal",
+    "price": "$6.75",
+    "section": "Rice Hotdogs"
+   },
+   {
+    "name": "Chai",
+    "description": "Chai tea with options for boba, less boba, or no boba, ice, light ice, or no ice.",
+    "price": "$7.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Thai Tea",
+    "description": "Sweet and creamy Thai tea with customizable boba options: regular boba, less boba, or no boba, plus ice choices.",
+    "price": "$6.50",
+    "section": "Drinks"
+   },
+   {
+    "name": "Peach Mango",
+    "description": "Peach mango fruit juice with boba, less boba, no boba, ice, light ice, no ice, or cream froth options.",
+    "price": "$6.50",
+    "section": "Drinks"
+   },
+   {
+    "name": "Strawberry Matcha",
+    "description": "Matcha drink with choice of boba variations including less boba, no boba, ice, light ice, or no ice.",
+    "price": "$8.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Brown Sugar",
+    "description": "Brown Sugar Milk Tea with customizable boba quantity and ice level, cream froth comes with it automatically. ",
+    "price": "$7.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Ube Coffee",
+    "description": "Ube coffee with options for boba, ice, or cream froth.",
+    "price": "$6.75",
+    "section": "Drinks"
+   },
+   {
+    "name": "Matcha",
+    "description": "Matcha drink with customizable options: boba amount, ice level, and cream froth.",
+    "price": "$7.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Strawberry Milk",
+    "description": "Velvety milk infused with the luscious sweetness of fresh strawberries.",
+    "price": "$7.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Fruit Punch",
+    "description": "A refreshing blend of juicy fruits, perfectly sweetened for a thirst-quenching treat.",
+    "price": "$6.50",
+    "section": "Drinks"
+   },
+   {
+    "name": "Lemonade ",
+    "description": "Refreshing citrus beverage.",
+    "price": "$6.50",
+    "section": "Drinks"
+   },
+   {
+    "name": "Lychee",
+    "description": "Lychee beverage with customizable boba and ice levels; option for cream froth.",
+    "price": "$6.50",
+    "section": "Drinks"
+   },
+   {
+    "name": "Coffee",
+    "description": "Coffee with customizable options including boba intensity, ice levels, and cream froth topping.",
+    "price": "$6.50",
+    "section": "Drinks"
+   },
+   {
+    "name": "Matcha Coffee",
+    "description": "Matcha coffee with customization options: boba amount, ice level, or cream froth.",
+    "price": "$6.75",
+    "section": "Drinks"
+   },
+   {
+    "name": "Banana Matcha",
+    "description": "Matcha with banana flavors. Options include various boba levels and ice preferences.",
+    "price": "$8.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Milk Tea",
+    "description": "Milk tea with customizable options: choose boba amount, ice level, or cream froth addition.",
+    "price": "$6.50",
+    "section": "Drinks"
+   },
+   {
+    "name": "Wintermelon",
+    "description": "Wintermelon juice, customizable with boba options: full, less, or none. Ice levels adjustable. Option for cream froth topping.",
+    "price": "$6.50",
+    "section": "Drinks"
+   },
+   {
+    "name": "Sprite",
+    "description": "The cold, refreshing flavors of lemon and lime, perfectly blended.",
+    "price": "$2.25",
+    "section": "Drinks"
+   },
+   {
+    "name": "Water",
+    "description": "Clear, refreshing bottled water.",
+    "price": "$1.75",
+    "section": "Drinks"
+   },
+   {
+    "name": "Coke",
+    "description": "The cold, refreshing, sparkling classic that America loves.",
+    "price": "$2.25",
+    "section": "Drinks"
+   },
+   {
+    "name": "Dozen",
+    "description": "Our flavors are on Instagram @mochinutnationalcity",
+    "price": "$38.00",
+    "section": "Mochinut"
+   },
+   {
+    "name": "Half Dozen",
+    "description": "Our flavors are on Instagram @mochinutnationalcity",
+    "price": "$20.00",
+    "section": "Mochinut"
+   },
+   {
+    "name": "3 pieces",
+    "description": "Our flavors are on Instagram @mochinutnationalcity",
+    "price": "$11.00",
+    "section": "Mochinut"
+   }
+  ]
+ },
+ {
+  "restaurantId": "3422",
+  "name": "Donuts N Things",
+  "sourceUrl": "https://donuts-n-things.hub.biz",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "no restaurant website found; only sources are directory/aggregator profiles (hub.biz, restaurantguru, sluurpy) that carry no prices; prices mentioned in Yelp reviews ($8.50/half dozen, $1.75/donut) are hearsay, not a source"
+ },
+ {
+  "restaurantId": "9844",
+  "name": "Potato World",
+  "sourceUrl": "https://www.potatoworldinc.com/",
+  "confidence": "high",
+  "notes": "read from the restaurant's own site; address matches exactly (Mershops North County Mall, 272 E Via Rancho Pkwy, Floor 3, Escondido) despite the batch-listed potatocornerusa.com now 404ing",
+  "dishes": [
+   {
+    "name": "French Fries",
+    "description": "Golden crispy fries with any of our 6 signature flavors",
+    "price": "$7.99",
+    "section": "Munchie Menu"
+   },
+   {
+    "name": "Mozzarella Sticks with Truffle Sauce",
+    "description": "Crispy golden mozzarella sticks served with premium truffle dipping sauce",
+    "price": "$9.99",
+    "section": "Munchie Menu"
+   },
+   {
+    "name": "Mac & Cheese Bites",
+    "description": "Crispy breaded mac and cheese balls with a gooey center",
+    "price": "$9.99",
+    "section": "Munchie Menu"
+   },
+   {
+    "name": "Chicken Wings (5pcs)",
+    "description": "Crispy fried chicken wings with any of our 6 signature flavors",
+    "price": "$9.99",
+    "section": "Munchie Menu"
+   },
+   {
+    "name": "Popcorn Chicken",
+    "description": "Bite-sized pieces of golden fried chicken, perfectly seasoned",
+    "price": "$8.99",
+    "section": "Munchie Menu"
+   },
+   {
+    "name": "Fish Cake",
+    "description": "Golden fried fish cake with a savory, flaky filling",
+    "price": "$8.99",
+    "section": "Munchie Menu"
+   },
+   {
+    "name": "Truffle Sauce",
+    "description": "Premium truffle dipping sauce to elevate any dish",
+    "price": "$1.00",
+    "section": "Munchie Menu"
+   },
+   {
+    "name": "Pepsi",
+    "description": "",
+    "price": "$2.79",
+    "section": "Drinks"
+   },
+   {
+    "name": "Diet Pepsi",
+    "description": "",
+    "price": "$2.79",
+    "section": "Drinks"
+   },
+   {
+    "name": "Dr. Pepper",
+    "description": "",
+    "price": "$2.79",
+    "section": "Drinks"
+   },
+   {
+    "name": "Root Beer",
+    "description": "",
+    "price": "$2.79",
+    "section": "Drinks"
+   },
+   {
+    "name": "Starry",
+    "description": "",
+    "price": "$2.79",
+    "section": "Drinks"
+   },
+   {
+    "name": "Lemonade",
+    "description": "",
+    "price": "$2.79",
+    "section": "Drinks"
+   },
+   {
+    "name": "Strawberry Watermelon",
+    "description": "",
+    "price": "$4.50",
+    "section": "Drinks"
+   },
+   {
+    "name": "Potato Ube Coffee",
+    "description": "",
+    "price": "$6.99",
+    "section": "Drinks"
+   }
+  ]
+ },
+ {
+  "restaurantId": "5805",
+  "name": "Ching's Famous Hopia",
+  "sourceUrl": "http://places.singleplatform.com/chings-famous-hopia/menu",
+  "confidence": "medium",
+  "notes": "SinglePlatform listing (address confirmed 1722 E 8th St, National City); this one was not price-stripped; batch-listed website chingsfamoushopia.site now redirects to expireddomains.com",
+  "dishes": [
+   {
+    "name": "6 Pc",
+    "description": "Hopia. Flavor Choice: Baboy, Buko Pandan, Jackfruit, Mongo, Pineapple, Ube",
+    "price": "$4.80",
+    "section": "Hopia"
+   },
+   {
+    "name": "Travel Pack 27 Pc",
+    "description": "Hopia. Flavor Choice: Baboy, Buko Pandan, Jackfruit, Mongo, Pineapple, Ube",
+    "price": "$20.00",
+    "section": "Hopia"
+   },
+   {
+    "name": "3 Pc",
+    "description": "Hopia. Flavor Choice: Baboy, Buko Pandan, Jackfruit, Mongo, Pineapple, Ube",
+    "price": "$2.40",
+    "section": "Hopia"
+   },
+   {
+    "name": "8 Pc Box",
+    "description": "Hopia. Flavor Choice: Baboy, Buko Pandan, Jackfruit, Mongo, Pineapple, Ube",
+    "price": "$5.75",
+    "section": "Hopia"
+   },
+   {
+    "name": "12 Pc",
+    "description": "Hopia. Flavor Choice: Baboy, Buko Pandan, Jackfruit, Mongo, Pineapple, Ube",
+    "price": "$8.65",
+    "section": "Hopia"
+   },
+   {
+    "name": "Empanada",
+    "description": "Protein Choice: Beef, Chicken, Pork",
+    "price": "$1.50",
+    "section": "Empanada"
+   }
+  ]
+ },
+ {
+  "restaurantId": "11416",
+  "name": "Suspiros Cakes Chula Vista",
+  "sourceUrl": "https://www.ubereats.com/store/suspiros-cakes/4_timw5XWbG6UQyKAZ_HXg",
+  "confidence": "medium",
+  "notes": "read from Uber Eats schema.org Menu JSON-LD; address confirmed (985 Broadway, Chula Vista); only 5 SKUs listed, all at one flat price - the business markets '40+ cake flavors' so the flat price likely covers one standard cake size across flavors rather than 40 distinct delivery items",
+  "dishes": [
+   {
+    "name": "Gansito Cake",
+    "description": "A traditional mexican snack cake that we all love, now in a cake! It tastes exactly the same as our favorite childhood memories, it is a vanilla cake with suspiros cream and strawberry jelly in the middle, covered with chocolate and chocolate sprinkles.",
+    "price": "$49.90",
+    "section": "Cakes"
+   },
+   {
+    "name": "Mazapán Cake",
+    "description": "Amazing vanilla cake covered with our Suspiros Cakes combined with the famous mexican mazapan candy. If you love peanuts, this is your cake!",
+    "price": "$49.90",
+    "section": "Cakes"
+   },
+   {
+    "name": "Cherry Blossom",
+    "description": "Moist cake infused with the sweetness of cherry blossoms.",
+    "price": "$49.90",
+    "section": "Cakes"
+   },
+   {
+    "name": "Napolitano Cake",
+    "description": "You will get the three flavors in one cake for you to enjoy! Vanilla, strawberry and chocolate cake covered with our buttercream frosting and chocolate chips. A beautiful and delicious cake!",
+    "price": "$49.90",
+    "section": "Cakes"
+   },
+   {
+    "name": "Mango Cake",
+    "description": "A light and delicious vanilla cake with layers of Suspiros cream and mango jelly for those who don't like their cakes too sweet!",
+    "price": "$49.90",
+    "section": "Cakes"
+   }
+  ]
+ },
+ {
+  "restaurantId": "9016",
+  "name": "Saya Brasserie",
+  "sourceUrl": "https://www.doordash.com/store/saya-brasserie-sd-san-diego-46803583/",
+  "confidence": "medium",
+  "notes": "read from DoorDash schema.org Menu JSON-LD; 91 items across 16 sections (Breakfast through Lemonades & Soft Drinks) - checked against every category name appearing elsewhere in the page body and found no section beyond these 16, and the last section ends on a plausible final drink item rather than mid-category, so treated as complete rather than truncated; prices are clean .00/.50 endings consistent with this upscale brasserie's price level",
+  "dishes": [
+   {
+    "name": "Steak Frites and Eggs",
+    "description": "Juicy steak with crispy fries, served with choice of egg style. Select preferred steak temperature and egg preference for a personalized breakfast experience.",
+    "price": "$38.50",
+    "section": "Breakfast"
+   },
+   {
+    "name": "The Ultimate Benedict",
+    "description": "Two Poached egg served on toasted brioche bread, Marinated bbq beef, smashed avocado, Hollandaise sauce",
+    "price": "$33.50",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Salmon Egg Benedict",
+    "description": "Danish bread, salted salmon gravlax, egg, parmesan cheeses, sliced of avocado, hollandaise sauce and baby spinach",
+    "price": "$31.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Salmon Avocado Toast",
+    "description": "Toasted brioche, cream cheese, salmon gravlax, sliced avocado, guacamole quenelle, add-ons 1 pc egg - 10 aed salmon gravlax - 30 aed",
+    "price": "$31.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "French Omelette with Salmon & Avocado",
+    "description": "French omelette served with sourdough, fresh avocado, salmon,butter, cheese, mix seeds",
+    "price": "$30.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Turkey Ham Egg Benedict",
+    "description": "Danish bread, turkey ham,egg, parmesan cheeses, slices of avocado, hollandaise sauce and baby spinach",
+    "price": "$29.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Croissant Truffle",
+    "description": "Freshly baked croissant, truffle mayo, sautéed mushroom,  scramble egg, and top with parmesan cheese and fresh black truffle",
+    "price": "$29.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Saya Signature Breakfast",
+    "description": "Avocado, shrimp, salmon gravlax, tomato uzbek, asparagus, egg, homemade herb cheese and served homemade croissant",
+    "price": "$29.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Avocado Bruschetta",
+    "description": "Homemade sourdough, guacamole, avocado, roasted cherry tomatoes, eggs your way",
+    "price": "$27.50",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Shakshuka",
+    "description": "Baked tomato base, egg, onion pesto, greek yogurt, feta cheeses, kuluri bread, oregano chives",
+    "price": "$27.50",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Truffle Scrambled Eggs",
+    "description": "3 scrambled eggs, brioche, fresh black truffle, mixed mushrooms, truffle mayonnaise. With parmesan cheese on the top and fresh black truffle",
+    "price": "$27.50",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Japanese Morning Burger",
+    "description": "Japanese bun, baby spinach, béchamel sauce, smoked turkey ham, mushroom and onion pesto",
+    "price": "$27.50",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Burrata Toast",
+    "description": "Toasted brioche,guacamole, fresh burrata, mix seeds",
+    "price": "$27.50",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Saya Pink Benedict",
+    "description": "Poached eggs on English muffin, choice of egg style, topped with pink hollandaise sauce.",
+    "price": "$27.50",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Sexy Eggs",
+    "description": "Fluffy omelette atop toasted bread, garnished with fresh greens, accompanied by crispy bacon and diced tomatoes.",
+    "price": "$25.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Chilaquiles",
+    "description": "Crisp tortilla chips, tangy sauce, cheese, choice of protein like chicken or steak, with eggs prepared to your liking, such as fried or scrambled. A Mediterranean twist on a Mexican classic.",
+    "price": "$24.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Avocado Toast",
+    "description": "Sourdough bread topped with mashed avocado, microgreens, and pomegranate seeds, served with a lemon wedge.",
+    "price": "$23.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Açai",
+    "description": "Açai pureé, mixed forest berries, peanut butter, coconut, homemade granola, oat bar",
+    "price": "$25.00",
+    "section": "Sweet Breakfast"
+   },
+   {
+    "name": "Greek Yogurt Bowl",
+    "description": "Greek yogurt, homemade granola, honey, fresh strawberries",
+    "price": "$24.00",
+    "section": "Sweet Breakfast"
+   },
+   {
+    "name": "French Toast",
+    "description": "French toast made with our croissant, lotus crumbs, and vanilla ice cream served vanilla sauce",
+    "price": "$21.50",
+    "section": "Sweet Breakfast"
+   },
+   {
+    "name": "Crepes with berries",
+    "description": "Crepes, sour cream, and berries",
+    "price": "$18.00",
+    "section": "Sweet Breakfast"
+   },
+   {
+    "name": "Dynamite Shrimps",
+    "description": "Crispy shrimps, dynamite mayonnaise",
+    "price": "$27.50",
+    "section": "Starters"
+   },
+   {
+    "name": "Quesadilla de Pollo",
+    "description": "Tortilla bread quesadillas mix with shredded chicken breast, fresh tomato uzbek, mix cheese, coriander leaves, fresh chives, serve with tomato salsa and sour cream",
+    "price": "$25.00",
+    "section": "Starters"
+   },
+   {
+    "name": "Dynamite Chicken",
+    "description": "Crispy chicken, dynamite mayonnaise",
+    "price": "$25.00",
+    "section": "Starters"
+   },
+   {
+    "name": "Kataifi Shrimp",
+    "description": "Crispy shrimp wrapped in shredded phyllo dough, garnished with fresh herbs.",
+    "price": "$25.00",
+    "section": "Starters"
+   },
+   {
+    "name": "Salmon Wellness Bowl",
+    "description": "Mesclun mix, black quinoa, boiled egg, halloumi cheese, gravlax salmon, uzbek tomato, smashed avocado,edamame beans,rocket leaf dressing, mix seed chips",
+    "price": "$32.50",
+    "section": "Salads & Bowls"
+   },
+   {
+    "name": "Shrimps Energy Bowl",
+    "description": "Mesclun mix, black quinoa, boiled egg, halloumi cheese, shrimps, uzbek tomato, smashed avocado,edamame beans,rocket leaf dressing, mix seed chips",
+    "price": "$30.00",
+    "section": "Salads & Bowls"
+   },
+   {
+    "name": "Chicken Caesar Salad",
+    "description": "Grilled chicken, romaine lettuce, croutons, cherry tomatoes, red onions, and Caesar dressing, topped with a halved boiled egg.",
+    "price": "$29.00",
+    "section": "Salads & Bowls"
+   },
+   {
+    "name": "Burrata Salad",
+    "description": "Fresh burrata, uzbek tomatoes, homemade pesto, basil, oregano dressing, basil",
+    "price": "$26.50",
+    "section": "Salads & Bowls"
+   },
+   {
+    "name": "Striploin Medallion with Mushroom",
+    "description": "Striploin medallions, mushroom sauce, fries with parmesan",
+    "price": "$45.50",
+    "section": "Mains"
+   },
+   {
+    "name": "Salmon Steak with Sushi Rice",
+    "description": "Grilled salmon steak with homemade sushi rice, and beurre blanc",
+    "price": "$41.00",
+    "section": "Mains"
+   },
+   {
+    "name": "Truffle Pizza",
+    "description": "Homemade truffle sauce, mozzarella cheese, mushroom, fresh truffle",
+    "price": "$33.50",
+    "section": "Mains"
+   },
+   {
+    "name": "Chicken Fillet",
+    "description": "Grilled chicken breast with potato wedges and salad. Served with mexican sauce",
+    "price": "$32.50",
+    "section": "Mains"
+   },
+   {
+    "name": "Chicken Confit Fillet",
+    "description": "Slow-cooked chicken fillet served with creamy mixed mushrooms, sautee silver onions and tender baby spinach",
+    "price": "$31.00",
+    "section": "Mains"
+   },
+   {
+    "name": "Chicken Pizza",
+    "description": "Grilled chicken pieces atop a thin crust with tomato sauce, melted cheese, and a sprinkle of fresh herbs.",
+    "price": "$30.00",
+    "section": "Mains"
+   },
+   {
+    "name": "Mushroom Pizza",
+    "description": "Savory pizza topped with melted cheese, tomato sauce, and sliced mushrooms on a crispy crust.",
+    "price": "$26.50",
+    "section": "Mains"
+   },
+   {
+    "name": "Burrata Pizza",
+    "description": "Pizza base, tomato sauce, burrata, basil, olive oil",
+    "price": "$26.50",
+    "section": "Mains"
+   },
+   {
+    "name": "Pepperoni Pizza",
+    "description": "Thin crust topped with tomato sauce, mozzarella cheese, and slices of pepperoni.",
+    "price": "$24.00",
+    "section": "Mains"
+   },
+   {
+    "name": "Margherita Pizza",
+    "description": "Pizza base, tomato sauce, mozzarella, basil",
+    "price": "$23.00",
+    "section": "Mains"
+   },
+   {
+    "name": "Pepperoni Pita",
+    "description": "Savory pepperoni slices atop melted cheese on a pita base, combining Mediterranean flavors with a classic twist.",
+    "price": "$15.50",
+    "section": "Mains"
+   },
+   {
+    "name": "Rigatoni Bolognese",
+    "description": "Classic bolognese,rigatoni al dente, parmesan cheese",
+    "price": "$31.00",
+    "section": "Pasta"
+   },
+   {
+    "name": "Creamy Risotto",
+    "description": "Risotto, butter, cooking cream, pepper, parmesan, stracciatella cheese, olive oil, chives and fresh prawns, prawns bisque",
+    "price": "$30.00",
+    "section": "Pasta"
+   },
+   {
+    "name": "Meatball with Spaghetti",
+    "description": "Homemade angus beef meatballs served with traditional tomato sauce and finished with crumbled feta cheese",
+    "price": "$30.00",
+    "section": "Pasta"
+   },
+   {
+    "name": "Truffle Gnocchi",
+    "description": "Soft sweet potato gnocchi tossed with prawns, creamy burrata cheese, and sun-dried cherry tomatoes for a rich, silky Italian-style dish.",
+    "price": "$30.00",
+    "section": "Pasta"
+   },
+   {
+    "name": "Spaghetti Bolognese",
+    "description": "A classic spaghetti dish with a rich tomato and meat sauce, garnished with fresh basil leaves.",
+    "price": "$30.00",
+    "section": "Pasta"
+   },
+   {
+    "name": "Saya Pink Pasta with mushroom",
+    "description": "Creamy pink sauce pasta, with mixed mushroom, and parmesan cheese",
+    "price": "$26.50",
+    "section": "Pasta"
+   },
+   {
+    "name": "Classic Beef Burger",
+    "description": "Homemade hokkaidō burger bun with homemade beef burger patty,  boston lettuce, cheese and burger sauce, topped pickled cucumber, onion red, tomato uzbek and served with french fries",
+    "price": "$26.50",
+    "section": "Burger & Sandwich"
+   },
+   {
+    "name": "Chicken Crispy Classic",
+    "description": "Crispy fried chicken, fresh lettuce, and creamy sauce on a soft bun.",
+    "price": "$26.50",
+    "section": "Burger & Sandwich"
+   },
+   {
+    "name": "Saya Signature Slider",
+    "description": "Juicy beef patty topped with melted cheese and crisp lettuce, nestled in a soft bun.",
+    "price": "$19.00",
+    "section": "Burger & Sandwich"
+   },
+   {
+    "name": "Kid's Marinara Spaghetti",
+    "description": "Spaghetti, tomato sauce, parmesan",
+    "price": "$21.50",
+    "section": "Kid's Menu"
+   },
+   {
+    "name": "Mac and Cheese",
+    "description": "Creamy pasta with melted cheese, topped with a sprinkle of herbs.",
+    "price": "$21.50",
+    "section": "Kid's Menu"
+   },
+   {
+    "name": "Kid's Chicken Nuggets",
+    "description": "Crispy chicken nuggets served with a side of golden fries and tangy dipping sauce.",
+    "price": "$19.00",
+    "section": "Kid's Menu"
+   },
+   {
+    "name": "Truffle French Fries",
+    "description": "Crispy fries typically tossed with white truffle oil, topped with parmesan cheese and a sprinkle of parsley.",
+    "price": "$15.50",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "Sweet Potato Fries",
+    "description": "Sweet potato fries",
+    "price": "$14.50",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "Potato Wedges",
+    "description": "Potato wedges",
+    "price": "$12.00",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "French Fries",
+    "description": "World famous fries",
+    "price": "$11.00",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "Mashed Potato",
+    "description": "Mashed potato",
+    "price": "$11.00",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "Side of Bread",
+    "description": "Freshly baked bread, typically served plain or with butter.",
+    "price": "$2.50",
+    "section": "Side Dishes"
+   },
+   {
+    "name": "Dubai Pistachio Kunafa Tin",
+    "description": "A creamy, cheesy milk chocolate cheesecake with rich dark chocolate ganache topped with cocoa nibs",
+    "price": "$33.50",
+    "section": "Desserts"
+   },
+   {
+    "name": "Vanilla Basque Tin",
+    "description": "A creamy, cheesy cheesecake with a caramelized golden-brown top. Smooth vanilla notes blend with rich creaminess for a decadent, melt-in-your-mouth treat",
+    "price": "$30.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Saffron Milk Cake",
+    "description": "Soft sponge cake soaked in a fragrant saffron-infused milk blend, topped with light whipped cream and . A luxurious and aromatic twist on traditional milk cake",
+    "price": "$19.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Pecan Croissant",
+    "description": "Flaky croissant topped with pecans, offering a buttery and nutty experience.",
+    "price": "$13.00",
+    "section": "Bakery"
+   },
+   {
+    "name": "Cheese Croissant",
+    "description": "Croissant with cheese",
+    "price": "$12.00",
+    "section": "Bakery"
+   },
+   {
+    "name": "Plain Croissant",
+    "description": "Plain croissant",
+    "price": "$9.50",
+    "section": "Bakery"
+   },
+   {
+    "name": "Saya House Blend Coffee Bag",
+    "description": "Aromatic blend featuring notes of dark chocolate, citrus, and floral undertones. Roasted to medium perfection, ideal for a balanced cup. Originating from Brazil, Mexico, and Ethiopia.",
+    "price": "$26.50",
+    "section": "Classic Coffee"
+   },
+   {
+    "name": "Amour Latte",
+    "description": "Rich coffee latte with choice of almond, full fat, oat, or no milk. blend.",
+    "price": "$17.00",
+    "section": "Classic Coffee"
+   },
+   {
+    "name": "Saya Signature Hot Chocolate",
+    "description": "Rich hot chocolate with a choice of almond, full-fat, oat milk, or no milk.",
+    "price": "$13.00",
+    "section": "Classic Coffee"
+   },
+   {
+    "name": "Pistachio Latte Hot",
+    "description": "Warm pistachio latte with choice of almond, full fat, or oat milk. Option for no milk.",
+    "price": "$12.00",
+    "section": "Classic Coffee"
+   },
+   {
+    "name": "Nutella Latte Hot",
+    "description": "Warm blend of Nutella and espresso. Choice of almond, full-fat, or oat milk, or enjoy without milk.",
+    "price": "$12.00",
+    "section": "Classic Coffee"
+   },
+   {
+    "name": "Signature Lotus Cappuccino",
+    "description": "Rich espresso blended with creamy milk, topped with a frothy layer and a sprinkle of crushed lotus biscuits.",
+    "price": "$11.00",
+    "section": "Classic Coffee"
+   },
+   {
+    "name": "Cafe Latte",
+    "description": "Espresso blended with your choice of milk—almond, full fat, oat, or none. Available hot or cold.",
+    "price": "$8.50",
+    "section": "Classic Coffee"
+   },
+   {
+    "name": "Cappuccino",
+    "description": "Rich coffee blend with customizable milk options like almond, full fat, oat, or no milk.",
+    "price": "$7.00",
+    "section": "Classic Coffee"
+   },
+   {
+    "name": "Americano",
+    "description": "Choice of hot or cold American-style coffee served in a classic Mediterranean café setting.",
+    "price": "$6.00",
+    "section": "Classic Coffee"
+   },
+   {
+    "name": "Espresso",
+    "description": "Single or double espresso. Choice of almond, full fat, oat milk, or no milk.",
+    "price": "$5.00",
+    "section": "Classic Coffee"
+   },
+   {
+    "name": "Green Tea",
+    "description": "Chinese sencha green tea typically infused with marigold petals, pineapple, mango, and key lime flavors, offering a refreshing and aromatic tea experience.",
+    "price": "$14.50",
+    "section": "Saya Signature Tea"
+   },
+   {
+    "name": "Chamomille Tea",
+    "description": "Chamomile tea, typically featuring gentle floral notes and a mellow, honey-like sweetness, offers a soothing herbal infusion.",
+    "price": "$14.50",
+    "section": "Saya Signature Tea"
+   },
+   {
+    "name": "Passion Flower Tea",
+    "description": "A fragrant blend of passion flower tea, offering a soothing and aromatic experience typical of Mediterranean influences.",
+    "price": "$14.50",
+    "section": "Saya Signature Tea"
+   },
+   {
+    "name": "Ashwaganda Mango Green Tea",
+    "description": "Aromatic tea infused with sweet peach and passion fruit flavors, offering a refreshing Mediterranean twist.",
+    "price": "$14.50",
+    "section": "Saya Signature Tea"
+   },
+   {
+    "name": "Signature Biscoff Affogato",
+    "description": "Espresso, vanilla ice cream, lotus biscuit and crumbs, lotus sauce",
+    "price": "$17.00",
+    "section": "Cold Coffee"
+   },
+   {
+    "name": "Mocha Loca",
+    "description": "Velvety blend of coffee and chocolate with a hint of sweetness, topped with chocolate bars.",
+    "price": "$12.00",
+    "section": "Cold Coffee"
+   },
+   {
+    "name": "Honey Coffee Latte",
+    "description": "Rich espresso blended with honey and milk, topped with a dusting of cocoa.",
+    "price": "$11.00",
+    "section": "Cold Coffee"
+   },
+   {
+    "name": "White Spanish Matcha",
+    "description": "Matcha powder, fresh milk, whipping cream, condensed milk, white chocolate",
+    "price": "$13.00",
+    "section": "Matcha Bar"
+   },
+   {
+    "name": "Strawberry Matcha",
+    "description": "Matcha, strawberry syrup, full fat milk",
+    "price": "$13.00",
+    "section": "Matcha Bar"
+   },
+   {
+    "name": "Cloudy Matcha",
+    "description": "Matcha powder, fresh milk, whipping cream, vanilla syrups",
+    "price": "$13.00",
+    "section": "Matcha Bar"
+   },
+   {
+    "name": "Pink Popping Matcha",
+    "description": "Pink matcha, beet root powder, popping boba (strawberry), fresh milk",
+    "price": "$13.00",
+    "section": "Matcha Bar"
+   },
+   {
+    "name": "Mango Matcha",
+    "description": "Matcha powder, fresh milk, whipping cream, mango puree, condensed milk, garnish fresh mango, edible flower",
+    "price": "$12.00",
+    "section": "Matcha Bar"
+   },
+   {
+    "name": "Coconut Matcha",
+    "description": "Matcha with coconut milk, coconut juice and cream",
+    "price": "$12.00",
+    "section": "Matcha Bar"
+   },
+   {
+    "name": "Classic Matcha",
+    "description": "Matcha powder, fresh milk",
+    "price": "$9.50",
+    "section": "Matcha Bar"
+   },
+   {
+    "name": "Fashionista",
+    "description": "Pineapple juice, passion fruit puree, lemon juice, sugar syrup, cranberry juice, fresh passionfruit, edible flower",
+    "price": "$12.00",
+    "section": "Lemonades & Soft Drinks"
+   },
+   {
+    "name": "Strawberry Watermelon Lemonade w/ Cold Foam",
+    "description": "Watermelon juice, lemon juice, strawberry syrup, fresh lemon, lime, strawberry",
+    "price": "$12.00",
+    "section": "Lemonades & Soft Drinks"
+   },
+   {
+    "name": "Sparkling Water",
+    "description": "Sanpellegrino",
+    "price": "$11.00",
+    "section": "Lemonades & Soft Drinks"
+   }
+  ]
+ }
+]

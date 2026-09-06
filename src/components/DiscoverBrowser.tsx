@@ -7,6 +7,7 @@ import { RestaurantCard } from "@/components/RestaurantCard";
 import { OurPicks } from "@/components/OurPicks";
 import { Dialog } from "@/components/feed/Dialog";
 import { useNearby } from "@/lib/nearby";
+import { fromWire } from "@/lib/discoverWire";
 import {
   NO_FILTERS,
   activeFilterCount,
@@ -107,7 +108,7 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
    * answer is in flight the previous one stays on screen, which is the same
    * thing the transition dimming does everywhere else here.
    */
-  const view = page.filters.nearby && nearby.coords && located ? located : page;
+  const view = nearby.coords && located ? located : page;
   const { filters, results, counts, options, picks, total, shown } = view;
   const active = activeFilterCount(filters);
 
@@ -136,18 +137,32 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
   }, [router, shown]);
 
   /*
-   * Fetch the located view whenever Nearby is on and there are coordinates to
-   * measure from — and drop it the moment either stops being true, so turning
-   * Nearby off cannot leave a stale distance-filtered grid on screen.
+   * A typed search is the act that explains the permission prompt: the results
+   * are about to be ordered by how far away each one is, and the card is about
+   * to print that number. Asked once — a denial is sticky, and a second prompt
+   * is the first one again. With the permission already granted, useNearby has
+   * taken the fix on mount and this never runs.
+   */
+  const requestLocation = nearby.request;
+  useEffect(() => {
+    if (filters.q && !nearby.coords && nearby.state === "idle") requestLocation();
+  }, [filters.q, nearby.coords, nearby.state, requestLocation]);
+
+  /*
+   * Fetch the located view whenever there are coordinates to measure from —
+   * not only with Nearby on. Every card prints a distance, and once the
+   * position is known that number should be from *here* rather than from the
+   * seeded downtown origin; a search is also ordered by it (lib/discover.ts).
+   * The located answer is dropped the moment the coordinates go, so nothing
+   * position-dependent can outlive the position.
    *
-   * Keyed on the URL as well as the coordinates: with Nearby on, every other
-   * filter change still has to be re-answered against the visitor's position,
-   * and the server-rendered page arriving from that navigation is the wrong
-   * answer to show.
+   * Keyed on the URL as well as the coordinates: every filter change has to be
+   * re-answered against the visitor's position, and the server-rendered page
+   * arriving from that navigation is the unlocated answer.
    */
   const search = searchFromFilters("", filters);
   useEffect(() => {
-    if (!filters.nearby || !nearby.coords) return;
+    if (!nearby.coords) return;
 
     let cancelled = false;
     void (async () => {
@@ -158,7 +173,7 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
           body: JSON.stringify({ search, shown, coords: nearby.coords }),
         });
         if (!res.ok) return;
-        const next: DiscoverPage = await res.json();
+        const next = fromWire(await res.json());
         if (!cancelled) setLocated(next);
       } catch {
         // Leaves the server's unlocated answer on screen — a wider result set
@@ -170,7 +185,7 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
     return () => {
       cancelled = true;
     };
-  }, [filters.nearby, nearby.coords, search, shown]);
+  }, [nearby.coords, search, shown]);
 
   /*
    * Every handler builds on `filters` — what is currently in effect, as

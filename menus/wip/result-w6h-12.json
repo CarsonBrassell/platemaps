@@ -1,0 +1,695 @@
+[
+  {
+    "restaurantId": "9704",
+    "name": "Side Chick - Chicken & Fries",
+    "sourceUrl": "https://www.ubereats.com/store/side-chick-chicken-%26-fries/9agPvr7fUeOn4fbnAU4low",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "restaurant's own ordering platform (eatsidechick.appfront.app) is client-rendered React with no server-side prices; only readable sources are Uber Eats and Postmates (same owner), both carrying a uniform 15% markup - 59/71 prices divide cleanly by 1.15 onto whole dollars (e.g. $9.20/1.15=$8.00, $11.50/1.15=$10.00, sauce $0.575/1.15=$0.50); Grubhub/Seamless is a client-side shell with no data in the served HTML"
+  },
+  {
+    "restaurantId": "5778",
+    "name": "Eat Your Heart Out II",
+    "sourceUrl": "https://eatyourheartoutii.onrender.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "restaurant's own site (onrender.com) returns 'Service Suspended' by its host, no Wayback snapshot exists; only other sources are edan.io (barred farm domain) and wheree.com (403, and its own snippet says prices may be outdated - not a real source); Yelp prices are hearsay-in-review only. Restaurant appears to be open (voted #1 sandwich spot in Poway 2025 per Facebook post) so not a not_found case"
+  },
+  {
+    "restaurantId": "6571",
+    "name": "Sushiman",
+    "sourceUrl": "https://www.ubereats.com/store/sushiman/8i_WMzlST2OmrvN9bBPUoQ",
+    "confidence": "medium",
+    "notes": "read from Uber Eats schema.org JSON-LD Menu block (hasMenuSection -> hasMenuItem -> offers.price), 9 sections, 102 items, deduped on name+price (no duplicates found). Cent distribution is conventional (.49 x39, .99 x54) - no uniform markup divisor found. A SinglePlatform listing for the same address shows much lower prices for overlapping items (601. Kakke Udon $5.99 SP vs $13.99 here) - treated as a stale restaurant-submitted listing per playbook guidance and NOT used as cross-check.",
+    "dishes": [
+      {
+        "name": "401.Tuna (Ahi) Nigiri",
+        "description": "Tuna Over Rice Ball",
+        "price": "$5.99",
+        "section": "Nigiri (2Pcs)"
+      },
+      {
+        "name": "402. Spicy Tuna Nigiri",
+        "description": "Spicy Tuna over Rice Ball, wrapped in Nori",
+        "price": "$5.99",
+        "section": "Nigiri (2Pcs)"
+      },
+      {
+        "name": "403.Ika (Squid) Nigiri",
+        "description": "Squid over Rice Ball",
+        "price": "$6.49",
+        "section": "Nigiri (2Pcs)"
+      },
+      {
+        "name": "404. Ebi (Shrimp) Nigiri",
+        "description": "Shrimp over Rice Ball",
+        "price": "$5.99",
+        "section": "Nigiri (2Pcs)"
+      },
+      {
+        "name": "406. Tamago (Egg) Nigiri",
+        "description": "Chicken over Rice Ball, Wrapped with Nori",
+        "price": "$4.99",
+        "section": "Nigiri (2Pcs)"
+      },
+      {
+        "name": "407. Unagi (Eel) Nigiri",
+        "description": "Eel over Rice Ball, Wrapped with Nori",
+        "price": "$5.99",
+        "section": "Nigiri (2Pcs)"
+      },
+      {
+        "name": "408. Salmon Nigiri",
+        "description": "Fresh Salmon over Rice Ball",
+        "price": "$5.99",
+        "section": "Nigiri (2Pcs)"
+      },
+      {
+        "name": "409. Ikura Nigiri",
+        "description": "Salmon Egg over Rice Ball, wrapped with Nori",
+        "price": "$8.49",
+        "section": "Nigiri (2Pcs)"
+      },
+      {
+        "name": "410. Masago Nigiri",
+        "description": "Fish Roe over Rice Ball, wrapped in Nori",
+        "price": "$5.99",
+        "section": "Nigiri (2Pcs)"
+      },
+      {
+        "name": "411.Ahi (Tuna) Poke Nigiri",
+        "description": "Ahi Poke over Rice Ball, wrapped in Nori",
+        "price": "$5.99",
+        "section": "Nigiri (2Pcs)"
+      },
+      {
+        "name": "501 Dlx. Nigiri Bento (12 Pcs)",
+        "description": "Tuna 2, Salmon 2, Ikura 1, Masago 1, Spicy Tuna 1, Ebi 1, Ika 1, Izumi Dai 1, Unagi 1, Egg 1",
+        "price": "$25.99",
+        "section": "Bento"
+      },
+      {
+        "name": "502 Nigiri Bento (9 Pcs)",
+        "description": "Tuna 1, Ika 1, Ebi 1, Izumi Dai 1, Masago 1, Spicy Tuna 1, Salmon 1, Unagi 1, Egg 1",
+        "price": "$22.49",
+        "section": "Bento"
+      },
+      {
+        "name": "504 Combo Bento",
+        "description": "Cali Maki 4, Tuna 1, Ebi 1, Salmon 1, Unagi 1, Egg 1, Salad + 2 Gyoza + 2 Shrimp Tempura",
+        "price": "$25.99",
+        "section": "Bento"
+      },
+      {
+        "name": "514 Mega Bento",
+        "description": "Rice, Salad, Cali Maki 2 Pcs, Tuna 1, Ebi 1, Salmon 1, Fish Tempura 1, Shrimp Tempura 1, Gyoza 2",
+        "price": "$22.49",
+        "section": "Bento"
+      },
+      {
+        "name": "515 Ahi (Tuna) Poke Bento",
+        "description": "Rice, Salad, Gyoza 2, Ahi Poke with Salt, Sesame Oil, Green Onion, Sweet Onion",
+        "price": "$22.49",
+        "section": "Bento"
+      },
+      {
+        "name": "518 Teriyaki Beef Bento",
+        "description": "Rice, Salad, Gyoza 2, Beef with Mushroom 5, Broccoli 5, Carrot, Onion, Teriyaki Sauce,  Sesame Oil, Pepper, Green Onions and Sesame Seeds on top",
+        "price": "$20.99",
+        "section": "Bento"
+      },
+      {
+        "name": "519 Chicken Katsu Bento",
+        "description": "Breaded Chicken, Cali Maki 2, Fried Gyoza 2, Salad, Edamame 2, Rice, Katsu Sauce",
+        "price": "$22.49",
+        "section": "Bento"
+      },
+      {
+        "name": "521 Kid's Pack",
+        "description": "Avocado Maki (8 Pcs), Spam Musubi Nigiri (6 Pcs), Gyoza 1",
+        "price": "$12.99",
+        "section": "Bento"
+      },
+      {
+        "name": "503 My Nigiri Bento (9 Pcs)",
+        "description": "Tuna 2, Salmon 2, Spicy Tuna 2, Izumi Dai 1, Ebi 1, Egg 1",
+        "price": "$22.49",
+        "section": "Bento"
+      },
+      {
+        "name": "506 Spicy Salmon Bento",
+        "description": "Rice, Salad, Gyoza 2, Spicy Salmon with Green Onion, Sweet Onion, Salt 2, Sesame Oil, Spicy Sauce",
+        "price": "$22.49",
+        "section": "Bento"
+      },
+      {
+        "name": "508 Tempura Bento",
+        "description": "Rice, Salad, Fish Tempura 1, Shrimp Tempura 3, Cali Maki 2 Pcs",
+        "price": "$18.49",
+        "section": "Bento"
+      },
+      {
+        "name": "510 My Combo Bento",
+        "description": "Rice, Salad, Cali Maki 2 Pcs, Fish Tempura 2, Shrimp Tempura 1, Gyoza 2",
+        "price": "$18.49",
+        "section": "Bento"
+      },
+      {
+        "name": "513 Teriyaki Chicken Bento",
+        "description": "Rice, Salad, Gyoza 2, Chicken with Mushroom 5, Broccoli 5, Carrot, Onion, Teriyaki Sauce,  Sesame Oil, Pepper, Green Onions and Sesame Seeds on top",
+        "price": "$19.99",
+        "section": "Bento"
+      },
+      {
+        "name": "602. Wakame Udon",
+        "description": "Kakke Udon + Wakame",
+        "price": "$14.99",
+        "section": "Noodle"
+      },
+      {
+        "name": "603. Tempura Udon",
+        "description": "Kakke Udon +  Shrimp Tempura 2",
+        "price": "$16.49",
+        "section": "Noodle"
+      },
+      {
+        "name": "604. Udon Plus \"A\"",
+        "description": "Kakke Udon +  Cali Maki 4 Pcs + Crunch and Unagi Sauce on top",
+        "price": "$18.49",
+        "section": "Noodle"
+      },
+      {
+        "name": "605. Udon Plus \"B\"",
+        "description": "Kakke Udon + Fish Tempura 1, Gyoza 2, Shrimp Tempura 2 on side",
+        "price": "$19.99",
+        "section": "Noodle"
+      },
+      {
+        "name": "601 Kakke Udon",
+        "description": "Udon, Udon Sauce, Fish Cake, Aburagi, Thin Nori, Green Onion",
+        "price": "$13.99",
+        "section": "Noodle"
+      },
+      {
+        "name": "102. Spam Roll (5 Pcs)",
+        "description": "Spam, Cucumber, Mayo, Unagi Sauce",
+        "price": "$4.99",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "101. Egg Roll (5 Pcs)",
+        "description": "Egg 3, Mayo",
+        "price": "$4.49",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "103 Cucumber Roll (5 Pcs)",
+        "description": "Cucumber",
+        "price": "$3.49",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "104. Tuna Roll (5 Pcs)",
+        "description": "Tuna, Cucumber",
+        "price": "$5.99",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "105. Spicy Tuna Roll (5 Pcs)",
+        "description": "Spicy Tuna, Cucumber",
+        "price": "$5.99",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "106. Crab Roll (5 Pcs)",
+        "description": "Crab, Cucumber",
+        "price": "$4.49",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "108. California Roll (5 Pcs)",
+        "description": "Cucumber, Avocado, Crab",
+        "price": "$5.99",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "109. Salmon Roll (5 Pcs)",
+        "description": "Salmon, Cucumber",
+        "price": "$5.99",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "110. Spicy Salmon Roll (5 Pcs)",
+        "description": "Spicy Salmon, Cucumber",
+        "price": "$5.99",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "111. Unagi Roll (5 Pcs)",
+        "description": "Unagi, Cucumber, Sesame Seeds, Unagi Sauce",
+        "price": "$5.99",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "113. Vege Roll (5 Pcs)",
+        "description": "Cucumber, Kanpyo, Shinko, Avocado, Egg, Mayo",
+        "price": "$5.99",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "114. Spicy Vege Roll (5 Pcs)",
+        "description": "Cucumber, Kanpyo, Shinko, Avocado, Egg, Sriracha Sauce",
+        "price": "$5.99",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "115.Ebi (Shrimp) Tempura Roll (5 Pcs)",
+        "description": "Shrimp Tempura, Unagi Sauce, Mayo",
+        "price": "$5.99",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "116. Vege Tempura Roll (5 Pcs)",
+        "description": "Crispy vegetable tempura rolled with rice and nori. 5 pieces.",
+        "price": "$6.49",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "117. Dynamite Roll (5 Pcs)",
+        "description": "Cucumber, Avocado, Crab, Spicy Tuna",
+        "price": "$6.49",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "119. Philly Roll (5 Pcs)",
+        "description": "Cucumber, Philly Cheese, Salmon",
+        "price": "$6.49",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "120. Dragon Roll (5 Pcs)",
+        "description": "Cucumber, Avocado, Crab, Unagi, Sesame Seeds",
+        "price": "$6.49",
+        "section": "Hand Roll (5Pcs)"
+      },
+      {
+        "name": "Garlic Edamame",
+        "description": "Steamed soybeans infused with garlic.",
+        "price": "$9.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "Spam Musubi 3P",
+        "description": "Spam over rice, wrapped with nori (3 Pcs).",
+        "price": "$4.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "Inari 2Pcs",
+        "description": "Sweet pouches of tofu filled with sushi rice.",
+        "price": "$4.29",
+        "section": "Side Order"
+      },
+      {
+        "name": "Inari 5Pcs",
+        "description": "Sweet pouches of tofu filled with sushi rice.",
+        "price": "$8.44",
+        "section": "Side Order"
+      },
+      {
+        "name": "Edamame Stick (10Pcs)",
+        "description": "Edamame (young soybeans) shaped into sticks; 10 per order.",
+        "price": "$7.79",
+        "section": "Side Order"
+      },
+      {
+        "name": "Sweet Volcano",
+        "description": "Specialty side order with an eye-catching 'volcano' presentation.",
+        "price": "$14.49",
+        "section": "Side Order"
+      },
+      {
+        "name": "Edamame",
+        "description": "Boiled soybeans in their pods, a popular Japanese snack.",
+        "price": "$8.49",
+        "section": "Side Order"
+      },
+      {
+        "name": "Seaweed Salad",
+        "description": "Marinated seaweed salad.",
+        "price": "$5.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "Green Salad",
+        "description": "Fresh mixed greens.",
+        "price": "$4.89",
+        "section": "Side Order"
+      },
+      {
+        "name": "Gyoza Бp (Fried or Steamed)",
+        "description": "Pan-seared or steamed dumplings filled with savory ingredients.",
+        "price": "$7.79",
+        "section": "Side Order"
+      },
+      {
+        "name": "Miso Soup",
+        "description": "Traditional Japanese soup made with miso paste.",
+        "price": "$2.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "Spicy Mayo sauce",
+        "description": "Spicy and savory condiment to elevate your dish.",
+        "price": "$1.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Unagi sauce",
+        "description": "Sweet and savory Japanese-inspired sauce.",
+        "price": "$1.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Teriyaki sauce",
+        "description": "Sweet and savory Japanese-inspired sauce.",
+        "price": "$1.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "202 California Maki (10 Pcs)",
+        "description": "Cucumber, Avocado, Crab, Sesame Seeds outside",
+        "price": "$11.49",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "204 Masago Cali Maki (10 Pcs)",
+        "description": "Cucumber, Avocado, Crab, Seaweed inside, Masago outside",
+        "price": "$13.49",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "206 Spicy Salmon Maki (10 Pcs)",
+        "description": "Avocado, Spicy Salmon, Masago on top + Spicy Sauce",
+        "price": "$14.99",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "210 Beef Maki (10 Pcs)",
+        "description": "Beef with Teriyaki Sauce + Carrot + Onion + Sesame Oil + Pepper, Cucumber 2-3, Mayo Inside, Teriyaki Sauce, Sesame Seeds on top",
+        "price": "$15.49",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "211 Rainbow Maki (10 Pcs)",
+        "description": "Cali Maki + Tuna, Izumi Dai (Tilapia), Ebi, Unagi, Avocado, Salmon on top",
+        "price": "$18.49",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "Tuna King Maki (10 Pcs)",
+        "description": "Cucumber, Spicy Tuna, Shrimp Tempura. On top is Tuna, Avocado, Spicy Sauce, Unagi Sauce, Masago, Green Onion",
+        "price": "$19.49",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "213 Dragon Maki (10 Pcs)",
+        "description": "Cali Maki + Unagi and Avocado on top, Unagi Sauce and Sesame Seeds on top",
+        "price": "$18.99",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "215 Crunch Maki (10 Pcs)",
+        "description": "Shrimp Tempura, Cucumber, Avocado, Crab inside, Crunch and Unagi Sauce on top",
+        "price": "$16.99",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "217 Dynamite Maki (8 Pcs)",
+        "description": "Cucumber, Shrimp Tempura, Mayo inside, Unagi Sauce -&gt; Spicy Tuna, Spicy Sauce, Sweet & Sour Sauce, and Green Onion on top",
+        "price": "$19.99",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "201 Futo Maki (10 Pcs)",
+        "description": "Cucumber, Kanpyo (Squash), Egg, Ebi Powder, Crab inside",
+        "price": "$11.49",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "203 Wrapped Cali Maki (10 Pcs)",
+        "description": "Cucumber, Avocado, Crab, Seaweed inside, Wrap outside",
+        "price": "$11.04",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "208 Philly Maki (10 Pcs)",
+        "description": "Cucumber, Philly Cheese, Salmon, Masago on top",
+        "price": "$14.99",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "209 Teri Chicken Maki (10 Pcs)",
+        "description": "Chicken with Teriyaki Sauce + Carrot + Onion + Sesame Oil + Pepper, Cucumber, Mayo Inside, Teriyaki Sauce, Sesame Seeds on top",
+        "price": "$15.49",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "212 Spicy Tuna Maki (10 Pcs)",
+        "description": "Cucumber, Spicy Tuna inside, Masago on top + Spicy Sauce",
+        "price": "$18.49",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "214 Alaskan Maki (10 Pcs)",
+        "description": "Cali Maki + Salmon on top",
+        "price": "$18.99",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "216 Ti ger Maki (10 Pcs)",
+        "description": "Cali Maki + Ebi on top",
+        "price": "$18.49",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "218 Hawaiian Maki (10 Pcs)",
+        "description": "Cali Maki + Tuna on top",
+        "price": "$18.99",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "220 Tempura Cali Maki (10 Pcs)",
+        "description": "Cali Maki + Tempura Battered and Fried",
+        "price": "$19.99",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "221 Spicy Tempura Tuna Maki (10 Pcs)",
+        "description": "Spicy Tuna Maki + Tempura Battered and Fried",
+        "price": "$19.99",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "222 Crunch Dragon Maki (10 Pcs)",
+        "description": "Cucumber, Mayo, Shrimp Tempura. On top is Avocado, Unagi, Tempura, Unagi Sauce, Crumbs",
+        "price": "$19.99",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "223 Red Dragon Maki (10 Pcs)",
+        "description": "Cucumber, Spicy Tuna, Shrimp Tempura. On top is Tuna, Avocado, Spicy Sauce, Unagi Sauce, Masago, Green Onion",
+        "price": "$20.99",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "Dlx. Alaskan Maki (10 Pcs)",
+        "description": "",
+        "price": "$22.49",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "Protein Maki (10 Pcs)",
+        "description": "No rice., Soy Paper wrap. Crab, Avocado, Tuna, Salmon, Izumidai, Shrimp",
+        "price": "$22.49",
+        "section": "Maki (8-10 Pcs)"
+      },
+      {
+        "name": "702 Dlx. Family Plate (40 Pcs)",
+        "description": "Cali Maki 4 Pcs, Futo Maki 4 Pcs, Inari 2 Pcs, Tuna 3, Ebi 3, Salmon 2, Izumi Dai (Tilapia) 2, Egg 2, Hoso Maki (Tekka 6, Shinko (Radish) 6, Cucumber 6)",
+        "price": "$47.49",
+        "section": "Party Plate"
+      },
+      {
+        "name": "703. Cali Inari Plate (33 Pcs)",
+        "description": "Cali Maki (24 Pcs), Inari 9 Pcs",
+        "price": "$39.99",
+        "section": "Party Plate"
+      },
+      {
+        "name": "704. Maki Plate (54 Pcs)",
+        "description": "Futo Maki 8 Pcs, Cali Maki 8 Pcs, Cali Wrap Maki 8 Pcs, Inari 6 Pcs, Hoso Maki (Tekka 6, Shinko (Radish) 6, Cucumber 6, Kanpyo (Squash) 6)",
+        "price": "$47.49",
+        "section": "Party Plate"
+      },
+      {
+        "name": "706. Aloha Plate (43 Pcs)",
+        "description": "Tuna 5, Ebi 5, Salmon 5, Unagi 5, Egg 5, Hoso Maki (Tekka 6, Shinko (Radish) 6, Cucumber 6)",
+        "price": "$62.99",
+        "section": "Party Plate"
+      },
+      {
+        "name": "708. Sushiman Plate (42 Pcs)",
+        "description": "Tuna 5, Ebi 5, Egg 2, Ahi Poke 2, Spicy Tuna 2, Ikura 2, Masago 2, Salmon 3, Unagi 3, Izumi Dai (Tilapia) 2, Ika 2, Hoso Maki (Tekka 6, Cucumber 6)",
+        "price": "$70.99",
+        "section": "Party Plate"
+      },
+      {
+        "name": "California Musubi plate (38 ps)",
+        "description": "Spam musubi bites and California rolls (crab, avocado, cucumber). 38 pieces.",
+        "price": "$39.99",
+        "section": "Party Plate"
+      },
+      {
+        "name": "701. Family Plate (30 Pcs)",
+        "description": "Tuna 3, Ebi 3, Salmon 2, Izumi Dai (Tilapia) 2, Egg 2, Hoso Maki (Tekka 6, Shinko (Radish) 6, Cucumber 6)",
+        "price": "$37.99",
+        "section": "Party Plate"
+      },
+      {
+        "name": "705. Chargers Plate (48 Pcs)",
+        "description": "Futo Maki 4 Pcs, Cali Maki 4 Pcs, Cali Wrap Maki 4 Pcs, Inari 3 Pcs, Tuna 3, Ebi 3, Salmon 3, Izumi Dai (Tilapia) 3, Egg 3, Hoso Maki (Tekka 6, Shinko (Radish) 6, Cucumber 6)",
+        "price": "$59.99",
+        "section": "Party Plate"
+      },
+      {
+        "name": "809. Spicy Salmon Donburi",
+        "description": "Rice with Furikake, Salmon, Spicy Sauce, Sweet Onion, Green Onion, Sesame Oil, Masago on top",
+        "price": "$20.99",
+        "section": "Donburi (Rice Bowls)"
+      },
+      {
+        "name": "801. Ahi Poke Donburi",
+        "description": "Rice with Furikake, Ahi Poke with Salt, Sesame Oil, Green Onion, Sweet Onion, Masago  on top",
+        "price": "$20.99",
+        "section": "Donburi (Rice Bowls)"
+      },
+      {
+        "name": "803. Unagi Donburi",
+        "description": "Rice with Furikake, Seaweed, Cabbage on top, Unagi Sauce, Gyoza 2, Unagi, Unagi Sauce + Sesame Seeds on top",
+        "price": "$20.99",
+        "section": "Donburi (Rice Bowls)"
+      },
+      {
+        "name": "805.Chicken Katsu Donburi",
+        "description": "Rice, Furikaki, Cabbage, Breaded Chicken, Fried Gyoza 2",
+        "price": "$19.49",
+        "section": "Donburi (Rice Bowls)"
+      },
+      {
+        "name": "807. Teriyaki Chicken Donburi",
+        "description": "Chicken in teriyaki sauce over steamed rice, Japanese donburi style.",
+        "price": "$17.99",
+        "section": "Donburi (Rice Bowls)"
+      },
+      {
+        "name": "808. Beef Donburi",
+        "description": "Beef over steamed rice, Japanese donburi style.",
+        "price": "$19.49",
+        "section": "Donburi (Rice Bowls)"
+      },
+      {
+        "name": "806. Tempura Donburi",
+        "description": "Crispy tempura over steamed rice.",
+        "price": "$13.99",
+        "section": "Donburi (Rice Bowls)"
+      },
+      {
+        "name": "811. Kid's Chicken Donburi",
+        "description": "Kid-sized portion of chicken served over rice.",
+        "price": "$11.99",
+        "section": "Donburi (Rice Bowls)"
+      },
+      {
+        "name": "812. Kid's Beef Donburi",
+        "description": "Beef over rice, kid-sized portion.",
+        "price": "$12.49",
+        "section": "Donburi (Rice Bowls)"
+      },
+      {
+        "name": "301. Tekka Maki",
+        "description": "Tuna",
+        "price": "$5.49",
+        "section": "Hoso Maki"
+      },
+      {
+        "name": "302. Shinko Maki",
+        "description": "Shinko (Radish)",
+        "price": "$3.99",
+        "section": "Hoso Maki"
+      },
+      {
+        "name": "305. Avocado Maki",
+        "description": "Avocado, Cucumber, Mayo",
+        "price": "$5.49",
+        "section": "Hoso Maki"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10505",
+    "name": "Sand Crab Tavern",
+    "sourceUrl": "https://www.bbb.org/us/ca/escondido/profile/restaurants/the-original-sand-crab-tavern-1126-172010130",
+    "confidence": "high",
+    "notes": "confirmed closed: Yelp lists status as CLOSED, and BBB profile independently states the business is 'no longer in business' / 'out of business' (not quoting Yelp) - two independent sources per not_found rule",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5788",
+    "name": "House of Pizza",
+    "sourceUrl": "https://www.doordash.com/store/house-of-pizza-la-jolla-42796219/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "the batch's apparent own-site domain thehouseofpizza.com is actually Northboro House of Pizza in Massachusetts (wrong business - not used). Only readable priced source is DoorDash (address on the payload confirmed as 8107 Camino Del Sol, La Jolla; menuBook category counts 12/13/6/25/5/2 sum to the 63 raw rows captured, so not truncated). No single markup divisor (1.00-1.35) clears even 25% of prices, and the subtraction test on same-size pizza topping tiers is inconsistent (Personal size steps ~$1.17-1.25/topping, X-Large size steps $0.78-$2.01/topping for the identical topping-count increase) - reads as a computed/corrupted payload rather than the wall price, so blocking rather than filing per the mixed-payload rule"
+  },
+  {
+    "restaurantId": "9706",
+    "name": "Julian Station",
+    "sourceUrl": "https://www.julianstation.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "multi-vendor food complex: julianstation.com is a tasting-room/event-venue site hosting several independently-named food vendors on-site (e.g. Colts Burger Bar, Poppy's American Grill, Mr. Mantia's) rather than a single restaurant with one menu; no unified priced menu for 'Julian Station' itself exists, and filing any one vendor's menu under this name would misattribute it"
+  },
+  {
+    "restaurantId": "5881",
+    "name": "San Diego Blenders",
+    "sourceUrl": "https://6663elcajonsdblenders.smartonlineorder.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: batch website sandiegoblenders.com now 301-redirects to an unrelated business (tortaschano.com - domain hijack/reassignment, not used); the smartonlineorder.com storefront linked from Yelp is client-rendered with zero prices in the served HTML ('contact the Store to update Online Ordering Hours'); Uber Eats shows the store closed since 2021; no DoorDash/Grubhub listing found for this address"
+  },
+  {
+    "restaurantId": "6213",
+    "name": "Victor's Kafe - Poway",
+    "sourceUrl": "https://order.online/en-AU/store/victors-kafe-23260326",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser/unparseable: own site (victorskafe.com, a SpotHopper site) lists item names and descriptions but renders no prices server-side; order.online (DoorDash white-label) carries prices nested in nested QuickAddMonetaryFields.unitAmount that could not be reliably correlated to item names in the served markup; imenu4u.com has 73 item names and prices but with irregular markup (descriptions interleaved) a positional name/price parse only matched 35 of 73 pairs reliably, too fragile to file without risking mispriced or dropped items. Address 14057 Stowe Dr confirmed present on both order.online and imenu4u payloads."
+  },
+  {
+    "restaurantId": "1129",
+    "name": "Ringers Cocktails",
+    "sourceUrl": "https://www.tripadvisor.com/Restaurant_Review-g32096-d4929333-Reviews-Ringer_s_Cocktail_Lounge-Bonsall_California.html",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "dive bar/cocktail lounge (Ringer's Cocktail Lounge); TripAdvisor confirms it serves bar/pub food but no menu or prices were found anywhere (Yelp, Facebook, Instagram, Bonsall Chamber all describe drinks/live-music only, no food menu); the placejoys.com hit is a barred farm domain"
+  },
+  {
+    "restaurantId": "2913",
+    "name": "Nanay's Best BBQ",
+    "sourceUrl": "https://nanaysbestbbq.restaurants-us.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "open Filipino BBQ counter at 6715/6755 Mira Mesa Blvd Ste 103 (address varies slightly across sources, same plaza) confirmed via Yelp/Eater/Instagram; batch's own website field (nanaysbestbbqgo.twupro.com) is a barred farm domain, and restaurants-us.com is also a barred farm domain (both show '$' with no actual number). Facebook posts confirm it is on DoorDash/Uber Eats/Grubhub/Postmates but the specific store URL could not be located via search within budget; Uber Eats hit for 'Nanay's Filipino Restaurant' found was a same-name store in Chandler, AZ, not this one - not used"
+  }
+]

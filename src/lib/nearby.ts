@@ -13,7 +13,7 @@
  * is spent on the tap that explains why it's being asked.
  */
 
-import { useCallback, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 
 /**
  * The geometry moved to lib/geo.ts so the server can filter on distance without
@@ -98,6 +98,32 @@ export function useNearby(): Nearby {
       },
     );
   }, []);
+
+  /*
+   * A permission already granted raises no prompt, so taking a fix on mount
+   * costs the visitor nothing and puts a real distance on every card from the
+   * first render. The doctrine above is about the *prompt*: while the browser
+   * would still ask, nothing here asks — that stays on the tap (or the search)
+   * that explains why.
+   */
+  useEffect(() => {
+    if (!supported) return;
+    const permissions = typeof navigator !== "undefined" ? navigator.permissions : undefined;
+    if (!permissions || typeof permissions.query !== "function") return;
+    let cancelled = false;
+    permissions
+      .query({ name: "geolocation" })
+      .then((status) => {
+        if (!cancelled && status.state === "granted") request();
+      })
+      .catch(() => {
+        // No permissions API, or a browser that will not say — the tap still
+        // works exactly as before.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [supported, request]);
 
   return { state: supported ? state : "unsupported", coords, request };
 }

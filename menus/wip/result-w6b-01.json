@@ -1,0 +1,82 @@
+[
+  {
+    "restaurantId": "11117",
+    "name": "Sessions by the Bay Cannabis Dispensary and Lounge",
+    "sourceUrl": "https://sessionsbythebay.com/pages/cannabis-restaurant",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Food (via adjacent Kimball Bar & Grill) is served only through an in-venue 'Food & Mocktail Menu Device' (tablet); the restaurant's own site pages (/pages/cannabis-restaurant, /pages/food-and-mocktails-menu, /pages/cannabis-lounge) advertise the device but publish no dish names or prices. Yelp mentions dish names (margarita flatbread, pretzel bites) with no prices (hearsay). No ordering-platform page found."
+  },
+  {
+    "restaurantId": "11560",
+    "name": "Kaelin's Market",
+    "sourceUrl": "https://kaelinsmarket.com/departments/mexican-arabic-food/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Mexican/Arabic grocery market with a made-to-order prepared-food counter (tacos, burritos, tamales, kebab, shawarma, falafel per site copy) but no itemized online menu with prices found on the site, weekly-ad pages, or Yelp/Facebook. Reddit mentions '$1 tacos' informally (hearsay, not a source)."
+  },
+  {
+    "restaurantId": "9517",
+    "name": "Buffet House",
+    "sourceUrl": "https://www.yelp.com/biz/buffet-house-chula-vista-6",
+    "confidence": "medium",
+    "dishes": [],
+    "blocked": "All-you-can-eat Asian/American buffet priced per person only (Yelp/Tripadvisor/Atly all agree: weekday lunch ~$17-19, weekday dinner/weekend ~$23-24, discounted price for children/seniors), no itemized per-dish menu. A res-discover.com listing shows per-item prices (e.g. 'Bbq Pork Chop $29.99') that are inconsistent with an all-you-can-eat concept and read as a farm/templated listing; not trusted."
+  },
+  {
+    "restaurantId": "11282",
+    "name": "Cardiff Seaside Market",
+    "sourceUrl": "https://seasidemarket.com/order-online/sandwiches/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Grocery/deli market. Its own WooCommerce shop prices sandwiches ($12.99 corned beef, etc.) and tri-tip/pork-chop packages, but the site's 'Cuisine' hot-deli ordering link (rice bowls, ribs, bbq chicken, caprese salad per Tripadvisor reviews - the deli's other headline items) redirects to a ChowNow storefront (company id 2596, address-confirmed) whose menu endpoints (api/restaurant/2596/menu returns {}, api/order/2596 needs auth) could not be reached without a browser/login. DoorDash lists this location only as a grocery/convenience store (butcher pricing, e.g. ribs $8.99/lb by weight), not the prepared hot-food menu. Treating sandwiches-only as the menu would be a partial capture of a core section, so blocking instead."
+  },
+  {
+    "restaurantId": "12151",
+    "name": "Mitsuwa Marketplace - San Diego",
+    "sourceUrl": "https://mitsuwa.com/sd",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Japanese grocery market with an in-house food court containing separately-branded vendors (e.g. Musashiya, Mitsuwa Nagomi). Musashiya's own site has a /menu page but the server-rendered HTML contains no priced items, only a logo image (menu content appears client/JS-rendered). Mitsuwa's own site (mitsuwa.com/sd) is a grocery-store page (weekly-ad item prices only, e.g. produce/packaged goods) with no deli/prepared-food menu page found. Yelp/Tripadvisor/Mindtrip mention prepared foods (onigiri, teriyaki bowls, sushi, ramen, udon) as 'reasonably priced' with no itemized prices. No single itemized priced menu found for the complex."
+  },
+  {
+    "restaurantId": "11204",
+    "name": "Draft South Mission",
+    "sourceUrl": "https://www.belmontpark.com/restaurants-san-diego-ca/draft-belmont-park",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Restaurant's own site runs on the Tambourine CMS: menu tabs (beer/food/brunch) exist in the static HTML but their content is loaded client-side only, with no corresponding content divs and no discoverable API/AJAX endpoint in the raw source. A DoorDash listing exists only for a different Draft location (Oceanside, different address) and was excluded as a different branch per the identity-verification rule. A same-named Toast listing ('Draft Coffee') is an unrelated business. An OpenTable fetch returned no usable menu content. Needs a browser to render the JS-driven menu."
+  },
+  {
+    "restaurantId": "8002",
+    "name": "Mama Kat's Restaurant",
+    "sourceUrl": "http://www.mamakats.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Own site (mamakats.com) has no itemized priced menu in server HTML. An order.online listing ('mama-kats-san-marcos-898566') shows priced items but its address is 950 W San Marcos Blvd - the restaurant's OLD/closed location per Yelp ('MAMA KAT'S - CLOSED - Try Our New Menu'), not the batch's current address (288 Rancheros Dr, San Marcos). Excluded per the identity-verification rule (same name, different/former address). No priced menu found for the current location."
+  },
+  {
+    "restaurantId": "12337",
+    "name": "Louisiana Charlie's San Diego",
+    "sourceUrl": "https://www.doordash.com/store/louisiana-charlies-san-diego-24414011",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "DoorDash listing (address-confirmed, 849 W Harbor Dr) has a full JSON-LD menu: 56 unique dishes across 10 sections (Most Ordered, Seafood Boils, Poboy's, Sandwiches, Baskets, Louisiana Specialties, Sides, Dessert, Drinks, Sauces) were successfully extracted. However, a divisor sweep of the 55 non-null prices found a single dominant divisor (1.170) landing 54/55 (98%) of prices on round or .95/.99 cent endings once removed - the signature of a uniform ~17% platform markup baked into every price. Per the markup rule, these are not the restaurant's real prices and must not be filed as-is or manually divided out. No own-site or other lower-tier priced source was found to cross-check against, so blocking rather than filing marked-up numbers."
+  },
+  {
+    "restaurantId": "11372",
+    "name": "Somisomi",
+    "sourceUrl": "https://www.somisomi.com/locations",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Official site (somisomi.com and somisomi.com/softserve) is a fully client-rendered React/Netlify SPA - raw HTML is a ~1.4KB shell with no server-rendered menu, order, or price content. Marketplace searches for the Convoy St (4620 Convoy St) location found no matching listing: an UberEats 'Somisomi' result is a different store (3520 Hwy 6 S, a Texas location), a Grubhub result ('ca-somis') is a generic delivery-area page (not the restaurant), and a DoorDash 'Nobibi (Convoy)' result is an unrelated business at a different street number (4646 Convoy St). Only a stale 2017 Eater article price ($5.95 fish waffle, $3 soft-serve) was found, too old to trust per the price-dating rule. Needs a browser to render the ordering flow."
+  },
+  {
+    "restaurantId": "10268",
+    "name": "Crumbl Cookies",
+    "sourceUrl": "https://crumblcookies.com/stores/ca/san-diego-area/caterranova",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Official site's store page (caterranova) and order flow (crumblcookies.com/order) are templated store-locator pages with no server-rendered prices; the actual weekly-flavor menu and pricing load via JS/app only. Two 'menu with prices' sites (crumblcookiemenus.us, thecrumblcookiesmenu.com) were checked but carry identical templated national pricing word-for-word across both domains (e.g. 'Single $4.49', '4-Pack $16.49', 'Mini 3-Pack $9.99') - not independent sources, not specific to this store, read as duplicated content-farm pages. A DoorDash listing for 'Crumbl' in Chula Vista was found but is a different location (2260 Otay Lakes Road), not this store (374 E H St Ste 1702, Terra Nova). No verified store-specific priced source found."
+  }
+]

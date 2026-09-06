@@ -1,0 +1,1616 @@
+[
+  {
+    "restaurantId": "2694",
+    "name": "Lime in the Coconut",
+    "sourceUrl": "https://order.toasttab.com/online/lime-in-the-coconut",
+    "confidence": "high",
+    "notes": "First-party Toast ordering page linked from limexcoconut.com/orderonline. Single CAFE menu, 33 items across CLASSIC DRINKS/SIGNATURE DRINKS/BREAKFAST - matches the cafe concept (coffee/smoothies + breakfast), no lunch/dinner sections exist to be missing. Many drinks have hot/iced/size price ladders; recorded the lowest listed price as base and noted as such.",
+    "dishes": [
+      {
+        "name": "AMERICANO",
+        "description": "",
+        "price": "$4.00",
+        "section": "CLASSIC DRINKS"
+      },
+      {
+        "name": "CAPPUCCINO",
+        "description": "",
+        "price": "$5.00",
+        "section": "CLASSIC DRINKS"
+      },
+      {
+        "name": "LATTE",
+        "description": "",
+        "price": "$5.50",
+        "section": "CLASSIC DRINKS"
+      },
+      {
+        "name": "COLD BREW",
+        "description": "",
+        "price": "$5.00",
+        "section": "CLASSIC DRINKS"
+      },
+      {
+        "name": "MATCHA",
+        "description": "",
+        "price": "$5.50",
+        "section": "CLASSIC DRINKS"
+      },
+      {
+        "name": "CHAI",
+        "description": "",
+        "price": "$5.50",
+        "section": "CLASSIC DRINKS"
+      },
+      {
+        "name": "LIMEADE",
+        "description": "",
+        "price": "$5.00",
+        "section": "CLASSIC DRINKS"
+      },
+      {
+        "name": "HANDCRAFTED SODA",
+        "description": "",
+        "price": "$4.00",
+        "section": "CLASSIC DRINKS"
+      },
+      {
+        "name": "COCONUT COLD BREW",
+        "description": "",
+        "price": "$5.00",
+        "section": "SIGNATURE DRINKS"
+      },
+      {
+        "name": "CAFE SOL",
+        "description": "",
+        "price": "$5.00",
+        "section": "SIGNATURE DRINKS"
+      },
+      {
+        "name": "COCO CABANA",
+        "description": "",
+        "price": "$5.50",
+        "section": "SIGNATURE DRINKS"
+      },
+      {
+        "name": "MANGO CLOUD MATCHA",
+        "description": "",
+        "price": "$5.50",
+        "section": "SIGNATURE DRINKS"
+      },
+      {
+        "name": "PROMISED PARADISE",
+        "description": "",
+        "price": "$6.00",
+        "section": "SIGNATURE DRINKS"
+      },
+      {
+        "name": "FILTHY CHAI",
+        "description": "",
+        "price": "$5.00",
+        "section": "SIGNATURE DRINKS"
+      },
+      {
+        "name": "PINA COLADA LIMEADE",
+        "description": "",
+        "price": "$5.50",
+        "section": "SIGNATURE DRINKS"
+      },
+      {
+        "name": "PINA COLADA SODA",
+        "description": "",
+        "price": "$4.00",
+        "section": "SIGNATURE DRINKS"
+      },
+      {
+        "name": "BANANA BREAD",
+        "description": "",
+        "price": "$3.95",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "SCONE",
+        "description": "",
+        "price": "$6.95",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "BISCUIT",
+        "description": "",
+        "price": "$4.95",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "BREAKFAST SLIDERS",
+        "description": "",
+        "price": "$9.95",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "BREAKFAST BURRITO",
+        "description": "",
+        "price": "$9.95",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "BISCUIT SANDWICH",
+        "description": "",
+        "price": "$8.95",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "AVOCADO TOAST",
+        "description": "",
+        "price": "$8.95",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "STRAWBERRY TOAST",
+        "description": "",
+        "price": "$8.95",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "FRUIT CUP",
+        "description": "",
+        "price": "$4.95",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "FRUIT BOWL",
+        "description": "",
+        "price": "$8.95",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "OVERNIGHT OATS",
+        "description": "",
+        "price": "$4.95",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "YOGURT AND FRUIT",
+        "description": "",
+        "price": "$4.95",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "CINNAMON TOAST",
+        "description": "",
+        "price": "$5.95",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "PROTIEN",
+        "description": "",
+        "price": "$2.00",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "LILIKOI BUTTER",
+        "description": "",
+        "price": "$1.00",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "JAM",
+        "description": "",
+        "price": "$1.00",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "EXTRA SAUCE",
+        "description": "",
+        "price": "$1.00",
+        "section": "BREAKFAST"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8797",
+    "name": "The Cottage Encinitas",
+    "sourceUrl": "https://tmt.spotapps.co/ordering-menu/?spot_id=257598",
+    "confidence": "high",
+    "notes": "SpotHopper widget for \"The Cottage Restaurants\" serves 3 sister locations (La Jolla, Encinitas, Del Mar) in one payload, each with its own Breakfast+Brunch/Lunch/Beverages menus (9 menus total). The router's \"doubled\" flag was cross-location repetition (similar items priced the same across La Jolla/Encinitas/Del Mar), not a corrupted catalog. Filtered to ONLY the 3 Encinitas menus (confirmed against cottageencinitas.com address, 127 N El Camino Real, Encinitas CA 92024): 123 unique in-stock items, conventional cents (.00/.50/.75/.25), no markup divisor pattern.",
+    "dishes": [
+      {
+        "name": "House Granola",
+        "description": "pecans, oats, craisins, fresh fruit, your choice of milk or plain yogurt | Add toasted coconut and honey +3",
+        "price": "$16.00",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "Fruit Bowl",
+        "description": "with strawberry crème fraîche | Add house granola: +2.25",
+        "price": "$15.00",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "Coffee Cake",
+        "description": "with buttermilk, walnuts",
+        "price": "$7.00",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "King Kong Muffin",
+        "description": "oat muffin with banana, chopped walnuts, and millet",
+        "price": "$8.00",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "Salted Chocolate Chip Cookie",
+        "description": "",
+        "price": "$5.50",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "Cinnamon Roll",
+        "description": "house-made cinnamon roll",
+        "price": "$9.00",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "new!! Snickerdoodle Muffin",
+        "description": "",
+        "price": "$6.00",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "Chocolate Decadence Muffin",
+        "description": "Vegan + gluten free muffin made with vegan coffee liqueur and flax meal and a rice flour blend.",
+        "price": "$6.50",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "new!! Matcha Cinnamon Roll",
+        "description": "house-made cinnamon roll",
+        "price": "$10.00",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "new!! Chipotle Guava Cheese Danish",
+        "description": "",
+        "price": "$8.00",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "Strawberry Cheese Danish",
+        "description": "Ricotta cream cheese blend on a fresh \"house made puff pastry\" and a strawberry jam.",
+        "price": "$8.00",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "Maple Glazed Donuts",
+        "description": "Four maple glazed donuts with chocolate sauce and strawberries.",
+        "price": "$8.50",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "new!! Lemon Bar",
+        "description": "",
+        "price": "$8.00",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "new!! Mushroom Goat Cheese, and Leek Danish",
+        "description": "with everything spice",
+        "price": "$8.00",
+        "section": "Encinitas Breakfast + Brunch / Fruit & Baked"
+      },
+      {
+        "name": "Lemon Ricotta Pancakes (V)",
+        "description": "house recipe lemon ricotta batter, lemon zest",
+        "price": "$20.00",
+        "section": "Encinitas Breakfast + Brunch / Griddle"
+      },
+      {
+        "name": "Buttermilk Pancakes (V)",
+        "description": "house recipe",
+        "price": "$18.00",
+        "section": "Encinitas Breakfast + Brunch / Griddle"
+      },
+      {
+        "name": "Cinnamon Swirl Pancakes (V)",
+        "description": "buttermilk pancakes, cinnamon swirl, cream cheese frosting, candied pecans",
+        "price": "$20.00",
+        "section": "Encinitas Breakfast + Brunch / Griddle"
+      },
+      {
+        "name": "Brioche French Toast (V)",
+        "description": "a cottage specialty",
+        "price": "$20.00",
+        "section": "Encinitas Breakfast + Brunch / Griddle"
+      },
+      {
+        "name": "Stuffed French Toast (V)",
+        "description": "brioche, strawberry compote, fresh mascarpone  *GUEST FAVORITE*",
+        "price": "$22.00",
+        "section": "Encinitas Breakfast + Brunch / Griddle"
+      },
+      {
+        "name": "Millionaire Bacon Skewers",
+        "description": "candied thick cut bacon",
+        "price": "$15.00",
+        "section": "Encinitas Breakfast + Brunch / Griddle"
+      },
+      {
+        "name": "All American Breakfast*",
+        "description": "two egg any style, bacon or chicken sausage, served with a scone and Cottage potatoes",
+        "price": "$18.50",
+        "section": "Encinitas Breakfast + Brunch / Classics"
+      },
+      {
+        "name": "Joe's Special*",
+        "description": "three egg scramble, chicken sausage, spinach, mushrooms, onions, served with a scone and Cottage potatoes",
+        "price": "$19.00",
+        "section": "Encinitas Breakfast + Brunch / Classics"
+      },
+      {
+        "name": "Steel Cut Irish Oatmeal (V)",
+        "description": "steele cut Irish oats with milk, toasted pecans, brown sugar, raisins, banana, and fresh berries",
+        "price": "$15.50",
+        "section": "Encinitas Breakfast + Brunch / Classics"
+      },
+      {
+        "name": "Avocado Smash (V) (+)",
+        "description": "Arley's Bakery rosemary bread topped with fresh avocado and a choice of: burrata, baby tomato, basil, and balsamic glaze 18 | cucumber, olive, onion, tomato, feta and oregano 18 | smoked salmon, red onion, dill and capers 20 | charred corn, micro cilantro, pickled Fresno Chili, queso fresco, smoked almonds, lime juice , chipotle aioli on Pinsa Bread 18 |  Add an egg +3",
+        "price": "$18.00",
+        "section": "Encinitas Breakfast + Brunch / Classics"
+      },
+      {
+        "name": "Morning Glory Sandwich*",
+        "description": "fried egg, bacon, smoked gouda, tomato, arugula, onion, lemon aioli on sourdough served with Cottage potatoes | Add avocado +2.5  *EMPLOYEE FAVORITE*",
+        "price": "$22.00",
+        "section": "Encinitas Breakfast + Brunch / Classics"
+      },
+      {
+        "name": "Soy Chorizo Hash",
+        "description": "soy chorizo with heirloom pico, black beans, green onion, potato and queso fresco on two crispy corn tostadas with scrambled eggs",
+        "price": "$19.00",
+        "section": "Encinitas Breakfast + Brunch / Eggs"
+      },
+      {
+        "name": "Smoked Salmon Hash",
+        "description": "sweet potatoes, cottage potatoes, leeks, bacon, peppers, eggs any style, hollandaise, fresh dill, served with a scone",
+        "price": "$22.50",
+        "section": "Encinitas Breakfast + Brunch / Eggs"
+      },
+      {
+        "name": "Chilaquiles",
+        "description": "El Indio tortilla chips, house made guajillo sauce, two eggs - any style, sour cream, pickled red onion, cilantro, cotija, black beans",
+        "price": "$19.00",
+        "section": "Encinitas Breakfast + Brunch / Eggs"
+      },
+      {
+        "name": "Braised Beef Hash",
+        "description": "eggs any style with braised beef, roasted bell pepper, sweet onion, avocado, potato, asparagus, jalapeño crema, heirloom pico",
+        "price": "$21.00",
+        "section": "Encinitas Breakfast + Brunch / Eggs"
+      },
+      {
+        "name": "Machaca Beef \"Birria\"",
+        "description": "scrambled eggs, machaca sauce with julienned bell pepper, onion, heirloom pico, queso fresco, corn tortillas, and black beans",
+        "price": "$21.00",
+        "section": "Encinitas Breakfast + Brunch / Eggs"
+      },
+      {
+        "name": "Vegan Hash",
+        "description": "broccolini, Okinawan sweet potato, roasted tomato, marinated wild mushrooms, Cottage potatoes, soy chorizo, vegan feta, basil, just egg, sweet chili aioli",
+        "price": "$20.00",
+        "section": "Encinitas Breakfast + Brunch / Eggs"
+      },
+      {
+        "name": "Eggs Benedict*",
+        "description": "poached eggs, Canadian bacon, hollandaise - over an English muffin",
+        "price": "$19.50",
+        "section": "Encinitas Breakfast + Brunch / Benedicts"
+      },
+      {
+        "name": "Pork Belly Benedict*",
+        "description": "poached eggs, pork belly, sautéed spinach, garlic, hollandaise, over Arley's Bakery rosemary olive oil bread",
+        "price": "$21.00",
+        "section": "Encinitas Breakfast + Brunch / Benedicts"
+      },
+      {
+        "name": "Mexicali Benedict* (V)",
+        "description": "poached eggs, soy chorizo, cotija cheese, roasted poblano Hollandaise - over corn cakes",
+        "price": "$22.50",
+        "section": "Encinitas Breakfast + Brunch / Benedicts"
+      },
+      {
+        "name": "Crab & Prosciutto Benedict*",
+        "description": "poached egg, Indonesian special white crab meat, crispy prosciutto with old bay Hollandaise over Arley's Bakery rosemary and olive oil bread",
+        "price": "$25.00",
+        "section": "Encinitas Breakfast + Brunch / Benedicts"
+      },
+      {
+        "name": "Antojito Benedict*",
+        "description": "home made sopes with chili braised beef, poached eggs, shredded lettuce, queso fresco, jalapeno crema and pico de gallo | Served with black beans instead of potatoes",
+        "price": "$23.00",
+        "section": "Encinitas Breakfast + Brunch / Benedicts"
+      },
+      {
+        "name": "Eggs La Jolla Benedict*",
+        "description": "poached eggs, Canadian bacon, balsamic mushrooms, spinach, roasted tomato, and hollandaise, over an English muffin   *SINCE 1992*",
+        "price": "$21.00",
+        "section": "Encinitas Breakfast + Brunch / Benedicts"
+      },
+      {
+        "name": "Wild Mushroom (V)",
+        "description": "wild mushrooms, goat cheese, spinach, roasted shallots",
+        "price": "$21.00",
+        "section": "Encinitas Breakfast + Brunch / Omelettes"
+      },
+      {
+        "name": "Southern California",
+        "description": "bacon, guacamole, cheddar cheese, sour cream",
+        "price": "$22.00",
+        "section": "Encinitas Breakfast + Brunch / Omelettes"
+      },
+      {
+        "name": "Roasted Vegetable (V)",
+        "description": "asparagus, mushrooms, tricolor cauliflower, broccoli, chives, brie, and cheddar",
+        "price": "$21.00",
+        "section": "Encinitas Breakfast + Brunch / Omelettes"
+      },
+      {
+        "name": "Spanish Omelette",
+        "description": "serrano ham, iberico chorizo, aged manchego, and madeira mushrooms with fresh thyme",
+        "price": "$24.00",
+        "section": "Encinitas Breakfast + Brunch / Omelettes"
+      },
+      {
+        "name": "Build Your Own (+)",
+        "description": "The pantry is stocked, tell us what you like!",
+        "price": "$15.00",
+        "section": "Encinitas Breakfast + Brunch / Omelettes"
+      },
+      {
+        "name": "Mediterranean Labne",
+        "description": "served with pinsa bread, Greek yogurt, spicy Macha sauce",
+        "price": "$15.00",
+        "section": "Encinitas Lunch / For the Table"
+      },
+      {
+        "name": "Charcuterie Board",
+        "description": "chef's choice of meats, cheese, pickled vegetables, and more",
+        "price": "$23.00",
+        "section": "Encinitas Lunch / For the Table"
+      },
+      {
+        "name": "Char-Broiled Broccolini",
+        "description": "with smoked almonds, garlic, feta cheese, roasted red peppers, and olives",
+        "price": "$13.00",
+        "section": "Encinitas Lunch / For the Table"
+      },
+      {
+        "name": "Blackened Salmon Caesar Salad",
+        "description": "romaine and butter lettuce tossed with Caesar dressing, croutons, and parmesan cheese, topped with blackened salmon",
+        "price": "$25.00",
+        "section": "Encinitas Lunch / Salads"
+      },
+      {
+        "name": "Chicken & Goat Cheese",
+        "description": "chicken breast, roasted red bell pepper, candied pecan, goat cheese with balsamic vinaigrette",
+        "price": "$19.00",
+        "section": "Encinitas Lunch / Salads"
+      },
+      {
+        "name": "Shrimp & Lump Crab",
+        "description": "mixed greens, hearts of palm, avocado, tomato, lemon-basil vinaigrette",
+        "price": "$25.00",
+        "section": "Encinitas Lunch / Salads"
+      },
+      {
+        "name": "Stuffed Avocado",
+        "description": "tuna, quinoa, onion, carrots, butter lettuce salad, lemon vinaigrette  | Add:  chicken +6 |  shrimp +9 |  mahi +8 |  Indonesian Special White Crab +9",
+        "price": "$19.50",
+        "section": "Encinitas Lunch / Salads"
+      },
+      {
+        "name": "Vegan Greek",
+        "description": "marinated grilled artichoke, kalamata olive, feta, red onion, cherry tomato, cucumber, Marcona almond, chopped romaine in an oregano vinaigrette",
+        "price": "$23.00",
+        "section": "Encinitas Lunch / Salads"
+      },
+      {
+        "name": "new!! Cottage Cobb",
+        "description": "grilled Ribeye, aged cotija cheese, charred corn,\napplewood smoked bacon, boiled egg, avocado, thin sliced jalapeno,\nserved on romaine, cabbage and arugula tossed in a tomatillo ranch\ndressing",
+        "price": "$25.00",
+        "section": "Encinitas Lunch / Salads"
+      },
+      {
+        "name": "Chile Lime Shrimp Bowl",
+        "description": "chile and lime marinated shrimp with quinoa, cucumber, broccolini, tricolor cauliflower, pickled onion, avocado, and cilantro",
+        "price": "$23.00",
+        "section": "Encinitas Lunch / Bowls"
+      },
+      {
+        "name": "Salmon Pasta",
+        "description": "angel hair pasta with salmon, roasted and fresh tomato, spinach, garlic, white wine, butter, lemon juice and parsley",
+        "price": "$25.00",
+        "section": "Encinitas Lunch / Bowls"
+      },
+      {
+        "name": "Cottage Mac & Cheese",
+        "description": "cavatappi pasta tossed with a bechamel cream sauce, cheddar, american, gouda cheese, topped with panko crust",
+        "price": "$19.00",
+        "section": "Encinitas Lunch / Bowls"
+      },
+      {
+        "name": "Swagyu Burger*",
+        "description": "ground wagyu steak blend, cheddar, butter lettuce, tomato, onion, mayo, on brioche bun",
+        "price": "$24.50",
+        "section": "Encinitas Lunch / Handhelds"
+      },
+      {
+        "name": "Cottage Club",
+        "description": "turkey, avocado, cheddar, bacon, lettuce, tomato, mayo, on toasted wheat bread",
+        "price": "$23.00",
+        "section": "Encinitas Lunch / Handhelds"
+      },
+      {
+        "name": "Caprese Sandwich",
+        "description": "heirloom tomato, saba glaze, evoo, on Arley's Bakery rosemary olive oil bread",
+        "price": "$18.50",
+        "section": "Encinitas Lunch / Handhelds"
+      },
+      {
+        "name": "Tuna Melt",
+        "description": "cheddar, tomato, arugula, on toasted sourdough | Add avocado + 2.5",
+        "price": "$21.00",
+        "section": "Encinitas Lunch / Handhelds"
+      },
+      {
+        "name": "French Dip",
+        "description": "filet French dip with smoked shallots and aus jus, on French roll",
+        "price": "$25.00",
+        "section": "Encinitas Lunch / Handhelds"
+      },
+      {
+        "name": "Pastrami",
+        "description": "Jack Daniels demi glazed kosher like pastrami, red and green slaw, Havarti, house white sauce, deli mustard on marbled rye, with pickle",
+        "price": "$25.00",
+        "section": "Encinitas Lunch / Handhelds"
+      },
+      {
+        "name": "Cottage Fish or Shrimp Tacos",
+        "description": "choose mahi mahi or shrimp (grilled or battered), cabbage, heirloom pico, or slaw sauce with corn tortillas and served with salad and beans",
+        "price": "$23.00",
+        "section": "Encinitas Lunch / Handhelds"
+      },
+      {
+        "name": "Milanese Chicken Sandwich",
+        "description": "crispy fried chicken cutlet, bacon, lettuce, tomato, onion, and chipotle aioli, on \"bolillo\" bread  *EMPLOYEE FAVORITE*",
+        "price": "$23.00",
+        "section": "Encinitas Lunch / Handhelds"
+      },
+      {
+        "name": "new!! Lobster Roll",
+        "description": "parmesan crusted brioche roll stuffed with Pacific\nlobster tail meat, lemon aioli and red and green slaw",
+        "price": "$29.00",
+        "section": "Encinitas Lunch / Handhelds"
+      },
+      {
+        "name": "Hand Sliced Ham Steak",
+        "description": "",
+        "price": "$7.00",
+        "section": "Encinitas Lunch / Sides"
+      },
+      {
+        "name": "Char-broiled Bilbao Chorizo Sausage",
+        "description": "",
+        "price": "$8.00",
+        "section": "Encinitas Lunch / Sides"
+      },
+      {
+        "name": "Lemon Cheesecake",
+        "description": "velvety lemon cheesecake with graham cracker crust and strawberry compote",
+        "price": "$7.50",
+        "section": "Encinitas Lunch / Sweet"
+      },
+      {
+        "name": "Salted Chocolate Chip Cookie",
+        "description": "",
+        "price": "$5.50",
+        "section": "Encinitas Lunch / Sweet"
+      },
+      {
+        "name": "Maple Glazed Donuts",
+        "description": "four maple glazed donuts",
+        "price": "$8.50",
+        "section": "Encinitas Lunch / Sweet"
+      },
+      {
+        "name": "House Roasted Coffee (16 oz)",
+        "description": "for the days you're not here but wish you were, we now offer our in-house roasted coffee | Organic Dark roast",
+        "price": "$18.00",
+        "section": "Encinitas Lunch / Bring the Cottage Home"
+      },
+      {
+        "name": "Cottage Granola (20 oz)",
+        "description": "our infamous house-made granola is available for purchase | shipping available",
+        "price": "$14.00",
+        "section": "Encinitas Lunch / Bring the Cottage Home"
+      },
+      {
+        "name": "Loose Leaf Tea",
+        "description": "signature blends by The Loose Leaf in Oceanside",
+        "price": "$6.00",
+        "section": "Encinitas Beverages / Coffee  Tea  Espresso"
+      },
+      {
+        "name": "Coffee",
+        "description": "Cottage house coffee, dark roast",
+        "price": "$5.75",
+        "section": "Encinitas Beverages / Coffee  Tea  Espresso"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "imported Japanese Matcha, steamed milk, lightly sweet",
+        "price": "$8.75",
+        "section": "Encinitas Beverages / Coffee  Tea  Espresso"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "steamed milk, foam",
+        "price": "$6.50",
+        "section": "Encinitas Beverages / Coffee  Tea  Espresso"
+      },
+      {
+        "name": "Cafe Latte",
+        "description": "Cottage espresso with steamed milk, light foam",
+        "price": "$7.00",
+        "section": "Encinitas Beverages / Coffee  Tea  Espresso"
+      },
+      {
+        "name": "Nitro Cold Brew",
+        "description": "Nitro by Cafe Moto",
+        "price": "$9.00",
+        "section": "Encinitas Beverages / Coffee  Tea  Espresso"
+      },
+      {
+        "name": "Cottage Mocha",
+        "description": "Cottage espresso, chocolate, steamed milk, whipped cream",
+        "price": "$9.00",
+        "section": "Encinitas Beverages / Coffee  Tea  Espresso"
+      },
+      {
+        "name": "Mexican Mocha",
+        "description": "Cottage espresso, Mexican chocolate, steamed milk, whipped cream | Contains peanuts",
+        "price": "$9.25",
+        "section": "Encinitas Beverages / Coffee  Tea  Espresso"
+      },
+      {
+        "name": "Spiced Lavendar Mocha",
+        "description": "Cottage espresso, Mexican chocolate, lavender syrup | Contains peanuts",
+        "price": "$9.50",
+        "section": "Encinitas Beverages / Coffee  Tea  Espresso"
+      },
+      {
+        "name": "Chai Tea Latte",
+        "description": "spiced black tea with a choice of steamed milk",
+        "price": "$8.00",
+        "section": "Encinitas Beverages / Coffee  Tea  Espresso"
+      },
+      {
+        "name": "Jumpstart",
+        "description": "cold brew, simple syrup, salted cream",
+        "price": "$12.00",
+        "section": "Encinitas Beverages / Shaken Coffee"
+      },
+      {
+        "name": "Clydesdale",
+        "description": "espresso, oat milk, brown sugar, cinnamon",
+        "price": "$12.00",
+        "section": "Encinitas Beverages / Shaken Coffee"
+      },
+      {
+        "name": "Brown Magic",
+        "description": "espresso, sweetened condensed milk, vanilla",
+        "price": "$12.00",
+        "section": "Encinitas Beverages / Shaken Coffee"
+      },
+      {
+        "name": "Bees Knees",
+        "description": "espresso, honey, cardamom, almond milk",
+        "price": "$12.00",
+        "section": "Encinitas Beverages / Shaken Coffee"
+      },
+      {
+        "name": "Fresh Squeezed Juice",
+        "description": "Orange | Tangerine | Watermelon | Grapefruit | Apple | Lemonade",
+        "price": "$10.00",
+        "section": "Encinitas Beverages / Fresh Squeezed Juice"
+      },
+      {
+        "name": "Green Devotion Juice",
+        "description": "Greens blended with even more greens » organic juices (celery, cucumber, spinach, romaine lettuce, kale, lemon, parsley) Nutrient density is what greens are all about and this juice is power packed!",
+        "price": "$12.00",
+        "section": "Encinitas Beverages / Juice Blends"
+      },
+      {
+        "name": "Ruby Roots Juice",
+        "description": "Big flavor plus good-for-you nutrients » organic juices (carrot, apple, beet, cucumber, lemon, ginger) Root vegetables full of vitamins and minerals with a kick of powerful ginger!",
+        "price": "$12.00",
+        "section": "Encinitas Beverages / Juice Blends"
+      },
+      {
+        "name": "Lavendar Champagne",
+        "description": "champagne, lemon juice, lavender-honey",
+        "price": "$12.75",
+        "section": "Encinitas Beverages / Mixed"
+      },
+      {
+        "name": "Blackberry Palmer",
+        "description": "Soju, blackberry, passion tea, lemon",
+        "price": "$12.75",
+        "section": "Encinitas Beverages / Mixed"
+      },
+      {
+        "name": "Heat Wave",
+        "description": "Ola Sol agave wine, agave, lime, ancho chile",
+        "price": "$12.75",
+        "section": "Encinitas Beverages / Mixed"
+      },
+      {
+        "name": "Dark Horse",
+        "description": "Soju, cold brew, simple syrup, salted cream",
+        "price": "$12.75",
+        "section": "Encinitas Beverages / Mixed"
+      },
+      {
+        "name": "Mimosa",
+        "description": "fresh orange, tangerine, watermelon or grapefruit",
+        "price": "$12.75",
+        "section": "Encinitas Beverages / Mixed"
+      },
+      {
+        "name": "Bloody Mary",
+        "description": "Cottage style Bloody Mary served regular or spicy |  Add: bacon +3 | Shrimp +5 | Avocado +2",
+        "price": "$12.75",
+        "section": "Encinitas Beverages / Mixed"
+      },
+      {
+        "name": "Watermelon Mojito",
+        "description": "Soju, lime, watermelon, mint",
+        "price": "$12.75",
+        "section": "Encinitas Beverages / Mixed"
+      },
+      {
+        "name": "Magic Carpet Ride",
+        "description": "Soju, espresso, vanilla, condensed milk, cinnamon",
+        "price": "$12.75",
+        "section": "Encinitas Beverages / Mixed"
+      },
+      {
+        "name": "Blackberry Lemonade",
+        "description": "muddled blackberry, lavender, lemon, bubbles",
+        "price": "$11.00",
+        "section": "Encinitas Beverages / Mock"
+      },
+      {
+        "name": "Blood Orange “Paloma”",
+        "description": "blood orange, lime, agave, grapefruit soda, sea salt",
+        "price": "$11.00",
+        "section": "Encinitas Beverages / Mock"
+      },
+      {
+        "name": "Maui Vibes",
+        "description": "coconut, lime, mint, cane sugar, bubbles",
+        "price": "$11.00",
+        "section": "Encinitas Beverages / Mock"
+      },
+      {
+        "name": "American Dream",
+        "description": "Lyre’s “Triple Sec”, orange, vanilla cream",
+        "price": "$11.00",
+        "section": "Encinitas Beverages / Mock"
+      },
+      {
+        "name": "Booze Bros 1-800 Tropics Hazy IPA",
+        "description": "Vista, CA",
+        "price": "$8.50",
+        "section": "Encinitas Beverages / Beers"
+      },
+      {
+        "name": "Duck Foot Brewing Drink This or The Bees Die Honey Blonde",
+        "description": "San Diego, CA",
+        "price": "$8.50",
+        "section": "Encinitas Beverages / Beers"
+      },
+      {
+        "name": "Delirium Tremens Golden Ale",
+        "description": "Belgium",
+        "price": "$10.25",
+        "section": "Encinitas Beverages / Beers"
+      },
+      {
+        "name": "Lost Abbey Farmhouse Lager",
+        "description": "San Marcos, CA",
+        "price": "$8.50",
+        "section": "Encinitas Beverages / Beers"
+      },
+      {
+        "name": "Mother Earth Cali Creamin' Vanilla Ale",
+        "description": "San Diego, CA",
+        "price": "$8.50",
+        "section": "Encinitas Beverages / Beers"
+      },
+      {
+        "name": "Bambucha Blueberry Vanilla",
+        "description": "",
+        "price": "$9.00",
+        "section": "Encinitas Beverages / Kombucha"
+      },
+      {
+        "name": "Bambucha Blueberry Tart (Nonalc)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Encinitas Beverages / Kombucha"
+      },
+      {
+        "name": "Bambucha Hibiscus Rose (Nonalc)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Encinitas Beverages / Kombucha"
+      },
+      {
+        "name": "Wycliff Sparkling Wine (Glass)",
+        "description": "CA",
+        "price": "$9.00",
+        "section": "Encinitas Beverages / Bubbles"
+      },
+      {
+        "name": "Campagnola (Glass)",
+        "description": "Pinot Grigio, Italy",
+        "price": "$9.00",
+        "section": "Encinitas Beverages / White"
+      },
+      {
+        "name": "Campagnola (Bottle)",
+        "description": "Pinot Grigio, Italy",
+        "price": "$35.00",
+        "section": "Encinitas Beverages / White"
+      },
+      {
+        "name": "Proverb (Glass)",
+        "description": "Chardonnay, CA",
+        "price": "$9.75",
+        "section": "Encinitas Beverages / White"
+      },
+      {
+        "name": "Proverb (Bottle)",
+        "description": "Chardonnay, CA",
+        "price": "$38.00",
+        "section": "Encinitas Beverages / White"
+      },
+      {
+        "name": "White Haven (Glass)",
+        "description": "Sauvignon Blanc, New Zealand",
+        "price": "$11.00",
+        "section": "Encinitas Beverages / White"
+      },
+      {
+        "name": "White Haven (Bottle)",
+        "description": "Sauvignon Blanc, New Zealand",
+        "price": "$43.00",
+        "section": "Encinitas Beverages / White"
+      },
+      {
+        "name": "Los Cuervos (Can)",
+        "description": "Chardonnay, CA",
+        "price": "$9.00",
+        "section": "Encinitas Beverages / White"
+      },
+      {
+        "name": "Alamos (Glass)",
+        "description": "Malbec, Argentina",
+        "price": "$10.00",
+        "section": "Encinitas Beverages / Red"
+      },
+      {
+        "name": "Alamos (Bottle)",
+        "description": "Malbec, Argentina",
+        "price": "$39.00",
+        "section": "Encinitas Beverages / Red"
+      },
+      {
+        "name": "Louis Martini (Glass)",
+        "description": "Cabernet, CA",
+        "price": "$13.00",
+        "section": "Encinitas Beverages / Red"
+      },
+      {
+        "name": "Louis Martini (Bottle)",
+        "description": "Cabernet, CA",
+        "price": "$50.00",
+        "section": "Encinitas Beverages / Red"
+      },
+      {
+        "name": "Wild Child (Glass)",
+        "description": "Cabernet, CA",
+        "price": "$12.00",
+        "section": "Encinitas Beverages / Red"
+      },
+      {
+        "name": "Wild Child (375ml Bottle)",
+        "description": "Cabernet, CA",
+        "price": "$24.00",
+        "section": "Encinitas Beverages / Red"
+      },
+      {
+        "name": "Fleur De Mer (Glass)",
+        "description": "Rosé, Provence",
+        "price": "$11.00",
+        "section": "Encinitas Beverages / Rosé"
+      },
+      {
+        "name": "Fleur De Mer (Bottle)",
+        "description": "Rosé, Provence",
+        "price": "$44.00",
+        "section": "Encinitas Beverages / Rosé"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8927",
+    "name": "Kettle On Main",
+    "sourceUrl": "https://kettle-on-main-fallbrook.cloveronline.com/menu/all",
+    "confidence": "high",
+    "notes": "Batch website http://thekettleon.com/ is a 3-location cafe group (Fallbrook/Escondido/Oceanside); router had grabbed the wrong Clover payload (223 North Coast Hwy = Oceanside branch). Confirmed correct branch via clover.com/online-ordering/kettle-on-main-fallbrook -> redirect API -> kettle-on-main-fallbrook.cloveronline.com, whose menu payload contains \"Fallbrook\" 99+ times. Dropped \"KOM Merch\" (apparel) and \"Retail Coffee\" (bagged beans) as non-menu retail adjuncts per playbook.",
+    "dishes": [
+      {
+        "name": "Espresso (2oz)",
+        "price": "$2.95",
+        "section": "Espresso Based Drinks"
+      },
+      {
+        "name": "Cortado (4oz)",
+        "price": "$4.25",
+        "section": "Espresso Based Drinks"
+      },
+      {
+        "name": "Cappuccino (6oz + foam)",
+        "price": "$4.25",
+        "section": "Espresso Based Drinks"
+      },
+      {
+        "name": "Flat White (6oz + microfoam)",
+        "price": "$5.00",
+        "section": "Espresso Based Drinks"
+      },
+      {
+        "name": "Latte",
+        "price": "$5.25",
+        "section": "Espresso Based Drinks"
+      },
+      {
+        "name": "Americano",
+        "price": "$3.95",
+        "section": "Espresso Based Drinks"
+      },
+      {
+        "name": "The Goldie",
+        "price": "$5.50",
+        "section": "Specialty Drinks",
+        "description": "Our signature drink, a refreshing latte with hints of agave and lavender."
+      },
+      {
+        "name": "Mocha",
+        "price": "$5.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Vietnamese",
+        "price": "$6.25",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Chai Latte",
+        "price": "$5.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Matcha Latte",
+        "price": "$6.00",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Hot Chocolate",
+        "price": "$4.00",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Pumpkin Pie Latte  (seasonal)",
+        "price": "$6.75",
+        "section": "Specialty Drinks",
+        "description": "It's fall, you know we had to! Our take on the classic pumpkin spice latte. \\n\\n"
+      },
+      {
+        "name": "London Fog",
+        "price": "$5.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Kids Steamed Milk (8oz)",
+        "price": "$4.00",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Churro Chai (seasonal)",
+        "price": "$6.50",
+        "section": "Specialty Drinks",
+        "description": "A rich, spiced chai latte inspired by the warm, cinnamon-sugar A rich, spiced chai latte inspired by the warm, cinnamon-sugar flavors of a classic churro.\\n"
+      },
+      {
+        "name": "Kettle Cider (seasonal)",
+        "price": "$5.95",
+        "section": "Specialty Drinks",
+        "description": "A warm, spiced apple cider with cozy notes of cinnamon, clove, and seasonal spices.\\n"
+      },
+      {
+        "name": "Caramel Apple Latte (seasonal)",
+        "price": "$6.50",
+        "section": "Specialty Drinks",
+        "description": "A smooth espresso latte with rich caramel and crisp apple flavors, finished with a touch of warm seasonal spice.\\n"
+      },
+      {
+        "name": "Drip",
+        "price": "$3.50",
+        "section": "Just Coffee"
+      },
+      {
+        "name": "Toddy",
+        "price": "$4.75",
+        "section": "Cold Brew",
+        "description": "Classic Cold Brew"
+      },
+      {
+        "name": "Nola",
+        "price": "$5.00",
+        "section": "Cold Brew"
+      },
+      {
+        "name": "Other",
+        "price": "$4.50",
+        "section": "Tea"
+      },
+      {
+        "name": "Japanese Sencha",
+        "price": "$4.50",
+        "section": "Tea"
+      },
+      {
+        "name": "English Breakfast",
+        "price": "$4.50",
+        "section": "Tea"
+      },
+      {
+        "name": "Masala Chai",
+        "price": "$4.75",
+        "section": "Tea"
+      },
+      {
+        "name": "Honeybush",
+        "price": "$4.50",
+        "section": "Tea"
+      },
+      {
+        "name": "Peach Melba",
+        "price": "$4.75",
+        "section": "Tea"
+      },
+      {
+        "name": "Black Iced Tea (16oz iced only)",
+        "price": "$4.50",
+        "section": "Tea"
+      },
+      {
+        "name": "Plain Toast (2 slices w/ butter and jam)",
+        "price": "$3.50",
+        "section": "Toasts"
+      },
+      {
+        "name": "Bagel With Cream Cheese",
+        "price": "$4.00",
+        "section": "Toasts"
+      },
+      {
+        "name": "The Classic",
+        "price": "$8.50",
+        "section": "Brekkie Sammies and Tacos",
+        "description": "egg and cheddar cheese, all piled on a delicious everything bagel"
+      },
+      {
+        "name": "EMC",
+        "price": "$10.00",
+        "section": "Brekkie Sammies and Tacos",
+        "description": "bacon, egg and cheddar cheese, all piled on a delicious everything bagel"
+      },
+      {
+        "name": "Croissant Brekkie Taco",
+        "price": "$10.75",
+        "section": "Brekkie Sammies and Tacos",
+        "description": "croissant style taco with pesto, egg, avocado, bacon, tomato, and microgreens, topped with balsamic glaze and everything seasoning"
+      },
+      {
+        "name": "Pablo",
+        "price": "$10.25",
+        "section": "Brekkie Sammies and Tacos",
+        "description": "flaky croissant stuffed with sausage, egg, melted swiss and spicy mayo"
+      },
+      {
+        "name": "BLTA",
+        "price": "$12.95",
+        "section": "Meals and Wraps",
+        "description": "bacon, lettuce, tomato, avocado, and mayo - with side salad\\n"
+      },
+      {
+        "name": "California Club",
+        "price": "$14.75",
+        "section": "Meals and Wraps",
+        "description": "turkey, bacon, swiss cheese, avocado, tomato, red onion, pesto, and mayo - with side salad"
+      },
+      {
+        "name": "Veggie Wrap",
+        "price": "$12.00",
+        "section": "Meals and Wraps",
+        "description": "scrambled egg, mozzarella cheese, avocado, mushrooms, peppers, red onion, roasted baby red potatoes, fresh spinach, and olive oil \\n"
+      },
+      {
+        "name": "Good Morning Wrap",
+        "price": "$12.00",
+        "section": "Meals and Wraps",
+        "description": "scrambled egg, mozzarella cheese, bacon, roasted baby red potatoes, and mushrooms\\n"
+      },
+      {
+        "name": "Spicy Breakfast Burrito (seasonal)",
+        "price": "$12.95",
+        "section": "Meals and Wraps",
+        "description": "Scrambled egg, cheddar, turkey, bacon, spicy mayo, and Kettle Caliente sauce."
+      },
+      {
+        "name": "Acai",
+        "price": "$10.25",
+        "section": "Bites and Bowls",
+        "description": "acai topped with granola, banana, fresh berries, coconut, chia seeds, and honey"
+      },
+      {
+        "name": "Greek Yogurt Bowl",
+        "price": "$10.25",
+        "section": "Bites and Bowls",
+        "description": "greek yogurt topped with granola, banana, fresh berries, coconut, chia seeds, and honey"
+      },
+      {
+        "name": "The Farmer Bowl",
+        "price": "$12.00",
+        "section": "Bites and Bowls",
+        "description": "scrambled egg, bacon, roasted baby red potatoes, avocado, mushrooms, cheese, fresh tomatoes, and garlic aioli\\n"
+      },
+      {
+        "name": "The Bunny Bowl",
+        "price": "$12.00",
+        "section": "Bites and Bowls",
+        "description": "scrambled egg, roasted potatoes, avocado, mushrooms, cheese, peppers, fresh tomatoes, spinach, red onion, and garlic aioli\\n"
+      },
+      {
+        "name": "Tomato Soup",
+        "price": "$7.25",
+        "section": "Bites and Bowls",
+        "description": "our take on classic tomato soup"
+      },
+      {
+        "name": "Potatoes",
+        "price": "$1.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Turkey Side",
+        "price": "$2.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Avocado Side",
+        "price": "$2.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Bacon (2 slices)",
+        "price": "$2.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Egg",
+        "price": "$1.75",
+        "section": "Sides"
+      },
+      {
+        "name": "Sausage Patty",
+        "price": "$1.75",
+        "section": "Sides"
+      },
+      {
+        "name": "Fruit Cup",
+        "price": "$3.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Scrambled Egg",
+        "price": "$1.75",
+        "section": "Sides"
+      },
+      {
+        "name": "Baked Egg",
+        "price": "$1.50",
+        "section": "Sides"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8771",
+    "name": "Knockout Korean Fried Chicken",
+    "sourceUrl": "https://www.doordash.com/store/knockout-chicken-chula-vista-1580879/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "Uber Eats and Grubhub search snippets both show \"Pc Original Fried Leg & Thigh $19.99\" matching this DoorDash listing",
+    "notes": "Batch website https://orderpickup.com/knockoutchickenchulavista/ and the restaurant's own domain knockoutchickensd.com both redirect through an sgcaptcha bot-wall (non-browser requests get a 0-byte meta-refresh to /.well-known/sgcaptcha/) so no first-party price source was reachable. Grubhub restaurant page is a pure client-rendered shell with no embedded price data. Filed from DoorDash's server-rendered page instead (name/price pairs extracted via existing probe/extract_dd.js), which is confirmed to be the correct Chula Vista location at 358 East H Street.",
+    "dishes": [
+      {
+        "name": "Spicy Chicken Sandwich",
+        "price": "$15.99"
+      },
+      {
+        "name": "5 Pc Original Fried Leg & Thigh",
+        "price": "$19.99"
+      },
+      {
+        "name": "Honey Garlic Chicken - Half",
+        "price": "$19.99"
+      },
+      {
+        "name": "10 Pc Original Fried Leg & Thigh",
+        "price": "$34.99"
+      },
+      {
+        "name": "Corn Cheese",
+        "price": "$12.99"
+      },
+      {
+        "name": "French Fries",
+        "price": "$9.99"
+      },
+      {
+        "name": "Cajun Fries",
+        "price": "$9.99"
+      },
+      {
+        "name": "Boneless Chicken - Regular",
+        "price": "$24.99"
+      },
+      {
+        "name": "Kimchi",
+        "price": "$4.99"
+      },
+      {
+        "name": "Original Fried Chicken - Half",
+        "price": "$19.99"
+      },
+      {
+        "name": "6pc Wing",
+        "price": "$18.99"
+      },
+      {
+        "name": "Traditional Fried Chicken - Whole",
+        "price": "$34.99"
+      },
+      {
+        "name": "Kids Meal - Mild Boneless Chicken w/ Fries",
+        "price": "$12.99"
+      },
+      {
+        "name": "Spicy Soy Chicken - Half",
+        "price": "$18.99"
+      },
+      {
+        "name": "Angry Sauce Chicken - Half",
+        "price": "$19.99"
+      },
+      {
+        "name": "Angry Sauce Chicken - Whole",
+        "price": "$39.99"
+      },
+      {
+        "name": "Boneless Chicken - Large",
+        "price": "$44.99"
+      },
+      {
+        "name": "Half & Half Chicken - Whole",
+        "price": "$42.99"
+      },
+      {
+        "name": "Honey Garlic Chicken - Whole",
+        "price": "$39.99"
+      },
+      {
+        "name": "Original Fried Chicken - Whole",
+        "price": "$39.99"
+      },
+      {
+        "name": "Snow Cheese Chicken - Half",
+        "price": "$18.99"
+      },
+      {
+        "name": "Snow Cheese Chicken - Whole",
+        "price": "$36.99"
+      },
+      {
+        "name": "Spicy Soy Chicken - Whole",
+        "price": "$36.99"
+      },
+      {
+        "name": "Sweet & Spicy Chicken - Half",
+        "price": "$18.99"
+      },
+      {
+        "name": "Sweet & Spicy Chicken - Whole",
+        "price": "$36.99"
+      },
+      {
+        "name": "Traditional Fried Chicken - Half",
+        "price": "$17.99"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9196",
+    "name": "Frankie's",
+    "sourceUrl": "https://www.frankiesoceanside.com/menu",
+    "confidence": "high",
+    "notes": "Cocktail bar/lounge menu (Squarespace built-in Menu block) at /menu. \"Summer '26\" (8 cocktails) and \"House Classics\" (7 cocktails) sections carry a single flat per-tab price ($15 and $16 respectively) in the tab header rather than per-item, applied to every item in that section. Wine section lists glass/bottle price pairs (kept the glass price as the filed price, bottle price noted separately). Beer section prices are bare numbers with no \"$\" markup at all (e.g. \"8\" = $8), parsed from the item description field. Dropped the \"Happy Hour\" tab (9 cocktails) entirely - genuinely no price shown anywhere on the page for that section, just names/ingredients (\"Rotating Slushie - Inquire with Bartender\"). Food is limited to 2 small-bites items (Mixed Nuts, Kettle Chips); this is a bar-forward venue, no separate dinner/food menu was found on the site.",
+    "dishes": [
+      {
+        "name": "Garden Gin",
+        "price": "$15.00",
+        "section": "Summer '26",
+        "description": "Gin. Amaro Angeleno. Orange. Chamomile. Lemon. Saline."
+      },
+      {
+        "name": "Pretty in Pink",
+        "price": "$15.00",
+        "section": "Summer '26",
+        "description": "Vodka. Prickly Pear. Pineapple. Lime."
+      },
+      {
+        "name": "Notcha Average Matcha",
+        "price": "$15.00",
+        "section": "Summer '26",
+        "description": "Rum. Licor 43. Banana. Matcha. Coconut. Cream. Lime"
+      },
+      {
+        "name": "My Bittersweet Baby",
+        "price": "$15.00",
+        "section": "Summer '26",
+        "description": "Tequila. Bitter Bianco. Pink Peppercorn. Grapefruit. Pomegranate. Lemon. Peycahaud Bitters."
+      },
+      {
+        "name": "La Toxica",
+        "price": "$15.00",
+        "section": "Summer '26",
+        "description": "Mezcal. Granny Smith. Habanero. Honey. Clove. Lemon."
+      },
+      {
+        "name": "Forget The Alamo",
+        "price": "$15.00",
+        "section": "Summer '26",
+        "description": "Rye. Alma Tepec. Strawberry. Chamoy. Spicy Bitters."
+      },
+      {
+        "name": "H2O",
+        "price": "$15.00",
+        "section": "Summer '26",
+        "description": "Tequila. Blanc Vermouth. Clarified Cucumber Cordial."
+      },
+      {
+        "name": "Traffic Jam",
+        "price": "$15.00",
+        "section": "Summer '26",
+        "description": "Argonaut Brandy. Curacao. Jam. Lemon"
+      },
+      {
+        "name": "Off Hours Old Fashioned",
+        "price": "$16.00",
+        "section": "House Classics",
+        "description": "Off Hours Bourbon. Demerara. Angostura Bitters."
+      },
+      {
+        "name": "Planteray Painkiller",
+        "price": "$16.00",
+        "section": "House Classics",
+        "description": "Planteray Rum Blend. Coconut. Pineapple. Orange. Lime. Nutmeg."
+      },
+      {
+        "name": "Señora Leona Cadillac Margarita",
+        "price": "$16.00",
+        "section": "House Classics",
+        "description": "Señora Leona Blanco. Curacao. Sugar. Lime."
+      },
+      {
+        "name": "Sazerac",
+        "price": "$16.00",
+        "section": "House Classics",
+        "description": "Sazerac Rye. Peychaud Bitters. Angostura Bitters. Demerara. Absinthe. Lemon"
+      },
+      {
+        "name": "Ford's Fix",
+        "price": "$16.00",
+        "section": "House Classics",
+        "description": "Ford's Gin. Berries. Sugar. Lemon."
+      },
+      {
+        "name": "Amaras Paloma",
+        "price": "$16.00",
+        "section": "House Classics",
+        "description": "Amaras Verde Mezcal. Grapefruit. Sugar. Lime. Soda."
+      },
+      {
+        "name": "Martini Rosso Prosseco Split",
+        "price": "$12.00",
+        "section": "Wine"
+      },
+      {
+        "name": "Oyster Bay Sauvignon Blanc",
+        "price": "$12.00",
+        "section": "Wine",
+        "description": "glass $12.00 / bottle $40.00"
+      },
+      {
+        "name": "Banshee Chardonnay",
+        "price": "$14.00",
+        "section": "Wine",
+        "description": "glass $14.00 / bottle $48.00"
+      },
+      {
+        "name": "Bianchi Pinot Grigio",
+        "price": "$11.00",
+        "section": "Wine",
+        "description": "glass $11.00 / bottle $36.00"
+      },
+      {
+        "name": "Conundrum Red Blend",
+        "price": "$12.00",
+        "section": "Wine",
+        "description": "glass $12.00 / bottle $40.00"
+      },
+      {
+        "name": "Robert Mondavi Pinot Noir",
+        "price": "$12.00",
+        "section": "Wine",
+        "description": "glass $12.00 / bottle $40.00"
+      },
+      {
+        "name": "Bianchi Cabernet Sauvignon",
+        "price": "$14.00",
+        "section": "Wine",
+        "description": "glass $14.00 / bottle $48.00"
+      },
+      {
+        "name": "Karl Strauss x West Coast IPA",
+        "price": "$8.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Sierra Nevada x Hazy IPA",
+        "price": "$8.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Plainview x Lager",
+        "price": "$6.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Harland x Japanese Lager",
+        "price": "$7.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Pacifico",
+        "price": "$7.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Booze Brothers x Blonde",
+        "price": "$7.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Cali Squeeze Blood Orange",
+        "price": "$7.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Guinness",
+        "price": "$8.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Modelo Especial",
+        "price": "$6.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Coors Banquet",
+        "price": "$5.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Coors Light",
+        "price": "$5.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Miller High Life",
+        "price": "$5.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Coors Edge N/A",
+        "price": "$6.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Athletic Brewing Run Wild N/A",
+        "price": "$6.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Bambucha Tropical Guava Kombucha",
+        "price": "$6.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Newtopia Soiree Cyder",
+        "price": "$7.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Montucky Cold Snack",
+        "price": "$6.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Suncruiser",
+        "price": "$7.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Mocktail",
+        "price": "$7.00",
+        "section": "Non-Alcoholic",
+        "description": "Dealer's Choice"
+      },
+      {
+        "name": "Espresso",
+        "price": "$4.00",
+        "section": "Non-Alcoholic",
+        "description": "Interim Espresso."
+      },
+      {
+        "name": "Mineragua",
+        "price": "$4.00",
+        "section": "Non-Alcoholic",
+        "description": "Sparkling Soda"
+      },
+      {
+        "name": "Mixed Nuts",
+        "price": "$2.00",
+        "section": "Small Bites"
+      },
+      {
+        "name": "Kettle Chips",
+        "price": "$2.00",
+        "section": "Small Bites"
+      }
+    ]
+  }
+]

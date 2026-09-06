@@ -1,0 +1,82 @@
+[
+  {
+    "restaurantId": "9686",
+    "name": "Nickel Beer Company",
+    "sourceUrl": "https://nickelbeerco.com/our-beers/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Julian taproom brewery; own site lists 16+ beer names/descriptions and pour sizes (5oz/9oz/16oz, growlers/jugs) but publishes no price anywhere on the site (checked home, our-beers, growler-policy); no food menu (site says food is at sister location, The Pub at Lake Cuyamaca). Yelp/Tripadvisor mention prices only in prose. No priced source found."
+  },
+  {
+    "restaurantId": "4017",
+    "name": "Ko-Li Bar",
+    "sourceUrl": "https://ko-li.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Japanese kakigori (shaved ice) dessert bar inside the Yakyudori restaurant group at 4898 Convoy St #102 (address confirmed). Both its domains (sandiegoyakyudori.com/page/ko-li and ko-li.com) list flavors/descriptions only, no prices anywhere. Yelp review mentions '~$10' in prose only, not a menu. Open business that simply does not publish prices."
+  },
+  {
+    "restaurantId": "6579",
+    "name": "SoCal Sushi",
+    "sourceUrl": "https://socalsushigo.twupro.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Batch website (socalsushigo.site) is expired/parked and forwards to socalsushigo.twupro.com, which is a barred farm domain (twupro.com is on the barred-domain list) - no real prices there, only generic sample dish names. No DoorDash/Grubhub/UberEats storefront found for this San Diego (3454 Adams Ave) location; search results returned unrelated LA-area sushi stores. An Instagram caption (@socalsushi_sd) shows a handful of prices (Garlic Shishito Peppers $7.75, Hotaru Ika $8, Ama Ebi Sm $8/Lg $12) but is an unverifiable partial excerpt, not a fetchable menu page - not filed."
+  },
+  {
+    "restaurantId": "5777",
+    "name": "Phở Hòa Restaurant | Vietnamese",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Batch website (phohoalindavistago.site) is expired/parked and forwards to phohoalindavistago.twupro.com, a barred farm domain. Confirmed this Linda Vista location is NOT part of the national phohoa.com franchise (its /locations page lists no San Diego/Linda Vista store, no match for '6921' or 'Linda Vista'), so phohoa.com's chain menu does not apply here. No DoorDash/Grubhub/UberEats listing found for 6921 Linda Vista Rd. No priced source found."
+  },
+  {
+    "restaurantId": "3795",
+    "name": "IB Thai",
+    "sourceUrl": "https://api.menufy.com/v1/locations/51937/categories/all",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Router already screened out the restaurant's own Menufy storefront (linked from ibthaica.com/order, confirmed same platform): only 1% of 147 prices land conventional as published, 73% land conventional after dividing by 1.04 - a 4% online-ordering fee is baked in. Grubhub, Uber Eats and Postmates each carry their own delivery-platform priced catalogs but disagree with each other and with Menufy on overlapping items beyond a uniform markup (e.g. egg roll prices differ $5.50 vs $9.15/$9.59 across platforms) - no fee-free source found, so blocked rather than filing any of them."
+  },
+  {
+    "restaurantId": "10583",
+    "name": "Fusion Bar & Lounge",
+    "sourceUrl": "https://fusionloungesd.com/our-menu-desktop/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Mira Mesa hookah lounge. Own site publishes a full item list - desserts (Tuxedo Cake, Baklava), refreshers, smoothies, milkshakes, coffee/tea, beer, soft drinks, and hookah flavors - but not a single price anywhere on the page. Open business that does not publish prices; no delivery platform found."
+  },
+  {
+    "restaurantId": "5764",
+    "name": "Super Donuts",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "No website in batch and none found. Search turned up only unrelated same-name businesses in other cities/states (Super Donut House in Inglewood, Super Donuts in Pea Ridge AR, Super Donut in San Antonio TX, The Mini Donut Company at a different Carlsbad address) - none is this 590 Grand Ave, Carlsbad store. No DoorDash/Grubhub/UberEats page or first-party site found for the actual location."
+  },
+  {
+    "restaurantId": "6033",
+    "name": "Bistro Pazzo",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Own site's homepage is reachable (cached, 200) and confirms the business is open (dinner Mon-Sat 4-9pm, lunch suspended) with Dinner/Desserts/Wine/Specials menu links, but the actual /dinner menu page times out on every attempt (Connect Timeout Error, tried plain curl and with navigation headers, ~10-30s each, 3 attempts) - matches the router's own earlier fetch-failed finding. web.archive.org returned 429 (rate limited). Menu content itself never became reachable."
+  },
+  {
+    "restaurantId": "5992",
+    "name": "San Diego Blenders",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "No website in batch. Uber Eats explicitly states this restaurant is 'unavailable on Uber Eats at this time.' A DoorDash listing at the same street address (4242 Camino Del Rio N) belongs to a different business (Hot Chickz & Pizza), not San Diego Blenders. Only tier-5/directory pages (Yelp, MapQuest, wheree.com) describe the menu in prose with no reliable price list. No priced source found for this location."
+  },
+  {
+    "restaurantId": "10278",
+    "name": "Starbread Bakery",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "No website in batch. starbreadbakery.org (a multi-location directory page for this chain) reads like a first-party site but is an Amazon/Clickbank affiliate farm with zero prices anywhere. DoorDash's own page (business/starbread-bakery-469372) is pure client-rendered JS with no data in the HTML; the page-service.doordash.com payload for that same store id resolved to an entirely unrelated pizza/wings/sandwiches restaurant (confirmed by dish names - Cheese Pizza, Wings, Stromboli - nothing Filipino-bakery related), so that slug/id does not belong to this restaurant and was not filed. No reliable priced source found."
+  }
+]

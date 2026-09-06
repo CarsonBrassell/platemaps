@@ -1,0 +1,1227 @@
+[
+  {
+    "restaurantId": "9341",
+    "name": "ESSNTL Coffee",
+    "sourceUrl": "https://joe.coffee/cities/california/san-diego/essntl-coffee",
+    "confidence": "low",
+    "notes": "No official website, no delivery platform (DoorDash/UberEats/Grubhub) listing found. Only source located is a Joe Coffee directory/review-aggregation page with no priced menu, just customer reviews mentioning approximate prices (e.g. \"$8.76 on my matcha\") in prose, not a published menu.",
+    "dishes": [],
+    "blocked": "no priced menu source found - no website, no ordering platform; only a review-aggregator directory page with prose price mentions, not a menu"
+  },
+  {
+    "restaurantId": "9853",
+    "name": "CRAVE Mediterranean Grill",
+    "sourceUrl": "https://www.doordash.com/store/crave-mediterranean-grill-el-cajon-45314031/",
+    "confidence": "low",
+    "notes": "Own site cravemedgrill.com now redirects to a sunset 'Redirect | BentoBox' page (site abandoned, not proof restaurant closed). The name-exact cravemediterraneangrill.com belongs to a different restaurant in Glendale, CO - not used. Grubhub page is a client-rendered shell with zero embedded data. DoorDash listing confirmed as the correct El Cajon branch (address + URL slug both say el-cajon), but a fine-resolution divisor sweep (1.000-1.100 step .001) found 100% of prices become conventional cents at divisor 1.035 - definitive evidence of a uniform computed/fee-inflated price field. Per brief, cannot divide out a markup and file; blocking instead.",
+    "dishes": [],
+    "blocked": "only priced source is DoorDash, where all prices carry a uniform ~3.5% computed markup (100% conventional-cent match at divisor 1.035); own site sunset, name-exact site is a different CO restaurant, Grubhub has no data"
+  },
+  {
+    "restaurantId": "4527",
+    "name": "Tree House",
+    "sourceUrl": "https://treehousesm.com/food-menu/",
+    "confidence": "high",
+    "notes": "Batch address lists \"9442 Pacific Heights Boulevard #200\" but the restaurant's own site footer and every other reference give \"9945 Pacific Heights Blvd, Suite 200, San Diego, CA 92121\" - treated as a batch typo (same street/suite, router already links this site to this restaurantId) rather than a different restaurant. First-party menu, own website.",
+    "dishes": [
+      {
+        "name": "The Brekkie Sando",
+        "description": "Egg, American cheese, garlic aioli, English muffin, choice of sausage, bacon or kimchi sausage",
+        "price": "$11.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Brioche French Toast",
+        "description": "Strawberry compote, whipped cream, matcha powder",
+        "price": "$12.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Breakfast Burrito",
+        "description": "Flour tortilla, scrambled eggs with poblano sofrito, Oaxaca cheese, soyrizo, black beans, salsa verde",
+        "price": "$13.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "Toasted focaccia, edamame, feta, hibiscus onions, radishes",
+        "price": "$12.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Corned Beef Hash",
+        "description": "Corned beef, potato, sauerkraut, 2 eggs, marbled rye bread",
+        "price": "$15.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Thai Tea Overnight Oats",
+        "description": "Chia, brown sugar boba, coconut yogurt",
+        "price": "$11.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Parfait",
+        "description": "Seasonal berries, honey, house granola",
+        "price": "$11.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Falafel Burger",
+        "description": "Tomatoes, cucumbers, shredded romaine, tzatziki sauce",
+        "price": "$15.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Shrimp Aguachile",
+        "description": "Lime, avocado, serrano, red onions, Maggi, tortilla chips",
+        "price": "$14.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Fried Wings",
+        "description": "Choice: Carolina gold sauce, tajin ranch dry rub or buffalo with blue cheese or ranch, celery, carrots",
+        "price": "$16.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Fried Brussels Sprouts",
+        "description": "Black garlic sauce, crispy garlic, goat cheese",
+        "price": "$12.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Wagyu Smash Burger",
+        "description": "Custom blend smash patties, caramelized onions, American cheese, special sauce, pickles",
+        "price": "$15.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Portobello Fries",
+        "description": "Panko breaded portobello, parmesan, basil aioli",
+        "price": "$10.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Crudite & Dips",
+        "description": "Assorted market vegetables, hummus, spicy yogurt dip",
+        "price": "$14.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Birria Potato Skins",
+        "description": "Beef, cheddar, onions, cilantro, sour cream, red salsa",
+        "price": "$13.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Chips & Guacamole",
+        "description": "Tortilla chips with salsa and guacamole",
+        "price": "$16.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Poke Bowl",
+        "description": "Marinated ahi tuna, pickled vegetables, edamame, green onion, kimchi, sesame, Asian pear, gochujang",
+        "price": "$19.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Mediterranean Bowl",
+        "description": "Chicken, carrots, red peppers, turmeric cauliflower, feta, figs, garlic yogurt vinaigrette",
+        "price": "$17.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Tijuana Caesar Salad",
+        "description": "Kale & romaine mix, cotija cheese, lime, tortilla crumb",
+        "price": "$12.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Chicken Tenders (3pc)",
+        "description": "Choice of sauce",
+        "price": "$14.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Chicken Tenders (5pc)",
+        "description": "Choice of sauce",
+        "price": "$18.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Crispy Fries, Onion Rings or Sweet Potato Fries",
+        "description": "Crispy fries served with aioli, rings served with house dressing, sweet potato fries served with ranch",
+        "price": "$6.00",
+        "section": "Bar Bites"
+      },
+      {
+        "name": "Pizza by the Slice (1 slice)",
+        "description": "Pepperoni, cheese or pizza of the day",
+        "price": "$8.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Pizza by the Slice (2 slices)",
+        "description": "Pepperoni, cheese or pizza of the day",
+        "price": "$14.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Wagyu Smash Burger",
+        "description": "Custom blend smash patties, caramelized onions, American cheese, special sauce, pickle",
+        "price": "$15.00",
+        "section": "Hands"
+      },
+      {
+        "name": "The 'Cue Burger",
+        "description": "Bacon, onion ring, bbq sauce, pepper jack",
+        "price": "$16.00",
+        "section": "Hands"
+      },
+      {
+        "name": "Crispy Chicken Sando",
+        "description": "Breaded chicken, pickles, aioli; choice of classic, hot honey or Nashville hot",
+        "price": "$16.00",
+        "section": "Hands"
+      },
+      {
+        "name": "The Reuben",
+        "description": "Corned beef, sauerkraut, house sauce, marbled rye",
+        "price": "$15.00",
+        "section": "Hands"
+      },
+      {
+        "name": "Chipotle Turkey Sando",
+        "description": "Smoked gouda, avocado, chipotle mayo, lettuce, rosemary focaccia",
+        "price": "$16.00",
+        "section": "Hands"
+      },
+      {
+        "name": "Ahi Tuna Burger",
+        "description": "Marinated ahi tuna, mango, spicy slaw, wasabi aioli",
+        "price": "$16.00",
+        "section": "Hands"
+      },
+      {
+        "name": "Chicken Tenders (3pc)",
+        "description": "Crispy fries and choice of sauce",
+        "price": "$14.00",
+        "section": "Hands"
+      },
+      {
+        "name": "Chicken Tenders (5pc)",
+        "description": "Crispy fries and choice of sauce",
+        "price": "$18.00",
+        "section": "Hands"
+      },
+      {
+        "name": "Birria Tacos",
+        "description": "Beef, onion, cilantro, corn tortillas, salsa roja",
+        "price": "$14.00",
+        "section": "Hands"
+      },
+      {
+        "name": "Chopped",
+        "description": "Napa red cabbage, edamame, almonds, mandarins, wontons, apple, citrus tahini",
+        "price": "$14.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Cali Cobb",
+        "description": "Diced tomato, cooked egg, sous vide bacon, avocado, Point Reyes blue cheese, poblano ranch",
+        "price": "$14.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Tijuana Caesar",
+        "description": "Kale & romaine mix, cotija cheese, lime, tortilla crumb",
+        "price": "$12.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Mediterranean Bowl",
+        "description": "Grilled chicken, harissa carrots, red peppers, turmeric cauliflower, feta, figs, garlic yogurt vinaigrette",
+        "price": "$17.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Poke Bowl",
+        "description": "Marinated ahi tuna, pickled vegetables, edamame, green onion, kimchi, sesame, Asian pear, gochujang",
+        "price": "$19.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Ancient Grains Bowl",
+        "description": "Falafel, charred onion, snow peas, avocado, wild mushrooms, chia seeds, roasted brussels, apple cider vinaigrette",
+        "price": "$16.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Housemade Beverages",
+        "description": "",
+        "price": "$4.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Cheesecake Matcha",
+        "description": "",
+        "price": "$9.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Dot Cake Matcha",
+        "description": "",
+        "price": "$9.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Coastal Lavender",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Strawberry Matcha",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Hoji-Cha Latte",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Mocha Hoji-Chai",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Toffee Crunch Mocha",
+        "description": "",
+        "price": "$6.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Tumeric Ginger Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Chai Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Salted Caramel Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Earl Grey & Cherry Milk Tea",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Matcha Mint Lemonade",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$6.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Protein Smoothie - Acai",
+        "description": "40 grams of protein",
+        "price": "$12.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Protein Smoothie - Dragon Fruit",
+        "description": "40 grams of protein",
+        "price": "$12.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Protein Smoothie - Peanut Butter Chocolate",
+        "description": "40 grams of protein",
+        "price": "$12.00",
+        "section": "Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6224",
+    "name": "Mr Donuts",
+    "sourceUrl": null,
+    "confidence": "low",
+    "notes": "No website, no delivery-platform listing (DoorDash/UberEats/Grubhub) found for this Oceanside donut shop. No priced menu source located within budget.",
+    "dishes": [],
+    "blocked": "no ordering platform or priced menu found for this location"
+  },
+  {
+    "restaurantId": "10739",
+    "name": "Läderach",
+    "sourceUrl": "https://laderach.com/us-en/tafeln",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://laderach.com/us-en/geschenke",
+    "notes": "Prices come from the first-party national US online shop (laderach.com, same domain as the batch's website field), which is the same catalog Laderach sells nationally rather than a location-specific price list for the Fashion Valley Mall kiosk; marked medium confidence for that reason. Two unlabeled fragments (\"box $34.00\", \"box $50.00\") appeared on the boxes page with no recoverable product name and were dropped rather than guessed.",
+    "dishes": [
+      {
+        "name": "FrischSchoggi Mini 24pc box",
+        "description": "",
+        "price": "$55.00",
+        "section": "FrischSchoggi"
+      },
+      {
+        "name": "FrischSchoggi Mini 12pc box",
+        "description": "",
+        "price": "$30.00",
+        "section": "FrischSchoggi"
+      },
+      {
+        "name": "FrischSchoggi boat big",
+        "description": "",
+        "price": "$86.00",
+        "section": "FrischSchoggi"
+      },
+      {
+        "name": "FrischSchoggi boat small",
+        "description": "",
+        "price": "$45.00",
+        "section": "FrischSchoggi"
+      },
+      {
+        "name": "FrischSchoggi pouch big",
+        "description": "",
+        "price": "$65.00",
+        "section": "FrischSchoggi"
+      },
+      {
+        "name": "FrischSchoggi pouch small",
+        "description": "",
+        "price": "$34.00",
+        "section": "FrischSchoggi"
+      },
+      {
+        "name": "FrischSchoggi Tin",
+        "description": "",
+        "price": "$61.00",
+        "section": "FrischSchoggi"
+      },
+      {
+        "name": "FrischSchoggi sticks Summer Edition 90g",
+        "description": "",
+        "price": "$26.00",
+        "section": "FrischSchoggi"
+      },
+      {
+        "name": "FrischSchoggi sticks Summer Edition 370g",
+        "description": "",
+        "price": "$58.00",
+        "section": "FrischSchoggi"
+      },
+      {
+        "name": "Milk Teddy Eddie",
+        "description": "",
+        "price": "$32.00",
+        "section": "FrischSchoggi"
+      },
+      {
+        "name": "Single Origin India Tablet 90%",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tablets"
+      },
+      {
+        "name": "Single Origin Brazil Tablet 70%",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tablets"
+      },
+      {
+        "name": "Single Origin Madagascar Tablet 64%",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tablets"
+      },
+      {
+        "name": "Single Origin Trinidad Tablet 80%",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tablets"
+      },
+      {
+        "name": "Milk Tablet 36%",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tablets"
+      },
+      {
+        "name": "Milk Tablet 49%",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tablets"
+      },
+      {
+        "name": "White Tablet 36%",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tablets"
+      },
+      {
+        "name": "Summer Edition Blond Caramel Tablet",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tablets"
+      },
+      {
+        "name": "Summer Edition Lemon Tablet",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tablets"
+      },
+      {
+        "name": "Summer Edition Raspberry Tablet",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tablets"
+      },
+      {
+        "name": "Single Origin 4x6er Box",
+        "description": "",
+        "price": "$35.00",
+        "section": "Tablets"
+      },
+      {
+        "name": "Praline Selection 4 pcs per box",
+        "description": "",
+        "price": "$13.00",
+        "section": "Pralines & Truffles"
+      },
+      {
+        "name": "Praline Selection 8 pcs per box",
+        "description": "",
+        "price": "$22.00",
+        "section": "Pralines & Truffles"
+      },
+      {
+        "name": "Pralines & Truffles with alcohol 36 pcs per box",
+        "description": "",
+        "price": "$75.00",
+        "section": "Pralines & Truffles"
+      },
+      {
+        "name": "Truffle Selection 8 pcs per box",
+        "description": "",
+        "price": "$22.00",
+        "section": "Pralines & Truffles"
+      },
+      {
+        "name": "Truffle Selection 24 pcs per box",
+        "description": "",
+        "price": "$54.00",
+        "section": "Pralines & Truffles"
+      },
+      {
+        "name": "Truffle Selection 36 pcs per box",
+        "description": "",
+        "price": "$75.00",
+        "section": "Pralines & Truffles"
+      },
+      {
+        "name": "Truffle Selection with alcohol 8 pcs per box",
+        "description": "",
+        "price": "$22.00",
+        "section": "Pralines & Truffles"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2281",
+    "name": "Tasty Donuts",
+    "sourceUrl": "https://www.ubereats.com/store/tasty-donuts/",
+    "confidence": "low",
+    "notes": "The only priced source located (UberEats) carries a JSON-LD address in Norman, OK - a different branch, not this San Diego (Clairemont Mesa) location. Two further Serper searches (platform-specific query, then a Maps-scoped query) did not turn up a San Diego-specific delivery listing within budget.",
+    "dishes": [],
+    "blocked": "only priced source found (UberEats) is a wrong-branch listing in Norman, OK; no San Diego-specific ordering platform found"
+  },
+  {
+    "restaurantId": "7895",
+    "name": "Mia's",
+    "sourceUrl": "https://www.mias101.com/menus/",
+    "confidence": "high",
+    "notes": "Router flagged this as a possible wrong-branch (\"no address in payload\"), but the page itself is explicitly titled \"Mia's | Baja-Mediterranean Restaurant in Solana Beach, CA\" and the footer/location fields say Solana Beach, CA, matching the batch address exactly - confirmed correct venue despite the router flag.",
+    "dishes": [
+      {
+        "name": "Seasonal Oysters",
+        "description": "Half dozen freshly shucked and topped with cucumber lime mezcal mignonette, cilantro and tajin",
+        "price": "$24.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Hamachi Crudo",
+        "description": "Mango fresno citrus tiger's milk, charred mango, avocado, jalapeno, cilantro, mint",
+        "price": "$24.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mediterranean Ceviche",
+        "description": "Market fish, red onion, grape tomatoes, cucumber, mint, cilantro, ruby grapefruit, cara cara orange, avocado, sweet peppers, olive oil",
+        "price": "$16.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Crispy Spanish Octopus",
+        "description": "Romesco, crispy baby Yukon potatoes, Spanish chorizo and chimichurri",
+        "price": "$24.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mezze Platter",
+        "description": "Roasted red pepper and feta, muhammara, tzatziki, with vegetable crudites and pita",
+        "price": "$17.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mediterranean Flat Bread",
+        "description": "Artichoke hearts, cucumber, grape tomatoes, red onion, Kalamata olive chimichurri, parmesan cheese, frisee, basil, lemon olive oil",
+        "price": "$17.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Papas & Mole Negro",
+        "description": "Crispy potato pave, Oaxacan mole negro, crema salada, chicken chicharron, micro epazote",
+        "price": "$17.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Avocado Mousse",
+        "description": "Avocado, lime, cilantro, parsley, tomatillo, garnished with micro cilantro, dill, radish, everything but the bagel seasoning, served with tostadas",
+        "price": "$16.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mushroom Chorizo Fundido",
+        "description": "Chorizo made of mushroom, pasilla rajas, onion, chihuahua cheese, mushroom pico de gallo, cilantro, flour tortillas",
+        "price": "$16.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Picadillo Empanadas",
+        "description": "Peanut chipotle salsa, chimichurri aioli",
+        "price": "$15.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Volcano Tostada",
+        "description": "Carne asada, chorizo, refried beans, chihuahua cheese, pickled onion, avocado salsa verde, salsa macha",
+        "price": "$18.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Squash Blossom Quesadilla",
+        "description": "Squash blossom, chihuahua cheese, Oaxaca cheese, roasted poblano peppers, fire roasted tomatillo salsa, cotija, cilantro, green onion",
+        "price": "$18.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken Tinga Taco",
+        "description": "Shredded chicken, pickled onion, avocado, crispy chihuahua cheese, micro cilantro",
+        "price": "$15.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Grilled Shrimp Taco",
+        "description": "Avocado salsa, salsa macha, chihuahua cheese, pickled onion",
+        "price": "$18.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Pork Belly Taco",
+        "description": "Tzatziki, harissa agave, cucumber, onion, dill",
+        "price": "$18.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Crispy Fish Taco",
+        "description": "Panko cod, chihuahua cheese, pickled fresno harissa ranch, cucumber pico de gallo, cabbage",
+        "price": "$15.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mia's Caesar Salad",
+        "description": "Little gem lettuce, charred snap peas, aged parmesan, hand torn croutons, traditional Caesar dressing",
+        "price": "$18.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Riviera Salad",
+        "description": "Mixed baby lettuce, heirloom tomato, dirty baby Yukon potatoes, haricot vert, Kalamata olive, crispy six-minute egg, white anchovy, champagne vinaigrette",
+        "price": "$20.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Roasted Cauliflower",
+        "description": "Cauliflower puree, spice of life, toasted almond Spanish salsa verde",
+        "price": "$18.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Roasted Beet Salad",
+        "description": "Marinated feta, orange segments, pepitas, garden herbs, Dijon champagne vinaigrette",
+        "price": "$19.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Ancient Grain Salad",
+        "description": "Farro, wild arugula, kale, squash, tomato, goat cheese, dill, mint pistachio, dried currants, radish, red wine vinaigrette",
+        "price": "$17.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Roasted Organic Carrots",
+        "description": "Tahini yogurt, honey aleppo glaze, pistachio dukkah",
+        "price": "$18.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Dirty Baby Yukon Potatoes",
+        "description": "Harissa aioli, chives",
+        "price": "$16.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Chef's Seasonal Organic Vegetable",
+        "description": "",
+        "price": "$16.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Shrimp Chile Relleno",
+        "description": "Guajillo puree, fire-roasted grape tomatoes, frisee, pepita dressing, micro cilantro, roasted spiced pepitas",
+        "price": "$22.00",
+        "section": "Seafood, Chicken & Steaks"
+      },
+      {
+        "name": "Blackened Crusted Ahi Tuna",
+        "description": "Mediterranean quinoa salad, castelvetrano olive tapenade, amarillo ginger coconut emulsion",
+        "price": "$32.00",
+        "section": "Seafood, Chicken & Steaks"
+      },
+      {
+        "name": "Pan-Seared Barramundi",
+        "description": "Crispy skin with cannellini beans, fish fumet, salsa verde, tomato, Kalamata olives",
+        "price": "$36.00",
+        "section": "Seafood, Chicken & Steaks"
+      },
+      {
+        "name": "Half Roasted Aleppo Chicken",
+        "description": "Corn garbanzo puree, corn relish, pickled onion, fire-roasted tomatillo salsa, pistachio dukka",
+        "price": "$32.00",
+        "section": "Seafood, Chicken & Steaks"
+      },
+      {
+        "name": "Prime Flat Iron Steak",
+        "description": "Herb marinated, English pea truffle puree, griddled panela, chimichurri",
+        "price": "$39.00",
+        "section": "Seafood, Chicken & Steaks"
+      },
+      {
+        "name": "Bone-In Ribeye 22oz",
+        "description": "Ancho chile rubbed, fried onions, topped with salsa macha butter - great to share",
+        "price": "$80.00",
+        "section": "Seafood, Chicken & Steaks"
+      },
+      {
+        "name": "Barbacoa Braised Short Rib",
+        "description": "Carrot puree, potato mash, garden herb salad, herb oil, pickled onion",
+        "price": "$34.00",
+        "section": "Seafood, Chicken & Steaks"
+      },
+      {
+        "name": "Heritage Pork Chop",
+        "description": "Lan-roc Farms double cut, apple juice brine, calabas puree, Spanish rice pilaf, mango chutney",
+        "price": "$35.00",
+        "section": "Seafood, Chicken & Steaks"
+      },
+      {
+        "name": "Classic Two Egg Breakfast",
+        "description": "Eggs, bacon, crispy potatoes, and sourdough",
+        "price": "$16.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Short Rib Barbacoa Flautas",
+        "description": "Tomatillo sauce, fried egg, pickled onion, jalapeno crema, cilantro",
+        "price": "$19.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Mediterranean Quinoa Bowl",
+        "description": "Tri-color quinoa, cucumber, tomato, onion, tzatziki, arugula mint basil mix salad, roasted corn, avocado, black beans",
+        "price": "$19.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Lox Flat Bread",
+        "description": "Smoked salmon, crispy six-minute egg, red onion, chives, dill, cream cheese, fried capers, lemon oil, everything seasoning, tzatziki",
+        "price": "$19.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Ahi Club Sandwich",
+        "description": "Blackened yellowfin tuna, tomatoes, frisee, red onion, smash avocado salsa, black garlic chive aioli, jalapenos, buttered toasted sourdough bread",
+        "price": "$21.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "California Chicken Club Sandwich",
+        "description": "Herb marinated chicken breast, wild arugula, alfalfa sprouts, avocado, smoked bacon, sundried tomato jam, scallion mayo, swiss cheese, buttered toasted multigrain wheat bread",
+        "price": "$19.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Poke Bowl",
+        "description": "Yellowfin tuna, garlic rice, edamame, avocado, pickled ginger, red onion scallions, mango, radish, cilantro, wasabi, chipotle mayo, crispy wonton",
+        "price": "$20.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Mia's Classic Margarita",
+        "description": "Blanco tequila, Cointreau, lime, agave",
+        "price": "$14.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Aguachile Margarita",
+        "description": "Blanco tequila, Chareau, cucumber-cilantro aguachile, lime, agave",
+        "price": "$16.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Carrot Passion Margarita",
+        "description": "Blanco tequila, Cointreau, carrot, passion fruit, lime, agave",
+        "price": "$16.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coconut Margarita",
+        "description": "Blanco tequila, Cointreau, coconut puree, lime, toasted coconut",
+        "price": "$16.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Solana Siesta",
+        "description": "Reposado tequila, Aperol, grapefruit, cinnamon, hibiscus, lime, fee foam",
+        "price": "$16.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Tia Mia",
+        "description": "Pineapple-infused mezcal, agricole rum, Cointreau, coffee-infused rum, tiki bitters, orgeat, lime, mint",
+        "price": "$16.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Oaxaca Old Fashioned",
+        "description": "Reposado tequila, mezcal, Nixta, xocolatl mole bitters, angostura, agave",
+        "price": "$16.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Guava Spritz",
+        "description": "Aperol, Chareau, guava, lemon, cava, mint",
+        "price": "$16.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Maracuya Mule",
+        "description": "Mezcal, ginger beer, passion fruit, lime, agave, cucumber, chipotle powder",
+        "price": "$16.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Carajillo",
+        "description": "Licor 43, cold brew, fee foam, cinnamon",
+        "price": "$16.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Zero-Proof Margarita",
+        "description": "Choose any Mia's margarita and make it non-alcoholic",
+        "price": "$15.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Mia-Netto Spritz",
+        "description": "Alcohol removed Mionetto sparkling brut and NA Aperol aperitivo",
+        "price": "$15.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Indigo Sunset",
+        "description": "Empress Gin 0.0 alcohol-free, grapefruit, lime, agave, tonic",
+        "price": "$15.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Beer Flight",
+        "description": "Four 4oz pours from our selection of draft beer",
+        "price": "$9.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Crispy Fish Taco (Happy Hour)",
+        "description": "Panko cod, jack cheese, pickled fresno harissa ranch, cucumber pico de gallo and cabbage",
+        "price": "$5.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Seasonal Oysters (Happy Hour)",
+        "description": "Three freshly shucked oysters, topped with cucumber lime mezcal mignonette",
+        "price": "$12.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Snapper Ceviche (Happy Hour)",
+        "description": "Aji amarillo, coconut, sweet potato, cucumber, red onion, green onion",
+        "price": "$12.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Volcano Tostada (Happy Hour)",
+        "description": "Carne asada, chorizo, refried beans, queso chihuahua, pickled onion, avocado salsa verde, salsa macha",
+        "price": "$6.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Mezze Platter (Happy Hour)",
+        "description": "Roasted red pepper and feta, muhammara, tzatziki, with vegetable crudites and pita",
+        "price": "$12.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Picadillo Empanadas - Two (Happy Hour)",
+        "description": "Peanut chipotle salsa, chimichurri aioli",
+        "price": "$10.00",
+        "section": "Happy Hour"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9380",
+    "name": "12 HRS MATCHA CAFE",
+    "sourceUrl": null,
+    "confidence": "low",
+    "notes": "Only ordering platforms found were a Square Online storefront (*.square.site) and a Snackpass ordering page (order.snackpass.co), both confirmed to be fully client-rendered with zero server-embedded menu/price data (matches the brief's browser-only list, which names Square Online explicitly). No first-party website (only an Instagram link, which requires login to view).",
+    "dishes": [],
+    "blocked": "needs-browser: only found ordering platforms (Square Online, Snackpass) are client-rendered with no server-embedded prices; no first-party site"
+  },
+  {
+    "restaurantId": "7496",
+    "name": "Trevi Hills Winery",
+    "sourceUrl": "https://www.trevihillswinery.com/",
+    "confidence": "low",
+    "notes": "A winery/event venue; food status (e.g. pizza nights) is not clearly published with prices anywhere on the site. No delivery platform listing found.",
+    "dishes": [],
+    "blocked": "winery/event venue with unclear food-service status; no published food prices found"
+  },
+  {
+    "restaurantId": "9855",
+    "name": "Seoul Korean Corndog & Fried Chicken",
+    "sourceUrl": "https://www.doordash.com/store/seoul-corndog-&-fried-chicken-escondido-23686987/",
+    "confidence": "medium",
+    "notes": "DoorDash JSON-LD Menu block, address-confirmed (272 East Via Rancho Parkway, Escondido) matching the batch's food-court address. A coarse divisor sweep found only a messy 65% match at 1.076 (not conclusive), but a subtraction test comparing Large-vs-Regular pairs of the same flavor (e.g. Wings vs Boneless within each flavor) found the SAME price differences recurring across multiple independent pairs - evidence of a real, internally consistent size/modifier structure rather than a corrupted field, so filed as marketplace pricing rather than blocked.",
+    "dishes": [
+      {
+        "name": "#8. (L) Buldak Wings (12pc)",
+        "description": "",
+        "price": "$34.96",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#1. (L) Crispy Boneless",
+        "description": "",
+        "price": "$30.13",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#3. (L) Spicy Garlic Boneless",
+        "description": "",
+        "price": "$32.28",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#6. (L) Mild Garlic Wings (12pc)",
+        "description": "",
+        "price": "$32.28",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#7. (L) Spicy Garlic Wings (12pc)",
+        "description": "",
+        "price": "$32.28",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#5. (L) Crispy Wings (12pc)",
+        "description": "",
+        "price": "$30.13",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#2. (L) Mild Garlic Boneless",
+        "description": "",
+        "price": "$32.28",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#7. (R) Spicy Garlic Wings (6pc)",
+        "description": "",
+        "price": "$17.21",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#8. (R) Buldak Wings (6pc)",
+        "description": "",
+        "price": "$18.29",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#4. (L) Buldak Boneless",
+        "description": "",
+        "price": "$34.96",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#6. (R) Mild Garlic Wings (6pc)",
+        "description": "",
+        "price": "$17.21",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#5. (R) Crispy Wings (6pc)",
+        "description": "",
+        "price": "$16.13",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#3. (R) Spicy Garlic Boneless",
+        "description": "",
+        "price": "$17.21",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#2. (R) Mild Garlic Boneless",
+        "description": "",
+        "price": "$17.21",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#1. (R) Crispy Boneless",
+        "description": "",
+        "price": "$16.13",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#4. (R) Buldak Boneless",
+        "description": "",
+        "price": "$18.29",
+        "section": "Fried Chicken"
+      },
+      {
+        "name": "#19. Rose Ddeok-bokki",
+        "description": "",
+        "price": "$15.06",
+        "section": "Ddeok-Bokki"
+      },
+      {
+        "name": "#18. Ddeok-bokki",
+        "description": "",
+        "price": "$12.37",
+        "section": "Ddeok-Bokki"
+      },
+      {
+        "name": "Fish Cake",
+        "description": "",
+        "price": "$2.34",
+        "section": "Ddeok-Bokki"
+      },
+      {
+        "name": "#20. Garlic Fried Dumplings",
+        "description": "",
+        "price": "$12.37",
+        "section": "Dumplings"
+      },
+      {
+        "name": "#21. Spicy Garlic Fried Dumplings",
+        "description": "",
+        "price": "$12.37",
+        "section": "Dumplings"
+      },
+      {
+        "name": "#24. Buldak Fries",
+        "description": "",
+        "price": "$7.00",
+        "section": "French Fries"
+      },
+      {
+        "name": "#22. Fries",
+        "description": "",
+        "price": "$4.57",
+        "section": "French Fries"
+      },
+      {
+        "name": "#23. Garlic Fries",
+        "description": "",
+        "price": "$5.65",
+        "section": "French Fries"
+      },
+      {
+        "name": "Blue Takis",
+        "description": "",
+        "price": "$1.61",
+        "section": "Takis"
+      },
+      {
+        "name": "Red Takis",
+        "description": "",
+        "price": "$1.61",
+        "section": "Takis"
+      },
+      {
+        "name": "#12. Potato Mozzarella",
+        "description": "",
+        "price": "$6.46",
+        "section": "Corndog"
+      },
+      {
+        "name": "#9. Potato Trio",
+        "description": "",
+        "price": "$7.00",
+        "section": "Corndog"
+      },
+      {
+        "name": "#10. Potato Mozzarella Sausage",
+        "description": "",
+        "price": "$6.46",
+        "section": "Corndog"
+      },
+      {
+        "name": "#17. Mozzarella",
+        "description": "",
+        "price": "$5.65",
+        "section": "Corndog"
+      },
+      {
+        "name": "#11. Potato Sausage",
+        "description": "",
+        "price": "$6.46",
+        "section": "Corndog"
+      },
+      {
+        "name": "#14. Mozzarella Sausage",
+        "description": "",
+        "price": "$4.57",
+        "section": "Corndog"
+      },
+      {
+        "name": "#15. Original Sausage",
+        "description": "",
+        "price": "$4.57",
+        "section": "Corndog"
+      },
+      {
+        "name": "#16. Premium Sausage",
+        "description": "",
+        "price": "$5.65",
+        "section": "Corndog"
+      },
+      {
+        "name": "#13. Original Trio",
+        "description": "",
+        "price": "$5.65",
+        "section": "Corndog"
+      },
+      {
+        "name": "Potato",
+        "description": "",
+        "price": "$1.76",
+        "section": "Corndog"
+      },
+      {
+        "name": "Canned",
+        "description": "",
+        "price": "$2.69",
+        "section": "Soda"
+      },
+      {
+        "name": "Bottled",
+        "description": "",
+        "price": "$4.68",
+        "section": "Soda"
+      },
+      {
+        "name": "Lemonade Slushie",
+        "description": "",
+        "price": "$4.62",
+        "section": "Juice"
+      },
+      {
+        "name": "Ramune",
+        "description": "",
+        "price": "$4.10",
+        "section": "Juice"
+      },
+      {
+        "name": "Calpico",
+        "description": "",
+        "price": "$4.62",
+        "section": "Juice"
+      },
+      {
+        "name": "Korean Drinks",
+        "description": "",
+        "price": "$4.62",
+        "section": "Juice"
+      },
+      {
+        "name": "Green Tea",
+        "description": "",
+        "price": "$4.10",
+        "section": "Water"
+      },
+      {
+        "name": "Sparkling",
+        "description": "",
+        "price": "$4.10",
+        "section": "Water"
+      },
+      {
+        "name": "Arrowhead",
+        "description": "",
+        "price": "$2.69",
+        "section": "Water"
+      },
+      {
+        "name": "Evian",
+        "description": "",
+        "price": "$2.75",
+        "section": "Water"
+      }
+    ]
+  }
+]

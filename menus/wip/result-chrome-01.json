@@ -1,0 +1,27 @@
+[
+  {
+    "restaurantId": "24",
+    "name": "Bronx Pizza",
+    "sourceUrl": "https://bronxpizza.com/menu1/",
+    "confidence": "high",
+    "notes": "read in Claude-in-Chrome off the rendered DOM. The HOMEPAGE of bronxpizza.com is compromised - injected with casino/betting SEO spam - which is why the automated router and browser passes found no menu. The /menu1/ page is intact and carries the real priced menu.",
+    "dishes": [
+      { "name": "Cheese Slice", "description": "A variety of slices available daily", "price": "$3.50", "section": "Slices" },
+      { "name": "Topping Slice", "description": "A variety of slices available daily", "price": "$4.00", "section": "Slices" },
+      { "name": "2 Slices and a Drink", "description": "Slice special", "price": "$9.00", "section": "Slices" },
+      { "name": "1 Slice, Side Salad and a Drink", "description": "Slice special", "price": "$9.00", "section": "Slices" },
+      { "name": "Cheese Pizza", "description": "18 inch, cut into 8 slices. Toppings $3 each: pepperoni, sausage, meatballs, tomatoes, mushrooms, onions, green peppers, black olives, roasted red peppers, spinach, broccoli, artichokes, anchovies, basil, cherry peppers, ricotta, parmesan, pesto, eggplant, extra cheese", "price": "$20.00", "section": "Pizza" },
+      { "name": "Calzone", "description": "Mozzarella, parmesan, ricotta. Up to 4 fillings $1.50 each", "price": "$11.00", "section": "Calzones & Side Salad" },
+      { "name": "Side Salad", "description": "Spring mix, purple cabbage, carrots, cherry tomatoes, balsamic vinaigrette", "price": "$5.00", "section": "Calzones & Side Salad" },
+      { "name": "Bronx Deluxe", "description": "Pepperoni, sausage, onions, mushrooms, green peppers, black olives, garlic", "price": "$31.00", "section": "Specialty Pizzas" },
+      { "name": "Vegetarian", "description": "Tomatoes, mushrooms, onions, green peppers, black olives, garlic", "price": "$30.00", "section": "Specialty Pizzas" },
+      { "name": "Primavera", "description": "Spinach, roasted red peppers, mushrooms, broccoli", "price": "$30.00", "section": "Specialty Pizzas" },
+      { "name": "Porko", "description": "Pepperoni, sausage, meatball", "price": "$28.00", "section": "Specialty Pizzas" },
+      { "name": "Tomato Basil", "description": "Tomato, garlic, basil, parmesan. No sauce", "price": "$23.00", "section": "Specialty Pizzas" },
+      { "name": "Whitestone", "description": "Mozzarella, ricotta, garlic, parmesan. No sauce", "price": "$23.00", "section": "Specialty Pizzas" },
+      { "name": "Pesto", "description": "Mozzarella, parmesan, pesto. No sauce", "price": "$23.00", "section": "Specialty Pizzas" },
+      { "name": "Artichoke Case", "description": "Mozzarella, artichokes, parmesan, dollops of sauce", "price": "$22.00", "section": "Specialty Pizzas" },
+      { "name": "Fountain Drink", "description": "Coke, Diet Coke, Sprite, bottled water", "price": "$2.00", "section": "Drinks" }
+    ]
+  }
+]

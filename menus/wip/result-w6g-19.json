@@ -1,0 +1,82 @@
+[
+  {
+    "restaurantId": "7732",
+    "name": "chance's coffee",
+    "sourceUrl": "https://www.doordash.com/store/chance%27s-coffee-san-diego-38541631/",
+    "confidence": "medium",
+    "dishes": [],
+    "blocked": "DoorDash catalog (36 items, address-confirmed 2311 El Cajon Blvd) has scattered cent endings; divisor sweep shows 24/36 (67%) land on round/conventional prices when divided by 1.25 - a ~25% fee baked into the DoorDash price, not the wall price. Own site chancescoffee.com is Square Online (client-rendered, no prices in raw HTML, needs-browser). No fee-free priced source found."
+  },
+  {
+    "restaurantId": "7579",
+    "name": "Taqueria El Patron",
+    "sourceUrl": "https://www.doordash.com/business/taqueria-el-patron-804265/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "DoorDash listing exists (search snippet shows real prices: Manzana De Bote $1.95, Salad Bowl $12.50) but direct fetch of www.doordash.com returned no JSON-LD/menu data, and page-service.doordash.com/store/taqueria-el-patron-804265/ returned a completely mismatched Chinese-restaurant catalog (91 items, wrong cuisine) under the same slug - untrustworthy, not used. Own site is order.blogicsystems.com, an Angular client-rendered ordering widget with no prices in raw HTML. needs-browser."
+  },
+  {
+    "restaurantId": "8957",
+    "name": "GOLDEN DRAGON ASIAN CUISINE",
+    "sourceUrl": "https://www.ubereats.com/store/golden-dragon/PTaq7BgcWC617S0-1FifWg",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Uber Eats listing at the exact address (251 South Melrose Drive, Vista) mixes unrelated concepts under one storefront - Chinese entrees, boba drinks, AND $108-350 flower arrangements - too incoherent to trust as this restaurant's real menu. Own site goldendragonvista.com is a Square Online storefront (client-rendered, no prices without JS). beyondmenu.com has prices but is a rejected tier-5 aggregator, cannot file alone. Yelp and Mapquest say this location closed, but Mapquest only quotes Yelp (not independent) and the business's own domain has a live, functioning 'Order Online' - closure not confirmed independently. needs-browser / possible rebrand at this address."
+  },
+  {
+    "restaurantId": "7368",
+    "name": "Champs Korean Bbq",
+    "sourceUrl": "https://www.instagram.com/champskbbq/",
+    "confidence": "medium",
+    "dishes": [],
+    "blocked": "All-you-can-eat Korean BBQ with flat per-person pricing only (official Instagram: Lunch $24.99+ Mon-Fri/Sat/Sun, Dinner $29.99+; Yelp: 'Power Menu $38.99' tier). No itemized a la carte dish menu with individual prices found anywhere. Buffet-style core offering, no discoverable per-dish prices."
+  },
+  {
+    "restaurantId": "7892",
+    "name": "SINTA",
+    "sourceUrl": "https://www.sintaorchid.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Filipino bakery/cafe (Sinta Bakery). Own site is a Squarespace single-page ordering widget (/home, /cart only) with no prices in raw HTML - client-rendered. Instagram mentions isolated prices (matcha latte $6+$0.75 oat) but that is fewer than 5 priced items, not a menu. No marketplace listing (DoorDash/Uber Eats) found. needs-browser."
+  },
+  {
+    "restaurantId": "9864",
+    "name": "Shake Smart",
+    "sourceUrl": "https://shakesmart.com/menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Chain site's own /menu/ page lists item categories (shakes, bowls, coffee, sandwiches, oatmeal, wraps) with zero prices in the rendered HTML - prices are not published on the corporate site. Location is inside Camp Pendleton North (military base), a campus-style concession; self-ordering.shakesmart.com is a client-rendered per-location ordering app with no static price data. No location-specific priced source found."
+  },
+  {
+    "restaurantId": "11158",
+    "name": "Cleopatra's Lounge",
+    "sourceUrl": "https://cleopatrahookah2014.com/",
+    "confidence": "high",
+    "dishes": [],
+    "blocked": "Hookah lounge - own site's menu section lists only hookah tobacco flavors (Al Fakher, Starbuzz, Fumari) with no food items or prices at all. Bar/lounge serving no food."
+  },
+  {
+    "restaurantId": "10275",
+    "name": "SweetLife on 3rd",
+    "sourceUrl": "https://www.yelp.com/biz/sweet-life-chula-vista-2",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Ice cream shop/sundae bar (SweetLife Ice Cream Shop), open and active (Instagram/Facebook posts through 2026). No website found and no priced menu located on Yelp, Instagram, Facebook, or any delivery platform (DoorDash/Uber Eats searches surfaced only unrelated nearby restaurants) - flavors/items named but no prices published anywhere found."
+  },
+  {
+    "restaurantId": "7991",
+    "name": "Cristallo Cafe",
+    "sourceUrl": "https://www.instagram.com/cristallocafesd/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Coffee/cafe (coffee, matcha, chai, sandwiches, pastries, acai bowls), open and active. No website found; Yelp, Instagram, TikTok, joe.coffee all describe menu items and drinks by name but none publish prices; no delivery-platform listing found."
+  },
+  {
+    "restaurantId": "12185",
+    "name": "The Iconic Coffee Club",
+    "sourceUrl": "https://www.toasttab.com/local/the-iconic-coffee-club-2722-fifth-ave/r-a531736f-d834-406d-9802-fde1ec96a0f7",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Toast directory/local page has no menu items or prices in raw HTML (marketing page, not the order page). Yelp lists this location as closed, but Instagram (@theiconiccoffeeclub) shows recent, active posts advertising current menu combos, directly contradicting the Yelp closure claim - status unresolved, not independently confirmed closed. needs-browser for the actual Toast order page."
+  }
+]

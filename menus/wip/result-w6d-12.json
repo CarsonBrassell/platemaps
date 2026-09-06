@@ -1,0 +1,2088 @@
+[
+  {
+    "restaurantId": "8692",
+    "name": "Taste of Denmark",
+    "sourceUrl": "https://truetasteofdenmark.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site's only priced content is a rotating 'Food Gallery' photo carousel (9 photographed items across Dinner/Breakfast/Lunch/Drinks tabs, e.g. Soft-Boiled Organic $25.55, Curry Salad Soup $10.55, Tang Creamsicle Shake $12.55) - a curated sample, not the itemized menu. Yelp/OpenTable snippets reference a core 'Burgers & Hotdogs' section (Famous Danish Hot Dog, Grill Bar Burger) not present on the site at all; OpenTable itself would not load (connection timeout/blocked) to confirm those prices. Core section missing = partial, not complete."
+  },
+  {
+    "restaurantId": "4660",
+    "name": "La Rosa Giant Pizza",
+    "sourceUrl": "https://rosagiantpizza.netwaiter.com/chula-vista/about/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no priced source reachable. Address (1680 Broadway #G) matches Chula Vista's 'Rosa Giant Pizza', in San Diego County. Its NetWaiter storefront returns {Groups:[],ExternalType:null} (About-page only, no ordering). Not found on DoorDash/Grubhub/UberEats under this name. Only remaining sources are Yelp's menu tab (barred) and rosagiantpizza.restaurants-us.com (barred farm domain)."
+  },
+  {
+    "restaurantId": "9668",
+    "name": "Grove Steakhouse",
+    "sourceUrl": "https://viejas.com/wp-json/grove-menu/v1/menus",
+    "confidence": "high",
+    "notes": "First-party JSON API embedded on the restaurant's own site (viejas.com); the human-facing menu page (viejas.com/dining/grove-steakhouse/grove-steakhouse-menu/, aka /the-grove-menu/) is Elementor/JS-rendered with no prices in the HTML, but it calls this REST endpoint. Covers Brunch, Dinner, Drinks and Wine (Prix Fixe menu excluded - no per-item prices, it's a fixed 3-course price not published here). Dropped 6 items with no price ('market price' lobster/king crab, two unpriced AA Wagyu steaks, a sauce-choice line, an unpriced king crab add-on). Beer/wine glass-vs-bottle and size variants filed as separate priced rows.",
+    "dishes": [
+      {
+        "name": "Berry Fruit Parfait",
+        "description": "Seasonal Selection, Vanilla Yogurt, House Made Granola",
+        "price": "$12.00",
+        "section": "Brunch / APPETIZERS, SOUPS, SALADS"
+      },
+      {
+        "name": "Brown Sugar and Spice Glazed Pork Belly",
+        "description": "Jalapeño Slaw, Two-Berry Gastrique",
+        "price": "$18.00",
+        "section": "Brunch / APPETIZERS, SOUPS, SALADS"
+      },
+      {
+        "name": "Bacon-Wrapped Shrimp",
+        "description": "Jumbo Shrimp, Apple Wood Bacon, Ancho BBQ Glaze",
+        "price": "$30.00",
+        "section": "Brunch / APPETIZERS, SOUPS, SALADS"
+      },
+      {
+        "name": "Steamed Clams",
+        "description": "Lemon Herb Butter, White Wine, Garlic Bread",
+        "price": "$22.00",
+        "section": "Brunch / APPETIZERS, SOUPS, SALADS"
+      },
+      {
+        "name": "Burrata Alla Panna",
+        "description": "Fresh Burrata, Arugula, Heirloom Tomatoes, Prosciutto, Extra Virgin Olive Oil",
+        "price": "$18.00",
+        "section": "Brunch / APPETIZERS, SOUPS, SALADS"
+      },
+      {
+        "name": "Lobster Bisque",
+        "description": "Crème Fraîche, Herbs",
+        "price": "$15.00",
+        "section": "Brunch / APPETIZERS, SOUPS, SALADS"
+      },
+      {
+        "name": "French Onion Soup",
+        "description": "Vidalia Onions, Beef Broth, Gruyère Cheese",
+        "price": "$14.00",
+        "section": "Brunch / APPETIZERS, SOUPS, SALADS"
+      },
+      {
+        "name": "Cinnamon Roll French Toast",
+        "description": "Whipped Cream, Apple Maple Compote",
+        "price": "$15.00",
+        "section": "Brunch / BRUNCH SPECIALTIES"
+      },
+      {
+        "name": "King Crab Benedict",
+        "description": "Spinach, Poached Eggs, Butter Toasted English Muffin, Asparagus, Hollandaise Sauce",
+        "price": "$30.00",
+        "section": "Brunch / BRUNCH SPECIALTIES"
+      },
+      {
+        "name": "Farmer’s Breakfast",
+        "description": "Two Eggs Any Style, Breakfast Potatoes, Choice of Sausage or Applewood Smoked Bacon, Choice of Toast",
+        "price": "$17.00",
+        "section": "Brunch / BRUNCH SPECIALTIES"
+      },
+      {
+        "name": "The Grove Omelet",
+        "description": "Choice of Three Fillings: Spinach, Mushrooms, Bell Pepper, Onion, Tomato, Bacon, Sausage, Chorizo, Swiss, Cheddar, Choice of Toast",
+        "price": "$19.00",
+        "section": "Brunch / BRUNCH SPECIALTIES"
+      },
+      {
+        "name": "Steak & Eggs",
+        "description": "Grilled Beef Filet, Two Eggs Any Style, Breakfast Potatoes, Choice of Toast",
+        "price": "$30.00",
+        "section": "Brunch / BRUNCH SPECIALTIES"
+      },
+      {
+        "name": "Steak & Bacon-Wrapped Shrimp",
+        "description": "Filet Mignon, Bacon-Wrapped Shrimp, Ancho Glaze, Roasted Vegetables, Smashed Potatoes",
+        "price": "$55.00",
+        "section": "Brunch / BRUNCH SPECIALTIES"
+      },
+      {
+        "name": "Grilled Steak Sandwich",
+        "description": "Prime Beef Filet, Arugula, Roasted Tomato, Garlic Aioli, Caramelized Onion, Ciabatta Baguette",
+        "price": "$23.00",
+        "section": "Brunch / BURGERS & SANDWICHES"
+      },
+      {
+        "name": "Smoked Salmon & Everything Bagel",
+        "description": "Avocado, Heirloom Tomato, Cilantro Cream Cheese, Hard-Boiled Egg, Chives",
+        "price": "$19.00",
+        "section": "Brunch / BURGERS & SANDWICHES"
+      },
+      {
+        "name": "The Grove Burger",
+        "description": "Wagyu Beef Patty, Foie Gras Spread, White Cheddar, Onion Confit, Roasted Jalapeño, Tomato, Bibb Lettuce, Truffle Aioli, Brioche Bun",
+        "price": "$22.00",
+        "section": "Brunch / BURGERS & SANDWICHES"
+      },
+      {
+        "name": "Smoked Turkey Club",
+        "description": "Applewood Smoked Bacon, Gruyère, Ripe Tomato, Lettuce, Avocado, Truffle Aioli, Sourdough",
+        "price": "$16.00",
+        "section": "Brunch / BURGERS & SANDWICHES"
+      },
+      {
+        "name": "Fries",
+        "description": "",
+        "price": "$6.00",
+        "section": "Brunch / SIDE ORDERS"
+      },
+      {
+        "name": "Fresh Fruit",
+        "description": "",
+        "price": "$6.00",
+        "section": "Brunch / SIDE ORDERS"
+      },
+      {
+        "name": "Berries",
+        "description": "",
+        "price": "$8.00",
+        "section": "Brunch / SIDE ORDERS"
+      },
+      {
+        "name": "One Egg — Any Style",
+        "description": "",
+        "price": "$6.00",
+        "section": "Brunch / SIDE ORDERS"
+      },
+      {
+        "name": "Buttered Toast",
+        "description": "",
+        "price": "$4.00",
+        "section": "Brunch / SIDE ORDERS"
+      },
+      {
+        "name": "Applewood Smoked Bacon",
+        "description": "",
+        "price": "$6.00",
+        "section": "Brunch / SIDE ORDERS"
+      },
+      {
+        "name": "Sausage",
+        "description": "",
+        "price": "$6.00",
+        "section": "Brunch / SIDE ORDERS"
+      },
+      {
+        "name": "Breakfast Potatoes",
+        "description": "",
+        "price": "$6.00",
+        "section": "Brunch / SIDE ORDERS"
+      },
+      {
+        "name": "Warm “Brookie” A La Mode",
+        "description": "Brownie and Chocolate Chip Cookie, Coffee Ice Cream, Caramel",
+        "price": "$12.00",
+        "section": "Brunch / SWEETS"
+      },
+      {
+        "name": "Cookies and Cream Cheesecake",
+        "description": "Oreo Crumbs, Chocolate Sauce",
+        "price": "$12.00",
+        "section": "Brunch / SWEETS"
+      },
+      {
+        "name": "Strawberry Shortcake Mousse Cake",
+        "description": "Crème Anglaise, Chantilly Cream",
+        "price": "$12.00",
+        "section": "Brunch / SWEETS"
+      },
+      {
+        "name": "Chef Ileana’s Honey Pecan Sticky Bun",
+        "description": "For 2-3 Guests",
+        "price": "$16.00",
+        "section": "Brunch / SWEETS"
+      },
+      {
+        "name": "Maryland Crab Cakes",
+        "description": "Whole Grain Mustard Aioli, Corn Relish, Chive Oil",
+        "price": "$26.00",
+        "section": "Dinner / APPETIZERS"
+      },
+      {
+        "name": "Calamari",
+        "description": "Sweet Chili Glaze, Cherry Pepper Relish, Scallion",
+        "price": "$16.00",
+        "section": "Dinner / APPETIZERS"
+      },
+      {
+        "name": "Jumbo Shrimp Cocktail",
+        "description": "Cocktail Sauce, Horseradish, Fresh Lemon",
+        "price": "$29.00",
+        "section": "Dinner / APPETIZERS"
+      },
+      {
+        "name": "Oysters on the Half Shell",
+        "description": "Cocktail Sauce, Mignonette, Fresh Lemon",
+        "price": "$24.00",
+        "section": "Dinner / APPETIZERS"
+      },
+      {
+        "name": "Signature Seafood Tower",
+        "description": "Jumbo Shrimp, Seasonal Oysters, Crab Legs, Lobster Claws, Cocktail Sauce, Horseradish, Mignonette, Fresh Lemon",
+        "price": "$120.00",
+        "section": "Dinner / APPETIZERS"
+      },
+      {
+        "name": "Wagyu Meatballs",
+        "description": "Tomato Fondue, Shaved Manchego, Fresh Basil",
+        "price": "$23.00",
+        "section": "Dinner / APPETIZERS"
+      },
+      {
+        "name": "Pepper Glazed Bacon Steak",
+        "description": "Bourbon, Maple, Cracked Pepper, Sweet Mustard",
+        "price": "$18.00",
+        "section": "Dinner / APPETIZERS"
+      },
+      {
+        "name": "Oysters Rockefeller",
+        "description": "Creamed Spinach, Asiago, White Cheddar, Applewood Smoked Bacon Crumble, Mousseline",
+        "price": "$24.00",
+        "section": "Dinner / APPETIZERS"
+      },
+      {
+        "name": "Artisan Cheeses and Meats",
+        "description": "Marinated Olives, Roasted Peppers, Cornichons",
+        "price": "$42.00",
+        "section": "Dinner / APPETIZERS"
+      },
+      {
+        "name": "Lobster Bisque",
+        "description": "Sherry Crème",
+        "price": "$15.00",
+        "section": "Dinner / SOUPS & SALADS"
+      },
+      {
+        "name": "French Onion Soup",
+        "description": "Caramelized Vidalia Onions, Beef Broth, Gruyère Cheese Gratin",
+        "price": "$14.00",
+        "section": "Dinner / SOUPS & SALADS"
+      },
+      {
+        "name": "The Wedge",
+        "description": "Iceberg, Bacon Strip, Baby Heirloom Tomato, Pepitas, Maytag Blue Cheese Dressing",
+        "price": "$16.00",
+        "section": "Dinner / SOUPS & SALADS"
+      },
+      {
+        "name": "Caprese",
+        "description": "Burrata, Heirloom Tomato, Pesto, Arugula, Balsamic Drizzle",
+        "price": "$12.00",
+        "section": "Dinner / SOUPS & SALADS"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Baby Romaine, Parmesan, Garlic Croutons",
+        "price": "$12.00",
+        "section": "Dinner / SOUPS & SALADS"
+      },
+      {
+        "name": "Seasonal Grove Salad",
+        "description": "Romaine, Radicchio, Poached Pear, Pomegranate, Crumbled Gorgonzola, Bacon Vinaigrette",
+        "price": "$14.00",
+        "section": "Dinner / SOUPS & SALADS"
+      },
+      {
+        "name": "Greens & Beets",
+        "description": "Petite Lettuce, Gold and Rose Beets, Crushed Candied Pecans, Goat Cheese, Banyuls Vinaigrette",
+        "price": "$14.00",
+        "section": "Dinner / SOUPS & SALADS"
+      },
+      {
+        "name": "Seafood Linguine",
+        "description": "Clams, Fish, Prawns, Scallops, Creamy Garlic Sauce",
+        "price": "$38.00",
+        "section": "Dinner / SEAFOOD SELECTION"
+      },
+      {
+        "name": "Chilean Sea Bass",
+        "description": "Miso Glaze, Shiitake Mushrooms, Udon Noodles, Pickled Squash, Ponzu",
+        "price": "$53.00",
+        "section": "Dinner / SEAFOOD SELECTION"
+      },
+      {
+        "name": "Skuna Bay Salmon",
+        "description": "Melted Leeks, Fregola Pasta, Lemon Butter, Charred Cipollini",
+        "price": "$42.00",
+        "section": "Dinner / SEAFOOD SELECTION"
+      },
+      {
+        "name": "Atlantic Sea Scallops",
+        "description": "Celery Root Purée, Pancetta, Seasonal Mushrooms, Romesco Sauce, Fish Roe",
+        "price": "$52.00",
+        "section": "Dinner / SEAFOOD SELECTION"
+      },
+      {
+        "name": "Branzino Meuniere",
+        "description": "Preserved Lemon, Brown Butter, Fried Capers, Parsley, Heirloom Tomato, Asparagus",
+        "price": "$48.00",
+        "section": "Dinner / SEAFOOD SELECTION"
+      },
+      {
+        "name": "Porterhouse Steak 22Oz",
+        "description": "",
+        "price": "$85.00",
+        "section": "Dinner / USDA PRIME STEAKS"
+      },
+      {
+        "name": "Bone-In Ribeye 18Oz",
+        "description": "",
+        "price": "$80.00",
+        "section": "Dinner / USDA PRIME STEAKS"
+      },
+      {
+        "name": "Ribeye Cap Steak 10Oz",
+        "description": "",
+        "price": "$55.00",
+        "section": "Dinner / USDA PRIME STEAKS"
+      },
+      {
+        "name": "New York Steak 14Oz",
+        "description": "",
+        "price": "$51.00",
+        "section": "Dinner / USDA PRIME STEAKS"
+      },
+      {
+        "name": "Filet Mignon 10Oz",
+        "description": "",
+        "price": "$58.00",
+        "section": "Dinner / USDA PRIME STEAKS"
+      },
+      {
+        "name": "Petit Filet Mignon 8Oz",
+        "description": "",
+        "price": "$52.00",
+        "section": "Dinner / USDA PRIME STEAKS"
+      },
+      {
+        "name": "Lobster Tail",
+        "description": "White Wine Saffron Butter",
+        "price": "$48.00",
+        "section": "Dinner / GROVE STEAK ADDITIONS"
+      },
+      {
+        "name": "Jumbo Shrimp",
+        "description": "White Wine Saffron Butter",
+        "price": "$35.00",
+        "section": "Dinner / GROVE STEAK ADDITIONS"
+      },
+      {
+        "name": "Seared Atlantic Sea Scallops",
+        "description": "",
+        "price": "$35.00",
+        "section": "Dinner / GROVE STEAK ADDITIONS"
+      },
+      {
+        "name": "“Oscar Style” Crab & Asparagus",
+        "description": "",
+        "price": "$18.00",
+        "section": "Dinner / GROVE STEAK ADDITIONS"
+      },
+      {
+        "name": "Mary’s Farm Organic Chicken",
+        "description": "Pancetta, Sun-Dried Tomato, Thyme, Natural Jus, Leek Fondue, Crispy Leeks, Oyster Mushrooms",
+        "price": "$52.00",
+        "section": "Dinner / GROVE ENTREES"
+      },
+      {
+        "name": "Berkshire Pork Chop",
+        "description": "Apple Jack Brandy, Pommery Mustard, Roasted Applesauce, Charred Brocollini, Carrot",
+        "price": "$58.00",
+        "section": "Dinner / GROVE ENTREES"
+      },
+      {
+        "name": "Rack of Lamb Pistachio Crust",
+        "description": "Violet Mustard, Herb Jus Lie, Roasted Carrots, Baby Turnips, Fondant Potato",
+        "price": "$58.00",
+        "section": "Dinner / GROVE ENTREES"
+      },
+      {
+        "name": "Grilled Bison Ribeye",
+        "description": "Carrots, Sweet Potato Purée, Trumpet Mushroom, Cherry Chutney, Rapini",
+        "price": "$52.00",
+        "section": "Dinner / GROVE ENTREES"
+      },
+      {
+        "name": "Roasted Mushroom Pappardelle",
+        "description": "Cremini, Shiitake, Oyster, Portobello Mushrooms, Shallot, Thyme Cognac, White Wine, Truffle Oil, Pine Nuts, Sundried Tomato",
+        "price": "$36.00",
+        "section": "Dinner / GROVE ENTREES"
+      },
+      {
+        "name": "Glazed Brussels Sprouts",
+        "description": "Shallot, Fresno Chile, Pancetta, Honey, Balsamic",
+        "price": "$12.00",
+        "section": "Dinner / STEAKHOUSE SIDES"
+      },
+      {
+        "name": "Wild Mushrooms",
+        "description": "Sherry Butter Sauce",
+        "price": "$12.00",
+        "section": "Dinner / STEAKHOUSE SIDES"
+      },
+      {
+        "name": "Maine Lobster Mac ‘N’ Cheese",
+        "description": "Lobster, Bechamel, Asiago, White Cheddar, Mozzarella, Toasted Crumbs",
+        "price": "$10.00",
+        "section": "Dinner / STEAKHOUSE SIDES"
+      },
+      {
+        "name": "Whipped Potatoes",
+        "description": "Roasted Garlic or Fine Herb",
+        "price": "$10.00",
+        "section": "Dinner / STEAKHOUSE SIDES"
+      },
+      {
+        "name": "Sweet Creamed Corn",
+        "description": "",
+        "price": "$10.00",
+        "section": "Dinner / STEAKHOUSE SIDES"
+      },
+      {
+        "name": "Au Gratin Potatoes",
+        "description": "",
+        "price": "$12.00",
+        "section": "Dinner / STEAKHOUSE SIDES"
+      },
+      {
+        "name": "Grilled Asparagus",
+        "description": "Pecorino",
+        "price": "$13.00",
+        "section": "Dinner / STEAKHOUSE SIDES"
+      },
+      {
+        "name": "Brocollini Poloniase",
+        "description": "Garlic, Lemon, Hard Cooked Egg, Toasted Crumb, Parsley",
+        "price": "$10.00",
+        "section": "Dinner / STEAKHOUSE SIDES"
+      },
+      {
+        "name": "Bud Light (16 oz)",
+        "description": "American-Style Light Lager, 4.2% • St. Louis, MO",
+        "price": "$5.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Bud Light (24 oz)",
+        "description": "American-Style Light Lager, 4.2% • St. Louis, MO",
+        "price": "$7.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "BNS Brewery — Viejas Blonde Ale (16 oz)",
+        "description": "4.8% • San Diego, CA",
+        "price": "$5.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "BNS Brewery — Viejas Blonde Ale (24 oz)",
+        "description": "4.8% • San Diego, CA",
+        "price": "$7.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Modelo Especial (16 oz)",
+        "description": "American Lager Style, 4.5% • Mexico",
+        "price": "$6.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Modelo Especial (24 oz)",
+        "description": "American Lager Style, 4.5% • Mexico",
+        "price": "$8.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Stella Artois (16 oz)",
+        "description": "European Pale Lager, 5.2% • Leuven, Belgium",
+        "price": "$6.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Stella Artois (24 oz)",
+        "description": "European Pale Lager, 5.2% • Leuven, Belgium",
+        "price": "$8.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Red Trolley (16 oz)",
+        "description": "Irish Style Red Ale, 5.8% • San Diego, CA",
+        "price": "$7.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Red Trolley (24 oz)",
+        "description": "Irish Style Red Ale, 5.8% • San Diego, CA",
+        "price": "$10.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Coors Light (16 oz)",
+        "description": "American-Style Light Lager, 4.2% • Golden, CO",
+        "price": "$5.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Coors Light (24 oz)",
+        "description": "American-Style Light Lager, 4.2% • Golden, CO",
+        "price": "$7.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "BNS Brewery — Viejas V-IPA (16 oz)",
+        "description": "6.3% • San Diego, CA",
+        "price": "$6.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "BNS Brewery — Viejas V-IPA (24 oz)",
+        "description": "6.3% • San Diego, CA",
+        "price": "$8.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Firestone Walker 805 (16 oz)",
+        "description": "American Blonde Ale, 6% • Paso Robles, CA",
+        "price": "$7.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Firestone Walker 805 (24 oz)",
+        "description": "American Blonde Ale, 6% • Paso Robles, CA",
+        "price": "$9.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Blue Moon (16 oz)",
+        "description": "Belgian Witbier, 5.2% • Montreal",
+        "price": "$7.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Blue Moon (24 oz)",
+        "description": "Belgian Witbier, 5.2% • Montreal",
+        "price": "$9.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Stone Delicious (16 oz)",
+        "description": "American IPA, 7.7% • San Diego, CA",
+        "price": "$7.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Stone Delicious (24 oz)",
+        "description": "American IPA, 7.7% • San Diego, CA",
+        "price": "$10.00",
+        "section": "Drinks / Draft Beers"
+      },
+      {
+        "name": "Imported Beer",
+        "description": "Amstel Light, Corona, Corona Light, Heineken, New Castle, Pacifico, XX Lager Especial, Angry Orchard, Modelo Especial, Modelo Negra, New Belgium Trippel, New Belgium 1554",
+        "price": "$6.00",
+        "section": "Drinks / Bottled Beers"
+      },
+      {
+        "name": "Domestic Beer",
+        "description": "Bud Light, Coors Light, Michelob Ultra, Miller Lite, Miller Genuine Draft, Budweiser, Coors Original, Sam Adams Boston Lager, O’Doul’s",
+        "price": "$5.00",
+        "section": "Drinks / Bottled Beers"
+      },
+      {
+        "name": "Bermuda Tide",
+        "description": "Bacardi Superior Rum, Captain Morgan Rum, Ron Zacapa Rum, Cointreau, Coco Lopez, Pineapple Juice, Orgeat",
+        "price": "$13.00",
+        "section": "Drinks / LIBATIONS"
+      },
+      {
+        "name": "The Prestige",
+        "description": "Viejas Makers Mark Private Selection Bourbon, Carpano Antica, Cynar Apéritif, Aperol",
+        "price": "$12.00",
+        "section": "Drinks / LIBATIONS"
+      },
+      {
+        "name": "William Tell",
+        "description": "Bulleit Rye, Laird’s Apple Brandy, Lime Juice, Green Chartreuse, Mint",
+        "price": "$12.00",
+        "section": "Drinks / LIBATIONS"
+      },
+      {
+        "name": "Illuminati",
+        "description": "Viejas Barrel Select Patron Reposado, Fresh Lemon Juice, Agave Nectar, Green Chartreuse, Cynar Aperitif, Lemon Zest, Mescal Rinse",
+        "price": "$11.00",
+        "section": "Drinks / LIBATIONS"
+      },
+      {
+        "name": "Viejas Signature Margarita",
+        "description": "Viejas Barrel Select Patron Reposado, Cointreau Orange Liqueur, Fresh Lemon & Lime Juice, Agave Nectar",
+        "price": "$11.00",
+        "section": "Drinks / LIBATIONS"
+      },
+      {
+        "name": "Letter to Venus",
+        "description": "Tito’s Handmade Vodka, Fresh Lemon Juice, Chambord, Simple Syrup, Barrel Aged Raspberry Vinegar",
+        "price": "$11.00",
+        "section": "Drinks / LIBATIONS"
+      },
+      {
+        "name": "Viejas Bloody Mary",
+        "description": "Ketel One Vodka, Cutwater Spirits Mild Bloody Mary Mix, Celery Stalk, Pepper Jack Cheese, Salami, Olive and Pickle Spear",
+        "price": "$11.00",
+        "section": "Drinks / LIBATIONS"
+      },
+      {
+        "name": "Johnnie Walker Blue Label",
+        "description": "",
+        "price": "$35.00",
+        "section": "Drinks / WHISKEY & BOURBON"
+      },
+      {
+        "name": "Bulleit",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / WHISKEY & BOURBON"
+      },
+      {
+        "name": "Glenfiddich",
+        "description": "",
+        "price": "$10.00",
+        "section": "Drinks / WHISKEY & BOURBON"
+      },
+      {
+        "name": "Bulleit Rye",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / WHISKEY & BOURBON"
+      },
+      {
+        "name": "Macallan 12 Year",
+        "description": "",
+        "price": "$13.00",
+        "section": "Drinks / WHISKEY & BOURBON"
+      },
+      {
+        "name": "Woodford Reserve",
+        "description": "",
+        "price": "$12.00",
+        "section": "Drinks / WHISKEY & BOURBON"
+      },
+      {
+        "name": "Jack Daniels",
+        "description": "",
+        "price": "$10.00",
+        "section": "Drinks / WHISKEY & BOURBON"
+      },
+      {
+        "name": "Maker’s Mark",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / WHISKEY & BOURBON"
+      },
+      {
+        "name": "Knob Creek",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / WHISKEY & BOURBON"
+      },
+      {
+        "name": "Grey Goose",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / VODKA"
+      },
+      {
+        "name": "Ketel One",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / VODKA"
+      },
+      {
+        "name": "Tito’s Handmade",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / VODKA"
+      },
+      {
+        "name": "Absolut",
+        "description": "",
+        "price": "$10.00",
+        "section": "Drinks / VODKA"
+      },
+      {
+        "name": "Bacardi Superior",
+        "description": "",
+        "price": "$10.00",
+        "section": "Drinks / RUM"
+      },
+      {
+        "name": "Captain Morgan",
+        "description": "",
+        "price": "$10.00",
+        "section": "Drinks / RUM"
+      },
+      {
+        "name": "Sailor Jerry",
+        "description": "",
+        "price": "$10.00",
+        "section": "Drinks / RUM"
+      },
+      {
+        "name": "Myer’s Original Dark",
+        "description": "",
+        "price": "$10.00",
+        "section": "Drinks / RUM"
+      },
+      {
+        "name": "1800 Reposado",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / TEQUILA"
+      },
+      {
+        "name": "Casamigos Añejo",
+        "description": "",
+        "price": "$14.00",
+        "section": "Drinks / TEQUILA"
+      },
+      {
+        "name": "Don Julio 1942",
+        "description": "",
+        "price": "$30.00",
+        "section": "Drinks / TEQUILA"
+      },
+      {
+        "name": "Casamigos Blanco",
+        "description": "",
+        "price": "$10.00",
+        "section": "Drinks / TEQUILA"
+      },
+      {
+        "name": "Herradura Reposado",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / TEQUILA"
+      },
+      {
+        "name": "Don Julio Blanco",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / TEQUILA"
+      },
+      {
+        "name": "Patron Barrel Select Reposado",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / TEQUILA"
+      },
+      {
+        "name": "Patron Silver",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / TEQUILA"
+      },
+      {
+        "name": "Tanqueray",
+        "description": "",
+        "price": "$10.00",
+        "section": "Drinks / GIN"
+      },
+      {
+        "name": "Bombay Sapphire",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / GIN"
+      },
+      {
+        "name": "Hendrick’s",
+        "description": "",
+        "price": "$11.00",
+        "section": "Drinks / GIN"
+      },
+      {
+        "name": "Armand de Brignac Ace of Spades Brut",
+        "description": "France · Ripe White Cherry, Whole Grain Toast, Vanilla, Spun Honey",
+        "price": "$675.00",
+        "section": "Wine / Champagne"
+      },
+      {
+        "name": "Beau Joie Brut",
+        "description": "France NV · Pastry, Yellow Stone Fruit",
+        "price": "$225.00",
+        "section": "Wine / Champagne"
+      },
+      {
+        "name": "Bollinger \"Special Cuvee\"",
+        "description": "France NV · Pear, Lemon Curd, Brioche, Fresh Walnut",
+        "price": "$156.00",
+        "section": "Wine / Champagne"
+      },
+      {
+        "name": "Bruno Paillard Brut Rose Prem Cuvee",
+        "description": "France NV · Citrus, Almonds, Brioche, Redcurrant Jelly, Fig",
+        "price": "$204.00",
+        "section": "Wine / Champagne"
+      },
+      {
+        "name": "Dom Pérignon",
+        "description": "France 2013 · Light Pineapple, Peach, Praline, Cooked Apple, Tropical Fruit",
+        "price": "$675.00",
+        "section": "Wine / Champagne"
+      },
+      {
+        "name": "Dom Pérignon Brut Rose Luminous",
+        "description": "France 2005 · Red Currant, Wild Strawberries, Blood Orange, Cocoa",
+        "price": "$1231.00",
+        "section": "Wine / Champagne"
+      },
+      {
+        "name": "Louis Roederer Brut \"Premier\"",
+        "description": "France NV · Lemon Meringue, Apple, Citrus, Zesty Orange",
+        "price": "$210.00",
+        "section": "Wine / Champagne"
+      },
+      {
+        "name": "Louis Roederer Cristal Brut",
+        "description": "France 2007 · Poached Apple, Gingersnap Biscuit, Pastry Cream, Spun Honey",
+        "price": "$837.00",
+        "section": "Wine / Champagne"
+      },
+      {
+        "name": "Moët && Chandon Brut Impérial",
+        "description": "France NV · Citrus Fruit, Mineral, Brioche",
+        "price": "$136.00",
+        "section": "Wine / Champagne"
+      },
+      {
+        "name": "Ruinart Blanc de Blancs",
+        "description": "France NV · Clean, Brioche, Honey",
+        "price": "$266.00",
+        "section": "Wine / Champagne"
+      },
+      {
+        "name": "Veuve Clicquot La Grand Dame",
+        "description": "France 2015 · White Fruit, Black Currant",
+        "price": "$450.00",
+        "section": "Wine / Champagne"
+      },
+      {
+        "name": "Veuve Clicquot Yellow Label",
+        "description": "France NV · Blackberry, Honey",
+        "price": "$169.00",
+        "section": "Wine / Champagne"
+      },
+      {
+        "name": "Caposaldo Prosecco (Glass)",
+        "description": "Italy NV · Ripe Peaches, Green Apple, Flowers",
+        "price": "$9.00",
+        "section": "Wine / Sparkling Wine"
+      },
+      {
+        "name": "Caposaldo Prosecco (Bottle)",
+        "description": "Italy NV · Ripe Peaches, Green Apple, Flowers",
+        "price": "$36.00",
+        "section": "Wine / Sparkling Wine"
+      },
+      {
+        "name": "Roederer Estate Brut",
+        "description": "Anderson Valley NV· Asian Pear, Strawberry Blossom, Roasted Hazelnut",
+        "price": "$59.00",
+        "section": "Wine / Sparkling Wine"
+      },
+      {
+        "name": "Schramsberg Brut Rose",
+        "description": "Napa 2018 · Green Apple, Candied Citrus, Grapefruit",
+        "price": "$96.00",
+        "section": "Wine / Sparkling Wine"
+      },
+      {
+        "name": "Schramsberg Blanc de Blancs",
+        "description": "Napa 2020 · Green Apple, Candied Citrus, Apricot, Pineapple",
+        "price": "$85.00",
+        "section": "Wine / Sparkling Wine"
+      },
+      {
+        "name": "Ferrari-Carano Fumé Blanc (Glass)",
+        "description": "Sonoma 2023 · Pink Grapefruit, Pineapple, Lemon Grass, Mineral",
+        "price": "$10.00",
+        "section": "Wine / Sauvignon Blanc"
+      },
+      {
+        "name": "Ferrari-Carano Fumé Blanc (Bottle)",
+        "description": "Sonoma 2023 · Pink Grapefruit, Pineapple, Lemon Grass, Mineral",
+        "price": "$40.00",
+        "section": "Wine / Sauvignon Blanc"
+      },
+      {
+        "name": "Ladoucette Pouilly-Fume",
+        "description": "France 2019 · Stony Minerals, Lemon, Citrus Fruits",
+        "price": "$105.00",
+        "section": "Wine / Sauvignon Blanc"
+      },
+      {
+        "name": "Benvolio (Glass)",
+        "description": "Friuli-Venezia Giulia, Italy 2022 · Apple, Pear",
+        "price": "$8.00",
+        "section": "Wine / PINOT GRIGIO/PINOT GRIS"
+      },
+      {
+        "name": "Benvolio (Bottle)",
+        "description": "Friuli-Venezia Giulia, Italy 2022 · Apple, Pear",
+        "price": "$32.00",
+        "section": "Wine / PINOT GRIGIO/PINOT GRIS"
+      },
+      {
+        "name": "King Estate",
+        "description": "Eugene, Oregon 2021 · White Peach, Tangerine Peel, Meyer Lemon, Fresh Pear",
+        "price": "$59.00",
+        "section": "Wine / PINOT GRIGIO/PINOT GRIS"
+      },
+      {
+        "name": "August Kesseler",
+        "description": "Palatinate, Germany 2022 · Ripe Fruits, Aromatic Apples, Peaches",
+        "price": "$36.00",
+        "section": "Wine / Riesling"
+      },
+      {
+        "name": "Duckhorn (Glass)",
+        "description": "Napa Valley 2022 · Apple, Peach, Creamy Lemon Curd, Hazelnut",
+        "price": "$20.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Duckhorn (Bottle)",
+        "description": "Napa Valley 2022 · Apple, Peach, Creamy Lemon Curd, Hazelnut",
+        "price": "$76.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Mer Soleil Reserve (Glass)",
+        "description": "Monterey, California 2022 · Meyer Lemon, Apricot, Apple, Pear, Honeysuckle, Vanilla, Baking Spice, Toasted Almond",
+        "price": "$11.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Mer Soleil Reserve (Bottle)",
+        "description": "Monterey, California 2022 · Meyer Lemon, Apricot, Apple, Pear, Honeysuckle, Vanilla, Baking Spice, Toasted Almond",
+        "price": "$41.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Niner (Glass)",
+        "description": "Edna Valley 2021 · Orange Blossom, Crisp Pear, Clove Studded Marmalade, Toasty Brioche, Notes of Vanilla",
+        "price": "$24.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Niner (Bottle)",
+        "description": "Edna Valley 2021 · Orange Blossom, Crisp Pear, Clove Studded Marmalade, Toasty Brioche, Notes of Vanilla",
+        "price": "$95.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Cakebread",
+        "description": "Napa Valley 2019 · Yellow Apple, Nectarine, Honeydew Melon, Mineral and Spicy Oak",
+        "price": "$93.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Carmel Road",
+        "description": "Unoaked, Monterey 2018 · Nectarine, Guava, Butter Cream",
+        "price": "$42.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Ferrari Carano Tre Terre",
+        "description": "Sonoma 2018 · Meyer Lemon, Pear, Apple, Brown Sugar, Spice, Maple, Acidity",
+        "price": "$51.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Folie a Deux",
+        "description": "Russian River Valley 2016 · Ripe Vanilla, Mandarin, Toasted Marshmallow, Butterscotch, Banana, Citrus Blossom",
+        "price": "$36.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Jordan",
+        "description": "Russian River Valley 2019 · Lemon Zest, Green Apple, Stone Fruit",
+        "price": "$136.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Newton Unfiltered",
+        "description": "Napa Valley 2021 · Lemon Curd, Marzipan, White Peach",
+        "price": "$129.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Rochioli Estate Chardonnay",
+        "description": "Russian River Valley 2022 · Rich Apple Flavors, Crisp Acidity",
+        "price": "$132.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Sequoia Grove",
+        "description": "Napa Valley 2022 · Lemon Zest, Custard, Honeysuckle, Pound Cake, Coconut, Cashew",
+        "price": "$71.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "The Fableist Chardonnay",
+        "description": "Central Coast, California 2021 · Honeydew Melon, Cantaloupe, Orange Zest, Creme Zest, Creme Fraiche, Lemon Meringue",
+        "price": "$34.00",
+        "section": "Wine / Chardonnay"
+      },
+      {
+        "name": "Imagery (Glass)",
+        "description": "California 2022 · Jammy Strawberry, Cherry, Boysen Berry",
+        "price": "$11.00",
+        "section": "Wine / Pinot Noir"
+      },
+      {
+        "name": "Imagery (Bottle)",
+        "description": "California 2022 · Jammy Strawberry, Cherry, Boysen Berry",
+        "price": "$40.00",
+        "section": "Wine / Pinot Noir"
+      },
+      {
+        "name": "La Crema (Glass)",
+        "description": "Sonoma Coast 2022 · Wild Strawberry, Red Plum, Rose Petals, Baking Spice",
+        "price": "$14.00",
+        "section": "Wine / Pinot Noir"
+      },
+      {
+        "name": "La Crema (Bottle)",
+        "description": "Sonoma Coast 2022 · Wild Strawberry, Red Plum, Rose Petals, Baking Spice",
+        "price": "$51.00",
+        "section": "Wine / Pinot Noir"
+      },
+      {
+        "name": "Niner (Glass)",
+        "description": "Edna Valley 2021 · Dried Cherry, Hibiscus Flavors, Mace, Sumac and Chai Spices, Lavender, Mint",
+        "price": "$27.00",
+        "section": "Wine / Pinot Noir"
+      },
+      {
+        "name": "Niner (Bottle)",
+        "description": "Edna Valley 2021 · Dried Cherry, Hibiscus Flavors, Mace, Sumac and Chai Spices, Lavender, Mint",
+        "price": "$105.00",
+        "section": "Wine / Pinot Noir"
+      },
+      {
+        "name": "Belle Glos Clark && Telephone Vineyard",
+        "description": "Santa Maria Valley 2022 · Blackberry, Mocha, Black Tea",
+        "price": "$105.00",
+        "section": "Wine / Pinot Noir"
+      },
+      {
+        "name": "Benton-Lane",
+        "description": "Willamette Valley, Oregon 2022 · Cherry, Blueberry, Dried Cranberry, Earthy Plum",
+        "price": "$54.00",
+        "section": "Wine / Pinot Noir"
+      },
+      {
+        "name": "Brewer Clifton",
+        "description": "Sta. Rita Hills, California 2021 · Dried Fig, White Truffle, Ripe Cherry",
+        "price": "$96.00",
+        "section": "Wine / Pinot Noir"
+      },
+      {
+        "name": "Copain",
+        "description": "Les Voisins, Anderson Valley 2018 · Raspberry Compote, Red Currants, Vanilla",
+        "price": "$90.00",
+        "section": "Wine / Pinot Noir"
+      },
+      {
+        "name": "Martin Ray Synthesis Estate",
+        "description": "Russian River 2022 · Underripe Raspberry, Sweet Morello Cherry, Savory Cedar",
+        "price": "$68.00",
+        "section": "Wine / Pinot Noir"
+      },
+      {
+        "name": "Ponzi Reserve",
+        "description": "Willamette Valley, Oregon 2021 · Salted Caramel, Black Tea, Strawberry, Balsamic Notes",
+        "price": "$150.00",
+        "section": "Wine / Pinot Noir"
+      },
+      {
+        "name": "Rochioli Estate",
+        "description": "Russian River Valley 2020 · Silky Tannins, Dusty Cherry, Wild Berry",
+        "price": "$195.00",
+        "section": "Wine / Pinot Noir"
+      },
+      {
+        "name": "Matanzas Creek Merlot (Glass)",
+        "description": "Sonoma 2021 · Red Fruit, Savory Bacon, Toasted Hazelnut, Rubbed Sage, Coffee, Bay Leaf",
+        "price": "$23.00",
+        "section": "Wine / Merlot"
+      },
+      {
+        "name": "Matanzas Creek Merlot (Bottle)",
+        "description": "Sonoma 2021 · Red Fruit, Savory Bacon, Toasted Hazelnut, Rubbed Sage, Coffee, Bay Leaf",
+        "price": "$90.00",
+        "section": "Wine / Merlot"
+      },
+      {
+        "name": "Cakebread Merlot",
+        "description": "Napa Valley 2021 · Dark Cherry, Plum, Black Tea, Oak, Chocolate",
+        "price": "$144.00",
+        "section": "Wine / Merlot"
+      },
+      {
+        "name": "Duckhorn",
+        "description": "Napa Valley 2021 · Ripe Plum, Blueberry, Licorice, Baking Spice",
+        "price": "$116.00",
+        "section": "Wine / Merlot"
+      },
+      {
+        "name": "Justin (Glass)",
+        "description": "Paso Robles Central Coast 2021 · Blackcurrant, Ripe Red & Black Cherry, Vanilla, Toasty Oaks, Cinnamon Spice",
+        "price": "$20.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Justin (Bottle)",
+        "description": "Paso Robles Central Coast 2021 · Blackcurrant, Ripe Red & Black Cherry, Vanilla, Toasty Oaks, Cinnamon Spice",
+        "price": "$78.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Martin Ray (Glass)",
+        "description": "Napa Valley 2022 · Chocolate-Covered Cherry, Cassis, Blueberry, Toasted Walnut",
+        "price": "$19.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Martin Ray (Bottle)",
+        "description": "Napa Valley 2022 · Chocolate-Covered Cherry, Cassis, Blueberry, Toasted Walnut",
+        "price": "$75.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Niner (Glass)",
+        "description": "Paso Robles 2020 · Dark Chocolate and Cherry Flavors, Powdery Tannins and Juicy Acidity",
+        "price": "$15.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Niner (Bottle)",
+        "description": "Paso Robles 2020 · Dark Chocolate and Cherry Flavors, Powdery Tannins and Juicy Acidity",
+        "price": "$60.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Cakebread",
+        "description": "Napa Valley 2021 · Ripe Blackberry, Boysenberry, Dark Chocolate, Oak, Earthy",
+        "price": "$171.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Caymus",
+        "description": "Napa Valley 2022 · Cocoa, Cassis, Ripe Dark Berries, Licorice",
+        "price": "$180.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Chateau Montelena Estate",
+        "description": "Napa Valley 2019 · Strawberry, Rhubarb and Vanilla",
+        "price": "$450.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Daou Soul of a Lion",
+        "description": "Paso Robles 2016 · Vanilla Bean, Toasted Spice, Licorice",
+        "price": "$315.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Duckhorn",
+        "description": "Napa Valley 2021 · Boysenberry, Black Currant, Oak, Savory Spices",
+        "price": "$130.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Faust",
+        "description": "Napa Valley 2022 · Blackberry, Black cherry, Plum",
+        "price": "$105.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Freemark Abbey",
+        "description": "Napa Valley 2016 · Blackberry, Boysenberry, Bing Cherry, Dark Chocolate",
+        "price": "$360.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Hess",
+        "description": "North Coast 2022 · Cherry, Raspberry, Anise, Black Pepper, Spice and Cedar",
+        "price": "$42.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Kenwood Jack London",
+        "description": "Sonoma 2018 · Black Cherry, Vanilla, Cocoa Nibs, Mint",
+        "price": "$54.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Mondavi Oakville",
+        "description": "Napa Valley 2019 · Blackberry, Cassis, Bittersweet Chocolate, Oak, Spice",
+        "price": "$165.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Neyers",
+        "description": "Napa Valley 2017 · Creamed Plum, Acai Berry Fruit, Graphite",
+        "price": "$130.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Sequoia Grove",
+        "description": "Napa Valley 2021 · Blackberry, Toasted Vanilla, Chocolate, Sweet Baking Spices",
+        "price": "$111.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Silver Oak",
+        "description": "Alexander Valley 2019 · Toasted Vanilla, Roasted Brown Sugar, Ripe Red & Black Fruits",
+        "price": "$180.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Silver Oak",
+        "description": "Napa Valley 2019 · Sage, Blackberry",
+        "price": "$240.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Silverado Solo",
+        "description": "Stags Leap District, Napa Valley 2018 · Licorice, Cassis, Spices",
+        "price": "$255.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Stag's Leap",
+        "description": "Napa Valley 2021 · Dark Chocolate, Plum, Dried Fruit, Toasted Oak",
+        "price": "$150.00",
+        "section": "Wine / Cabernet Sauvignon"
+      },
+      {
+        "name": "Cline Cellars (Glass)",
+        "description": "Ancient Vines, Central Coast 2022 · Dark Berries, Coffee, Chocolate, Vanilla Oak",
+        "price": "$37.00",
+        "section": "Wine / Zinfandel"
+      },
+      {
+        "name": "Cline Cellars (Bottle)",
+        "description": "Ancient Vines, Central Coast 2022 · Dark Berries, Coffee, Chocolate, Vanilla Oak",
+        "price": "$144.00",
+        "section": "Wine / Zinfandel"
+      },
+      {
+        "name": "Cambria Syrah (Glass)",
+        "description": "Santa Maria Valley 2021 · Dark Berry Fruit, Mocha",
+        "price": "$13.00",
+        "section": "Wine / Full Bodied Reds"
+      },
+      {
+        "name": "Cambria Syrah (Bottle)",
+        "description": "Santa Maria Valley 2021 · Dark Berry Fruit, Mocha",
+        "price": "$50.00",
+        "section": "Wine / Full Bodied Reds"
+      },
+      {
+        "name": "Niner \"Fog Catcher\"",
+        "description": "Paso Robles 2020 · Licorice, Graphite, Vanilla Bean, Toasted Bread & Spice, Jammy Blackberry Fruits",
+        "price": "$282.00",
+        "section": "Wine / Full Bodied Reds"
+      },
+      {
+        "name": "Tablas Creek Côtes De Tablas",
+        "description": "Paso Robles 2022 · Rich Fruit, Mineral",
+        "price": "$84.00",
+        "section": "Wine / Full Bodied Reds"
+      },
+      {
+        "name": "Tenute Silvio Nardi Brunello di Montalcino",
+        "description": "Tuscany, Italy 2018 · Black Cherry, Plum, Tart Red Fruit, Spice",
+        "price": "$177.00",
+        "section": "Wine / Full Bodied Reds"
+      },
+      {
+        "name": "Niner Bootjack Red (Glass)",
+        "description": "Paso Robles 2019 · Vanilla, Black Fruits, Oaky Notes",
+        "price": "$24.00",
+        "section": "Wine / Meritage/Blends"
+      },
+      {
+        "name": "Niner Bootjack Red (Bottle)",
+        "description": "Paso Robles 2019 · Vanilla, Black Fruits, Oaky Notes",
+        "price": "$93.00",
+        "section": "Wine / Meritage/Blends"
+      },
+      {
+        "name": "Beaulieu Vineyard Tapestry Reserve",
+        "description": "Napa Valley 2020 · Red Cherries, Dried Currants, Toasty Oak",
+        "price": "$126.00",
+        "section": "Wine / Meritage/Blends"
+      },
+      {
+        "name": "Joseph Phelps Insignia",
+        "description": "Napa Valley 2020 · Black Fruit, Mocha, Cardamom, Madagascar Vanilla",
+        "price": "$822.00",
+        "section": "Wine / Meritage/Blends"
+      },
+      {
+        "name": "Leviathan Red Blend",
+        "description": "California 2019 · Black Cherry, Blackberry, Currant, Cocoa Nib, Spice, Cigar",
+        "price": "$75.00",
+        "section": "Wine / Meritage/Blends"
+      },
+      {
+        "name": "Opus One",
+        "description": "Napa Valley 2018 · Black Fruit, Orange Zest, Licorice, Dark Chocolate",
+        "price": "$1029.00",
+        "section": "Wine / Meritage/Blends"
+      },
+      {
+        "name": "Opus One Overture",
+        "description": "Napa Valley 2017 · Black Fruit, Orange Zest, Licorice, Dark Chocolate",
+        "price": "$441.00",
+        "section": "Wine / Meritage/Blends"
+      },
+      {
+        "name": "Quintessa",
+        "description": "Napa Valley 2015 · Dark Berries, Dark Chocolate, Savory Herbs",
+        "price": "$562.00",
+        "section": "Wine / Meritage/Blends"
+      },
+      {
+        "name": "Dow’s Fine Ruby Porto",
+        "description": "Portugal NV · Peppery Spice, Raspberry, Cherry",
+        "price": "$12.00",
+        "section": "Wine / DESSERT WINES/PORT"
+      },
+      {
+        "name": "Fonseca Unfiltered Lbv",
+        "description": "Portugal 2009 · Black Fruit, Bitter Chocolate, Licorice",
+        "price": "$9.00",
+        "section": "Wine / DESSERT WINES/PORT"
+      },
+      {
+        "name": "Graham’s Six Grape Lbv",
+        "description": "Portugal NV · Plum, Cherry, Dark Chocolate",
+        "price": "$9.00",
+        "section": "Wine / DESSERT WINES/PORT"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8587",
+    "name": "P.L. Bagels",
+    "blocked": "No priced menu source. Own site is plbagelsgo.twupro.com, a barred farm domain (per AGENT-BRIEF) so not usable as a source. No DoorDash/Grubhub/UberEats listing found in San Diego search results (Grubhub's Point Loma bagel list does not include it). Only price data available is scattered anecdotal mentions in Yelp reviews and a 2012 blog post (mini bagels 35c, cash-only shop) - not a structured menu and too old/unreliable to file as dishes.",
+    "confidence": "n/a",
+    "notes": "Identity confirmed: 3704 Voltaire St #107, San Diego 92107 (Point Loma), matches batch address.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6902",
+    "name": "White Labs Brewing Co - San Diego",
+    "sourceUrl": "https://whitelabsbrewingco.com/wp-content/uploads/2026/08/White-Labs-San-Diego-Beer-Menu-3-1.pdf",
+    "confidence": "high",
+    "notes": "Own site (whitelabsbrewingco.com/san-diego-cal/) embeds this PDF beer menu via EmbedPress. Each house beer is fermented with 1-3 different yeast strains served side-by-side, each a distinct tasting profile, priced identically per beer at Full/8oz/4oz pours - filed each yeast variant x pour size as a separate row. Guest beer menu (8 taps) has no prices listed anywhere and was dropped per no-invented-prices rule. This is a brewery whose kitchen serves pizza/food (per brewbound.com coverage of a 2020s kitchen addition), but no food menu with prices could be found on the site, in search results, or via a toasttab.com guess (403s); only the beer menu is filed. Growler/crowler to-go sizes listed with no price, dropped.",
+    "dishes": [
+      {
+        "name": "Louis P. Lager - German Lager Yeast (WLP830) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Louis P. Lager - German Lager Yeast (WLP830) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Louis P. Lager - German Lager Yeast (WLP830) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Louis P. Lager - American Lager Yeast (WLP840) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Louis P. Lager - American Lager Yeast (WLP840) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Louis P. Lager - American Lager Yeast (WLP840) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "On The Pitch Lager - On The Pitch Lager Yeast (WLP826) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "On The Pitch Lager - On The Pitch Lager Yeast (WLP826) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "On The Pitch Lager - On The Pitch Lager Yeast (WLP826) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Vienna Lager - Mexican Lager Yeast (WLP940) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Vienna Lager - Mexican Lager Yeast (WLP940) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Vienna Lager - Mexican Lager Yeast (WLP940) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Van Helmont Witbier - East Coast Ale Yeast (WLP008) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Van Helmont Witbier - East Coast Ale Yeast (WLP008) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Van Helmont Witbier - East Coast Ale Yeast (WLP008) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Van Helmont Witbier - Belgian Wit Ale Yeast (WLP400) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Van Helmont Witbier - Belgian Wit Ale Yeast (WLP400) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Van Helmont Witbier - Belgian Wit Ale Yeast (WLP400) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Hansen Hefeweizen - German/Kolsch Ale Yeast (WLP029) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Hansen Hefeweizen - German/Kolsch Ale Yeast (WLP029) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Hansen Hefeweizen - German/Kolsch Ale Yeast (WLP029) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Hansen Hefeweizen - Hefeweizen Ale Yeast (WLP300) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Hansen Hefeweizen - Hefeweizen Ale Yeast (WLP300) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Hansen Hefeweizen - Hefeweizen Ale Yeast (WLP300) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Antonie Ale - English Ale Yeast (WLP002) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Antonie Ale - English Ale Yeast (WLP002) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Antonie Ale - English Ale Yeast (WLP002) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Antonie Ale - Pacific Ale Yeast (WLP041) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Antonie Ale - Pacific Ale Yeast (WLP041) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Antonie Ale - Pacific Ale Yeast (WLP041) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Pasteur Porter - California Ale Yeast (WLP001) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Pasteur Porter - California Ale Yeast (WLP001) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Pasteur Porter - California Ale Yeast (WLP001) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Pasteur Porter - Yorkshire Square Ale Yeast (WLP037) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Pasteur Porter - Yorkshire Square Ale Yeast (WLP037) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Pasteur Porter - Yorkshire Square Ale Yeast (WLP037) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Pale 21 - California Ale Yeast (WLP001) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Pale 21 - California Ale Yeast (WLP001) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Pale 21 - California Ale Yeast (WLP001) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Pale 21 - Suava Ale Yeast (WLP079) (Full Pour)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Pale 21 - Suava Ale Yeast (WLP079) (8oz Pour)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Pale 21 - Suava Ale Yeast (WLP079) (4oz Pour)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Tabberer IPA - California Ale Yeast (WLP001) (Full Pour)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Tabberer IPA - California Ale Yeast (WLP001) (8oz Pour)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Tabberer IPA - California Ale Yeast (WLP001) (4oz Pour)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Tabberer IPA - London Fog Ale Yeast (WLP066) (Full Pour)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Tabberer IPA - London Fog Ale Yeast (WLP066) (8oz Pour)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Tabberer IPA - London Fog Ale Yeast (WLP066) (4oz Pour)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Tabberer IPA - Suava Ale Yeast (WLP079) (Full Pour)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Tabberer IPA - Suava Ale Yeast (WLP079) (8oz Pour)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Beer Menu"
+      },
+      {
+        "name": "Tabberer IPA - Suava Ale Yeast (WLP079) (4oz Pour)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beer Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9241",
+    "name": "GRANGE GARDEN",
+    "sourceUrl": "https://grangegarden.com/menu/ and https://grangegarden.com/coffee-beverages/",
+    "confidence": "high",
+    "notes": "Own site, first-party, current (2026). Prices render as bare numbers in the HTML (CSS-generated $ prefix via ::before, confirmed no non-USD symbol anywhere and site/address is Solana Beach CA) - added the $ sign myself, values otherwise verbatim. Croissant is 4 filling variants at 2 prices (6.5/9.5): filed plain/chocolate/almond at the lower price and ham+gruyere cheese (the only savory/premium option) at the higher price - this pairing was inferred from context, not stated explicitly on the page, flagging as the one uncertain call. All other size-variant items (Americano, Latte, Mocha, Hot Chocolate, San Pellegrino, Aqua Panna, all Specialty Lattes) explicitly listed as two prices with no ambiguity - filed as separate Small/Large rows. Note: this domain also runs an unrelated WooCommerce dropshipping shop (patio furniture etc, 'Business & Pleasure Co' products) at /product/ URLs - not a food menu, ignored entirely.",
+    "dishes": [
+      {
+        "name": "Soup du Jour - French Onion",
+        "description": "Handcrafted by private French Chef Christophe Leneouanic. Served with mixed greens, seasonal grapes, and a freshly baked French onion roll from Bread & Cie Bakery",
+        "price": "$16.50",
+        "section": "Everyday Brunch"
+      },
+      {
+        "name": "Sandwich Jambon Beurre (Deluxe Ham Sandwich)",
+        "description": "Ham, butter, cornichon, toasted baguette; served with mixed greens, seasonal grapes",
+        "price": "$18.50",
+        "section": "Everyday Brunch"
+      },
+      {
+        "name": "Traditional Pizza Fromage",
+        "description": "Classic cheese",
+        "price": "$16.50",
+        "section": "Everyday Brunch"
+      },
+      {
+        "name": "Traditional Pizza Old World Pepperoni",
+        "description": "",
+        "price": "$18.50",
+        "section": "Everyday Brunch"
+      },
+      {
+        "name": "Gourmet Quiche Lorraine",
+        "description": "Caramelized onion, brie, bacon; served with mixed greens, seasonal grapes",
+        "price": "$18.50",
+        "section": "Everyday Brunch"
+      },
+      {
+        "name": "Gourmet Quiche Heirloom Vegetable",
+        "description": "Tomato, mushroom, spinach; served with mixed greens, seasonal grapes",
+        "price": "$18.50",
+        "section": "Everyday Brunch"
+      },
+      {
+        "name": "Croissant (Plain)",
+        "description": "Featuring Bread & Cie Bakery",
+        "price": "$6.50",
+        "section": "Bakeshop"
+      },
+      {
+        "name": "Croissant (Chocolate)",
+        "description": "Featuring Bread & Cie Bakery",
+        "price": "$6.50",
+        "section": "Bakeshop"
+      },
+      {
+        "name": "Croissant (Almond)",
+        "description": "Featuring Bread & Cie Bakery",
+        "price": "$6.50",
+        "section": "Bakeshop"
+      },
+      {
+        "name": "Croissant (Ham + Gruyere Cheese)",
+        "description": "Featuring Bread & Cie Bakery",
+        "price": "$9.50",
+        "section": "Bakeshop"
+      },
+      {
+        "name": "Bagel + Cream Cheese (Plain)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Bakeshop"
+      },
+      {
+        "name": "Bagel + Cream Cheese (Everything)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Bakeshop"
+      },
+      {
+        "name": "Chocolate Chip Cookie",
+        "description": "",
+        "price": "$6.50",
+        "section": "Bakeshop"
+      },
+      {
+        "name": "Coffee Cake",
+        "description": "",
+        "price": "$5.50",
+        "section": "Bakeshop"
+      },
+      {
+        "name": "Seasonal Cookie",
+        "description": "",
+        "price": "$6.50",
+        "section": "Bakeshop"
+      },
+      {
+        "name": "Seasonal Pastry",
+        "description": "",
+        "price": "$8.50",
+        "section": "Bakeshop"
+      },
+      {
+        "name": "Chocolate Macaroon (GF)",
+        "description": "Gluten-free",
+        "price": "$5.50",
+        "section": "Bakeshop"
+      },
+      {
+        "name": "Seasonal Muffin (GF)",
+        "description": "Gluten-free",
+        "price": "$6.50",
+        "section": "Bakeshop"
+      },
+      {
+        "name": "Seasonal Muffin (V)",
+        "description": "Vegan",
+        "price": "$8.50",
+        "section": "Bakeshop"
+      },
+      {
+        "name": "Double Espresso",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Macchiato",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Cortado",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Americano (Small)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Americano (Large)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Latte (Small)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Latte (Large)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Mocha (Small)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Mocha (Large)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Hot Chocolate (Small)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Hot Chocolate (Large)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "",
+        "price": "$4.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Iced Black Tea",
+        "description": "",
+        "price": "$4.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Lemonade",
+        "description": "",
+        "price": "$4.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Organic Apple Juice",
+        "description": "",
+        "price": "$4.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "San Pellegrino (Small)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "San Pellegrino (Large)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Aqua Panna (Small)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Aqua Panna (Large)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Pup Cup / Bun Cup",
+        "description": "Fun treat for our four-legged friends",
+        "price": "$3.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "The Gardener (Small)",
+        "description": "Organic espresso with honey, lavender, and vanilla",
+        "price": "$6.50",
+        "section": "Specialty Lattes"
+      },
+      {
+        "name": "The Gardener (Large)",
+        "description": "Organic espresso with honey, lavender, and vanilla",
+        "price": "$7.50",
+        "section": "Specialty Lattes"
+      },
+      {
+        "name": "The Farmer (Small)",
+        "description": "Organic espresso with spiced brown sugar and vanilla",
+        "price": "$6.50",
+        "section": "Specialty Lattes"
+      },
+      {
+        "name": "The Farmer (Large)",
+        "description": "Organic espresso with spiced brown sugar and vanilla",
+        "price": "$7.50",
+        "section": "Specialty Lattes"
+      },
+      {
+        "name": "The Pollinator (Small)",
+        "description": "Organic espresso with honey and cinnamon",
+        "price": "$6.50",
+        "section": "Specialty Lattes"
+      },
+      {
+        "name": "The Pollinator (Large)",
+        "description": "Organic espresso with honey and cinnamon",
+        "price": "$7.50",
+        "section": "Specialty Lattes"
+      },
+      {
+        "name": "The Florist (Small)",
+        "description": "Ceremonial, unsweetened organic matcha with rose",
+        "price": "$6.50",
+        "section": "Specialty Lattes"
+      },
+      {
+        "name": "The Florist (Large)",
+        "description": "Ceremonial, unsweetened organic matcha with rose",
+        "price": "$7.50",
+        "section": "Specialty Lattes"
+      },
+      {
+        "name": "The Forager (Small)",
+        "description": "Ceremonial, unsweetened organic matcha with lavender",
+        "price": "$6.50",
+        "section": "Specialty Lattes"
+      },
+      {
+        "name": "The Forager (Large)",
+        "description": "Ceremonial, unsweetened organic matcha with lavender",
+        "price": "$7.50",
+        "section": "Specialty Lattes"
+      },
+      {
+        "name": "The Harvester (Small)",
+        "description": "Organic chai with vanilla",
+        "price": "$6.50",
+        "section": "Specialty Lattes"
+      },
+      {
+        "name": "The Harvester (Large)",
+        "description": "Organic chai with vanilla",
+        "price": "$7.50",
+        "section": "Specialty Lattes"
+      },
+      {
+        "name": "Add Shot",
+        "description": "",
+        "price": "$1.50",
+        "section": "Add-ons"
+      },
+      {
+        "name": "Milk Alternative",
+        "description": "House-made, no added sugar; oat, almond, and coconut, sweetened with maple syrup or dates",
+        "price": "$1.50",
+        "section": "Add-ons"
+      },
+      {
+        "name": "Flavored Syrup",
+        "description": "",
+        "price": "$1.50",
+        "section": "Add-ons"
+      },
+      {
+        "name": "Extra Toppings",
+        "description": "",
+        "price": "$1.00",
+        "section": "Add-ons"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9109",
+    "name": "Sprinkles La Jolla",
+    "confidence": "high",
+    "notes": "Confirmed permanently closed - not_found, not blocked. NBC San Diego (nbcsandiego.com) reports Sprinkles Cupcakes abruptly and permanently closed all its stores nationwide on December 31, 2025, explicitly naming the La Jolla location (8855 Villa La Jolla Dr) as one of the closures. Independently corroborated by wusa9.com (employee confirmed by phone), timesofsandiego.com, nypost.com, and Yelp's own listing now reading 'SPRINKLES LA JOLLA - CLOSED'. This matches why the batch's given website 404s. Stale UberEats/order.online storefronts still show a cached menu/prices but are leftover listings from before the January 2026 closure, not evidence the store is open.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "9670",
+    "name": "Ginza Sushi",
+    "blocked": "Renamed - now operating as 'Gintaro Sushi' at the same address (925 E Plaza Blvd Ste 108, National City, CA 91950), same phone (619) 856-4062, per current (September 2026) Yelp listing, Apple Maps, and multiple directory listings. Not closed. Given website ginzasushisd.com is an expired/parked Namecheap domain, consistent with the rename. No priced menu source found for Gintaro Sushi: zmenu.com returned 403, no DoorDash/UberEats/Grubhub listing located (an UberEats 'Ginza Sushi & Asian Fusion' store is a same-named but unrelated Oregon City/Portland OR chain location, confirmed via its own listings - not this restaurant, correctly excluded per outside-city rule). SinglePlatform and Yelp menu tab both carry only the pre-rename 'Ginza Sushi' menu, which is stale.",
+    "confidence": "n/a",
+    "notes": "Identity/location confirmed via multiple independent map listings (Apple Maps, Yelp, Roadtrippers) all showing 925 E Plaza Blvd Ste 108, National City - matches batch address.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6055",
+    "name": "Imperial Express",
+    "blocked": "Buffet-style Chinese restaurant with no per-item prices. Own site's '#menu' section explicitly states 'Menu and prices subject to change. Call restaurant for current prices and selections' and the only menu content is 4 photos of the physical buffet steam-table spread (fried rice, orange chicken, broccoli, fries, egg rolls, wings, etc) - no priced items, no per-plate/per-pound pricing shown anywhere on site or in search results.",
+    "confidence": "n/a",
+    "notes": "Site is live and current (imperialexpresschinese.com, HTTP 200).",
+    "dishes": []
+  },
+  {
+    "restaurantId": "9265",
+    "name": "Bica Coffee Shop",
+    "blocked": "Open restaurant, no published priced menu found anywhere. Own site (bica-sd.com) is an essentially empty Squarespace shell - homepage and /preorder-shop page both have zero content blocks (confirmed via ?format=json-pretty, mainContent is an empty div), just nav links to /events and /special-events-and-catering. joe.coffee has a listing (920779a0-...) but 'orderingUrl':null - directory entry only, no menu. Yelp/Instagram/Union-Tribune coverage describe it in prose ('$4 for a small coffee', avocado toast, giant pastries) but no structured priced menu; Union-Tribune article not accessible (not cached, likely paywalled).",
+    "confidence": "n/a",
+    "notes": "Identity confirmed: 3569 Adams Ave, San Diego 92116 (Normal Heights), matches batch address exactly. Restaurant is open and popular (SDUT feature, active Instagram) - genuinely a no-published-prices case, not a closure.",
+    "dishes": []
+  }
+]

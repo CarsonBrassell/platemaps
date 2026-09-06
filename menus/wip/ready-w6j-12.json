@@ -1,0 +1,809 @@
+[
+  {
+    "restaurantId": "12158",
+    "name": "Cozy Cup",
+    "sourceUrl": "https://www.ubereats.com/store/cozy-cup",
+    "confidence": "medium",
+    "notes": "Read from Uber Eats schema.org JSON-LD (hasMenu/hasMenuSection). Dropped the \"Top 9 (Cold)\" carousel section (9 items) — every item in it is a higher-priced upsell duplicate of an item already listed under its real section (e.g. Fruit of the Spirit); kept the base-priced canonical listing only. 21 dishes kept from Specialty Coffee, Signature Tea, Delicious Bites, and Fruit of the Spirit sections.",
+    "dishes": [
+      {
+        "name": "12. Vietnamese Coffee",
+        "description": "Rich and smooth coffee with a hint of Vietnamese flavor.",
+        "price": "$6.25",
+        "section": "Specialty Coffee (Hot/Cold)"
+      },
+      {
+        "name": "13. Cappuccino",
+        "description": "Rich and smooth espresso-style coffee drink.",
+        "price": "$5.75",
+        "section": "Specialty Coffee (Hot/Cold)"
+      },
+      {
+        "name": "14. Latte",
+        "description": "Rich and velvety espresso-style coffee drink.",
+        "price": "$5.75",
+        "section": "Specialty Coffee (Hot/Cold)"
+      },
+      {
+        "name": "15. Cold Brew",
+        "description": "Smooth, rich coffee brewed without heat.",
+        "price": "$5.75",
+        "section": "Specialty Coffee (Hot/Cold)"
+      },
+      {
+        "name": "16. Americano",
+        "description": "Espresso-style coffee made with hot water.",
+        "price": "$4.50",
+        "section": "Specialty Coffee (Hot/Cold)"
+      },
+      {
+        "name": "17. Coffee",
+        "description": "Rich and smooth coffee to start your day.",
+        "price": "$4.50",
+        "section": "Specialty Coffee (Hot/Cold)"
+      },
+      {
+        "name": "10. Green Tea",
+        "description": "Steeped in tradition, this soothing green tea offers a calming experience.",
+        "price": "$6.00",
+        "section": "Signature Tea (Hot/Cold)"
+      },
+      {
+        "name": "11. Black Tea",
+        "description": "Strong and smooth black tea.",
+        "price": "$6.00",
+        "section": "Signature Tea (Hot/Cold)"
+      },
+      {
+        "name": "18. Beef Sukiyaki Rice with Veggie",
+        "description": "Beef and vegetables served over a bed of rice in a savory sukiyaki sauce.",
+        "price": "$16.00",
+        "section": "Delicious Bites"
+      },
+      {
+        "name": "19. Minced Pork Rice with Veggie",
+        "description": "Rice plate includes one free drink of your choice.",
+        "price": "$16.00",
+        "section": "Delicious Bites"
+      },
+      {
+        "name": "21. Pork with Egg Bao (2)",
+        "description": "Tender pork and egg in a soft bao bun.",
+        "price": "$7.00",
+        "section": "Delicious Bites"
+      },
+      {
+        "name": "20. Xiao Long Bao (6)",
+        "description": "Steamed dumplings filled with pork and broth.",
+        "price": "$6.00",
+        "section": "Delicious Bites"
+      },
+      {
+        "name": "Power of Love",
+        "description": "Cozy signature milk tea.",
+        "price": "$6.50",
+        "section": "Fruit of the Spirit (Cold)"
+      },
+      {
+        "name": "Joy to the World",
+        "description": "Mango purple rice coconut milk.",
+        "price": "$7.00",
+        "section": "Fruit of the Spirit (Cold)"
+      },
+      {
+        "name": "Peace Maker",
+        "description": "Avocado smoothie.",
+        "price": "$7.00",
+        "section": "Fruit of the Spirit (Cold)"
+      },
+      {
+        "name": "Please be Patient",
+        "description": "Lemonade.",
+        "price": "$6.00",
+        "section": "Fruit of the Spirit (Cold)"
+      },
+      {
+        "name": "Be Kind to Yourself",
+        "description": "Brown sugar fresh milk with boba.",
+        "price": "$6.00",
+        "section": "Fruit of the Spirit (Cold)"
+      },
+      {
+        "name": "Oh My Goodness",
+        "description": "Ribena lemon sparkling soda.",
+        "price": "$6.00",
+        "section": "Fruit of the Spirit (Cold)"
+      },
+      {
+        "name": "Forever Faithful",
+        "description": "Osmanthus green tea.",
+        "price": "$6.00",
+        "section": "Fruit of the Spirit (Cold)"
+      },
+      {
+        "name": "Ladies and Gentleness",
+        "description": "Taro milk.",
+        "price": "$6.00",
+        "section": "Fruit of the Spirit (Cold)"
+      },
+      {
+        "name": "Control Button",
+        "description": "Thai tea.",
+        "price": "$6.00",
+        "section": "Fruit of the Spirit (Cold)"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4565",
+    "name": "Showa Ramen",
+    "sourceUrl": "https://order.toasttab.com/online/showa-ramen",
+    "confidence": "high",
+    "notes": "Read from Toast __OO_STATE__ Apollo cache (brace-balanced parse of the FOOD and BEVERAGES menus). 12 of 36 items are currently flagged outOfStock on the ordering platform (mostly Appetizers, Rice Bowls, one Ramen and some Sides) but all carry genuine listed prices, and the core Ramen section is mostly available (5 of 6 ramen items in stock), so filed as found rather than blocked. Own-site (showaramen.com) has no prices; this Toast order page was linked from it and matches the same restaurant.",
+    "dishes": [
+      {
+        "name": "KARAAGE",
+        "description": "5 pieces of Chicken Thigh Marinated Deep Fired to Perfection with Spicy Mayo on the side.",
+        "price": "$8.00",
+        "section": "FOOD / APPETIZERS"
+      },
+      {
+        "name": "EDAMAME",
+        "description": "Soybeans boiled to perfection and served chilled with Salt",
+        "price": "$4.00",
+        "section": "FOOD / APPETIZERS"
+      },
+      {
+        "name": "GYOZA",
+        "description": "5 pieces of perfectly pan-fried dumplings filled with your choice of pork or vegetables, served with our Ponzu sauce.",
+        "price": "$7.00",
+        "section": "FOOD / APPETIZERS"
+      },
+      {
+        "name": "SHOWA FRIES",
+        "description": "Straight Fries with Green Onions, Salt ,Sesame Seeds ,Red Ginger ,PorkBelly ,Spicy Mayo and kewpie yuzu",
+        "price": "$10.00",
+        "section": "FOOD / APPETIZERS"
+      },
+      {
+        "name": "TAKOYAKI",
+        "description": "dish made of wheat batter and octopus filling with our homemade sauce ,ginger and nori flakes",
+        "price": "$10.00",
+        "section": "FOOD / APPETIZERS"
+      },
+      {
+        "name": "FIRED CORN",
+        "description": "2 Fried corn on the cob with yuzu mayo and tagarashi ",
+        "price": "$6.00",
+        "section": "FOOD / APPETIZERS"
+      },
+      {
+        "name": "TSUKEMEN",
+        "description": "Spicy Miso Fish Broth Serve With Cold Thick Noodles Perfect For Dipping , Pork Belly , whole Ramen Egg, Green Onion,bamboo shoots, Sesame seeds.",
+        "price": "$13.75",
+        "section": "FOOD / RAMEN"
+      },
+      {
+        "name": "SHOYU",
+        "description": "Shoyu Base 22 hour pork broth, Egg White Thin Noodles, Garlic Oil ,2 Pork Belly, 1/2 Ramen Egg, Green Onions, Wakame",
+        "price": "$13.75",
+        "section": "FOOD / RAMEN"
+      },
+      {
+        "name": "TONKOTSU",
+        "description": "Original 22 hour pork bone Broth, Egg White Thin Noodles, Garlic Oil, 2 Pork Belly, 1/2 Ramen Egg, Green Onions, and bamboo shoots",
+        "price": "$13.75",
+        "section": "FOOD / RAMEN"
+      },
+      {
+        "name": "VEGGIE",
+        "description": "Original Shiitaki and Kombu Vegan Broth ,Garlic oil, Vegan Noodles, Black Mushrooms ,Green Onions, Corn, bamboo shoots and Red ginger",
+        "price": "$13.50",
+        "section": "FOOD / RAMEN"
+      },
+      {
+        "name": "BLACK SHOWA",
+        "description": "Original 22 hour pork bone Broth, Egg White Thin Noodles, 2 Pork Belly , 1/2 Ramen Egg, Kikurage, Green Onions, and Black Garlic Oil.",
+        "price": "$13.75",
+        "section": "FOOD / RAMEN"
+      },
+      {
+        "name": "SPICY MISO",
+        "description": "Spicy Miso , 22 Hour Pork Bone Broth, Egg Wavy Noodles, Garlic oil ,2 Pork Belly , 1/2 Ramen Egg, Green Onions, and Corn.",
+        "price": "$13.75",
+        "section": "FOOD / RAMEN"
+      },
+      {
+        "name": "CHASHU BOWl",
+        "description": "Porkbelly Over Steamed Rice, Green Onions, Red Ginger,FURIKAKE SEAWEED ,and yuzu kewpie mayo",
+        "price": "$13.00",
+        "section": "FOOD / RICE BOWLS"
+      },
+      {
+        "name": "KARAAGE BOWL",
+        "description": "5 pieces of Chicken Thigh Marinated Deep Fired Over Steamed Sushi Rice, Green Onions ,FURIKAKE SEAWEED ,and Spicy Mayo.",
+        "price": "$13.00",
+        "section": "FOOD / RICE BOWLS"
+      },
+      {
+        "name": "FRIED TOFU BOWL",
+        "description": "Fried marinated Tofu ,white rice ,furikake nori,green onions , sesame seeds and okonomi sauce ",
+        "price": "$13.00",
+        "section": "FOOD / RICE BOWLS"
+      },
+      {
+        "name": "BAKED GREEN TEA CHEESECAKE",
+        "description": "",
+        "price": "$8.00",
+        "section": "FOOD / DESSERTS"
+      },
+      {
+        "name": "YUZU CHEESE CAKE",
+        "description": "",
+        "price": "$8.00",
+        "section": "FOOD / DESSERTS"
+      },
+      {
+        "name": "HAZELNUT AND MOCHA CAKE",
+        "description": "",
+        "price": "$8.00",
+        "section": "FOOD / DESSERTS"
+      },
+      {
+        "name": "RICE",
+        "description": "",
+        "price": "$3.00",
+        "section": "FOOD / SIDES"
+      },
+      {
+        "name": "CHILI PASTE",
+        "description": "",
+        "price": "$1.00",
+        "section": "FOOD / SIDES"
+      },
+      {
+        "name": "FRIES",
+        "description": "",
+        "price": "$3.00",
+        "section": "FOOD / SIDES"
+      },
+      {
+        "name": "SPICY MAYO",
+        "description": "",
+        "price": "$0.50",
+        "section": "FOOD / SIDES"
+      },
+      {
+        "name": "PONZU SAUCE",
+        "description": "",
+        "price": "$0.50",
+        "section": "FOOD / SIDES"
+      },
+      {
+        "name": "BROTH",
+        "description": "",
+        "price": "$4.00",
+        "section": "FOOD / SIDES"
+      },
+      {
+        "name": "NOODLES",
+        "description": "",
+        "price": "$3.00",
+        "section": "FOOD / SIDES"
+      },
+      {
+        "name": "KIMCHI",
+        "description": "Napa cabbage,radish,red pepper,garlic,cane sugar,ginger,fish sauce and green onions",
+        "price": "$3.00",
+        "section": "FOOD / SIDES"
+      },
+      {
+        "name": "SIDE FRIED TOFU",
+        "description": "Fried marinated Tofu, okinomi sauce.",
+        "price": "$3.00",
+        "section": "FOOD / SIDES"
+      },
+      {
+        "name": "CALPICO SODA",
+        "description": "",
+        "price": "$3.50",
+        "section": "BEVERAGES / DRINKS"
+      },
+      {
+        "name": "COCA COLA",
+        "description": "",
+        "price": "$2.79",
+        "section": "BEVERAGES / DRINKS"
+      },
+      {
+        "name": "GREEN TEA",
+        "description": "",
+        "price": "$3.50",
+        "section": "BEVERAGES / DRINKS"
+      },
+      {
+        "name": "MANGO CREAMY SODA",
+        "description": "",
+        "price": "$4.00",
+        "section": "BEVERAGES / DRINKS"
+      },
+      {
+        "name": "PANNA WATER",
+        "description": "",
+        "price": "$2.50",
+        "section": "BEVERAGES / DRINKS"
+      },
+      {
+        "name": "RUMUNE",
+        "description": "",
+        "price": "$3.50",
+        "section": "BEVERAGES / DRINKS"
+      },
+      {
+        "name": "DIET COKE",
+        "description": "",
+        "price": "$2.79",
+        "section": "BEVERAGES / DRINKS"
+      },
+      {
+        "name": "SPRITE",
+        "description": "",
+        "price": "$2.79",
+        "section": "BEVERAGES / DRINKS"
+      },
+      {
+        "name": "SAPPORO",
+        "description": "",
+        "price": "$7.00",
+        "section": "BEVERAGES / BEER"
+      }
+    ]
+  },
+  {
+    "restaurantId": "11438",
+    "name": "Solana Coffee Co at the Granger Hotel",
+    "sourceUrl": "https://grangerhotel.com/eat-drink/solana-coffee/",
+    "confidence": "high",
+    "notes": "Read from the hotel's own page (Elementor-built, prices render as plain numbers in separate heading widgets next to each item name, no \"$\" glyph in the markup). Dropped the \"Brew Bar\" origin list (Honduras, Guatemala) — bean/origin descriptions with no per-item price shown.",
+    "dishes": [
+      {
+        "name": "Espresso",
+        "description": "All drinks made with whole milk; +$1.00 for almond/oat milk.",
+        "price": "$4.50",
+        "section": "Coffee menu"
+      },
+      {
+        "name": "Latte",
+        "description": "All drinks made with whole milk; +$1.00 for almond/oat milk.",
+        "price": "$7.50",
+        "section": "Coffee menu"
+      },
+      {
+        "name": "Americano",
+        "description": "All drinks made with whole milk; +$1.00 for almond/oat milk.",
+        "price": "$5.50",
+        "section": "Coffee menu"
+      },
+      {
+        "name": "Golden Honey",
+        "description": "All drinks made with whole milk; +$1.00 for almond/oat milk.",
+        "price": "$8.00",
+        "section": "Coffee menu"
+      },
+      {
+        "name": "Cortado",
+        "description": "All drinks made with whole milk; +$1.00 for almond/oat milk.",
+        "price": "$6.00",
+        "section": "Coffee menu"
+      },
+      {
+        "name": "Vanilla Latte",
+        "description": "All drinks made with whole milk; +$1.00 for almond/oat milk.",
+        "price": "$8.00",
+        "section": "Coffee menu"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "All drinks made with whole milk; +$1.00 for almond/oat milk.",
+        "price": "$6.50",
+        "section": "Coffee menu"
+      },
+      {
+        "name": "Orange Spritz",
+        "description": "All drinks made with whole milk; +$1.00 for almond/oat milk.",
+        "price": "$9.00",
+        "section": "Coffee menu"
+      },
+      {
+        "name": "Mocha",
+        "description": "All drinks made with whole milk; +$1.00 for almond/oat milk.",
+        "price": "$6.00",
+        "section": "Coffee menu"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "All drinks made with whole milk; +$1.00 for almond/oat milk.",
+        "price": "$6.00",
+        "section": "Coffee menu"
+      },
+      {
+        "name": "Loose Leaf Tea",
+        "description": "All drinks made with whole milk; +$1.00 for almond/oat milk.",
+        "price": "$6.00",
+        "section": "Coffee menu"
+      },
+      {
+        "name": "Butter Croissant",
+        "description": "Rotating selection of fresh, locally baked goods.",
+        "price": "$6.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Chocolate Croissant",
+        "description": "Rotating selection of fresh, locally baked goods.",
+        "price": "$6.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Ham & Cheese Croissant",
+        "description": "Rotating selection of fresh, locally baked goods.",
+        "price": "$5.50",
+        "section": "Pastries"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8773",
+    "name": "Famous Wok",
+    "sourceUrl": "https://www.ubereats.com/store/famous-wok",
+    "confidence": "medium",
+    "notes": "Read from Uber Eats schema.org JSON-LD. Own listed website (premiumoutlets.com mall directory page) only redirects/300s and carries no menu; this is a food-court vendor inside the Las Americas outlet mall, address matches the batch record. 22 items across Mains, Sides, Drinks, Boba Tea, Combo Meals, no carousel duplication found.",
+    "dishes": [
+      {
+        "name": "Orange Chicken, 26 oz",
+        "description": "Crispy chicken strips tossed in a tangy orange sauce.",
+        "price": "$8.49",
+        "section": "Mains"
+      },
+      {
+        "name": "Chow Mein, 26 oz",
+        "description": "This authentic Chow Mein is made with the best Chinese noodle mixed with vegetables, it gives you the best taste with our exclusive Famous Wok’s original sauce.",
+        "price": "$6.49",
+        "section": "Mains"
+      },
+      {
+        "name": "Fried Rice, 26 oz",
+        "description": "This Fried Rice is made with the best jasmine long grain rice mixed with peas and carrots, it gives you the best taste with our exclusive Famous Wok’s authentic sauce.",
+        "price": "$6.49",
+        "section": "Mains"
+      },
+      {
+        "name": "Kung Pao Chicken, 26 oz",
+        "description": "Stir-fried chicken with peanuts and vegetables in a savory sauce.",
+        "price": "$8.49",
+        "section": "Mains"
+      },
+      {
+        "name": "BBQ Teriyaki Chicken, 26 oz",
+        "description": "26 oz portion of chicken coated in BBQ teriyaki glaze with lightly charred edges.",
+        "price": "$8.49",
+        "section": "Mains"
+      },
+      {
+        "name": "Beef Broccoli, 26 oz",
+        "description": "Tender beef and broccoli in a savory sauce.",
+        "price": "$8.49",
+        "section": "Mains"
+      },
+      {
+        "name": "Mixed Vegetable, 26 oz",
+        "description": "26 oz serving of mixed vegetables with broccoli, carrots, and cabbage.",
+        "price": "$6.49",
+        "section": "Mains"
+      },
+      {
+        "name": "BBQ Teriyaki Pork, 26 oz",
+        "description": "Tender pork smothered in a sweet and savory teriyaki sauce.",
+        "price": "$8.49",
+        "section": "Mains"
+      },
+      {
+        "name": "Chicken And Mushroom, 26 oz",
+        "description": "Tender chicken and mushrooms in a savory dish.",
+        "price": "$8.49",
+        "section": "Mains"
+      },
+      {
+        "name": "Spring Rolls - 2 pc",
+        "description": "Crispy rolls filled with savory ingredients.",
+        "price": "$2.19",
+        "section": "Sides"
+      },
+      {
+        "name": "Side Box (Veggie), 26 oz",
+        "description": "26 oz box, choose from Chow Mein or Fried Rice or Mixed Vegetables.\nPlease indicate your item choice when ordering.",
+        "price": "$6.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Side Box (Meat), 26 oz",
+        "description": "26 oz box, choose from any 1 item from the main menu\nPlease indicate your item choice from main menu when ordering",
+        "price": "$8.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Family Package, 5 Side Boxes, 4 Spring Rolls",
+        "description": "2 Side Boxes (Veggie), 3 Side Boxes (Meat), 4 Spring Rolls, good for up to 5 people, best choice for party and social events\nPlease indicate your item choice from main menu when ordering",
+        "price": "$36.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Fountain Soda, 21 oz",
+        "description": "Refreshing drink in a 21 oz serving size.",
+        "price": "$2.19",
+        "section": "Drinks"
+      },
+      {
+        "name": "Fountain Soda, 32 oz",
+        "description": "Pick one favor from Coke, Diet Coke, Sprite, Dr. Pepper, Hi-C Lemonade, Fanta Orange",
+        "price": "$2.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Soda, 20 oz",
+        "description": "Available favor: Coke, Diet Coke, Zero Sugar Coke, Sprite, Dr. Pepper",
+        "price": "$3.19",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Water, 20 oz",
+        "description": "Refreshing and thirst-quenching bottled water.",
+        "price": "$3.19",
+        "section": "Drinks"
+      },
+      {
+        "name": "Horchata, 20 oz",
+        "description": "Traditional Mexican Drink, best taste from hometown",
+        "price": "$2.39",
+        "section": "Drinks"
+      },
+      {
+        "name": "Boba Tea",
+        "description": "The most popular Asian drinks in town, 7 favors available including Coffee, Coconut, Honeydew, Strawberry, Mango, Taro, Matcha, Watermelon.\nPlease indicate your favor choice when ordering.",
+        "price": "$5.99",
+        "section": "Boba Tea"
+      },
+      {
+        "name": "1 Item Combo",
+        "description": "Any 1 item from the main menu, and pick either Fried Rice or Lo Mein",
+        "price": "$9.19",
+        "section": "Combo Meals"
+      },
+      {
+        "name": "2 Item Combo",
+        "description": "Choose any 2 items from the main menu, pick either Fried Rice or Chow Mein",
+        "price": "$10.19",
+        "section": "Combo Meals"
+      },
+      {
+        "name": "3 Item Combo",
+        "description": "Choose any 3 items from the main menu, and pick either Fried Rice or Chow Mein",
+        "price": "$11.19",
+        "section": "Combo Meals"
+      }
+    ]
+  },
+  {
+    "restaurantId": "11529",
+    "name": "Bonne Vie Brasserie & Bar",
+    "sourceUrl": "https://www.westgatehotel.com/dining/bonne-vie-menu/",
+    "confidence": "high",
+    "notes": "Read from the Westgate Hotel's own dining page (the restaurant's only web presence; website field in the batch was null). The page renders every daypart menu (Breakfast, Beverages, Dessert, Afternoon Tea, Wine, Dinner, Happy Hour, From the Bar, Lunch, Brunch, Sunday Brunch) in one static HTML document behind client-side tabs. Filed the Dinner menu (Appetizers/Entrées/Soup & Salads/Sides) plus Dessert as the core priced menu; skipped Breakfast, Lunch, Brunch, Happy Hour, wine/beverage lists, and Afternoon Tea (unpriced tea flavor descriptions) to keep scope to one clear daypart rather than mixing overlapping items priced differently across menus (e.g. Prince Edward Island Mussels appears on both Dinner and Happy Hour at different prices — used Dinner's price only). Sides category carries one flat $10.00 price applying to all 5 listed sides per the page's own category note.",
+    "dishes": [
+      {
+        "name": "Pacific Kumiai Oysters (Half Dozen)",
+        "description": "Tabasco, Mignonette Sauce",
+        "price": "$16.00",
+        "section": "Dinner / Appetizers"
+      },
+      {
+        "name": "Pacific Kumiai Oysters (Full Dozen)",
+        "description": "Tabasco, Mignonette Sauce",
+        "price": "$22.00",
+        "section": "Dinner / Appetizers"
+      },
+      {
+        "name": "Burgundy Escargot",
+        "description": "Garlic Parsley Butter",
+        "price": "$15.00",
+        "section": "Dinner / Appetizers"
+      },
+      {
+        "name": "Prince Edward Island Mussels (Standard)",
+        "description": "Lemon Thyme Vermouth Broth",
+        "price": "$17.00",
+        "section": "Dinner / Appetizers"
+      },
+      {
+        "name": "Prince Edward Island Mussels (With Hand-Cut Fries)",
+        "description": "Lemon Thyme Vermouth Broth",
+        "price": "$22.00",
+        "section": "Dinner / Appetizers"
+      },
+      {
+        "name": "Baja Crab Cake",
+        "description": "Grilled Leek, Yuzu Lime Butter Sauce",
+        "price": "$19.00",
+        "section": "Dinner / Appetizers"
+      },
+      {
+        "name": "Breadbasket",
+        "description": "Pesto Crusted House Sundried Tomato Sourdough",
+        "price": "$8.00",
+        "section": "Dinner / Appetizers"
+      },
+      {
+        "name": "Mangrove Prawn Cocktail",
+        "description": "Clamato, Cucumber Avocado",
+        "price": "$17.00",
+        "section": "Dinner / Appetizers"
+      },
+      {
+        "name": "Baked Artichoke Hearts",
+        "description": "Boursin & Parmesan Cheese Dip",
+        "price": "$18.00",
+        "section": "Dinner / Appetizers"
+      },
+      {
+        "name": "Burrata Alla Panna",
+        "description": "Heirloom Tomato, Prosciutto San Daniel, Arugula, Pesto, Aged Balsamic",
+        "price": "$16.00",
+        "section": "Dinner / Appetizers"
+      },
+      {
+        "name": "Brie Cheese Pot Pie",
+        "description": "Roasted Fig, Pine Nuts, Crostini",
+        "price": "$16.00",
+        "section": "Dinner / Appetizers"
+      },
+      {
+        "name": "Pacific Bluefin Tuna Tartar",
+        "description": "Cucumber, Quail Egg, Preserved Lemon",
+        "price": "$19.00",
+        "section": "Dinner / Appetizers"
+      },
+      {
+        "name": "Sea Scallop",
+        "description": "Pistou Risotto, Caramelized Onion Tagine, Bell Pepper Confit, Harissa",
+        "price": "$32.00",
+        "section": "Dinner / Entrées"
+      },
+      {
+        "name": "Ricotta Cheese Ravioli",
+        "description": "Pine Nuts, Artichoke, Arugula, Sage Alfredo",
+        "price": "$26.00",
+        "section": "Dinner / Entrées"
+      },
+      {
+        "name": "King Salmon",
+        "description": "Zucchini Tagliatelle, Fennel, Zucchini Blossom Tempura, Dill Butter Sauce",
+        "price": "$33.00",
+        "section": "Dinner / Entrées"
+      },
+      {
+        "name": "Bouillabaisse",
+        "description": "Sea Bass Corvina, Sea Scallop, Mangrove Shrimp, Manila Clams, Tomato Saffron Broth, Garlic Aioli",
+        "price": "$36.00",
+        "section": "Dinner / Entrées"
+      },
+      {
+        "name": "Steak Frites",
+        "description": "Angus Flat Iron Steak, Bordelaise Demi, Béarnaise Sauce, Seasonal Vegetables, Hand-Cut Fries",
+        "price": "$35.00",
+        "section": "Dinner / Entrées"
+      },
+      {
+        "name": "Braised Short Rib",
+        "description": "Roasted Parsnip Mousseline, King Oyster Mushroom, Cipollini Onion",
+        "price": "$36.00",
+        "section": "Dinner / Entrées"
+      },
+      {
+        "name": "Hardel Burger",
+        "description": "Wagyu Beef or Impossible Patty, Whole Grain Mustard Aioli, Arugula, Aged Cheddar",
+        "price": "$21.00",
+        "section": "Dinner / Entrées"
+      },
+      {
+        "name": "Coq Au Vin",
+        "description": "Pitman Farm Braised Chicken Breast, Pancetta, Heirloom Carrot, Parisienne Potatoes",
+        "price": "$29.00",
+        "section": "Dinner / Entrées"
+      },
+      {
+        "name": "French Onion Soup",
+        "description": "Beef Broth, Gruyère Cheese, Sourdough Crostini",
+        "price": "$14.00",
+        "section": "Dinner / Soup & Salads"
+      },
+      {
+        "name": "Baked Thai Curry Lobster Bisque",
+        "description": "Crème Fraîche",
+        "price": "$15.00",
+        "section": "Dinner / Soup & Salads"
+      },
+      {
+        "name": "Iceberg Wedge",
+        "description": "Point Reyes Blue Cheese, Applewood Smoked Bacon, Chive, Buttermilk Blue Cheese Dressing",
+        "price": "$14.00",
+        "section": "Dinner / Soup & Salads"
+      },
+      {
+        "name": "Caesar",
+        "description": "Heirloom Romaine, White Anchovy, Brioche Croutons, Parmesan",
+        "price": "$14.00",
+        "section": "Dinner / Soup & Salads"
+      },
+      {
+        "name": "Charred Brussels Sprouts",
+        "description": "",
+        "price": "$10.00",
+        "section": "Dinner / Sides"
+      },
+      {
+        "name": "Asparagus Lemon Hollandaise",
+        "description": "",
+        "price": "$10.00",
+        "section": "Dinner / Sides"
+      },
+      {
+        "name": "Truffle Mashed Potato",
+        "description": "",
+        "price": "$10.00",
+        "section": "Dinner / Sides"
+      },
+      {
+        "name": "Yukon Gold Potato Gratin",
+        "description": "",
+        "price": "$10.00",
+        "section": "Dinner / Sides"
+      },
+      {
+        "name": "Stuffed Tomato Procencale Ratatouille",
+        "description": "",
+        "price": "$10.00",
+        "section": "Dinner / Sides"
+      },
+      {
+        "name": "Tropical Bread Pudding",
+        "description": "Brioche, Roasted Pineapple, Coconut Ice Cream, Passion Fruit Caramel",
+        "price": "$12.00",
+        "section": "Dessert"
+      },
+      {
+        "name": "Banana Foster Profiteroles",
+        "description": "Craquelin Choux, Banana Ice Cream, Rum Caramel, Candied Pecans, Fresh Bananas",
+        "price": "$12.00",
+        "section": "Dessert"
+      },
+      {
+        "name": "Granny Smith Apple Tarte Tartin",
+        "description": "Calvados Ice Cream",
+        "price": "$12.00",
+        "section": "Dessert"
+      },
+      {
+        "name": "Chocolate & Hazelnut Entremet",
+        "description": "Chocolate Buttercream, Apricot Jelly, Vanilla Ice Cream",
+        "price": "$12.00",
+        "section": "Dessert"
+      },
+      {
+        "name": "Grand Marnier Crème Brûlée",
+        "description": "Citrus Vanilla Custard, Seasonal Macaron, Fresh Berries",
+        "price": "$12.00",
+        "section": "Dessert"
+      }
+    ]
+  }
+]

@@ -284,3 +284,55 @@ A document that accumulates every lesson becomes, past some size, a liability to
 the reader it was written for. Two documents with different jobs is the fix, and
 the split has to be maintained deliberately or the short one quietly becomes the
 long one.
+
+## 10. Cost plan 2026-09-08
+
+Calvin burned 60% of a week's Max usage in a day. Cause, quantified: a
+10-restaurant Sonnet extraction batch cost 73K-161K agent tokens and
+54-209 tool calls for ~3/10 `found` (~40K tokens per found menu), on top of
+the coordinator's own round-trip cost per completion (see TOKEN-PLAN.md).
+Four changes, aimed at the agent-token side specifically:
+
+1. **Router-first, always.** `route-menus.mjs` is zero-token and already ran
+   over every queue row with a website. It had a gap: a row with NO website
+   was invisible to it (hard `website IS NOT NULL` filter), so 1,024 of 2,982
+   queue rows (2026-09-05) went straight to agents that then had to discover
+   the platform themselves. Fixed with a Serper fallback: no website, or a
+   site that yields no known platform, gets ONE search
+   (`"<name>" <city> doordash OR ubereats OR toasttab OR menufy`), and any
+   platform/first-party hit goes through the router's existing
+   `attemptOnce()` — same address/name identity checks, same "a router miss
+   is a note, never a verdict" invariant. Run it before every wave:
+   `node --env-file=.env.local scripts/route-menus.mjs --concurrency 4`.
+2. **`probe/AGENT-BRIEF-LITE.md`** (under 8KB) replaces `AGENT-BRIEF.md`
+   (26KB) for spawned agents. Same standing judgement rules (§7/§8 below,
+   condensed), plus a hard budget: 6 tool calls/restaurant, 60/batch, block
+   after 2 dead ends, never read `PLAYBOOK.md` whole, never dump raw HTML.
+3. **`scripts/cut-wave.mjs`** cuts a wave ONLY from rows the router attempted
+   and failed on (never raw/never-routed rows — `cut-batches.mjs` still owns
+   those). Each batch file is `{ tier, tried, restaurants }`: `tier` is
+   `"haiku"` only when every row already has a website or a router-found
+   platform (nothing left to discover), else `"sonnet"`. Spawn on the tier's
+   model — a haiku agent following a known URL to a known payload does not
+   need Sonnet's judgement to extract it.
+4. **`scripts/process-result.sh <result.json>`** replaces the four
+   hand-typed commands (§2 above) with one: check-shape → screen-menus →
+   copy to `ready-*.json` → check-shape again (refusing on a count mismatch
+   or a screener-manufactured `not_found`) → load-menus → one line appended
+   to `STATE.md` → one summary line printed. One coordinator round trip per
+   batch instead of four.
+
+**Blocked-row skip is now 30 days by default in `cut-wave.mjs`** (was 24h in
+`cut-batches.mjs`, still 24h there — that cutter feeds fresh, not-yet-routed
+rows where a same-day retry is less wasteful). A router/agent block
+(`needs-browser`, a bot wall, a dead platform) is a real finding; the next
+morning is too soon to spend a second agent re-discovering it. `cut-wave.mjs`
+also treats a `menu_lookups` row with `status = 'error'` (written only by the
+on-demand user-triggered lookup in `src/lib/db.ts`; the batch loader never
+writes `error`) as blocked for the same 30 days, then eligible again —
+`found`/`not_found` stay excluded forever, unchanged.
+
+New loop, full detail in `probe/RESUME.md` "The loop": router pass → cut a
+wave → spawn agents on `AGENT-BRIEF-LITE.md` at the batch's own tier →
+`process-result.sh` on each completion. Spawning stays paused until Calvin
+says go; this section is the plan he asked for, not a decision to resume.

@@ -1,0 +1,1474 @@
+[
+  {
+    "restaurantId": "10639",
+    "name": "Pacifica Breeze Cafe",
+    "sourceUrl": "https://www.coastnewsgroup.com/",
+    "confidence": "high",
+    "notes": "Restaurant's own Squarespace site's breeze-menu page is an empty shell with no prices; closure confirmed by two independent non-Yelp sources: the business's own Instagram closure announcement and a Coast News article naming Breeze Cafe and stating it will close in December. Permanent not_found.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "11101",
+    "name": "Bonchon National City",
+    "sourceUrl": "https://postmates.com/store/bonchon-national-city (Postmates/Uber Eats storefront)",
+    "confidence": "medium",
+    "notes": "Extracted from the store's React Query state payload (catalogSectionsMap), decoding double-escaped unicode. 49 deduped dishes across KOREAN FRIED CHICKEN, APPETIZERS, KOREAN DISHES, SIDES, DESSERTS, K-MEALS, DRINKS; a NEW ITEMS carousel section was deduped away as a duplicate of items already counted elsewhere. Price-cents distribution is scattered/POS-style with no consistent divisor pattern from 1.00-1.35, so no delivery-fee markup detected; prices filed as-is.",
+    "dishes": [
+      {
+        "name": "Drums",
+        "description": "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+        "price": "$21.29",
+        "section": "KOREAN FRIED CHICKEN"
+      },
+      {
+        "name": "Strips",
+        "description": "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+        "price": "$21.29",
+        "section": "KOREAN FRIED CHICKEN"
+      },
+      {
+        "name": "Wings",
+        "description": "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+        "price": "$21.29",
+        "section": "KOREAN FRIED CHICKEN"
+      },
+      {
+        "name": "Mixed",
+        "description": "Wings & Drumsticks, double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw. (*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+        "price": "$21.29",
+        "section": "KOREAN FRIED CHICKEN"
+      },
+      {
+        "name": "Boneless",
+        "description": "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+        "price": "$21.29",
+        "section": "KOREAN FRIED CHICKEN"
+      },
+      {
+        "name": "Sotteok Sotteok",
+        "description": "Popular Korean street food skewer of crispy, chewy rice cake and sausage, coated in sweet, spicy Yangnyeom sauce.",
+        "price": "$4.59",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "MoPo Corndog",
+        "description": "The Korean way to Corn Dog! Mozzarella cheese center in crispy breading with golden crunchy potato cubes with choice Soy Garlic brushed or sugar-cinnamon rolled. Choice of dipping sauce.",
+        "price": "$8.09",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Bulgogi Fries",
+        "description": "Bulgogi piled on our seasoned fries and topped with mozzarella, scallions and a drizzle of spicy mayo.  (*Contains sesame seeds or sesame seed oil.)",
+        "price": "$17.29",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Bao Buns",
+        "description": "Three steamed buns with cucumbers, coleslaw, spicy mayo and katsu sauce.  Your choice of Pork Belly, Fried Chicken, or Bulgogi. (*Contains sesame seeds or sesame seed oil.)",
+        "price": "$17.29",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Seoul Sampler",
+        "description": "All your favs!  2 drums, 4 wings, Bulgogi Fries, Pork Potstickers, Korean Street Corn and Coleslaw.  Your choice of Bonchon signature sauce and a dipping sauce. Feeds 2-3",
+        "price": "$42.59",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Korean Tacos",
+        "description": "Three soft flour tortilla tacos topped with lettuce, coleslaw, spicy mayo, buttermilk ranch and scallions. (*Contains sesame seeds or sesame seed oil.)",
+        "price": "$17.29",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Takoyaki",
+        "description": "Fried octopus dumplings drizzled with Kewpie Mayo, katsu sauce and topped with scallions.",
+        "price": "$10.99",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Shrimp Shumai",
+        "description": "Steamed or fried shrimp dumplings drizzled with spicy mayo & Soy Garlic sauce.",
+        "price": "$10.99",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Potstickers",
+        "description": "Eight fried dumplings, brushed with Bonchon signature sauce. Choice of pork or vegetable.",
+        "price": "$14.99",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "K-Chicken Sandwich",
+        "description": "Fried chicken breast brushed with a choice of signature flavor, topped with Korean Cucumber Salad*, Kewpie mayo on a brioche bun. Served with choice of side. (*Contains sesame seeds and/or sesame seed oil.)",
+        "price": "$17.29",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Fried Rice",
+        "description": "Fried rice, eggs, red bell pepper, onions, scallions, cooked with Soy Garlic sauce and topped with sesame seeds. (Contains sesame seeds or sesame seed oil.)",
+        "price": "$16.69",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Bibimbap",
+        "description": "Steamed rice topped with scrambled egg, lettuce, carrots, sauteed onions, spinach and mushrooms. (Contains sesame seeds or sesame seed oil.)",
+        "price": "$16.69",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Bulgogi",
+        "description": "Thinly sliced marinated USDA select beef, sauteed with mushrooms, scallions, sesame seeds and onions. Served with steamed rice. (*Contains sesame seeds or sesame seed oil.)",
+        "price": "$24.19",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Buldak",
+        "description": "Spicy chicken stir-fried with rice cakes, onions, and hot pepper sauce. Topped with scallions, sesame seeds, and mozzarella cheese. Served with steamed rice. (Contains sesame seeds or sesame seed oil.)",
+        "price": "$22.99",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Chicken Katsu",
+        "description": "Breaded chicken breast served drizzled with katsu sauce and spicy mayo topped with scallions. On steamed rice with a side of coleslaw. (*Contains sesame seeds or sesame seed oil.)",
+        "price": "$19.59",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Japchae",
+        "description": "Glass noodles, red bell pepper, carrots, onions, spinach, mushrooms and bulgogi stir-fried with Soy Garlic sauce and topped with sesame seeds. (*Contains sesame seeds or sesame seed oil.)",
+        "price": "$20.69",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Tteokbokki",
+        "description": "Rice cakes simmered in a spicy sauce with fish cakes, scallions, and onions, topped with mozzarella cheese and vegetable potstickers. Contains sesame seeds or sesame seed oil.",
+        "price": "$18.99",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Sesame Salad",
+        "description": "Romaine tossed with stir-fried kimchi, carrots, cabbage, red bell pepper, scallions and mozzarella cheese with toasted sesame dressing.",
+        "price": "$12.69",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Udon Noodle Soup",
+        "description": "Wheat noodles in a broth with mushrooms and topped with scallions. (*Bulgogi protein option contains sesame seeds or sesame seed oil.)",
+        "price": "$14.99",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Bonchon Gold Dust Sweet Potato Waffle Fries",
+        "description": "Crispy waffle-cut sweet potato fries and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+        "price": "$11.49",
+        "section": "SIDES"
+      },
+      {
+        "name": "Bonchon Gold Dust French Fries",
+        "description": "Medium cut potatoes deep-fried and lightly salted and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+        "price": "$8.09",
+        "section": "SIDES"
+      },
+      {
+        "name": "Bonchon Gold Dust Onion Rings",
+        "description": "Thick slices of onions in a crunch batter served golden brown and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+        "price": "$11.49",
+        "section": "SIDES"
+      },
+      {
+        "name": "Bonchon Gold Dust Fried Zucchini",
+        "description": "Breaded zucchini, lightly salted and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+        "price": "$11.49",
+        "section": "SIDES"
+      },
+      {
+        "name": "Sweet Potato Waffle Fries",
+        "description": "Crispy waffle-cut sweet potato fries.",
+        "price": "$10.39",
+        "section": "SIDES"
+      },
+      {
+        "name": "Seasoned French Fries",
+        "description": "French fries topped with a garlic seasoning, parmesan cheese, and parsley flakes.",
+        "price": "$10.39",
+        "section": "SIDES"
+      },
+      {
+        "name": "French Fries",
+        "description": "Medium cut potatoes deep-fried and lightly salted.",
+        "price": "$6.89",
+        "section": "SIDES"
+      },
+      {
+        "name": "Seasoned Fried Zucchini",
+        "description": "Breaded zucchini topped with garlic seasoning, parmesan cheese, and parsley flakes.",
+        "price": "$11.49",
+        "section": "SIDES"
+      },
+      {
+        "name": "Fried Zucchini",
+        "description": "Breaded zucchini, lightly salted.",
+        "price": "$10.39",
+        "section": "SIDES"
+      },
+      {
+        "name": "Onion Rings",
+        "description": "Thick slices of onions in a crunchy batter served golden brown.",
+        "price": "$10.39",
+        "section": "SIDES"
+      },
+      {
+        "name": "Korean Street Corn",
+        "description": "Grilled corn with Kewpie Mayo, mozzarella, Korean red chili flakes and topped with scallions.",
+        "price": "$8.09",
+        "section": "SIDES"
+      },
+      {
+        "name": "Korean Cucumber Salad",
+        "description": "Sliced cucumbers, onions, scallions, and Korean red chili powder.",
+        "price": "$5.79",
+        "section": "SIDES"
+      },
+      {
+        "name": "Edamame",
+        "description": "Steamed soybeans sprinkled with salt.",
+        "price": "$7.49",
+        "section": "SIDES"
+      },
+      {
+        "name": "Kimchi",
+        "description": "National Korean dish consisting of fermented chili peppers mixed with cabbage.",
+        "price": "$5.19",
+        "section": "SIDES"
+      },
+      {
+        "name": "Pickled Radish",
+        "description": "Juicy, crispy radish steeped in the perfect blend of slightly sweet and tangy flavors.",
+        "price": "$3.49",
+        "section": "SIDES"
+      },
+      {
+        "name": "Steamed Rice",
+        "description": "Fluffy, cooked white rice.",
+        "price": "$3.49",
+        "section": "SIDES"
+      },
+      {
+        "name": "Coleslaw",
+        "description": "Shredded cabbage and carrots fused with a sweet and creamy mayo-based sauce.",
+        "price": "$3.49",
+        "section": "SIDES"
+      },
+      {
+        "name": "1pc Korean Donut & Sauce",
+        "description": "One traditional soft and fluffy Korean donut coated with cinnamon and sugar on the outside, served with a sweet cream dipping sauce.",
+        "price": "$4.09",
+        "section": "DESSERTS"
+      },
+      {
+        "name": "2pc Korean Donuts & Sauce",
+        "description": "Two traditional soft and fluffy Korean donuts coated with cinnamon and sugar on the outside, served with a sweet cream dipping sauce.",
+        "price": "$6.89",
+        "section": "DESSERTS"
+      },
+      {
+        "name": "K-Meal To-Go for 4-6",
+        "description": "12 wings or boneless with 6 drumsticks and two sides.(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+        "price": "$52.89",
+        "section": "K-MEALS"
+      },
+      {
+        "name": "K-Meal To-Go for 6-8",
+        "description": "30 wings or boneless with 10 drumsticks and three sides.(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+        "price": "$87.39",
+        "section": "K-MEALS"
+      },
+      {
+        "name": "K-Meal To-Go for 8-10",
+        "description": "45 wings or boneless with 14 drumsticks and four sides. (*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+        "price": "$123.09",
+        "section": "K-MEALS"
+      },
+      {
+        "name": "K-Box To-Go",
+        "description": "For the game or anytime!  50 wings or 50 boneless, fries and 5 dipping sauces.  For 6-8 people(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+        "price": "$109.29",
+        "section": "K-MEALS"
+      },
+      {
+        "name": "Pepsi Can",
+        "description": "",
+        "price": "$3.49",
+        "section": "DRINKS"
+      },
+      {
+        "name": "Water Bottle",
+        "description": "",
+        "price": "$3.49",
+        "section": "DRINKS"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9689",
+    "name": "Mustangs & Burros",
+    "sourceUrl": "http://places.singleplatform.com/mustangs-burros/menu",
+    "confidence": "medium",
+    "notes": "Restaurant's own estancialajolla.com page and OpenTable fetch both failed to yield prices (site is JS-rendered; OpenTable fetch errored/timed out). Filed from SinglePlatform's schema.org OfferCatalog JSON-LD, which is comprehensive and structured (117 items) and whose embedded address (9700 N. Torrey Pines Road, La Jolla, CA 92037) exactly matches the batch record. Includes Dinner food sections (Starters, Greens, Ranch Sides, From the Fire, To Share, Desserts) plus a full Beverages list (cocktails, mocktails, spirits, wine); all carry real USD prices.",
+    "dishes": [
+      {
+        "name": "Harvest Ranch Crudité",
+        "description": "avocado green goddess, black garlic hummus, market vegetables",
+        "price": "$18.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "Oxtail Terrine",
+        "description": "house pickled vegetables, tarragon mustard, grilled bread",
+        "price": "$22.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "Baja Shrimp Cocktail",
+        "description": "clamato, local avocado, cucumber, jalapeno, house made saladitas",
+        "price": "$24.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "Chilled Heirloom Tomato Gazpacho",
+        "description": "local stone crab, avocado, grilled sourdough",
+        "price": "$22.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "Smoked Whale Cove Mussel Tartine",
+        "description": "smoked mussels, roasted tomato, garlic confit",
+        "price": "$19.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "Baja Catch of the Day Crudo",
+        "description": "citrus, strawberry, scallion, chili oil, sea salt",
+        "price": "$24.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "Fried Chicken Bites & Caviar",
+        "description": "crème fraîche, chives",
+        "price": "$26.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "Kumai Oysters on the Half Shell",
+        "description": "mignonette, cocktail sauce, horseradish",
+        "price": "$20.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "Iberico Secreto Pork Belly",
+        "description": "jalapeno spoonbread, estancia hot honey",
+        "price": "$23.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "The Ranch Wedge",
+        "description": "point reyes blue cheese, pancetta, blistered tomato, hibiscus pickled shallots, creamy tarragon dressing",
+        "price": "$18.00",
+        "section": "Dinner / Greens"
+      },
+      {
+        "name": "Stone Fruit & Herb Salad",
+        "description": "cucumber, fennel, feta, estancia honey-lime vinaigrette",
+        "price": "$18.00",
+        "section": "Dinner / Greens"
+      },
+      {
+        "name": "Kale Caesar, Ranch Style",
+        "description": "parmesan, white anchovy, brioche, lemon",
+        "price": "$19.00",
+        "section": "Dinner / Greens"
+      },
+      {
+        "name": "Fire-Roasted Corn Ribs",
+        "description": "garlic-lime crema",
+        "price": "$12.00",
+        "section": "Dinner / Ranch Sides"
+      },
+      {
+        "name": "Lobster Campanelli",
+        "description": "herbs, lemon, olive oil",
+        "price": "$18.00",
+        "section": "Dinner / Ranch Sides"
+      },
+      {
+        "name": "Crispy Smashed Potatoes",
+        "description": "sauce vert, trout roe, chives",
+        "price": "$14.00",
+        "section": "Dinner / Ranch Sides"
+      },
+      {
+        "name": "Charred Broccolini",
+        "description": "chili oil, parmesan, breadcrumbs",
+        "price": "$13.00",
+        "section": "Dinner / Ranch Sides"
+      },
+      {
+        "name": "Cowboy Caviar",
+        "description": "beans, peppers, citrus vinaigrette",
+        "price": "$11.00",
+        "section": "Dinner / Ranch Sides"
+      },
+      {
+        "name": "Blistered Shishitos",
+        "description": "bird's eye chile vinaigrette, smoked bonito",
+        "price": "$12.00",
+        "section": "Dinner / Ranch Sides"
+      },
+      {
+        "name": "Smoked Half Chicken",
+        "description": "heirloom carrots, charred cabbage, mustard jus",
+        "price": "$28.00",
+        "section": "Dinner / From the Fire"
+      },
+      {
+        "name": "Kurobuta Bone-in Pork Chop",
+        "description": "pepperonata, charred onion, greens, chorizo cornbread",
+        "price": "$46.00",
+        "section": "Dinner / From the Fire"
+      },
+      {
+        "name": "Braised Short Rib Osso Buco",
+        "description": "summer beans, charred peppers, blue corn polenta",
+        "price": "$48.00",
+        "section": "Dinner / From the Fire"
+      },
+      {
+        "name": "Wagyu New York Strip",
+        "description": "beef tallow smoked potatoes, charred spring onion chimichurri",
+        "price": "$72.00",
+        "section": "Dinner / From the Fire"
+      },
+      {
+        "name": "Spot Tail Seabass a la Plancha",
+        "description": "fried green tomatoes, charred corn & okra succotash",
+        "price": "$46.00",
+        "section": "Dinner / From the Fire"
+      },
+      {
+        "name": "Stuffed Peppers, Ranch Garden Style",
+        "description": "chickpeas, wild mushroom, romesco",
+        "price": "$30.00",
+        "section": "Dinner / From the Fire"
+      },
+      {
+        "name": "Wagyu Burger",
+        "description": "onion & fennel jam, arugula, hook's sharp cheddar, roasted garlic aioli, served with fries",
+        "price": "$29.00",
+        "section": "Dinner / From the Fire"
+      },
+      {
+        "name": "SoCal Seafood Boil",
+        "description": "mussels, prawns, rock crab, corn, potatoes, charred pain au levain",
+        "price": "$95.00",
+        "section": "Dinner / To Share"
+      },
+      {
+        "name": "32oz Wagyu Tomahawk",
+        "description": "twice baked potato, charred broccolini, chili citrus butter, smoked salt",
+        "price": "$185.00",
+        "section": "Dinner / To Share"
+      },
+      {
+        "name": "Cast Iron Stone Fruit & Berry Crumble*",
+        "description": "toasted pecan, bourbon caramel ice cream",
+        "price": "$15.00",
+        "section": "Dinner / Desserts"
+      },
+      {
+        "name": "Cocoa Noir Truffle Cake",
+        "description": "amarena cherries, vanilla bean ice cream",
+        "price": "$15.00",
+        "section": "Dinner / Desserts"
+      },
+      {
+        "name": "Chef's Seasonal Sorbet",
+        "description": "",
+        "price": "$15.00",
+        "section": "Dinner / Desserts"
+      },
+      {
+        "name": "Pacific Pearl Martini",
+        "description": "condesa prickly pear gin, vermouth, orange bitters, prosecco",
+        "price": "$22.00",
+        "section": "Beverages / Signature Cocktails"
+      },
+      {
+        "name": "Rancho Flower Margarita",
+        "description": "casa dragones anejo, ancho reyes liqueur, el corazón puree, st. germain elderflower",
+        "price": "$21.00",
+        "section": "Beverages / Signature Cocktails"
+      },
+      {
+        "name": "Moonrise Orchard",
+        "description": "martingale cognac, sauvignon blanc, pear syrup, spiced pear liqueur, lemon, prosecco",
+        "price": "$20.00",
+        "section": "Beverages / Signature Cocktails"
+      },
+      {
+        "name": "Sea Smoke",
+        "description": "fino sherry, charred lemon cordial, whiskey atomizer, kelp tincture",
+        "price": "$21.00",
+        "section": "Beverages / Signature Cocktails"
+      },
+      {
+        "name": "Garden House Spritz",
+        "description": "basil cordial, dry vermouth, sparkling brut",
+        "price": "$19.00",
+        "section": "Beverages / Signature Cocktails"
+      },
+      {
+        "name": "Saddle & Smoke",
+        "description": "angels envy bourbon, charred apricot syrup, lime, angostura bitters",
+        "price": "$20.00",
+        "section": "Beverages / Signature Cocktails"
+      },
+      {
+        "name": "Lavender Vale",
+        "description": "blueberry lavender mint, lemon juice, soda water",
+        "price": "$13.00",
+        "section": "Beverages / Mocktails"
+      },
+      {
+        "name": "Champions Garden",
+        "description": "opal basil cordial, non-alcoholic prosecco",
+        "price": "$13.00",
+        "section": "Beverages / Mocktails"
+      },
+      {
+        "name": "Coastal Juniper",
+        "description": "coastal spritz, grapefruit syrup",
+        "price": "$13.00",
+        "section": "Beverages / Mocktails"
+      },
+      {
+        "name": "Cincoro",
+        "description": "",
+        "price": "$20.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Flecha Azul",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Clase Azul",
+        "description": "",
+        "price": "$32.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Casa Dragones",
+        "description": "",
+        "price": "$22.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Casa Dragones Joven",
+        "description": "",
+        "price": "$50.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Lalo",
+        "description": "",
+        "price": "$20.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Hacienda de Chihuauhua",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Patron",
+        "description": "",
+        "price": "$16.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Volcan",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Espolon",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Chamucos",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Volcan De Mi Tierra",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Hacienda De Chihuahua",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Nosotros",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Blanco"
+      },
+      {
+        "name": "Cincoro",
+        "description": "",
+        "price": "$24.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Flecha Azul",
+        "description": "",
+        "price": "$21.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Clase Azul",
+        "description": "",
+        "price": "$38.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Casa Dragones",
+        "description": "",
+        "price": "$36.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Asombroso",
+        "description": "",
+        "price": "$23.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Codigo 1530 Rosa*",
+        "description": "",
+        "price": "$25.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Komos Rosa",
+        "description": "",
+        "price": "$26.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Hacienda de Chihuauhua",
+        "description": "",
+        "price": "$27.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Patron",
+        "description": "",
+        "price": "$26.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Chamucos",
+        "description": "",
+        "price": "$31.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Hussong's",
+        "description": "",
+        "price": "$32.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Ambroso la Rosa",
+        "description": "",
+        "price": "$33.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Volcan De Mi Tierra",
+        "description": "",
+        "price": "$29.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Nosotros",
+        "description": "",
+        "price": "$22.00",
+        "section": "Beverages / Reposado"
+      },
+      {
+        "name": "Cincoro",
+        "description": "",
+        "price": "$35.00",
+        "section": "Beverages / Añejo"
+      },
+      {
+        "name": "Don Juilo",
+        "description": "",
+        "price": "$24.00",
+        "section": "Beverages / Añejo"
+      },
+      {
+        "name": "Asombroso 11yr",
+        "description": "",
+        "price": "$35.00",
+        "section": "Beverages / Añejo"
+      },
+      {
+        "name": "Patron",
+        "description": "",
+        "price": "$24.00",
+        "section": "Beverages / Añejo"
+      },
+      {
+        "name": "Volcan De Mi Tierra",
+        "description": "",
+        "price": "$25.00",
+        "section": "Beverages / Añejo"
+      },
+      {
+        "name": "Chamucos",
+        "description": "",
+        "price": "$26.00",
+        "section": "Beverages / Añejo"
+      },
+      {
+        "name": "Hussong's",
+        "description": "",
+        "price": "$27.00",
+        "section": "Beverages / Añejo"
+      },
+      {
+        "name": "Tears of Llorona",
+        "description": "",
+        "price": "$55.00",
+        "section": "Beverages / Añejo"
+      },
+      {
+        "name": "Don Julio 1942",
+        "description": "",
+        "price": "$45.00",
+        "section": "Beverages / Añejo"
+      },
+      {
+        "name": "Clase Azul Gold",
+        "description": "",
+        "price": "$55.00",
+        "section": "Beverages / Añejo"
+      },
+      {
+        "name": "Nosotros",
+        "description": "",
+        "price": "$28.00",
+        "section": "Beverages / Añejo"
+      },
+      {
+        "name": "Cincoro",
+        "description": "",
+        "price": "$150.00",
+        "section": "Beverages / Extra Añejo"
+      },
+      {
+        "name": "Flecha Azul",
+        "description": "",
+        "price": "$55.00",
+        "section": "Beverages / Extra Añejo"
+      },
+      {
+        "name": "Patron",
+        "description": "",
+        "price": "$40.00",
+        "section": "Beverages / Extra Añejo"
+      },
+      {
+        "name": "Komas",
+        "description": "",
+        "price": "$65.00",
+        "section": "Beverages / Extra Añejo"
+      },
+      {
+        "name": "Asombroso Gran Reserva",
+        "description": "",
+        "price": "$150.00",
+        "section": "Beverages / Extra Añejo"
+      },
+      {
+        "name": "Hussong's Platinum Anejo",
+        "description": "",
+        "price": "$34.00",
+        "section": "Beverages / Extra Añejo"
+      },
+      {
+        "name": "Gran Centenario Leyenda",
+        "description": "",
+        "price": "$40.00",
+        "section": "Beverages / Extra Añejo"
+      },
+      {
+        "name": "Hacienda de Chihuauhua",
+        "description": "",
+        "price": "$26.00",
+        "section": "Beverages / Extra Añejo"
+      },
+      {
+        "name": "Dos Hombres",
+        "description": "",
+        "price": "$19.00",
+        "section": "Beverages / Mezcal"
+      },
+      {
+        "name": "Cutwater Spirits",
+        "description": "",
+        "price": "$24.00",
+        "section": "Beverages / Mezcal"
+      },
+      {
+        "name": "Del Maguey Vida Mezcal",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Mezcal"
+      },
+      {
+        "name": "Ilegal Reposado",
+        "description": "",
+        "price": "$22.00",
+        "section": "Beverages / Mezcal"
+      },
+      {
+        "name": "Ilegal Anejo",
+        "description": "",
+        "price": "$26.00",
+        "section": "Beverages / Mezcal"
+      },
+      {
+        "name": "Casamigos Mezca",
+        "description": "",
+        "price": "$20.00",
+        "section": "Beverages / Mezcal"
+      },
+      {
+        "name": "Fosforo Ensemble",
+        "description": "",
+        "price": "$22.00",
+        "section": "Beverages / Mezcal"
+      },
+      {
+        "name": "Fosforo Tobala",
+        "description": "",
+        "price": "$32.00",
+        "section": "Beverages / Mezcal"
+      },
+      {
+        "name": "Fosforo Tobala Penca",
+        "description": "",
+        "price": "$40.00",
+        "section": "Beverages / Mezcal"
+      },
+      {
+        "name": "Nosotros Mezcal Mexicano",
+        "description": "",
+        "price": "$20.00",
+        "section": "Beverages / Mezcal"
+      },
+      {
+        "name": "Flecha Azul",
+        "description": "",
+        "price": "$25.00",
+        "section": "Beverages / Cristalino"
+      },
+      {
+        "name": "The Butterfly Cannon",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Cristalino"
+      },
+      {
+        "name": "Gran Centenario",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Cristalino"
+      },
+      {
+        "name": "Volcan de Mi Tierra Cristal",
+        "description": "",
+        "price": "$32.00",
+        "section": "Beverages / Cristalino"
+      },
+      {
+        "name": "Kim Crawford, Sauvignon Blanc, NZ",
+        "description": "",
+        "price": "$17.00",
+        "section": "Beverages / Whites"
+      },
+      {
+        "name": "Emmolo Sauvignon Blanc, Napa Valley",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Whites"
+      },
+      {
+        "name": "Stags Leap, Chardonnay, Napa Valley",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Whites"
+      },
+      {
+        "name": "Auteur, Chardonnay, Sonoma Coast",
+        "description": "",
+        "price": "$24.00",
+        "section": "Beverages / Whites"
+      },
+      {
+        "name": "Terlato Pinot Grigio, Italy",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Whites"
+      },
+      {
+        "name": "Auteur, Pinot Noir, Sonoma Coast",
+        "description": "",
+        "price": "$25.00",
+        "section": "Beverages / Reds"
+      },
+      {
+        "name": "Justin Vineyards, Cabernet Sauvignon, Paso Robles",
+        "description": "",
+        "price": "$21.00",
+        "section": "Beverages / Reds"
+      },
+      {
+        "name": "Caymus, Cabernet Sauvignon, California",
+        "description": "",
+        "price": "$45.00",
+        "section": "Beverages / Reds"
+      },
+      {
+        "name": "Terrazas Riserva, Malbec, Mendonza, Argentina",
+        "description": "",
+        "price": "$17.00",
+        "section": "Beverages / Reds"
+      },
+      {
+        "name": "Two Hands \"Gnarly Dudes\" Shiraz, Barossa Valley, Australia",
+        "description": "",
+        "price": "$19.00",
+        "section": "Beverages / Reds"
+      },
+      {
+        "name": "Jardin De Tru, Red Blend, Baja California",
+        "description": "",
+        "price": "$19.00",
+        "section": "Beverages / Baja Region Wines"
+      },
+      {
+        "name": "Corona Del Valle, Merlot, Baja California",
+        "description": "",
+        "price": "$24.00",
+        "section": "Beverages / Baja Region Wines"
+      },
+      {
+        "name": "Casa Jipi, Sauvignon Blanc, Baja California",
+        "description": "",
+        "price": "$17.00",
+        "section": "Beverages / Baja Region Wines"
+      },
+      {
+        "name": "Chateau Domecq Select Harvest, White Blend",
+        "description": "",
+        "price": "$16.00",
+        "section": "Beverages / Baja Region Wines"
+      },
+      {
+        "name": "Lallier Brut R Series, Champagne, France",
+        "description": "",
+        "price": "$17.00",
+        "section": "Beverages / Bubbles"
+      },
+      {
+        "name": "Lallier Brut Rose, Champagne, France",
+        "description": "",
+        "price": "$21.00",
+        "section": "Beverages / Bubbles"
+      },
+      {
+        "name": "Cotes des Rose, Languedoc, France",
+        "description": "",
+        "price": "$18.00",
+        "section": "Beverages / Rosé"
+      }
+    ]
+  },
+  {
+    "restaurantId": "12170",
+    "name": "Piper",
+    "sourceUrl": "http://places.singleplatform.com/piper-19/menu",
+    "confidence": "medium",
+    "notes": "Restaurant's own site (piperoceanside.com /menus/) publishes full dish names and descriptions in schema.org Menu JSON-LD with genuinely zero prices anywhere (confirmed by both a price-field grep and a raw-text proximity grep around dish names) - own site not usable as a price source. Filed instead from the SinglePlatform mirror of the same catalog (matching dish names/descriptions, e.g. same items appear on both), parsed from its structured item-left/item-title/price HTML. 42 dishes across Breakfast Menu (Farm Fresh Breakfast, Sides) and Dinner (Starters, Pasta & Grains, Ranch and Water Entrees, family style large plates). All 53 raw price occurrences on the page end in .00 with no markup/fee divisor pattern found (some duplicate across a summary list, hence 42 unique dishes vs 53 raw price occurrences).",
+    "dishes": [
+      {
+        "name": "Superfood Bowl",
+        "description": "frozen acai, sunflower butter, bee pollen, seasonal fruit, hemp & chia seed granola",
+        "price": "$16.00",
+        "section": "Breakfast Menu / Farm Fresh Breakfast"
+      },
+      {
+        "name": "Market Fruit",
+        "description": "piper granola, yogurt foam, honey",
+        "price": "$14.00",
+        "section": "Breakfast Menu / Farm Fresh Breakfast"
+      },
+      {
+        "name": "Oat & Grain Bowl",
+        "description": "grain medley, harissa chickpeas, market vegetables, frisee, cilantro pesto",
+        "price": "$14.00",
+        "section": "Breakfast Menu / Farm Fresh Breakfast"
+      },
+      {
+        "name": "Peach Crisp Oatmeal",
+        "description": "slow cooked peaches, brown sugar streusel",
+        "price": "$14.00",
+        "section": "Breakfast Menu / Farm Fresh Breakfast"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "cucumber, radishes, poblano cream cheese, sprouts, toasted sesame",
+        "price": "$19.00",
+        "section": "Breakfast Menu / Farm Fresh Breakfast"
+      },
+      {
+        "name": "Two Eggs any Style",
+        "description": "thyme & onion confit potatoes, choice of protein, local bread",
+        "price": "$17.00",
+        "section": "Breakfast Menu / Farm Fresh Breakfast"
+      },
+      {
+        "name": "Brioche French Toast",
+        "description": "Grand Marnier custard, summer berry compote, whipped Chantilly cream",
+        "price": "$17.00",
+        "section": "Breakfast Menu / Farm Fresh Breakfast"
+      },
+      {
+        "name": "Piper Croissant Monsieur",
+        "description": "rosemary ham, Gruyère cheese, mornay sauce, croissant, thyme and onion confit potatoes",
+        "price": "$20.00",
+        "section": "Breakfast Menu / Farm Fresh Breakfast"
+      },
+      {
+        "name": "Farmer's Omelet",
+        "description": "roasted corn, shishito peppers, summer squash, gruyère cheese",
+        "price": "$18.00",
+        "section": "Breakfast Menu / Farm Fresh Breakfast"
+      },
+      {
+        "name": "Piper's Chilaquiles",
+        "description": "guajillo salsa, Viva tortillas, refried beans, queso fresco, pickled red onion, cilantro crema, sunny side up egg",
+        "price": "$20.00",
+        "section": "Breakfast Menu / Farm Fresh Breakfast"
+      },
+      {
+        "name": "Chili Verde Pork Benedict",
+        "description": "slow cooked duroc pork, tomatillo salsa, hollandaise, english muffin, cilantro sprouts, house breakfast potatoes",
+        "price": "$21.00",
+        "section": "Breakfast Menu / Farm Fresh Breakfast"
+      },
+      {
+        "name": "Smoked Bacon",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast Menu / Sides"
+      },
+      {
+        "name": "Pork Sausage",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast Menu / Sides"
+      },
+      {
+        "name": "Chicken Apple Sausage",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast Menu / Sides"
+      },
+      {
+        "name": "2 Eggs",
+        "description": "",
+        "price": "$6.00",
+        "section": "Breakfast Menu / Sides"
+      },
+      {
+        "name": "Single Pancake",
+        "description": "",
+        "price": "$5.00",
+        "section": "Breakfast Menu / Sides"
+      },
+      {
+        "name": "Greek Yogurt",
+        "description": "",
+        "price": "$6.00",
+        "section": "Breakfast Menu / Sides"
+      },
+      {
+        "name": "Thyme & Onion Confit Potatoes",
+        "description": "",
+        "price": "$5.00",
+        "section": "Breakfast Menu / Sides"
+      },
+      {
+        "name": "House Cured Smoked Salmon",
+        "description": "",
+        "price": "$12.00",
+        "section": "Breakfast Menu / Sides"
+      },
+      {
+        "name": "Local Bread",
+        "description": "",
+        "price": "$4.00",
+        "section": "Breakfast Menu / Sides"
+      },
+      {
+        "name": "scallop crudo",
+        "description": "buttermilk, yuzu, poppy seeds, radish, gooseberries, chive oil",
+        "price": "$18.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "grilled octopus",
+        "description": "pipian, purslane, radish, spiced pumpkin seeds",
+        "price": "$20.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "oven roasted mussels",
+        "description": "rosemary, San Diego&#x27;s finest beer, preserved lemons,confit cherry tomatoes",
+        "price": "$20.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "whipped smoked eggplant (veg)",
+        "description": "green chickpea falafel, cherry tomatoes, crumbled goat cheese",
+        "price": "$16.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "salanova greens (veg)",
+        "description": "strawberries, strawberry vinaigrette, candied walnuts, goat cheese",
+        "price": "$16.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "grilled asparagus (veg)",
+        "description": "seaweed butter, sea beans, morel mushrooms",
+        "price": "$18.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "salt roasted new potatoes",
+        "description": "black garlic aioli, black truffle pecorino",
+        "price": "$16.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "spring pea soup",
+        "description": "crème fraiche, mint, crab dumpling, pea blossoms",
+        "price": "$18.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "smoked kurobuta pork",
+        "description": "apple mole, savory bread pudding, Cipollini onion, sprouts",
+        "price": "$16.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "parker rolls",
+        "description": "honey butter, sea salt, espelette, honeycomb",
+        "price": "$14.00",
+        "section": "Dinner / Starters"
+      },
+      {
+        "name": "nonna's bolognese",
+        "description": "rigatoni, pancetta, beef, pork, herbs",
+        "price": "$25.00",
+        "section": "Dinner / Pasta & Grains"
+      },
+      {
+        "name": "duck ragout",
+        "description": "pappardella, parmesan, pancetta, wild mushrooms",
+        "price": "$28.00",
+        "section": "Dinner / Pasta & Grains"
+      },
+      {
+        "name": "saffron risotto",
+        "description": "roasted cherry tomatoes, artichokes, broccoli rabe, garlic aioli",
+        "price": "$26.00",
+        "section": "Dinner / Pasta & Grains"
+      },
+      {
+        "name": "mary's organic chicken",
+        "description": "chicken jus, olives, preserved lemons, caper berries, almonds, spring greens, chickpea panisse",
+        "price": "$35.00",
+        "section": "Dinner / Ranch and Water Entrees"
+      },
+      {
+        "name": "catch of the day",
+        "description": "mussel green curry, Japanese eggplant, radishes, sprouts",
+        "price": "$36.00",
+        "section": "Dinner / Ranch and Water Entrees"
+      },
+      {
+        "name": "braised short rib",
+        "description": "onion soubise, asparagus, Cipollini onion, almond crumble",
+        "price": "$31.00",
+        "section": "Dinner / Ranch and Water Entrees"
+      },
+      {
+        "name": "Steak Frites",
+        "description": "grilled prime Brandt Beef New York strip, bone marrow, watercress, chimichurri, bordelaise, french fries",
+        "price": "$62.00",
+        "section": "Dinner / Ranch and Water Entrees"
+      },
+      {
+        "name": "Piper's Burger",
+        "description": "bacon-onion jam, heirloom tomato, bibb lettuce, pimento cheese, cheese crisp",
+        "price": "$21.00",
+        "section": "Dinner / Ranch and Water Entrees"
+      },
+      {
+        "name": "whole branzino",
+        "description": "smoked chili oil, pickled peppers, red onion, cherry tomatoes, capers",
+        "price": "$80.00",
+        "section": "Dinner / family style large plates"
+      },
+      {
+        "name": "mary's organic chicken",
+        "description": "chicken jus, olives, preserved lemons, caper berries, almonds, spring greens, chickpea panisse",
+        "price": "$75.00",
+        "section": "Dinner / family style large plates"
+      },
+      {
+        "name": "chateaubriand",
+        "description": "bourguignon sauce, sunchokes, Cipollini onions",
+        "price": "$100.00",
+        "section": "Dinner / family style large plates"
+      },
+      {
+        "name": "whole roasted cauliflower",
+        "description": "fondue, pomegranates, toasted almonds",
+        "price": "$23.00",
+        "section": "Dinner / family style large plates"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10987",
+    "name": "Carlsbad Danish Bakery",
+    "sourceUrl": "https://order.online/store/carlsbad-danish-bakery-carlsbad-25108819/",
+    "confidence": "medium",
+    "notes": "Restaurant's carlsbadbakery.shop site 404s. Filed from the order.online white-label ordering storefront, whose page (2805 Roosevelt Street, Carlsbad) matches the batch address; parsed from an embedded JSON payload (name/description/displayPrice fields) rather than rendered HTML. 30 deduped dishes (each item appeared twice in the raw payload - list view + modal - and was deduped by name+price).",
+    "dishes": [
+      {
+        "name": "Blossom Pithivier (Gluten Free)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Brownie Choc",
+        "description": "",
+        "price": "$4.30",
+        "section": "Menu"
+      },
+      {
+        "name": "Latte 12oz",
+        "description": "With a single cup of Lavazza coffee, you can feel the unique Italian lifestyle, full of passion, creativity, and attention to detail",
+        "price": "$4.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Quiche",
+        "description": "",
+        "price": "$6.90",
+        "section": "Menu"
+      },
+      {
+        "name": "Flourless Cake Gluten Free",
+        "description": "",
+        "price": "$4.90",
+        "section": "Menu"
+      },
+      {
+        "name": "Coffee Cake Cinnamon",
+        "description": "",
+        "price": "$3.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Mocha",
+        "description": "With a single cup of Lavazza coffee, you can feel the unique Italian lifestyle, full of passion, creativity, and attention to detail",
+        "price": "$4.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Rainbow Bar (Almond Cake)",
+        "description": "",
+        "price": "$6.90",
+        "section": "Menu"
+      },
+      {
+        "name": "Drip Coffee 12oz",
+        "description": "With a single cup of Lavazza coffee, you can feel the unique Italian lifestyle, full of passion, creativity, and attention to detail",
+        "price": "$3.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Kringle",
+        "description": "",
+        "price": "$3.30",
+        "section": "Menu"
+      },
+      {
+        "name": "Copenhagen Square",
+        "description": "",
+        "price": "$3.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Pain Au Chocolate",
+        "description": "",
+        "price": "$3.90",
+        "section": "Menu"
+      },
+      {
+        "name": "Croissant",
+        "description": "",
+        "price": "$3.70",
+        "section": "Menu"
+      },
+      {
+        "name": "Muffin",
+        "description": "",
+        "price": "$3.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Strudel",
+        "description": "",
+        "price": "$3.90",
+        "section": "Menu"
+      },
+      {
+        "name": "Capuccino 8oz",
+        "description": "With a single cup of Lavazza coffee, you can feel the unique Italian lifestyle, full of passion, creativity, and attention to detail",
+        "price": "$3.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Americano 8oz",
+        "description": "With a single cup of Lavazza coffee, you can feel the unique Italian lifestyle, full of passion, creativity, and attention to detail",
+        "price": "$3.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Vanilla Cupcake",
+        "description": "",
+        "price": "$3.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Carrot Cake Cupcake",
+        "description": "",
+        "price": "$3.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Red Velvet Cupcake",
+        "description": "",
+        "price": "$3.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Chocolate Cupcake",
+        "description": "",
+        "price": "$3.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Blue Velvet Cupcake",
+        "description": "",
+        "price": "$3.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Cheezy",
+        "description": "",
+        "price": "$2.90",
+        "section": "Menu"
+      },
+      {
+        "name": "Chocochip Cookie",
+        "description": "",
+        "price": "$1.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Danish Square",
+        "description": "",
+        "price": "$2.90",
+        "section": "Menu"
+      },
+      {
+        "name": "Danish Waffle",
+        "description": "",
+        "price": "$2.90",
+        "section": "Menu"
+      },
+      {
+        "name": "Coconut Macaroon",
+        "description": "",
+        "price": "$1.90",
+        "section": "Menu"
+      },
+      {
+        "name": "Pumpkin Cookie",
+        "description": "",
+        "price": "$2.90",
+        "section": "Menu"
+      },
+      {
+        "name": "Bear Claw",
+        "description": "",
+        "price": "$2.90",
+        "section": "Menu"
+      },
+      {
+        "name": "Marzipan Balls",
+        "description": "",
+        "price": "$2.50",
+        "section": "Menu"
+      }
+    ]
+  }
+]

@@ -1,0 +1,921 @@
+[
+  {
+    "restaurantId": "798",
+    "name": "Manta Pizza",
+    "sourceUrl": "https://seaworld.com/san-diego/dining/manta-pizza/",
+    "confidence": "low",
+    "notes": "SeaWorld San Diego dining-stand page describes the food but publishes no itemized prices; site-wide note says 'Menu, prices and dine offerings are subject to change without notice.' Yelp/TikTok reviews mention prices ($13-20) but that is hearsay, not a published source. It is inside the park with no independent delivery-platform listing. Treated as a captive theme-park concession stand.",
+    "dishes": [],
+    "blocked": "theme-park concession stand: no itemized menu prices published anywhere (official SeaWorld page has no prices; only reviews mention prices, which is hearsay)"
+  },
+  {
+    "restaurantId": "8612",
+    "name": "Sara's Bakery",
+    "sourceUrl": "https://www.yelp.com/biz/sarahs-bakery-spring-valley",
+    "confidence": "low",
+    "notes": "Small cash-only bakery (per Yellow Pages), no website. Not found on DoorDash/UberEats/Grubhub for Spring Valley CA (search only returned Spring Valley NY results, a different place). Only directories/reviews with no prices.",
+    "dishes": [],
+    "blocked": "no website and no delivery-platform presence found; only directory listings with no prices"
+  },
+  {
+    "restaurantId": "6834",
+    "name": "Michoacana Mia - SDSU",
+    "sourceUrl": "https://www.ubereats.com/store/la-michoacana-mia-college-area/UisjeYchVUqIBJo-ZsK0Jw",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://order.online/store/la-michoacana-mia-sdsu-25763568",
+    "notes": "Restaurant's own site (michoacanamia.com) lists flavors for this exact location (5971 University Ave Suite 307) but publishes no prices at all. Uber Eats store address matches batch exactly (5971 University Ave, San Diego, CA 92115); order.online listing for the same address shows comparable prices (e.g. Paletas $4.50, Elote $6.25), corroborating these are not inflated marketplace-only prices. Cents are conventional (.00/.25/.50/.75/.95/.99), no uniform-markup pattern.",
+    "dishes": [
+      {
+        "name": "Mangonada",
+        "description": "",
+        "price": "$7.75",
+        "section": "Mangonada"
+      },
+      {
+        "name": "Ice Cream (Nieves)",
+        "description": "",
+        "price": "$4.25",
+        "section": "Ice Cream (Nieves)"
+      },
+      {
+        "name": "Banana Split Ice Cream",
+        "description": "",
+        "price": "$9.99",
+        "section": "Ice Cream (Nieves)"
+      },
+      {
+        "name": "Esquimal Popsicle (Paletas)",
+        "description": "",
+        "price": "$4.75",
+        "section": "Popsicle (Paletas)"
+      },
+      {
+        "name": "Popsicle (Paletas)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Popsicle (Paletas)"
+      },
+      {
+        "name": "Popsicles (Docena de Paletas) (1 dz)",
+        "description": "",
+        "price": "$36.00",
+        "section": "Popsicle (Paletas)"
+      },
+      {
+        "name": "Choco Banana Popsicle",
+        "description": "",
+        "price": "$4.25",
+        "section": "Popsicle (Paletas)"
+      },
+      {
+        "name": "Biónicos",
+        "description": "",
+        "price": "$9.50",
+        "section": "Biónicos and Fruits (Biónicos y Frutas)"
+      },
+      {
+        "name": "Biónicos with a Nieve Scoop (Biónicos con Bola de Nieve)",
+        "description": "",
+        "price": "$11.50",
+        "section": "Biónicos and Fruits (Biónicos y Frutas)"
+      },
+      {
+        "name": "Strawberry with Milk (Fresas con Crema Chica)",
+        "description": "",
+        "price": "$8.25",
+        "section": "Biónicos and Fruits (Biónicos y Frutas)"
+      },
+      {
+        "name": "Fruit Cup (Vaso de Fruta)",
+        "description": "",
+        "price": "$6.25",
+        "section": "Biónicos and Fruits (Biónicos y Frutas)"
+      },
+      {
+        "name": "Regular Fruit Cup (Vaso de Fruta Regular)",
+        "description": "",
+        "price": "$9.50",
+        "section": "Biónicos and Fruits (Biónicos y Frutas)"
+      },
+      {
+        "name": "Pickled Pork Skin (Cueritos) (16 Oz)",
+        "description": "",
+        "price": "$5.95",
+        "section": "Extra"
+      },
+      {
+        "name": "Extra Pickled Pork Skin (Cueritos Extra)",
+        "description": "",
+        "price": "$1.75",
+        "section": "Extra"
+      },
+      {
+        "name": "Jalapeños",
+        "description": "",
+        "price": "$0.60",
+        "section": "Extra"
+      },
+      {
+        "name": "Banderilla",
+        "description": "",
+        "price": "$0.60",
+        "section": "Extra"
+      },
+      {
+        "name": "Agua Fresca",
+        "description": "",
+        "price": "$5.50",
+        "section": "Waters and Beverages (Aguas y Bebidas)"
+      },
+      {
+        "name": "Michelagua Large/Grande",
+        "description": "",
+        "price": "$12.00",
+        "section": "Waters and Beverages (Aguas y Bebidas)"
+      },
+      {
+        "name": "Michelagua Regular",
+        "description": "",
+        "price": "$5.95",
+        "section": "Waters and Beverages (Aguas y Bebidas)"
+      },
+      {
+        "name": "Regular Fresh Flavored Water Float (Agua Flotante Regular)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Waters and Beverages (Aguas y Bebidas)"
+      },
+      {
+        "name": "Regular Raspados (Raspados Regulares)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Raspados"
+      },
+      {
+        "name": "Regular Raspado Diablitos (Diablitos de Raspados Regulares)",
+        "description": "",
+        "price": "$8.75",
+        "section": "Raspados"
+      },
+      {
+        "name": "Nachos",
+        "description": "",
+        "price": "$5.50",
+        "section": "Snacks (Botanas)"
+      },
+      {
+        "name": "Rueditas",
+        "description": "",
+        "price": "$4.75",
+        "section": "Snacks (Botanas)"
+      },
+      {
+        "name": "Chips",
+        "description": "",
+        "price": "$3.25",
+        "section": "Snacks (Botanas)"
+      },
+      {
+        "name": "Tosti Corn (Tosti Esquite)",
+        "description": "",
+        "price": "$8.75",
+        "section": "Snacks (Botanas)"
+      },
+      {
+        "name": "Tostilocos Regular",
+        "description": "",
+        "price": "$8.75",
+        "section": "Snacks (Botanas)"
+      },
+      {
+        "name": "Prepared Fried Pork Rind (Chicharrón Preparado)",
+        "description": "",
+        "price": "$10.50",
+        "section": "Snacks (Botanas)"
+      },
+      {
+        "name": "Corn in a Cup (Esquite)",
+        "description": "",
+        "price": "$5.95",
+        "section": "Snacks (Botanas)"
+      },
+      {
+        "name": "Corn in a Cup with Hot Cheetos (Esquite con Hot Cheetos)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Snacks (Botanas)"
+      },
+      {
+        "name": "Chips with Cheese (Chips con Queso)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Snacks (Botanas)"
+      },
+      {
+        "name": "Corn on the Cob (Elote)",
+        "description": "",
+        "price": "$5.95",
+        "section": "Snacks (Botanas)"
+      },
+      {
+        "name": "Corn on the Cob with Hot Cheetos (Elote con Hot Cheetos)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Snacks (Botanas)"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7910",
+    "name": "Franco's Flapjack",
+    "sourceUrl": "https://www.yelp.com/biz/francos-flapjack-chula-vista",
+    "confidence": "low",
+    "notes": "Franco's Flapjack is a small local chain (Bonita, Poway, Alpine, and this Chula Vista/Broadway-and-Moss location). Yelp confirms the exact address (1037 Broadway, Chula Vista) under the plain name 'Franco's Flapjack'. Instagram says 'Order through DoorDash', but every DoorDash/order.online listing found (searched by name and via site:doordash.com) resolves only to the Bonita (4164 Bonita Rd) and Poway (14034 Poway Rd) branches - no store page found for the Chula Vista branch itself.",
+    "dishes": [],
+    "blocked": "no priced source found for this specific branch (1037 Broadway, Chula Vista); DoorDash only surfaces the chain's Bonita and Poway locations"
+  },
+  {
+    "restaurantId": "4815",
+    "name": "Madina Market Halal Fast Food",
+    "sourceUrl": "https://www.doordash.com/store/madina-market-san-diego-28034630/",
+    "confidence": "medium",
+    "notes": "Batch website halalchickenusa.com is NOT this restaurant's own site - it is a nationwide halal-chicken directory/aggregator ('HALAL CHICKEN USA...tracking 1,500+ locations'), so no first-party site exists. DoorDash store address matches exactly (3890 50th Street, San Diego). DoorDash's own MenuBookCategory metadata reports exactly 1 category / 12 items, matching what was extracted, so this is the complete DoorDash catalog (not a truncated read) even though all items fall in one 'Special Food Menu' section - consistent with this being primarily a halal market/butcher counter with a small hot-food menu.",
+    "dishes": [
+      {
+        "name": "Rice with Salmon",
+        "description": "",
+        "price": "$15.99",
+        "section": "Special Food Menu"
+      },
+      {
+        "name": "Spaghetti with Salmon",
+        "description": "",
+        "price": "$15.99",
+        "section": "Special Food Menu"
+      },
+      {
+        "name": "Rice with Goat Meat",
+        "description": "",
+        "price": "$15.00",
+        "section": "Special Food Menu"
+      },
+      {
+        "name": "Spaghetti with Goat Meat",
+        "description": "",
+        "price": "$15.00",
+        "section": "Special Food Menu"
+      },
+      {
+        "name": "Ugali with Goat Meat",
+        "description": "",
+        "price": "$15.00",
+        "section": "Special Food Menu"
+      },
+      {
+        "name": "Rice with Chicken Suqar",
+        "description": "",
+        "price": "$12.00",
+        "section": "Special Food Menu"
+      },
+      {
+        "name": "Spaghetti with Chicken Suqar",
+        "description": "",
+        "price": "$12.00",
+        "section": "Special Food Menu"
+      },
+      {
+        "name": "Ugali with Chicken Suqar",
+        "description": "",
+        "price": "$12.00",
+        "section": "Special Food Menu"
+      },
+      {
+        "name": "Chicken Samosa",
+        "description": "",
+        "price": "$2.00",
+        "section": "Special Food Menu"
+      },
+      {
+        "name": "Beef Samosa",
+        "description": "",
+        "price": "$2.00",
+        "section": "Special Food Menu"
+      },
+      {
+        "name": "Chabati",
+        "description": "",
+        "price": "$2.00",
+        "section": "Special Food Menu"
+      },
+      {
+        "name": "Mandasi",
+        "description": "",
+        "price": "$1.00",
+        "section": "Special Food Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8028",
+    "name": "Mimi’s Panini Italian Deli",
+    "sourceUrl": "https://www.ubereats.com/store/mimis-panini-1237-prospect-st/1UdAJ1npQGWV9rteFEfu0Q",
+    "confidence": "medium",
+    "notes": "Restaurant's own site (mimispanini.com) is a client-rendered Wix page with only hours/address, no menu content reachable via curl. Uber Eats store address matches batch exactly (1237 Prospect St, La Jolla). Prices cross-check against Yelp popular-dish snippets seen in search (Prosciutto Di Parma $17.00, Mortazza $16.00, Godfather $18.00) - all match. 28 items across 7 sections (The Classic, Panini, Pressed Panini, Build Your Own, Dolce, Drinks, Deli Case), plausible for a small deli.",
+    "dishes": [
+      {
+        "name": "Chicken Parmesan",
+        "description": "",
+        "price": "$18.00",
+        "section": "The Classic"
+      },
+      {
+        "name": "Meatball Sandwich",
+        "description": "",
+        "price": "$17.00",
+        "section": "The Classic"
+      },
+      {
+        "name": "Caprese",
+        "description": "",
+        "price": "$15.00",
+        "section": "Panini"
+      },
+      {
+        "name": "Contadino",
+        "description": "",
+        "price": "$16.00",
+        "section": "Panini"
+      },
+      {
+        "name": "Mortazza",
+        "description": "",
+        "price": "$16.00",
+        "section": "Panini"
+      },
+      {
+        "name": "Vegetariano",
+        "description": "",
+        "price": "$16.00",
+        "section": "Panini"
+      },
+      {
+        "name": "Godfather",
+        "description": "",
+        "price": "$18.00",
+        "section": "Panini"
+      },
+      {
+        "name": "Prosciutto Di Parma",
+        "description": "",
+        "price": "$17.00",
+        "section": "Panini"
+      },
+      {
+        "name": "Romano",
+        "description": "",
+        "price": "$17.00",
+        "section": "Panini"
+      },
+      {
+        "name": "Calabria",
+        "description": "",
+        "price": "$17.00",
+        "section": "Panini"
+      },
+      {
+        "name": "Capri",
+        "description": "",
+        "price": "$18.00",
+        "section": "Panini"
+      },
+      {
+        "name": "Tacchino",
+        "description": "",
+        "price": "$15.00",
+        "section": "Panini"
+      },
+      {
+        "name": "Classico",
+        "description": "",
+        "price": "$15.00",
+        "section": "Pressed Panini"
+      },
+      {
+        "name": "Olivia",
+        "description": "",
+        "price": "$17.00",
+        "section": "Pressed Panini"
+      },
+      {
+        "name": "Rustico",
+        "description": "",
+        "price": "$15.00",
+        "section": "Pressed Panini"
+      },
+      {
+        "name": "Focaccia",
+        "description": "",
+        "price": "$14.00",
+        "section": "Build Your Own"
+      },
+      {
+        "name": "Ciabatta",
+        "description": "",
+        "price": "$14.00",
+        "section": "Build Your Own"
+      },
+      {
+        "name": "Cannoli",
+        "description": "",
+        "price": "$7.00",
+        "section": "Dolce"
+      },
+      {
+        "name": "Tiramisu",
+        "description": "",
+        "price": "$7.00",
+        "section": "Dolce"
+      },
+      {
+        "name": "Nutella Focaccia",
+        "description": "",
+        "price": "$9.00",
+        "section": "Dolce"
+      },
+      {
+        "name": "La Siciliana",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coke",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Pellegrino",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Panna Water",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Celsius",
+        "description": "",
+        "price": "$4.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Fiji",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Mix Olives",
+        "description": "",
+        "price": "$7.50",
+        "section": "Deli Case"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8093",
+    "name": "Mood ALsham restaurant",
+    "sourceUrl": "https://www.instagram.com/mood.alsham/",
+    "confidence": "low",
+    "notes": "An Instagram reel for 'Mal Al Sham' gives the address '478 W Douglas Avenue, El Cajon, CA 92020' - matching the batch address exactly - so this is confirmed to be a branch of the Mal Al Sham Syrian-restaurant chain, apparently the successor to 'Uncle Feras Resturant' at the same address. However all priced sources found (malalsham.com, Grubhub, Uber Eats, DoorDash 'Abn al Sham') are for OTHER branches at different addresses (388 E Main St and 8575 Los Coches Rd, El Cajon) - no ordering page or priced menu found specifically for the 478 W Douglas Ave location.",
+    "dishes": [],
+    "blocked": "no priced source found for this specific branch (478 W Douglas Ave, El Cajon); menus found online belong to other branches of the same chain at different addresses"
+  },
+  {
+    "restaurantId": "12339",
+    "name": "La Michoacana Ice Cream",
+    "sourceUrl": "https://www.yelp.com/biz/la-michoacana-vista",
+    "confidence": "low",
+    "notes": "No website. A DoorDash listing for 'La Michoacana - Vista' exists but is at 906 South Santa Fe Avenue - a different address/store, not this one (170 Emerald Dr). A DoorDash 'La Michoacana Superior' hit is a different, unrelated LA-area chain (Monrovia/Duarte/Inglewood) - a same-name trap, not this restaurant. No delivery-platform page found matching 170 Emerald Dr, Vista.",
+    "dishes": [],
+    "blocked": "no priced source found matching this exact address (170 Emerald Dr, Vista); the delivery-platform hits found are for a different same-name store and an unrelated chain"
+  },
+  {
+    "restaurantId": "10519",
+    "name": "Get Baked Cookie Co.",
+    "sourceUrl": "https://www.instagram.com/getbakedcookie.co/",
+    "confidence": "low",
+    "notes": "Own site (getbakedcc.com) is fully client-rendered, no static content. Per its own Instagram bio and a home-bakery marketplace listing (thefrontporch.store), this is a cottage-food operation baked in a home kitchen, sold only at the Vista farmers market (Saturdays) and pop-ups - no fixed storefront (batch address is null), no delivery-platform presence, no prices found anywhere.",
+    "dishes": [],
+    "blocked": "cottage-food/home-kitchen seller with no storefront; no priced source found anywhere (site is client-rendered, sells only at farmers-market pop-ups)"
+  },
+  {
+    "restaurantId": "11825",
+    "name": "Tierra y Mar",
+    "sourceUrl": "https://files.harrahssocal.com/production/dining/Tierra-Y-Mar/Menus/Tierra-y-Mar-Main-Menu_JUL_2026.pdf",
+    "confidence": "high",
+    "notes": "First-party PDF menu (dated July 2026) linked directly from the restaurant's own page on harrahssocal.com, Harrah's SoCal casino resort's website; this is a full-service themed restaurant (site tags it 'restaurant' type, distinct from the property's 'bar' and 'grab-and-go' locations), not a concession stand. Also captured the separate Saturday/Sunday brunch menu PDF from the same page (linked as a section, prices unchanged where dishes repeat). One item, 'Pacific Rock Fish', is priced 'MP' (market price) with no fixed dollar amount and was excluded per the no-price-construction rule.",
+    "dishes": [
+      {
+        "name": "Guacamole",
+        "description": "Smashed Avocado Mixed with Charred Poblano Puree, Topped with Cilantro, Pepitas, Pomegranate, & Served with Fried Corn Tortillas",
+        "price": "$17.00",
+        "section": "Antojitos"
+      },
+      {
+        "name": "Shrimp Aguachile",
+        "description": "Shrimp Marinated in Chile-Lime Sauce Mixed with Cucumber, Red Onion Topped with Radish, Avocado & Cilantro, Served with Fried Corn Tortillas",
+        "price": "$22.00",
+        "section": "Antojitos"
+      },
+      {
+        "name": "Crab Cakes",
+        "description": "Served with Charred Poblano Aioli, Petite Frisee Salad Mixed with Citrus Segments, Pepitas, Radish & Tossed with Honey Citrus Vinaigrette",
+        "price": "$25.00",
+        "section": "Antojitos"
+      },
+      {
+        "name": "Additional Basket of Chips",
+        "description": "",
+        "price": "$5.00",
+        "section": "Antojitos / Chips & Salsa Martajada"
+      },
+      {
+        "name": "Salsa Sampler (fresca, morita, cruda)",
+        "description": "Upgrade to Salsa Sampler",
+        "price": "$9.00",
+        "section": "Antojitos / Chips & Salsa Martajada"
+      },
+      {
+        "name": "Taquitos - Chicken Tinga",
+        "description": "Topped with Queso Fresco, Crema, Salsa Cruda, Pico de Gallo, Radish, & Guacamole",
+        "price": "$18.00",
+        "section": "Antojitos / Taquitos"
+      },
+      {
+        "name": "Taquitos - Potato",
+        "description": "Topped with Queso Fresco, Crema, Salsa Cruda, Pico de Gallo, Radish, & Guacamole",
+        "price": "$16.00",
+        "section": "Antojitos / Taquitos"
+      },
+      {
+        "name": "Quesadilla - Chicken Tinga",
+        "description": "Filled with House Cheese Blend & Epazote Served with Guacamole, Salsa Morita & Pico de Gallo",
+        "price": "$14.00",
+        "section": "Antojitos / Quesadilla"
+      },
+      {
+        "name": "Quesadilla - Carne Asada",
+        "description": "Filled with House Cheese Blend & Epazote Served with Guacamole, Salsa Morita & Pico de Gallo",
+        "price": "$16.00",
+        "section": "Antojitos / Quesadilla"
+      },
+      {
+        "name": "Add Protein - With Chicken",
+        "description": "",
+        "price": "$8.00",
+        "section": "Antojitos / Add Protein"
+      },
+      {
+        "name": "Add Protein - With Shrimp (4)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Antojitos / Add Protein"
+      },
+      {
+        "name": "Add Protein - With Steak (6oz)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Antojitos / Add Protein"
+      },
+      {
+        "name": "Ensalada Organica",
+        "description": "Mixed Greens, Pomegranates, Citrus Segments, Queso de Cabra, Pepitas, Radish & Pecans, Tossed with Honey Citrus Vinaigrette",
+        "price": "$17.00",
+        "section": "Sopas Y Ensaladas"
+      },
+      {
+        "name": "Ensalada de la Casa (House Salad)",
+        "description": "Mixed Greens, Cotija, Crispy Chickpeas, Cucumbers, Corn & Cherry Tomatoes Tossed with Elote Dressing",
+        "price": "$17.00",
+        "section": "Sopas Y Ensaladas"
+      },
+      {
+        "name": "Pozole Rojo",
+        "description": "Slow Braised Pork Shoulder, White Hominy, Guajillo/Ancho Broth, Shredded Cabbage, Radish, Onion & Lime",
+        "price": "$14.00",
+        "section": "Sopas Y Ensaladas"
+      },
+      {
+        "name": "Menudo (Saturdays & Sundays Only)",
+        "description": "Braised Tripe, White Hominy, Guajillo Broth, Cilantro, Onion, Radish & Lime",
+        "price": "$15.00",
+        "section": "Sopas Y Ensaladas"
+      },
+      {
+        "name": "Rajas con Crema (side)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Sides / Extras"
+      },
+      {
+        "name": "Papas (side)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Sides / Extras"
+      },
+      {
+        "name": "Frijoles Negros (Refried or De La Olla) (side)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Sides / Extras"
+      },
+      {
+        "name": "Arroz Verde o Rojo (side)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Sides / Extras"
+      },
+      {
+        "name": "Fajita Vegetables (side)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Sides / Extras"
+      },
+      {
+        "name": "Side Salad",
+        "description": "",
+        "price": "$5.00",
+        "section": "Sides / Extras"
+      },
+      {
+        "name": "Mole Poblano",
+        "description": "Pan Seared Airline Chicken Breast Served with Arroz Rojo, Caramelized Butternut Squash & Celery Root",
+        "price": "$28.00",
+        "section": "Tierra"
+      },
+      {
+        "name": "Fajitas - Steak",
+        "description": "Sauteed Poblano Pepper, Cipollini Onions, Cherry Tomato, Topped with Guacamole, Pico de Gallo & Served with Four House Salsas",
+        "price": "$29.00",
+        "section": "Tierra / Fajitas"
+      },
+      {
+        "name": "Fajitas - Shrimp",
+        "description": "Sauteed Poblano Pepper, Cipollini Onions, Cherry Tomato, Topped with Guacamole, Pico de Gallo & Served with Four House Salsas",
+        "price": "$28.00",
+        "section": "Tierra / Fajitas"
+      },
+      {
+        "name": "Fajitas - Chicken",
+        "description": "Sauteed Poblano Pepper, Cipollini Onions, Cherry Tomato, Topped with Guacamole, Pico de Gallo & Served with Four House Salsas",
+        "price": "$24.00",
+        "section": "Tierra / Fajitas"
+      },
+      {
+        "name": "Fajitas - Choice of two",
+        "description": "Sauteed Poblano Pepper, Cipollini Onions, Cherry Tomato, Topped with Guacamole, Pico de Gallo & Served with Four House Salsas",
+        "price": "$29.00",
+        "section": "Tierra / Fajitas"
+      },
+      {
+        "name": "Birria",
+        "description": "Eight-Ounce Braised Short Rib Wrapped in Hoja Santa, Served with Consomme Reduction & Sweet Corn Puree",
+        "price": "$31.00",
+        "section": "Tierra"
+      },
+      {
+        "name": "Wet Burrito",
+        "description": "Chicken Tinga, Frijoles de la Olla, Arroz Rojo, Salsa Fresca, Pico de Gallo, Served in a Flour Tortilla with Poblano Cream Sauce, Habanero Pickled Red Onions, Crema & Queso Fresco",
+        "price": "$24.00",
+        "section": "Tierra"
+      },
+      {
+        "name": "Bistec Ranchero",
+        "description": "Twelve-Ounce Grilled Ribeye Served with Salsa Ranchera, Blistered Cherry Tomatoes, Cipollini Onions, Crispy Fingerling Potatoes, Sweet Peppers & Two Grilled Shrimp Head-On",
+        "price": "$65.00",
+        "section": "Tierra"
+      },
+      {
+        "name": "Carne con Papas",
+        "description": "Twelve-Ounce Grilled Marinated Flat Iron Steak Topped with Salsa Cruda & Served with Crispy Fingerling Potatoes",
+        "price": "$40.00",
+        "section": "Tierra"
+      },
+      {
+        "name": "Al Pastor (Pork) Tacos",
+        "description": "Cilantro, Onion & Avocado Salsa",
+        "price": "$22.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada (Beef) Tacos",
+        "description": "Cilantro, Onion & Avocado Salsa",
+        "price": "$22.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pollo (Chicken) Tacos",
+        "description": "Cilantro, Onion & Avocado Salsa",
+        "price": "$22.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Baja Fish (Cod) Tacos",
+        "description": "Cilantro, Onion & Avocado Salsa",
+        "price": "$23.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Crispy Beef Birria Tacos",
+        "description": "House Cheese Blend, Consomme, Cilantro & Onion",
+        "price": "$23.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Suadero (Beef) Tacos",
+        "description": "Cilantro, Onion & Avocado Salsa",
+        "price": "$23.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Enchiladas Suizas",
+        "description": "Filled with Chicken Tinga & House Cheese Blend Topped with Creamy Poblano Sauce",
+        "price": "$22.00",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Enchiladas de Camarones",
+        "description": "Filled with Sauteed Shrimp & House Cheese Blend Topped with Creamy Poblano Sauce",
+        "price": "$24.00",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Enchiladas Rancheras",
+        "description": "Filled with Chicken Tinga & House Cheese Blend Topped with a House Blended Chile Sauce",
+        "price": "$23.00",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Enchiladas de Queso",
+        "description": "Filled with House Cheese Blend Topped with House Blended Chile Sauce",
+        "price": "$21.00",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Enmoladas",
+        "description": "Filled with Chicken Tinga & House Cheese Blend Topped with Mole Poblano",
+        "price": "$24.00",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Siete Mares",
+        "description": "Seared Seabass, Mussels, Little Neck Clams, Scallops, Shrimp & Fried Crab Cake Served in a Lobster Tomato Consomme",
+        "price": "$42.00",
+        "section": "Mar"
+      },
+      {
+        "name": "Camarones a la Diabla",
+        "description": "Sauteed Shrimp, Cipollini Onions, Sweet Pepper Finished with a Spicy Morita Sauce & Served with Arroz Verde",
+        "price": "$36.00",
+        "section": "Mar"
+      },
+      {
+        "name": "Salmon Zarandeado",
+        "description": "Grilled Salmon Marinated in a Chipotle Sauce, Served with Arroz Verde & Petite Frisee Salad Tossed with Cucumber, Cherry Tomatoes, Citrus Segments & Honey Citrus Vinaigrette",
+        "price": "$32.00",
+        "section": "Mar"
+      },
+      {
+        "name": "Corvina",
+        "description": "Pan-seared Seabass, Topped with Poblano Butter Sauce & Served with Crispy Potatoes & Caramelized Celery Root, Sweet Peppers",
+        "price": "$38.00",
+        "section": "Mar"
+      },
+      {
+        "name": "Pan de Elote",
+        "description": "Fried Corn Bread, Chantilly, Banana Mousse, Pecans & Totomoxtle",
+        "price": "$13.00",
+        "section": "Postres"
+      },
+      {
+        "name": "Choco Flan",
+        "description": "Dulce de Leche, Chantilly, Pecans & Totomoxtle",
+        "price": "$13.00",
+        "section": "Postres"
+      },
+      {
+        "name": "Churros",
+        "description": "Mexican Chocolate Ganache & Mixed Berry Compote",
+        "price": "$13.00",
+        "section": "Postres"
+      },
+      {
+        "name": "Guacamole (Brunch)",
+        "description": "Smashed Avocado Mixed with Charred Poblano Puree, Topped with Cilantro, Pepitas, Pomegranate & Served with Fried Corn Tortillas",
+        "price": "$17.00",
+        "section": "Brunch (Saturday & Sunday, 9am-1pm only)"
+      },
+      {
+        "name": "Quesadilla - Chicken Tinga (Brunch)",
+        "description": "Filled with House Cheese Blend & Epazote Served with Guacamole, Salsa morita & Pico de Gallo",
+        "price": "$14.00",
+        "section": "Brunch (Saturday & Sunday, 9am-1pm only)"
+      },
+      {
+        "name": "Quesadilla - Carne Asada (Brunch)",
+        "description": "Filled with House Cheese Blend & Epazote Served with Guacamole, Salsa morita & Pico de Gallo",
+        "price": "$16.00",
+        "section": "Brunch (Saturday & Sunday, 9am-1pm only)"
+      },
+      {
+        "name": "Enfrijoladas",
+        "description": "Filled with House Cheese Blend & Epazote Topped with Black Bean Puree, Two Eggs Your Way, Salsa Cruda, Pico de Gallo & Salsa de Cacahuate",
+        "price": "$18.00",
+        "section": "Brunch (Saturday & Sunday, 9am-1pm only)"
+      },
+      {
+        "name": "Huevos Rancheros",
+        "description": "Corn Tortillas Topped with Two Eggs Your Way, Black Beans, Queso fresco, Avocado & Cilantro",
+        "price": "$18.00",
+        "section": "Brunch (Saturday & Sunday, 9am-1pm only)"
+      },
+      {
+        "name": "Masa Waffle",
+        "description": "Whipped Hibiscus Cream Cheese, Mixed Berry Compote, Vanilla Chantilly, Fresh Berries, Maple Syrup & Pecans",
+        "price": "$17.00",
+        "section": "Brunch (Saturday & Sunday, 9am-1pm only)"
+      },
+      {
+        "name": "Breakfast Burrito",
+        "description": "Scrambled Eggs, Breakfast Potatoes, House Cheese Blend, Pico de gallo, Salsa Ranchera, Served with Arroz Rojo, with Choice of Carne Asada, Chorizo or Bacon",
+        "price": "$17.00",
+        "section": "Brunch (Saturday & Sunday, 9am-1pm only)"
+      },
+      {
+        "name": "Steak & Eggs",
+        "description": "Grilled Ten Ounce Flank Steak, Breakfast Potatoes, Two Eggs Your Way & Choice of tortillas",
+        "price": "$32.00",
+        "section": "Brunch (Saturday & Sunday, 9am-1pm only)"
+      },
+      {
+        "name": "Two Egg Breakfast",
+        "description": "Two Eggs Your Way, Breakfast Potatoes with Choice of Longaniza or Bacon & Choice of Tortillas",
+        "price": "$21.00",
+        "section": "Brunch (Saturday & Sunday, 9am-1pm only)"
+      },
+      {
+        "name": "Mollete",
+        "description": "Multigrain Bread, Bean Puree, House Cheese Blend, Chorizo, Topped with Avocado, Salsa Cruda, Pico de Gallo, Two Eggs Your Way & a Side of Fresh Berries",
+        "price": "$18.00",
+        "section": "Brunch (Saturday & Sunday, 9am-1pm only)"
+      },
+      {
+        "name": "Enchiladas Suizas (Brunch)",
+        "description": "Filled with Chicken Tinga & House Cheese Blend Topped with Creamy Poblano Sauce",
+        "price": "$22.00",
+        "section": "Brunch (Saturday & Sunday, 9am-1pm only)"
+      },
+      {
+        "name": "Beef Birria Tacos",
+        "description": "House Cheese Blend, Consomme, Cilantro & Onion",
+        "price": "$23.00",
+        "section": "Brunch (Saturday & Sunday, 9am-1pm only)"
+      },
+      {
+        "name": "Breakfast Potatoes",
+        "description": "",
+        "price": "$5.00",
+        "section": "Brunch / Extras"
+      },
+      {
+        "name": "Bacon or Longaniza",
+        "description": "",
+        "price": "$10.00",
+        "section": "Brunch / Extras"
+      },
+      {
+        "name": "Toast",
+        "description": "",
+        "price": "$4.00",
+        "section": "Brunch / Extras"
+      },
+      {
+        "name": "Fresh Berries",
+        "description": "",
+        "price": "$9.00",
+        "section": "Brunch / Extras"
+      }
+    ]
+  }
+]

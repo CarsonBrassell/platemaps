@@ -4,7 +4,7 @@ import {
   getRestaurantById,
   getUserById,
   markPhotoNoticeSeen,
-  markTourSeen,
+  setTourSeen,
   updateFavorites,
   updatePhotoSharing,
   updatePrivacySettings,
@@ -44,9 +44,10 @@ export async function POST(req: Request) {
     await markPhotoNoticeSeen(user.id);
   }
 
-  // The coach tour finishing or being skipped. Same latch, same reasoning.
-  if (body.tourSeen === true) {
-    await markTourSeen(user.id);
+  // The coach tour finishing, being skipped, or being asked for again — so
+  // either value, where the photo notice takes only `true`.
+  if (typeof body.tourSeen === "boolean") {
+    await setTourSeen(user.id, body.tourSeen);
   }
 
   // The three privacy switches ride this endpoint rather than getting one each:

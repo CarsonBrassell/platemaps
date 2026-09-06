@@ -35,3 +35,13 @@ export function milesBetween(a: Coords, b: Coords): number {
     Math.cos(toRadians(a.lat)) * Math.cos(toRadians(b.lat)) * Math.sin(dLng / 2) ** 2;
   return 2 * EARTH_RADIUS_MI * Math.asin(Math.min(1, Math.sqrt(h)));
 }
+
+/**
+ * Miles as a card prints them: one decimal while the decimal still means
+ * something ("0.4 mi", "3.7 mi"), whole miles past ten ("12 mi"). The same
+ * shape as the seeded `distance` strings, so a replaced number is
+ * indistinguishable in layout from the one it replaced.
+ */
+export function formatMiles(mi: number): string {
+  return mi < 10 ? `${mi.toFixed(1)} mi` : `${Math.round(mi)} mi`;
+}

@@ -1,0 +1,163 @@
+[
+  {
+    "restaurantId": "9911",
+    "name": "Stage stop pizza",
+    "sourceUrl": "https://www.stagestoppizza.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: menu page (Weebly-hosted) renders with no static price text; no first-party priced source found"
+  },
+  {
+    "restaurantId": "9201",
+    "name": "Marcella June's Coffee Lounge",
+    "sourceUrl": "https://joe.coffee/locations/ca/la-mesa/marcella-june-s-coffee-lounge-la-mesa-af0f10c2-b3fb-48f9-bd31-013f15c2ddb8/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: joe.coffee storefront renders its catalog client-side; no API path found"
+  },
+  {
+    "restaurantId": "7909",
+    "name": "Scena Fusion Kitchen & Bar",
+    "sourceUrl": "https://www.scenasd.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: menu page loads but contains no priced text (only a GTM iframe, no menu platform detected)"
+  },
+  {
+    "restaurantId": "9220",
+    "name": "Elote",
+    "sourceUrl": "https://order.online/store/23027643",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: order.online storefront (403 on direct fetch) and UberEats (403) both client-rendered; only 4 priced items visible via search snippet (Build your own Corn $7.99, Tostitos Salsa Verde $3.50, Traditional Mexican corn $7.99, Jarrito $4.00), below the 8-dish minimum"
+  },
+  {
+    "restaurantId": "9912",
+    "name": "Pepita's Cafe",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: search only surfaced a same-name Pepita's Cafe & Bar in Austin, TX (different city/address); no first-party site or platform found for the National City location"
+  },
+  {
+    "restaurantId": "9913",
+    "name": "We Cookn",
+    "sourceUrl": "http://www.wecookn.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "fetch-failed: site unreachable on www.wecookn.com (connect timeout) and bare wecookn.com/menu (000); gotruckster.com listing returned 405. No reachable priced source."
+  },
+  {
+    "restaurantId": "8052",
+    "name": "Krak Boba",
+    "sourceUrl": "https://www.krakboba.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: Webflow-hosted /menu page has no static price text; likely image or video menu (site also links a /video-menu page)"
+  },
+  {
+    "restaurantId": "9026",
+    "name": "The Yogo, Handcrafted Ice Cream & Desserts",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: no first-party site; search hits are Yelp/Instagram/TikTok with no itemised prices"
+  },
+  {
+    "restaurantId": "9039",
+    "name": "Urban Skillet San Diego",
+    "sourceUrl": "https://www.urbanskilletla.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: Wix Editor client-rendered site; homepage returns only Wix platform API links, no static menu/price content"
+  },
+  {
+    "restaurantId": "11487",
+    "name": "Pala Cafe",
+    "sourceUrl": "https://www.palacasino.com/bars-restaurants/pala-cafe",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "casino concession, no itemized menu published; the only $ hits on the page are slot-machine promo prize amounts, not food prices"
+  },
+  {
+    "restaurantId": "10317",
+    "name": "FLAVORFUL Dessert Atelier",
+    "sourceUrl": "https://flavorfulsd.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: homepage and /menu page both load with no priced text and no known ordering platform"
+  },
+  {
+    "restaurantId": "9362",
+    "name": "Little Fox Cups + Cones",
+    "sourceUrl": "https://www.littlefoxcupsandcones.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "only 2 priced items found on the Wix site (Ice Cream Cake $64.00, Ice Cream Tacos $7.00), below the 8-dish minimum; /shop page 404s"
+  },
+  {
+    "restaurantId": "11758",
+    "name": "Ramones Mexican BBQ",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "military base concession (22 USMC Camp Pendleton); Facebook page fetch also 400s and is not a food-price source"
+  },
+  {
+    "restaurantId": "8090",
+    "name": "El Flako's Wrangler Barbecue",
+    "sourceUrl": "https://www.wranglerbarbecue.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: Squarespace site's /menu page has no static price text and no known ordering platform"
+  },
+  {
+    "restaurantId": "8864",
+    "name": "Phoenix Dessert - San Diego",
+    "sourceUrl": "https://www.yelp.com/biz/phoenix-dessert-san-diego",
+    "confidence": "high",
+    "crossCheckedAgainst": "https://www.doordash.com/store/phoenix-dessert-san-diego-25596205/",
+    "notes": "Yelp lists this location (7420 Clairemont Mesa Blvd) as CLOSED; DoorDash's listing at the same address now shows a different vendor name ('Graveyard'), confirming the space has been replaced. Router's Toast payload was already confirmed wrong-branch (208 East Valley Blvd belongs to a different Phoenix Dessert location).",
+    "dishes": []
+  },
+  {
+    "restaurantId": "12554",
+    "name": "Dulzura Vineyard and Winery",
+    "sourceUrl": "https://dulzurawinery.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no food menu, hold candidate (winery); site returns HTTP 202 with no fetchable content"
+  },
+  {
+    "restaurantId": "13036",
+    "name": "Plant Power Fast Food",
+    "sourceUrl": "https://www.plantpowerfastfood.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: menu page embeds Square Online / mymenuhd.com digital menu board with no static price text; /ucsd location page 404s"
+  },
+  {
+    "restaurantId": "12166",
+    "name": "Dole Whip",
+    "sourceUrl": "https://www.belmontpark.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "park concession stand inside Belmont Park amusement park, no itemized menu found on the park site"
+  },
+  {
+    "restaurantId": "10717",
+    "name": "French Secret Pastry (Pre-Order Only)",
+    "sourceUrl": "https://frenchsecretpastry.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: homepage has no priced text; /menu path returns a 406 bot-wall error"
+  },
+  {
+    "restaurantId": "11011",
+    "name": "Blue Bowl Superfoods - Oceanside",
+    "sourceUrl": "https://mybluebowl.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: Squarespace homepage has no priced text; /menu path 404s"
+  }
+]

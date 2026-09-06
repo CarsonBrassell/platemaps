@@ -130,6 +130,9 @@ const rows = await sql`
   SELECT r.id, r.name, r.address, r.website, r.review_count
   FROM restaurants r
   WHERE r.hold_reason IS NULL
+    AND r.lat BETWEEN 32.534 AND 33.44 AND r.lng BETWEEN -117.6 AND -116.08  -- San Diego County only; sweep rows include LA/OC/Tijuana
+    AND (r.address IS NULL OR r.address ~ 'CA[[:space:]]+9(19[0-9][0-9]|2[01][0-9][0-9])' OR r.address !~ '[A-Z]{2}[[:space:]]+[0-9]{5}')
+    AND (r.address IS NULL OR r.address !~* 'tijuana|tecate|rosarito|ensenada|baja|m[eé]xico')
     AND NOT EXISTS (SELECT 1 FROM dishes d WHERE d.restaurant_id = r.id)
     AND NOT EXISTS (SELECT 1 FROM menu_lookups m WHERE m.restaurant_id = r.id)
   ORDER BY r.review_count DESC NULLS LAST`;

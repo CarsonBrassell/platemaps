@@ -1,0 +1,162 @@
+[
+  {
+    "restaurantId": "9939",
+    "name": "Jery's Pizza",
+    "sourceUrl": "https://www.jeryspizza.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published on first-party site (homepage + common menu paths checked, none priced); Grubhub/DoorDash/Postmates listings show prices but pages are JS-rendered with no fetchable payload"
+  },
+  {
+    "restaurantId": "5666",
+    "name": "Zoo Brew",
+    "sourceUrl": "https://zoo.sandiegozoo.org/dining",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no food menu, hold candidate (zoo park concession selling craft beer, coffee, and cookies only)"
+  },
+  {
+    "restaurantId": "6207",
+    "name": "Pizza Grande",
+    "sourceUrl": "https://pizzagrande1.netwaiter.com/national-city/menu/GetMenu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "netwaiter menu payload returns 0 priced items (confirmed); no alternate first-party or marketplace source with a priced payload found within budget"
+  },
+  {
+    "restaurantId": "5655",
+    "name": "Dockside Casual Seafood Counter",
+    "sourceUrl": "https://docksidesd.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "site returns 403 on all subpaths tried (bot wall); its linktr.ee page links to unrelated neighboring vendors (Brigantine, Ketch Brewing, Miguel's Cocina), not this business's own menu"
+  },
+  {
+    "restaurantId": "6437",
+    "name": "Hector's Taco Shop & Fruteria",
+    "sourceUrl": "https://hectorstacoshopfruteria.restaurants-us.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no first-party site; wheree.com aggregator menu page 403'd; only scattered partial prices found on Instagram/aggregator listings, insufficient for a verified 8+ dish menu"
+  },
+  {
+    "restaurantId": "9940",
+    "name": "The Red Barn",
+    "sourceUrl": "https://www.julianheroes.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "confirmed correct business (Heroes Wood-Fired Pizza / The Red Barn bar, 4355 Julian Hwy); menu page fetched successfully but contains no priced text, menu appears to be image-based"
+  },
+  {
+    "restaurantId": "7767",
+    "name": "Agave Birrieria",
+    "sourceUrl": "https://order.toasttab.com/online/agave-birrieria-north-park-nro-6345-el-cajon-boulevard-suite-132",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "router found a service fee baked into every toast price (divisor 1.1500 fits 79% of 160 items); re-fetch to pull the raw price list for dividing returned HTTP 403 (bot wall)"
+  },
+  {
+    "restaurantId": "11816",
+    "name": "Sweet Story Company LLC",
+    "sourceUrl": "http://www.sweetstoryco.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (custom-order dessert/cake business)"
+  },
+  {
+    "restaurantId": "9252",
+    "name": "Perk Social",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website on record; no prices published anywhere findable"
+  },
+  {
+    "restaurantId": "10821",
+    "name": "Oto Sushi Encinitas",
+    "sourceUrl": "https://order.toasttab.com/online/locations/d7deca9a-079b-4095-8cba-a2bc77873bb1/23c3977e-1c90-44e4-984d-327b3e284781",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "found the Encinitas-specific toast ordering link via otosushi.co (distinct from the Laguna Beach branch the router hit); fetch returned HTTP 403 (bot wall)"
+  },
+  {
+    "restaurantId": "11190",
+    "name": "IB Espresso",
+    "sourceUrl": "https://www.instagram.com/ibespresso/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (Instagram-only presence, no website)"
+  },
+  {
+    "restaurantId": "12010",
+    "name": "Maple Tree Coffee",
+    "sourceUrl": "https://joe.coffee/locations/ca/chula-vista/maple-tree-coffee-chula-vista-ebfbc211-6c68-49a2-9623-5eab8a0186a4/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: joe.coffee is a client-rendered storefront with no fetchable payload"
+  },
+  {
+    "restaurantId": "12329",
+    "name": "Marina Kitchen at Mariott Marquis",
+    "sourceUrl": "https://www.marriott.com/content/dam/marriott-digital/mc/us-canada/hws/s/sandt/en_us/document/assets/mc-sandt-marina-kitchen-menu-66802.pdf",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "first-party PDF menu (from marriott.com dining page) lists dish names with no prices at all; OpenTable/singleplatform listings show some priced items but those pages would not fetch (bot-gated/stale)"
+  },
+  {
+    "restaurantId": "12345",
+    "name": "Lori's Custom Cakes",
+    "sourceUrl": "http://www.loriscustomcakes.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (custom-order cake business)"
+  },
+  {
+    "restaurantId": "11419",
+    "name": "Deleitte",
+    "sourceUrl": "http://www.fb.com/DeleittebyLili",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published; Facebook-only presence, fetch returns HTTP 400"
+  },
+  {
+    "restaurantId": "10010",
+    "name": "Fatburger",
+    "sourceUrl": "https://fatburger.com/menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-platform per router; /menu path returns HTTP 403 (bot wall); no fetchable priced payload found within budget"
+  },
+  {
+    "restaurantId": "10012",
+    "name": "Boardwalk Pizza",
+    "sourceUrl": "http://www.boardwalk-parkway.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site 404s on menu subpaths tried; only stale-looking SinglePlatform prices (Caesar Salad $3.35, Spaghetti $4.50 - implausibly low for current pizzeria pricing) and the barred Yelp menu tab are available"
+  },
+  {
+    "restaurantId": "8945",
+    "name": "Board & Brew - Mission Valley",
+    "sourceUrl": "https://order.boardandbrew.com/menu/board-brew-mission-valley",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: order.boardandbrew.com renders its catalog client-side, static fetch returned no priced payload"
+  },
+  {
+    "restaurantId": "10302",
+    "name": "Delicious Treats",
+    "sourceUrl": "https://www.delicioustreats.net/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published anywhere findable within budget"
+  },
+  {
+    "restaurantId": "9062",
+    "name": "Chula Tacos Taquerias",
+    "sourceUrl": "https://eatchulatacos.com/chula-menu.pdf",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "chain confirmed opening at this Newport Ave (Ocean Beach) address, but the first-party menu PDF is image-based with no extractable text; delivery-platform prices found belong to other locations (Spring Valley), not this store"
+  }
+]

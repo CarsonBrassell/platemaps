@@ -23,7 +23,7 @@
  */
 
 import { sql } from "./sql-client.mjs";
-import { canonicalCuisine, isUnsetCuisine, tagsFor } from "../src/data/cuisines.ts";
+import { CUISINES, canonicalCuisine, isUnsetCuisine, tagsFor } from "../src/data/cuisines.ts";
 
 const DRY_RUN = process.argv.includes("--dry");
 
@@ -47,7 +47,11 @@ for (const row of rows) {
   // Mid-dry-run the claim above has not happened, so fall back to the live
   // column — otherwise --dry would report the whole table as unmapped.
   const raw = row.cuisine_raw ?? row.cuisine;
-  const cuisine = canonicalCuisine(raw);
+  // Keep a cuisine that infer-cuisine.mjs derived from the menu when the raw
+  // label itself maps to nothing ("Restaurant", null). Re-deriving from raw
+  // would null it back out.
+  const mapped = canonicalCuisine(raw);
+  const cuisine = mapped ?? (row.cuisine && CUISINES.includes(row.cuisine) ? row.cuisine : null);
   const tags = tagsFor(raw).join(" ") || null;
 
   if (row.listed) {

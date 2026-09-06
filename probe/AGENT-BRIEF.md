@@ -65,6 +65,13 @@ one agent extracted a Denver catalog for a National City restaurant. Confirm the
 street number. Flag a discrepancy rather than silently correcting it. For a
 chain, only this branch.
 
+**Every restaurant in your batch is in San Diego County, even when the record
+has no address.** Use its lat/lng to confirm which location you are capturing.
+A menu from a same-name restaurant in another city is never filed: mark it
+`blocked` and say which city the only menu you found belongs to. (w4-24 filed
+a Berkeley menu for a Carmel Valley restaurant whose address was null; the
+coordinator had to strip it before loading.)
+
 ## Judging a price
 
 | cents look like | verdict |

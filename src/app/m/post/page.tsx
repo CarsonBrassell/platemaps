@@ -552,7 +552,7 @@ export default function PhonePost() {
                     What was this restaurant best at?{" "}
                     {/* `nowrap` because `.mono-label`'s 0.18em tracking makes the
                         legend wrap at 390px, and it was breaking mid-parenthetical. */}
-                    <span className="whitespace-nowrap normal-case text-zinc-400">(pick one)</span>
+                    <span className="whitespace-nowrap normal-case text-zinc-400">(optional, pick one)</span>
                   </legend>
                   <div className="flex flex-wrap gap-1.5">
                     {BEST_AT.map((b) => {

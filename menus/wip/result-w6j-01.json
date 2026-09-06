@@ -1,0 +1,1258 @@
+[
+  {
+    "restaurantId": "1041",
+    "name": "Formosa Club",
+    "sourceUrl": "https://www.yelp.com/biz/the-formosa-club-chula-vista",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "dive bar with no priced food menu — old-school tavern with pool tables and karaoke; reviews mention only occasional free food during football season, no ordering platform or menu found"
+  },
+  {
+    "restaurantId": "10392",
+    "name": "Crafted Coastal Bakery",
+    "sourceUrl": "https://craftedcoastal.com/wp-json/wc/store/v1/products",
+    "confidence": "high",
+    "notes": "read from the restaurant's own WooCommerce Store API (first-party); small online bakery selling bread and jam for pickup — 6 items is the whole catalog, no other menu/order page exists on the site",
+    "dishes": [
+      {
+        "name": "Seasonal Jam (Apple Butter)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Jam"
+      },
+      {
+        "name": "Seasonal Jam (Strawberry)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Jam"
+      },
+      {
+        "name": "Take 'n Bake Cinnamon Rolls",
+        "description": "",
+        "price": "$20.00",
+        "section": "Bread"
+      },
+      {
+        "name": "Sourdough Sandwich Loaf",
+        "description": "",
+        "price": "$10.00",
+        "section": "Bread"
+      },
+      {
+        "name": "Classic Sourdough",
+        "description": "",
+        "price": "$12.00",
+        "section": "Bread"
+      },
+      {
+        "name": "Artisan Sourdough",
+        "description": "",
+        "price": "$12.00",
+        "section": "Bread"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8095",
+    "name": "Cenaduria Mi Ranchito",
+    "sourceUrl": "https://www.doordash.com/store/cenaduria-mi-ranchito-san-diego-47058537/",
+    "confidence": "medium",
+    "notes": "DoorDash schema.org Menu JSON-LD (two blocks, deduped on name+price -> 76 unique dishes across 8 sections). Address on the DoorDash page (4869 University Ave) matches the work list exactly. Prices are all round-dollar or .50-ending — no markup divisor pattern found. Not the unrelated same-name 'Mi Ranchito Mexican Restaurant' at 12812 Rancho Penasquitos Blvd.",
+    "dishes": [
+      {
+        "name": "Chilaquiles Verdes",
+        "description": "",
+        "price": "$12.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Machaca Con Huevos",
+        "description": "",
+        "price": "$13.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Nutella Stuffed French Toast",
+        "description": "",
+        "price": "$14.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Chilaquiles Rojos",
+        "description": "",
+        "price": "$12.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Chorizo Con Papas",
+        "description": "",
+        "price": "$12.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Torta Asada",
+        "description": "",
+        "price": "$11.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Chocolate Chip Pancakes",
+        "description": "",
+        "price": "$11.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Taco Dorado Camarón",
+        "description": "",
+        "price": "$5.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Sope Carne",
+        "description": "",
+        "price": "$4.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Chilaquiles Chipotle",
+        "description": "",
+        "price": "$13.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Enchilada Pollo",
+        "description": "",
+        "price": "$3.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Choco Milk De Fresa",
+        "description": "",
+        "price": "$3.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Mocha Frapp",
+        "description": "",
+        "price": "$6.00",
+        "section": "Blended Coffees"
+      },
+      {
+        "name": "Strawberry Frapp",
+        "description": "",
+        "price": "$7.00",
+        "section": "Blended Coffees"
+      },
+      {
+        "name": "Vanilla Frapp",
+        "description": "",
+        "price": "$6.00",
+        "section": "Blended Coffees"
+      },
+      {
+        "name": "Caramel Frapp",
+        "description": "",
+        "price": "$6.00",
+        "section": "Blended Coffees"
+      },
+      {
+        "name": "Java Frost Frapp",
+        "description": "",
+        "price": "$6.00",
+        "section": "Blended Coffees"
+      },
+      {
+        "name": "Full Strawberry Bowl",
+        "description": "",
+        "price": "$12.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Half Açaí Bowl",
+        "description": "",
+        "price": "$8.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Half Pitaya Bowl",
+        "description": "",
+        "price": "$8.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Half Strawberry Bowl",
+        "description": "",
+        "price": "$8.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Full Açaí Bowl",
+        "description": "",
+        "price": "$12.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Full Pitaya Bowl",
+        "description": "",
+        "price": "$12.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Huevos Rancheros",
+        "description": "",
+        "price": "$11.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Chorizo Con Huevos",
+        "description": "",
+        "price": "$13.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Huevos Con Papa A La Mexicana",
+        "description": "",
+        "price": "$12.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Huevos En Salsa",
+        "description": "",
+        "price": "$11.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Ciabatta Sandwich",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Croissant Sandwich",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Huevos Con Salchicha",
+        "description": "",
+        "price": "$11.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Muffin Sandwich",
+        "description": "",
+        "price": "$7.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Bagel Sandwich",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Avena",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Agua De Horchata",
+        "description": "",
+        "price": "$5.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Agua De Jamaica",
+        "description": "",
+        "price": "$5.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Cafe De La Olla",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Choco Milk",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Medium Orange Juice",
+        "description": "",
+        "price": "$6.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Coke",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "House Coffee",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Large Orange Juice",
+        "description": "",
+        "price": "$8.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Small Orange Juice",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Agua De Fresa",
+        "description": "",
+        "price": "$5.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Agua De Cebada",
+        "description": "",
+        "price": "$5.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Torta Jamón",
+        "description": "",
+        "price": "$10.00",
+        "section": "Especiales De La Casa"
+      },
+      {
+        "name": "Torta Pollo",
+        "description": "",
+        "price": "$10.00",
+        "section": "Especiales De La Casa"
+      },
+      {
+        "name": "Tostada Carne",
+        "description": "",
+        "price": "$5.50",
+        "section": "Especiales De La Casa"
+      },
+      {
+        "name": "Taco Dorado Pollo",
+        "description": "",
+        "price": "$4.00",
+        "section": "Especiales De La Casa"
+      },
+      {
+        "name": "Enchilada Queso",
+        "description": "",
+        "price": "$2.00",
+        "section": "Especiales De La Casa"
+      },
+      {
+        "name": "Taco Dorado Carne",
+        "description": "",
+        "price": "$4.00",
+        "section": "Especiales De La Casa"
+      },
+      {
+        "name": "Torta Adobada",
+        "description": "",
+        "price": "$11.00",
+        "section": "Especiales De La Casa"
+      },
+      {
+        "name": "Tostada Asado",
+        "description": "",
+        "price": "$6.50",
+        "section": "Especiales De La Casa"
+      },
+      {
+        "name": "Tostada Pollo",
+        "description": "",
+        "price": "$4.50",
+        "section": "Especiales De La Casa"
+      },
+      {
+        "name": "Sope Pollo",
+        "description": "",
+        "price": "$4.00",
+        "section": "Especiales De La Casa"
+      },
+      {
+        "name": "Vampiro Carne Asada",
+        "description": "",
+        "price": "$5.00",
+        "section": "Especiales De La Casa"
+      },
+      {
+        "name": "Asado Pollo",
+        "description": "",
+        "price": "$13.00",
+        "section": "Especiales De La Casa"
+      },
+      {
+        "name": "Enchilada Carne",
+        "description": "",
+        "price": "$4.00",
+        "section": "Especiales De La Casa"
+      },
+      {
+        "name": "Classic French Toast",
+        "description": "",
+        "price": "$10.00",
+        "section": "Pancakes y French Toast"
+      },
+      {
+        "name": "Coco Piña Pancakes",
+        "description": "",
+        "price": "$12.00",
+        "section": "Pancakes y French Toast"
+      },
+      {
+        "name": "Cream Cheese Stuffed French Toast",
+        "description": "",
+        "price": "$13.00",
+        "section": "Pancakes y French Toast"
+      },
+      {
+        "name": "Granola Pancakes",
+        "description": "",
+        "price": "$11.00",
+        "section": "Pancakes y French Toast"
+      },
+      {
+        "name": "Strawberry Banana Pancakes",
+        "description": "",
+        "price": "$12.00",
+        "section": "Pancakes y French Toast"
+      },
+      {
+        "name": "Biscoff Pancakes",
+        "description": "",
+        "price": "$13.00",
+        "section": "Pancakes y French Toast"
+      },
+      {
+        "name": "Blueberry Pancakes",
+        "description": "",
+        "price": "$12.00",
+        "section": "Pancakes y French Toast"
+      },
+      {
+        "name": "Mango Fusion Smoothie",
+        "description": "",
+        "price": "$8.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Gansito Smoothie",
+        "description": "",
+        "price": "$8.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "PB Smoothie",
+        "description": "",
+        "price": "$8.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Biscoff Smoothie",
+        "description": "",
+        "price": "$8.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Blueberry Smoothie",
+        "description": "",
+        "price": "$8.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Green Machine Smoothie",
+        "description": "",
+        "price": "$8.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Peaches & Cream Smoothie",
+        "description": "",
+        "price": "$8.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Pineapple Frosty Smoothie",
+        "description": "",
+        "price": "$8.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry Smoothie",
+        "description": "",
+        "price": "$8.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Papaya Smoothie",
+        "description": "",
+        "price": "$8.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "PB Coffee Smoothie",
+        "description": "",
+        "price": "$8.00",
+        "section": "Smoothies"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10994",
+    "name": "La Cucina di Silvana",
+    "sourceUrl": "https://lacucinadisilvana.com/shop/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no priced menu found — the restaurant's own domain (lacucinadisilvana.com) is a Peruvian-recipe blog with an empty WooCommerce shop (no products), and no DoorDash/UberEats/Toast listing could be located for this bakery (operating out of a shared Latin market at 1249 Morena Blvd, San Diego 92110); only Instagram/Facebook/TikTok presence with no prices"
+  },
+  {
+    "restaurantId": "7303",
+    "name": "Jaws Topokki",
+    "sourceUrl": "https://www.doordash.com/store/jaws-tpk-san-diego-24927902/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://order.online/en/store/jaws-tpk-balboa-ave-24927902",
+    "notes": "DoorDash schema.org Menu JSON-LD (deduped on name+price -> 35 dishes across 8 sections: gimbap, topokki, rice bowls, fried, set menus, drinks, sauces). Address (7725 Balboa Avenue) matches the work list; the restaurant's own site (jawstopokki.com/storelocation) links this exact DoorDash page as its 'Online Order' option for the Balboa/H-Mart branch. order.online listing shows matching items/prices for cross-check. Cent endings are .49/.99 (conventional), no markup divisor pattern.",
+    "dishes": [
+      {
+        "name": "Bulgogi Gimbap",
+        "description": "",
+        "price": "$12.49",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Tuna Gimbap",
+        "description": "",
+        "price": "$11.49",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Rose Topokki Soup",
+        "description": "",
+        "price": "$18.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Jaws Topokki Soup (Half Regular)",
+        "description": "",
+        "price": "$10.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Fried Shrimp Gimbap",
+        "description": "",
+        "price": "$12.49",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Duo Set",
+        "description": "",
+        "price": "$25.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Spicy Pork Wrap Gimbap",
+        "description": "",
+        "price": "$11.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Bareun Gimbap",
+        "description": "",
+        "price": "$10.49",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Cheese Stick (2Pcs)/ Cheese Ball (3Pcs)",
+        "description": "starting price; varies by size/topping",
+        "price": "$5.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Jaws Korean Sausage",
+        "description": "",
+        "price": "$10.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Jaws Topokki Soup",
+        "description": "",
+        "price": "$16.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Assorted Fish Cake Soup",
+        "description": "",
+        "price": "$11.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Wasabi Mayo",
+        "description": "",
+        "price": "$0.99",
+        "section": "Dipping Sauces"
+      },
+      {
+        "name": "Spicy Mayo (Spicy)",
+        "description": "",
+        "price": "$0.99",
+        "section": "Dipping Sauces"
+      },
+      {
+        "name": "Sriracha Mayo",
+        "description": "",
+        "price": "$0.99",
+        "section": "Dipping Sauces"
+      },
+      {
+        "name": "Wholegrain Mustard Mayo",
+        "description": "",
+        "price": "$0.99",
+        "section": "Dipping Sauces"
+      },
+      {
+        "name": "Spicy Pork Rice Bowl",
+        "description": "",
+        "price": "$15.99",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Bulgogi Rice Bowl",
+        "description": "",
+        "price": "$15.99",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Pork Bulgogi Rice Bowl",
+        "description": "",
+        "price": "$15.99",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Chicken Mayo Rice Bowl",
+        "description": "",
+        "price": "$14.49",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Sikhye Slushie",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drink"
+      },
+      {
+        "name": "Jaws Slushie",
+        "description": "",
+        "price": "$4.50",
+        "section": "Drink"
+      },
+      {
+        "name": "Soda",
+        "description": "starting price; varies by size/topping",
+        "price": "$2.00",
+        "section": "Drink"
+      },
+      {
+        "name": "Keto Gimbap (No Rice)",
+        "description": "",
+        "price": "$12.49",
+        "section": "Gimbap"
+      },
+      {
+        "name": "Spicy Fish Cake Gimbap",
+        "description": "",
+        "price": "$11.49",
+        "section": "Gimbap"
+      },
+      {
+        "name": "Pork Cutlet Gimbap",
+        "description": "",
+        "price": "$11.49",
+        "section": "Gimbap"
+      },
+      {
+        "name": "Tofu Gimbap (Vegetarian)",
+        "description": "",
+        "price": "$10.99",
+        "section": "Gimbap"
+      },
+      {
+        "name": "Deep Fried Set (M)",
+        "description": "",
+        "price": "$11.49",
+        "section": "Fried"
+      },
+      {
+        "name": "Deep Fried Set (L)",
+        "description": "",
+        "price": "$14.49",
+        "section": "Fried"
+      },
+      {
+        "name": "Jaws Fried Chicken",
+        "description": "starting price; varies by size/topping",
+        "price": "$8.49",
+        "section": "Fried"
+      },
+      {
+        "name": "Friend Set (L)",
+        "description": "",
+        "price": "$35.49",
+        "section": "Set Menu"
+      },
+      {
+        "name": "Friend Set (M)",
+        "description": "",
+        "price": "$33.49",
+        "section": "Set Menu"
+      },
+      {
+        "name": "Jawsome Set",
+        "description": "",
+        "price": "$43.99",
+        "section": "Set Menu"
+      },
+      {
+        "name": "Cheese Topokki Soup",
+        "description": "",
+        "price": "$18.99",
+        "section": "Topokki"
+      },
+      {
+        "name": "Jajang Topokki Soup",
+        "description": "",
+        "price": "$18.99",
+        "section": "Topokki"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9958",
+    "name": "Autentica Comida Oaxaquena",
+    "sourceUrl": "https://www.fantuanorder.com/dianping/en-US/store/autentica-comida-oaxaquena-3316495538-us",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no priced menu reachable — the only located ordering-platform listing (fantuanorder.com) renders client-side/obfuscated with no static prices in the served HTML; no DoorDash/UberEats listing found for this address (1275 S Santa Fe Ave, Vista); zmenu explicitly reports its menu as outdated; restaurantguru is a barred tier-5 farm"
+  },
+  {
+    "restaurantId": "9957",
+    "name": "BGC Bar & Grill",
+    "sourceUrl": "https://bonitagolfcourse.com/wp-content/uploads/2026/07/2026-Menu-BGC.pdf",
+    "confidence": "high",
+    "notes": "First-party PDF menu linked from the restaurant's own page (bonitagolfcourse.com/bgc-bar-grill/), text layer extracted with pdftotext -layout, 52 priced dishes. Golf-course clubhouse restaurant that is explicitly open to the public with a full breakfast/lunch/dinner menu, not just a bar. Dropped all '+X' modifier upcharges (add sausage +2, add avocado +2, add chicken +4, add carne asada +6, topping +1, etc.) and unpriced a-la-carte sides (fries/tater tots/fruit, truffle fries +3, house salad +3) as they are modifiers/upcharges, not standalone priced items.",
+    "dishes": [
+      {
+        "name": "Lychee Breeze",
+        "description": "Ketel One vodka, Soho Lychee Liqueur, Luxardo cherries, fresh lime juice, unsweetened iced tea",
+        "price": "$11.00",
+        "section": "Signature Cocktails"
+      },
+      {
+        "name": "Mango Margarita",
+        "description": "Hornitos Reposado, mango puree, agave nectar, fresh lime juice, tajin, orange juice",
+        "price": "$11.00",
+        "section": "Signature Cocktails"
+      },
+      {
+        "name": "Guava Margarita",
+        "description": "Choice of Mezcal or Tequila, guava puree, agave nectar, fresh lime juice",
+        "price": "$11.00",
+        "section": "Signature Cocktails"
+      },
+      {
+        "name": "Aperol Spritz",
+        "description": "Aperol, La Marca Prosecco, soda water, orange slice",
+        "price": "$13.00",
+        "section": "Signature Cocktails"
+      },
+      {
+        "name": "Espresso Martini",
+        "description": "Tito's vodka, Kahlua, creamy Baileys, cold brew",
+        "price": "$12.00",
+        "section": "Signature Cocktails"
+      },
+      {
+        "name": "Bulletproof Old Fashioned",
+        "description": "Bulleit bourbon, cherry bark vanilla bitters, Luxardo cherries",
+        "price": "$12.00",
+        "section": "Signature Cocktails"
+      },
+      {
+        "name": "BGC Bloody",
+        "description": "",
+        "price": "$7.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Mimosa",
+        "description": "",
+        "price": "$6.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Modelo Michelada",
+        "description": "",
+        "price": "$7.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Manmosa",
+        "description": "",
+        "price": "$10.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Screwdriver",
+        "description": "",
+        "price": "$7.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Greyhound",
+        "description": "",
+        "price": "$7.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coffee",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Fountain Drinks",
+        "description": "Pepsi, Diet Pepsi, Starry, Root Beer, Raspberry Iced Tea, Pink Lemonade",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Classic",
+        "description": "Two eggs, choice of bread, choice of side",
+        "price": "$13.00",
+        "section": "Breakfast / Eggcellent Bites"
+      },
+      {
+        "name": "Sunrise Sandwich",
+        "description": "Scrambled eggs, choice of bacon or sausage, American cheese, choice of bread, choice of side",
+        "price": "$13.00",
+        "section": "Breakfast / Eggcellent Bites"
+      },
+      {
+        "name": "Loaded Avo Toast",
+        "description": "Country Levain, avocado, two eggs, herb marinated pearl mozzarella, microgreens, tomatoes, balsamic, truffle oil",
+        "price": "$14.00",
+        "section": "Breakfast / Eggcellent Bites"
+      },
+      {
+        "name": "Steak & Eggs",
+        "description": "Denver steak, chimichurri, two eggs, choice of bread, choice of side",
+        "price": "$22.00",
+        "section": "Breakfast / Eggcellent Bites"
+      },
+      {
+        "name": "Californian Omelet",
+        "description": "Bacon, avocado, sour cream, pico de gallo",
+        "price": "$17.00",
+        "section": "Breakfast / Omelets"
+      },
+      {
+        "name": "Florentine Omelet",
+        "description": "Spinach, onions, mushrooms, feta cheese",
+        "price": "$16.00",
+        "section": "Breakfast / Omelets"
+      },
+      {
+        "name": "Chorizo Omelet",
+        "description": "Cheddar cheese, sour cream",
+        "price": "$16.00",
+        "section": "Breakfast / Omelets"
+      },
+      {
+        "name": "Build Your Own Omelet",
+        "description": "Avocado, bell peppers, mushrooms, bacon, tomatoes, onions, spinach, sausage, ham, cheddar, Swiss, jack or pepper jack cheese",
+        "price": "$14.00",
+        "section": "Breakfast / Omelets"
+      },
+      {
+        "name": "Eggs Benedict",
+        "description": "Two poached eggs, Canadian bacon, Hollandaise sauce, English muffin, choice of side",
+        "price": "$15.00",
+        "section": "Breakfast / Hollandaise House"
+      },
+      {
+        "name": "Garden Benedict",
+        "description": "Two poached eggs, sauteed spinach, tomatoes, Hollandaise sauce, English muffin, choice of side",
+        "price": "$15.00",
+        "section": "Breakfast / Hollandaise House"
+      },
+      {
+        "name": "Diego Benedict",
+        "description": "Two poached eggs, turkey, avocado, Hollandaise sauce, chipotle drizzle, English muffin, choice of side",
+        "price": "$16.00",
+        "section": "Breakfast / Hollandaise House"
+      },
+      {
+        "name": "French Toast",
+        "description": "Sliced brioche, powdered sugar",
+        "price": "$9.00",
+        "section": "Breakfast / On the Griddle"
+      },
+      {
+        "name": "Pancakes - Stack of Two",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast / On the Griddle"
+      },
+      {
+        "name": "Pancakes - Stack of Three",
+        "description": "",
+        "price": "$10.00",
+        "section": "Breakfast / On the Griddle"
+      },
+      {
+        "name": "Chorizo Con Huevos",
+        "description": "Chorizo scrambled eggs, black beans, sour cream, cotija, cilantro, choice of tortillas",
+        "price": "$15.00",
+        "section": "Breakfast / Go South"
+      },
+      {
+        "name": "Chilaquiles",
+        "description": "Corn tortilla chips, warm salsa, black beans, crema, cotija, shredded cheese, three eggs, cilantro",
+        "price": "$16.00",
+        "section": "Breakfast / Go South"
+      },
+      {
+        "name": "Breakfast Burrito",
+        "description": "Scrambled eggs, cheddar & jack cheese, choice of bacon, ham, sausage, or chorizo, choice of side",
+        "price": "$15.00",
+        "section": "Breakfast / Go South"
+      },
+      {
+        "name": "Nachos Grande",
+        "description": "Tortilla chips, black beans, white queso, jalapenos, pico de gallo, sour cream, guacamole",
+        "price": "$14.00",
+        "section": "Shareables"
+      },
+      {
+        "name": "Chicken Wings - Small (6)",
+        "description": "Plain, Buffalo, Thai sweet chili or lemon pepper rub",
+        "price": "$14.00",
+        "section": "Shareables"
+      },
+      {
+        "name": "Chicken Wings - Large (10)",
+        "description": "Plain, Buffalo, Thai sweet chili or lemon pepper rub",
+        "price": "$20.00",
+        "section": "Shareables"
+      },
+      {
+        "name": "Poke Nachos",
+        "description": "Ahi poke, fried wonton chips, seaweed salad, avocado, furikake, eel sauce, dynamite sauce",
+        "price": "$18.00",
+        "section": "Shareables"
+      },
+      {
+        "name": "Chicken Caesar",
+        "description": "Romaine lettuce, grilled chicken, croutons, parmesan cheese, cheese bread",
+        "price": "$15.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Summer Salad",
+        "description": "Choice of salmon or chicken, spinach, candied pecans, goat cheese, strawberry, quinoa, balsamic vinaigrette",
+        "price": "$18.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Pacific Bowl",
+        "description": "Choice of soy glazed salmon or Ahi poke, mixed greens or Jasmine rice, pickled cucumbers, carrots, edamame, avocado, chili crunch, wontons",
+        "price": "$16.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Fish Tacos (2)",
+        "description": "Beer-battered rockfish, cabbage, chipotle aioli",
+        "price": "$15.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada Tacos (2)",
+        "description": "Carne asada, guacamole, cilantro, onions",
+        "price": "$15.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Chicken Tacos (2)",
+        "description": "Grilled chicken, guacamole, pico de gallo, chipotle aioli",
+        "price": "$15.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Steak Frites",
+        "description": "Denver steak, chimichurri, fries, house salad",
+        "price": "$22.00",
+        "section": "BGC Classics"
+      },
+      {
+        "name": "Fish & Chips",
+        "description": "Beer-battered rockfish, coleslaw, fries, house tartar sauce",
+        "price": "$17.00",
+        "section": "BGC Classics"
+      },
+      {
+        "name": "Ballpark Dog",
+        "description": "Diced onions, cheddar cheese, choice of side",
+        "price": "$9.00",
+        "section": "BGC Classics"
+      },
+      {
+        "name": "Tailgate Chili Bowl",
+        "description": "Diced onions, cheddar cheese",
+        "price": "$9.00",
+        "section": "BGC Classics"
+      },
+      {
+        "name": "Bodacious Burger",
+        "description": "Angus beef patty, lettuce, tomato, onion, choice of cheese",
+        "price": "$16.00",
+        "section": "Favorites"
+      },
+      {
+        "name": "Smash Burger",
+        "description": "Two patties, American cheese, braised onions, house pickle relish, house spread",
+        "price": "$16.00",
+        "section": "Favorites"
+      },
+      {
+        "name": "Cali Chicken",
+        "description": "Grilled chicken breast, bacon, tomato, avocado, Swiss cheese, ciabatta bread",
+        "price": "$16.00",
+        "section": "Favorites"
+      },
+      {
+        "name": "Reuben",
+        "description": "Corned beef brisket, sauerkraut, Swiss cheese, rye bread, house spread",
+        "price": "$16.00",
+        "section": "Favorites"
+      },
+      {
+        "name": "Tuna Melt",
+        "description": "Tuna, American cheese, sourdough bread",
+        "price": "$16.00",
+        "section": "Favorites"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10248",
+    "name": "SugarBears Sweet Provisions",
+    "sourceUrl": "https://www.doordash.com/store/sugarbears-sweet-provisions-san-diego-1598056/",
+    "confidence": "medium",
+    "notes": "Router flagged this DoorDash catalog as 'doubled' (13 of 38 rows repeat by name+price across differently-named sections). Deduping on name+price resolves this cleanly to 26 unique items (cupcakes all $4.95, brownies $9.99/serves 4, packs $24-$27) — the 'Most Ordered' and 'Sweet Provisions' sections legitimately repeat several identical items, and after removing the duplicates the remaining catalog is internally consistent with no markup pattern. Address (2707 Boston Avenue) matches. Restaurant's own site (sugarbears.net) lists flavors with no prices ('call to order').",
+    "dishes": [
+      {
+        "name": "6 pack cupcake special",
+        "description": "",
+        "price": "$27.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Bearpaws- Peanut Butter Chocolate Chip Cookie Sandwich - serves 4",
+        "description": "",
+        "price": "$9.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Gluten-Free Vegan Oreo",
+        "description": "",
+        "price": "$4.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "BEARownie - Peanut Butter Cup Serves 4",
+        "description": "",
+        "price": "$9.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Gluten Free German Chocolate",
+        "description": "",
+        "price": "$4.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Cupcake - Red Velvet Cream Cheese",
+        "description": "",
+        "price": "$4.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Cupcake - Strawberry Cream",
+        "description": "",
+        "price": "$4.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Cupcake - S’MORES",
+        "description": "",
+        "price": "$4.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "BEAROWNIE - Turtle Serves 4 ",
+        "description": "",
+        "price": "$9.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Cupcake - Lemon Tart Bar",
+        "description": "",
+        "price": "$4.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Cupcake - Gluten-Free Vegan Black ＆ White Oreo",
+        "description": "",
+        "price": "$4.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Cupcake - Cheesecake",
+        "description": "",
+        "price": "$4.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "BEARownie Triple Chocolate Serves 4 ",
+        "description": "",
+        "price": "$9.99",
+        "section": "Sweet Provisions"
+      },
+      {
+        "name": "12 pack Macarons",
+        "description": "",
+        "price": "$24.00",
+        "section": "Sweet Provisions"
+      },
+      {
+        "name": "BEARownie - German Chocolate Serves 4",
+        "description": "",
+        "price": "$9.99",
+        "section": "Sweet Provisions"
+      },
+      {
+        "name": "Cupcake - Vanilla Bean",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sweet Provisions"
+      },
+      {
+        "name": "Cupcake - Birthday Cake Batter",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sweet Provisions"
+      },
+      {
+        "name": "Cupcake - Chocolate Salty Caramel",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sweet Provisions"
+      },
+      {
+        "name": "Cupcake -Gluten Free German Chocolate",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sweet Provisions"
+      },
+      {
+        "name": "Cupcake - Churro",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sweet Provisions"
+      },
+      {
+        "name": "Cupcake - Gluten-Free Chocolate Donut",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sweet Provisions"
+      },
+      {
+        "name": "Cupcake - Carrot Cream Cheese",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sweet Provisions"
+      },
+      {
+        "name": "Cupcake - Peanut Butter Cup",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sweet Provisions"
+      },
+      {
+        "name": "Cupcake - Chocolate Decadence",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sweet Provisions"
+      },
+      {
+        "name": "Cupcake - Cinnamon Crumb Cake",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sweet Provisions"
+      },
+      {
+        "name": "Gluten-Free Chocolate Donut",
+        "description": "",
+        "price": "$4.95",
+        "section": "Cupcakes"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5811",
+    "name": "Panadería El Trigal",
+    "sourceUrl": "https://www.yelp.com/biz/panaderia-el-trigal-national-city",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no priced menu located — no own website; searches for a DoorDash/UberEats listing at 319 N Highland Ave, National City repeatedly surfaced unrelated same-name bakeries in Jackson Heights NY, Orange NJ, Carson City and Cincinnati; only Facebook/Instagram presence found for the real National City shop, with no prices"
+  },
+  {
+    "restaurantId": "9955",
+    "name": "Sonora Steak Asadero El Prieto #13",
+    "sourceUrl": "https://restaurantguru.com/Sonora-Steak-Asadero-San-Diego/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no priced source reachable — small food-truck/asadero stand with no own website and no DoorDash/UberEats listing found for 4211 Camino De La Plaza; the only menu located is on restaurantguru.com, a barred tier-5 farm domain, and its menu content is user/owner-uploaded images with no extractable text prices"
+  }
+]

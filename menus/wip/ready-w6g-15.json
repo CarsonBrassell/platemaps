@@ -1,0 +1,893 @@
+[
+  {
+    "restaurantId": "8996",
+    "name": "Pastiamo",
+    "sourceUrl": "https://pastiamosd.com/indexhc.html",
+    "confidence": "high",
+    "notes": "first-party static site; Hillcrest branch page (address matches 600 University Ave exactly, phone 619-380-2100); PB-branch page (indexpb.html) exists at different address and was not used; dropped a commented-out Lasagna row and a commented-out out-of-stock Amatriciana row",
+    "dishes": [
+      {
+        "name": "Burrata",
+        "description": "",
+        "price": "$11.90",
+        "section": "Extras"
+      },
+      {
+        "name": "Side Meatballs",
+        "description": "",
+        "price": "$6.90",
+        "section": "Extras"
+      },
+      {
+        "name": "Beverages",
+        "description": "",
+        "price": "$2.50",
+        "section": "Extras"
+      },
+      {
+        "name": "Just Uncooked Pasta",
+        "description": "Choose from spaghetti, pappardelle, rigatoni, fusilli, caserecce",
+        "price": "$3.50",
+        "section": "Pasta"
+      },
+      {
+        "name": "Pasta with Marinara sauce",
+        "description": "Your choice of pasta served with marinara sauce",
+        "price": "$10.90",
+        "section": "Pasta"
+      },
+      {
+        "name": "Pasta White Sauce",
+        "description": "Your choice of pasta served with butter and parmesan",
+        "price": "$11.90",
+        "section": "Pasta"
+      },
+      {
+        "name": "Pasta alla Bolognese",
+        "description": "Your choice of pasta served with pork and beef meat sauce",
+        "price": "$15.90",
+        "section": "Pasta"
+      },
+      {
+        "name": "Pasta al Pesto",
+        "description": "Your choice of pasta served with Pesto - basil, parmesan cheese, pine nuts, oil, garlic",
+        "price": "$15.90",
+        "section": "Pasta"
+      },
+      {
+        "name": "Pasta alla Carbonara",
+        "description": "Your choice of pasta served with bacon, egg, pepper and parmesan",
+        "price": "$18.90",
+        "section": "Pasta"
+      },
+      {
+        "name": "Pasta with Meatballs",
+        "description": "Your choice of pasta served with marinara sauce and meatballs",
+        "price": "$16.90",
+        "section": "Pasta"
+      },
+      {
+        "name": "Pasta Misto Funghi",
+        "description": "Your choice of pasta served with mixed mushroom in a white sauce",
+        "price": "$16.90",
+        "section": "Pasta"
+      },
+      {
+        "name": "Pasta alla Boscaiola",
+        "description": "Your choice of pasta served with mushrooms and bolognese sauce",
+        "price": "$17.90",
+        "section": "Pasta"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10554",
+    "name": "Schmackary's",
+    "sourceUrl": "https://order.toasttab.com/online/schmackarys-san-diego-1255-university-avenue",
+    "confidence": "high",
+    "notes": "router flagged wrong-branch (a cached Toast payload for the Union Square/4th Ave NYC location, 129 4th Avenue); confirmed via schmackarys.com/locations that a separate San Diego branch exists at 1255 University Ave with its own Toast slug schmackarys-san-diego-1255-university-avenue, used here instead; dropped the Featured Items carousel (duplicates The Classic/Funfetti below); Cookies & Cream appeared 3x with distinct item ids at identical name+price+section, deduped to one row",
+    "dishes": [
+      {
+        "name": "Mix & Match 4 Pack",
+        "description": "Choose your four and make it your own. Perfect for sharing… but we won’t judge if you keep them all!",
+        "price": "$16.00",
+        "section": "Schmack Packs - Late August"
+      },
+      {
+        "name": "Share & Save 6 Pack",
+        "description": "Choose up to 3 flavors and mix your way to the perfect 6-pack. Enough to share… but no promises.",
+        "price": "$22.00",
+        "section": "Schmack Packs - Late August"
+      },
+      {
+        "name": "Cheaper By The Dozen 12 Pack",
+        "description": "Be the star of the party with a dozen cookies made just your way. Choose up to 4 flavors and create the perfect box for sharing, celebrations, and sweet moments.",
+        "price": "$40.00",
+        "section": "Schmack Packs - Late August"
+      },
+      {
+        "name": "The Classic",
+        "description": "Far from average, forever a classic, Packed with a blend of milk & semisweet chocolate and a hint of flake sea salt.",
+        "price": "$4.25",
+        "section": "Solo Cookies - Late August"
+      },
+      {
+        "name": "Funfetti",
+        "description": "Butter, Sugar, Flour... Plus mountains of sprinkles. Topped with our famous frosting.",
+        "price": "$4.25",
+        "section": "Solo Cookies - Late August"
+      },
+      {
+        "name": "Cookies & Cream",
+        "description": "Black cocoa, Oreo cookie crumbs, white chocolate & vanilla frosting. An instant fan favorite.",
+        "price": "$4.25",
+        "section": "Solo Cookies - Late August"
+      },
+      {
+        "name": "Dulce De Leche",
+        "description": "Abuela approved! This cookie is made with homemade dulce de leche caramel and dusted with cinnamon sugar.",
+        "price": "$4.25",
+        "section": "Solo Cookies - Late August"
+      },
+      {
+        "name": "Stay Gold^",
+        "description": "A reminder to savor life's sweet moments, this cookie contains freshly zested lemon, creamy lemon morsels and topped with a lemon creamsicle frosting. ^gluten free",
+        "price": "$4.25",
+        "section": "Solo Cookies - Late August"
+      },
+      {
+        "name": "Field of Dreams☮",
+        "description": "A delicate blend of soothing lavender & earl grey tea, swirling in perfect balance. Softly intriguing, just like a whispered secret at tea time.",
+        "price": "$4.25",
+        "section": "Solo Cookies - Late August"
+      },
+      {
+        "name": "Oh My Guava!",
+        "description": "An oatmeal cookie packed with white chocolate chips and fresh guava paste.",
+        "price": "$4.25",
+        "section": "Solo Cookies - Late August"
+      },
+      {
+        "name": "Buckeye Moonpie*",
+        "description": "We flip-flopped this chocolate peanut butter combination with a rich chocolate cookie slathered in creamy peanut butter frosting.",
+        "price": "$4.25",
+        "section": "Solo Cookies - Late August"
+      },
+      {
+        "name": "Best Sellers",
+        "description": "A pre-assorted dozen box of our best selling flavors: Classic Chocolate Chip Funfetti Rotating Fan Favorite",
+        "price": "$40.00",
+        "section": "Cookie Flights"
+      },
+      {
+        "name": "Daily Dozen",
+        "description": "An assortment of all 12 flavors we have on in today's rotation.",
+        "price": "$40.00",
+        "section": "Cookie Flights"
+      },
+      {
+        "name": "Knockout Brownies",
+        "description": "Current Flavor: Dulce de Leche Brownie",
+        "price": "$4.75",
+        "section": "Treats"
+      },
+      {
+        "name": "Schmanana Pudding",
+        "description": "",
+        "price": "$6.00",
+        "section": "Treats"
+      },
+      {
+        "name": "Colossal Krispy Treats",
+        "description": "Current Flavor: Cinnamon Toasted Krispy Treat",
+        "price": "$4.75",
+        "section": "Treats"
+      },
+      {
+        "name": "Coconut Schmackaroons",
+        "description": "Current Flavor: Triple Chip",
+        "price": "$4.75",
+        "section": "Treats"
+      },
+      {
+        "name": "Simply Vanilla Milkshake",
+        "description": "Pure and simple—but never basic. Creamy vanilla ice cream blended with our luscious homemade anglaise for the ultimate classic shake.",
+        "price": "$8.25",
+        "section": "Milkshakes"
+      },
+      {
+        "name": "Chocolate Daydream Milkshake",
+        "description": "A rich, malted chocolate shake that’s smooth, dreamy, and just the right amount of nostalgic. One sip and you’re floating.",
+        "price": "$8.25",
+        "section": "Milkshakes"
+      },
+      {
+        "name": "Strawberry Spectacular Milkshake",
+        "description": "Fresh strawberries blended to creamy perfection—sweet, juicy, and berry, berry irresistible.",
+        "price": "$8.25",
+        "section": "Milkshakes"
+      },
+      {
+        "name": "Ube-licious Milkshake",
+        "description": "",
+        "price": "$8.75",
+        "section": "Milkshakes"
+      },
+      {
+        "name": "Birthday Cake Milkshake",
+        "description": "",
+        "price": "$8.25",
+        "section": "Milkshakes"
+      },
+      {
+        "name": "Cookies & Cream Milkshake",
+        "description": "",
+        "price": "$8.25",
+        "section": "Milkshakes"
+      },
+      {
+        "name": "Mocha Java Milkshake",
+        "description": "",
+        "price": "$8.75",
+        "section": "Milkshakes"
+      },
+      {
+        "name": "Milk",
+        "description": "",
+        "price": "$3.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Chocolate Milk",
+        "description": "",
+        "price": "$3.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9019",
+    "name": "R&B Tea Terra Nova",
+    "sourceUrl": "https://order.toasttab.com/online/rbterranova",
+    "confidence": "high",
+    "notes": "first-party rbteausa.com is a client-rendered SPA with no menu data; found the restaurant's own Toast ordering page (address matches, 374 East H Street) with prices rendered directly in HTML; dropped the 3-item Featured Items carousel (Classic Milk Tea, Hawaiian Fruit Green Tea, Dragonfruit Mango Green Tea all duplicate rows in the sections below at identical prices)",
+    "dishes": [
+      {
+        "name": "Assam Black Tea",
+        "description": "",
+        "price": "$5.75",
+        "section": "Tea Series"
+      },
+      {
+        "name": "Jasmine Green Tea",
+        "description": "",
+        "price": "$5.75",
+        "section": "Tea Series"
+      },
+      {
+        "name": "Roasted Oolong Tea",
+        "description": "",
+        "price": "$5.75",
+        "section": "Tea Series"
+      },
+      {
+        "name": "Honey Black Tea",
+        "description": "",
+        "price": "$5.95",
+        "section": "Tea Series"
+      },
+      {
+        "name": "Honey Green Tea",
+        "description": "",
+        "price": "$5.95",
+        "section": "Tea Series"
+      },
+      {
+        "name": "Rose Oolong Tea",
+        "description": "",
+        "price": "$5.75",
+        "section": "Tea Series"
+      },
+      {
+        "name": "Brown Rice Tea",
+        "description": "",
+        "price": "$5.75",
+        "section": "Tea Series"
+      },
+      {
+        "name": "Classic Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Jasmine Green Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Roasted Oolong Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "House Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Thai Black Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Wintermelon Green Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Hokkaido Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Fresh Taro Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Rose Oolong Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Chocolate Black Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Hazelnut Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Honey Black Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Honey Green Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Horchata Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Brown Rice Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Matcha Milk Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Milk Tea Series"
+      },
+      {
+        "name": "Cream Brown Sugar Boba Milk",
+        "description": "",
+        "price": "$6.95",
+        "section": "Pure Milk Series"
+      },
+      {
+        "name": "Horchata",
+        "description": "",
+        "price": "$6.75",
+        "section": "Pure Milk Series"
+      },
+      {
+        "name": "Strawberry Horchata",
+        "description": "",
+        "price": "$6.75",
+        "section": "Pure Milk Series"
+      },
+      {
+        "name": "Mango Matcha Latte",
+        "description": "",
+        "price": "$6.75",
+        "section": "Pure Milk Series"
+      },
+      {
+        "name": "Strawberry Matcha Latte",
+        "description": "",
+        "price": "$6.75",
+        "section": "Pure Milk Series"
+      },
+      {
+        "name": "Cream Assam Black Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Cream Series"
+      },
+      {
+        "name": "Cream Jasmine Green Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Cream Series"
+      },
+      {
+        "name": "Roasted Cream Oolong Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Cream Series"
+      },
+      {
+        "name": "Cream Rose Tea",
+        "description": "",
+        "price": "$6.35",
+        "section": "Cream Series"
+      },
+      {
+        "name": "Cream Green Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Cream Series"
+      },
+      {
+        "name": "Cream Black Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Cream Series"
+      },
+      {
+        "name": "Cream Oreo Chocolate Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Cream Series"
+      },
+      {
+        "name": "Cream Oolong milk tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Cream Series"
+      },
+      {
+        "name": "Lychee Yakult",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Mango Yakult",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Peach Yakult",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Strawberry Yakult",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Passion Fruit Yakult",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Lychee Sparkling",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Mango Sparkling",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Peach Sparkling",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Strawberry Sparkling",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Passion Sparkling",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Dragonfruit Sparkling",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Dragonfruit Yakult",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Kumquat Sparkling",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Watermelon Sparkling",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Watermelon Yakult",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yakult Series"
+      },
+      {
+        "name": "Strawberry Stormy",
+        "description": "",
+        "price": "$6.95",
+        "section": "Stormy Series"
+      },
+      {
+        "name": "Mango Stormy",
+        "description": "",
+        "price": "$6.95",
+        "section": "Stormy Series"
+      },
+      {
+        "name": "Taro Stormy",
+        "description": "",
+        "price": "$6.95",
+        "section": "Stormy Series"
+      },
+      {
+        "name": "Mangonada",
+        "description": "",
+        "price": "$6.95",
+        "section": "Stormy Series"
+      },
+      {
+        "name": "Thai Tea Stormy",
+        "description": "",
+        "price": "$6.95",
+        "section": "Stormy Series"
+      },
+      {
+        "name": "Oreo Stormy",
+        "description": "",
+        "price": "$6.95",
+        "section": "Stormy Series"
+      },
+      {
+        "name": "Chocolate Oreo Stormy",
+        "description": "",
+        "price": "$6.95",
+        "section": "Stormy Series"
+      },
+      {
+        "name": "Dragonfruit Stormy",
+        "description": "",
+        "price": "$6.95",
+        "section": "Stormy Series"
+      },
+      {
+        "name": "Watermelon Stormy",
+        "description": "",
+        "price": "$6.95",
+        "section": "Stormy Series"
+      },
+      {
+        "name": "Matcha Stormy",
+        "description": "",
+        "price": "$6.95",
+        "section": "Stormy Series"
+      },
+      {
+        "name": "Watermelonada",
+        "description": "",
+        "price": "$6.95",
+        "section": "Stormy Series"
+      },
+      {
+        "name": "Coffee Stormy",
+        "description": "",
+        "price": "$6.95",
+        "section": "Stormy Series"
+      },
+      {
+        "name": "Frosty Strawberry Milk Tea",
+        "description": "",
+        "price": "$6.45",
+        "section": "Frosty Fruit Milk Tea"
+      },
+      {
+        "name": "Frosty Mango Milk Tea",
+        "description": "",
+        "price": "$6.45",
+        "section": "Frosty Fruit Milk Tea"
+      },
+      {
+        "name": "Frosty Peach Milk Tea",
+        "description": "",
+        "price": "$6.45",
+        "section": "Frosty Fruit Milk Tea"
+      },
+      {
+        "name": "Frosty Passion Fruit Milk Tea",
+        "description": "",
+        "price": "$6.45",
+        "section": "Frosty Fruit Milk Tea"
+      },
+      {
+        "name": "Frosty Lychee Milk Tea",
+        "description": "",
+        "price": "$6.45",
+        "section": "Frosty Fruit Milk Tea"
+      },
+      {
+        "name": "Hawaiian Fruit Black Tea",
+        "description": "",
+        "price": "$7.25",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Hawaiian Fruit Green Tea",
+        "description": "",
+        "price": "$7.25",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Wintermelon Green Tea",
+        "description": "",
+        "price": "$6.45",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Kumquat Lemon Ice Tea",
+        "description": "",
+        "price": "$6.45",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Lychee Green Tea with Aloe Vera",
+        "description": "",
+        "price": "$6.55",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Mango Green Tea with Aloe Vera",
+        "description": "",
+        "price": "$6.55",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Peach Black Tea with Aloe Vera",
+        "description": "",
+        "price": "$6.55",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Passion Fruit Green Tea with Aloe Vera",
+        "description": "",
+        "price": "$6.55",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Strawberry Black Tea with Aloe Vera",
+        "description": "",
+        "price": "$6.55",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Dragonfruit Mango Green Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Cupid Super Fruit Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Watermelon Mango Green Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Watermelon Peach Green Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Watermelon Strawberry Green Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Watermelon Green Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Fresh Fruit Tea Series"
+      },
+      {
+        "name": "Vietnamese Coffee",
+        "description": "",
+        "price": "$6.55",
+        "section": "Coffee Series"
+      },
+      {
+        "name": "Hokkaido Coffee",
+        "description": "",
+        "price": "$6.55",
+        "section": "Coffee Series"
+      },
+      {
+        "name": "Hazelnut Coffee",
+        "description": "",
+        "price": "$6.55",
+        "section": "Coffee Series"
+      },
+      {
+        "name": "Mocha Coffee",
+        "description": "",
+        "price": "$6.55",
+        "section": "Coffee Series"
+      },
+      {
+        "name": "Coffee Latte",
+        "description": "",
+        "price": "$6.55",
+        "section": "Coffee Series"
+      },
+      {
+        "name": "5 Scoops Topping(0.75)",
+        "description": "",
+        "price": "$3.75",
+        "section": "Topping Sales Only"
+      },
+      {
+        "name": "10 Scoops Topping(0.75)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Topping Sales Only"
+      },
+      {
+        "name": "5 Scoops Topping (0.95) crystal boba",
+        "description": "",
+        "price": "$4.75",
+        "section": "Topping Sales Only"
+      },
+      {
+        "name": "10 Scoops Topping (0.95) crystal boba",
+        "description": "",
+        "price": "$9.50",
+        "section": "Topping Sales Only"
+      },
+      {
+        "name": "Cheese Dip",
+        "description": "",
+        "price": "$0.85",
+        "section": "Topping Sales Only"
+      },
+      {
+        "name": "Chocolate Dip",
+        "description": "",
+        "price": "$0.85",
+        "section": "Topping Sales Only"
+      },
+      {
+        "name": "Strawberry Lemonade",
+        "description": "",
+        "price": "$5.95",
+        "section": "Lemonade"
+      },
+      {
+        "name": "Mango Lemonade",
+        "description": "",
+        "price": "$5.95",
+        "section": "Lemonade"
+      },
+      {
+        "name": "Dragonfruit Lemonade",
+        "description": "",
+        "price": "$5.95",
+        "section": "Lemonade"
+      },
+      {
+        "name": "Lychee Yogurt",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yogurt Series"
+      },
+      {
+        "name": "Mango Yogurt",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yogurt Series"
+      },
+      {
+        "name": "Peach Yogurt",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yogurt Series"
+      },
+      {
+        "name": "Strawberry Yogurt",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yogurt Series"
+      },
+      {
+        "name": "Passionfruit Yogurt",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yogurt Series"
+      },
+      {
+        "name": "Dragonfruit Yogurt",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yogurt Series"
+      },
+      {
+        "name": "Watermelon Yogurt",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yogurt Series"
+      },
+      {
+        "name": "Cupid Super Fruit Yogurt",
+        "description": "",
+        "price": "$6.55",
+        "section": "Yogurt Series"
+      }
+    ]
+  }
+]

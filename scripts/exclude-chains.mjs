@@ -40,6 +40,12 @@ const patterns = groups.flatMap(([group, list]) =>
   list.map((p) => ({ group, src: p, re: new RegExp(`(^|[^a-z0-9])(?:${p})(?![a-z0-9])`, "i") })),
 );
 
+/* Rows that match a pattern by accident and must never be held: a real cafe
+ * that also pours Peet's, an L&L inside a Walmart, an independent "Togos
+ * Kitchen Pizza". Listed by id in data/excluded-chains.json under _allow_ids. */
+const ALLOW = new Set(JSON.parse(readFileSync(new URL("../data/excluded-chains.json", import.meta.url), "utf8"))._allow_ids ?? []);
+const matchOf = (r) => (ALLOW.has(r.id) ? undefined : patterns.find((p) => p.re.test(r.name)));
+
 const rows = await sql`
   SELECT id::text, name, neighborhood, listed, hold_reason,
          (SELECT count(*)::int FROM dishes d WHERE d.restaurant_id = r.id) AS dishes
@@ -48,7 +54,7 @@ const rows = await sql`
 const toHold = [];
 const perPattern = new Map();
 for (const r of rows) {
-  const hit = patterns.find((p) => p.re.test(r.name));
+  const hit = matchOf(r);
   if (!hit) continue;
   const key = `${hit.group}:${hit.src}`;
   if (!perPattern.has(key)) perPattern.set(key, []);
@@ -59,7 +65,7 @@ for (const r of rows) {
   toHold.push({ r, reason: `${PREFIX}${hit.src})` });
 }
 const toRelease = rows.filter(
-  (r) => r.hold_reason?.startsWith(PREFIX) && !patterns.some((p) => p.re.test(r.name)),
+  (r) => r.hold_reason?.startsWith(PREFIX) && !matchOf(r),
 );
 
 if (SHOW) {

@@ -1817,3 +1817,107 @@ a {
 @media (prefers-reduced-motion: reduce) {
   .logo-bob { animation: none; }
 }
+
+/* ── Rank ring (RankRing.tsx) ─────────────────────────────────────────────
+   The owner's progression ring: an orange arc around the crest. The arc and
+   tip positions are set imperatively per frame (the roll-call changes the
+   total every frame); everything here is the discrete motion around that —
+   the tip breathing at rest, the crest nudge when a delivery settles, the
+   halos, crest-out and title slide of a rank-up, and `.crest-pop`, which
+   RankInsignia wears once when a new title's crest arrives. */
+
+.rank-ring { position: relative; }
+.rank-ring-svg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  transform: rotate(-90deg); overflow: visible;
+}
+.rank-ring-track { fill: none; stroke: var(--pm-orange-tint); stroke-width: 3; }
+.rank-ring-arc   { fill: none; stroke: var(--pm-orange); stroke-width: 3; stroke-linecap: round; }
+.rank-ring-tip {
+  fill: var(--pm-orange);
+  transform-box: fill-box; transform-origin: center;
+  animation: rank-ring-breathe 2.4s ease-in-out infinite;
+}
+.rank-ring-tipflash {
+  fill: none; stroke: var(--pm-orange); stroke-width: 1.5; opacity: 0;
+  transform-box: fill-box; transform-origin: center;
+}
+.rank-ring-crest { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.rank-ring-crest-out { animation: rank-ring-crest-out 0.22s cubic-bezier(0.5, 0, 0.8, 0.4) both; }
+.rank-ring-nudge     { animation: rank-ring-nudge 0.38s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.rank-ring-halo {
+  position: absolute; inset: -4px; border-radius: 50%;
+  border: 2px solid var(--pm-orange); opacity: 0; pointer-events: none;
+}
+.rank-ring-halo-go { animation: rank-ring-halo 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.rank-ring-halo-2.rank-ring-halo-go { animation-delay: 0.12s; }
+.rank-ring-spark {
+  position: absolute; left: 50%; top: 50%; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--pm-orange); pointer-events: none;
+}
+.rank-ring-title { position: relative; overflow: hidden; }
+.rank-ring-title-out {
+  position: absolute; left: 0; right: 0; top: 0;
+  animation: rank-ring-title-out 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.rank-ring-title-in { display: block; animation: rank-ring-title-in 0.52s cubic-bezier(0.16, 1, 0.3, 1) 60ms both; }
+
+.crest-pop .crest-star {
+  transform-box: fill-box; transform-origin: center;
+  animation: crest-star-pop 0.55s cubic-bezier(0.3, 1.6, 0.4, 1) both;
+  animation-delay: calc(160ms + var(--d, 0ms));
+}
+.crest-pop .crest-body {
+  transform-box: fill-box; transform-origin: center;
+  animation: crest-settle 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes rank-ring-breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.25); }
+}
+@keyframes rank-ring-nudge {
+  0%   { transform: translate(-50%, -50%) scale(1); }
+  35%  { transform: translate(-50%, -50%) scale(1.07); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes rank-ring-crest-out {
+  0%   { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+}
+@keyframes rank-ring-halo {
+  0%   { transform: scale(0.92); opacity: 0.9; }
+  100% { transform: scale(1.55); opacity: 0; }
+}
+@keyframes rank-ring-title-out {
+  0%   { transform: translateY(0);     opacity: 1; }
+  100% { transform: translateY(-110%); opacity: 0; }
+}
+@keyframes rank-ring-title-in {
+  0%   { transform: translateY(110%); opacity: 0; }
+  100% { transform: translateY(0);    opacity: 1; }
+}
+@keyframes crest-star-pop {
+  0%   { transform: scale(0)   rotate(-40deg); }
+  65%  { transform: scale(1.4) rotate(6deg); }
+  100% { transform: scale(1)   rotate(0); }
+}
+@keyframes crest-settle {
+  0%   { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rank-ring-tip,
+  .rank-ring-crest-out,
+  .rank-ring-nudge,
+  .rank-ring-halo-go,
+  .rank-ring-title-in,
+  .crest-pop .crest-star,
+  .crest-pop .crest-body {
+    animation: none;
+  }
+  /* The outgoing title only exists to slide away; without the slide it would
+     sit on top of the new one. */
+  .rank-ring-title-out { display: none; }
+}

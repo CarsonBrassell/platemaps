@@ -1,0 +1,977 @@
+[
+  {
+    "restaurantId": "12008",
+    "name": "Underdog Food Truck",
+    "sourceUrl": "https://www.ubereats.com/store/underdog-food-truck/lVul9yR7QASDbEwknqIsUQ",
+    "confidence": "medium",
+    "notes": "underdogsd.com is dead/repurposed (redirects to a pukkaliving.com MMS-supplement page, unrelated to food); no other first-party site found. Filed from Uber Eats catalogSectionsMap JSON. Address on Uber Eats is 2404 El Cajon Blvd, San Diego 92104 vs batch address 3052 El Cajon Blvd Ste C, San Diego 92104 - same street and zip, food truck so address is a service point not a fixed storefront; name, cuisine (vegan hot dogs/corn dogs/burgers) match batch record. Deduped 23 raw rows to 19 unique on name+price (Sides and Bites appears twice, once for an after-12pm daypart variant with identical items/prices). Sections: Hot Dogs, Loaded Fries, Corn Dogs, Burgers, Sides and Bites - all real, no Most Ordered carousel.",
+    "dishes": [
+      {
+        "name": "Banh Mi Hot Dog",
+        "description": "Stadium dog, pickled daikon and carrot, cucumber spear, fresh jalapeño, mayo, and cilantro.",
+        "price": "$9.50",
+        "section": "Hot Dogs"
+      },
+      {
+        "name": "Classic Hot Dog",
+        "description": "Frankfurter, mustard, ketchup, dill relish, and diced onion.",
+        "price": "$8.50",
+        "section": "Hot Dogs"
+      },
+      {
+        "name": "Chili Cheese Dog",
+        "description": "Stadium dog, house-made chili, cheddar, and green onion.",
+        "price": "$11.50",
+        "section": "Hot Dogs"
+      },
+      {
+        "name": "Danger Dog",
+        "description": "Stadium dog, bacon, grilled onions and peppers, pickled jalapeño, cilantro, mayo, and yellow mustard.",
+        "price": "$11.50",
+        "section": "Hot Dogs"
+      },
+      {
+        "name": "N.Y.C. Hot Dog",
+        "description": "Frankfurter, sauerkraut, onion sauce, and spicy brown mustard.",
+        "price": "$8.95",
+        "section": "Hot Dogs"
+      },
+      {
+        "name": "Dirty Fries",
+        "description": "Fries tossed in underdog spice rub.",
+        "price": "$4.95",
+        "section": "Sides and Bites"
+      },
+      {
+        "name": "Fries",
+        "description": "",
+        "price": "$3.95",
+        "section": "Sides and Bites"
+      },
+      {
+        "name": "Chicken Tenders (5 pcs)",
+        "description": "Gardein ultimate tender.",
+        "price": "$11.50",
+        "section": "Sides and Bites"
+      },
+      {
+        "name": "Chili",
+        "description": "House-made chili topped with cheddar and green onion.",
+        "price": "$8.50",
+        "section": "Sides and Bites"
+      },
+      {
+        "name": "Triple Threat",
+        "description": "Frankfurter, bacon, chicken, and special sauce.",
+        "price": "$13.95",
+        "section": "Loaded Fries"
+      },
+      {
+        "name": "Chili Cheese Fries",
+        "description": "House-made chili, cheddar, and green onion.",
+        "price": "$13.50",
+        "section": "Loaded Fries"
+      },
+      {
+        "name": "Animal Fries",
+        "description": "Cheddar, caramelized onion, and special sauce.",
+        "price": "$9.95",
+        "section": "Loaded Fries"
+      },
+      {
+        "name": "Kimchi Cheddar Fries",
+        "description": "Cheddar, bacon, kimchi, and spicy mayo.",
+        "price": "$13.50",
+        "section": "Loaded Fries"
+      },
+      {
+        "name": "Classic Corn Dog",
+        "description": "Buttermilk battered frankfurter.",
+        "price": "$6.95",
+        "section": "Corn Dogs"
+      },
+      {
+        "name": "Goblin's Club",
+        "description": "Dough battered stadium dog, fries, panko, and sugar- a Korean classic.",
+        "price": "$8.95",
+        "section": "Corn Dogs"
+      },
+      {
+        "name": "Jalapeño Popper Corn Dog",
+        "description": "Classic corn dog with cheddar and jalapeño-infused batter.",
+        "price": "$8.50",
+        "section": "Corn Dogs"
+      },
+      {
+        "name": "Classic Burger",
+        "description": "Beyond patty, cheddar, caramelized onion, lettuce, tomato, pickles, and special sauce. Add bacon for additional charge.",
+        "price": "$10.95",
+        "section": "Burgers"
+      },
+      {
+        "name": "The Jesse Burger",
+        "description": "Mat ganjang glazed beyond patty, cheddar, kimchi, pickled jalapeño, and spicy mayo.",
+        "price": "$13.50",
+        "section": "Burgers"
+      },
+      {
+        "name": "Chili Cheeseburger",
+        "description": "Beyond patty, cheddar, house-made chili, and green onion.",
+        "price": "$12.50",
+        "section": "Burgers"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9149",
+    "name": "Park Blvd Liquor and Deli",
+    "sourceUrl": "https://themenustar.com/webspace/menus.php?code=parkblvddeli.com",
+    "confidence": "high",
+    "notes": "first-party MenuStar backend embedded on parkblvddeli.com (restaurant_id=139); pulled per-category via POST to themenustar.com/webspace/functions/restaurant.php. 8 categories, 41 priced items, conventional .99/.69/.79/.49/.29 cent endings.",
+    "dishes": [
+      {
+        "name": "Bagel w/ cream cheese",
+        "description": "",
+        "price": "$4.29",
+        "section": "Wake up calls"
+      },
+      {
+        "name": "Bagel w/ cream cheese and ham",
+        "description": "",
+        "price": "$5.69",
+        "section": "Wake up calls"
+      },
+      {
+        "name": "Bagel w/ cream cheese and bacon",
+        "description": "",
+        "price": "$5.69",
+        "section": "Wake up calls"
+      },
+      {
+        "name": "Egg and cheese",
+        "description": "",
+        "price": "$6.69",
+        "section": "Breakfast Bites"
+      },
+      {
+        "name": "Eggs cheese and ham",
+        "description": "",
+        "price": "$7.99",
+        "section": "Breakfast Bites"
+      },
+      {
+        "name": "Eggs cheese and bacon",
+        "description": "",
+        "price": "$7.99",
+        "section": "Breakfast Bites"
+      },
+      {
+        "name": "Breakfast bite- eggs Swiss cheese ham and bacon",
+        "description": "",
+        "price": "$8.99",
+        "section": "Breakfast Bites"
+      },
+      {
+        "name": "Spicy kickstart- egg Gouda cheese jerk chicken bacon and spicy Mayo",
+        "description": "",
+        "price": "$9.99",
+        "section": "Breakfast Bites"
+      },
+      {
+        "name": "Garden Salad",
+        "description": "",
+        "price": "$10.99",
+        "section": "In the Green"
+      },
+      {
+        "name": "Greek Salad",
+        "description": "",
+        "price": "$13.99",
+        "section": "In the Green"
+      },
+      {
+        "name": "Chef Salad",
+        "description": "",
+        "price": "$14.99",
+        "section": "In the Green"
+      },
+      {
+        "name": "Chicken Caesar Salad",
+        "description": "",
+        "price": "$12.99",
+        "section": "In the Green"
+      },
+      {
+        "name": "Tuna melt",
+        "description": "",
+        "price": "$11.99",
+        "section": "Veggie Delights"
+      },
+      {
+        "name": "Tuna Supreme",
+        "description": "",
+        "price": "$12.99",
+        "section": "Veggie Delights"
+      },
+      {
+        "name": "Egg salad",
+        "description": "",
+        "price": "$9.99",
+        "section": "Veggie Delights"
+      },
+      {
+        "name": "Veggie w/ choice of 6 cheese",
+        "description": "",
+        "price": "$10.99",
+        "section": "Veggie Delights"
+      },
+      {
+        "name": "Veggie supreme",
+        "description": "",
+        "price": "$11.99",
+        "section": "Veggie Delights"
+      },
+      {
+        "name": "Peanut butter and jelly",
+        "description": "",
+        "price": "$3.99",
+        "section": "Veggie Delights"
+      },
+      {
+        "name": "Ruki’s Special",
+        "description": "",
+        "price": "$15.99",
+        "section": "Signature Sandwiches"
+      },
+      {
+        "name": "Torpedo",
+        "description": "",
+        "price": "$15.99",
+        "section": "Signature Sandwiches"
+      },
+      {
+        "name": "EL padre",
+        "description": "",
+        "price": "$15.99",
+        "section": "Signature Sandwiches"
+      },
+      {
+        "name": "The Charger",
+        "description": "",
+        "price": "$15.99",
+        "section": "Signature Sandwiches"
+      },
+      {
+        "name": "AL",
+        "description": "",
+        "price": "$18.99",
+        "section": "Signature Sandwiches"
+      },
+      {
+        "name": "The Jerk (local Favorite)",
+        "description": "",
+        "price": "$15.99",
+        "section": "Signature Sandwiches"
+      },
+      {
+        "name": "Cordon Blue",
+        "description": "",
+        "price": "$15.99",
+        "section": "Signature Sandwiches"
+      },
+      {
+        "name": "Park Blvd",
+        "description": "",
+        "price": "$15.99",
+        "section": "Signature Sandwiches"
+      },
+      {
+        "name": "Chicken Pesto",
+        "description": "",
+        "price": "$15.99",
+        "section": "Signature Sandwiches"
+      },
+      {
+        "name": "Mila's BLT",
+        "description": "",
+        "price": "$15.99",
+        "section": "Signature Sandwiches"
+      },
+      {
+        "name": "Aria’s special",
+        "description": "",
+        "price": "$15.99",
+        "section": "Signature Sandwiches"
+      },
+      {
+        "name": "Turkey Club",
+        "description": "",
+        "price": "$15.99",
+        "section": "Signature Sandwiches"
+      },
+      {
+        "name": "Build your own sandwich",
+        "description": "",
+        "price": "$13.99",
+        "section": "Build your own sandwich"
+      },
+      {
+        "name": "Chicken Mediterranean Wrap",
+        "description": "",
+        "price": "$14.99",
+        "section": "Wraps"
+      },
+      {
+        "name": "Chicken Ranch Wrap",
+        "description": "",
+        "price": "$14.99",
+        "section": "Wraps"
+      },
+      {
+        "name": "Chicken Caesar Wrap",
+        "description": "",
+        "price": "$14.99",
+        "section": "Wraps"
+      },
+      {
+        "name": "Buffalo Chicken Wrap",
+        "description": "",
+        "price": "$14.99",
+        "section": "Wraps"
+      },
+      {
+        "name": "Macaroni Salad",
+        "description": "",
+        "price": "$2.79",
+        "section": "Sides"
+      },
+      {
+        "name": "Potato Salad",
+        "description": "",
+        "price": "$2.79",
+        "section": "Sides"
+      },
+      {
+        "name": "Home Made Potato Salad",
+        "description": "",
+        "price": "$3.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Hummus W/ Pita Bread",
+        "description": "",
+        "price": "$5.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Deviled Eggs",
+        "description": "",
+        "price": "$3.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Baklawa",
+        "description": "",
+        "price": "$4.49",
+        "section": "Sides"
+      }
+    ]
+  },
+  {
+    "restaurantId": "13025",
+    "name": "Un Mundo Mexican Grill",
+    "sourceUrl": "https://www.yelp.com/biz/un-mundo-mexican-grill-la-jolla",
+    "confidence": "high",
+    "crossCheckedAgainst": "https://www.mapquest.com/us/california/un-mundo-mexican-grill-365529229",
+    "notes": "closed: Yelp listing itself titled 'UN MUNDO MEXICAN GRILL - CLOSED', Mapquest and Chamber of Commerce both independently say 'Permanently closed' at 4150 Regents Park Row Suite 170 (exact batch address match)",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5681",
+    "name": "Casa De Otay – The Casita",
+    "sourceUrl": "http://www.casadeotay.com/collections/menu",
+    "confidence": "medium",
+    "notes": "router had screened out /products.json (81 items) as mostly unrelated retail merchandise; /collections/menu is a separate curated 12-item cafe menu (coffee drinks, pastries) at the same address (1964 Optima St, Chula Vista) confirmed in homepage HTML — this is the legitimate food/drink menu, distinct from the retail catalog",
+    "dishes": [
+      {
+        "name": "Banana Matcha",
+        "description": "",
+        "price": "$8.00",
+        "section": "Cafe Menu"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$4.50",
+        "section": "Cafe Menu"
+      },
+      {
+        "name": "Cinnamon Roll",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cafe Menu"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cafe Menu"
+      },
+      {
+        "name": "Concha",
+        "description": "",
+        "price": "$5.50",
+        "section": "Cafe Menu"
+      },
+      {
+        "name": "Cookies",
+        "description": "",
+        "price": "$4.00",
+        "section": "Cafe Menu"
+      },
+      {
+        "name": "Cortado",
+        "description": "",
+        "price": "$4.00",
+        "section": "Cafe Menu"
+      },
+      {
+        "name": "Croissant",
+        "description": "",
+        "price": "$5.00",
+        "section": "Cafe Menu"
+      },
+      {
+        "name": "Empanadas",
+        "description": "",
+        "price": "$5.00",
+        "section": "Cafe Menu"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$3.50",
+        "section": "Cafe Menu"
+      },
+      {
+        "name": "Flat White",
+        "description": "",
+        "price": "$4.50",
+        "section": "Cafe Menu"
+      },
+      {
+        "name": "Strawberry Matcha",
+        "description": "",
+        "price": "$8.00",
+        "section": "Cafe Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7790",
+    "name": "Pho'Tastic!",
+    "sourceUrl": "https://www.ubereats.com/store/photastic/fBK5Hf9YXRuzCP2ShSZIzw",
+    "confidence": "medium",
+    "notes": "Uber Eats catalogSectionsMap; address confirmed exact match (835 South Main Avenue #B = batch's 835 S Main Ave Ste B, Fallbrook); 95 raw items captured, deduped by name+price to 83 unique dishes (12 items were repeats from a 'Most Ordered' recommendation carousel embedded a second time in the page, same pattern as DoorDash's double JSON-LD); cent-ending distribution (.00/.25/.50/.75/.95 only, no .20/.40/.60/.80 skew) confirms conventional printed-menu pricing, no fee markup",
+    "dishes": [
+      {
+        "name": "A2. Spring Rolls 2Pc",
+        "description": "All served with rice paper, vermicelli noodles, lettuce, pickled carrots and daikon.",
+        "price": "$10.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "A3. Premium Spring Rolls 2Pc",
+        "description": "All served with rice paper, vermicelli noodles, lettuce, pickled carrots and daikon.",
+        "price": "$11.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "A4. Fried Egg Rolls",
+        "description": "Made with shrimp and pork",
+        "price": "$7.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "A5. Pho'tastic! Wings 6Pc",
+        "description": "Sweet and savory Vietnamese style chicken wings.",
+        "price": "$14.75",
+        "section": "Appetizers"
+      },
+      {
+        "name": "A1. Pho'tastic! Appetizer Combo",
+        "description": "2 shrimp and pork spring rolls and 2 egg rolls",
+        "price": "$13.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "A4. Vegetarian Fried Egg Rolls",
+        "description": "Made with Mung bean, taro, and other vegetables served with lettuce wrap and sweet chili sauce",
+        "price": "$7.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "A7. Vietnamese Salted Shrimp",
+        "description": "Spicy Stir Fried Shrimp",
+        "price": "$16.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "B1. Beef Salad",
+        "description": "served on mixed greens with carrots / daikon, and onions, topped with roasted peanuts, and fried onion.",
+        "price": "$18.95",
+        "section": "Salads"
+      },
+      {
+        "name": "B2. Chicken Salad",
+        "description": "served on mixed greens with carrots / daikon, and onions, topped with roasted peanuts, and fried onion.",
+        "price": "$17.95",
+        "section": "Salads"
+      },
+      {
+        "name": "B3. Tofu Salad",
+        "description": "served on mixed greens with carrots / daikon, and onions, topped with roasted peanuts, and fried onion.",
+        "price": "$17.95",
+        "section": "Salads"
+      },
+      {
+        "name": "C1. Pho'tastic! Pho",
+        "description": "Made with beef broth, topped with onion, cilantro, and green onion",
+        "price": "$18.95",
+        "section": "Pho"
+      },
+      {
+        "name": "C2. Oxtail Pho",
+        "description": "Made with beef broth, topped with onion, cilantro, and green onion",
+        "price": "$21.95",
+        "section": "Pho"
+      },
+      {
+        "name": "C3. Chicken Pho",
+        "description": "Made with chicken broth, topped with onion, cilantro, and green onion",
+        "price": "$18.75",
+        "section": "Pho"
+      },
+      {
+        "name": "C5. Tofu and Veggie Pho",
+        "description": "Made with veggie broth, topped with onion, cilantro, and green onion",
+        "price": "$18.75",
+        "section": "Pho"
+      },
+      {
+        "name": "C6. Rare Steak Pho",
+        "description": "Made with beef broth, topped with onion, cilantro, and green onion",
+        "price": "$18.75",
+        "section": "Pho"
+      },
+      {
+        "name": "C4. Shrimp Pho",
+        "description": "Made with beef broth, topped with onion, cilantro, and green onion",
+        "price": "$19.75",
+        "section": "Pho"
+      },
+      {
+        "name": "C7. Well-done Steak Pho",
+        "description": "Made with beef broth, topped with onion, cilantro, and green onion",
+        "price": "$18.75",
+        "section": "Pho"
+      },
+      {
+        "name": "Broth and Noodles",
+        "description": "Your choice of pho broth with pho noodles, topped with green onion, white onion, and cilantro",
+        "price": "$10.95",
+        "section": ""
+      },
+      {
+        "name": "C8. Seafood Combo Pho",
+        "description": "Shrimp, Squid, Fishballs",
+        "price": "$21.95",
+        "section": "Pho"
+      },
+      {
+        "name": "C10. Build Your Own Pho",
+        "description": "Your choice of broth and proteins, topped with onion, cilantro, and green onion",
+        "price": "$18.95",
+        "section": "Pho"
+      },
+      {
+        "name": "D1. Vietnamese Beef Stew",
+        "description": "Topped with onions, cilantro, and green onions",
+        "price": "$20.75",
+        "section": "Noodle Soups"
+      },
+      {
+        "name": "D3. Southern Vietnamese Noodle Soup",
+        "description": "Pork, Shrimp, and Veggies in chicken broth with rice noodles topped with onions, cilantro, and green onions",
+        "price": "$17.95",
+        "section": "Noodle Soups"
+      },
+      {
+        "name": "D2. Spicy Beef Noodle Soup",
+        "description": "Topped with onions, cilantro, and green onions",
+        "price": "$20.75",
+        "section": "Noodle Soups"
+      },
+      {
+        "name": "E1. Pho'tastic! Rice Plate",
+        "description": "Grilled beef, grilled chicken, grilled pork, grilled shrimp, and an egg roll. Served with lettuce, cucumber, tomato,  carrot / daikon, and fish sauce.",
+        "price": "$20.50",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "E2. Grilled Beef Plate Cơm",
+        "description": "Served with lettuce, cucumber, tomato, carrot / daikon, and fish sauce.",
+        "price": "$18.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "E3. Grilled Chicken Plate",
+        "description": "Served with lettuce, cucumber, tomato,  carrot / daikon, and fish sauce.",
+        "price": "$18.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "E4. Grilled Pork Plate",
+        "description": "Served with lettuce, cucumber, tomato, carrot / daikon, and fish sauce.",
+        "price": "$18.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "E5. Pork Chop Plate",
+        "description": "Served with lettuce, cucumber, tomato, carrot / daikon, and fish sauce.",
+        "price": "$18.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "E7. Grilled Shrimp Plate",
+        "description": "Served with lettuce, cucumber, tomato, carrot / daikon, and fish sauce.",
+        "price": "$18.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "E9. You Pick Two Plate",
+        "description": "*Excludes Pork Chop and Salmon*.  Served with lettuce, cucumber, tomato, carrot / daikon, and fish sauce.",
+        "price": "$21.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "F4. Shaken Beef",
+        "description": "Served with an egg and your choice of rice or baguette",
+        "price": "$22.95",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "F1. Beef and Broccoli Stir Fry",
+        "description": "Served with steamed rice",
+        "price": "$20.50",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "F2. Shrimp and Broccoli Stir Fry",
+        "description": "Served with steamed rice",
+        "price": "$20.50",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "F3. Tofu and Veggie Stir Fry",
+        "description": "Served with steamed rice",
+        "price": "$18.95",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "F5. Spicy Lemongrass Beef Stir Fry",
+        "description": "Served with steamed rice",
+        "price": "$18.95",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "F6. Spicy Lemongrass Chicken Stir Fry",
+        "description": "Served with steamed rice",
+        "price": "$18.95",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "F7. Spicy Lemongrass Shrimp Stir Fry",
+        "description": "Served with steamed rice",
+        "price": "$18.95",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "F8. Spicy Vietnamese Salted Shrimp Stir Fry",
+        "description": "Savory shrimp stir-fry with a spicy kick, seasoned with Vietnamese salt.",
+        "price": "$18.95",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "G1. Pho'tastic! Vermicelli Bowl",
+        "description": "Grilled beef, grilled chicken, grilled pork, grilled shrimp, and an egg roll served with vermicelli noodles, lettuce, cucumber, tomato, carrot / daikon, fish sauce topped with peanuts.",
+        "price": "$20.50",
+        "section": "Vermicelli Bowls"
+      },
+      {
+        "name": "G5. Grilled Pork Vermicelli Bowl",
+        "description": "served with vermicelli noodles, lettuce, cucumber, tomato, carrot / daikon, fish sauce topped with peanuts.",
+        "price": "$18.95",
+        "section": "Vermicelli Bowls"
+      },
+      {
+        "name": "G2. Grilled Beef Vermicelli Bowl",
+        "description": "served with vermicelli noodles, lettuce, cucumber, tomato, carrot / daikon, fish sauce topped with peanuts.",
+        "price": "$18.95",
+        "section": "Vermicelli Bowls"
+      },
+      {
+        "name": "G3. Grilled Chicken Vermicelli Bowl",
+        "description": "served with vermicelli noodles, lettuce, cucumber, tomato, carrot / daikon, fish sauce topped with peanuts.",
+        "price": "$18.95",
+        "section": "Vermicelli Bowls"
+      },
+      {
+        "name": "G4. Grilled Shrimp Vermicelli Bowl",
+        "description": "served with vermicelli noodles, lettuce, cucumber, tomato, carrot / daikon, fish sauce topped with peanuts.",
+        "price": "$18.95",
+        "section": "Vermicelli Bowls"
+      },
+      {
+        "name": "G6. Egg Roll Vermicelli Bowl",
+        "description": "served with vermicelli noodles, lettuce, cucumber, tomato,  carrot / daikon, fish sauce topped with peanuts.",
+        "price": "$18.95",
+        "section": "Vermicelli Bowls"
+      },
+      {
+        "name": "G8. Tofu Vermicelli Bowl",
+        "description": "served with vermicelli noodles, lettuce, cucumber, tomato, carrot / daikon, fish sauce topped with peanuts.",
+        "price": "$18.95",
+        "section": "Vermicelli Bowls"
+      },
+      {
+        "name": "G9. You Pick Two Vermicelli Bowl",
+        "description": "served with vermicelli noodles, lettuce, cucumber, tomato, carrot / daikon, fish sauce topped with peanuts.",
+        "price": "$21.95",
+        "section": "Vermicelli Bowls"
+      },
+      {
+        "name": "H1. Pho'tastic! Stir Fried Noodles",
+        "description": "made with your choice of egg noodles or rice noodles (flat noodles) served with celery, carrot, bok choy, broccoli, and topped with cilantro.",
+        "price": "$21.95",
+        "section": "Stir Fried Noodles"
+      },
+      {
+        "name": "H6. Tofu and veggie Stir Fried Noodles",
+        "description": "made with your choice of egg noodles or rice noodles (flat noodles) served with celery, carrot, bok choy, broccoli, and topped with cilantro.",
+        "price": "$18.95",
+        "section": "Stir Fried Noodles"
+      },
+      {
+        "name": "H2. Seafood Combo Stir Fried Noodles",
+        "description": "Shrimp, calamari, fish balls made with your choice of egg noodles or rice noodles (flat noodles) served with celery, carrot, bok choy, broccoli, and topped with cilantro.",
+        "price": "$21.95",
+        "section": "Stir Fried Noodles"
+      },
+      {
+        "name": "H3. Beef Stir Fried Noodles",
+        "description": "made with your choice of egg noodles or rice noodles (flat noodles) served with celery, carrot, bok choy, broccoli, and topped with cilantro.",
+        "price": "$20.50",
+        "section": "Stir Fried Noodles"
+      },
+      {
+        "name": "H4. Chicken Stir Fried Noodles",
+        "description": "made with your choice of egg noodles or rice noodles (flat noodles) served with celery, carrot, bok choy, broccoli, and topped with cilantro.",
+        "price": "$20.50",
+        "section": "Stir Fried Noodles"
+      },
+      {
+        "name": "H5. Shrimp Stir Fried Noodles",
+        "description": "made with your choice of egg noodles or rice noodles (flat noodles) served with celery, carrot, bok choy, broccoli, and topped with cilantro.",
+        "price": "$20.50",
+        "section": "Stir Fried Noodles"
+      },
+      {
+        "name": "H7. Crispy Stir Fried Egg Noodles",
+        "description": "Your choice of protein served with celery, carrot, bok choy, broccoli, and topped with cilantro.",
+        "price": "$18.95",
+        "section": "Stir Fried Noodles"
+      },
+      {
+        "name": "J1. Pho'tastic! Fried Rice",
+        "description": "Beef, chicken, shrimp. Made with eggs, peas & carrots, and topped with cilantro",
+        "price": "$20.50",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "J2. Shrimp and Vietnamese Sausage Fried Rice",
+        "description": "Made with eggs, peas & carrots, and topped with cilantro",
+        "price": "$20.50",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "J3. Beef Fried Rice",
+        "description": "Made with eggs, peas & carrots, and topped with cilantro",
+        "price": "$20.50",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "J4. Chicken Fried Rice",
+        "description": "Made with eggs, peas & carrots, and topped with cilantro",
+        "price": "$20.50",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "J5. Shrimp Fried Rice",
+        "description": "Made with eggs, peas & carrots, and topped with cilantro",
+        "price": "$20.50",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "J6. Tofu Fried Rice",
+        "description": "Made with eggs, peas & carrots, and topped with cilantro",
+        "price": "$18.95",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "K3. Grilled Pork",
+        "description": "Hand-crafted with pâté, butter, cucumber, carrots/ daikon, jalapeños, and cilantro",
+        "price": "$11.50",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "K1. Grilled Beef Sandwich",
+        "description": "Hand-crafted with pâté, butter, cucumber, carrots/ daikon, jalapeños, and cilantro",
+        "price": "$11.50",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "K2. Grilled Chicken Sandwich",
+        "description": "Hand-crafted with pâté, butter, cucumber, carrots/ daikon, jalapeños, and cilantro",
+        "price": "$11.50",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "K4. Tofu Sandwich",
+        "description": "Crisp tofu on a soft bun, a Vietnamese-inspired delight.",
+        "price": "$11.50",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Side of Broth",
+        "description": "Rich and flavorful broth served on the side.",
+        "price": "$7.95",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Steamed Rice",
+        "description": "Plain steamed rice, served as a side.",
+        "price": "$3.95",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Vinegar Onions",
+        "description": "Tangy and sweet onions in a vinegar dressing.",
+        "price": "$2.95",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Fried Egg",
+        "description": "One fried egg, served as a side.",
+        "price": "$2.50",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Steamed Veggies",
+        "description": "Add Bok Choy, Broccoli, Carrots, and Celery on the side for Pho or any other dish!",
+        "price": "$5.00",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Coke",
+        "description": "",
+        "price": "$3.25",
+        "section": "Sodas"
+      },
+      {
+        "name": "Dr. Pepper",
+        "description": "",
+        "price": "$3.25",
+        "section": "Sodas"
+      },
+      {
+        "name": "Sprite",
+        "description": "",
+        "price": "$3.25",
+        "section": "Sodas"
+      },
+      {
+        "name": "Diet Coke",
+        "description": "",
+        "price": "$3.25",
+        "section": "Sodas"
+      },
+      {
+        "name": "Coke Zero",
+        "description": "",
+        "price": "$3.25",
+        "section": "Sodas"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "Sweet and creamy Thai black tea with milk.",
+        "price": "$7.50",
+        "section": "Fruit Teas"
+      },
+      {
+        "name": "Brown Sugar Milk Tea",
+        "description": "Sweet and creamy tea infused with brown sugar flavor.",
+        "price": "$7.50",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Jasmine Milk Tea",
+        "description": "Smooth and creamy tea infused with jasmine flowers.",
+        "price": "$7.50",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Vietnamese Coffee",
+        "description": "Rich and smooth coffee with a sweet, creamy flavor.",
+        "price": "$7.50",
+        "section": "Fruit Teas"
+      },
+      {
+        "name": "Mango Green Tea",
+        "description": "Sweet and refreshing tea infused with mango flavor.",
+        "price": "$7.50",
+        "section": "Fruit Teas"
+      },
+      {
+        "name": "Peach Green Tea",
+        "description": "Sweet and refreshing tea infused with peaches and green tea leaves.",
+        "price": "$7.50",
+        "section": "Fruit Teas"
+      },
+      {
+        "name": "Strawberry Green Tea",
+        "description": "Sweet and refreshing green tea infused with strawberry flavor.",
+        "price": "$7.50",
+        "section": "Fruit Teas"
+      },
+      {
+        "name": "Strawberry Passion Fruit Green Tea",
+        "description": "Sweet and refreshing blend of strawberry and passion fruit flavors infused in green tea.",
+        "price": "$7.50",
+        "section": "Fruit Teas"
+      },
+      {
+        "name": "Unsweetened Iced Tea",
+        "description": "Refreshing unsweetened iced tea, served over ice.",
+        "price": "$3.50",
+        "section": "Iced Tea"
+      },
+      {
+        "name": "Unsweetened Iced Green Tea",
+        "description": "Refreshing and thirst-quenching green tea, served over ice.",
+        "price": "$3.50",
+        "section": "Fruit Teas"
+      }
+    ]
+  }
+]

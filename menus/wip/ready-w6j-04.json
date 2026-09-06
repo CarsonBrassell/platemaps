@@ -1,0 +1,836 @@
+[
+  {
+    "restaurantId": "9961",
+    "name": "The Great Greek Mediterranean Grill - San Diego, CA - Barrio Logan",
+    "sourceUrl": "https://www.thegreatgreekgrill.com/menus/menu?location=san-diego-ca-barrio-logan",
+    "confidence": "high",
+    "notes": "Router flagged the Toast delivery link as wrong-branch (Texas address) but the restaurant's own site is a Popmenu platform; confirmed this location's page carries the matching address 2707 Boston Ave. Suite 8, San Diego, CA 92113 (a Toast 'cloud kitchen' digital-only listing tied to the same location). Read priced JSON-LD from the location's own /menus/menu page. Four build-your-own entrees/salad (Souvlaki Plate, Great Greek Plate, Classic Greek Salad) have no flat price in the JSON-LD; opened each item's own page and recorded the cheapest REQUIRED protein/size option as a 'from' price (noted per-dish). Spanakopita has priceType amount_price_type but price:null everywhere checked -- dropped, no price found. 33 dishes across Appetizers/Salads/Sandwiches/Entrees/Sides/Kids/Desserts/Drinks -- full core menu.",
+    "dishes": [
+      {
+        "name": "Avgolemono Soup",
+        "description": "Chicken - Lemon Juice - Rice - Pita Bread",
+        "price": "$3.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Tzatziki",
+        "description": "Greek Yogurt - Labne - Cucumber - Garlic - Dill - Pita Bread",
+        "price": "$4.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Hummus",
+        "description": "Garbanzo Beans - Garlic - Tahini - Lemon Juice - Pita Bread",
+        "price": "$4.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Tirokafteri",
+        "description": "Cream Cheese - Feta - Roasted Peppers - Pita Bread",
+        "price": "$4.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Melitzanosalata",
+        "description": "Roasted Eggplant - Olive Oil - Lemon Juice - Garlic - Pita Bread",
+        "price": "$4.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Four Dip Combo",
+        "description": "Tzatziki - Hummus - Tirokafteri - Melitzanosalata - Pita Bread",
+        "price": "$12.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Dolmades",
+        "description": "Grape Leaves - Rice - Lemon Juice - Herbs",
+        "price": "$5.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "The Great Greek Rice Bowl",
+        "description": "Rice Pilaf - Romaine Lettuce - Tomatoes - Red Onions - Cucumbers - Garbanzo Beans - Kalamata Olives - Feta - Tzatziki",
+        "price": "$8.95",
+        "section": "Salads"
+      },
+      {
+        "name": "Classic Greek Salad",
+        "description": "Romaine Lettuce - Tomatoes - Cucumbers - Red Onions - Feta - Kalamata Olives - Pita Bread - Housemade Greek Vinaigrette (Small; Large $7.95)",
+        "price": "$5.95",
+        "section": "Salads"
+      },
+      {
+        "name": "The Great Greek Gyro",
+        "description": "Beef & Lamb or Chicken Breast - Romaine Lettuce - Tomatoes - Red Onions - Tzatziki - Feta",
+        "price": "$8.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Falafel Pita",
+        "description": "Housemade Chickpea Fritters - Romaine Lettuce - Tomatoes",
+        "price": "$7.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Greek Salad Wrap",
+        "description": "Romaine Lettuce - Tomatoes - Red Onions - Garbanzo Beans - Cucumbers - Kalamata Olives - Feta - Hummus - Tzatziki - Flour Tortilla",
+        "price": "$6.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Athenian Burger",
+        "description": "Certified Angus Beef - Romaine Lettuce - Tomatoes - Red Onions - Tzatziki - Feta",
+        "price": "$7.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Souvlaki Plate",
+        "description": "Served with Side Salad, Tzatziki and Pita plus choice of Rice Pilaf, French Fries or Feta Fries; cheapest protein Chicken Breast (Steak Tenderloin/Australian Lamb/Garlic Shrimp $15.95)",
+        "price": "$14.95",
+        "section": "Entrees"
+      },
+      {
+        "name": "Great Greek Plate",
+        "description": "Served with Side Salad, Tzatziki and Pita plus choice of side; cheapest protein Falafel (Gyro Meat $12.95)",
+        "price": "$10.95",
+        "section": "Entrees"
+      },
+      {
+        "name": "Mezze Plate",
+        "description": "Dolmades, Falafel, Spanakopita, Hummus",
+        "price": "$11.95",
+        "section": "Entrees"
+      },
+      {
+        "name": "Feta Fries",
+        "description": "",
+        "price": "$2.95",
+        "section": "Sides"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$2.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Lemon Potatoes",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sides"
+      },
+      {
+        "name": "Rice Pilaf",
+        "description": "",
+        "price": "$2.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Side Salad",
+        "description": "",
+        "price": "$3.95",
+        "section": "Sides"
+      },
+      {
+        "name": "Cheese Pizza",
+        "description": "Pizza Sauce - Mozzarella Cheese",
+        "price": "$6.95",
+        "section": "Kids"
+      },
+      {
+        "name": "Chicken Fingers",
+        "description": "Chopped Salad",
+        "price": "$6.95",
+        "section": "Kids"
+      },
+      {
+        "name": "Gyro Plate",
+        "description": "Chopped Salad - Tzatziki - Pita Bread",
+        "price": "$7.95",
+        "section": "Kids"
+      },
+      {
+        "name": "Grilled Cheese Pita",
+        "description": "American Cheese",
+        "price": "$6.95",
+        "section": "Kids"
+      },
+      {
+        "name": "Souvlaki Plate (Kids)",
+        "description": "Chopped Salad - Tzatziki - Pita Bread - Choose a Skewer",
+        "price": "$9.95",
+        "section": "Kids"
+      },
+      {
+        "name": "Baklava",
+        "description": "Fillo Dough - Walnuts - Honey Syrup",
+        "price": "$4.75",
+        "section": "Desserts"
+      },
+      {
+        "name": "Mom's Rice Pudding",
+        "description": "Vanilla - Cinnamon",
+        "price": "$4.75",
+        "section": "Desserts"
+      },
+      {
+        "name": "Baklava Ice Cream",
+        "description": "Crumbled Baklava - Vanilla Bean Ice Cream - Honey",
+        "price": "$3.95",
+        "section": "Desserts"
+      },
+      {
+        "name": "Dessert Sampler",
+        "description": "1 Baklava, Side of Rice Pudding, Baklava Ice Cream",
+        "price": "$9.95",
+        "section": "Desserts"
+      },
+      {
+        "name": "Fountain Drinks",
+        "description": "",
+        "price": "$2.25",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Sparkling Water",
+        "description": "",
+        "price": "$2.75",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Drinks",
+        "description": "",
+        "price": "$2.75",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9964",
+    "name": "Greenfinch Restaurant & Bar",
+    "sourceUrl": "http://places.singleplatform.com/greenfinch-restaurant-bar/menu",
+    "confidence": "medium",
+    "notes": "Restaurant's own site (estancialajolla.com/greenfinch-restaurant) does not embed a priced menu in static HTML. Used the SinglePlatform-hosted menu (tier-4 source per the ladder) instead, which carries full priced breakfast/brunch/bar menu: To Share, Classic Entrees, Omelets, Toast, Fruits & Grains, Kids, Sweets/Desserts, Latin Favorites, Coffee & Tea, Juice, Cocktails, Mocktails, and a wine list (White/Red/Sparkling). Prices matched the OpenTable '$30 and under' price-tier expectation and a third-party review-site price snippet (Basket $18, Lox & Bagels $28) as a sanity cross-check. Wine-by-the-glass/bottle items with multiple price tiers were recorded at the first (lower) listed price. 166 total line items captured.",
+    "dishes": [
+      {
+        "name": "Breakfast Pastry Basket",
+        "description": "almond croissant, pain au chocolate, lemon poppyseed scone, raspberry danish",
+        "price": "$18.00",
+        "section": "To Share"
+      },
+      {
+        "name": "Seasonal Fruit and Honey",
+        "description": "granola, coconut",
+        "price": "$19.00",
+        "section": "To Share"
+      },
+      {
+        "name": "Lox & Bagels",
+        "description": "smoked salmon, herb cream cheese, caperberries, tomato, red onion, dill, everything bagel chips",
+        "price": "$28.00",
+        "section": "To Share"
+      },
+      {
+        "name": "Prosciutto & Burrata",
+        "description": "house seasonal jam, red wine poached pear, candied pecan, grilled sourdough",
+        "price": "$25.00",
+        "section": "To Share"
+      },
+      {
+        "name": "Crispy Potatoes",
+        "description": "n&#x27;duja vinaigrette, spanish pimenton aioli, scallion",
+        "price": "$18.00",
+        "section": "To Share"
+      },
+      {
+        "name": "Grilled Spring Asparagus",
+        "description": "poached egg, pancetta pan gratatto, whole grain mustard hollandaise",
+        "price": "$18.00",
+        "section": "To Share"
+      },
+      {
+        "name": "Quiche Lorraine",
+        "description": "pancetta, spinach, gruyere cheese, pickled fennel, spring greens",
+        "price": "$22.00",
+        "section": "Classic Entrées"
+      },
+      {
+        "name": "Harvest Salad",
+        "description": "seasonal citrus, avocado, toasted hazelnut, goat cheese, castelfranco & artisan lettuce, sherry honey vinaigrette",
+        "price": "$19.00",
+        "section": "Classic Entrées"
+      },
+      {
+        "name": "Birria Chilaquiles",
+        "description": "avocado, lime crèma, roasted poblano, hibiscus onion, queso fresco",
+        "price": "$23.00",
+        "section": "Classic Entrées"
+      },
+      {
+        "name": "Greenfinch Plate",
+        "description": "two eggs, breakfast potatoes, choice of bacon, country pork or chicken apple sausage, toast",
+        "price": "$23.00",
+        "section": "Classic Entrées"
+      },
+      {
+        "name": "Butter Poached Lobster Benedict",
+        "description": "arugula, tarragon, caper & lemon hollandaise",
+        "price": "$32.00",
+        "section": "Classic Entrées"
+      },
+      {
+        "name": "Midwestern Biscuits and Gravy",
+        "description": "sage pork sausage gravy, cornmeal, sharp cheddar and chive biscuit",
+        "price": "$23.00",
+        "section": "Classic Entrées"
+      },
+      {
+        "name": "Estancia Wagyu Beef Burger",
+        "description": "sharp cheddar, caramelized fennel & onion jam, aioli, arugula",
+        "price": "$29.00",
+        "section": "Classic Entrées"
+      },
+      {
+        "name": "Nashville Hot Fried Chicken Sandwich",
+        "description": "jalapeño cilantro slaw, sweet pickles, brioche bun, french fries",
+        "price": "$24.00",
+        "section": "Classic Entrées"
+      },
+      {
+        "name": "Marinated Hanger Steak",
+        "description": "grilled broccolini, chimichurri, maciare potato, hollandaise",
+        "price": "$42.00",
+        "section": "Classic Entrées"
+      },
+      {
+        "name": "Moroccan Shakshuka",
+        "description": "snap peas, black kale, cauliflower romanesco, chickpeas, soft poached eggs, grilled baguette",
+        "price": "$23.00",
+        "section": "Classic Entrées"
+      },
+      {
+        "name": "Sticky Mango French Toast",
+        "description": "coconut, condensed milk, toasted macadamia, black sesame",
+        "price": "$23.00",
+        "section": "Classic Entrées"
+      },
+      {
+        "name": "Grilled Petit Filet & Eggs",
+        "description": "pomme purée, grilled asparagus, poached eggs, hollandaise",
+        "price": "$36.00",
+        "section": "Classic Entrées"
+      },
+      {
+        "name": "Berries & Vanilla Bean Whipped Cream",
+        "description": "",
+        "price": "$15.00",
+        "section": "Kids"
+      },
+      {
+        "name": "Classic Breakfast",
+        "description": "eggs, bacon or sausage, breakfast potatoes",
+        "price": "$15.00",
+        "section": "Kids"
+      },
+      {
+        "name": "Pancake & Sausage Corndogs",
+        "description": "breakfast potatoes",
+        "price": "$15.00",
+        "section": "Kids"
+      },
+      {
+        "name": "Toad in a Hole",
+        "description": "bacon or sausage, potatoes",
+        "price": "$15.00",
+        "section": "Kids"
+      },
+      {
+        "name": "Freshly Brewed Lavazza Italian Roast Coffee",
+        "description": "",
+        "price": "$6.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$3.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Latte",
+        "description": "",
+        "price": "$8.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$8.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Jenwey Tea Selection",
+        "description": "",
+        "price": "$8.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Fruit Juice",
+        "description": "orange, grapefruit, cranberry, apple",
+        "price": "$6.00",
+        "section": "Juice"
+      },
+      {
+        "name": "12 oz. Cali-Cleanse – Detox",
+        "description": "kale, celery, cucumber, lemon, ginger",
+        "price": "$12.00",
+        "section": "Juice"
+      },
+      {
+        "name": "The Buzz",
+        "description": "beets, carrots, apple, lemon",
+        "price": "$12.00",
+        "section": "Juice"
+      },
+      {
+        "name": "Poppy&#x27;s Tea",
+        "description": "lilet blanc, estancia blend tea syrup, lemon, sparkling rosé top",
+        "price": "$19.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Peeling Off",
+        "description": "grapefruit hibiscus liqueor, bacardi, cardamon, juniper, grapefruit soda, lime",
+        "price": "$18.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Tinkerbell",
+        "description": "j&#x27;enway apple & aged chamomile cordial, créme de cacao, green chartrouse",
+        "price": "$19.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Time For Business",
+        "description": "Caffe de olla, blackcurrant liqueur, mr. black, flecha azul reposado or kettle one",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Sometime In the Summer",
+        "description": "Guava mezcal, aperol, elderflower liqueur, ginger, lemon",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Sugar & Silk",
+        "description": "absinthe syrup, fino sherry, nolet&#x27;s dry gin, peach liqueur, moet & chandon",
+        "price": "$22.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Champion&#x27;s Cup",
+        "description": "opal basil cordial, mionetto alcohol-removed prosecco",
+        "price": "$13.00",
+        "section": "Mocktails"
+      },
+      {
+        "name": "Grapefruit Refresher",
+        "description": "grapefruit cardamom & juniper berry cordial, j&#x27;enwey jasmine brew, club soda",
+        "price": "$13.00",
+        "section": "Mocktails"
+      },
+      {
+        "name": "The Phoenix",
+        "description": "sol-ti blue spirulina superaide, pentire seaward, liposomal NAD+",
+        "price": "$13.00",
+        "section": "Mocktails"
+      },
+      {
+        "name": "Lallier, Brut Champagne",
+        "description": "",
+        "price": "$17.00",
+        "section": "Sparkling Wine & Champagne"
+      },
+      {
+        "name": "Lallier, Brut Rosé",
+        "description": "",
+        "price": "$21.00",
+        "section": "Sparkling Wine & Champagne"
+      },
+      {
+        "name": "Gloria Ferrer, Blanc de Blancs",
+        "description": "",
+        "price": "$16.00",
+        "section": "Sparkling Wine & Champagne"
+      },
+      {
+        "name": "Moët & Chandon, Imperial Brut",
+        "description": "",
+        "price": "$30.00",
+        "section": "Sparkling Wine & Champagne"
+      },
+      {
+        "name": "Love Block, Sauvignon Blanc",
+        "description": "",
+        "price": "$16.00",
+        "section": "White"
+      },
+      {
+        "name": "Krug, Sauvignon Blanc",
+        "description": "",
+        "price": "$15.00",
+        "section": "White"
+      },
+      {
+        "name": "Stag&#x27;s Leap Hands of Time, Chardonnay",
+        "description": "",
+        "price": "$17.00",
+        "section": "White"
+      },
+      {
+        "name": "Groth, Chardonnay",
+        "description": "",
+        "price": "$30.00",
+        "section": "White"
+      },
+      {
+        "name": "Sungoddess, Pinot Grigio",
+        "description": "",
+        "price": "$15.00",
+        "section": "White"
+      },
+      {
+        "name": "Stag&#x27;s Leap Hands of Time, Cabernet Sauvignon",
+        "description": "",
+        "price": "$22.00",
+        "section": "Red"
+      },
+      {
+        "name": "Jordan, Cabernet Sauvignon",
+        "description": "",
+        "price": "$48.00",
+        "section": "Red"
+      },
+      {
+        "name": "Sea Sun, Pinot Noir",
+        "description": "",
+        "price": "$16.00",
+        "section": "Red"
+      },
+      {
+        "name": "Conundrum, Red Blend",
+        "description": "",
+        "price": "$16.00",
+        "section": "Red"
+      },
+      {
+        "name": "Sungoddess, Merlot",
+        "description": "",
+        "price": "$26.00",
+        "section": "Red"
+      },
+      {
+        "name": "Joseph Phelps, Pinot Noir",
+        "description": "",
+        "price": "$16.00",
+        "section": "Red"
+      },
+      {
+        "name": "Greek Yogurt Parfait",
+        "description": "macerated berries, dried fruit & nut granola",
+        "price": "$18.00",
+        "section": "Fruits & Grains"
+      },
+      {
+        "name": "Steel Cut Oats",
+        "description": "brown sugar, marcona almonds, golden raisins",
+        "price": "$16.00",
+        "section": "Fruits & Grains"
+      },
+      {
+        "name": "Roasted Berries & Ricotta Cheese",
+        "description": "cracked black peppercorn, balsamic glaze",
+        "price": "$15.00",
+        "section": "Fruits & Grains"
+      },
+      {
+        "name": "Açai Chia Protein Bowl",
+        "description": "pepitas, citrus, tropical fruit",
+        "price": "$17.00",
+        "section": "Fruits & Grains"
+      },
+      {
+        "name": "Greenfinch Plate",
+        "description": "two eggs, breakfast potatoes, choice of bacon, country pork or chicken apple sausage, toast",
+        "price": "$23.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Mindful Breakfast",
+        "description": "scrambled egg whites, crispy teriyaki glazed tofu, roasted cauliflower, black kale, quinoa",
+        "price": "$21.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Guajillo Braised Short Rib Hash",
+        "description": "bell peppers & onions, poached eggs",
+        "price": "$24.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Hanger Steak & Eggs",
+        "description": "breakfast potatoes, chimichurri",
+        "price": "$28.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Classic Eggs Benedict",
+        "description": "artisan ham, spinach, hollandaise",
+        "price": "$23.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "lemon & herb whipped cream cheese, sliced avocado, crispy capers, arugula, sunny eggs",
+        "price": "$19.00",
+        "section": "Toast"
+      },
+      {
+        "name": "Wild Mushroom Pesto",
+        "description": "poached egg, soft herbs",
+        "price": "$21.00",
+        "section": "Toast"
+      },
+      {
+        "name": "Classic French",
+        "description": "boursin cheese, fine herbs, baby greens",
+        "price": "$21.00",
+        "section": "Omelets"
+      },
+      {
+        "name": "Farmers Market",
+        "description": "roasted asparagus, spring onion, mushrooms, goat cheese",
+        "price": "$22.00",
+        "section": "Omelets"
+      },
+      {
+        "name": "Soy Chorizo",
+        "description": "\"just egg\", spinach, avocado",
+        "price": "$20.00",
+        "section": "Omelets"
+      },
+      {
+        "name": "Smoked Salmon",
+        "description": "chives, capers, herb cream cheese",
+        "price": "$24.00",
+        "section": "Omelets"
+      },
+      {
+        "name": "Carnivore",
+        "description": "bacon, pork sausage, scallions, sharp cheddar",
+        "price": "$23.00",
+        "section": "Omelets"
+      },
+      {
+        "name": "Chilaquiles Verdes",
+        "description": "pickled red onion, queso fresco, fried egg, lime crèma",
+        "price": "$19.00",
+        "section": "Latin Favorites"
+      },
+      {
+        "name": "Chilaquiles Poblanos",
+        "description": "lime crema, hibiscus onion, queso fresco, avocado,fried egg",
+        "price": "$19.00",
+        "section": "Latin Favorites"
+      },
+      {
+        "name": "Breakfast Burrito",
+        "description": "scrambled eggs, chorizo, roasted potato, caramelized onion, poblano peppers, jack cheese, lime crèma, salsa roja",
+        "price": "$19.00",
+        "section": "Latin Favorites"
+      },
+      {
+        "name": "Patatas Bravas Scramble",
+        "description": "crispy bacon, scrambled eggs, spanish paprika aioli, frijoles charros",
+        "price": "$23.00",
+        "section": "Latin Favorites"
+      },
+      {
+        "name": "Buttermilk Pancakes",
+        "description": "100% maple syrup",
+        "price": "$18.00",
+        "section": "Sweets"
+      },
+      {
+        "name": "Quinoa Blueberry Banana Pancakes",
+        "description": "dried fruit and nut granola, maple syrup",
+        "price": "$21.00",
+        "section": "Sweets"
+      },
+      {
+        "name": "Vanilla Mascarpone French Toast",
+        "description": "fresh strawberries, candied walnuts, dulce de leche",
+        "price": "$22.00",
+        "section": "Sweets"
+      },
+      {
+        "name": "PB&J Toast",
+        "description": "house-made preserves, whipped peanut butter",
+        "price": "$15.00",
+        "section": "Kids"
+      },
+      {
+        "name": "Blueberry Banana Pancakes",
+        "description": "100% maple syrup",
+        "price": "$15.00",
+        "section": "Kids"
+      },
+      {
+        "name": "Silver Dollar Pancakes",
+        "description": "100% maple syrup",
+        "price": "$15.00",
+        "section": "Kids"
+      },
+      {
+        "name": "Jen&#x27;wey Tea Selection",
+        "description": "",
+        "price": "$8.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "L&#x27;Allier, Brut Champagne",
+        "description": "",
+        "price": "$17.00",
+        "section": "Sparkling Wine & Champagne"
+      },
+      {
+        "name": "L&#x27;Allier, Brut Rosé",
+        "description": "",
+        "price": "$21.00",
+        "section": "Sparkling Wine & Champagne"
+      },
+      {
+        "name": "Harvest Salad",
+        "description": "roasted squash, brussels sprouts, apples, pomegranate, dukkah, feta cheese, artisan lettuce, za&#x27;taar vinaigrette",
+        "price": "$19.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Little Gem Pistachio Caesar",
+        "description": "calabrian chili, parmesan, brioche",
+        "price": "$20.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Smoked Tofu Bahn Mi",
+        "description": "mushroom pate, pickled daikon radish & carrot, persian cucumber, mint, cilantro, chili lime aioli",
+        "price": "$16.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Roasted Tomato Fennel Bisque & Grilled Cheese",
+        "description": "sharp cheddar, seven grain bread",
+        "price": "$21.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Speck & Burrata Flatbread",
+        "description": "meyer lemon, pistachio pesto, arugula",
+        "price": "$21.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Smoked Albacore Tuna Melt",
+        "description": "capers, dill pickles, roasted red pepper relish, arugula, pepperjack, sourdough",
+        "price": "$22.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Greenfinch Wagyu Beef Burger",
+        "description": "sharp cheddar, caramelized fennel & onion jam, aioli, arugula, french fries",
+        "price": "$29.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Stone Buenaveza Battered Baja Fish Tacos",
+        "description": "cabbage, pico de gallo, chipotle crema, pickled jalapeños, cilantro, salsa verde",
+        "price": "$18.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Nashville Hot Fried Chicken Sandwich",
+        "description": "jalapeño cilantro slaw, smoked paprika aioli, sweet pickles, brioche bun, french fries",
+        "price": "$24.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Crispy Spot Tail Sea Bass",
+        "description": "thai green papaya, haricot vert, heirloom tomatoes, toasted cashews, thai chili, forbidden rice",
+        "price": "$34.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Santa Maria Grilled Tri Tip",
+        "description": "roasted sweet potatoes, lemon tahini kale, avocado, toasted pepitas, chimichurri",
+        "price": "$26.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Chocolate Espresso Tart",
+        "description": "chocolate ganache, vanilla bean whipped cream",
+        "price": "$14.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Mango Coconut Mousse",
+        "description": "toasted coconut, tropical fruit",
+        "price": "$14.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Smashburger Sliders",
+        "description": "sharp cheddar cheese, hawaiian rolls, french fries",
+        "price": "$15.00",
+        "section": "Kids"
+      },
+      {
+        "name": "Baja Fish Tacos",
+        "description": "cabbage, pico de gallo, chipotle crema, cilantro, salsa verde",
+        "price": "$15.00",
+        "section": "Kids"
+      },
+      {
+        "name": "Chicken Tenders",
+        "description": "french fries",
+        "price": "$15.00",
+        "section": "Kids"
+      },
+      {
+        "name": "Chicken Quesadilla",
+        "description": "sour cream, pico de gallo",
+        "price": "$15.00",
+        "section": "Kids"
+      },
+      {
+        "name": "Cheese Quesadilla",
+        "description": "sour cream, pico de gallo",
+        "price": "$10.00",
+        "section": "Kids"
+      },
+      {
+        "name": "Veggie Plate",
+        "description": "sweet peppers, rainbow carrots, cherry tomatoes, buttermilk ranch",
+        "price": "$15.00",
+        "section": "Kids"
+      }
+    ]
+  }
+]

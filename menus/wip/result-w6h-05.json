@@ -1,0 +1,2212 @@
+[
+  {
+    "restaurantId": "9681",
+    "name": "Japanese Friendship Bell",
+    "address": "1500 Shelter Island Dr, San Diego, CA 92106",
+    "sourceUrl": "https://www.sandiego.gov/digital-archives-photos/yokohama-friendship-bell-shelter-island",
+    "confidence": "high",
+    "notes": "Not a food business: this is the Yokohama/Japanese Friendship Bell monument on Shelter Island, confirmed by sandiego.gov digital archives, Tripadvisor (listed as an Attraction, not a restaurant), and Yelp listing for 'Yokohama Friendship Bell' at the same address. No menu, no food service.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "7728",
+    "name": "Ernes Mexican Food & Breakfast",
+    "sourceUrl": "https://order.online/store/ernes-mexican-food-and-breakfast-33097527",
+    "confidence": "medium",
+    "notes": "Read from the order.online (DoorDash white-label) RSC payload, address confirmed San Marcos in the same payload. 111 items across 20 sections (8 breakfast sub-sections, burritos, tortas, tacos, quesadillas, tostadas, combinations, seafood, caldos, kids' meal, desserts, side orders). Dropped the 'Most Ordered' carousel as duplicate; no items were unique to it. Divisor sweep (1.04-1.30) found no consistent markup (raw prices already 107/111 conventional cent endings, all divisors under 16%), so filed as read, not divided.",
+    "dishes": [
+      {
+        "name": "Vegetarian Omelette",
+        "description": "Vegetarian Omelette accompanied with pancakes or home potatoes",
+        "price": "$17.00",
+        "section": "Breakfast - Omelettes"
+      },
+      {
+        "name": "Mushroom Omelette",
+        "description": "Mushroom Omelette accompanied with pancakes or home potatoes",
+        "price": "$17.00",
+        "section": "Breakfast - Omelettes"
+      },
+      {
+        "name": "Ham Omelette",
+        "description": "Ham Omelette accompanied with pancakes or home potatoes",
+        "price": "$17.00",
+        "section": "Breakfast - Omelettes"
+      },
+      {
+        "name": "Spinach Omelette",
+        "description": "Spinach Omelette accompanied with pancakes or home potatoes",
+        "price": "$17.00",
+        "section": "Breakfast - Omelettes"
+      },
+      {
+        "name": "Bacon Omelette",
+        "description": "Bacon Omelette accompanied with pancakes or home potatoes",
+        "price": "$17.00",
+        "section": "Breakfast - Omelettes"
+      },
+      {
+        "name": "Cheese Omelette",
+        "description": "Cheese Omelette accompanied with pancakes or home potatoes",
+        "price": "$13.00",
+        "section": "Breakfast - Omelettes"
+      },
+      {
+        "name": "6 Buttermilk",
+        "description": "Six buttermilk pancakes, typically served with butter and maple syrup.",
+        "price": "$12.00",
+        "section": "Breakfast - Pancakes"
+      },
+      {
+        "name": "6 Bacon Pancakes",
+        "description": "Six pancakes with bacon strips, typically includes syrup and butter.",
+        "price": "$13.00",
+        "section": "Breakfast - Pancakes"
+      },
+      {
+        "name": "6 Chocolate Pancakes",
+        "description": "Six chocolate pancakes with chocolate chips, drizzled with chocolate syrup, and dusted with powdered sugar.",
+        "price": "$13.00",
+        "section": "Breakfast - Pancakes"
+      },
+      {
+        "name": "Eggs Benedict",
+        "description": "A toasted English muffin topped with Canadian bacon, poached eggs and hollandaise sauce served with hashbrowns or three buttermilk pancakes.",
+        "price": "$17.00",
+        "section": "Breakfast - Eggs Benedict"
+      },
+      {
+        "name": "Plain Waffle",
+        "description": "Typically served with powdered sugar and syrup.",
+        "price": "$12.50",
+        "section": "Breakfast - Waffles"
+      },
+      {
+        "name": "Bacon Waffle",
+        "description": "Crispy waffle with bacon, typically includes butter and powdered sugar.",
+        "price": "$13.50",
+        "section": "Breakfast - Waffles"
+      },
+      {
+        "name": "Ham, Bacon & Potatoes Burrito",
+        "description": "Ham, bacon, and potatoes wrapped in a flour tortilla, typically includes scrambled eggs and cheese.",
+        "price": "$12.75",
+        "section": "Breakfast - Breakfast Burrito"
+      },
+      {
+        "name": "Choice of Chorizo or Ham or  Bacon or Potatoes Burrito",
+        "description": "Burrito with choice of chorizo, ham, bacon, or potatoes. Egg, cheese, and beans inside.",
+        "price": "$10.80",
+        "section": "Breakfast - Breakfast Burrito"
+      },
+      {
+        "name": "Chorizo & Potatoes",
+        "description": "Chorizo & potatoes breakfast burrito: Chorizo, potatoes, jack cheese, eggs, and beans wrapped in a flour tortilla.",
+        "price": "$10.95",
+        "section": "Breakfast - Breakfast Burrito"
+      },
+      {
+        "name": "Machaca Burrito",
+        "description": "Shredded beef, eggs, bell peppers, onions, tomatoes, and cheese wrapped in a flour tortilla.",
+        "price": "$10.99",
+        "section": "Breakfast - Breakfast Burrito"
+      },
+      {
+        "name": "Breakfast Carne Asada Burrito",
+        "description": "Carne asada, eggs, potatoes, and cheese wrapped in a flour tortilla typically includes pico de gallo.",
+        "price": "$12.50",
+        "section": "Breakfast - Breakfast Burrito"
+      },
+      {
+        "name": "Sausage Burrito",
+        "description": "Scrambled eggs, sausage, potatoes, and cheese wrapped in a flour tortilla.",
+        "price": "$10.99",
+        "section": "Breakfast - Breakfast Burrito"
+      },
+      {
+        "name": "Eggs and Cheese Burrito",
+        "description": "Scrambled eggs and melted cheese wrapped in a flour tortilla, typically includes beans or potatoes.",
+        "price": "$9.50",
+        "section": "Breakfast - Breakfast Burrito"
+      },
+      {
+        "name": "Grande Breakfast Burrito",
+        "description": "3 eggs, cheese, potatoes, bacon, and sour cream wrapped in a double tortilla.",
+        "price": "$19.99",
+        "section": "Breakfast - Breakfast Burrito"
+      },
+      {
+        "name": "Bacon and Eggs Breakfast Plate",
+        "description": "3 eggs cooked to your liking accompanied by 2 bacon strips and choice of home potatoes of 3 pancakes",
+        "price": "$16.00",
+        "section": "Breakfast - Eggs Specialties"
+      },
+      {
+        "name": "Diced Ham and Eggs Breakfast Plate",
+        "description": "3 eggs cooked to your liking accompanied by diced ham strips and choice of home potatoes of 3 pancakes",
+        "price": "$16.00",
+        "section": "Breakfast - Eggs Specialties"
+      },
+      {
+        "name": "Links and Eggs Breakfast Plate",
+        "description": "Breakfast sausage links with 3 eggs cooked to your liking accompanied by home potatoes or buttermilk pancakes",
+        "price": "$16.00",
+        "section": "Breakfast - Eggs Specialties"
+      },
+      {
+        "name": "Huevos Rancheros Breakfast Plate",
+        "description": "2 over easy eggs on a fried corn tortilla topped with ranchera sauce and cheese. Accompanied by beans and home potatoes and choice of corn or flour tortillas",
+        "price": "$16.00",
+        "section": "Breakfast - Eggs Specialties"
+      },
+      {
+        "name": "Huevos Con Chorizo Breakfast Plate",
+        "description": "Huevos con chorizo accompanied by beans and home potatoes. Choice of corn or flour tortillas.",
+        "price": "$13.99",
+        "section": "Breakfast - Eggs Specialties"
+      },
+      {
+        "name": "Machaca Con Huevo Breakfast Plate",
+        "description": "Machaca con huevos accompanied by beans and home potatoes. Choice of corn or flour tortillas.",
+        "price": "$14.99",
+        "section": "Breakfast - Eggs Specialties"
+      },
+      {
+        "name": "Steak and Eggs Breakfast Plate",
+        "description": "Diced carne asada accompanied by 2 eggs cooked to your liking. With side of beans and home potatoes. Choice of corn or flour tortillas",
+        "price": "$15.99",
+        "section": "Breakfast - Eggs Specialties"
+      },
+      {
+        "name": "Breakfast Special",
+        "description": "2 buttermilk pancakes with 2 eggs cooked to your liking accompanied by 3 breakfast sausages",
+        "price": "$14.25",
+        "section": "Breakfast - Eggs Specialties"
+      },
+      {
+        "name": "Huevos Con Jamón Breakfast Plate",
+        "description": "Huevos con jamon served with beans and home potatoes. Choice of corn or flour tortillas",
+        "price": "$14.00",
+        "section": "Breakfast - Eggs Specialties"
+      },
+      {
+        "name": "Chilaquiles",
+        "description": "Served in green or red sauce accompanied with beans, homemade rice, two eggs and mixed cheese.",
+        "price": "$16.25",
+        "section": "Breakfast - Chilaquiles"
+      },
+      {
+        "name": "Pigs en Su Nuevo Carro / Links Wrapped in Buttermilk Pancakes",
+        "description": "Sausage links wrapped in buttermilk pancakes, typically served with syrup.",
+        "price": "$13.70",
+        "section": "Breakfast - Pigs en Su Nuevo Carro"
+      },
+      {
+        "name": "El Grande Burrito",
+        "description": "A footlong burrito. Carne asada , fries, pico d gallo, sour cream, guacamole and lettuce",
+        "price": "$22.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shrimp Burrito",
+        "description": "Shrimp cooked in ranchera sauce topped with rice and sour cream",
+        "price": "$14.25",
+        "section": "Burritos"
+      },
+      {
+        "name": "Campechano Burrito",
+        "description": "1/2 carne asada and 1/2 Al pastor mixed and topped off with guacamole and pico de gallo",
+        "price": "$14.90",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Asado Burrito",
+        "description": "Pollo asado topped with guacamole and pico de gallo",
+        "price": "$13.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shredded Beef or Chicken Burrito",
+        "description": "Choice of shredded beef or chicken, wrapped in a tortilla.",
+        "price": "$12.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Steak Ranchero Burrito",
+        "description": "Carne asada cooked in ranchera sauce with potatoes and jalapenos. Topped off with rice and beans",
+        "price": "$14.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chile Relleno Burrito",
+        "description": "1 chile relleno with rice and beans",
+        "price": "$12.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "California Burrito",
+        "description": "Carne asada with french fries topped off with sour cream and cheese",
+        "price": "$14.90",
+        "section": "Burritos"
+      },
+      {
+        "name": "Mix (Beef & Beans) Burrito",
+        "description": "Shredded beef and beans, typically with bell peppers, onions, and tomatoes, wrapped in a flour tortilla.",
+        "price": "$11.75",
+        "section": "Burritos"
+      },
+      {
+        "name": "Veggie Burrito",
+        "description": "Rice, beans, guacamole, sour cream, lettuce, cheese and pico de gallo",
+        "price": "$11.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Hawaiian Burrito",
+        "description": "Carne asada grilled with pineapple, ham and bell pepper topped off with cheese and avocado slices",
+        "price": "$15.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Grilled Fish Burrito",
+        "description": "grilled fish with pico de gallo, cabbage and tarter sauce",
+        "price": "$12.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Mar Y Tierra Burrito",
+        "description": "Carne asada grilled with 5 shrimp. topped off with rice, pico de gallo and guacamole",
+        "price": "$16.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Beans and Cheese Burrito",
+        "description": "Refried pinto beans and cheddar cheese wrapped in a large flour tortilla.",
+        "price": "$7.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas Burrito",
+        "description": "Carnitas with pico de gallo and Guacamole",
+        "price": "$13.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Mariachi Burrito",
+        "description": "Carne asada grilled with chorizo. Topped with beans, sour cream, guacamole and cheese. This tasty burrito will have you singing like a mariachi",
+        "price": "$15.75",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carne Asada Torta",
+        "description": "Carne asada All tortas come with sour cream smeared on top slice of bread and beans smeared on bottom slice of bread. Topped with lettuce, onion, tomatoes and avocado slices",
+        "price": "$14.50",
+        "section": "Tortas"
+      },
+      {
+        "name": "Cubana Torta",
+        "description": "Our torta cubana is our best seller torta, it comes with carne asada, ham, fried egg, cheese, sausage and chipotle sauce. All tortas come with sour cream smeared on top slice of bread and beans smeared on bottom slice of bread. Topped with lettuce, onion, tomatoes and avocado slices",
+        "price": "$15.25",
+        "section": "Tortas"
+      },
+      {
+        "name": "Carnitas Torta",
+        "description": "Carnitas All tortas come with sour cream smeared on top slice of bread and beans smeared on bottom slice of bread. Topped with lettuce, onion, tomatoes and avocado slices",
+        "price": "$13.50",
+        "section": "Tortas"
+      },
+      {
+        "name": "Milanesa Torta",
+        "description": "A whole slice of Milanesa (BEEF) All tortas come with sour cream smeared on top slice of bread and beans smeared on bottom slice of bread. Topped with lettuce, onion, tomatoes and avocado slices",
+        "price": "$13.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Pollo Asado Torta",
+        "description": "Pollo asado All tortas come with sour cream smeared on top slice of bread and beans smeared on bottom slice of bread. Topped with lettuce, onion, tomatoes and avocado slices",
+        "price": "$13.50",
+        "section": "Tortas"
+      },
+      {
+        "name": "Pastor Torta",
+        "description": "Pastor All tortas come with sour cream smeared on top slice of bread and beans smeared on bottom slice of bread. Topped with lettuce, onion, tomatoes and avocado slices",
+        "price": "$13.75",
+        "section": "Tortas"
+      },
+      {
+        "name": "Machaca Torta",
+        "description": "Machaca con huevos and cheese. All tortas come with sour cream smeared on top slice of bread and beans smeared on bottom slice of bread. Topped with lettuce, onion, tomatoes and avocado slices",
+        "price": "$13.50",
+        "section": "Tortas"
+      },
+      {
+        "name": "Chorizo or Ham Torta",
+        "description": "Chorizo con huevo and cheese or Ham and cheese. All tortas come with sour cream smeared on top slice of bread and beans smeared on bottom slice of bread. Topped with lettuce, onion, tomatoes and avocado slices",
+        "price": "$12.00",
+        "section": "Tortas"
+      },
+      {
+        "name": "Beef or Chicken Torta",
+        "description": "Shredded beef or chicken All tortas come with sour cream smeared on top slice of bread and beans smeared on bottom slice of bread. Topped with lettuce, onion, tomatoes and avocado slices",
+        "price": "$12.80",
+        "section": "Tortas"
+      },
+      {
+        "name": "1 Shrimp Taco",
+        "description": "4 shrimp grilled with onions and bell peppers. topped with a light crust of cheese on a corn tortilla. Pico de gallo, cabbage and tarter sauce",
+        "price": "$5.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "1 Carnitas Taco",
+        "description": "Carnitas topped with guacamole, onion and cilantro",
+        "price": "$6.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "1 Carne Asada Taco",
+        "description": "Carne asada topped with guacamole, onion and cilantro",
+        "price": "$6.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "1 Grilled Fish Taco",
+        "description": "Grilled fish taco with cabbage, pico de gallo, chipotle sauce, and cilantro on a corn tortilla.",
+        "price": "$5.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "1 Pollo Asado Taco",
+        "description": "Pollo asado topped with guacamole, onion and cilantro",
+        "price": "$5.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "1 Pastor Taco",
+        "description": "Al pastor (Adobada) topped with guacamole, onion and cilantro",
+        "price": "$6.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "1 Shredded Beef or Chicken Taco (CRISPY)",
+        "description": "Shredded beef or chicken topped with lettuce and cheese",
+        "price": "$5.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "12 Rolled Tacos",
+        "description": "12 rolled tacos topped with Guacamole, sour cream, lettuce pico de gallo & cheese. Choice of chicken or beef",
+        "price": "$27.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "5 Rolled Tacos - Guacamole, Sour Cream, Lettuce, Pico De Gallo & Cheese",
+        "description": "Shredded beef rolled tacos topped with guacamole, sour cream, lettuce, pico de gallo, and cheese.",
+        "price": "$10.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "5 Rolled Tacos - Guacamole & Cheese",
+        "description": "Shredded beef rolled tacos topped with guacamole and cheese.",
+        "price": "$9.75",
+        "section": "Tacos"
+      },
+      {
+        "name": "3 Rolled Tacos Guacamole & Cheese",
+        "description": "Guacamole & cheese.",
+        "price": "$8.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "3 Rolled Tacos Guacamole, Sour Cream, Lettuce, Pico De Gallo & Cheese",
+        "description": "Three rolled tacos filled with shredded beef, topped with guacamole, sour cream, lettuce, pico de gallo, and cheese.",
+        "price": "$6.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "1 Beer Batter Fish Taco",
+        "description": "Baja Style beer batter fish taco",
+        "price": "$6.15",
+        "section": "Tacos"
+      },
+      {
+        "name": "Cheese Quesadilla",
+        "description": "Melted Cheese in a Crispy Tortilla Fold",
+        "price": "$6.60",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Choice of  Ham, Beef or Chicken Quesadilla",
+        "description": "Ham, beef, or chicken quesadilla with melted cheese and classic Mexican flavors.",
+        "price": "$11.75",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Super Quesadilla",
+        "description": "Choice of protein topped with sour cream and guacamole",
+        "price": "$13.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Carne Asada Quesadilla",
+        "description": "Grilled carne asada and melted cheese in a flour tortilla, typically accompanied by guacamole, sour cream, and pico de gallo.",
+        "price": "$13.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Mar Y Tierra Quesadilla",
+        "description": "Carne asada, shrimp, guacamole, sour cream, and pico de gallo in a folded tortilla with melted cheese.",
+        "price": "$13.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Shrimp Quesadilla",
+        "description": "Succulent shrimp encased in a crispy, golden tortilla with melted cheese.",
+        "price": "$12.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Mariachi Quesadilla",
+        "description": "Grilled chicken, steak, shrimp, and chorizo, topped with melted cheese in a flour tortilla.",
+        "price": "$13.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "1 Carnitas Tostada",
+        "description": "Carnitas with beans, lettuce, sour cream, guacamole, pico de gallo",
+        "price": "$9.25",
+        "section": "Tostadas"
+      },
+      {
+        "name": "1 Carne Asada Tostada",
+        "description": "Carne Asada with beans, lettuce, sour cream, guacamole, pico de gallo",
+        "price": "$9.99",
+        "section": "Tostadas"
+      },
+      {
+        "name": "1 Pollo Asado Tostada",
+        "description": "Pollo asado with beans, lettuce, sour cream, guacamole, pico de gallo",
+        "price": "$9.25",
+        "section": "Tostadas"
+      },
+      {
+        "name": "1 Bean Tostada",
+        "description": "Beans, cheese and lettuce",
+        "price": "$7.25",
+        "section": "Tostadas"
+      },
+      {
+        "name": "1 Shredded Beef Tostada",
+        "description": "Shredded beef with beans, lettuce and cheese",
+        "price": "$7.99",
+        "section": "Tostadas"
+      },
+      {
+        "name": "1 Shredded Chicken Tostada",
+        "description": "Shredded chicken with beans, lettuce and cheese",
+        "price": "$7.99",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Two Beef, Chicken or Potato Tacos",
+        "description": "Choice of two tacos. Select beef, chicken, or potato fillings.",
+        "price": "$13.85",
+        "section": "Combinations"
+      },
+      {
+        "name": "Two Beef or Chicken Sopes",
+        "description": "Soft, thick corn tortillas topped with beans, lettuce, cheese, beef or chicken. Two sopes per order.",
+        "price": "$13.85",
+        "section": "Combinations"
+      },
+      {
+        "name": "Carne Asada Plate",
+        "description": "Grilled marinated steak with rice, beans, guacamole, pico de gallo, and tortillas.",
+        "price": "$15.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Chorizo Plate",
+        "description": "Spicy seasoned pork sausage with scrambled eggs and cheese. Typically includes rice, refried beans, and flour or corn tortillas.",
+        "price": "$13.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Machaca Plate",
+        "description": "Shredded beef mixed with bell peppers, tomatoes, onions, and scrambled eggs.",
+        "price": "$14.80",
+        "section": "Combinations"
+      },
+      {
+        "name": "Two Chiles Rellenos Plate",
+        "description": "Two cheese-stuffed, battered, and fried chile peppers, topped with enchilada sauce, lettuce, pico de gallo, guacamole, and sour cream. Typically includes rice and refried beans.",
+        "price": "$16.50",
+        "section": "Combinations"
+      },
+      {
+        "name": "Steak Ranchero Plate",
+        "description": "Grilled steak in ranchero sauce with bell peppers, onions, and tomatoes, served with rice, beans, and tortillas.",
+        "price": "$15.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Chimichanga Plate",
+        "description": "Crispy flour tortilla filled with your choice of protein‚ÄîChicken, Beef, Carnitas, Pollo Asado, Carne Asada, or Pastor.",
+        "price": "$14.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Carnitas Plate",
+        "description": "Shredded pork served with rice, beans, guacamole, lettuce, pico de gallo, and tortillas.",
+        "price": "$14.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Two  Beer Batter Fish Tacos Plate",
+        "description": "Crispy beer-battered fish topped with fresh pico de gallo, shredded cabbage, and creamy sauce, served with refried beans and Mexican rice.",
+        "price": "$14.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Milanesa Plate",
+        "description": "Breaded steak served with rice, beans, lettuce, guacamole, salsa, sour cream, cheese, and tortillas.",
+        "price": "$15.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Chile Verde Plate",
+        "description": "Pork in green chile sauce, served with rice, beans, and tortillas. Typically includes pico de gallo and guacamole.",
+        "price": "$15.49",
+        "section": "Combinations"
+      },
+      {
+        "name": "Shrimp Ranchero Plate",
+        "description": "Shrimp with choice of tortillas: one large flour tortilla or four corn tortillas.",
+        "price": "$16.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Shrimp Fajitas Plate",
+        "description": "Shrimp fajitas with choice of one large flour tortilla or four corn tortillas.",
+        "price": "$17.75",
+        "section": "Seafood"
+      },
+      {
+        "name": "A La Diabla Shrimp Plate",
+        "description": "Spicy shrimp served with either a large flour tortilla or four corn tortillas.",
+        "price": "$17.25",
+        "section": "Seafood"
+      },
+      {
+        "name": "Shrimp Soup",
+        "description": "Shrimp soup with choice of 1 flour tortilla (14in) or 4 corn tortillas.",
+        "price": "$15.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Caldo 7 Mares",
+        "description": "Hearty seafood soup with your choice of 1 large flour tortilla or 4 corn tortillas.",
+        "price": "$20.75",
+        "section": "Seafood"
+      },
+      {
+        "name": "Camarones Al Mojo de Ajo ( Garlic Shrimp)",
+        "description": "Garlic shrimp served with choice of 1 flour tortilla (14in) or 4 corn tortillas.",
+        "price": "$17.25",
+        "section": "Seafood"
+      },
+      {
+        "name": "Chicken Soup",
+        "description": "Hearty chicken soup with your choice of one large flour tortilla or four corn tortillas.",
+        "price": "$14.99",
+        "section": "Caldos"
+      },
+      {
+        "name": "Albóndigas Soup",
+        "description": "Hearty Mexican soup with meatballs. Choice of one large flour tortilla or four small corn tortillas.",
+        "price": "$14.99",
+        "section": "Caldos"
+      },
+      {
+        "name": "Chicken tortilla soup",
+        "description": "Zesty Soup made with a savory blend of tortillas, spices, and fresh ingredients.",
+        "price": "$15.50",
+        "section": "Caldos"
+      },
+      {
+        "name": "Carne Asada Chips",
+        "description": "Grilled steak on crispy tortilla chips, typically includes guacamole, sour cream, pico de gallo, beans, and cheese.",
+        "price": "$16.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "",
+        "price": "$15.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Quesadilla",
+        "description": "Crispy tortilla filled with melted cheese",
+        "price": "$7.95",
+        "section": "Kids' Meal"
+      },
+      {
+        "name": "Burrito",
+        "description": "Flour tortilla filled with rice, beans, and cheese.",
+        "price": "$7.95",
+        "section": "Kids' Meal"
+      },
+      {
+        "name": "2. Buñuelos",
+        "description": "Buñuelos: Deep-fried flour tortillas sprinkled with cinnamon and sugar, typically drizzled with honey and topped with whipped cream.",
+        "price": "$5.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "1. Rice or Beans",
+        "description": "Rice or beans. Choose between seasoned rice or hearty beans.",
+        "price": "$4.25",
+        "section": "Side Orders"
+      },
+      {
+        "name": "2. Chile Relleno",
+        "description": "Anaheim chile stuffed with cheese, topped with enchilada sauce, sour cream, and lettuce.",
+        "price": "$6.99",
+        "section": "Side Orders"
+      },
+      {
+        "name": "3. Chips with Cheese",
+        "description": "Freshly made tortilla chips topped with shredded cheddar and Monterey Jack cheese.",
+        "price": "$6.65",
+        "section": "Side Orders"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9683",
+    "name": "Basil Thai Bistro",
+    "sourceUrl": "https://www.doordash.com/store/basil-thai-bistro-san-diego-83842/",
+    "confidence": "medium",
+    "notes": "Own site (basilthaibistrosd.com) consistently timed out and Grubhub returned an empty client-rendered shell with no menu data, so read from the DoorDash RSC payload instead; address confirmed 8680 Navajo Road matches batch. 80 items across 10 sections (Starter, Salad, Soup, Noodle and Rice, House Curries, Entrees, Specialties, Side Orders, Desserts, Beverages). Dropped the 'Most Ordered' carousel as duplicate; no items unique to it. Prices are 71/80 whole-dollar and 9/80 at .50, a conventional pattern with no sign of baked-in markup, so filed as read.",
+    "dishes": [
+      {
+        "name": "Satay Chicken",
+        "description": "Skewered slice of marinated chicken served with peanut sauce and cucumber vinaigrette. (4pcs).",
+        "price": "$13.00",
+        "section": "Starter"
+      },
+      {
+        "name": "Fresh Spring Rolls",
+        "description": "Rice paper stuffed with tofu, iceberg lettuce, cucumber, carrot, mint and rice noodle served with peanut sauce and a special house sauce.",
+        "price": "$12.00",
+        "section": "Starter"
+      },
+      {
+        "name": "Spring Rolls",
+        "description": "Crispy rolls stuffed with ground chicken, glass noodle, cabbage, taro and carrot served with plum sauce. (4pcs).",
+        "price": "$11.00",
+        "section": "Starter"
+      },
+      {
+        "name": "Dumpling",
+        "description": "Dumplings filled with ground chicken, cabbage and scallion served with sweet soy sauce. (6pcs.).",
+        "price": "$10.00",
+        "section": "Starter"
+      },
+      {
+        "name": "Cream Cheese Wonton",
+        "description": "Diced cream cheese in a wonton skin served with plum sauce. (8pcs).",
+        "price": "$10.00",
+        "section": "Starter"
+      },
+      {
+        "name": "Gyoza (Pot Sticker)",
+        "description": "Fried dumplings filled with ground chicken, cabbage and scallion served with sweet soy sauce. (6pcs).",
+        "price": "$10.00",
+        "section": "Starter"
+      },
+      {
+        "name": "Steamed Wonton",
+        "description": "Steamed wontons typically filled with ground pork, shrimp, and water chestnuts.",
+        "price": "$13.00",
+        "section": "Starter"
+      },
+      {
+        "name": "Curry Puff",
+        "description": "Deep fried pastry stuffed with chicken, potato and carrot ( 2 pieces.)",
+        "price": "$12.00",
+        "section": "Starter"
+      },
+      {
+        "name": "Crispy Calamari",
+        "description": "Batter-fried calamari ring served with plum sauce.",
+        "price": "$12.00",
+        "section": "Starter"
+      },
+      {
+        "name": "Shrimp Tempura",
+        "description": "Crispy, Lightly Battered Shrimp Served- perfect for dipping",
+        "price": "$10.00",
+        "section": "Starter"
+      },
+      {
+        "name": "Crispy Tofu",
+        "description": "Lightly fried bean cake served with plum sauce topped with peanut sprinkles.",
+        "price": "$10.00",
+        "section": "Starter"
+      },
+      {
+        "name": "Winter Shrimp",
+        "description": "Shrimp wrapped in the spring roll skin golden fried served with plum sauce. (5pcs).",
+        "price": "$10.00",
+        "section": "Starter"
+      },
+      {
+        "name": "Chicken Larb",
+        "description": "Minced chicken with lime juice, chili, red onion, scallion, garlic, rice powder, fresh mint and iceberg lettuce on the side.",
+        "price": "$18.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Som Tum (Papaya Salad)",
+        "description": "Shredded green papaya mixed with thai chili, carrot, tomato, green bean, garlic, lime juice and peanut.",
+        "price": "$13.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Beef Salad (Yum Nua)",
+        "description": "Grilled sliced steak with spring mix salad, scallion, red onion, lime juice, chili, carrot, rice powder and mint.",
+        "price": "$19.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Spicy Shrimp Salad",
+        "description": "Grilled shrimp with spring mix salad, lime juice, chili, red onion, lemon grass, tomato, scallion, carrot and mint.",
+        "price": "$19.00",
+        "section": "Salad"
+      },
+      {
+        "name": "House Salad",
+        "description": "Spring mix salad, tomato, cucumber, carrot and tofu served with peanut dressing.",
+        "price": "$13.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Spicy Seafood Salad",
+        "description": "Shrimp, calamari, fish and green mussel with spring mix salad, lime juice, chili, red onion, lemon grass, tomato, scallion, carrot and fresh mint.",
+        "price": "$22.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Spicy Calamari Salad",
+        "description": "Grilled calamari with spring mix salad, lime juice, chili, red onion, lemon grass, tomato, scallion, carrot and mint.",
+        "price": "$19.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Chicken Salad",
+        "description": "Spring mix salad, tomato, cucumber, carrot and chicken served with peanut dressing.",
+        "price": "$15.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Large Tofu Soup",
+        "description": "Steamed tofu, cabbage, celery, glass noodle, carrot, garlic and scallion sprinkles.",
+        "price": "$16.50",
+        "section": "Soup"
+      },
+      {
+        "name": "Large Tom Kha",
+        "description": "Coconut milk soup with galangal, mushroom, tomato, iceberg lettuce and scallion sprinkles.",
+        "price": "$16.50",
+        "section": "Soup"
+      },
+      {
+        "name": "Wonton Soup",
+        "description": "Clear broth, Wontons filled with pork and shrimp, Bokchoy, Garlic and Green onion.",
+        "price": "$15.50",
+        "section": "Soup"
+      },
+      {
+        "name": "Large Tom Yum",
+        "description": "Lemon grass soup, mushroom, tomato, chili paste, lime juice and cilantro sprinkles.",
+        "price": "$16.50",
+        "section": "Soup"
+      },
+      {
+        "name": "Small Tom Kha",
+        "description": "Coconut milk soup with galangal, mushroom, tomato, iceberg lettuce and scallion sprinkles.",
+        "price": "$7.50",
+        "section": "Soup"
+      },
+      {
+        "name": "Small Tom Yum",
+        "description": "Lemon grass soup, mushroom, tomato, chili paste, lime juice and cilantro sprinkles.",
+        "price": "$7.50",
+        "section": "Soup"
+      },
+      {
+        "name": "Small Tofu Soup",
+        "description": "Steamed tofu, cabbage, celery, glass noodle, carrot, garlic and scallion sprinkles.",
+        "price": "$7.50",
+        "section": "Soup"
+      },
+      {
+        "name": "Pad Thai",
+        "description": "Stir fried thin rice noodle, bean sprout, scallion, egg and topped with ground peanut. (contains fish sauce).",
+        "price": "$15.00",
+        "section": "Noodle and Rice"
+      },
+      {
+        "name": "Thai Fried Rice",
+        "description": "Steamed rice, pea-carrot, garlic and egg.",
+        "price": "$15.00",
+        "section": "Noodle and Rice"
+      },
+      {
+        "name": "Spicy Noodle (Pad Khee Mao)",
+        "description": "Stir fried flat rice noodle with chili, egg, red and green bell pepper, onion, garlic, and basil leaves.",
+        "price": "$15.00",
+        "section": "Noodle and Rice"
+      },
+      {
+        "name": "Pad Woon Sen",
+        "description": "Stir fried glass noodle with egg, tomato, carrot, cabbage, celery and scallion.",
+        "price": "$15.00",
+        "section": "Noodle and Rice"
+      },
+      {
+        "name": "Spicy Fried Rice",
+        "description": "Steamed rice with chili, egg, red and green bell pepper, onion, garlic, and basil leaves. Curry.",
+        "price": "$15.00",
+        "section": "Noodle and Rice"
+      },
+      {
+        "name": "Curry Fried Rice",
+        "description": "Steamed rice, pea-carrot, garlic, curry powder and egg.",
+        "price": "$15.00",
+        "section": "Noodle and Rice"
+      },
+      {
+        "name": "Pad See Ew",
+        "description": "Stir fried flat rice noodle with dark soy sauce, Chinese broccoli, broccoli garlic and egg.",
+        "price": "$15.00",
+        "section": "Noodle and Rice"
+      },
+      {
+        "name": "Rard Nar",
+        "description": "Flat rice noodle in thai gravy sauce, egg and oriental broccoli.",
+        "price": "$15.00",
+        "section": "Noodle and Rice"
+      },
+      {
+        "name": "Massamun Curry",
+        "description": "Potato, carrot and peanut with coconut milk served with steamed rice. (contains fish sauce).",
+        "price": "$16.00",
+        "section": "House Curries"
+      },
+      {
+        "name": "Yellow Curry",
+        "description": "Potato and carrot with coconut milk served with steamed rice. (contains fish sauce).",
+        "price": "$16.00",
+        "section": "House Curries"
+      },
+      {
+        "name": "Green Curry",
+        "description": "Bamboo shoot, red and green bell pepper, basil leaves and eggplant with coconut milk served with steamed rice. (contains fish sauce).",
+        "price": "$16.00",
+        "section": "House Curries"
+      },
+      {
+        "name": "Panang Curry",
+        "description": "Red and green bell pepper, onion, and lime leaf with coconut milk served with steamed rice. (contains fish sauce).",
+        "price": "$16.00",
+        "section": "House Curries"
+      },
+      {
+        "name": "Red Curry",
+        "description": "Bamboo shoot, red and green bell pepper, basil leaves and eggplant with coconut milk served with steamed rice. (contains fish sauce).",
+        "price": "$16.00",
+        "section": "House Curries"
+      },
+      {
+        "name": "Eggplant",
+        "description": "Eggplant, red and green bell pepper, onion and basil leaves, chili sauce served with steamed rice.",
+        "price": "$16.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Pra Ram",
+        "description": "Broccoli, carrot and chili paste sauce topped with peanut sauce served with steamed rice.",
+        "price": "$16.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Hot Basil",
+        "description": "Red and green bell pepper, carrot, onion, garlic, basil leaves ,chili sauce served with steamed rice.",
+        "price": "$16.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Sweet & Sour",
+        "description": "Red bell pepper, pineapple, tomato, cucumber, onion, scallion, mushroom with sweet and sour sauce served with steamed rice.",
+        "price": "$16.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Cashew Nut",
+        "description": "Red bell pepper, onion, celery, scallion, cashew nut , soy sauce served with steamed rice.",
+        "price": "$16.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Ginger",
+        "description": "Young ginger, onion, mushroom, celery, carrot and scallion, soy sauce served with steamed rice.",
+        "price": "$16.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Garlic Pepper",
+        "description": "Stir fried garlic with black pepper, cucumber, tomato, cilantro served with steamed rice.",
+        "price": "$16.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Mixed Vegetables",
+        "description": "Cabbage, broccoli, carrot, onion, celery, mushroom, soy sauce served with steamed rice.",
+        "price": "$16.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Spicy Curry Duck",
+        "description": "Roasted duck in red curry sauce with red and green bell pepper, tomato, pineapple and basil leaves served with steamed rice.",
+        "price": "$25.00",
+        "section": "Specialties"
+      },
+      {
+        "name": "Panang Salmon",
+        "description": "Grilled salmon topped with thick panang curry sauce, pea-carrot, broccoli, carrot served with steamed rice.",
+        "price": "$25.00",
+        "section": "Specialties"
+      },
+      {
+        "name": "Crab Fried Rice",
+        "description": "Stir-fried rice with crab meat, egg, onion, scallions, peas, and carrots.",
+        "price": "$22.00",
+        "section": "Specialties"
+      },
+      {
+        "name": "Tiger Cry Steak",
+        "description": "Grilled new York steak, broccoli, carrot, pineapple served with authentic thai spicy sauce served and steamed rice.",
+        "price": "$21.00",
+        "section": "Specialties"
+      },
+      {
+        "name": "Spaghetti Pad Khee Mao",
+        "description": "Stir fried spaghetti with shrimp, calamari, fish, green mussel, chili, basil leaves, red and green bell pepper, onion, garlic and egg.",
+        "price": "$25.00",
+        "section": "Specialties"
+      },
+      {
+        "name": "Grilled Chicken Curry",
+        "description": "Grilled chicken breast in massaman curry sauce with potato, carrot, tomato, pineapple and peanut served with steamed rice.",
+        "price": "$21.00",
+        "section": "Specialties"
+      },
+      {
+        "name": "Panang Curry Duck",
+        "description": "Roasted duck topped with thick panang curry sauce, pea-carrot, broccoli and carrot served with steamed rice.",
+        "price": "$21.00",
+        "section": "Specialties"
+      },
+      {
+        "name": "Pineapple Fried Rice",
+        "description": "Steamed rice, shrimp, chicken, pineapple, cashew nut, curry powder, pea-carrot, garlic and egg served in a pineapple shell.",
+        "price": "$20.00",
+        "section": "Specialties"
+      },
+      {
+        "name": "Thai Chicken",
+        "description": "Grilled half chicken marinated in thai herbs and sweet chili sauce served with steamed rice.",
+        "price": "$20.00",
+        "section": "Specialties"
+      },
+      {
+        "name": "Curry Sauce",
+        "description": "Sauce choice: Red, Green, Panang, Yellow, Massaman.",
+        "price": "$10.00",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Steamed Rice",
+        "description": "",
+        "price": "$4.00",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Cucumber Vinaigrette",
+        "description": "",
+        "price": "$3.00",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Steamed Vegetables",
+        "description": "",
+        "price": "$8.00",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Sticky Rice",
+        "description": "",
+        "price": "$5.00",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Steam Noodle",
+        "description": "",
+        "price": "$5.00",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Peanut Sauce",
+        "description": "",
+        "price": "$3.00",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Brown Rice",
+        "description": "",
+        "price": "$4.00",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Plum Sauce",
+        "description": "",
+        "price": "$3.00",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Sweet Rice with Mango",
+        "description": "",
+        "price": "$12.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Sweet Rice with Coconut Ice Cream",
+        "description": "",
+        "price": "$12.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Sweet Rice with Fried Banana",
+        "description": "",
+        "price": "$12.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Fried Banana",
+        "description": "",
+        "price": "$9.50",
+        "section": "Desserts"
+      },
+      {
+        "name": "Fried Banana with Coconut Ice Cream",
+        "description": "",
+        "price": "$9.50",
+        "section": "Desserts"
+      },
+      {
+        "name": "Coconut Ice Cream",
+        "description": "",
+        "price": "$6.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Soda",
+        "description": "",
+        "price": "$4.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Thai Iced Green Tea",
+        "description": "Strongly brewed Green Ceylon tea mixed with Jasmine flavored ,sugar and milk. Add Boba for an additional charge.",
+        "price": "$6.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Thai Iced Tea",
+        "description": "Strongly brewed thai Ceylon tea with sugar and milk. Add Boba for an additional charge.",
+        "price": "$6.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Thai Iced Coffee",
+        "description": "Black thai coffee with sugar and milk. Add Boba for an additional charge.",
+        "price": "$6.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Coconut Water",
+        "description": "Coconut water 100% (No Sugar Added)",
+        "price": "$5.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Lemonade",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Unsweetened Iced Tea",
+        "description": "Unsweeted tea.",
+        "price": "$5.00",
+        "section": "Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9685",
+    "name": "Surf Up Chicken",
+    "sourceUrl": "https://www.surfupchicken.com/",
+    "confidence": "high",
+    "notes": "Read from the restaurant's own Toast ordering page (server-rendered item cards with data-testid price spans, not JSON blob). Address confirmed 5661 Palmer Way Suite B, Carlsbad matches batch. 41 available items with prices (combos, sandwiches, sides, family trays, drinks). Dropped 4 items ('Crispy Chicken', two Sparkling drink flavors, one more drink) that were explicitly tagged OUT OF STOCK on the page. Prices are a conventional mix of round and quarter/nickel-dime endings with no sign of baked-in markup, so filed as read. No section/category labels were exposed in the static HTML, so all items are grouped under a single 'Menu' section.",
+    "dishes": [
+      {
+        "name": "CRISPY CHICKEN",
+        "description": "&quot;Surf Up Chicken’s crispy chicken is known for its perfectly golden, crunchy coating that locks in juicy, tender meat with every bite. Our signature batter, crafted with a special blend of seasonings, creates a light yet crispy texture that elevates the chicken to a new level of flavor. Whether you enjoy it right out of the fryer or reheat it in an air fryer, it’s always packed with bold taste and satisfying crunch, making it a customer favorite.&quot;",
+        "price": "$8.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Combo 1",
+        "description": "Crispy Chicken, French Fries, and Fountain Drink",
+        "price": "$12.25",
+        "section": "Menu"
+      },
+      {
+        "name": "CHICKEN SANDWICH",
+        "description": "Sweet Crinkle Pickle, Jalapeño, Spring Mix, and our Famous Yum Yum Sauce.",
+        "price": "$7.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Combo 2",
+        "description": "Crispy Chicken, Rice, Greens, and Fountain Drink",
+        "price": "$12.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Combo 3",
+        "description": "Crispy Chicken Sandwich, French Fries, and Fountain Drink",
+        "price": "$11.95",
+        "section": "Menu"
+      },
+      {
+        "name": "Combo 4",
+        "description": "Crispy Chicken Wrap, and Fountain Drink",
+        "price": "$9.95",
+        "section": "Menu"
+      },
+      {
+        "name": "CHEESY CRISPY CHICKEN",
+        "description": "&quot;Surf Up Chicken’s crispy chicken just got a flavor upgrade! Enjoy the same golden, crunchy coating with a delicious twist—now paired with creamy nacho cheese that brings a hint of sweetness and just the right amount of spicy kick. Each bite offers a perfect balance of textures and bold flavors, making it an irresistible treat for those who love a little extra excitement in their crispy chicken.&quot;",
+        "price": "$8.95",
+        "section": "Menu"
+      },
+      {
+        "name": "CHICKEN WRAP",
+        "description": "Dive into flavor! A warm 12&quot; tortilla packed with your choice of crispy chicken or juicy shrimp, tossed with fresh pico de gallo, spring mix, and coleslaw — all drizzled with our famous Yum Yum sauce. Fresh, crunchy, and totally crave-worthy!",
+        "price": "$8.75",
+        "section": "Menu"
+      },
+      {
+        "name": "CRISPY SHRIMP &amp; CHICKEN (Surf &amp; Bird)",
+        "description": "8 juicy, bite-sized shrimp ,and half order of our famous crispy chicken",
+        "price": "$9.95",
+        "section": "Menu"
+      },
+      {
+        "name": "CRISPY SHRIMP (16pcs Shrimp)",
+        "description": "&quot;16 juicy, bite-sized shrimp, seasoned to perfection with our signature blend of spices—bursting with flavor in every bite!&quot;",
+        "price": "$10.95",
+        "section": "Menu"
+      },
+      {
+        "name": "CHICKEN &amp; WAFFLES",
+        "description": "Delicious bite-sized Belgian waffles, light and fluffy, served with a half order of our crispy, flavorful chicken—a perfect sweet and savory combo!&quot;",
+        "price": "$8.50",
+        "section": "Menu"
+      },
+      {
+        "name": "TERIYAKI CHICKEN",
+        "description": "Juicy house-marinated chicken, pan-seared to a golden finish, drenched in savory teriyaki sauce, and layered over a bed of freshly shredded cabbage.",
+        "price": "$8.75",
+        "section": "Menu"
+      },
+      {
+        "name": "GARLIC BUTTER SHRIMP (16pcs Shrimp)",
+        "description": "16 pieces of tender juicy shrimp, pan-seared in rich butter, tossed with fresh cilantro and a splash of lime for a bright, savory finish.",
+        "price": "$10.95",
+        "section": "Menu"
+      },
+      {
+        "name": "FRENCH FRIES",
+        "description": "",
+        "price": "$2.50",
+        "section": "Menu"
+      },
+      {
+        "name": "SPAGHETTI",
+        "description": "Housemade Meat Sauce",
+        "price": "$4.50",
+        "section": "Menu"
+      },
+      {
+        "name": "VEGGIE EGG ROLLS",
+        "description": "3pcs, with Thailand Sweet Chili Sauce",
+        "price": "$2.50",
+        "section": "Menu"
+      },
+      {
+        "name": "BELGIAN WAFFLES",
+        "description": "5 pcs &quot;Delicious bite-sized Belgian waffles. Made in Belgian",
+        "price": "$3.50",
+        "section": "Menu"
+      },
+      {
+        "name": "GRASS JELLY",
+        "description": "Silky smooth 8oz grass jelly topped with our signature custom creamer – a refreshing and creamy delight!",
+        "price": "$2.50",
+        "section": "Menu"
+      },
+      {
+        "name": "TEXAS TOAST",
+        "description": "",
+        "price": "$1.35",
+        "section": "Menu"
+      },
+      {
+        "name": "RICE",
+        "description": "",
+        "price": "$1.35",
+        "section": "Menu"
+      },
+      {
+        "name": "GREENS",
+        "description": "ie Cauliflower/ Broccoli",
+        "price": "$1.35",
+        "section": "Menu"
+      },
+      {
+        "name": "CHEESE ON THE SIDE",
+        "description": "",
+        "price": "$0.45",
+        "section": "Menu"
+      },
+      {
+        "name": "FOUNTAIN DRINKS",
+        "description": "Coca-Cola® Fountain Drinks\r\nClassic Coke, Diet Coke, Coke Zero®, Root Beer, Lemonade, Dr Pepper®, Raspberry Iced Tea, Sprite®",
+        "price": "$2.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "Fresh brewed using authentic Thailand tea leaves, blended with just the right touch of cream and sweetness for a smooth, rich, and refreshing finish.",
+        "price": "$5.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Milk Tea",
+        "description": "Southern-style brewed tea, smooth and refreshing, blended with our own signature creamer.",
+        "price": "$5.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Ice Coffee",
+        "description": "Our iced coffee is a bold and robust Vietnamese-style brew, delivering deep, rich flavors. Sweetened to perfection, it offers a smooth and refreshing balance of strength and sweetness.",
+        "price": "$5.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Lime Sweet Tea",
+        "description": "&quot;Lime Sweet Tea&quot; is a refreshing twist on a Southern classic. It features one whole piece of fresh lime, sliced and infused into a sweet, Southern-style tea. The tangy citrus from the lime balances perfectly with the smooth sweetness of the tea, creating a bright, flavorful drink that&#x27;s both thirst-quenching and satisfying.",
+        "price": "$5.25",
+        "section": "Menu"
+      },
+      {
+        "name": "CRISPY CHICKEN TRAY (Serves 10)",
+        "description": "Our signature chicken is freshly marinated, hand-battered, and fried to a golden, crispy finish while staying juicy and tender inside. Each tray is generously portioned to serve approximately 10 people, making it perfect for meetings, parties, and group gatherings.\r\nIncludes 2 house-made sauces per tray.",
+        "price": "$60.00",
+        "section": "Menu"
+      },
+      {
+        "name": "CRISPY SHRIMP TRAY (Serves 10)",
+        "description": "A generous tray of juicy, bite-sized shrimp, seasoned to perfection with our signature blend of spices and fried until golden and crispy. Serves approximately 10 people and includes two handcrafted dipping sauces.",
+        "price": "$80.00",
+        "section": "Menu"
+      },
+      {
+        "name": "CRISPY SHIRMP &amp; CHICKEN TRAY (Serves 10)",
+        "description": "The best of both worlds in one tray. Enjoy a generous mix of our signature crispy chicken and juicy, bite-sized shrimp, both freshly seasoned, hand-battered, and fried to a golden crisp. Perfectly balanced for sharing at meetings, parties, and group gatherings. Serves approximately 10 people and includes two handcrafted dipping sauces.",
+        "price": "$72.00",
+        "section": "Menu"
+      },
+      {
+        "name": "TERIYAKI CHICKEN TRAY (Serves 10)",
+        "description": "Tender chicken pan-fried to lock in flavor, then glazed with imported Japanese teriyaki sauce for a rich, savory-sweet finish. Cooked fresh and portioned for sharing, this tray serves approximately 10 people and is perfect for meetings, family gatherings, and group events.",
+        "price": "$60.00",
+        "section": "Menu"
+      },
+      {
+        "name": "GARLIC BUTTER SHRIMP TRAY (Serves 10)",
+        "description": "Juicy, bite-sized shrimp pan-fried to lock in flavor, then tossed in our rich garlic butter sauce for a bold, savory finish. Cooked fresh and portioned for sharing, this tray serves approximately 10 people and is perfect for meetings, family gatherings, and group events.",
+        "price": "$80.00",
+        "section": "Menu"
+      },
+      {
+        "name": "CHICKEN CURRY TRAY (Serves 10)",
+        "description": "Japanese curry featuring our perfectly marinated chicken, simmered to rich, comforting flavor and paired with tender broccoli and crisp yellow radish. Served with rice included, this hearty tray is designed for sharing and serves approximately 10 people—perfect for meetings, family gatherings, and group events.",
+        "price": "$60.00",
+        "section": "Menu"
+      },
+      {
+        "name": "FRENCH FRIES TRAY (Serves 10)",
+        "description": "A generous tray of golden, crispy French fries, cooked to perfection with a fluffy potato center you can truly taste. Freshly fried and perfect for sharing, this tray serves approximately 10 people and pairs well with any meal.",
+        "price": "$20.00",
+        "section": "Menu"
+      },
+      {
+        "name": "VEGGIE EGG ROLLS TRAY  (Serves 12)",
+        "description": "A shareable tray of crispy vegetable egg rolls, filled with a savory mix of fresh vegetables and fried until golden and crunchy. Served with Thailand sweet chili sauce for the perfect balance of sweet heat. Designed for group gatherings and serves approximately 12 people.",
+        "price": "$30.00",
+        "section": "Menu"
+      },
+      {
+        "name": "SPAGHETTI TRAY (Serves 10)",
+        "description": "A generous tray of classic spaghetti tossed in our house-made meat sauce, slow-simmered for rich, savory flavor. Simple, hearty, and satisfying, this tray is perfect for sharing at meetings, family gatherings, and group events, serving approximately 10 people.",
+        "price": "$32.00",
+        "section": "Menu"
+      },
+      {
+        "name": "TEXAS TOAST TRAY (Serves 14)",
+        "description": "Thick-cut Texas toast generously brushed with buttery garlic spread and toasted until golden and aromatic. Soft and fluffy on the inside with a rich, buttery crunch on the outside, this tray is perfect for sharing and serves approximately 14 people.",
+        "price": "$18.90",
+        "section": "Menu"
+      },
+      {
+        "name": "RICE TRAY (Serves 10)",
+        "description": "A generous tray of rice cooked to perfection using new-crop, No. 1 Extra Fancy rice. Fluffy, fragrant, and perfectly textured—because we don’t play around with our rice. Made fresh and ideal for sharing, serves approximately 10 people.",
+        "price": "$14.00",
+        "section": "Menu"
+      },
+      {
+        "name": "GREENS TRAY (Serves 10)",
+        "description": "Broccoli blanched and lightly chilled, then tossed with our house seasoning to maintain a clean, crisp texture. Light, refreshing, and perfect for sharing, this tray serves approximately 10 people.",
+        "price": "$14.00",
+        "section": "Menu"
+      },
+      {
+        "name": "BELGIAN WAFFLES TRAY (Serves 10)",
+        "description": "Delicious bite-sized Belgian waffles, made in Belgium and finished to a golden, fluffy perfection with a lightly crisp exterior. Perfect for sharing at meetings, parties, and group gatherings, this tray serves approximately 10 people.",
+        "price": "$24.50",
+        "section": "Menu"
+      },
+      {
+        "name": "GRASS JELLY (Serves 10)",
+        "description": "Silky-smooth 8 oz grass jelly, topped with our signature custom creamer for a perfectly refreshing and creamy finish. Each catering order includes 10 individual 8 oz cups, ideal for easy sharing at meetings and group events.",
+        "price": "$25.00",
+        "section": "Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9684",
+    "name": "Casa Reveles Restaurant",
+    "sourceUrl": "https://casareveles.net/menu-2",
+    "confidence": "medium",
+    "notes": "Batch's own domain (casarevelesrestaurant.com) confirms the address (28960 Lilac Rd, Valley Center) on its homepage but its ordering page is a JS widget with no static prices. Menu instead read from casareveles.net, the shared site for this small two-location family group (Valley Center + a Ramona location); same phone number (760-749-8041) appears on both domains confirming same business. The menu-2 page appears to be one shared menu for the group rather than location-specific, so confidence is medium rather than high. 117 items (appetizers, quesadillas, seafood dishes with variant pricing like dozen/half split into separate rows, salads, entrees). Prices are conventional .50/.95/.99 endings with no sign of markup.",
+    "dishes": [
+      {
+        "name": "super nachos",
+        "description": "",
+        "price": "$17.95",
+        "section": "Menu"
+      },
+      {
+        "name": "half super nacho",
+        "description": "",
+        "price": "$12.95",
+        "section": "Menu"
+      },
+      {
+        "name": "chiles toreados",
+        "description": "",
+        "price": "$8.50",
+        "section": "Menu"
+      },
+      {
+        "name": "cheese crisp w/ guacamole",
+        "description": "",
+        "price": "$11.75",
+        "section": "Menu"
+      },
+      {
+        "name": "super quesadilla",
+        "description": "",
+        "price": "$14.50",
+        "section": "Menu"
+      },
+      {
+        "name": "quesadilla de camaron",
+        "description": "",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "sergio's quesadilla",
+        "description": "",
+        "price": "$17.95",
+        "section": "Menu"
+      },
+      {
+        "name": "jalapeno poppers",
+        "description": "",
+        "price": "$10.95",
+        "section": "Menu"
+      },
+      {
+        "name": "ostiones en su concha (dozen)",
+        "description": "",
+        "price": "$36.99",
+        "section": "Menu"
+      },
+      {
+        "name": "ostiones en su concha (half)",
+        "description": "",
+        "price": "$20.99",
+        "section": "Menu"
+      },
+      {
+        "name": "docena de camarones",
+        "description": "",
+        "price": "$30.95",
+        "section": "Menu"
+      },
+      {
+        "name": "1/2 docena camarones con pulpo",
+        "description": "",
+        "price": "$21.95",
+        "section": "Menu"
+      },
+      {
+        "name": "camarones ahogadas (8)",
+        "description": "",
+        "price": "$21.95",
+        "section": "Menu"
+      },
+      {
+        "name": "bbq shrimp",
+        "description": "",
+        "price": "$21.95",
+        "section": "Menu"
+      },
+      {
+        "name": "A. carne asada",
+        "description": "",
+        "price": "$22.95",
+        "section": "Menu"
+      },
+      {
+        "name": "B. chile verde",
+        "description": "",
+        "price": "$20.95",
+        "section": "Menu"
+      },
+      {
+        "name": "C. tripitas",
+        "description": "",
+        "price": "$21.95",
+        "section": "Menu"
+      },
+      {
+        "name": "D. carne con chile",
+        "description": "",
+        "price": "$20.95",
+        "section": "Menu"
+      },
+      {
+        "name": "E. bistek ranchero",
+        "description": "",
+        "price": "$20.95",
+        "section": "Menu"
+      },
+      {
+        "name": "F. fajitas (meat)",
+        "description": "",
+        "price": "$21.50",
+        "section": "Menu"
+      },
+      {
+        "name": "F. fajitas (shrimp)",
+        "description": "",
+        "price": "$23.95",
+        "section": "Menu"
+      },
+      {
+        "name": "F. fajitas (mixed)",
+        "description": "",
+        "price": "$23.95",
+        "section": "Menu"
+      },
+      {
+        "name": "G. chile colorado",
+        "description": "",
+        "price": "$20.95",
+        "section": "Menu"
+      },
+      {
+        "name": "H. carnitas",
+        "description": "",
+        "price": "$20.50",
+        "section": "Menu"
+      },
+      {
+        "name": "I. carnitas con nopales",
+        "description": "",
+        "price": "$20.50",
+        "section": "Menu"
+      },
+      {
+        "name": "J. carnitas con papas",
+        "description": "",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "K. carnitas con salsa de tomatillo",
+        "description": "",
+        "price": "$20.50",
+        "section": "Menu"
+      },
+      {
+        "name": "L. chuletas",
+        "description": "",
+        "price": "$21.50",
+        "section": "Menu"
+      },
+      {
+        "name": "M. pollo en mole",
+        "description": "",
+        "price": "$20.50",
+        "section": "Menu"
+      },
+      {
+        "name": "N. brisa del mar",
+        "description": "",
+        "price": "$23.50",
+        "section": "Menu"
+      },
+      {
+        "name": "O. enchiladas suizas",
+        "description": "",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "P. huevos rancheros",
+        "description": "",
+        "price": "$16.95",
+        "section": "Menu"
+      },
+      {
+        "name": "Q. machaca con huevos",
+        "description": "",
+        "price": "$16.95",
+        "section": "Menu"
+      },
+      {
+        "name": "R. chorizo con huevos",
+        "description": "",
+        "price": "$16.95",
+        "section": "Menu"
+      },
+      {
+        "name": "1. two enchiladas",
+        "description": "",
+        "price": "$16.95",
+        "section": "Menu"
+      },
+      {
+        "name": "2. two tacos",
+        "description": "",
+        "price": "$15.95",
+        "section": "Menu"
+      },
+      {
+        "name": "3. two sopes",
+        "description": "",
+        "price": "$17.95",
+        "section": "Menu"
+      },
+      {
+        "name": "4. two cheese chile rellenos",
+        "description": "",
+        "price": "$2.00",
+        "section": "Menu"
+      },
+      {
+        "name": "beef or chicken",
+        "description": "",
+        "price": "$18.95",
+        "section": "Menu"
+      },
+      {
+        "name": "6. two fish tacos",
+        "description": "",
+        "price": "$18.95",
+        "section": "Menu"
+      },
+      {
+        "name": "7. two taquitos",
+        "description": "",
+        "price": "$15.95",
+        "section": "Menu"
+      },
+      {
+        "name": "8. two tostadas",
+        "description": "",
+        "price": "$16.95",
+        "section": "Menu"
+      },
+      {
+        "name": "17. taco and enchilada",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "18. one combination burrito, one beef taco",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "19. one beef taco, one sope",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "21. one cheese chile relleno, one tamal",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "22. one beef taco, one tostada",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "23. one combination burrito, one tamal",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "24. one enfrijolada, one quesadilla",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "25. one chile relleno, one enchilada",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "26. one enchilada, one tamal",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "27.  one combination burrito, one enchilada",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "28. one sope, one chile relleno",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "29. one chimichanga, one enchilada",
+        "description": "",
+        "price": "$16.95",
+        "section": "Menu"
+      },
+      {
+        "name": "30. one beef taco, one chile relleno",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "carne asada",
+        "description": "",
+        "price": "$13.95",
+        "section": "Menu"
+      },
+      {
+        "name": "bean",
+        "description": "",
+        "price": "$2.00",
+        "section": "Menu"
+      },
+      {
+        "name": "shredded beef, beans, and cheese",
+        "description": "",
+        "price": "$10.75",
+        "section": "Menu"
+      },
+      {
+        "name": "chicken",
+        "description": "",
+        "price": "$12.95",
+        "section": "Menu"
+      },
+      {
+        "name": "fajitas",
+        "description": "",
+        "price": "$17.95",
+        "section": "Menu"
+      },
+      {
+        "name": "fish",
+        "description": "",
+        "price": "$2.00",
+        "section": "Menu"
+      },
+      {
+        "name": "wet style, salsa ranchero, beans and cheese",
+        "description": "",
+        "price": "$16.95",
+        "section": "Menu"
+      },
+      {
+        "name": "chile verde",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "carnitas",
+        "description": "",
+        "price": "$13.95",
+        "section": "Menu"
+      },
+      {
+        "name": "carnitas con papas",
+        "description": "",
+        "price": "$14.75",
+        "section": "Menu"
+      },
+      {
+        "name": "carnitas con nopales",
+        "description": "",
+        "price": "$14.75",
+        "section": "Menu"
+      },
+      {
+        "name": "carnitas con tomatillo",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "tripas",
+        "description": "",
+        "price": "$15.95",
+        "section": "Menu"
+      },
+      {
+        "name": "chimichanga",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "machaca",
+        "description": "",
+        "price": "$13.50",
+        "section": "Menu"
+      },
+      {
+        "name": "chorizo",
+        "description": "",
+        "price": "$13.50",
+        "section": "Menu"
+      },
+      {
+        "name": "California",
+        "description": "",
+        "price": "$15.95",
+        "section": "Menu"
+      },
+      {
+        "name": "Shredded Beef",
+        "description": "",
+        "price": "$5.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Shredded Chicken",
+        "description": "",
+        "price": "$5.25",
+        "section": "Menu"
+      },
+      {
+        "name": "guacamole",
+        "description": "",
+        "price": "$6.25",
+        "section": "Menu"
+      },
+      {
+        "name": "(3) carnitas",
+        "description": "",
+        "price": "$16.95",
+        "section": "Menu"
+      },
+      {
+        "name": "(3) carne asada",
+        "description": "",
+        "price": "$16.95",
+        "section": "Menu"
+      },
+      {
+        "name": "(3) fish",
+        "description": "",
+        "price": "$16.95",
+        "section": "Menu"
+      },
+      {
+        "name": "(3) tripas",
+        "description": "",
+        "price": "$17.50",
+        "section": "Menu"
+      },
+      {
+        "name": "(3) lengua",
+        "description": "",
+        "price": "$17.95",
+        "section": "Menu"
+      },
+      {
+        "name": "(3) al pastor",
+        "description": "",
+        "price": "$17.50",
+        "section": "Menu"
+      },
+      {
+        "name": "each",
+        "description": "",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "cheese",
+        "description": "",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Shredded Beef",
+        "description": "",
+        "price": "$7.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Shredded Chicken",
+        "description": "",
+        "price": "$7.50",
+        "section": "Menu"
+      },
+      {
+        "name": "suiza style",
+        "description": "",
+        "price": "$8.25",
+        "section": "Menu"
+      },
+      {
+        "name": "beef super",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "chicken super",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "bean super",
+        "description": "",
+        "price": "$12.95",
+        "section": "Menu"
+      },
+      {
+        "name": "bean",
+        "description": "",
+        "price": "$10.95",
+        "section": "Menu"
+      },
+      {
+        "name": "beef",
+        "description": "",
+        "price": "$11.75",
+        "section": "Menu"
+      },
+      {
+        "name": "chicken",
+        "description": "",
+        "price": "$11.75",
+        "section": "Menu"
+      },
+      {
+        "name": "guacamole",
+        "description": "",
+        "price": "$12.50",
+        "section": "Menu"
+      },
+      {
+        "name": "carne asada",
+        "description": "",
+        "price": "$11.95",
+        "section": "Menu"
+      },
+      {
+        "name": "beef",
+        "description": "",
+        "price": "$13.95",
+        "section": "Menu"
+      },
+      {
+        "name": "chicken",
+        "description": "",
+        "price": "$13.95",
+        "section": "Menu"
+      },
+      {
+        "name": "chorizo",
+        "description": "",
+        "price": "$13.95",
+        "section": "Menu"
+      },
+      {
+        "name": "machaca",
+        "description": "",
+        "price": "$13.95",
+        "section": "Menu"
+      },
+      {
+        "name": "plain",
+        "description": "",
+        "price": "$10.25",
+        "section": "Menu"
+      },
+      {
+        "name": "cheeseburger",
+        "description": "",
+        "price": "$10.75",
+        "section": "Menu"
+      },
+      {
+        "name": "cheeseburger plate",
+        "description": "",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "large fries",
+        "description": "",
+        "price": "$8.50",
+        "section": "Menu"
+      },
+      {
+        "name": "pescado frito",
+        "description": "",
+        "price": "$21.95",
+        "section": "Menu"
+      },
+      {
+        "name": "filete empanizado",
+        "description": "",
+        "price": "$21.95",
+        "section": "Menu"
+      },
+      {
+        "name": "filete al mojo de ajo",
+        "description": "",
+        "price": "$21.95",
+        "section": "Menu"
+      },
+      {
+        "name": "filete a la veracruzana",
+        "description": "",
+        "price": "$21.95",
+        "section": "Menu"
+      },
+      {
+        "name": "filete a la diabla",
+        "description": "",
+        "price": "$21.95",
+        "section": "Menu"
+      },
+      {
+        "name": "empanizado",
+        "description": "",
+        "price": "$23.95",
+        "section": "Menu"
+      },
+      {
+        "name": "estilo barbacoa",
+        "description": "",
+        "price": "$23.95",
+        "section": "Menu"
+      },
+      {
+        "name": "al mojo de ajo",
+        "description": "",
+        "price": "$23.95",
+        "section": "Menu"
+      },
+      {
+        "name": "a la diabla",
+        "description": "",
+        "price": "$23.95",
+        "section": "Menu"
+      },
+      {
+        "name": "a la veracruzana",
+        "description": "",
+        "price": "$23.95",
+        "section": "Menu"
+      },
+      {
+        "name": "costa azul",
+        "description": "",
+        "price": "$24.95",
+        "section": "Menu"
+      },
+      {
+        "name": "mixed salad",
+        "description": "",
+        "price": "$7.95",
+        "section": "Menu"
+      },
+      {
+        "name": "chicken salad",
+        "description": "",
+        "price": "$17.95",
+        "section": "Menu"
+      },
+      {
+        "name": "shrimp salad",
+        "description": "",
+        "price": "$19.95",
+        "section": "Menu"
+      },
+      {
+        "name": "cucumber salad",
+        "description": "",
+        "price": "$8.95",
+        "section": "Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6119",
+    "name": "Nothing Bundt Cakes",
+    "sourceUrl": "https://www.nothingbundtcakes.com/find-a-bakery/ca/sandiego/bakery-42.html",
+    "confidence": "low",
+    "notes": "Chain bakery site gates the full flavor/size grid behind a 'Select Bakery to See Pricing' picker with no static prices, but this location's own page (bakery-42, matching the batch address 5624 Mission Center Rd) carries a small 'Most Popular Cakes' promotional carousel with 5 real, bakery-specific priced items. This is NOT the full menu (the full flavor x size grid was not accessible without a browser), so only these 5 confirmed items are filed rather than inventing the rest of the lineup.",
+    "dishes": [
+      {
+        "name": "Best In Class Bundtinis®",
+        "description": "",
+        "price": "$45.95",
+        "section": "Most Popular Cakes (promotional selection)"
+      },
+      {
+        "name": "Cele'bundt'ing You",
+        "description": "",
+        "price": "$46.85",
+        "section": "Most Popular Cakes (promotional selection)"
+      },
+      {
+        "name": "Bundtlet Bundle",
+        "description": "",
+        "price": "$79.45",
+        "section": "Most Popular Cakes (promotional selection)"
+      },
+      {
+        "name": "Triple Bundtlet Tower",
+        "description": "",
+        "price": "$22.85",
+        "section": "Most Popular Cakes (promotional selection)"
+      },
+      {
+        "name": "Seasonal Bundtinis®",
+        "description": "",
+        "price": "$35.45",
+        "section": "Most Popular Cakes (promotional selection)"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3223",
+    "name": "ENO Market & Pizzeria",
+    "confidence": "medium",
+    "notes": "Blocked: confirmed rebrand (Eater San Diego: 'Eno Pizzeria & Wine Bar has been transformed into Eno Market & Pizzeria'). Every priced source found (OpenTable 'ENO Artisan Pizzeria & Wine Bar', Gayot 'eno-artisan-pizzeria-wine-bar', a Menuweb PDF titled 'Eno Pizzeria Menu') is under the old pre-rebrand name and listing, so the prices are stale and not safe to file under the current listing. The official hoteldel.com dine page for the current concept has no accessible static price data (JS-rendered menu behind a 'SEE MENUS' anchor). Yelp confirms 'Our New Menu' exists under the current name but per rules cannot be filed from Yelp alone.",
+    "blocked": "confirmed rebrand from Eno Pizzeria & Wine Bar to Eno Market & Pizzeria; only priced sources found are stale, under the old pre-rebrand name/menu; current official site has no accessible prices without a browser",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1177",
+    "name": "One More Thats It",
+    "confidence": "medium",
+    "notes": "No website on file, no ordering platform found. Searches turn up only Yelp menu photos (cannot file from Yelp alone per rules), an Instagram profile with no menu/prices, and a Coast News feature article on the bar with no priced items mentioned. Described elsewhere as a cash-only dive bar, consistent with having no online ordering presence. No independent priced source found.",
+    "blocked": "cash-only dive bar with no own site or ordering platform; only source with prices is Yelp menu photos, which cannot be filed alone",
+    "dishes": []
+  },
+  {
+    "restaurantId": "9680",
+    "name": "Menuderia y mariscos GDL",
+    "confidence": "medium",
+    "notes": "Batch website (tiajuanafc.com, a soccer club site) is unrelated/wrong. Address (2490 Main St, Chula Vista) confirmed correct via an independent Instagram post naming both the business and the exact address, and via restaurantji.com, but neither has prices. A same-name-pattern domain (menuderiaguadalajara.com, 'GDL' = Guadalajara) has a full priced menu but its own locations page (sucursales) does not list a Main St / Chula Vista / 91911 address, so it could not be confirmed as this business rather than an unrelated chain location and was not used. Grubhub confirms a listing exists ('Menuderia y Mariscos GDL... Burritos') but the restaurant page is a JS-rendered client shell with no extractable link or price data without a browser. No safely-attributable priced source found.",
+    "blocked": "no confirmed-address priced source found; batch website is wrong/unrelated; a similarly-named domain's menu could not be confirmed as this specific location; Grubhub listing exists but is inaccessible without a browser",
+    "dishes": []
+  },
+  {
+    "restaurantId": "11168",
+    "name": "Mariscos La Bola",
+    "confidence": "medium",
+    "notes": "Batch Facebook URL (facebook.com/mariscoslabola) returns HTTP 400. Investigated whether this is the same business as 'Mariscos La Chalupa 1' / 'Mariscos La Chalupa #3', both listed at the identical address (401 N Johnson Ave, El Cajon) on DoorDash/Uber Eats/Postmates: concluded NOT a rebrand, since Yelp and Mapquest both carry La Bola and La Chalupa as separate, independently reviewed listings at the same address (a shared food-truck lot), and La Bola's own listing shows no closed/rebrand marker. A third-party nonprofit page (accessity.org) claims 'Mariscos la Bola Food Truck' is on UberEats/Grubhub/DoorDash with a different Facebook handle (mariscoslabolafoodtruck) than the batch's, but no direct ordering-platform URL for La Bola itself could be located via search (only the coexisting La Chalupa trucks' listings came up). Only other sources found are Yelp menu photos (cannot file from Yelp alone) and a single stray review-quoted price ($2.50 fish tacos on Mapquest, not a menu). No safely filable priced menu found.",
+    "blocked": "no ordering-platform or own-site menu found specifically for this business (only a same-address, separately-reviewed 'La Chalupa' truck's listings were found); only remaining source is Yelp menu photos, which cannot be filed alone",
+    "dishes": []
+  }
+]

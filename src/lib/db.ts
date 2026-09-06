@@ -1929,12 +1929,12 @@ export async function markPhotoNoticeSeen(userId: string): Promise<void> {
 }
 
 /**
- * Records that the first-run coach tour has run. Same one-way latch, and for
- * the same reason: nothing wants to put a tour back in front of somebody who
- * has already been walked through the app.
+ * Records whether the first-run coach tour has run. Two-way, unlike the photo
+ * notice: clearing it is how the tour is put back in front of somebody on
+ * purpose — a "show me again" control, or a re-arm on a dev box.
  */
-export async function markTourSeen(userId: string): Promise<void> {
-  await sql`UPDATE users SET tour_seen = true WHERE id = ${userId}`;
+export async function setTourSeen(userId: string, seen: boolean): Promise<void> {
+  await sql`UPDATE users SET tour_seen = ${seen} WHERE id = ${userId}`;
 }
 
 /**

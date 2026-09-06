@@ -20,9 +20,34 @@
  * ## Areas and categories
  *
  * Areas come from the corpus itself, not a fixed list: every (neighborhood,
- * city) pair with at least one *listed* row, plus every distinct city in the
- * whole table (a city-only pass, for the neighbourhoods our own data has never
- * named). CATEGORIES below is deliberately a flat, easy-to-edit array.
+ * city) pair with at least one *listed*, un-held row, plus every distinct city
+ * in the whole table under the same conditions (a city-only pass, for the
+ * neighbourhoods our own data has never named). CATEGORIES below is
+ * deliberately a flat, easy-to-edit array.
+ *
+ * Two guards were added 2026-09-05 after a poisoned run. Serper's `/maps`
+ * often ignores the area text in the query and returns places anywhere -
+ * Cardiff (Wales), London, Los Angeles, Tijuana, Angels Camp - and 2,557 of
+ * those got imported and are now held with `hold_reason 'outside San Diego
+ * County (sweep result)'`. Left alone, their cities (San Jose, Los Angeles,
+ * Lake Forest...) become areas on the next run and the query count explodes
+ * (3,864 -> 20,000+; one page-2 run spent 11,700 credits on cities outside
+ * the county).
+ *
+ *  1. **The area source is filtered in SQL**: `listed`, `hold_reason IS
+ *     NULL`, and lat/lng inside `SD_COUNTY_BBOX` (lat 32.50-33.55, lng
+ *     -117.65 to -116.00). A (neighborhood, city) pair or city with fewer
+ *     than 3 qualifying rows is dropped too - a stray mislabelled row should
+ *     not become a query of its own.
+ *  2. **The Serper request is centred on the area**: `ll` carries the
+ *     average lat/lng of the rows that produced the area, at zoom 13 for a
+ *     neighborhood and 12 for a city, so a drifting result has to drift
+ *     further to leave the county.
+ *
+ * Neither guard is perfect - Serper can still return a real place that sits
+ * inside the box but across the border (a Tijuana or Tecate address) - so
+ * the survivor filter below repeats the same `inCounty` check plus a
+ * ", Mexico" address check, and drops those too.
  *
  * ## Money - the same discipline as resolve-places.mjs --via serper
  *
@@ -95,6 +120,27 @@ const SERPER_BUDGET = Number(process.env.SERPER_BUDGET) || 52500;
 
 const CACHE_DIR = "data/places-cache";
 const OUT_PATH = "data/sweep-resolved.json";
+
+/**
+ * San Diego County, loosely - see "## Areas and categories" above for why
+ * this exists. Loose enough to hold the whole county with margin, tight
+ * enough to exclude Los Angeles, Orange County and the Mexico border cities.
+ */
+const SD_COUNTY_BBOX = { minLat: 32.5, maxLat: 33.55, minLng: -117.65, maxLng: -116.0 };
+function inCounty(lat, lng) {
+  return (
+    typeof lat === "number" &&
+    typeof lng === "number" &&
+    lat >= SD_COUNTY_BBOX.minLat &&
+    lat <= SD_COUNTY_BBOX.maxLat &&
+    lng >= SD_COUNTY_BBOX.minLng &&
+    lng <= SD_COUNTY_BBOX.maxLng &&
+    // The box's north-west corner is Orange County (San Clemente, Dana Point);
+    // the county line meets the coast at San Mateo Point, 33.39N. Camp Pendleton
+    // (62 Area, -117.56) stays inside.
+    !(lat > 33.39 && lng < -117.58)
+  );
+}
 
 /**
  * Categories to sweep every area with. Flat and easy to edit - add or remove
@@ -210,7 +256,7 @@ async function readCache(query, page) {
 
 /* --- serper ---------------------------------------------------------------- */
 
-async function fetchSerperMaps(apiKey, query, page) {
+async function fetchSerperMaps(apiKey, query, page, ll) {
   const started = new Date().toISOString();
   let http = 0;
   let json = null;
@@ -219,7 +265,7 @@ async function fetchSerperMaps(apiKey, query, page) {
     const res = await fetch(SERPER_URL, {
       method: "POST",
       headers: { "X-API-KEY": apiKey, "Content-Type": "application/json" },
-      body: JSON.stringify({ q: query, gl: "us", hl: "en", page }),
+      body: JSON.stringify({ q: query, gl: "us", hl: "en", page, ll }),
     });
     http = res.status;
     const text = await res.text();
@@ -258,14 +304,39 @@ if (!process.env.DATABASE_URL) {
 }
 const sql = neon(process.env.DATABASE_URL);
 
-const pairRows = await sql`SELECT DISTINCT neighborhood, city FROM restaurants WHERE listed`;
-const cityRows = await sql`SELECT DISTINCT city FROM restaurants`;
+/*
+ * Both queries are restricted to listed, un-held, in-county rows (see the
+ * header) and drop any group with fewer than 3 qualifying rows, so a stray
+ * mislabelled row never becomes a query on its own. The centroid (avg lat/lng
+ * of the rows that produced the area) feeds the Serper `ll` param below.
+ */
+const pairRows = await sql`
+  SELECT neighborhood, city, avg(lat)::float8 AS lat, avg(lng)::float8 AS lng
+    FROM restaurants
+   WHERE listed AND hold_reason IS NULL
+     AND neighborhood IS NOT NULL AND city IS NOT NULL
+     AND lat BETWEEN ${SD_COUNTY_BBOX.minLat} AND ${SD_COUNTY_BBOX.maxLat}
+     AND lng BETWEEN ${SD_COUNTY_BBOX.minLng} AND ${SD_COUNTY_BBOX.maxLng}
+   GROUP BY neighborhood, city
+  HAVING count(*) >= 3`;
+const cityRows = await sql`
+  SELECT city, avg(lat)::float8 AS lat, avg(lng)::float8 AS lng
+    FROM restaurants
+   WHERE listed AND hold_reason IS NULL
+     AND city IS NOT NULL
+     AND lat BETWEEN ${SD_COUNTY_BBOX.minLat} AND ${SD_COUNTY_BBOX.maxLat}
+     AND lng BETWEEN ${SD_COUNTY_BBOX.minLng} AND ${SD_COUNTY_BBOX.maxLng}
+   GROUP BY city
+  HAVING count(*) >= 3`;
 
-const neighborhoodAreas = pairRows
-  .filter((r) => r.neighborhood && r.city)
-  .map((r) => ({ kind: "neighborhood", neighborhood: r.neighborhood, city: r.city }));
-const cityAreas = [...new Set(cityRows.map((r) => r.city).filter(Boolean))]
-  .map((city) => ({ kind: "city", city }));
+const neighborhoodAreas = pairRows.map((r) => ({
+  kind: "neighborhood",
+  neighborhood: r.neighborhood,
+  city: r.city,
+  lat: r.lat,
+  lng: r.lng,
+}));
+const cityAreas = cityRows.map((r) => ({ kind: "city", city: r.city, lat: r.lat, lng: r.lng }));
 const areas = [...neighborhoodAreas, ...cityAreas];
 
 console.log(`sweep-serper  pages=${PAGES}  max-calls=${MAX_CALLS}${DRY ? "  (dry)" : ""}`);
@@ -276,12 +347,16 @@ console.log(`  categories:                                 ${CATEGORIES.length}`
 
 const baseQueries = [];
 for (const area of areas) {
+  /* Zoom 13 for a neighborhood (tighter), 12 for a whole city (wider) - see
+   * the header for why this exists. */
+  const zoom = area.kind === "neighborhood" ? 13 : 12;
+  const ll = `@${area.lat.toFixed(4)},${area.lng.toFixed(4)},${zoom}z`;
   for (const category of CATEGORIES) {
     const query =
       area.kind === "neighborhood"
         ? `${category} in ${area.neighborhood}, ${area.city}, CA`
         : `${category} in ${area.city}, CA`;
-    baseQueries.push({ query, city: area.city });
+    baseQueries.push({ query, city: area.city, ll });
   }
 }
 console.log(`  base queries (area x category):             ${baseQueries.length}`);
@@ -355,7 +430,7 @@ for (const bq of baseQueries) {
         notAttempted += 1;
         break;
       }
-      const { json, error, fetchedAt } = await fetchSerperMaps(apiKey, bq.query, page);
+      const { json, error, fetchedAt } = await fetchSerperMaps(apiKey, bq.query, page, bq.ll);
       calls += 1;
       const places = json?.places ?? [];
       cached = {
@@ -401,6 +476,7 @@ let dropKnown = 0;
 let dropClosed = 0;
 let dropNotFood = 0;
 let dropChain = 0;
+let dropOutsideCounty = 0;
 const survivors = [];
 
 for (const [placeId, { item, query, city }] of byPlaceId) {
@@ -423,12 +499,21 @@ for (const [placeId, { item, query, city }] of byPlaceId) {
     dropChain += 1;
     continue;
   }
+  /* Second guard against Serper drifting away from the queried area (or
+   * landing just across the border) - see the header. */
+  const address = item.address ?? null;
+  const lat = item.latitude ?? item.position?.lat ?? null;
+  const lng = item.longitude ?? item.position?.lng ?? null;
+  if (!inCounty(lat, lng) || /,\s*Mexico\b/i.test(address ?? "")) {
+    dropOutsideCounty += 1;
+    continue;
+  }
 
   survivors.push({
     sourceKey: `sweep:${placeId}`,
     recordId: null,
     legalName: name,
-    address: item.address ?? null,
+    address,
     city,
     status: "import",
     detail: type,
@@ -436,9 +521,9 @@ for (const [placeId, { item, query, city }] of byPlaceId) {
     place: {
       id: placeId,
       displayName: name,
-      formattedAddress: item.address ?? null,
-      lat: item.latitude ?? item.position?.lat ?? null,
-      lng: item.longitude ?? item.position?.lng ?? null,
+      formattedAddress: address,
+      lat,
+      lng,
       businessStatus,
       primaryType: type,
       types: type ? [type] : [],
@@ -459,6 +544,7 @@ console.log(`  dropped, already in restaurants.google_place_id: ${dropKnown}`);
 console.log(`  dropped, CLOSED_PERMANENTLY:                     ${dropClosed}`);
 console.log(`  dropped, not a food type:                        ${dropNotFood}`);
 console.log(`  dropped, matches data/excluded-chains.json:      ${dropChain}`);
+console.log(`  dropped, outside San Diego County:               ${dropOutsideCounty}`);
 console.log(`  survivors written to ${OUT_PATH}:                ${survivors.length}`);
 
 await writeFile(OUT_PATH, JSON.stringify(survivors, null, 1), "utf8");

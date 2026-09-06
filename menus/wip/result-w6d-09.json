@@ -1,0 +1,1210 @@
+[
+  {
+    "restaurantId": "3930",
+    "name": "Cake de Partie",
+    "sourceUrl": "https://cakedepartie.com/cdpmenu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "menu page lists dish names only (Pasta, Appetizer, Rice Plates, Greens, Dessert, Drinks etc.) with no prices anywhere on the WP site (checked wp-json pages dump, no $ figures at all); SinglePlatform listing 504s; no DoorDash/UberEats/Grubhub storefront found for this restaurant"
+  },
+  {
+    "restaurantId": "7573",
+    "name": "Luscious Dumplings - San Diego",
+    "sourceUrl": "https://order.toasttab.com/online/luscious-dumplings-02-em-872-eastlake-pkwy-suite-143",
+    "confidence": "high",
+    "notes": "restaurant's own Toast ordering page; address in payload (872 Eastlake Pkwy suite 413, Chula Vista, CA 91914) matches batch exactly; lusciousd.com is a parked GoDaddy domain, found via Serper instead; dropped 11-item 'Top Seller in Store' carousel as duplicate sample; cent endings are 53/60 on .49 (ends-in-9 convention), no divisor 1.00-1.35 lands >50% on round/.95/.99 so treated as genuine menu pricing",
+    "dishes": [
+      {
+        "name": "Cucumber Salad 凉拌黄瓜",
+        "description": "Refreshing cucumber slices tossed in a tangy-sweet and slightly spicy chili oil dressing, perfectly balancing cool crunch with bold flavor.",
+        "price": "$6.49",
+        "section": "Food / Appetizer/ Side Dishes"
+      },
+      {
+        "name": "Scallion Pancake/ 葱油饼",
+        "description": "Golden, pan-seared scallion pancake with ultra-flaky layers and savory onion aroma. Crisp outside, tender inside.",
+        "price": "$6.49",
+        "section": "Food / Appetizer/ Side Dishes"
+      },
+      {
+        "name": "Broccoli with Creamy Sesame Sauce 芝麻酱西兰花",
+        "description": "Tender broccoli florets drizzled with a rich, creamy sesame sauce, blending nutty depth with a hint of sweetness for a satisfying bite.",
+        "price": "$4.49",
+        "section": "Food / Appetizer/ Side Dishes"
+      },
+      {
+        "name": "Popcorn Chicken with Sauce 盐酥鸡",
+        "description": "Crispy, golden-brown bite-sized chicken pieces, seasoned to perfection and bursting with juicy flavor in every bite, serve with the sauce.",
+        "price": "$9.49",
+        "section": "Food / Appetizer/ Side Dishes"
+      },
+      {
+        "name": "Baby Bok Choy 酱油小青菜",
+        "description": "Baby bok choy in house-made soy sauce—lightly blanched, tender-crisp, savory and aromatic.",
+        "price": "$5.49",
+        "section": "Food / Appetizer/ Side Dishes"
+      },
+      {
+        "name": "Vegetable Fried Spring Rolls 炸春卷",
+        "description": "Golden-fried spring rolls packed with fresh vegetables—light, crunchy, and savory.",
+        "price": "$6.49",
+        "section": "Food / Appetizer/ Side Dishes"
+      },
+      {
+        "name": "Tempura (6pc) 天妇罗",
+        "description": "Shrimp & vegetable tempura—lightly battered and fried until crisp. Served with dipping sauce.",
+        "price": "$8.49",
+        "section": "Food / Appetizer/ Side Dishes"
+      },
+      {
+        "name": "Cold Seaweed Salad/凉拌海带丝",
+        "description": "",
+        "price": "$4.49",
+        "section": "Food / Appetizer/ Side Dishes"
+      },
+      {
+        "name": "Cold Wood Ear Mushroom Salad/凉拌黑木耳",
+        "description": "",
+        "price": "$4.49",
+        "section": "Food / Appetizer/ Side Dishes"
+      },
+      {
+        "name": "Spicy Chicken Wontons (8pc)  红油鸡肉馄饨",
+        "description": "100% handcrafted. A crowd-favorite wonton flavor featuring juicy chicken and sweet corn with a subtle spicy finish, seasoned with fish powder. From our handcrafted wonton selection that customers order again and again — over 3,000 wonton orders sold every month.",
+        "price": "$12.49",
+        "section": "Food / Wontons"
+      },
+      {
+        "name": "Chicken Wonton Soup (8pc) 清汤鸡肉馄炖",
+        "description": "100% handcrafted. A crowd-favorite wonton flavor featuring tender chicken and sweet corn, seasoned with fish powder, comforting chicken broth that lets the flavors shine. From our handcrafted wonton selection that customers order again and again — over 3,000 wonton orders sold every month.",
+        "price": "$12.49",
+        "section": "Food / Wontons"
+      },
+      {
+        "name": "Spicy Chicken Wonton Soup (8 pc) 辣鸡肉云吞汤",
+        "description": "A fresh take on a favorite: Chicken and Sweet Corn Wontons, seasoned with fish powder. Immersed in our authentic chicken broth and seasoned with a one-of-a-kind house spice mix for a flavor you won't find anywhere else.",
+        "price": "$13.49",
+        "section": "Food / Wontons"
+      },
+      {
+        "name": "Spicy Shrimp & Pork Wontons (8pc)  红油猪肉馄饨",
+        "description": "100% handcrafted. A crowd-favorite wonton flavor featuring savory pork and plump shrimp, wrapped in delicate skins for a rich, balanced bite. From our handcrafted wonton selection that customers order again and again — over 3,000 wonton orders sold every month.",
+        "price": "$12.49",
+        "section": "Food / Wontons"
+      },
+      {
+        "name": "Shrimp & Pork Wonton Soup (8pc)  清汤猪肉馄饨",
+        "description": "100% handcrafted. A crowd-favorite wonton flavor featuring savory pork and plump shrimp, served in a light, comforting chicken broth that highlights the natural richness of the filling. From our handcrafted wonton selection that customers order again and again — over 3,000 wonton orders sold every month.",
+        "price": "$12.49",
+        "section": "Food / Wontons"
+      },
+      {
+        "name": "Spicy Shrimp & Pork Wonton Soup (8 pc) 辣猪肉云吞汤",
+        "description": "Dive into a bowl of real chicken broth and plump shrimp & pork wontons. Featuring a one-of-a-kind spicy flavor profile meticulously developed by our team to deliver a kick that is as complex as it is should.",
+        "price": "$13.49",
+        "section": "Food / Wontons"
+      },
+      {
+        "name": "Dandan Noodle (Noodles in Sesame & Peanut Sauce) 担担面",
+        "description": "(Vegan base noodle with optional meat topping, contains sesame and peanuts)\nOur newest creation inspired by the local flavors of Sichuan. This dish perfectly blends the rich aroma of sesame with a gentle kick of spice, delivering a unique and unforgettable taste experience. It contains sesame and peanuts, please be cautious if you have allergies.",
+        "price": "$9.49",
+        "section": "Food / Noodles/Rice Bowls"
+      },
+      {
+        "name": "Angus Beef Noodle (Non-Spicy) 清汤牛肉面",
+        "description": "Tender cuts of premium Angus beef served over springy noodles in a clear, chicken broth, complemented with fresh bok choy for a wholesome, comforting bowl",
+        "price": "$16.49",
+        "section": "Food / Noodles/Rice Bowls"
+      },
+      {
+        "name": "Spicy Angus Beef Noodle 红汤牛肉面",
+        "description": "Spicy Beef Noodle – Slow-simmered beef and chewy noodles in a savory chicken broth, mild spicy and infused with aromatic chili flavor for a deep, satisfying heat.",
+        "price": "$16.49",
+        "section": "Food / Noodles/Rice Bowls"
+      },
+      {
+        "name": "Stewed Pork Belly Noodle/ 东坡大肉面",
+        "description": "Tender, melt-in-your-mouth pork belly served over springy noodles in a rich, handcrafted chicken broth, slow-simmered for deep, comforting flavor.",
+        "price": "$15.49",
+        "section": "Food / Noodles/Rice Bowls"
+      },
+      {
+        "name": "Mushroom Meat Sauce Dry Noodle 冬菇肉燥拌面",
+        "description": "Springy wheat noodles tossed in a savory, house-made mushroom meat sauce featuring finely ground meat and diced mushrooms sautéed with chili oil, soy sauce, and aromatic spices.",
+        "price": "$15.49",
+        "section": "Food / Noodles/Rice Bowls"
+      },
+      {
+        "name": "Angus Stewed Beef Rice Bowl 安格斯牛肉饭",
+        "description": "Succulent Angus beef, slow-braised to perfection in a savory soy-based sauce with fragrant herbs and spices, served over a bed of fluffy steamed rice and half sauteed egg.",
+        "price": "$16.49",
+        "section": "Food / Noodles/Rice Bowls"
+      },
+      {
+        "name": "Stewed Pork Belly Rice Bowl/ 东坡大肉饭",
+        "description": "Braised pork belly, tender and flavorful, served over fluffy steamed rice with a savory sauce that soaks into every bite.",
+        "price": "$15.49",
+        "section": "Food / Noodles/Rice Bowls"
+      },
+      {
+        "name": "Mushroom Meat Sauce Rice Bowl 冬菇肉燥饭",
+        "description": "A savory and comforting bowl of fluffy steamed rice topped with a rich, umami-packed meat sauce made with tender ground meat and a medley of sautéed mushrooms.",
+        "price": "$15.49",
+        "section": "Food / Noodles/Rice Bowls"
+      },
+      {
+        "name": "Kokuho Extra Fancy Rice - 5X Hand Washed 大米饭",
+        "description": "Premium Kokuho Extra Fancy rice—5x hand-washed and steamed for a pure, glossy bite.",
+        "price": "$1.99",
+        "section": "Food / Noodles/Rice Bowls"
+      },
+      {
+        "name": "Steamed Pork Soup Dumplings (XLB) 小笼包 - 8pcs",
+        "description": "Original soup dumplings made with pork with a dash of ginger and green onions. (To be enjoyed while hot)",
+        "price": "$14.49",
+        "section": "Food / Steamed Dumplings"
+      },
+      {
+        "name": "Steamed Wagyu Beef Soup Dumplings",
+        "description": "",
+        "price": "$17.99",
+        "section": "Food / Steamed Dumplings"
+      },
+      {
+        "name": "Steamed Crab and Pork Soup Dumplings (XLB) 蒸蟹小笼包- 8pcs",
+        "description": "Original soup dumplings with blue crab and pork with a dash of ginger and green onions. (To be enjoyed while hot)",
+        "price": "$15.49",
+        "section": "Food / Steamed Dumplings"
+      },
+      {
+        "name": "Steamed Yuzu Chicken Soup Dumplings (XLB) 柚子鸡肉小笼包 - 8pcs",
+        "description": "Made with premium Japanese yuzu. (Another original receipt you wont have anywhere else)",
+        "price": "$15.49",
+        "section": "Food / Steamed Dumplings"
+      },
+      {
+        "name": "Steamed Chive Shrimp and Pork 韭菜蒸三鲜饺 - 8pcs",
+        "description": "Juicy shrimp and savory pork mixed with fresh chives, wrapped in delicate dumpling skins and steamed to tender perfection.",
+        "price": "$14.49",
+        "section": "Food / Steamed Dumplings"
+      },
+      {
+        "name": "Steamed Cabbage Shrimp and Pork 白菜猪肉虾饺 - 8pcs",
+        "description": "Succulent shrimp and savory pork blended with fresh cabbage, wrapped in soft dumpling skins and steamed for a light, flavorful bite.",
+        "price": "$14.49",
+        "section": "Food / Steamed Dumplings"
+      },
+      {
+        "name": "Steamed Vegan Dumplings素饺 - 8pcs",
+        "description": "All natural colors, from 100% spinach juice. Packed with shiitake mushrooms, flavored bean curd, fresh cabbage, red carrots, glass noodles and shallots",
+        "price": "$15.49",
+        "section": "Food / Steamed Dumplings"
+      },
+      {
+        "name": "Steamed Chicken Dumplings 鸡肉饺 -8pcs",
+        "description": "Tender chicken filling seasoned just right, wrapped in soft dumpling skins and steamed to juicy, flavorful perfection.",
+        "price": "$14.49",
+        "section": "Food / Steamed Dumplings"
+      },
+      {
+        "name": "Pan Fried Pork Dumplings 猪肉饺 -8pcs",
+        "description": "(BEST SELLER SINCE 2001) Pork shoulder with a dash of ginger and green onions",
+        "price": "$14.49",
+        "section": "Food / Pan Fried Dumplings"
+      },
+      {
+        "name": "Pan Fried Beef, Cheese & Onion 牛肉芝士洋葱煎饺 - 8pcs",
+        "description": "Beef and cheese ratio is 2:1 (Beef with Monterey Jack cheese mixed with sweet onions) you can't go wrong!",
+        "price": "$15.49",
+        "section": "Food / Pan Fried Dumplings"
+      },
+      {
+        "name": "Pan Fried Chive Shrimp and Pork 韭菜三鲜饺 - 8pcs",
+        "description": "Crisp on the outside and bursting with flavor inside, these dumplings are filled with a juicy mix of tender pork, fresh shrimp, and fragrant Chinese chives. Pan-fried to a golden finish, each bite delivers a perfect balance of savory, aromatic, and satisfying.",
+        "price": "$15.49",
+        "section": "Food / Pan Fried Dumplings"
+      },
+      {
+        "name": "Pan Fried Cabbage Shrimp and Pork Dumplings 白菜猪肉虾饺 - 8pcs",
+        "description": "Crispy golden bottoms meet tender shrimp and pork with fresh cabbage, perfectly pan-fried for a satisfying crunch and juicy bite.",
+        "price": "$14.49",
+        "section": "Food / Pan Fried Dumplings"
+      },
+      {
+        "name": "Pan Fried Vegan Dumplings 素饺 - 8pcs",
+        "description": "All natural colors, from 100% spinach juice. Packed with shiitake mushrooms, flavored bean curd, fresh cabbage, red carrots, glass noodles and shallots",
+        "price": "$15.49",
+        "section": "Food / Pan Fried Dumplings"
+      },
+      {
+        "name": "Pan Fried Chicken Dumplings 鸡肉饺 -8pcs",
+        "description": "Made with all white meat chicken breast and cabbage",
+        "price": "$14.49",
+        "section": "Food / Pan Fried Dumplings"
+      },
+      {
+        "name": "Boiled Chive Shrimp and Pork 韭菜三鲜饺 - 8pcs",
+        "description": "Fresh chives, pork shoulder, shrimp and minced fried eggs (most traditional Chinese dumplings)",
+        "price": "$14.49",
+        "section": "Food / Boiled Dumplings"
+      },
+      {
+        "name": "Boiled Cabbage Shrimp and Pork 白菜猪肉虾饺 - 8pcs",
+        "description": "Fresh cabbage, pork shoulder, shrimp. (Mildly sweet)",
+        "price": "$14.49",
+        "section": "Food / Boiled Dumplings"
+      },
+      {
+        "name": "Steamed Piggy Bun(4pcs)猪猪包",
+        "description": "A soft, pig-shaped bun filled with creamy house-made custard. Lightly sweet, fluffy, and irresistibly cute — perfect for kids and adults alike.",
+        "price": "$8.49",
+        "section": "Food / Kids Option"
+      },
+      {
+        "name": "Animal Buns 动物包",
+        "description": "Handcrafted animal-shaped buns filled with smooth, creamy custard. Each bun is carefully made by hand, giving it a soft, fluffy texture and an adorable appearance. Perfect for both kids and adults who enjoy a fun, delicious treat.",
+        "price": "$14.49",
+        "section": "Food / Kids Option"
+      },
+      {
+        "name": "Noodle with Chicken Broth 鸡汤面",
+        "description": "",
+        "price": "$8.49",
+        "section": "Food / Kids Option"
+      },
+      {
+        "name": "Sesame Peanut Noodles 麻酱面",
+        "description": "Sesame Peanut Noodles (Not Spicy) — Springy noodles tossed in a creamy, nutty sesame sauce for a rich, savory flavor. Mild and comforting with no heat. Contains peanuts. Allergy warning: not suitable for guests with peanut allergy.",
+        "price": "$9.49",
+        "section": "Food / Kids Option"
+      },
+      {
+        "name": "Honest kids organic juice",
+        "description": "",
+        "price": "$2.49",
+        "section": "Food / Kids Option"
+      },
+      {
+        "name": "Shrimp & Pork Wonton Soup (8pc)  清汤猪肉馄饨",
+        "description": "100% handcrafted. A crowd-favorite wonton flavor featuring savory pork and plump shrimp, served in a light, comforting chicken broth that highlights the natural richness of the filling. From our handcrafted wonton selection that customers order again and again — over 3,000 wonton orders sold every month.",
+        "price": "$12.49",
+        "section": "Food / Kids Option"
+      },
+      {
+        "name": "Chicken Wonton Soup (8pc) 清汤鸡肉馄炖",
+        "description": "100% handcrafted. A crowd-favorite wonton flavor featuring tender chicken and sweet corn, seasoned with fish powder, comforting chicken broth that lets the flavors shine. From our handcrafted wonton selection that customers order again and again — over 3,000 wonton orders sold every month.",
+        "price": "$12.49",
+        "section": "Food / Kids Option"
+      },
+      {
+        "name": "Steamed Piggy Bun(4pcs)猪猪包",
+        "description": "A soft, pig-shaped bun filled with creamy house-made custard. Lightly sweet, fluffy, and irresistibly cute — perfect for kids and adults alike.",
+        "price": "$8.49",
+        "section": "Food / Dessert"
+      },
+      {
+        "name": "Animal Buns 动物包",
+        "description": "Handcrafted animal-shaped buns filled with smooth, creamy custard. Each bun is carefully made by hand, giving it a soft, fluffy texture and an adorable appearance. Perfect for both kids and adults who enjoy a fun, delicious treat.",
+        "price": "$14.49",
+        "section": "Food / Dessert"
+      },
+      {
+        "name": "Fountain Drink 20oz",
+        "description": "",
+        "price": "$2.80",
+        "section": "Drinks / Drink"
+      },
+      {
+        "name": "Handcrafted Thai Tea with Boba (Iced)",
+        "description": "Bold, creamy, and irresistibly smooth—our iced Thai tea is brewed with strong black tea, sweetened just right, and finished with a swirl of cream. Served ice-cold in a convenient to-go cup, it’s the perfect pick-me-up on the go.",
+        "price": "$5.49",
+        "section": "Drinks / Drink"
+      },
+      {
+        "name": "Fresh Jasmine Milk Tea with Boba (Iced)",
+        "description": "Enjoy the soothing aroma of jasmine green tea, freshly brewed to capture its light floral fragrance, then blended with smooth, creamy milk for a perfect balance of richness and freshness. Served chilled in a convenient to-go cup, it’s the ideal companion for a refreshing pick-me-up on the move.",
+        "price": "$5.49",
+        "section": "Drinks / Drink"
+      },
+      {
+        "name": "Hot Brew Rose oolong Tea",
+        "description": "Fragrant and soothing, our jasmine tea is steeped to perfection, blending delicate green tea leaves with the calming aroma of jasmine blossoms. Served piping hot in a convenient to-go cup—perfect for sipping serenity on the move",
+        "price": "$2.99",
+        "section": "Drinks / Drink"
+      },
+      {
+        "name": "Sugar Free Itoen Japanese Green Tea",
+        "description": "",
+        "price": "$3.49",
+        "section": "Drinks / Drink"
+      },
+      {
+        "name": "Chi Sparkling Water",
+        "description": "",
+        "price": "$3.49",
+        "section": "Drinks / Drink"
+      },
+      {
+        "name": "Honest kids organic juice",
+        "description": "",
+        "price": "$2.49",
+        "section": "Drinks / Drink"
+      },
+      {
+        "name": "Bottle water",
+        "description": "",
+        "price": "$1.90",
+        "section": "Drinks / Drink"
+      },
+      {
+        "name": "Sweet chili sauce to go (2oz)",
+        "description": "Best Seller: Sweet Chili sauce (2 oz) — Our customers' favorite, packed in a convenient small cup. Please placed items here if you need extra.",
+        "price": "$0.99",
+        "section": "Other / Other"
+      },
+      {
+        "name": "Lemon Wedge",
+        "description": "",
+        "price": "$0.49",
+        "section": "Other / Other"
+      },
+      {
+        "name": "Half egg",
+        "description": "",
+        "price": "$0.99",
+        "section": "Other / Other"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9068",
+    "name": "Little Club",
+    "sourceUrl": "https://www.coronadotimes.com/",
+    "confidence": "high",
+    "notes": "batch address 132 Orange Ave, Coronado has no live website; independent local news source coronadotimes.com confirms permanent closure of Little Club at this Orange Ave location as of end of March 2026 after 60-68 years in business, quoting owner Tim; corroborated by thecoronadonews.com and coronadonewsca.com (also independent, non-venue sources); Yelp listing itself flags the business as closed",
+    "dishes": []
+  },
+  {
+    "restaurantId": "8997",
+    "name": "Bacari North Park",
+    "sourceUrl": "https://www.eatwithbacari.com/north-park",
+    "confidence": "high",
+    "crossCheckedAgainst": "order.toasttab.com/online/bacari-north-park (address payload: 3823 30th Street, San Diego, CA 92104 - exact match to batch; router's flagged address mismatch was a stale-cache false positive)",
+    "notes": "restaurant's own Wix site renders full priced DINNER/BRUNCH menu as server-rendered text; Toast ordering page only exposed the currently-active BRUNCH daypart (time-gating) so the Wix site was used as primary source for completeness; dropped unpriced DRINKS/COCKTAILS/SPIRIT-FREE/WINE/BEER/NON-ALCOHOLIC/COFFEE sections as bar-list adjuncts; DINNER and BRUNCH sections share several identically-priced dish names (e.g. Tuscan Kale Salad, Chicken Schnitzel) so section field is prefixed with parent daypart to keep them distinct rather than deduped; the SWEET dessert list is offered under both DINNER and BRUNCH identically so it is filed once under DINNER only",
+    "dishes": [
+      {
+        "name": "House Baked Baguette",
+        "description": "with garlic olive oil",
+        "price": "$5.00",
+        "section": "DINNER / Bread & Olives"
+      },
+      {
+        "name": "House Cured Olives",
+        "description": "with marcona almonds",
+        "price": "$7.00",
+        "section": "DINNER / Bread & Olives"
+      },
+      {
+        "name": "Watermelon",
+        "description": "hibiscus-infused, whipped feta, arugula, crushed pistachio, urfa chili, pickled rind",
+        "price": "$13.00",
+        "section": "DINNER / Cold"
+      },
+      {
+        "name": "Crudo Barramundi",
+        "description": "herbed cucumber relish, za'atar, sumac, lemon, frantoia olive oil, sesame, maldon salt",
+        "price": "$14.50",
+        "section": "DINNER / Cold"
+      },
+      {
+        "name": "Shrimp Ceviche",
+        "description": "citrus fennel vinaigrette, heirloom cherry tomato, cucumber, za'atar, sesame, sumac, lime chili chips",
+        "price": "$15.50",
+        "section": "DINNER / Cold"
+      },
+      {
+        "name": "Little Gem Salad",
+        "description": "chickpea crunch, bacon, tomato, parsnip chips, lemon-calabrese vinaigrette, parmesan",
+        "price": "$14.00",
+        "section": "DINNER / Cold"
+      },
+      {
+        "name": "Burrata Caprese",
+        "description": "burrata di stefano, fresh basil, heirloom cherry tomato, basil walnut pesto, maldon salt, baguette",
+        "price": "$14.00",
+        "section": "DINNER / Cold"
+      },
+      {
+        "name": "Salatim",
+        "description": "vegan cashew pate, green chickpea sesame tahini hummus, hazelnut beet muhammara, fresh pita",
+        "price": "$16.50",
+        "section": "DINNER / Cold"
+      },
+      {
+        "name": "Rainbow Beets",
+        "description": "oven roasted, whipped chevre, tarragon, frantoia olive oil, black peppercorn, maldon salt",
+        "price": "$14.00",
+        "section": "DINNER / Cold"
+      },
+      {
+        "name": "Tuscan Kale Salad",
+        "description": "baby rainbow kale, persian cucumber, heirloom cherry tomato, green onion, crumbled feta, kale tahini, za'atar, sumac, crispy black kale",
+        "price": "$14.00",
+        "section": "DINNER / Cold"
+      },
+      {
+        "name": "Oyster Mushroom Shish Kabob",
+        "description": "pargiyot spice, pita, toum crema, herb mediterranean salad, lemon vinaigrette",
+        "price": "$16.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Sabich",
+        "description": "pita, roasted eggplant, purple potato, egg, cucumber, cherry tomato, beet tahini, amba, radish, scallion, dukkah",
+        "price": "$17.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Pistachio Lamb Kebab",
+        "description": "kale, turmeric, & beet tahinis; mediterranean salad, lemon-herb vinaigrette (on pita +3)",
+        "price": "$17.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Moroccan Cigars",
+        "description": "stuffed with lamb & chicken, roasted nut & garlic honey glaze, pickled onion, toum crema",
+        "price": "$14.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Flat Iron Steak",
+        "description": "grilled zucchini, bearnaise",
+        "price": "$18.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Chicken Schnitzel",
+        "description": "whipped feta, arugula-mint salad, sumac onion, dukkah oil, lemon",
+        "price": "$20.50",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Charred Broccoli",
+        "description": "harissa tahini, roasted garlic oil, chili flake, candied almond",
+        "price": "$13.50",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Scallop Medallions",
+        "description": "summer corn, cherry tomato, beurre fondue, scallion",
+        "price": "$18.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Mediterranean Street Corn",
+        "description": "fire-roasted corn, toum crema, crispy shallot, hazelnut pistachio chili crunch, feta, lemon",
+        "price": "$13.50",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Lamb Hummus",
+        "description": "braised ground lamb, spiced lebanese stew, crudites, sesame, tahini, fresh pita",
+        "price": "$16.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Chef's Salmon",
+        "description": "pan seared, walnut crust, tomato rouille, garlic & herb bulgur, parsley",
+        "price": "$17.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Green Falafel",
+        "description": "chickpea, coconut harissa, mediterranean salad",
+        "price": "$14.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Fried Chicken Sliders",
+        "description": "cornbread crusted, hawaiian roll, pickled cucumber, cabbage, caper kalamata aioli",
+        "price": "$15.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Tripoline Pasta",
+        "description": "handmade, pasilla pepper cream, almond romesco, toasted almond, cilantro",
+        "price": "$14.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Sea Bass",
+        "description": "pan seared, charred shishito, corn, shallot, tomato, tarragon aioli, pomegranate molasses, grilled lemon",
+        "price": "$19.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Shawarma Tacos",
+        "description": "chicken pargiyot, shredded cabbage, pickled red onion, sesame, garlic tahini",
+        "price": "$16.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Ricotta & Beet Gnocchi",
+        "description": "hand-made, chevre fondue, chimichurri",
+        "price": "$15.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Bacari Fries",
+        "description": "chef's \"bcn\" sauce, fried egg (add bacon +3)",
+        "price": "$13.50",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Noa's Cauliflower",
+        "description": "caramelized, chipotle sauce, mixed greens",
+        "price": "$13.50",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Grilled Chicken Breast",
+        "description": "air-chilled chicken, parmesan risotto cake, lemon jalapeno caper sauce",
+        "price": "$16.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Bacari Burger",
+        "description": "open faced, grass-fed beef, tomato, caramelized onion, worcestershire aioli, telera roll, fried egg",
+        "price": "$15.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Mac & Cheese",
+        "description": "five-cheese fondue, toasted panko, white truffle oil, scallion (add bacon +3)",
+        "price": "$13.50",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Glazed Pork Belly",
+        "description": "umami mulling glaze, sesame seed, lemon, green onion, cilantro",
+        "price": "$16.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Brussels Sprouts",
+        "description": "caramelized, pomegranate molasses creme fraiche, julienne beets",
+        "price": "$15.50",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Jidori Chicken Wings",
+        "description": "buttermilk batter, smoked pepper sauce, blue cheese creme fraiche, scallion (spicy)",
+        "price": "$15.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Stuffed Mushroom",
+        "description": "five cheese blend, toasted pecan, basil walnut pesto, parmesan, parsley",
+        "price": "$15.00",
+        "section": "DINNER / Hot"
+      },
+      {
+        "name": "Asian Pear & Brie Pizza",
+        "description": "guava fromage blanc, wild arugula, maldon salt, frantoia olive oil (sub gluten-free dough +4)",
+        "price": "$16.50",
+        "section": "DINNER / Pizza"
+      },
+      {
+        "name": "Smoked Mushroom Pizza",
+        "description": "fromage blanc, 2yr aged white cheddar, mixed greens, parsley (sub gluten-free dough +4)",
+        "price": "$16.50",
+        "section": "DINNER / Pizza"
+      },
+      {
+        "name": "Margherita Pizza",
+        "description": "organic tomato sauce, mozzarella di stefano, fresh basil, frantoia olive oil (add salami +4)",
+        "price": "$16.50",
+        "section": "DINNER / Pizza"
+      },
+      {
+        "name": "Vegan Pizza",
+        "description": "organic tomato sauce, roasted garlic, tomato, frantoia olive oil, parsley, maldon salt, caramelized onion, mixed greens",
+        "price": "$16.50",
+        "section": "DINNER / Pizza"
+      },
+      {
+        "name": "Pistachio Cremeschnitte",
+        "description": "crispy sfoglia, pistachio cream, toasted pistachios",
+        "price": "$12.00",
+        "section": "DINNER / Sweet"
+      },
+      {
+        "name": "Bread Pudding",
+        "description": "clover honey custard, vanilla bean ice cream",
+        "price": "$9.50",
+        "section": "DINNER / Sweet"
+      },
+      {
+        "name": "Malabi",
+        "description": "rosewater custard, shaved coconut, hibiscus, candied pistachio",
+        "price": "$9.50",
+        "section": "DINNER / Sweet"
+      },
+      {
+        "name": "The Best Cake",
+        "description": "medjool dates, brown sugar caramel, crispy bacon (add ice cream +2)",
+        "price": "$9.50",
+        "section": "DINNER / Sweet"
+      },
+      {
+        "name": "Bacari Ice Cream",
+        "description": "vanilla bean, walnuts, clover honey",
+        "price": "$8.50",
+        "section": "DINNER / Sweet"
+      },
+      {
+        "name": "Vegan Double Chocolate Cake",
+        "description": "chocolate pudding, chocolate syrup, hazelnut brittle",
+        "price": "$10.50",
+        "section": "DINNER / Sweet"
+      },
+      {
+        "name": "Turkish Egg",
+        "description": "sous vide, herbed labne, hazelnut-pistachio chili crisp, crispy shallot, black cumin & sesame flatbread",
+        "price": "$13.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Watermelon",
+        "description": "hibiscus-infused, whipped feta, arugula, crushed pistachio, urfa chili, pickled rind",
+        "price": "$13.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Chickpea Hash",
+        "description": "chorizo, bell pepper, caramelized onion, mornay sauce, fried egg",
+        "price": "$13.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Tuscan Kale Salad",
+        "description": "baby rainbow kale, persian cucumber, heirloom cherry tomato, green onion, crumbled feta, kale tahini, za'atar, sumac, crispy black kale",
+        "price": "$14.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Chicken Schnitzel",
+        "description": "whipped feta, arugula-mint salad, sumac onion, dukkah oil, lemon",
+        "price": "$20.50",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Veggie Bureka",
+        "description": "whipped potato, sauteed oyster mushroom, garlic kale, beet-cucumber tzatziki",
+        "price": "$13.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Beef Bureka",
+        "description": "seasoned ground beef, onion jam, cabbage, pistachio, black caraway seed, grated tomato, 6-minute egg",
+        "price": "$15.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Charred Broccoli",
+        "description": "harissa tahini, roasted garlic oil, chili flake, candied almond",
+        "price": "$13.50",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Shrimp Ceviche",
+        "description": "citrus fennel vinaigrette, heirloom cherry tomato, cucumber, za'atar, sesame, sumac, lime chili chips",
+        "price": "$15.50",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Crudo Barramundi",
+        "description": "herbed cucumber relish, za'atar, sumac, lemon, frantoia olive oil, sesame, maldon salt",
+        "price": "$14.50",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Little Gem Salad",
+        "description": "chickpea crunch, bacon, tomato, parsnip chips, lemon-calabrese vinaigrette, parmesan",
+        "price": "$14.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Lamb Hummus",
+        "description": "braised ground lamb, spiced lebanese stew, crudites, sesame, tahini, fresh pita",
+        "price": "$16.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Chilaquiles",
+        "description": "house-made tortilla chips, roasted poblano cream, pico de gallo, fried egg",
+        "price": "$14.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "house nut & seed bread, radish, frantoia olive oil, maldon salt (add egg +4)(add smoked salmon +7)",
+        "price": "$14.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Shawarma Tacos",
+        "description": "chicken pargiyot, shredded cabbage, pickled red onion, sesame, garlic tahini",
+        "price": "$16.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Noa's Cauliflower",
+        "description": "caramelized, chipotle sauce, mixed greens",
+        "price": "$13.50",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Jidori Chicken Wings",
+        "description": "buttermilk batter, smoked pepper sauce, blue cheese creme fraiche, scallion (spicy)",
+        "price": "$15.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Egg Pizza",
+        "description": "fromage blanc, caramelized onion, mixed greens, mozzarella (add bacon +3)",
+        "price": "$16.50",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Vegan Pizza",
+        "description": "organic tomato sauce, roasted garlic, tomato, olive oil, parsley, maldon salt, caramelized onion, mixed greens",
+        "price": "$16.50",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Bacari Burger",
+        "description": "open faced, grass-fed beef, tomato, caramelized onion, worcestershire aioli, telera roll, fried egg",
+        "price": "$15.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Bacari Fries",
+        "description": "chef's \"bcn\" sauce, fried egg (add bacon +3)",
+        "price": "$13.50",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Brussels Sprouts",
+        "description": "caramelized, pomegranate molasses creme fraiche, julienne beets",
+        "price": "$15.50",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Shakshouka",
+        "description": "rustic tomato sauce, bell pepper, sous vide egg, parsley, baguette",
+        "price": "$13.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Bacari Pancakes",
+        "description": "whole wheat, flax seed, hemp seed, cardamom butter, fresh fruit",
+        "price": "$13.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Chef's French Toast",
+        "description": "house baked brioche/challah, market fruit",
+        "price": "$13.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Smoked Salmon Pita",
+        "description": "caper, pickled red onion, pickled cucumber, dill garlic creme fraiche",
+        "price": "$14.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Salatim",
+        "description": "vegan cashew pate, green chickpea sesame tahini hummus, hazelnut beet muhammara, fresh pita",
+        "price": "$16.50",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Tofu Scramble",
+        "description": "roasted bell pepper, kale, spanish onion, pomegranate sweet chili, grilled baguette",
+        "price": "$13.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Crab Cake Benedict",
+        "description": "breaded claw meat, grapefruit hollandaise, sous vide egg",
+        "price": "$13.00",
+        "section": "BRUNCH / Brunch Food"
+      },
+      {
+        "name": "Avocado (side)",
+        "description": "substitute egg white +1 ea.",
+        "price": "$3.50",
+        "section": "BRUNCH / Brunch Sides"
+      },
+      {
+        "name": "Gluten-Free Brioche",
+        "description": "",
+        "price": "$4.00",
+        "section": "BRUNCH / Brunch Sides"
+      },
+      {
+        "name": "Extra Pita",
+        "description": "",
+        "price": "$3.50",
+        "section": "BRUNCH / Brunch Sides"
+      },
+      {
+        "name": "Extra Baguette",
+        "description": "",
+        "price": "$3.50",
+        "section": "BRUNCH / Brunch Sides"
+      },
+      {
+        "name": "Extra Pancake",
+        "description": "",
+        "price": "$5.00",
+        "section": "BRUNCH / Brunch Sides"
+      },
+      {
+        "name": "1 Egg",
+        "description": "",
+        "price": "$3.00",
+        "section": "BRUNCH / Brunch Sides"
+      },
+      {
+        "name": "2 Eggs",
+        "description": "",
+        "price": "$5.00",
+        "section": "BRUNCH / Brunch Sides"
+      },
+      {
+        "name": "Fresh Fruit (side)",
+        "description": "",
+        "price": "$4.00",
+        "section": "BRUNCH / Brunch Sides"
+      },
+      {
+        "name": "Bacon (4 strips)",
+        "description": "",
+        "price": "$5.00",
+        "section": "BRUNCH / Brunch Sides"
+      },
+      {
+        "name": "Mimosa (5oz)",
+        "description": "",
+        "price": "$10.50",
+        "section": "BRUNCH / Brunch Bar"
+      },
+      {
+        "name": "Mimosa (8oz)",
+        "description": "",
+        "price": "$16.00",
+        "section": "BRUNCH / Brunch Bar"
+      },
+      {
+        "name": "Bellini (5oz)",
+        "description": "",
+        "price": "$10.50",
+        "section": "BRUNCH / Brunch Bar"
+      },
+      {
+        "name": "Bellini (8oz)",
+        "description": "",
+        "price": "$16.00",
+        "section": "BRUNCH / Brunch Bar"
+      },
+      {
+        "name": "Bloody Mary",
+        "description": "",
+        "price": "$15.00",
+        "section": "BRUNCH / Brunch Bar"
+      },
+      {
+        "name": "Sparkling Sangria",
+        "description": "",
+        "price": "$10.50",
+        "section": "BRUNCH / Brunch Bar"
+      },
+      {
+        "name": "Spiked Sangria",
+        "description": "",
+        "price": "$14.00",
+        "section": "BRUNCH / Brunch Bar"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9082",
+    "name": "The Library Tavern",
+    "sourceUrl": "https://www.yelp.com/biz/the-library-san-diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "cocktail lounge / dive bar (pool tables, karaoke, live music) with a limited food menu (fries, sliders, cheese fries per hub.biz tag list) but no prices discoverable anywhere: batch's Facebook link 400s, Yelp and its menu tab are bot-walled, hub.biz directory listing has no prices, no DoorDash/UberEats/Grubhub storefront found for this address; bar with unclear food-menu pricing status"
+  },
+  {
+    "restaurantId": "4636",
+    "name": "Kokoro Restaurant",
+    "sourceUrl": "https://whatnow.com/san-diego/restaurants/after-12-years-one-of-san-diegos-most-authentic-japanese-spots-is-closing/",
+    "confidence": "high",
+    "notes": "independent news source whatnow.com confirms Kokoro Restaurant, 3298 Greyling Dr, San Diego, permanently closed on August 30, 2026 after 12 years, per the restaurant's own closing announcement relayed by the outlet; today's date is 2026-09-05, after the confirmed closure date; website kokoro-restaurant.net still resolves (200) but is stale/unmaintained post-closure",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5794",
+    "name": "Valerio's 1979",
+    "sourceUrl": "https://www.doordash.com/store/valerios-city-bakery-national-city-29869418/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Filipino bakery at 1631 E 8th St #1, National City (confirmed via valerios.com own site and Google Maps - correctly identified, not the Denver Valerio's or the separate valeriosusa.com/Valerio's Bakeshop chain which operates from a different National City address/phone); valerios.com is a WP brand/history site with no prices anywhere (checked wp-json pages dump); DoorDash marketplace listing's JSON-LD Menu block is an empty stub ({\"hasMenuSection\":[[]]}) and the RSC payload only contains unpopulated GraphQL query/fragment definitions, not actual item data - menu is rendered client-side only; Yelp bot-walled; no other platform found"
+  },
+  {
+    "restaurantId": "8973",
+    "name": "Mika's Cafe",
+    "sourceUrl": "https://www.ubereats.com/store/mikas/qBZYHYr5TLCpzPd4jfWzDA",
+    "confidence": "medium",
+    "crossCheckedAgainst": "postmates.com/store/mikas/qBZYHYr5TLCpzPd4jfWzDA (same Uber-owned company/listing, not independent) shows identical prices",
+    "notes": "batch had no website; found via Serper - UberEats and Postmates (both Uber-owned, same source) list this exact address (705 Center Dr, San Marcos); extracted full 36-item catalog from the page's embedded __REACT_QUERY_STATE__ JSON (catalogSectionsMap), decoding \\uXXXX and %5C-escaped nested JSON; ran the divisor sweep 1.00-1.35 and no divisor above 1.00 clears the 50% round/.95/.99/.50 threshold, so no delivery markup detected - genuine cafe pricing ($4.75-$19.00, mostly .00/.25/.50/.75/.59 endings); confidence capped at medium per playbook (delivery aggregator, tier 3, no second independent source available)",
+    "dishes": [
+      {
+        "name": "Kalenich",
+        "description": "Pressed panini sandwich with a rich, savory flavor.",
+        "price": "$18.00",
+        "section": "Signature Panini Sandwiches"
+      },
+      {
+        "name": "Aviator",
+        "description": "Turkey breast, crispy bacon, and melted cheddar cheese on toasted bread.",
+        "price": "$19.00",
+        "section": "Signature Panini Sandwiches"
+      },
+      {
+        "name": "Caprese",
+        "description": "Fresh mozzarella, tomato, and basil come together in perfect harmony.",
+        "price": "$18.00",
+        "section": "Signature Panini Sandwiches"
+      },
+      {
+        "name": "Caffe Caffe",
+        "description": "Panini sandwich with a rich flavor profile.",
+        "price": "$19.00",
+        "section": "Signature Panini Sandwiches"
+      },
+      {
+        "name": "Burrata and Prosciutto Di Parma Toast",
+        "description": "Burrata, apricot preserve, prosciutto di parma, arugula, hot honey.",
+        "price": "$19.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Smoke Salmon Avocado Toast",
+        "description": "Fresh salmon served on toasted bread.",
+        "price": "$17.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Rosemary Focaccia Turkey Ham Toast",
+        "description": "Mayo, arugula, turkey ham, bacon, cheese, tomato.",
+        "price": "$18.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Waffles",
+        "description": "Vanilla yogurt, berries, banana, almond, nutella.",
+        "price": "$14.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Burek cheese or meat",
+        "description": "Beef halal .Variation- cheese or meat (beef halal).",
+        "price": "$13.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Poached Eggs Avocado Toast",
+        "description": "Mashed avocado, pink salt and poached or scrambled eggs on sourdough bread.",
+        "price": "$17.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Egg White Omelette",
+        "description": "Egg white, tomato, spinach, cheese, sprouts, hash browns.",
+        "price": "$17.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Bagel",
+        "description": "Sesame bagel with cream cheese.",
+        "price": "$8.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Breakfast Croissant",
+        "description": "Scrambled eggs, bacon, spinach, mozzarella, garlic aioli.",
+        "price": "$17.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Breakfast Burrito",
+        "description": "Tortilla rolled and filled with savory breakfast ingredients.",
+        "price": "$14.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Latte",
+        "description": "Rich and velvety espresso drink.",
+        "price": "$6.25",
+        "section": "Espresso Classics"
+      },
+      {
+        "name": "Macchiato",
+        "description": "Espresso with options for an extra double shot or syrup addition.",
+        "price": "$5.25",
+        "section": "Espresso Classics"
+      },
+      {
+        "name": "Cortado",
+        "description": "Rich and smooth espresso topped with steamed milk.",
+        "price": "$5.50",
+        "section": "Espresso Classics"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "Rich espresso with steamed milk foam, available with oat or almond milk.",
+        "price": "$6.50",
+        "section": "Espresso Classics"
+      },
+      {
+        "name": "Flat White",
+        "description": "Rich and velvety espresso drink.",
+        "price": "$5.75",
+        "section": "Espresso Classics"
+      },
+      {
+        "name": "Americano",
+        "description": "Rich espresso topped with hot water for a smooth, bold cup.",
+        "price": "$5.00",
+        "section": "Espresso Classics"
+      },
+      {
+        "name": "Double Espresso",
+        "description": "Rich and intense shot of concentrated coffee.",
+        "price": "$4.75",
+        "section": "Espresso Classics"
+      },
+      {
+        "name": "Honey Lavander Latte",
+        "description": "Sweet and soothing latte infused with the subtle flavor of lavender and a hint of honey.",
+        "price": "$6.75",
+        "section": "Signatures Drinks"
+      },
+      {
+        "name": "Mocha Latte",
+        "description": "Rich and velvety espresso drink blended with steamed milk.",
+        "price": "$6.75",
+        "section": "Signatures Drinks"
+      },
+      {
+        "name": "Mexican Mocha",
+        "description": "Rich, chocolatey coffee drink with a hint of spice.",
+        "price": "$7.00",
+        "section": "Signatures Drinks"
+      },
+      {
+        "name": "Dirty Chai Latte",
+        "description": "Rich and aromatic black tea infused with a shot of espresso.",
+        "price": "$7.50",
+        "section": "Signatures Drinks"
+      },
+      {
+        "name": "Vanilla Latte",
+        "description": "Rich and creamy espresso drink with a hint of sweetness.",
+        "price": "$6.75",
+        "section": "Signatures Drinks"
+      },
+      {
+        "name": "Caramel Latte",
+        "description": "Rich and velvety espresso drink with a sweet caramel twist.",
+        "price": "$6.75",
+        "section": "Signatures Drinks"
+      },
+      {
+        "name": "Sparkling Lemon Lavender",
+        "description": "Lemon and lavender infused sparkling drink.",
+        "price": "$7.00",
+        "section": "Not Caffeine"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "Rich and creamy drink to warm your day.",
+        "price": "$5.50",
+        "section": "Not Caffeine"
+      },
+      {
+        "name": "Mexican Chocolate",
+        "description": "Rich, spicy drink with a deep chocolate flavor.",
+        "price": "$5.75",
+        "section": "Not Caffeine"
+      },
+      {
+        "name": "Tea",
+        "description": "Assorted teas: Earl Grey, Blood Orange, Dragonwell, Passionfruit.",
+        "price": "$5.59",
+        "section": "Teas"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "Green tea latte with a subtle, slightly bitter flavor.",
+        "price": "$6.75",
+        "section": "Teas"
+      },
+      {
+        "name": "Chai Latte",
+        "description": "Spiced black tea latte with a rich, creamy texture.",
+        "price": "$6.50",
+        "section": "Teas"
+      },
+      {
+        "name": "Crème Brûlée Croissant",
+        "description": "Rich, creamy custard base topped with a caramelized sugar crust.",
+        "price": "$8.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Homemade Chocolate Chip Cookies",
+        "description": "Homemade cookies filled with chocolate chips, baked to a golden finish.",
+        "price": "$4.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Scone",
+        "description": "Scone with raisins, jam.",
+        "price": "$7.00",
+        "section": "Desserts"
+      }
+    ]
+  },
+  {
+    "restaurantId": "11221",
+    "name": "Paris Baguette",
+    "sourceUrl": "https://www.ubereats.com/store/paris-baguette-7655-clairemont-mesa-blvd/aIhO6PGCQASYKyIlIGa8aA",
+    "confidence": "low",
+    "crossCheckedAgainst": "parisbaguette.com/locations/ca/san-diego/7655-clairemont-mesa-boulevard/ (restaurant's own location page)",
+    "dishes": [],
+    "blocked": "batch address 8330 Clairemont Mesa Blvd matches the restaurant's own location page content and phone (858) 650-0404 exactly, confirming identity, even though both that page's URL slug and its UberEats/DoorDash listings carry a differing street number (7655) for the same phone/store - a data quirk, not a different branch; extracted the full UberEats catalog via its embedded __REACT_QUERY_STATE__ payload (45 items) but every core bakery item (cakes, pastries) shows a literal $0.00 base price because real pricing only appears after a client-side size/variant pick that isn't in the static payload - only the adjunct bottled-beverage section (Coke, Sprite, Red Bull etc) carries a real fixed price; Grubhub listing for the exact address is a bare JS shell with zero data server-side; order.parisbaguette.com (Olo) is a client-rendered SPA with no discoverable API path in the time available"
+  },
+  {
+    "restaurantId": "8604",
+    "name": "Kababayan Bakery",
+    "sourceUrl": "http://places.singleplatform.com/kababayan-bakery/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "batch website is Instagram-only; the one source with real prices, a SinglePlatform listing (per Google's own SERP snippet: Lumpiang Shangha $9.95, Bulalo Soup $26.95, Palabok Noodle $13.95, Boneless Daing Na Bangus ~$16.9x), 504s consistently on every fetch attempt (direct and cached) so the actual page/full item list is inaccessible - a snippet fragment alone is not a usable source per the no-inventing-prices rule; Yelp is bot-walled; hyperflyer.com 'instant delivery' listing for the exact address 403s; no DoorDash/UberEats/Grubhub storefront found for this specific bakery (only an unrelated nearby restaurant, Tambayan Filipino BBQ, appears in Spring Valley delivery searches)"
+  }
+]

@@ -1,0 +1,118 @@
+[
+ {
+  "restaurantId": "1222",
+  "name": "Stadium Club",
+  "sourceUrl": "https://publuu.com/flip-book/293827/2485102",
+  "confidence": "low",
+  "notes": "Dive bar with an active kitchen (Instagram @stadium_club_dive_bar: 'Victor & Victory Kitchen are back'; Yelp/Mapquest reviewers describe burgers, short rib tacos). The restaurant's own printed dining/drink menu is hosted as a Publuu flipbook but is password-protected; no other priced source found within budget.",
+  "dishes": [],
+  "blocked": "menu exists (Publuu flipbook) but is password-protected; no accessible priced source"
+ },
+ {
+  "restaurantId": "8586",
+  "name": "Sage French Cake & Coffee",
+  "sourceUrl": "https://sandiego.eater.com/venue/98886/sage-french-cake-coffee",
+  "confidence": "high",
+  "notes": "Confirmed permanently closed by two independent sources: Yelp listing title reads 'SAGE FRENCH CAKE - CLOSED' and Eater San Diego's venue page states 'Permanently Closed'. Google Maps no longer shows a named tenant at 3860 Convoy St #112.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "6315",
+  "name": "LJ Crafted Wines - Wines & Tastings",
+  "sourceUrl": "https://www.ljcraftedwines.com/THE-MENU",
+  "confidence": "low",
+  "notes": "Urban winery tasting room; food is described elsewhere on the site only as 'a cheese board or seasonal gourmet small plates.' The site's own THE-MENU page renders with no items or prices. No delivery platform, tier-5 aggregator, or dated photo with legible prices found within budget.",
+  "dishes": [],
+  "blocked": "no published prices found for the food menu; own site's menu page is empty"
+ },
+ {
+  "restaurantId": "6101",
+  "name": "Valerio's 1979",
+  "sourceUrl": "https://valerios.com/",
+  "confidence": "low",
+  "notes": "Own site (valerios.com) is a placeholder page (mailing-list signup only, 'new website is up and running' notice), no menu or prices. DoorDash only carries the National City branch (Valerio's City Bakery, 1631 E 8th St), not this Mira Mesa location (9396 Mira Mesa Blvd). Tier-5 aggregators found (menupix, restaurantguru, checkle) show no extractable prices; checkle is barred outright regardless.",
+  "dishes": [],
+  "blocked": "no priced source found for the Mira Mesa branch; own site has no menu"
+ },
+ {
+  "restaurantId": "5530",
+  "name": "Asian Kitchen",
+  "sourceUrl": "https://www.toasttab.com/local/order/high-flying-foods-san-diego-asiankitchen/r-58fdf824-11af-4b09-8bdc-98b798fcc9a9",
+  "confidence": "low",
+  "notes": "Address (3225 N Harbor Dr) confirmed via Google Maps as an airport-terminal concession operated by High Flying Foods at San Diego International Airport. Its Toast storefront's __OO_STATE__ blob and rendered HTML both carry no menu items or prices (client-fetched); a plain curl with browser headers returned only metadata.",
+  "dishes": [],
+  "blocked": "airport terminal concession; Toast storefront serves no prices to curl (client-rendered), needs-browser"
+ },
+ {
+  "restaurantId": "4633",
+  "name": "Cafe Aero",
+  "sourceUrl": "https://www.epipay.com/the_cafe_aero/en/WebOrder?STORE_CODE=MTAwMA==&table_num=MTAwMA==",
+  "confidence": "low",
+  "notes": "epipay.com WebOrder platform (not a previously catalogued platform). Server-rendered HTML carries 25 items across sections (Breakfast, Sandwiches, Boba Teas, Espresso Drinks, Salads, Quesadillas, Smoothies, Snacks, etc.) but only 9 of 25 show a price in the markup; core sandwiches (e.g. BLT) render an empty price div, requiring a client-side size/modifier selection with no discoverable API within budget. Filing only the priced 9 would put the core sandwich menu on the map as unpriced/missing.",
+  "dishes": [],
+  "blocked": "core sandwich items priced only via client-side modifier modal; no API found, needs-browser"
+ },
+ {
+  "restaurantId": "7897",
+  "name": "Sabroso taco savor a mi tierra",
+  "sourceUrl": "https://themenustar6.com/webspace/functions/restaurant.php?function=get_items&id=45553&restaurant_id=120250&code=ordersabrosotacosavoramitierra.com",
+  "confidence": "high",
+  "notes": "Own MenuStar ordering platform (restaurant_id 120250, single category 'MENU' id 45553). All 6 items on the site's single menu category, matching the site's own 'About Us' description (un sope, mulita, quesadilla, huarache, gordita, tacos) — a complete small menu, not a sample.",
+  "dishes": [
+   {
+    "name": "Un Sope",
+    "description": "",
+    "price": "$5.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Mulita",
+    "description": "",
+    "price": "$6.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Quesadilla",
+    "description": "",
+    "price": "$6.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Huarache",
+    "description": "",
+    "price": "$7.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Gordita",
+    "description": "",
+    "price": "$5.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Tacos",
+    "description": "",
+    "price": "$5.00",
+    "section": "Menu"
+   }
+  ]
+ },
+ {
+  "restaurantId": "2123",
+  "name": "Necter Juice Bar",
+  "sourceUrl": "https://www.doordash.com/store/nekter-juice-bar-encinitas-25321419/",
+  "confidence": "low",
+  "notes": "Address confirmed exact match (127 N El Camino Real Ste C). DoorDash schema.org Menu JSON-LD parsed to 91 raw items (79 unique after dropping the 12-item 'Most Ordered' carousel) across 15 sections. The page's own MenuBookCategory nav (the un-virtualized category list the DOM is drawn from) lists 'Snacks' at numItems:12, but the JSON-LD only carries 10 Snacks rows -- a mid-category cut, and 79 unique items is exactly the truncation-signature count called out in the playbook. Treating as a confirmed partial rather than filing it.",
+  "dishes": [],
+  "blocked": "DoorDash JSON-LD capture is truncated mid-category (Snacks 10 of 12 per the page's own category nav); needs the full RSC catalog-map read"
+ },
+ {
+  "restaurantId": "11116",
+  "name": "Club 13",
+  "sourceUrl": "https://www.yelp.com/biz/club-13-national-city",
+  "confidence": "low",
+  "notes": "Dive bar (address confirmed 640 Civic Center Dr, National City). Reviews mention 'good food' and beer/cerveza options but no menu, dish names, or prices found anywhere (own site none, no delivery platform, no dated Yelp menu photo located within budget). Food status unclear.",
+  "dishes": [],
+  "blocked": "bar with unclear food status; no menu or prices found anywhere"
+ }
+]

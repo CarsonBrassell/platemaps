@@ -1,0 +1,739 @@
+[
+  {
+    "restaurantId": "6121",
+    "name": "Salsa Mexican Food",
+    "sourceUrl": "https://salsa-mexican-food.food-menu.net/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://www.yelp.com/menu/salsa-mexican-food-ramona",
+    "notes": "own site not found by router; aggregator food-menu.net's 18-item popular-dishes list cross-checked against Yelp's business menu page (Carnitas/Carne Asada/Chorizo Torta all $14.99 on both, independent owners); conventional .99 pricing",
+    "dishes": [
+      {
+        "name": "Adobada Burrito",
+        "description": "",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas Burrito",
+        "description": "",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carne Asada Burrito",
+        "description": "",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Asada Burrito",
+        "description": "",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Steak Ranchero Burrito",
+        "description": "",
+        "price": "$15.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shrimp Burrito",
+        "description": "",
+        "price": "$17.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Adobada Taco",
+        "description": "",
+        "price": "$7.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada Taco",
+        "description": "",
+        "price": "$7.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carnitas Taco",
+        "description": "",
+        "price": "$7.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pollo Asada Taco",
+        "description": "",
+        "price": "$7.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Fish Taco",
+        "description": "",
+        "price": "$6.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Shrimp Taco",
+        "description": "",
+        "price": "$7.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carnitas Torta",
+        "description": "",
+        "price": "$14.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Carne Asada Torta",
+        "description": "",
+        "price": "$14.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Chorizo Torta",
+        "description": "",
+        "price": "$14.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Beef Torta",
+        "description": "",
+        "price": "$14.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Chicken Torta",
+        "description": "",
+        "price": "$14.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Machaca Torta",
+        "description": "",
+        "price": "$14.99",
+        "section": "Tortas"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10236",
+    "name": "Village Cafe",
+    "sourceUrl": "https://www.ubereats.com/store/village-cafe/92DWN1RkWgK32YTd-qutRg",
+    "confidence": "medium",
+    "crossCheckedAgainst": "villagecafesandiego.com (own site; own site is a client-rendered SPA that could not be curled, but its Google-indexed text shows the identical Acai Bowl $15.00 / Avocado Toast $12.50 prices)",
+    "notes": "router's own site (villagecafesd.com) fetch failed and villagecafesandiego.com renders client-side with no server HTML; read from Uber Eats JSON-LD Menu block instead (schema.org Restaurant.hasMenu shape, deduped on name+price); prices are round/conventional (.00/.25/.50/.75), no scattered cents",
+    "dishes": [
+      {
+        "name": "Acai Bowl",
+        "description": "",
+        "price": "$15.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "",
+        "price": "$12.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Breakfast Croissant",
+        "description": "",
+        "price": "$13.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Village Breakfast",
+        "description": "",
+        "price": "$10.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Bagel Special",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Nutella Banana Croissant",
+        "description": "",
+        "price": "$10.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Breakfast Croissant Deluxe",
+        "description": "",
+        "price": "$17.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Oatmeal",
+        "description": "",
+        "price": "$7.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Vegan Sandwich",
+        "description": "",
+        "price": "$12.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Bagel w/ Cream Cheese",
+        "description": "",
+        "price": "$6.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Everything Bagel",
+        "description": "",
+        "price": "$6.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$5.75",
+        "section": "Espresso"
+      },
+      {
+        "name": "Americano",
+        "description": "",
+        "price": "$5.25",
+        "section": "Espresso"
+      },
+      {
+        "name": "Cortado",
+        "description": "",
+        "price": "$5.25",
+        "section": "Espresso"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$4.50",
+        "section": "Espresso"
+      },
+      {
+        "name": "Macchiato",
+        "description": "",
+        "price": "$5.25",
+        "section": "Espresso"
+      },
+      {
+        "name": "House Coffee",
+        "description": "",
+        "price": "$5.00",
+        "section": "Espresso"
+      },
+      {
+        "name": "Cafe Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Lattes"
+      },
+      {
+        "name": "Flat White",
+        "description": "",
+        "price": "$6.00",
+        "section": "Lattes"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "",
+        "price": "$6.00",
+        "section": "Lattes"
+      },
+      {
+        "name": "Mocha Latte",
+        "description": "",
+        "price": "$6.75",
+        "section": "Lattes"
+      },
+      {
+        "name": "Peach Lavender Latte",
+        "description": "",
+        "price": "$9.00",
+        "section": "Lattes"
+      },
+      {
+        "name": "Peaches & Cream",
+        "description": "",
+        "price": "$9.00",
+        "section": "Lattes"
+      },
+      {
+        "name": "Home Village Cafe",
+        "description": "",
+        "price": "$6.50",
+        "section": "Signatures"
+      },
+      {
+        "name": "Iced Greek Coffee",
+        "description": "",
+        "price": "$7.25",
+        "section": "Signatures"
+      },
+      {
+        "name": "Tiger Eye",
+        "description": "",
+        "price": "$6.50",
+        "section": "Signatures"
+      },
+      {
+        "name": "Village Cafe Special",
+        "description": "",
+        "price": "$6.75",
+        "section": "Signatures"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$6.50",
+        "section": "Signatures"
+      },
+      {
+        "name": "Red Eye",
+        "description": "",
+        "price": "$6.00",
+        "section": "Signatures"
+      },
+      {
+        "name": "Turkish Coffee",
+        "description": "",
+        "price": "$7.00",
+        "section": "Signatures"
+      },
+      {
+        "name": "Cold Foam",
+        "description": "",
+        "price": "$2.00",
+        "section": "Signatures"
+      },
+      {
+        "name": "Acai Smoothie",
+        "description": "",
+        "price": "$11.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Fresh Orange Juice",
+        "description": "",
+        "price": "$7.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Ginger Shot",
+        "description": "",
+        "price": "$2.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry Banana Smoothie",
+        "description": "",
+        "price": "$10.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Village Power",
+        "description": "",
+        "price": "$12.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Beat Juice",
+        "description": "",
+        "price": "$7.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Fruit Bowl",
+        "description": "",
+        "price": "$6.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Green Juice",
+        "description": "",
+        "price": "$7.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Chai Tea Latte",
+        "description": "",
+        "price": "$5.75",
+        "section": "Teas"
+      },
+      {
+        "name": "Dirty Chai",
+        "description": "",
+        "price": "$6.50",
+        "section": "Teas"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "",
+        "price": "$5.25",
+        "section": "Teas"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Teas"
+      },
+      {
+        "name": "Persian Iced Tea",
+        "description": "",
+        "price": "$5.75",
+        "section": "Teas"
+      },
+      {
+        "name": "Peach Macha",
+        "description": "",
+        "price": "$9.00",
+        "section": "Teas"
+      },
+      {
+        "name": "Blueberry Muffin",
+        "description": "",
+        "price": "$4.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "Cheese Danish",
+        "description": "",
+        "price": "$5.75",
+        "section": "Pastries"
+      },
+      {
+        "name": "Chocolate Muffin",
+        "description": "",
+        "price": "$4.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "Croissant",
+        "description": "",
+        "price": "$4.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Muffin",
+        "description": "",
+        "price": "$4.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "Regular Muffin",
+        "description": "",
+        "price": "$4.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "Rice Pudding",
+        "description": "",
+        "price": "$7.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "Strawberries & Cream",
+        "description": "",
+        "price": "$7.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "Bacon",
+        "description": "",
+        "price": "$2.00",
+        "section": "Custom Item"
+      },
+      {
+        "name": "Celsius",
+        "description": "",
+        "price": "$4.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Sparkling Water",
+        "description": "",
+        "price": "$4.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Water",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Coke",
+        "description": "",
+        "price": "$2.00",
+        "section": "Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "11841",
+    "name": "Dive at Harrah's Resort SoCal",
+    "sourceUrl": "https://files.harrahssocal.com/production/resort/Swim/Dive-Pool-Bites-Sips-Menu_APR_2026.pdf",
+    "confidence": "high",
+    "notes": "official pool-bar PDF menu (Bites & Sips, dated APR 2026) linked from harrahssocal.com/resort/swim/the-main-pool; cocktails listed at one base size ($17/12oz cup, larger tumbler options in description dropped since only base price is unambiguous); Cabana-Platters-Menu PDF also exists but not needed",
+    "dishes": [
+      {
+        "name": "Nachos",
+        "description": "House-Made Tortilla Chips, Refried Beans, Melted Cheese, Pico de Gallo & Sour Cream",
+        "price": "$14.00",
+        "section": "Bites / Specialties"
+      },
+      {
+        "name": "Chicken Tenders",
+        "description": "Served with French Fries & Ranch Dressing",
+        "price": "$16.00",
+        "section": "Bites / Specialties"
+      },
+      {
+        "name": "4 Rolled Tacos",
+        "description": "Chicken or Beef Rolled Tacos. Served with House Cheese Blend, Habanero Pickled Cabbage, Pico de Gallo & Guacamole",
+        "price": "$12.00",
+        "section": "Bites / Specialties"
+      },
+      {
+        "name": "Hot Dog",
+        "description": "Served with French Fries",
+        "price": "$13.00",
+        "section": "Bites / Specialties"
+      },
+      {
+        "name": "Cheeseburger",
+        "description": "American Cheese, Grilled Onions, Lettuce & Tomato. Served on a Brioche Bun with French Fries",
+        "price": "$16.00",
+        "section": "Bites / Specialties"
+      },
+      {
+        "name": "Buffalo Chicken Wrap",
+        "description": "Flour Tortilla, Chicken Tenders Tossed with Buffalo Sauce, Lettuce, Corn Salsa & Elote Dressing. Served with French Fries",
+        "price": "$16.00",
+        "section": "Bites / Fresh Options"
+      },
+      {
+        "name": "Shrimp Cocktail",
+        "description": "Shrimp Clamato Broth, Fresh Lime, Tomato, Cilantro, Onion, Cucumbers & Serrano Pepper. Served with Crackers",
+        "price": "$13.00",
+        "section": "Bites / Fresh Options"
+      },
+      {
+        "name": "Elote Salad",
+        "description": "Mixed Greens, Corn, Cucumbers, Tomato, Onion, Cilantro, Pepita Seeds, Cotija Cheese & Elote Dressing",
+        "price": "$13.00",
+        "section": "Bites / Fresh Options"
+      },
+      {
+        "name": "Taco Salad",
+        "description": "Mixed Greens, Refried Beans, Guacamole, Pico de Gallo, House Cheese Blend, Crema & Chipotle Ranch. Choice of Carne Asada or Pollo Asado. Served in a Tostada Bowl",
+        "price": "$17.00",
+        "section": "Bites / Fresh Options"
+      },
+      {
+        "name": "Elote Off the Cob",
+        "description": "Corn, Crema Mexicana, Cotija Cheese, Tajin & Squeezed Lime Juice",
+        "price": "$8.00",
+        "section": "Bites / Snacks"
+      },
+      {
+        "name": "Fruit Salad Cup",
+        "description": "Fresh Seasonal Pineapple & Watermelon Served with Tajin",
+        "price": "$7.00",
+        "section": "Bites / Snacks"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$6.00",
+        "section": "Bites / Snacks"
+      },
+      {
+        "name": "Flamin' Hot Cheetos or Cool Ranch Doritos",
+        "description": "",
+        "price": "$3.00",
+        "section": "Bites / Snacks"
+      },
+      {
+        "name": "Funner Churros",
+        "description": "Served with Caramel & Chocolate Syrup",
+        "price": "$6.00",
+        "section": "Bites / Desserts"
+      },
+      {
+        "name": "Helados Mexico",
+        "description": "Strawberry Fruit Bar",
+        "price": "$4.00",
+        "section": "Bites / Desserts"
+      },
+      {
+        "name": "Sparkling Mango Lemonade",
+        "description": "bucket of five $45",
+        "price": "$10.00",
+        "section": "Bites / Non-Alcoholic Beverages"
+      },
+      {
+        "name": "San Pellegrino Sparkling Blood Orange Aranciata Rosa",
+        "description": "bucket of five $35",
+        "price": "$8.00",
+        "section": "Bites / Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Evian Water",
+        "description": "bucket of five $30",
+        "price": "$7.00",
+        "section": "Bites / Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Red Bull",
+        "description": "Regular, SugarFree, or White Peach; bucket of five $30",
+        "price": "$7.00",
+        "section": "Bites / Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Dive Strawberry Nirvana",
+        "description": "Ketel One Vodka, Ginger, Strawberry, Fresh Lime & Agave; 12oz cup",
+        "price": "$17.00",
+        "section": "Sips / Dive Classics"
+      },
+      {
+        "name": "Dive Mai Tai",
+        "description": "Kuleana Rum, Kraken Dark Rum, Pineapple Juice, Orange Juice & Grenadine; 12oz cup",
+        "price": "$17.00",
+        "section": "Sips / Dive Classics"
+      },
+      {
+        "name": "Dive Paloma",
+        "description": "Maestro Dobel Diamante Tequila, Grapefruit, Agave & Soda; 12oz cup",
+        "price": "$17.00",
+        "section": "Sips / Dive Classics"
+      },
+      {
+        "name": "Dive Mojito",
+        "description": "Kuleana Rum, Fresh Lime, Mint & Soda; 12oz cup",
+        "price": "$17.00",
+        "section": "Sips / Dive Classics"
+      },
+      {
+        "name": "Dive Bloody Mary",
+        "description": "Tito's Vodka & Bloody Mary Mix; 12oz cup",
+        "price": "$17.00",
+        "section": "Sips / Dive Classics"
+      },
+      {
+        "name": "Basil Strawberry Margarita",
+        "description": "Teremana Reposado, Fresh Lime, Strawberry, Grand Marnier, Basil Agave; 12oz cup",
+        "price": "$17.00",
+        "section": "Sips / Dive Classics"
+      },
+      {
+        "name": "Señor Mango",
+        "description": "Teremana Reposado, Fresh Lime, Mango, Spicy Bitters & a Tajin Rim; 12oz cup",
+        "price": "$17.00",
+        "section": "Sips / Dive New Wave"
+      },
+      {
+        "name": "Berry Bramble",
+        "description": "Ketel One Vodka, Fresh Lime & Black Cherry; 12oz cup",
+        "price": "$17.00",
+        "section": "Sips / Dive New Wave"
+      },
+      {
+        "name": "Southside Rift",
+        "description": "Tanqueray Gin, Fresh Lime, Mint & Soda; 12oz cup",
+        "price": "$17.00",
+        "section": "Sips / Dive New Wave"
+      },
+      {
+        "name": "Jack's Smashed Wave",
+        "description": "Jack Daniels, Raspberry & Fresh Lime; 12oz cup",
+        "price": "$17.00",
+        "section": "Sips / Dive New Wave"
+      },
+      {
+        "name": "Ranch Water Refresher",
+        "description": "Maestro Dobel Diamante Blanco Tequila, Fresh Lime & Soda; 12oz cup",
+        "price": "$17.00",
+        "section": "Sips / Dive New Wave"
+      },
+      {
+        "name": "Dive Peachy Mimosa",
+        "description": "Chandon Split, Ketel One Peach & Orange Blossom Vodka & Orange Juice; 12oz cup",
+        "price": "$17.00",
+        "section": "Sips / Dive New Wave"
+      },
+      {
+        "name": "Gummy Bear",
+        "description": "Ketel One Citron, Peach Schnapps, Fresh Lime & Starry (shot ski)",
+        "price": "$12.00",
+        "section": "Sips / Shot Skis"
+      },
+      {
+        "name": "Mexican Candy",
+        "description": "Milagro Reposado Tequila, Watermelon Liqueur, Fresh Lime, Dash of Tapatio (shot ski)",
+        "price": "$12.00",
+        "section": "Sips / Shot Skis"
+      },
+      {
+        "name": "Spicy Berry",
+        "description": "Tanteo Jalapeno Tequila, Blackberry Moonshine & Fresh Lime (shot ski)",
+        "price": "$12.00",
+        "section": "Sips / Shot Skis"
+      },
+      {
+        "name": "Watermelon Pucker",
+        "description": "Sour Watermelon Moonshine, Cucumber, Mint & Fresh Lime (shot ski)",
+        "price": "$12.00",
+        "section": "Sips / Shot Skis"
+      },
+      {
+        "name": "California Surfer",
+        "description": "Jagermeister, Coconut Rum, Pineapple Juice (shot ski)",
+        "price": "$12.00",
+        "section": "Sips / Shot Skis"
+      },
+      {
+        "name": "Nitro Sevilla Sangria",
+        "description": "Alcohol-Free mocktail",
+        "price": "$14.00",
+        "section": "Sips / Mocktails"
+      },
+      {
+        "name": "Beers",
+        "description": "Modelo Especial, Michelob Ultra, Coors Light, Rincon Seasonal Beer, Stone IPA, Bud Light; also Heineken 0.0 non-alcoholic; bucket of 5 $45",
+        "price": "$10.00",
+        "section": "Sips / Beer, Wine, Seltzer & More"
+      },
+      {
+        "name": "Wines",
+        "description": "Freakshow Cabernet Sauvignon, Freakshow Chardonnay, Chandon Splits",
+        "price": "$13.00",
+        "section": "Sips / Beer, Wine, Seltzer & More"
+      },
+      {
+        "name": "Maui Hard Seltzers",
+        "description": "P.O.G. & Hibiscus Lime; bucket of 5 $45",
+        "price": "$10.00",
+        "section": "Sips / Beer, Wine, Seltzer & More"
+      },
+      {
+        "name": "Nitro Coffee Carnivale Espresso Martini",
+        "description": "",
+        "price": "$14.00",
+        "section": "Sips / Beer, Wine, Seltzer & More"
+      }
+    ]
+  }
+]

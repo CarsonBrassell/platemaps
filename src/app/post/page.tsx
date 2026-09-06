@@ -517,7 +517,7 @@ function PostComposer() {
                       oversight rather than as the point. */}
                   <legend className={legend}>
                     Besides the food, what was this place best at?{" "}
-                    <span className="normal-case text-zinc-400">(pick one)</span>
+                    <span className="normal-case text-zinc-400">(optional, pick one)</span>
                   </legend>
                   <div className="flex flex-wrap gap-1.5">
                     {BEST_AT.map((b) => {

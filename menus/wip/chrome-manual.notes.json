@@ -1,0 +1,74 @@
+[
+  {
+    "restaurantId": "24",
+    "name": "Bronx Pizza",
+    "website": "https://bronxpizza.com/",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "Chrome manual pass. Homepage is COMPROMISED - injected casino/sportsbook SEO spam in 8 languages, which is why every automated pass failed. /menu1/ is clean and carries the full priced menu. 16 dishes filed in result-chrome-01.json."
+  },
+  {
+    "restaurantId": "191",
+    "name": "C Level",
+    "website": "https://www.clevelsd.com/",
+    "platform": null,
+    "outcome": "no-prices-published",
+    "detail": "Chrome manual pass. /menus/ carries ~45 dishes with full descriptions and ZERO prices - confirmed in BOTH the DOM text and a rendered screenshot. The pixels carry nothing the text did not. Not a vision problem; the restaurant does not publish prices. Cohn Restaurant Group site (shares a platform with Coasterra, Island Prime, Corvette Diner, Pacific, Draft Republic, Del's Hideout, Park Social, Con Pane, ZigZag Pizza, The Prado, Coin Haus, Surf Rider Pizza - several likely in the same gap)."
+  },
+  {
+    "restaurantId": "7827",
+    "name": "Peterson's Donut Corner",
+    "website": "http://petersonsdonutcorner.menutoeat.com/",
+    "platform": "menutoeat",
+    "outcome": "quarantined-uncorroborated",
+    "detail": "Chrome manual read. Stored website redirects to https://menutoeat.com/petersonsdonutcorner/ - a full priced menu, 199 items / 24 sections, updated Jun 9 2026. 56 cleanly-priced items filed in result-chrome-02.json; the rest use compound dozen/each prices the format cannot carry. CORROBORATION ATTEMPTED 2026-09-06 and failed: the only other source carrying this menu is checkle.com, which is ALSO on the UNTRUSTED list. Pairing them is the documented sagemenu/allmenus false-strength trap - two tier-5 aggregators asked the same question is not a second opinion. Peterson's appears to have no first-party website at all; the menutoeat subdomain IS its web presence. Leaving the 56 dishes quarantined in result-chrome-02.json. This is a real category, not a one-off: restaurants whose only web presence is a tier-5 aggregator can never be corroborated by the current rule, and vision buys nothing for them either."
+  },
+  {
+    "restaurantId": "297",
+    "name": "Tita's Kitchenette",
+    "website": "https://titaskitchenette.shop",
+    "platform": "placejoys",
+    "outcome": "no-prices-published",
+    "detail": "Chrome manual read. titaskitchenette.shop redirects to titas-kitchenette.placejoys.com - a Placejoys directory listing, not the restaurant's own site. Carries a $10-20 price band, amenities and reviews, and zero itemised prices. Same class as C Level: no prices exist in text OR pixels, so vision buys nothing here. The stored website is an aggregator, which is a data-quality issue in its own right."
+  },
+  {
+    "restaurantId": "4464",
+    "name": "F Street Cafe",
+    "website": "https://fstreetcafe.com/",
+    "platform": "wordpress",
+    "outcome": "filed",
+    "detail": "Chrome manual read. 12 priced items printed on the homepage itself - the classifier bucketed this row prices-present, meaning the automated pipeline had the prices in reach and did not take them."
+  },
+  {
+    "restaurantId": "7344",
+    "name": "Docent Brewing",
+    "website": "https://docentbrewing.com/menu/menu-carlsbad/",
+    "platform": "wordpress",
+    "outcome": "filed",
+    "detail": "Chrome manual read. 28 items with prices. An age-verification interstitial fronts the page but does not block the menu text, which is the likely reason the automated pass stalled here."
+  },
+  {
+    "restaurantId": "6178",
+    "name": "El Charro Mexican Food",
+    "website": "https://elcharro.site/",
+    "platform": "squatted-domain",
+    "outcome": "barred-domain",
+    "detail": "Chrome manual read. elcharro.site is the squatted-domain class screen-menus.mjs already bars: AI-written marketing prose, contact email elcharro.site@gmail.com, copyright line reading elcharro.site, and only 4 prices with no menu structure. The real restaurant is at 2175 Avenida De La Playa, La Jolla. Do not file from this host; the website stored on the row should be replaced or nulled."
+  },
+  {
+    "restaurantId": "4622",
+    "name": "Junction Bar & Grill",
+    "website": "https://junctionbars.com/menu-restaurant/",
+    "platform": "digital-dinha",
+    "outcome": "no-prices-published",
+    "detail": "Chrome manual read. Scripps Ranch (9860 Carroll Canyon Rd) matches the address on the row; the chain shares one menu across all three locations. The menu is complete - roughly 80 items with full descriptions - and carries NO item prices at all. The only dollar figures on the page are upcharges (additional toppings $3, fries upgrade $4, add avocado $3). classify-gap.mjs bucketed this row prices-present on exactly those upcharges, so that bucket is inflated: a price regex cannot tell an item price from an add-on price. The bucket needs a rule that discounts dollar figures appearing inside upgrade/add prose."
+  },
+  {
+    "restaurantId": "3020",
+    "name": "Soda & Swine",
+    "website": "https://sodaandswine.com",
+    "platform": "squarespace",
+    "outcome": "skipped",
+    "detail": "Chrome manual read. Both locations (Liberty Station, UCSD) show 'Temporarily Closed' on the homepage. Row has 0 reviews and a null address, so it is low value either way. Worth a closure check rather than an extraction attempt."
+  }
+]

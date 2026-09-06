@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getDiscoverPage, parseShown } from "@/lib/discover";
+import { toWire } from "@/lib/discoverWire";
 
 /**
  * Discover's query for the one case the URL cannot carry: "Nearby".
@@ -57,5 +58,6 @@ export async function POST(req: Request) {
     here,
   });
 
-  return NextResponse.json(page);
+  // Entry lists for the Maps -- see lib/discoverWire.ts.
+  return NextResponse.json(toWire(page));
 }

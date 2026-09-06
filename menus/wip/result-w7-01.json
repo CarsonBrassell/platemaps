@@ -1,0 +1,161 @@
+[
+  {
+    "restaurantId": "7741",
+    "name": "Chin's Szechwan - Point Loma",
+    "sourceUrl": "https://www.grubhub.com/restaurant/chins-szechwan---point-loma-3373-rosecrans-street-san-diego/10424120",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: Grubhub and order.online both serve a client-rendered/bot-blocked shell (order.online 403); the brand's own toast.site points to the wrong branch (Carlsbad, per router). No first-party menu page found on govisitchins.com."
+  },
+  {
+    "restaurantId": "12163",
+    "name": "Perfect Pizza",
+    "sourceUrl": "https://www.clover.com/online-ordering/perfect-pizza-rancho-bernardo",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: Clover Online Ordering page for this exact branch (address matches) renders client-side with no fetchable payload; order.online store page 403s. Toast.site on record points to the wrong branch."
+  },
+  {
+    "restaurantId": "8954",
+    "name": "JJANG Korean bbq",
+    "sourceUrl": "https://jjangkoreanbbq.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "gated: jjangkoreanbbq.com is behind a Cloudflare bot-check on every page (home and soups-and-sides). Facebook shows this is all-you-can-eat pricing ($25.95 lunch / $34.95 dinner), not an itemized menu."
+  },
+  {
+    "restaurantId": "9475",
+    "name": "SusieCakes - Carlsbad Forum",
+    "sourceUrl": "https://susiecakes.com/menu/cupcakes",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: bakery product pages load with placeholder $0.00 prices (client-side pricing by size/order); no itemized price list found in the fetched HTML."
+  },
+  {
+    "restaurantId": "9788",
+    "name": "Main Street Pour House - Vista",
+    "sourceUrl": "https://www.mainstpourhousevista.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no food menu, hold candidate: Squarespace site nav is only About / Upcoming Events / Private Events / Contact / Cart — a beer bar with no food menu page found."
+  },
+  {
+    "restaurantId": "12367",
+    "name": "Rush Bowls",
+    "sourceUrl": "https://rushbowls.com/san-diego/menu/bowls/destination/aloha-bowl",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: menu/bowl pages render prices client-side; no __NEXT_DATA__ or JSON price payload present in the raw HTML."
+  },
+  {
+    "restaurantId": "10588",
+    "name": "Morada Restaurant Rancho Santa Fe",
+    "sourceUrl": "https://www.opentable.com/morada",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: no website on record; OpenTable/Tripadvisor/Facebook list dish names (korobuta ribs, chipotle meatloaf, sea bass) but no prices; OpenTable menu page did not respond to fetch. Google Maps listing is still active (123 reviews), so not treated as closed despite one Yelp listing saying CLOSED."
+  },
+  {
+    "restaurantId": "7109",
+    "name": "Harvey's",
+    "sourceUrl": "https://harveyssd.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: harveyssd.com has a broken cert (altnames point to 127-west.com) and 404s even bypassing the cert check. eatwithharveys.com is a same-named but unrelated Mississippi chain (Starkville/Tupelo/Columbus, MS), not this location. Instagram/Facebook show dish names only, no prices."
+  },
+  {
+    "restaurantId": "9328",
+    "name": "Immersion Coffee",
+    "sourceUrl": "https://joe.coffee/locations/ca/san-diego/immersion-coffee-san-diego-17254898-fe1b-4790-8eec-36b066065f52/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: ordering runs through joe.coffee, a client-rendered ordering platform with no fetchable payload. First-party site returns HTTP 401 on direct fetch."
+  },
+  {
+    "restaurantId": "7393",
+    "name": "KYODAI 23 SUSHI",
+    "sourceUrl": "https://kyodai23togo.menu11.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: menu11.com/crunch11 storefront ships a Semantic-UI shell with no menu items or prices in the raw HTML; catalog is fetched client-side."
+  },
+  {
+    "restaurantId": "8176",
+    "name": "OB Smoothies Bar & Subs",
+    "sourceUrl": "https://www.ubereats.com/store/ob-smoothie-bar-%26-subs/XMGUksdVTiK-ayUK3YkX8Q",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: UberEats store page 403s on direct fetch and the Postmates link from search now 404s; no first-party site with a menu was found."
+  },
+  {
+    "restaurantId": "11196",
+    "name": "Birrieria la Loteria",
+    "sourceUrl": "https://birrierialaloteria.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: no website on record for the Imperial Beach storefront; the only working birrierialaloteria.com site describes itself as a food truck based in Lemon Grove (different location/business), so not used. No marketplace listing found for the IB address."
+  },
+  {
+    "restaurantId": "2976",
+    "name": "South Park Kitchen",
+    "sourceUrl": "https://www.yelp.com/biz/south-park-kitchen-san-diego",
+    "confidence": "high",
+    "dishes": []
+  },
+  {
+    "restaurantId": "8874",
+    "name": "Cosmos Burger Carlsbad",
+    "sourceUrl": "https://www.burgerscosmos.com/order-online/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: this location's own site confirms the Carlsbad/Windmill Food Hall address but ordering runs through a Square widget (client-rendered); Grubhub page for this address is also a client-rendered shell with no embedded prices."
+  },
+  {
+    "restaurantId": "7737",
+    "name": "Boba Tea Spot",
+    "sourceUrl": "https://toast.app/r/boba-tea-spot/order/r-1a7dc8ad-c138-4ee6-9769-e5e191dbd09c",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: the correct-branch Toast ordering link (toast.app) 403s on direct fetch; the toast.site on record points to the wrong branch (per router). DoorDash/UberEats/Postmates listings exist but also block direct fetch."
+  },
+  {
+    "restaurantId": "10506",
+    "name": "Plant Power Fast Food Digital Kitchen",
+    "sourceUrl": "https://plantpower.mymenuhd.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: mymenuhd.com kiosk platform redirects (302) through an ARR-affinity cookie loop; the redirected menu URL never resolves via direct fetch."
+  },
+  {
+    "restaurantId": "9909",
+    "name": "Village Tacos",
+    "sourceUrl": "https://www.yelp.com/biz/village-taco-mexican-food-fallbrook",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: no website on record; UberEats listing on file is the wrong branch (per router); searches for marketplace pricing only returned unrelated same-named restaurants in Ohio. Yelp/Tripadvisor/Facebook list dish names only."
+  },
+  {
+    "restaurantId": "9419",
+    "name": "Al Umaraa Restaurant & Market",
+    "sourceUrl": "https://alumaraarestaurant.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: site is a client-side React app (empty #root div, bolt.new build) with no server-rendered content or menu data."
+  },
+  {
+    "restaurantId": "7115",
+    "name": "Poki Poki & Dragonitea - Fallbrook",
+    "sourceUrl": "https://www.doordash.com/store/poki-poki-fallbrook-26130592/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: first-party site 404s; DoorDash/UberEats/Postmates store pages all 403 on direct fetch, so no fetchable priced payload."
+  },
+  {
+    "restaurantId": "7367",
+    "name": "Viche Marina Deli & Coffee",
+    "sourceUrl": "https://order.online/en/store/viche-marina-deli-33307687",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: no website on record; order.online/UberEats/Postmates store pages all 403 on direct fetch. Search snippets show prices but disagree between platforms (e.g. CLUB Sandwich $14.99 vs $15.99, Breakfast Croissant $8.99 vs $9.99), not reliable enough to file without reading the actual page."
+  }
+]

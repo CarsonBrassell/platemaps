@@ -535,6 +535,9 @@ function escapeHtml(text: string) {
  * `closed` cools a spot to a dim grey ember, `density` 0..1 says how much of a
  * restaurant district this spot stands in (see districtDensities). */
 const PIN_SOURCE = "restaurants";
+/* The district-glow heatmap. Named because it is toggled at runtime: hidden
+   for the whole of a map search, shown again when the field clears. */
+const AURA_LAYER = "restaurant-aura";
 
 /**
  * The pins are drawn *under* the place labels, not over them.
@@ -1575,6 +1578,14 @@ export function RestaurantMap({
                read which light a label belongs to. False for everyone when
                nothing is being searched, which is the map's normal state. */
             dim: matched ? !matched.has(restaurant.id) : false,
+            /* The other half of a search: what it DID match, and only while
+               one is running. `!dim` is not the same thing — with no search
+               every place is undimmed but nothing is lit. A lit ember burns a
+               step hotter (the halo layer's LIT_GLOW_LIFT); it does NOT keep
+               an aura pool — the district aura is hidden outright for the
+               whole of a search (see applyPinData), so a searched map is
+               embers and matches on dark ground, nothing else. */
+            lit: matched ? matched.has(restaurant.id) : false,
             /* Both of the place's numbers, carried so hover can answer "how good
                is this?" without a round trip. `plateScore` is ours, the same 0-100
                percent the dish bubbles show, where -1 stands for "not enough rated
@@ -1597,11 +1608,25 @@ export function RestaurantMap({
     /* Source and layers are created once, then only re-fed — recreating them
        per vote would flash every pin. Event handlers bind at creation time and
        read feature properties at event time, so they never go stale. */
+    /* The district aura is a whole-city reading — where the restaurants
+       crowd — and a search is a question about a handful of them. The two
+       don't compose: with the pools left on, a searched map is orange smears
+       with some dimmed embers in them, and the reader can't tell a match from
+       the glow of the block it sits in. So the aura goes out for the whole of
+       a search and comes back when the field clears. Layer visibility rather
+       than a zero weight, so the GPU isn't rasterising an empty heatmap on
+       every frame of the search. */
+    const setAuraVisible = (visible: boolean) => {
+      if (!map.getLayer(AURA_LAYER)) return;
+      map.setLayoutProperty(AURA_LAYER, "visibility", visible ? "visible" : "none");
+    };
+
     const applyPinData = () => {
       const pinData = buildPinData(matchesRef.current?.ids ?? null);
       const existing = map.getSource(PIN_SOURCE) as GeoJSONSource | undefined;
       if (existing) {
         existing.setData(pinData);
+        setAuraVisible(!matchesRef.current);
         return;
       }
       /* Safe to call at any time, which it has to be: the search redraw below
@@ -1723,9 +1748,12 @@ export function RestaurantMap({
            reach exactly 1 by z13 or it would disturb the approved near
            view. */
       map.addLayer({
-        id: "restaurant-aura",
+        id: AURA_LAYER,
         type: "heatmap",
         source: PIN_SOURCE,
+        /* Off from the first frame if a search already settled while the
+           style was loading; setAuraVisible flips it thereafter. */
+        layout: { visibility: matchesRef.current ? "none" : "visible" },
         paint: {
           /* Zoom on the outside, feature property on the inside — MapLibre
              only accepts `["zoom"]` as the input to a top-level interpolate,
@@ -1755,6 +1783,12 @@ export function RestaurantMap({
              of genuinely dense districts, each as bright as it has earned.
              The exponent is the contrast knob out here — raise it and only
              downtown survives, drop it back to 1 and the smear returns. */
+          /* No search term in here on purpose. The search used to weight
+             this layer (unmatched at 0, matched at 2.2x) so the glow
+             "moved to the answer"; on screen that was still orange pools
+             with dimmed embers inside them, and a match was unreadable
+             against the block it lit. The aura is now hidden for the whole
+             of a search instead — see setAuraVisible. */
           "heatmap-weight": [
             "interpolate",
             ["linear"],
@@ -1883,7 +1917,42 @@ export function RestaurantMap({
          0.45 keeps a legible ember at every zoom while the matches, which
          carry the glow, the inner light and the ring on top of a 0.95 dot,
          stay obviously the brighter thing. */
-      const DIM_DOT_OPACITY = 0.45;
+      /* ...and that 0.45 is the COUNTY figure. From z13 in the dots are 4-8px
+         and a 0.45 ember beside a lit one still read as "on", so the answer
+         to a search was a city of slightly different lights rather than a
+         few lit ones over a dark field. The alpha steps down as the dots grow,
+         reaching 0.22 at street scale where even that is a clear dot. */
+      /* Zoom on the OUTSIDE. MapLibre only accepts `["zoom"]` as the input of
+         a top-level interpolate, so this cannot be a zoom ramp handed to one
+         branch of a `case` — that shipped once, MapLibre refused the whole
+         `circle-opacity` ("zoom expression may only be used as input to a
+         top-level step or interpolate"), the property fell back to its
+         default of 1, and every unmatched ember stayed at full brightness:
+         a searched map that dimmed nothing. Each stop is a whole case. */
+      const dotOpacityAt = (dimAlpha: number) => [
+        "case",
+        ["get", "dim"],
+        dimAlpha,
+        ["get", "closed"],
+        0.5,
+        0.95,
+      ];
+      const DOT_OPACITY = [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        9,
+        dotOpacityAt(0.45),
+        13,
+        dotOpacityAt(0.32),
+        16,
+        dotOpacityAt(0.22),
+      ] as unknown as number;
+      /* What a match wears on top of its normal light while a search runs:
+         a hotter halo (below); the district aura is hidden for the whole search.
+         Not a new colour — the map has one accent, and the halo already says
+         "brighter" in it. */
+      const LIT_GLOW_LIFT = 0.2;
       map.addLayer({
         id: "restaurant-dot-glow",
         type: "circle",
@@ -1895,6 +1964,8 @@ export function RestaurantMap({
             "case",
             ["any", ["get", "closed"], ["get", "dim"]],
             0,
+            ["get", "lit"],
+            ["+", 0.4 + LIT_GLOW_LIFT, ["*", 0.3, ["get", "intensity"]]],
             ["+", 0.4, ["*", 0.3, ["get", "intensity"]]],
           ],
           "circle-radius": byZoom(
@@ -1945,14 +2016,7 @@ export function RestaurantMap({
              a place is open is not the question being asked, and letting the
              closed branch win would leave unmatched-but-closed spots brighter
              (0.5) than unmatched-and-open ones. */
-          "circle-opacity": [
-            "case",
-            ["get", "dim"],
-            DIM_DOT_OPACITY,
-            ["get", "closed"],
-            0.5,
-            0.95,
-          ],
+          "circle-opacity": DOT_OPACITY,
           "circle-radius": byZoom(
             withIntensity(1.8, 1.6),
             withIntensity(2.4, 2.4),
@@ -1968,11 +2032,14 @@ export function RestaurantMap({
         type: "circle",
         source: PIN_SOURCE,
         minzoom: 12,
+        /* While a search runs every match wears the ring, hot or not — it is
+           the one mark that says "this one" without adding light, so a quiet
+           match still reads as part of the answer next to a hot one. */
         filter: [
           "all",
           ["!", ["get", "closed"]],
           ["!", ["get", "dim"]],
-          [">", ["get", "intensity"], 0.55],
+          ["any", ["get", "lit"], [">", ["get", "intensity"], 0.55]],
         ],
         paint: {
           "circle-color": "rgba(0,0,0,0)",

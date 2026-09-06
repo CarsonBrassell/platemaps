@@ -1,0 +1,82 @@
+[
+  {
+    "restaurantId": "9742",
+    "name": "CoLab Public House",
+    "sourceUrl": "https://colabpublichouse.com/our-partners/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "multi-vendor complex: CoLab Public House's own site presents it as a shared space combining Breakwater Brewing Co, 117 West Spirits, Propaganda Wine Co and food vendor Mexico City Cuisine as separate partners; no single priced restaurant menu on the shared site"
+  },
+  {
+    "restaurantId": "7825",
+    "name": "La Fresita Y Mas",
+    "sourceUrl": "https://www.doordash.com/en/store/la-fresita-y-mas-escondido-29337633/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "DoorDash JSON-LD returns only 91 of the store's real items (a known truncation-count signature); the page's own MenuBookCategory list confirms two core categories missing entirely from the JSON-LD - Snacks (8 items) and Paletas De Hielo / Ice Pops (14 items) - and Drinks reads 16 in JSON-LD vs 18 in the book. The order.online listing for the same store was already screened out by the router: only 11% of 106 prices land on a conventional ending as published, 68% do after dividing by 1.04 - a fee baked into every price, not filed"
+  },
+  {
+    "restaurantId": "7346",
+    "name": "Little Joy Coffee Bar",
+    "sourceUrl": "https://joe.coffee/locations/ca/del-mar/little-joy-coffee-bar-del-mar-5a6e5b1f-227e-4c09-8c51-18053da8b922/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: own Squarespace site's /coffee-bar page is titled \"Coffee Menu\" but carries no item names or prices in the served HTML, only photos; the joe.coffee ordering page for this location renders its item list and prices client-side with no data in the fetched HTML"
+  },
+  {
+    "restaurantId": "11010",
+    "name": "The Whet Noodle",
+    "sourceUrl": "https://www.yelp.com/biz/the-whet-noodle-oceanside",
+    "confidence": "medium",
+    "dishes": [],
+    "blocked": "likely closed but not confirmed to my own satisfaction: Yelp's search snippet reads \"THE WHET NOODLE - CLOSED\" with every day listed Closed, but the live Yelp page 403'd so I could not read \"permanently closed\" directly; the business's own Instagram says \"might return some day! follow along for updates on our other projects\", which is ambiguous between hiatus and permanent closure. Needs a direct look at the Yelp/Google listing status before retiring"
+  },
+  {
+    "restaurantId": "961",
+    "name": "China Fun",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no reachable priced source: Google Maps shows this address (11134 Rancho Carmel Dr #100, San Diego, CA 92128) actively listed as \"China Fun Authentic Noodle House\", 3.9 stars/172 reviews, no closure flag; no website, and every online-ordering hit found (Uber Eats/Postmates/Grubhub China Fun) resolves to a DIFFERENT China Fun location at 11932 Bernardo Plaza Dr, San Diego - a distinct address, not this restaurant"
+  },
+  {
+    "restaurantId": "11271",
+    "name": "Maxdon's",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "bar/pool hall whose food status is unclear: Yelp categorizes it as \"Pool Halls\", other directories describe it as a neighborhood bar with 6 pool tables, shuffleboard and a full bar; \"Food at bar\" and \"Happy-hour drinks\" are the only food-adjacent mentions found and no menu with prices was located anywhere (Facebook About page unreachable, no website)"
+  },
+  {
+    "restaurantId": "3155",
+    "name": "Hooked On Pokè",
+    "sourceUrl": "https://order.online/business/-11477203",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site (hkdonpokeandsushi.com/poke/ and /sushi/) lists dish names with no prices anywhere; its own Clover storefront was already screened out by the router (2% of 164 prices conventional as published, 95% conventional after dividing by 1.03 - fee baked in, never filed); Grubhub and order.online disagree sharply on the same dish (Ahi Tuna POKE $19.75 on Grubhub vs $17.50 on order.online), which per the playbook means the visible prices are unreliable, not correctable by cross-check"
+  },
+  {
+    "restaurantId": "9103",
+    "name": "Fuzziwig's Candy Factory",
+    "sourceUrl": "https://m.yelp.com/biz/fuzziwigs-candy-factory-coronado",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "retail candy/ice-cream shop priced mostly by weight (\"prices vary by type and are weighed by the pound\" per Atly review), not an itemized dish menu; the only online-ordering listing found under this name (Grubhub) is for a Mesa, AZ location at a different address, not this Coronado branch, so it cannot be filed here"
+  },
+  {
+    "restaurantId": "9439",
+    "name": "Yogurt Lounge III",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "self-serve frozen yogurt priced by weight in-store (a Facebook commenter reports \"almond yogurt for 89 cents\" per ounce and cups running $10-12); delivery-platform flat prices for the same item disagree sharply with each other - Grubhub/Seamless (same owner) list Vanilla Yogurt at $7.20, Uber Eats lists the same size at $13.00 - so no platform's fixed price reflects the store's real per-ounce pricing model, and none can be filed as the menu"
+  },
+  {
+    "restaurantId": "5797",
+    "name": "Panaderia La Buena",
+    "sourceUrl": null,
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website and no ordering platform found for this small independent panaderia; Yelp, Instagram, Facebook, Mapquest and directory listings all describe pastries (conchas, empanadas, tres leches, stuffed bolillos) but none publish any prices"
+  }
+]

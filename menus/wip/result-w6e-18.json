@@ -1,0 +1,1873 @@
+[
+ {
+  "restaurantId": "11424",
+  "name": "Yummy Spoon",
+  "sourceUrl": "https://www.yummyspoon.net/menu",
+  "confidence": "high",
+  "notes": "Self-serve frozen yogurt shop, weighed at point of sale; menu page lists flavors/toppings only, no prices anywhere on site.",
+  "dishes": [],
+  "blocked": "no-prices-published: self-serve froyo priced by weight, not itemized"
+ },
+ {
+  "restaurantId": "8840",
+  "name": "Thai2You Restaurant",
+  "sourceUrl": "https://thai2yourestaurantca.smiledining.com/",
+  "confidence": "low",
+  "notes": "Smile POS (smiledining.com) storefront renders menu client-side; listed as browser-only platform.",
+  "dishes": [],
+  "blocked": "needs-browser: Smile POS (smiledining.com) storefront"
+ },
+ {
+  "restaurantId": "3794",
+  "name": "Plantology Cafe",
+  "sourceUrl": "https://joe.coffee/locations/ca/oceanside/plantology-cafe-oceanside-c3d47d97-b9aa-4b92-bbd6-ba566342fb36/",
+  "confidence": "low",
+  "notes": "No first-party website; joe.coffee ordering page renders menu items client-side with no prices in static HTML and no discoverable API. Yelp/Instagram list drink names only, no prices (hearsay not usable).",
+  "dishes": [],
+  "blocked": "needs-browser: joe.coffee ordering page is client-rendered; no priced source found"
+ },
+ {
+  "restaurantId": "12187",
+  "name": "Coyote Steakhouse",
+  "sourceUrl": "https://www.thepalmsatindianhead.com/coyote-steakhouse",
+  "confidence": "high",
+  "notes": "First-party page for the steakhouse at The Palms at Indian Head resort, Borrego Springs; full a-la-carte dinner menu with prices. Two Caesar Salad add-ons (salmon/chicken) and a $10 split/sharing charge listed as separate priced modifiers; split charge itself excluded as a fee, not a dish. Whole Maine Lobster and Shrimp Scampi each have Whole/Half or Full/Half price variants, split into separate entries.",
+  "dishes": [
+   {
+    "name": "Shrimp Cocktail",
+    "description": "4 jumbo shrimp prawns, homemade cocktail sauce, lemon",
+    "price": "$26",
+    "section": "Starters & Appetizers"
+   },
+   {
+    "name": "Fried Calamari",
+    "description": "Rings and tentacles, marinara and cocktail sauce for dipping",
+    "price": "$22",
+    "section": "Starters & Appetizers"
+   },
+   {
+    "name": "Coastal Crab Cakes",
+    "description": "Made with 100% blue lump crab, garlic remoulade",
+    "price": "$26",
+    "section": "Starters & Appetizers"
+   },
+   {
+    "name": "Ahi Tartare",
+    "description": "Sushi grade tuna, green onion, sesame seeds, fresh ginger, sesame oil, garlic, fresh cilantro, fresh avocado, lime zest, won-ton crisps",
+    "price": "$26",
+    "section": "Starters & Appetizers"
+   },
+   {
+    "name": "Oysters Rockefeller",
+    "description": "Prepared in the traditional style",
+    "price": "$28",
+    "section": "Starters & Appetizers"
+   },
+   {
+    "name": "Baked Brie",
+    "description": "Garlic, honey, toasted almonds, crostini, sliced apples, grapes",
+    "price": "$22",
+    "section": "Starters & Appetizers"
+   },
+   {
+    "name": "Thick Cut Onion Rings",
+    "description": "Sweet onions, homemade ranch for dipping",
+    "price": "$20",
+    "section": "Starters & Appetizers"
+   },
+   {
+    "name": "Lobster Louie Salad",
+    "description": "Fresh Maine lobster, crab claw meat, fresh asparagus, radishes, cucumber, tomato, hard-boiled egg, romaine lettuce, house made Louie dressing",
+    "price": "$48",
+    "section": "Salads"
+   },
+   {
+    "name": "Wedge Salad",
+    "description": "Shaved red onion, crumbled bacon, bleu cheese crumbles, grape tomatoes, toasted almonds, chopped hard-boiled egg, bleu cheese dressing",
+    "price": "$17",
+    "section": "Salads"
+   },
+   {
+    "name": "Caesar Salad",
+    "description": "House made dressing with anchovies",
+    "price": "$18",
+    "section": "Salads"
+   },
+   {
+    "name": "Caesar Salad - Add Grilled Salmon",
+    "description": "Add-on to Caesar Salad",
+    "price": "$20",
+    "section": "Salads"
+   },
+   {
+    "name": "Caesar Salad - Add Chicken",
+    "description": "Add-on to Caesar Salad",
+    "price": "$12",
+    "section": "Salads"
+   },
+   {
+    "name": "Mixed Green Salad",
+    "description": "Mixed greens, grape tomatoes, grated carrots, shaved red onion, fresh beets, cucumbers, bleu cheese, ranch or house dressing",
+    "price": "$16",
+    "section": "Salads"
+   },
+   {
+    "name": "Soup Du Jour",
+    "description": "Made fresh daily",
+    "price": "$12",
+    "section": "Salads"
+   },
+   {
+    "name": "Quarter Pound Cheddar Cheese Burger",
+    "description": "Served with golden french fries",
+    "price": "$20",
+    "section": "Children's Menu"
+   },
+   {
+    "name": "Chicken Tenders",
+    "description": "Served with ranch dressing and golden french fries",
+    "price": "$20",
+    "section": "Children's Menu"
+   },
+   {
+    "name": "Filet Mignon 6 oz",
+    "description": "A lean cut from the heart of the tenderloin; served with soup or salad, vegetable du jour and house mashed potatoes",
+    "price": "$64",
+    "section": "Prime Grade Steaks"
+   },
+   {
+    "name": "Filet Mignon and Maine Lobster",
+    "description": "Filet mignon paired with Maine lobster",
+    "price": "$99",
+    "section": "Prime Grade Steaks"
+   },
+   {
+    "name": "New York Strip 12 oz",
+    "description": "Known for its firmer texture and bold, beefy flavor",
+    "price": "$76",
+    "section": "Prime Grade Steaks"
+   },
+   {
+    "name": "Rib Eye Steak 14 oz",
+    "description": "Rich, juicy, buttery, full-flavor profile from generous marbling",
+    "price": "$72",
+    "section": "Prime Grade Steaks"
+   },
+   {
+    "name": "Prime Rib with Yorkshire Pudding",
+    "description": "Saturday night only; creamy horseradish au jus for dipping",
+    "price": "$68",
+    "section": "Prime Grade Steaks"
+   },
+   {
+    "name": "Top Sirloin/Baseball Cut 7 oz",
+    "description": "Rich, beefy flavor, tender with little marbling",
+    "price": "$58",
+    "section": "Prime Grade Steaks"
+   },
+   {
+    "name": "T-Bone 18 oz",
+    "description": "Well marbled cut of strip and tenderloin connected by a T-shaped bone",
+    "price": "$72",
+    "section": "Prime Grade Steaks"
+   },
+   {
+    "name": "Steak Toppers",
+    "description": "Sauteed mushroom medley, bearnaise sauce, or bleu cheese butter",
+    "price": "$10",
+    "section": "Prime Grade Steaks"
+   },
+   {
+    "name": "Pork Porterhouse",
+    "description": "Bone-in, roasted, served with chef's apple chutney",
+    "price": "$48",
+    "section": "Entrees"
+   },
+   {
+    "name": "New Zealand Rack of Lamb",
+    "description": "Fresh rosemary-mustard herb rub, roasted garlic horseradish sauce, apple mint jelly",
+    "price": "$52",
+    "section": "Entrees"
+   },
+   {
+    "name": "Kobe Beef Burger 10 oz",
+    "description": "Extra sharp cheddar, caramelized onion, ketchup, mayo, golden fries",
+    "price": "$28",
+    "section": "Entrees"
+   },
+   {
+    "name": "Cornish Game Hen",
+    "description": "Stuffed with wild rice, chopped medjool dates, pecans, herbs and parmesan cheese, stock reduction",
+    "price": "$42",
+    "section": "Entrees"
+   },
+   {
+    "name": "Pork Shank Osso Bucco",
+    "description": "Slow roasted for tenderness, stock reduction",
+    "price": "$48",
+    "section": "Entrees"
+   },
+   {
+    "name": "Lobster Thermidor",
+    "description": "Whole Maine lobster paired with a velvety wine cream sauce and herbs, served with wild rice",
+    "price": "$94",
+    "section": "Entrees"
+   },
+   {
+    "name": "Whole Maine Lobster (Whole)",
+    "description": "Served with wild rice, fresh drawn butter and lemon",
+    "price": "$82",
+    "section": "Entrees"
+   },
+   {
+    "name": "Whole Maine Lobster (Half)",
+    "description": "Served with wild rice, fresh drawn butter and lemon",
+    "price": "$48",
+    "section": "Entrees"
+   },
+   {
+    "name": "Salmon Fillet",
+    "description": "Pacific caught, panko bread crumbs, parmesan cheese, horseradish and herbs, light garlic-dijon cream sauce, wild rice",
+    "price": "$52",
+    "section": "Entrees"
+   },
+   {
+    "name": "Shrimp Scampi (Full order)",
+    "description": "Jumbo shrimp, butter, garlic, lemon juice, fresh herbs, served with wild rice",
+    "price": "$58",
+    "section": "Entrees"
+   },
+   {
+    "name": "Shrimp Scampi (Half order)",
+    "description": "Jumbo shrimp, butter, garlic, lemon juice, fresh herbs, served with wild rice",
+    "price": "$42",
+    "section": "Entrees"
+   },
+   {
+    "name": "Portobello Mushroom Cap",
+    "description": "Marinated, pan seared, topped with black bean cake, porcini mushroom reduction, gluten free",
+    "price": "$32",
+    "section": "Entrees"
+   },
+   {
+    "name": "Personalized Vegetarian Meal",
+    "description": "Choose 3 from the side options",
+    "price": "$32",
+    "section": "Entrees"
+   }
+  ]
+ },
+ {
+  "restaurantId": "3921",
+  "name": "Long Story Irish Pub",
+  "sourceUrl": "https://www.sandiegoville.com/2026/07/long-story-irish-pub-to-close-in-poin.html",
+  "confidence": "high",
+  "notes": "Confirmed permanently closed: SanDiegoVille.com (Jul 2026) reports Point Loma's Long Story Irish Pub closing for good; Yelp lists it as CLOSED; owner's own site (longstoryirishpub.com) now 404s / has a cert mismatch.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "7718",
+  "name": "El Andale | Sports Bar & Restaurant",
+  "sourceUrl": "https://www.doordash.com/store/andale-restaurant-bar-bonita-california---4076-bonita-rd-bonita-34781649/",
+  "confidence": "medium",
+  "notes": "Restaurant's own site 404s; sourced from DoorDash JSON-LD Menu block, 6 sections matching the live category nav (Most Ordered, Appetizers, Others, Seafood, Tacos, Drinks) confirming no missing sections. Deduped on name+price: 91 raw rows included a 12-item 'Most Ordered' carousel, 10 of which duplicated items already in the real sections below (dropped); 2 (both burritos) were unique and kept. Final count 81 unique dishes.",
+  "dishes": [
+   {
+    "name": "Taco Asada",
+    "description": "Street style taco with choice of Al Pastor, Carne Asada, or Tripa.",
+    "price": "$4.20",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Taco de Pescado",
+    "description": "Delicate fish with choice of corn or flour tortilla.",
+    "price": "$3.60",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Taco Enchilado",
+    "description": "Seafood taco enchilado with choice of protein (octopus, shrimp, or mixed) and choice of tortilla (corn or flour).",
+    "price": "$10.80",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Dozena de Ostiones",
+    "description": "Fresh oysters garnished with sliced avocado, red onion, cucumber, and shrimp.",
+    "price": "$41.90",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Media Dozena de Ostiones",
+    "description": "Fresh oysters with sliced avocado, cucumber, red onion, and shrimp.",
+    "price": "$21.55",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Tostada - Ahi Tuna",
+    "description": "Ahi tuna on a crisp tortilla. Choice of chips, crackers, or no side.",
+    "price": "$23.95",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Aguachile Negro",
+    "description": "Spicy marinated seafood paired with chips, crackers, or no side.",
+    "price": "$21.55",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Agua Fresca",
+    "description": "",
+    "price": "$5.75",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Burrito California",
+    "description": "Soft flour tortilla filled with your choice of protein: pork al pastor, grilled carne asada, beef tripe, beef head, beef tongue, stewed birria, or chicken.",
+    "price": "$21.55",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Carne Asada Chips",
+    "description": "Typically includes carne asada, guacamole, sour cream, pico de gallo, beans, and cheese served over crunchy tortilla chips.",
+    "price": "$21.55",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Burrito de Carne Asada",
+    "description": "Grilled beef burrito with options of pork, chicken, various beef cuts, or marinated goat.",
+    "price": "$19.15",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Coctel de Pulpo",
+    "description": "Octopus cocktail with side choice of chips, crackers, or no side.",
+    "price": "$26.35",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Queso Fundido",
+    "description": "Molten cheese dip; choice of corn or flour tortillas.",
+    "price": "$14.35",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Calamari Frito",
+    "description": "Crispy battered calamari rings, served golden brown with marinara sauce drizzle.",
+    "price": "$20.35",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Papas Fritas",
+    "description": "Crispy golden fries paired with crunchy, seasoned chicken tenders and a side of creamy dipping sauce.",
+    "price": "$8.05",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Aros de Cebolla",
+    "description": "Crispy fried chicken tenders paired with golden French fries and a side of creamy dipping sauce.",
+    "price": "$12.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Alitas de Pollo (6 wings)",
+    "description": "Six pieces. Choice of BBQ, Buffalo, or Plain sauce. Mexican twist on a classic appetizer.",
+    "price": "$16.75",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Guacamole & Chips",
+    "description": "Crispy fried chicken tenders paired with golden French fries and a creamy dipping sauce.",
+    "price": "$8.40",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Salsa & Chips",
+    "description": "Crispy chicken tenders paired with golden French fries and a side of creamy dipping sauce.",
+    "price": "$3.60",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Tenders de Pollo",
+    "description": "Crispy breaded chicken tenders served with golden French fries and a side of creamy dipping sauce.",
+    "price": "$14.35",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Carne Seca",
+    "description": "Dried beef typically includes lime juice, spicy sauce, and chili seasoning.",
+    "price": "$29.90",
+    "section": "Others"
+   },
+   {
+    "name": "Adobada Fries",
+    "description": "Melted cheese, pico de gallo, guacamole, and sour cream.\nYour choice of fries or nachos.",
+    "price": "$21.55",
+    "section": "Others"
+   },
+   {
+    "name": "Pescado Empapelado",
+    "description": "Fish wrapped in paper; choice of red or green sauce.",
+    "price": "$19.15",
+    "section": "Others"
+   },
+   {
+    "name": "Adobada Chips",
+    "description": "Marinated pork and corn chips, topped with beans, guacamole, sour cream, pico de gallo, and cheese.",
+    "price": "$21.55",
+    "section": "Others"
+   },
+   {
+    "name": "Fajitas",
+    "description": "``` \nMexican dish with choice of beef, chicken, pork, shrimp, or combinations. Served with corn or flour tortillas, or without tortillas.\n```",
+    "price": "$20.35",
+    "section": "Others"
+   },
+   {
+    "name": "Carne Asada Fries or Nachos",
+    "description": "Melted cheese, pico de gallo, guacamole, and sour cream.\nYour choice of fries or nachos.",
+    "price": "$21.55",
+    "section": "Others"
+   },
+   {
+    "name": "Molcajete Campechano",
+    "description": "Served with choice of Corn Tortilla, Flour Tortilla, or No Tortillas.",
+    "price": "$33.50",
+    "section": "Others"
+   },
+   {
+    "name": "Puntas Carne Estilo Michoacan",
+    "description": "Tender beef tips Michoacan style. Choice of corn tortilla, flour tortilla, or no tortillas.",
+    "price": "$20.35",
+    "section": "Others"
+   },
+   {
+    "name": "Molcajete Cielo Mar Y Tierra",
+    "description": "Molcajete cielo mar y tierra. Choice of Corn or Flour Tortilla, or No Tortillas. Rich mix of ingredients symbolizing sky, sea, and land.",
+    "price": "$41.90",
+    "section": "Others"
+   },
+   {
+    "name": "Ceviche de Pescado - Orden",
+    "description": "",
+    "price": "$14.35",
+    "section": "Seafood"
+   },
+   {
+    "name": "Tostada - Ceviche de Pescado",
+    "description": "Crispy tortilla topped with fresh seafood. Choose a side: Chips, Crackers, or No Side.",
+    "price": "$7.20",
+    "section": "Seafood"
+   },
+   {
+    "name": "Tostada - Camaron y Pulpo",
+    "description": "Shrimp and octopus on a crispy corn tortilla. Choose from sides like chips, crackers, or opt for no side.",
+    "price": "$14.35",
+    "section": "Seafood"
+   },
+   {
+    "name": "Botana Mixta",
+    "description": "Fish, shrimp, octopus (spicy level hot)\nAsk server for non-spicy if desired",
+    "price": "$35.90",
+    "section": "Seafood"
+   },
+   {
+    "name": "Camaron Empanizado de Coco",
+    "description": "Coconut shrimp with choice of chips, crackers, or no side.",
+    "price": "$21.55",
+    "section": "Seafood"
+   },
+   {
+    "name": "Tostada - Aguachile Negro",
+    "description": "Crispy tostada with zesty aguachile, a seafood dish. Served with your choice of chips, crackers, or without a side.",
+    "price": "$12.00",
+    "section": "Seafood"
+   },
+   {
+    "name": "Tostada - Ceviche de Camaron",
+    "description": "Crispy tortilla topped with shrimp. Choice of chips, crackers, or no side.",
+    "price": "$9.60",
+    "section": "Seafood"
+   },
+   {
+    "name": "Tostada - Aguachile Verde",
+    "description": "Crisp tostada topped with aguachile verde, a refreshing mix of seafood and green chili-lime sauce. Choose a side: chips, crackers, or none.",
+    "price": "$12.00",
+    "section": "Seafood"
+   },
+   {
+    "name": "Camarones Costa Azul",
+    "description": "Shrimp wrapped in bacon, served with choice of chips, crackers, or no side.",
+    "price": "$26.35",
+    "section": "Seafood"
+   },
+   {
+    "name": "Ceviche de Camaron - Orden",
+    "description": "",
+    "price": "$21.55",
+    "section": "Seafood"
+   },
+   {
+    "name": "Coctel Campechano",
+    "description": "Mixed seafood cocktail with your choice of chips, crackers, or no side.",
+    "price": "$33.50",
+    "section": "Seafood"
+   },
+   {
+    "name": "Coctel de Camaron",
+    "description": "Shrimp served chilled with choice of chips, crackers, or no side.",
+    "price": "$23.95",
+    "section": "Seafood"
+   },
+   {
+    "name": "Aguachile de Mango",
+    "description": "Mango aguachile with your choice of chips, crackers, or no side.",
+    "price": "$23.95",
+    "section": "Seafood"
+   },
+   {
+    "name": "Filete a la Veracruzana",
+    "description": "Tender fish fillet topped with traditional Veracruz-style sauce. Choice of chips, crackers, or no side.",
+    "price": "$20.35",
+    "section": "Seafood"
+   },
+   {
+    "name": "Camarones Revolcados",
+    "description": "Shrimp dish with choice of chips, crackers, or no side.",
+    "price": "$29.90",
+    "section": "Seafood"
+   },
+   {
+    "name": "Camarones Cucaracha",
+    "description": "Shrimp accompanied by chips, crackers, or no side.",
+    "price": "$29.90",
+    "section": "Seafood"
+   },
+   {
+    "name": "Coctel Camaron y Pulpo",
+    "description": "Shrimp and octopus cocktail with your choice of chips, crackers, or no side.",
+    "price": "$26.35",
+    "section": "Seafood"
+   },
+   {
+    "name": "Aguachile Rojo",
+    "description": "Spicy citrus-marinated seafood. Choice of chips, crackers, or no side.",
+    "price": "$21.55",
+    "section": "Seafood"
+   },
+   {
+    "name": "Camaron Para Pelar - Orden",
+    "description": "Shrimp served with a choice of chips, crackers, or no side.",
+    "price": "$23.95",
+    "section": "Seafood"
+   },
+   {
+    "name": "Ceviche de Ahi Tuna",
+    "description": "",
+    "price": "$29.90",
+    "section": "Seafood"
+   },
+   {
+    "name": "Tostada Loca",
+    "description": "Tostada loca with choice of chips, crackers, or no side.",
+    "price": "$29.90",
+    "section": "Seafood"
+   },
+   {
+    "name": "Tostada - Aguachile Rojo",
+    "description": "Crisp tortilla, topped with fresh seafood and tangy red aguachile sauce. Comes with a choice of chips, crackers, or no side.",
+    "price": "$12.00",
+    "section": "Seafood"
+   },
+   {
+    "name": "Aguachile Verde",
+    "description": "Fresh Mexican seafood dish with a choice of chips, crackers, or no side.",
+    "price": "$21.55",
+    "section": "Seafood"
+   },
+   {
+    "name": "Camarones Roca",
+    "description": "Shrimp served with choice of chips, crackers, or no side.",
+    "price": "$29.90",
+    "section": "Seafood"
+   },
+   {
+    "name": " Ceviche de Camaron y Pulpo - Orden",
+    "description": "Shrimp and octopus ceviche. Served with choice of chips, crackers, or no side.",
+    "price": "$23.95",
+    "section": "Seafood"
+   },
+   {
+    "name": "Taco de Camaron Empanizado",
+    "description": "Breaded shrimp, cabbage, pico de gallo, and chipotle sauce.",
+    "price": "$6.00",
+    "section": "Tacos"
+   },
+   {
+    "name": "Taco de Marlin",
+    "description": "Marlin fish taco with your choice of corn or flour tortilla.",
+    "price": "$10.80",
+    "section": "Tacos"
+   },
+   {
+    "name": "Quesa Taco Birria",
+    "description": "Juicy birria-stuffed tacos with melted cheese. Choose from a variety of proteins like seasoned pork, beef, and chicken.",
+    "price": "$5.40",
+    "section": "Tacos"
+   },
+   {
+    "name": "Taco Tripa",
+    "description": "Choice of protein including seasoned pork, grilled beef, beef tripe, head meat, tongue, slow-cooked beef dish, or chicken, all enveloped in soft tortillas.",
+    "price": "$4.20",
+    "section": "Tacos"
+   },
+   {
+    "name": "Taco Lengua",
+    "description": "Tender beef tongue served in a soft taco shell. Choice of protein including seasoned pork, grilled beef, beef head, tripe, braised meat, or chicken.",
+    "price": "$4.20",
+    "section": "Tacos"
+   },
+   {
+    "name": "Taco Al Pastor",
+    "description": "Seasoned proteins like Al Pastor, Carne Asada, and more, with traditional toppings in a soft corn tortilla.",
+    "price": "$4.20",
+    "section": "Tacos"
+   },
+   {
+    "name": "Tacos Dorados de Papa (3)",
+    "description": "Crunchy potato-filled tacos. Corn or flour tortilla options.",
+    "price": "$17.95",
+    "section": "Tacos"
+   },
+   {
+    "name": "Tacos Dorados de Camaron (3)",
+    "description": "3 shrimp tacos in crispy shells. Tortilla options: Corn or Flour.",
+    "price": "$21.55",
+    "section": "Tacos"
+   },
+   {
+    "name": "Taco Cabeza",
+    "description": "Various taco fillings including marinated pork, grilled beef, beef head, tongue, and stewed meats. Served in a traditional Mexican style. Choose your favorite protein.",
+    "price": "$4.20",
+    "section": "Tacos"
+   },
+   {
+    "name": "Taco - Pulpo a La Oliva",
+    "description": "Octopus with olives in your choice of corn or flour tortilla.",
+    "price": "$12.00",
+    "section": "Tacos"
+   },
+   {
+    "name": "Taco Birria",
+    "description": "Warm corn tortilla filled with your choice of protein like slow-cooked goat stew, marinated pork, or grilled beef. Typically garnished with onions, cilantro, and lime.",
+    "price": "$4.20",
+    "section": "Tacos"
+   },
+   {
+    "name": "Taco Governador",
+    "description": "Grilled shrimp, melted cheese, fresh veggies. Your choice of corn or flour tortilla.",
+    "price": "$10.80",
+    "section": "Tacos"
+   },
+   {
+    "name": "Grape Juice",
+    "description": "Typically includes freshly pressed grapes, offering a natural and sweet flavor.",
+    "price": "$4.20",
+    "section": "Drinks"
+   },
+   {
+    "name": "Jugo Natural - Green Juice",
+    "description": "Refreshing green juice with a choice of flavors: rice-infused Horchata, floral Hibiscus, tangy Lime, or sweet Strawberry.",
+    "price": "$8.05",
+    "section": "Drinks"
+   },
+   {
+    "name": "SF Red Bull",
+    "description": "Red Bull Sugar Free: This energy drink typically includes caffeine, taurine, and B vitamins to provide a revitalizing boost without the sugar.",
+    "price": "$9.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Soda (Bote)",
+    "description": "Choice of soda: Coke, Sprite, Squirt, Seven Up, Diet Coke, Pepsi, Diet Pepsi.",
+    "price": "$4.20",
+    "section": "Drinks"
+   },
+   {
+    "name": "Ice Tea",
+    "description": "Refreshing chilled tea, perfectly brewed for a revitalizing experience.",
+    "price": "$4.20",
+    "section": "Drinks"
+   },
+   {
+    "name": "Soda (Maquina)",
+    "description": "Various soda options including Coke, Diet Coke, Sprite, Cranberry, Coke Zero, and Orange Fanta.",
+    "price": "$4.20",
+    "section": "Drinks"
+   },
+   {
+    "name": "Hot Tea - Copy",
+    "description": "Steeped tea leaves creating a soothing beverage, typically featuring options like chamomile, green tea, or black tea.",
+    "price": "$2.40",
+    "section": "Drinks"
+   },
+   {
+    "name": "Perrier (Botella)",
+    "description": "Crisp, Sparkling Perrier Water - Refreshment in Every Sip",
+    "price": "$6.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Agua Fresca Piña",
+    "description": "Agua fresca with choice of pineapple, Horchata (rice milk with cinnamon), Jamaica (hibiscus), lime, or strawberry flavors.",
+    "price": "$6.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Virgin Colada",
+    "description": "Coconut milk blended with pineapple juice, typically includes a touch of lime juice.",
+    "price": "$8.40",
+    "section": "Drinks"
+   },
+   {
+    "name": "Cranberry Juice",
+    "description": "Tangy cranberry delight, a refreshing concoction that will keep you craving more.",
+    "price": "$4.20",
+    "section": "Drinks"
+   },
+   {
+    "name": "Limonada - Agua Fresca",
+    "description": "",
+    "price": "$6.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Lemonade Fountain Drink",
+    "description": "Refreshing citrus beverage.",
+    "price": "$4.20",
+    "section": "Drinks"
+   },
+   {
+    "name": "Pineapple Juice",
+    "description": "Tropical refreshment with a sweet tang, freshly squeezed.",
+    "price": "$4.20",
+    "section": "Drinks"
+   },
+   {
+    "name": "Jugo Natural - Orange Juice",
+    "description": "Freshly squeezed orange juice with a choice of flavors like Horchata, Jamaica, Lime, or Strawberry.",
+    "price": "$8.05",
+    "section": "Drinks"
+   }
+  ]
+ },
+ {
+  "restaurantId": "6986",
+  "name": "Ama’s taqueria y cocina",
+  "sourceUrl": "https://www.ubereats.com/store/amas-cocina/hIxCs9niUfWLMFsdKp5ZrA",
+  "confidence": "medium",
+  "crossCheckedAgainst": "https://www.doordash.com/store/ama%E2%80%99s-cocina-el-cajon-42962777/",
+  "notes": "No first-party website. DoorDash's own JSON-LD Menu (91 raw rows) was truncated: its Tacos section (7 items) was missing Al Pastor Taco and Asada Taco, and its Most Ordered carousel referenced two burritos (El Jefe, Monster Burrito) absent from the Burritos section. Uber Eats JSON-LD (different owner) carried a complete, internally-consistent 98-item catalog across 17 sections including full Tacos/Mulitas/Regular Tortilla Tacos sections with no duplicates; overlapping items (e.g. Al Pastor Taco $3.50) matched DoorDash's prices exactly, so Uber Eats was filed instead of the truncated DoorDash capture.",
+  "dishes": [
+   {
+    "name": "Chilaquiles",
+    "description": "Tortilla chips smothered in a rich, flavorful sauce.",
+    "price": "$11.80",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Scrambled Eggs and Ham",
+    "description": "Fluffy eggs paired with savory ham.",
+    "price": "$11.80",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Divorced Eggs (Huevos Divorciados)",
+    "description": "Two fried eggs, one topped with a spicy tomato sauce and the other with a creamy green tomatillo sauce.",
+    "price": "$11.80",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Chorizo Plate",
+    "description": "Savory chorizo sausage, served as a breakfast plate.",
+    "price": "$11.80",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Huevos Rancheros",
+    "description": "Fried eggs on top of tortillas, smothered in a spicy tomato-based sauce.",
+    "price": "$11.80",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Bacon-Eggs and Sausage Plate",
+    "description": "Savoury plate featuring eggs, bacon, and sausage.",
+    "price": "$11.80",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Machaca Plate",
+    "description": "Traditional Mexican dish featuring shredded beef, served with eggs and more.",
+    "price": "$11.80",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Eggs Mexican (Huevos A La Mexicana)",
+    "description": "Scrambled eggs with a Mexican twist, featuring a blend of flavors.",
+    "price": "$11.80",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Ama's Burrito",
+    "description": "Eggs and ham, bacon, sausage, home made potatoes, and cheese.",
+    "price": "$10.80",
+    "section": "Breakfast Burritos"
+   },
+   {
+    "name": "Bacon And Egg Burrito",
+    "description": "Bacon and eggs, home made potatoes, and cheese.",
+    "price": "$10.80",
+    "section": "Breakfast Burritos"
+   },
+   {
+    "name": "Hash Brown Burrito",
+    "description": "Eggs, hash brown, sausage, bacon, sour cream, and cheese.",
+    "price": "$10.80",
+    "section": "Breakfast Burritos"
+   },
+   {
+    "name": "Machaca Burrito",
+    "description": "Shredded beef, scrambled eggs, and more in a flavorful breakfast wrap.",
+    "price": "$10.80",
+    "section": "Breakfast Burritos"
+   },
+   {
+    "name": "Chorizo Burrito",
+    "description": "Spicy chorizo sausage wrapped in a breakfast burrito.",
+    "price": "$10.80",
+    "section": "Breakfast Burritos"
+   },
+   {
+    "name": "Ham And Egg Burrito",
+    "description": "Eggs, ham, beans, sour cream, and cheese.",
+    "price": "$10.80",
+    "section": "Breakfast Burritos"
+   },
+   {
+    "name": "Ai Pastor Torta",
+    "description": "Marinated pork al pastor, served on a crusty bun.",
+    "price": "$12.10",
+    "section": "Tortas"
+   },
+   {
+    "name": "Roast Meat Torta (Carne Asada)",
+    "description": "Tender roast meat served on a torta.",
+    "price": "$12.10",
+    "section": "Tortas"
+   },
+   {
+    "name": "Carnitas Torta",
+    "description": "Slow-roasted pork, served on a crusty bun.",
+    "price": "$12.10",
+    "section": "Tortas"
+   },
+   {
+    "name": "Grilled Chicken Torta (Pollo Asado)",
+    "description": "Tender grilled chicken served on a crusty torta roll.",
+    "price": "$12.10",
+    "section": "Tortas"
+   },
+   {
+    "name": "Ham Torta",
+    "description": "Ham filled torta with savory flavors.",
+    "price": "$12.10",
+    "section": "Tortas"
+   },
+   {
+    "name": "Chicken Milanese Torta",
+    "description": "Breaded and fried chicken topped with lettuce and tomato on a crusty torta roll.",
+    "price": "$12.10",
+    "section": "Tortas"
+   },
+   {
+    "name": "Pollo Asado Burrito",
+    "description": "Tender chicken, wrapped in a flavorful burrito.",
+    "price": "$11.80",
+    "section": "Burritos"
+   },
+   {
+    "name": "Bean And Cheese Burritos",
+    "description": "Soft flour tortilla wrapped around beans and melted cheese.",
+    "price": "$7.80",
+    "section": "Burritos"
+   },
+   {
+    "name": "Al Pastor Burrito",
+    "description": "Tender pork, marinated in a blend of spices, wrapped in a large flour tortilla.",
+    "price": "$11.80",
+    "section": "Burritos"
+   },
+   {
+    "name": "Carne Asada Burrito",
+    "description": "Tender grilled steak wrapped in a large flour tortilla.",
+    "price": "$11.80",
+    "section": "Burritos"
+   },
+   {
+    "name": "Vegetarian Burrito",
+    "description": "Soft flour tortilla stuffed with hearty vegetarian fillings.",
+    "price": "$11.80",
+    "section": "Burritos"
+   },
+   {
+    "name": "Chile Relleno Burrito",
+    "description": "Roasted poblano pepper filled with cheese, wrapped in a tortilla.",
+    "price": "$11.80",
+    "section": "Burritos"
+   },
+   {
+    "name": "Grilled Shrimp Burritos",
+    "description": "Succulent shrimp wrapped in a flavorful burrito.",
+    "price": "$12.20",
+    "section": "Burritos"
+   },
+   {
+    "name": "Shrimp A La Diabla (Camaron A La Diabla)",
+    "description": "Spicy shrimp in a flavorful tomato-based sauce.",
+    "price": "$14.80",
+    "section": "Burritos"
+   },
+   {
+    "name": "Carnitas Burrito",
+    "description": "Tender slow-cooked pork wrapped in a flour tortilla.",
+    "price": "$11.80",
+    "section": "Burritos"
+   },
+   {
+    "name": "Chile Verde Burrito",
+    "description": "Tender pork in a zesty green chile sauce wrapped in a large flour tortilla.",
+    "price": "$11.80",
+    "section": "Burritos"
+   },
+   {
+    "name": "Grilled Fish Burritos",
+    "description": "Fresh catch wrapped in a tortilla with flavorful fillings.",
+    "price": "$11.80",
+    "section": "Burritos"
+   },
+   {
+    "name": "Cali Surf Burrito",
+    "description": "Carne asada, shrimp, fries, guacamole, cheese, and chipotle sauce.",
+    "price": "$14.80",
+    "section": "Surf And Turf Burritos"
+   },
+   {
+    "name": "Pb Burrito",
+    "description": "Double wrap, carne asada, shrimp, guacamole, beans, mex salsa, and white sauce.",
+    "price": "$14.80",
+    "section": "Surf And Turf Burritos"
+   },
+   {
+    "name": "Tsunami",
+    "description": "Carne asada, grilled shrimp, cabbage, guacamole, jack cheese, and mex salsa.",
+    "price": "$14.80",
+    "section": "Surf And Turf Burritos"
+   },
+   {
+    "name": "California",
+    "description": "Carne asada, fries, sour cream, and cheese.",
+    "price": "$12.10",
+    "section": "Try Our Favorites"
+   },
+   {
+    "name": "Monster Burrito",
+    "description": "Choice of meat, refried beans, rice, jack cheese, lettuce, guacamole, sour cream, and mex salsa.",
+    "price": "$13.00",
+    "section": "Try Our Favorites"
+   },
+   {
+    "name": "El Jefe",
+    "description": "Carne asada, bacon, guacamole, cheese, and sour cream.",
+    "price": "$13.20",
+    "section": "Try Our Favorites"
+   },
+   {
+    "name": "Rolled Tacos (3 pcs)",
+    "description": "Beef, chicken, or potato. Includes rice and beans.",
+    "price": "$11.10",
+    "section": "Combos"
+   },
+   {
+    "name": "Chile Relleno and Enchilada",
+    "description": "Includes rice and beans.",
+    "price": "$13.10",
+    "section": "Combos"
+   },
+   {
+    "name": "Chile Verde Plate",
+    "description": "Corn or flour tortilla. Includes rice and beans.",
+    "price": "$13.10",
+    "section": "Combos"
+   },
+   {
+    "name": "Meat Plate",
+    "description": "Carne asada, grilled chicken, al pastor, or carnitas. Includes rice and beans.",
+    "price": "$13.30",
+    "section": "Combos"
+   },
+   {
+    "name": "Tacos (3 pcs)",
+    "description": "Includes rice and beans.",
+    "price": "$13.30",
+    "section": "Combos"
+   },
+   {
+    "name": "Enchiladas (2 pcs)",
+    "description": "Cheese, beef, or chicken. Includes rice and beans.",
+    "price": "$12.60",
+    "section": "Combos"
+   },
+   {
+    "name": "Hard Shell Tacos (2 pcs)",
+    "description": "Beef, chicken, or potato. Includes rice and beans.",
+    "price": "$12.50",
+    "section": "Combos"
+   },
+   {
+    "name": "Bean Tostada and Hard Shell Taco",
+    "description": "Cheese, beef, or chicken. Includes rice and beans.",
+    "price": "$13.10",
+    "section": "Combos"
+   },
+   {
+    "name": "Bistek Ranchero",
+    "description": "Beef steak in ranchero sauce, a traditional Mexican dish.",
+    "price": "$13.30",
+    "section": "Combos"
+   },
+   {
+    "name": "Aguas Frescas",
+    "description": "Fresh fruit infused water, perfect for hot days.",
+    "price": "$5.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Jarritos",
+    "description": "Mexican soda in a variety of flavors.",
+    "price": "$4.90",
+    "section": "Drinks"
+   },
+   {
+    "name": "Mexican Coke (1/2 lts)",
+    "description": "",
+    "price": "$5.30",
+    "section": "Drinks"
+   },
+   {
+    "name": "Soda (can)",
+    "description": "",
+    "price": "$3.70",
+    "section": "Drinks"
+   },
+   {
+    "name": "Bottled Water",
+    "description": "Refreshing and thirst-quenching water.",
+    "price": "$3.30",
+    "section": "Drinks"
+   },
+   {
+    "name": "Flan",
+    "description": "Rich and creamy dessert with a caramelized sugar crust.",
+    "price": "$6.20",
+    "section": "Desserts"
+   },
+   {
+    "name": "Churros (3 pcs)",
+    "description": "Sweet, crispy fried dough pastries.",
+    "price": "$4.70",
+    "section": "Desserts"
+   },
+   {
+    "name": "Platano Macho",
+    "description": "Sweet plantain dessert.",
+    "price": "$5.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Paleta",
+    "description": "Traditional Mexican popsicle made with creamy milk and sweet flavors.",
+    "price": "$3.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Paleta and Mexican Popsicle",
+    "description": "Traditional Mexican-style popsicles in a variety of flavors.",
+    "price": "$3.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Corn Quesabirria (Quesabirria De Maiz)",
+    "description": "Melted cheese and birria in a corn tortilla.",
+    "price": "$6.50",
+    "section": "Quesa Taco"
+   },
+   {
+    "name": "Rolled Tacos Plain (3 pcs)",
+    "description": "Beef, chicken, and potatoe.",
+    "price": "$5.40",
+    "section": "Rolled Tacos"
+   },
+   {
+    "name": "Rolled Tacos Plain (5 pcs)",
+    "description": "Beef, chicken, and potatoe.",
+    "price": "$7.30",
+    "section": "Rolled Tacos"
+   },
+   {
+    "name": "5 Super Rolled tacos",
+    "description": "Served with guacamole, sour cream, lettuce, mex salsa, jack cheese, and cotija cheese. Beef, chicken, and potatoe.",
+    "price": "$9.70",
+    "section": "Super Rolled Tacos"
+   },
+   {
+    "name": "3 Super rolled tacos",
+    "description": "Three rolled tacos, fried until crispy.",
+    "price": "$7.90",
+    "section": "Super Rolled Tacos"
+   },
+   {
+    "name": "Cheese Quesadilla",
+    "description": "Melted cheese inside a crispy tortilla.",
+    "price": "$7.70",
+    "section": "Quesadillas"
+   },
+   {
+    "name": "Super Quesadilla",
+    "description": "Choice of meat, with beans, guacamole, sour cream, lettuce, and mex salsa.",
+    "price": "$12.50",
+    "section": "Quesadillas"
+   },
+   {
+    "name": "Veggie Quesadilla",
+    "description": "Roasted vegetables wrapped in a tortilla.",
+    "price": "$10.00",
+    "section": "Quesadillas"
+   },
+   {
+    "name": "Shrimp Quesadilla",
+    "description": "Succulent shrimp wrapped in a crispy tortilla.",
+    "price": "$11.70",
+    "section": "Quesadillas"
+   },
+   {
+    "name": "Pambazo",
+    "description": "Traditional Mexican sandwich filled with chorizo, potatoes, and refried beans.",
+    "price": "$9.00",
+    "section": "Antojitos Mexicanos"
+   },
+   {
+    "name": "Huarache",
+    "description": "Traditional Mexican flatbread topped with beans, cheese, and various meats.",
+    "price": "$12.00",
+    "section": "Antojitos Mexicanos"
+   },
+   {
+    "name": "Menudo",
+    "description": "Traditional Mexican soup made with tripe and hominy.",
+    "price": "$13.50",
+    "section": "Antojitos Mexicanos"
+   },
+   {
+    "name": "Gordita",
+    "description": "Traditional Mexican corn masa pocket filled with savory fillings.",
+    "price": "$9.00",
+    "section": "Antojitos Mexicanos"
+   },
+   {
+    "name": "Sopes",
+    "description": "Traditional Mexican dish featuring thick, crispy tortillas topped with various ingredients.",
+    "price": "$8.50",
+    "section": "Antojitos Mexicanos"
+   },
+   {
+    "name": "Quesadillas hechas a mano",
+    "description": "Handmade tortillas filled with melted cheese.",
+    "price": "$10.50",
+    "section": "Antojitos Mexicanos"
+   },
+   {
+    "name": "Empanada",
+    "description": "Traditional Mexican pastry turnover filled with your choice of filling.",
+    "price": "$5.80",
+    "section": "Antojitos Mexicanos"
+   },
+   {
+    "name": "Al Pastor Taco",
+    "description": "Tender pork marinated in a blend of spices, served in a taco.",
+    "price": "$3.50",
+    "section": "Tacos"
+   },
+   {
+    "name": "Asada Taco",
+    "description": "Tender grilled steak in a traditional Mexican-style taco.",
+    "price": "$3.50",
+    "section": "Tacos"
+   },
+   {
+    "name": "Tripa Taco",
+    "description": "Traditional Mexican-style taco filled with crispy tripe.",
+    "price": "$3.50",
+    "section": "Tacos"
+   },
+   {
+    "name": "Alambre Taco",
+    "description": "Asada, bacon, bell pepper, pine apple, cheese, onions, on Regular big tortilla",
+    "price": "$6.00",
+    "section": "Tacos"
+   },
+   {
+    "name": "Carnitas Taco",
+    "description": "Traditional Mexican-style taco filled with slow-cooked pork.",
+    "price": "$3.50",
+    "section": "Tacos"
+   },
+   {
+    "name": "Cabeza Taco",
+    "description": "Tender beef cheek, served in a taco.",
+    "price": "$3.50",
+    "section": "Tacos"
+   },
+   {
+    "name": "Pollo Asado Taco",
+    "description": "Tender grilled chicken in a traditional Mexican-style taco.",
+    "price": "$3.50",
+    "section": "Tacos"
+   },
+   {
+    "name": "Fish Taco",
+    "description": "Fish served in a tortilla, classic taco style.",
+    "price": "$4.00",
+    "section": "Tacos"
+   },
+   {
+    "name": "Shrimp Taco",
+    "description": "Shrimp in a traditional Mexican-style taco.",
+    "price": "$4.00",
+    "section": "Tacos"
+   },
+   {
+    "name": "Nopal",
+    "description": "Taco filled with nopal cactus (prickly pear cactus).",
+    "price": "$3.50",
+    "section": "Tacos"
+   },
+   {
+    "name": "Chicharron Prensado",
+    "description": "lettuce, cheese, and sour cream",
+    "price": "$3.50",
+    "section": "Tacos"
+   },
+   {
+    "name": "Azteca",
+    "description": "Chorizo, asada, nopal, pico de Gallo, on regular big tortilla",
+    "price": "$6.00",
+    "section": "Tacos"
+   },
+   {
+    "name": "Pastor Mulitas",
+    "description": "Tortilla wrapped with pastor meat, served with onions and cilantro.",
+    "price": "$6.00",
+    "section": "Mulitas"
+   },
+   {
+    "name": "Pollo Asado Mulitas",
+    "description": "Melted cheese sandwiched between two tortillas with grilled chicken.",
+    "price": "$6.00",
+    "section": "Mulitas"
+   },
+   {
+    "name": "Birria Mulitas",
+    "description": "Two tortillas layered with melted cheese and birria.",
+    "price": "$6.00",
+    "section": "Mulitas"
+   },
+   {
+    "name": "Cabeza Mulitas",
+    "description": "Melted cheese between two tortillas with tender beef head meat.",
+    "price": "$6.00",
+    "section": "Mulitas"
+   },
+   {
+    "name": "Asada Mulitas",
+    "description": "Tender grilled steak wrapped in a crispy tortilla.",
+    "price": "$6.00",
+    "section": "Mulitas"
+   },
+   {
+    "name": "Carnitas Mulitas",
+    "description": "Tender pork, wrapped in a crispy tortilla.",
+    "price": "$6.00",
+    "section": "Mulitas"
+   },
+   {
+    "name": "Tripa Mulitas",
+    "description": "Two tortillas filled with tripe.",
+    "price": "$6.00",
+    "section": "Mulitas"
+   },
+   {
+    "name": "Asada",
+    "description": "Double tortilla",
+    "price": "$6.00",
+    "section": "Regular Tortilla Tacos (L)"
+   },
+   {
+    "name": "Pastor",
+    "description": "Marinated pork served in a regular tortilla taco.",
+    "price": "$6.00",
+    "section": "Regular Tortilla Tacos (L)"
+   },
+   {
+    "name": "Pollo Asado",
+    "description": "Grilled chicken taco on a regular tortilla.",
+    "price": "$6.00",
+    "section": "Regular Tortilla Tacos (L)"
+   },
+   {
+    "name": "Tripa",
+    "description": "Tripe served in a regular tortilla taco.",
+    "price": "$6.00",
+    "section": "Regular Tortilla Tacos (L)"
+   },
+   {
+    "name": "Carnitas",
+    "description": "Slow-cooked, tender pork served in a regular tortilla taco.",
+    "price": "$6.00",
+    "section": "Regular Tortilla Tacos (L)"
+   },
+   {
+    "name": "Birria",
+    "description": "Traditional Mexican stewed meat in a regular tortilla taco.",
+    "price": "$6.00",
+    "section": "Regular Tortilla Tacos (L)"
+   },
+   {
+    "name": "Cabeza",
+    "description": "Tender beef head meat in a traditional taco.",
+    "price": "$6.00",
+    "section": "Regular Tortilla Tacos (L)"
+   }
+  ]
+ },
+ {
+  "restaurantId": "9751",
+  "name": "Tacos Mi Estilo Jalisco",
+  "sourceUrl": "https://order.online/en/store/tacos-mi-estilo-jalisco-los-vallecitos-blvd-24627992",
+  "confidence": "medium",
+  "notes": "Facebook page (listed website) returns HTTP 400; sourced from order.online (DoorDash-family white-label storefront). Extracted from the page's embedded menu-book state, which declares category item counts (Mains 7, Bebidas 7, Extra Sides 4 = 18) that exactly match the unique items recovered after removing a 10-item 'Most Ordered' carousel duplicate of those same 18 items — confirms the capture is complete, not truncated, despite the small size.",
+  "dishes": [
+   {
+    "name": "Taco",
+    "description": "Corn tortilla with choice of protein. Onion, cilantro, salsa options.",
+    "price": "$4.00"
+   },
+   {
+    "name": "Burrito",
+    "description": "Flour tortilla with rice, beans, cheese, and choice of protein. Toppings optional.",
+    "price": "$14.95"
+   },
+   {
+    "name": "Quesabirria",
+    "description": "Taco with birria (beef stew). Onion, cilantro, salsa options.",
+    "price": "$6.50"
+   },
+   {
+    "name": "Agua Fresca",
+    "description": "Choice of small or large. Available flavors include horchata (rice-based beverage) and jamaica (hibiscus flower tea).",
+    "price": "$3.50"
+   },
+   {
+    "name": "Mulita",
+    "description": "Two tortillas with melted cheese and choice of protein. Toppings optional.",
+    "price": "$6.50"
+   },
+   {
+    "name": "Quesadilla (Choice of Protein)",
+    "description": "Griddled tortilla with melted cheese and choice of protein. Toppings optional.",
+    "price": "$14.00"
+   },
+   {
+    "name": "Torta",
+    "description": "Mexican sandwich with choice of protein. Cheese, lettuce, tomato, onion, salsa options.",
+    "price": "$13.00"
+   },
+   {
+    "name": "Jarritos",
+    "description": "Colorful Mexican sodas in flavors like lime, hibiscus, and tamarind, offering a refreshing taste with natural fruit flavors.",
+    "price": "$3.50"
+   },
+   {
+    "name": "Cheese Quesadilla (Vegetarian)",
+    "description": "Melted Cheese in a Crispy Tortilla Fold",
+    "price": "$6.25"
+   },
+   {
+    "name": "Bottled Coke",
+    "description": "The cold, refreshing, sparkling classic that America loves.",
+    "price": "$3.50"
+   },
+   {
+    "name": "Canned Squirt",
+    "description": "Naturally flavored citrus soda with a refreshing blend of grapefruit and lemon-lime. Caffeine-free.",
+    "price": "$2.50"
+   },
+   {
+    "name": "Canned Coke",
+    "description": "The cold, refreshing, sparkling classic that America loves.",
+    "price": "$2.50"
+   },
+   {
+    "name": "Canned Diet Coke",
+    "description": "A crisp, refreshing taste you know and love with zero calories.",
+    "price": "$2.50"
+   },
+   {
+    "name": "Bottled Water",
+    "description": "Pure and refreshing bottled water.",
+    "price": "$2.00"
+   },
+   {
+    "name": "Cheese",
+    "description": "Side of cheese, typically shredded Monterey Jack or cheddar.",
+    "price": "$0.50"
+   },
+   {
+    "name": "Sour Cream",
+    "description": "Creamy and tangy sour cream, typically used to add a cool contrast to your dishes.",
+    "price": "$0.50"
+   },
+   {
+    "name": "Salsa",
+    "description": "Zesty, fresh chopped tomato blend with cilantro, onions, and a hint of lime.",
+    "price": "$0.50"
+   },
+   {
+    "name": "Chipotle Salsa",
+    "description": "Made with smoky chipotle peppers, this salsa typically includes tomatoes, onions, and cilantro.",
+    "price": "$0.50"
+   }
+  ]
+ },
+ {
+  "restaurantId": "9385",
+  "name": "Boba Love",
+  "sourceUrl": "https://bobalovesd.com/online-orders",
+  "confidence": "high",
+  "notes": "First-party site, SkyTab (Shift4) online-ordering page rendered server-side; 66 dishes across 9 sections. One item's visible name/description pair was mis-split during parsing (fixed to 'Plain Bubble Waffle'); 3 Protein Drinks items sat under a differently-styled heading and were relabeled to the 'Protein Drinks' section for consistency — prices unaffected.",
+  "dishes": [
+   {
+    "name": "Acai Smoothie",
+    "description": "",
+    "price": "$9.45",
+    "section": "Acai Bowls"
+   },
+   {
+    "name": "Almond Butter Delight",
+    "description": "",
+    "price": "$13.45",
+    "section": "Acai Bowls"
+   },
+   {
+    "name": "Classic Acai Bowl",
+    "description": "",
+    "price": "$12.45",
+    "section": "Acai Bowls"
+   },
+   {
+    "name": "Nutella Acai Delight",
+    "description": "",
+    "price": "$13.45",
+    "section": "Acai Bowls"
+   },
+   {
+    "name": "Peanut Butter Heaven",
+    "description": "",
+    "price": "$13.45",
+    "section": "Acai Bowls"
+   },
+   {
+    "name": "Tropical Acai Heaven",
+    "description": "",
+    "price": "$13.45",
+    "section": "Acai Bowls"
+   },
+   {
+    "name": "Plain Bubble Waffle",
+    "description": "",
+    "price": "$5.00",
+    "section": "Bubble Waffle"
+   },
+   {
+    "name": "Dragon Fruit Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Honey Dew Fruit Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Jasmine Green Tea",
+    "description": "",
+    "price": "$5.45",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Lychee Fruit Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Mango Fruit Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Passion Fruit Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Peach Fruit Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Peach Mango Fruit Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Pineapple Fruit Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Strawberry Fruit Tea",
+    "description": "",
+    "price": "$6.25",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Wintermelon Fruit Tea",
+    "description": "",
+    "price": "$6.25",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "BlueRaspberry Fruit Tea",
+    "description": "",
+    "price": "$6.25",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Cherry And Green Apple Fruit Tea",
+    "description": "",
+    "price": "$6.25",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Cherry Fruit Tea",
+    "description": "",
+    "price": "$6.25",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Green Apple Fruit Tea",
+    "description": "",
+    "price": "$6.25",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Watermelon Fruit Tea",
+    "description": "",
+    "price": "$6.25",
+    "section": "Fruit Teas"
+   },
+   {
+    "name": "Almond Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Black Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Brown Sugar Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Classic Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Coconut Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Coffee Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Honeydew Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Horchata Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Lavender Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Mango Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Matcha Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Pineapple Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Strawberry Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Taro Milk Tea",
+    "description": "",
+    "price": "$6.49",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Thai Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Wintermelon Milk Tea",
+    "description": "",
+    "price": "$5.95",
+    "section": "Milk Teas"
+   },
+   {
+    "name": "Pitaya Almond Butter Delight",
+    "description": "",
+    "price": "$14.25",
+    "section": "Pitaya"
+   },
+   {
+    "name": "Pitaya Nutella Delight",
+    "description": "",
+    "price": "$14.25",
+    "section": "Pitaya"
+   },
+   {
+    "name": "Pitaya Peanut Butter Heaven",
+    "description": "",
+    "price": "$14.25",
+    "section": "Pitaya"
+   },
+   {
+    "name": "Pitaya Smoothie",
+    "description": "",
+    "price": "$10.95",
+    "section": "Pitaya"
+   },
+   {
+    "name": "Pitaya Tropical Heaven",
+    "description": "",
+    "price": "$14.25",
+    "section": "Pitaya"
+   },
+   {
+    "name": "Classic Pitaya",
+    "description": "",
+    "price": "$13.25",
+    "section": "Pitaya"
+   },
+   {
+    "name": "Chocolate Protein Drink",
+    "description": "",
+    "price": "$8.25",
+    "section": "Protein Drinks"
+   },
+   {
+    "name": "Strawberry Protein Drink",
+    "description": "",
+    "price": "$8.25",
+    "section": "Protein Drinks"
+   },
+   {
+    "name": "Vanilla Protien Drink",
+    "description": "",
+    "price": "$8.25",
+    "section": "Pitaya"
+   },
+   {
+    "name": "Avocado Smoothie",
+    "description": "",
+    "price": "$7.40",
+    "section": "Smoothies"
+   },
+   {
+    "name": "Brown Sugar Smoothie",
+    "description": "",
+    "price": "$6.95",
+    "section": "Smoothies"
+   },
+   {
+    "name": "Coffee Java Chip Smoothie",
+    "description": "",
+    "price": "$7.40",
+    "section": "Smoothies"
+   },
+   {
+    "name": "Avocado Smoothie Swirl",
+    "description": "",
+    "price": "$6.95",
+    "section": "Swirl"
+   },
+   {
+    "name": "Brown Sugar Nutella Swirl",
+    "description": "",
+    "price": "$7.25",
+    "section": "Swirl"
+   },
+   {
+    "name": "Brown Sugar Smoothie Swirl",
+    "description": "",
+    "price": "$6.95",
+    "section": "Swirl"
+   },
+   {
+    "name": "Cookies And Cream Smoothie Swirl",
+    "description": "",
+    "price": "$6.95",
+    "section": "Swirl"
+   },
+   {
+    "name": "Horchata Smoothie Swirl",
+    "description": "",
+    "price": "$6.95",
+    "section": "Swirl"
+   },
+   {
+    "name": "Mango Smoothie Swirl",
+    "description": "",
+    "price": "$6.95",
+    "section": "Swirl"
+   },
+   {
+    "name": "Mocha Smoothie  Swirl",
+    "description": "",
+    "price": "$6.95",
+    "section": "Swirl"
+   },
+   {
+    "name": "Nutella In A Cup",
+    "description": "",
+    "price": "$1.00",
+    "section": "Swirl"
+   },
+   {
+    "name": "Strawberry Banana Smoothie Swirl",
+    "description": "",
+    "price": "$6.95",
+    "section": "Swirl"
+   },
+   {
+    "name": "Strawberry Matcha Smoothie  Swirl",
+    "description": "",
+    "price": "$6.95",
+    "section": "Swirl"
+   },
+   {
+    "name": "Strawberry Smoothie Swirl",
+    "description": "",
+    "price": "$6.95",
+    "section": "Swirl"
+   },
+   {
+    "name": "Taro Smoothie Swirl",
+    "description": "",
+    "price": "$6.95",
+    "section": "Swirl"
+   },
+   {
+    "name": "Cofee Java Chip Swirl",
+    "description": "",
+    "price": "$7.95",
+    "section": "Swirl"
+   },
+   {
+    "name": "Taro Cofffee Swirl",
+    "description": "",
+    "price": "$7.45",
+    "section": "Swirl"
+   },
+   {
+    "name": "Vietnamese Coffee",
+    "description": "",
+    "price": "$5.50",
+    "section": "Vietnamese Coffee"
+   }
+  ]
+ },
+ {
+  "restaurantId": "12338",
+  "name": "When Pigs Fly BBQ",
+  "sourceUrl": "https://www.tripadvisor.com/Restaurant_Review-g33231-d8452898-Reviews-When_Pigs_Fly_Bbq-Vista_California.html",
+  "confidence": "high",
+  "notes": "Confirmed permanently closed: restaurant's own site states closed as of Oct 14, 2023; independently confirmed by Tripadvisor (listed CLOSED) and Uber Eats (\"Closed on Uber Eats as of Nov 1, 2023\"); Yelp also lists it as closed/gas-station address change.",
+  "dishes": []
+ }
+]

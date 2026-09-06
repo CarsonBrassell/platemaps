@@ -1,0 +1,712 @@
+[
+  {
+    "restaurantId": "9475",
+    "name": "SusieCakes - Carlsbad Forum",
+    "notes": "Order Online link (https://susiecakes.orderexperience.net/66b3b912b0efd96cf60cd31c/menu) is a Paytronix ordering platform, which renders its catalog client-side (browser-only per playbook); no prices obtainable via static fetch. Address on the ordering page (1935 Calle Barcelona, Suite 172, Carlsbad, CA 92009) confirms correct location.",
+    "blocked": "Order Online link (https://susiecakes.orderexperience.net/66b3b912b0efd96cf60cd31c/menu) is a Paytronix ordering platform, which renders its catalog client-side (browser-only per playbook); no prices obtainable via static fetch. Address on the ordering page (1935 Calle Barcelona, Suite 172, Carlsbad, CA 92009) confirms correct location.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "7393",
+    "name": "KYODAI 23 SUSHI",
+    "notes": "Own ordering site (kyodai23togo.menu11.com) renders on the menu11/crunch11 platform; static HTML fetch (434KB) contains no embedded price/JSON data (only one literal '$0.00' placeholder, zero 'price' JSON fields). Catalog is populated client-side via JS/AJAX; needs-browser.",
+    "blocked": "Own ordering site (kyodai23togo.menu11.com) renders on the menu11/crunch11 platform; static HTML fetch (434KB) contains no embedded price/JSON data (only one literal '$0.00' placeholder, zero 'price' JSON fields). Catalog is populated client-side via JS/AJAX; needs-browser.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "9328",
+    "name": "Immersion Coffee",
+    "notes": "Own site (immersion-coffee.com) returns HTTP 401 and the fetched page is a Squarespace 'Private Site' gate (title: Private Site, password-protected). No public menu page or delivery-platform presence found. No published prices reachable.",
+    "blocked": "Own site (immersion-coffee.com) returns HTTP 401 and the fetched page is a Squarespace 'Private Site' gate (title: Private Site, password-protected). No public menu page or delivery-platform presence found. No published prices reachable.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "7544",
+    "name": "Fleurette",
+    "sourceUrl": "https://www.fleurettesd.com/menu",
+    "notes": "First-party dine-in menu, address on page (4727 Executive Dr., Suite 100, San Diego, CA 92121) matches batch record exactly. Wine-by-the-bottle list omitted (not dish-like); food, dessert, and cocktail items with real prices included. Market Fish item dropped (Market Price, no fixed price). A 4% disclosed service surcharge is added to checks but is not baked into menu prices, so no price adjustment made.",
+    "dishes": [
+      {
+        "name": "The Feast (5-course family-style menu)",
+        "price": "$95.00",
+        "description": "For parties of 2 or more; entire party must participate",
+        "category": "Feast"
+      },
+      {
+        "name": "4-Course Wine Pairing (add-on)",
+        "price": "$55.00",
+        "description": "Add-on wine pairing for the Feast",
+        "category": "Feast"
+      },
+      {
+        "name": "\"Ham & Cheese\"",
+        "price": "$26.00",
+        "description": "Crispy gougères, cornichon, 24-month prosciutto di parma, gruyère & black truffle fonduta",
+        "category": "Bites & Snacks"
+      },
+      {
+        "name": "Sourdough Rosemary Fougasse",
+        "price": "$14.00",
+        "description": "Ligurian taggiasca olive oil & tapenade",
+        "category": "Bites & Snacks"
+      },
+      {
+        "name": "Tasting of San Diego Vegetables",
+        "price": "$27.00",
+        "description": "Gently poached local veggies, provençal potato aioli, fines herbes",
+        "category": "Bites & Snacks"
+      },
+      {
+        "name": "Heirloom Tomato Tarte",
+        "price": "$29.00",
+        "description": "Mozzarella, basil, olive tapenade",
+        "category": "Starters"
+      },
+      {
+        "name": "Beets à la \"Fleurette\"",
+        "price": "$27.00",
+        "description": "Whipped goat cheese, pistachios, orange blossom & honey dressing",
+        "category": "Starters"
+      },
+      {
+        "name": "San Diego Yellowfin Tuna Crudo",
+        "price": "$32.00",
+        "description": "Watermelon, avocado, spicy tomato water",
+        "category": "Starters"
+      },
+      {
+        "name": "Wagyu Steak Tartare",
+        "price": "$29.00",
+        "description": "Cured egg yolk, celery, niçoise dressing",
+        "category": "Starters"
+      },
+      {
+        "name": "Duck Liver & Bone Marrow Pâté",
+        "price": "$29.00",
+        "description": "Fennel marmalade, citrus, brioche toast",
+        "category": "Starters"
+      },
+      {
+        "name": "\"Oeufs & Eggs\"",
+        "price": "$38.00",
+        "description": "Soft scrambled eggs, San Diego uni, black truffle, px sherry sabayon, griddled sourdough",
+        "category": "Starters"
+      },
+      {
+        "name": "Basil Risotto",
+        "price": "$29.00",
+        "description": "Confit tomato, parmigiano reggiano",
+        "category": "Pasta & Risotto"
+      },
+      {
+        "name": "Ricotta Cappelletti alla Norma",
+        "price": "$32.00",
+        "description": "Tomato, basil, italian eggplant",
+        "category": "Pasta & Risotto"
+      },
+      {
+        "name": "Egg Yolk Fettucine",
+        "price": "$48.00",
+        "description": "Meyer lemon butter, golden ossetra caviar",
+        "category": "Pasta & Risotto"
+      },
+      {
+        "name": "Hand Cut Pappardelle",
+        "price": "$32.00",
+        "description": "Braised duck ragu, wild fennel, whipped ricotta",
+        "category": "Pasta & Risotto"
+      },
+      {
+        "name": "Wild Dover Sole 'a la Meuniere'",
+        "price": "$90.00",
+        "description": "Lemon oil, caper, olive, brioche croutons",
+        "category": "Mains"
+      },
+      {
+        "name": "Grilled Wagyu Bavette Steak",
+        "price": "$54.00",
+        "description": "Summer corn, roasted mushrooms, bordelaise sauce",
+        "category": "Mains"
+      },
+      {
+        "name": "Provençal Lamb Rack",
+        "price": "$59.00",
+        "description": "Merguez sausage, zucchini blossom, red pepper jus",
+        "category": "Mains"
+      },
+      {
+        "name": "Dry Aged Liberty Farms Duck",
+        "price": "$58.00",
+        "description": "Local fig, fennel, lavender honey",
+        "category": "Mains"
+      },
+      {
+        "name": "32oz Dry Aged Flannery Ribeye",
+        "price": "$160.00",
+        "description": "Porcini rub, shallot-madeira butter",
+        "category": "To Share"
+      },
+      {
+        "name": "Whole Roasted Golden Chicken",
+        "price": "$110.00",
+        "description": "Garden herbs, natural jus",
+        "category": "To Share"
+      },
+      {
+        "name": "Crispy \"Rösti\" Potatoes",
+        "price": "$21.00",
+        "description": "Tarragon béarnaise",
+        "category": "Accoutrements"
+      },
+      {
+        "name": "Market Green Salad",
+        "price": "$18.00",
+        "description": "Fines herbes, simple vinaigrette",
+        "category": "Accoutrements"
+      },
+      {
+        "name": "Sweet Summer Corn",
+        "price": "$23.00",
+        "description": "Chanterelle mushrooms, green garlic",
+        "category": "Accoutrements"
+      },
+      {
+        "name": "Chickpea Panisse Fries",
+        "price": "$19.00",
+        "description": "Garlic aioli, red pepper ketchup",
+        "category": "Accoutrements"
+      },
+      {
+        "name": "Lavender & Honey",
+        "price": "$21.00",
+        "description": "Mikolich honey semifreddo, pistachio financier, lemon, lavender mousse",
+        "category": "Something Sweet"
+      },
+      {
+        "name": "Strawberry & Yuzu",
+        "price": "$21.00",
+        "description": "Crisp meringue, almond, wild fennel & pernod gelato",
+        "category": "Something Sweet"
+      },
+      {
+        "name": "Milk Chocolate & Raspberry",
+        "price": "$21.00",
+        "description": "Orange blossom, brik tuille, vanilla chantilly",
+        "category": "Something Sweet"
+      },
+      {
+        "name": "Dark Chocolate & Coffee",
+        "price": "$21.00",
+        "description": "Warm chocolate fondant, coffee & caramel gelato",
+        "category": "Something Sweet"
+      },
+      {
+        "name": "Gelato & Sorbet",
+        "price": "$9.00",
+        "description": "",
+        "category": "Something Sweet"
+      },
+      {
+        "name": "Del Mar",
+        "price": "$18.00",
+        "description": "California Citron Vodka, French Melon, Lime, Ginger Beer",
+        "category": "Signature Cocktails"
+      },
+      {
+        "name": "Provence",
+        "price": "$19.00",
+        "description": "Rosé Wine, Armagnac, Herbes de Provence, Strawberry, Lemon",
+        "category": "Signature Cocktails"
+      },
+      {
+        "name": "Cannes",
+        "price": "$20.00",
+        "description": "French Riviera Gin, Raspberry, Lemon, Champagne, Campari Foam",
+        "category": "Signature Cocktails"
+      },
+      {
+        "name": "Eze",
+        "price": "$21.00",
+        "description": "Blanco Tequila, Lime, Pommeau, Sea Foam",
+        "category": "Signature Cocktails"
+      },
+      {
+        "name": "Genoa",
+        "price": "$26.00",
+        "description": "Italian Sea Salt Gin, Green Charteuse, Maraschino, Pine Nut, Basil, Lime",
+        "category": "Signature Cocktails"
+      },
+      {
+        "name": "Big Sur",
+        "price": "$20.00",
+        "description": "Pine Gin, Citrus Apertif Wine, Apricot, Lemon, Mediterranean Tonic",
+        "category": "Signature Cocktails"
+      },
+      {
+        "name": "Cabo San Lucas",
+        "price": "$22.00",
+        "description": "Reposado Tequila, Strawberry, Yuzu, Theobroma Cacao Oil, Yogurt",
+        "category": "Signature Cocktails"
+      },
+      {
+        "name": "La Jolla",
+        "price": "$22.00",
+        "description": "La Jolla Gin, Caper Vermouth, Provencal Olive Oil, Brine",
+        "category": "Signature Cocktails"
+      },
+      {
+        "name": "Coronado",
+        "price": "$19.00",
+        "description": "Bourbon, Champagne Reduction, Brown Butter",
+        "category": "Signature Cocktails"
+      },
+      {
+        "name": "Marseille",
+        "price": "$23.00",
+        "description": "Rye Whiskey, North African spice, Date, Banana, Coffee",
+        "category": "Signature Cocktails"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9089",
+    "name": "One WorldBeat Cafe",
+    "sourceUrl": "https://www.doordash.com/store/one-worldbeat-cafe-san-diego-913697/",
+    "notes": "Own site (worldbeatcenter.org/about-us/cafe) publishes no prices, only pointing to GrubHub/UberEats/DoorDash for ordering. GrubHub restaurant page is a client-rendered shell with no embedded data. DoorDash store page address (2100 Park Boulevard, San Diego) matches batch record; extracted via schema.org JSON-LD, deduped against the \"Most Ordered\" carousel (dropped as duplicates of items in named sections).",
+    "dishes": [
+      {
+        "name": "Combination Plate",
+        "price": "$17.00",
+        "description": "Can't decide? Our combo plate offers a serving of our popular entrees like the African Peanut Coconut Curry, Costa Chica Chili, Louisiana Creole Gumbo served over basmati rice along with a side of collard greens, plantains, salad and pita bread.",
+        "category": "Entrees"
+      },
+      {
+        "name": "African Peanut Coconut Curry",
+        "price": "$12.50",
+        "description": "Fresh ingredients include mixed vegetables, sweet yam potatoes, coconut milk, curry powder, ginger, leeks, gluten-free soy sauce, peanut paste, olive oil, and spices. Served over basmati rice with plantains, spring salad, and pita bread on the side. (Gluten-free option available, ask to remove pita bread)",
+        "category": "Entrees"
+      },
+      {
+        "name": "Jamaican Red Curry",
+        "price": "$12.50",
+        "description": "Made with mixed vegetables, potatoes, ground tomato, coconut milk, Jamaican jerk, garlic, fresh herbs, spices, gluten free soy, onions and olive oil. Served over basmati rice and with a side of plantains, salad and pita bread.",
+        "category": "Entrees"
+      },
+      {
+        "name": "Louisiana Creole Gumbo",
+        "price": "$13.00",
+        "description": "Fresh ingredients include okra, ground tomato, corn, garlic, spices, gluten-free soy sauce, onion, and olive oil.  Served over basmati rice and a side of collard greens and salad.",
+        "category": "Entrees"
+      },
+      {
+        "name": "Costa Chica Chili",
+        "price": "$9.00",
+        "description": "Made with black beans, pinto beans, ground tomato, soyrizo, corn, garlic, gluten-free soy sauce and olive oil. Served over basmati rice and topped with vegan cheese, diced tomatoes, onions and purple tortilla chips.",
+        "category": "Entrees"
+      },
+      {
+        "name": "Ethnobotany Garden Salad ",
+        "price": "$13.00",
+        "description": "Freshly picked from our ethnobotany garden, packed with supper foods; variety of lettuce, Gotu Kola, “long life” Gynura, fresh Moringa leaves, African Basil, and micro greens (sprouts), grated carrots, beets, topped with miso tahini dressing.",
+        "category": "Fresh From The Garden"
+      },
+      {
+        "name": "Moringa Superfood Smoothie",
+        "price": "$10.00",
+        "description": "Freshly made with garden superfood greens like Moringa, gotu kola, gynura (long life), kale, mint, apple juice, water and banana",
+        "category": "Fresh From The Garden"
+      },
+      {
+        "name": "South of the Border Vegan Burritos - Cheezy Bean",
+        "price": "$8.00",
+        "description": "Cheezy Bean: ​ ​cannellini beans, vegan cheese, wheat flour tortilla\nServed with our Costa Chica Chili and topped with vegan cheese, diced tomatoes and diced onions",
+        "category": "Specialty  Selections"
+      },
+      {
+        "name": "Jerk Rasta Burger",
+        "price": "$14.50",
+        "description": "Veggie burger patty marinated with house made Jamaican jerk sauce, lettuce, tomato, onions, pickles, vegan mayo, pretzel buns with sweet potato fries on the side",
+        "category": "Specialty  Selections"
+      },
+      {
+        "name": "Mushroom \"Cheese\" Burger",
+        "price": "$16.00",
+        "description": "Veggie burger patty marinated with house made Jamaican jerk sauce, jerked shiitake mushrooms, vegan cheddar cheese, lettuce, tomato, onions, pickles, vegan mayo, pretzel buns with sweet potato fries on the side",
+        "category": "Specialty  Selections"
+      },
+      {
+        "name": "Vegan Chili Dog",
+        "price": "$9.00",
+        "description": "Vegan sausage snuggled in pretzel bun, topped with our house made Costa Chica chili, vegan cheese, red onions, microgreen sprouts and diced tomatoes",
+        "category": "Specialty  Selections"
+      },
+      {
+        "name": "South of the Border Vegan Burritos - Soyrizo",
+        "price": "$8.00",
+        "description": "Soyrizo: soy chorizo, vegan cheese, vegan egg (tofu), potato, onion, wheat flour tortilla\nServed with our Costa Chica Chili and topped with vegan cheese, diced tomatoes and diced onions",
+        "category": "Specialty  Selections"
+      },
+      {
+        "name": "Jamaican Veggie Patty",
+        "price": "$5.00",
+        "description": "flavors:\nSpicy Jerk Tofu \nVeggie Spinach\nSpicy Cabbage",
+        "category": "Specialty  Selections"
+      },
+      {
+        "name": "South of the Border Vegan Burritos - \"Eggy\" Ranchero",
+        "price": "$8.00",
+        "description": "“Eggy” Ranchero: vegan egg (tofu), vegan cheese, black beans, salsa (tomatoes, onion, cilantro, distilled vinegar, jalapeños, non GMO canola oil, garlic salt, spices) wheat flour tortilla\nServed with our Costa Chica Chili and topped with vegan cheese, diced tomatoes and diced onions",
+        "category": "Specialty  Selections"
+      },
+      {
+        "name": "Tamale (gluten-free)",
+        "price": "$8.50",
+        "description": "Vegan Tamale topped with our homemade Costa Chica and vegan cheese. Served with salad on the side.",
+        "category": "Specialty  Selections"
+      },
+      {
+        "name": "South of the Border Vegan Burritos - Soy-Sage",
+        "price": "$8.00",
+        "description": "Soy Sage:​ soy sausage, vegan egg (tofu), vegan cheese, green peppers, onion, wheat flour tortilla\nServed with our Costa Chica Chili and topped with vegan cheese, diced tomatoes and diced onions",
+        "category": "Specialty  Selections"
+      },
+      {
+        "name": "Fruit Smoothie",
+        "price": "$6.00",
+        "description": "Mixed berries, banana and apple juice.",
+        "category": "Smoothies"
+      },
+      {
+        "name": "Spirulina Elixer ",
+        "price": "$8.00",
+        "description": "Spirulina, water, apple juice, chia seed, limón, and ginger",
+        "category": "Fresh and Bottled Beverages"
+      },
+      {
+        "name": "Fresh Carrot Juice",
+        "price": "$7.00",
+        "description": "Fresh pressed organic carrots",
+        "category": "Fresh and Bottled Beverages"
+      },
+      {
+        "name": "Reed's Craft Ginger Beer",
+        "price": "$3.00",
+        "description": "",
+        "category": "Fresh and Bottled Beverages"
+      },
+      {
+        "name": "Lemon Verbena Tea",
+        "price": "$3.00",
+        "description": "Made with fresh picked lemon verbena leaves from the garden and lightly sweetened with agave. Cold with no ice.\n\nKnown for its relaxing qualities  and easing digestion.",
+        "category": "Fresh and Bottled Beverages"
+      },
+      {
+        "name": " Root Beer",
+        "price": "$3.00",
+        "description": "Smooth, classic root beer with a rich, frothy head. Perfectly sweet and endlessly refreshing.",
+        "category": "Fresh and Bottled Beverages"
+      },
+      {
+        "name": "Kombucha On Tap",
+        "price": "$5.00",
+        "description": "Flavors : \nPassionberry\nStrawberry \n\nPassionbarry Bliss",
+        "category": "On-Tap"
+      },
+      {
+        "name": "Vegan Chocolate Chip Cookies",
+        "price": "$2.00",
+        "description": "",
+        "category": "Dessert"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10545",
+    "name": "Finjan Coffee Co. - Mission Valley",
+    "sourceUrl": "https://www.doordash.com (Finjan Coffee Co, Hazard Center store)",
+    "crossCheckedAgainst": "Uber Eats listing (partial, address-confirmed)",
+    "notes": "Disambiguated from two other DoorDash listings for other Finjan branches by matching the Hazard Center Dr address against the batch record. Deduped against the \"Most Ordered\" carousel. Prices carry irregular cent endings (e.g. $7.02, $8.42, $6.32) that were checked for a baked-in delivery markup via a divisor sweep (1.00-1.35); no divisor produced a clean hit rate above ~26%, so this looks like the restaurant's own idiosyncratic pricing rather than a platform markup, and was filed as-is. \"Hot Chocolate\" was dropped ($4.00+ does not match a fixed-price format). Two Turkish coffee items are marked \"not available for online ordering\" on the source page but carry real listed prices, so were kept.",
+    "dishes": [
+      {
+        "name": "Zaatar Croissant",
+        "price": "$7.02",
+        "description": "Flaky croissant filled with zaatar, a Middle Eastern blend of thyme, sesame, and sumac",
+        "category": "Pastries"
+      },
+      {
+        "name": "Salted Tahini Honey Latte *SEASONAL SPECIAL*",
+        "price": "$8.42",
+        "description": "*Can be served Hot or Iced*  Double Shot Espresso mixed with our House Made Salted Tahini Honey Syrup and choice of Milk",
+        "category": "Seasonal Summer '26"
+      },
+      {
+        "name": "Basbousa Latte *SEASONAL SPECIAL*",
+        "price": "$7.60",
+        "description": "*Can be served Hot or Iced*  Double Shot Espresso mixed with our House Made Basbousa Syrup and topped with 8oz of Steamed Milk.  Basbousa is a classic Arabic semolina cake with hints of coconut.",
+        "category": "Seasonal Summer '26"
+      },
+      {
+        "name": "Matcha Coconut Cloud",
+        "price": "$8.78",
+        "description": "Coconut water topped with a house-made vanilla-matcha cloud. Hydrating, fresh, slightly sweet, kiss of matcha.",
+        "category": "Seasonal Summer '26"
+      },
+      {
+        "name": "Sparkling Matcha Mint Lemonade",
+        "price": "$9.36",
+        "description": "Sparkling lemonade, fresh muddled mint, PARU matcha. Earthy, refreshing, twist of citrus, matcha-forward.",
+        "category": "Seasonal Summer '26"
+      },
+      {
+        "name": "Basbousa Mocha *SEASONAL SPECIAL*",
+        "price": "$8.07",
+        "description": "*Can be Served Hot/Iced*   Double Shot Espresso mixed with Nibbles Chocolate and our House Made Basbousa Syrup and topped with 8oz of Steamed Milk.  Basbousa is a classic Arabic semolina cake with hints of coconut.",
+        "category": "Seasonal Summer '26"
+      },
+      {
+        "name": "Basbousa Cold Foam Cold Brew *SEASONAL SPECIAL*",
+        "price": "$7.72",
+        "description": "Our Signature Cold Brew topped with our House Made Basbousa Cold Foam.  Basbousa is a classic Arabic semolina cake with hints of coconut.",
+        "category": "Seasonal Summer '26"
+      },
+      {
+        "name": "Vanilla Bean Latte",
+        "price": "$8.42",
+        "description": "*Can be served Hot or Iced*  Double Shot Espresso mixed with our House Made Vanilla Bean Syrup and topped with 8oz of Steamed Milk.",
+        "category": "Espresso"
+      },
+      {
+        "name": "Latte",
+        "price": "$7.72",
+        "description": "*Can be Served Hot/Iced*  Double Shot Espresso topped with 10oz of Steamed Milk.",
+        "category": "Espresso"
+      },
+      {
+        "name": "Honey Cinnamon Latte",
+        "price": "$8.42",
+        "description": "*Can be Served Hot/Iced*  Double Shot Espresso mixed with a dash of Cinnamon and Raw, Organic Honey. Topped with 8oz of Steamed Milk.",
+        "category": "Espresso"
+      },
+      {
+        "name": "Mocha",
+        "price": "$8.07",
+        "description": "*Can be Served Hot/Iced*   Double Shot Espresso mixed with Nibbles Chocolate and topped with 8oz of Steamed Milk.",
+        "category": "Espresso"
+      },
+      {
+        "name": "Sparkling Orange Espresso",
+        "price": "$8.42",
+        "description": "Double Shot Espresso + Topo Chico Sparkling Water + House Made Orange Syrup + Orange Peel",
+        "category": "Espresso"
+      },
+      {
+        "name": "Cappuccino",
+        "price": "$7.02",
+        "description": "Double Shot Espresso topped with 6oz of Steamed Milk",
+        "category": "Espresso"
+      },
+      {
+        "name": "Cortado",
+        "price": "$6.32",
+        "description": "Double Shot Espresso topped with 2oz of Steamed Milk",
+        "category": "Espresso"
+      },
+      {
+        "name": "Sparkling Mazagran",
+        "price": "$10.53",
+        "description": "Our take on a classic North African drink.  Double Shot Espresso + House Lemon Syrup + Fresh Mint + Sumac + Topo Chico Sparkling Water",
+        "category": "Espresso"
+      },
+      {
+        "name": "Americano",
+        "price": "$4.91",
+        "description": "Double Shot Espresso mixed with water. Served Hot (12oz Cup) or Iced (16oz).",
+        "category": "Espresso"
+      },
+      {
+        "name": "Flat White",
+        "price": "$6.67",
+        "description": "Our Double Shot Espresso mixed with 4oz of Steamed Milk",
+        "category": "Espresso"
+      },
+      {
+        "name": "Macchiato",
+        "price": "$5.62",
+        "description": "Double Shot Espresso served with a dash of Milk Foam.",
+        "category": "Espresso"
+      },
+      {
+        "name": "Espresso Shot",
+        "price": "$4.91",
+        "description": "Double Shot of Espresso",
+        "category": "Espresso"
+      },
+      {
+        "name": "Turkish Coffee",
+        "price": "$5.62",
+        "description": "*NOT AVAILABLE FOR ONLINE ORDERING*  Turkish Coffee w/ freshly ground coffee, brewed over hot sand with your choice of Sugar Level.   3oz serving",
+        "category": "Specialty"
+      },
+      {
+        "name": "Turkish Coffee w/ Nutella",
+        "price": "$6.32",
+        "description": "*NOT AVAILABLE FOR ONLINE ORDERS*  Our Turkish Coffee, brewed over hot sand and made with Nutella!   3.5oz Serving",
+        "category": "Specialty"
+      },
+      {
+        "name": "Matcha Latte",
+        "price": "$7.60",
+        "description": "House Milled PARU Premium-Grade Matcha + Date Syrup + Choice of Milk  *Hot or Iced*",
+        "category": "Matcha (3Po)"
+      },
+      {
+        "name": "Matcha Americano",
+        "price": "$7.02",
+        "description": "House Milled PARU Premium-Grade Matcha + Water  *Hot or Iced*",
+        "category": "Matcha (3Po)"
+      },
+      {
+        "name": "Nitro Cold Brew Coffee",
+        "price": "$8.07",
+        "description": "Our Nitrogen Infused Cold Brew. Served Chilled",
+        "category": "Cold Brew Teas And Coffee"
+      },
+      {
+        "name": "Moroccan Mint Tea Still Cold Brew",
+        "price": "$7.72",
+        "description": "Our Cold Brewed Moroccan Mint Tea served over Ice. Served Sweet and w/ Fresh Mint.  *Green Tea Based*",
+        "category": "Cold Brew Teas And Coffee"
+      },
+      {
+        "name": "Cold Brew Coffee",
+        "price": "$6.67",
+        "description": "Our Cold Brew Coffee. Served Iced",
+        "category": "Cold Brew Teas And Coffee"
+      },
+      {
+        "name": "Cold Brew Lemonade",
+        "price": "$7.72",
+        "description": "",
+        "category": "Cold Brew Teas And Coffee"
+      },
+      {
+        "name": "Arab Cold Brew Coffee",
+        "price": "$7.37",
+        "description": "Our Cold Brew Coffee + Cinnamon Stick + Ground Cardamom + Fresh Mint",
+        "category": "Cold Brew Teas And Coffee"
+      },
+      {
+        "name": "Moroccan Mint Tea Nitro Cold Brew",
+        "price": "$8.42",
+        "description": "Our Nitrogen Infused, Cold-Brewed Moroccan Mint Tea. Served Sweet w/ Fresh Mint.  Green Tea Based",
+        "category": "Cold Brew Teas And Coffee"
+      },
+      {
+        "name": "Drip Coffee Traveler 96oz",
+        "price": "$21.06",
+        "description": "96oz of our Drip Coffee!",
+        "category": "Drip Coffee"
+      },
+      {
+        "name": "Drip Coffee",
+        "price": "$4.91",
+        "description": "12oz Drip Coffee. Served Hot",
+        "category": "Drip Coffee"
+      },
+      {
+        "name": "Hot Tea",
+        "price": "$4.91",
+        "description": "12oz Loose Leaf Tea. Served Hot",
+        "category": "Teas"
+      },
+      {
+        "name": "Moroccan Mint Tea (Hot)",
+        "price": "$5.62",
+        "description": "Loose Leaf Green Tea + Fresh Mint + Sugar. Served Hot",
+        "category": "Teas"
+      },
+      {
+        "name": "Sparkling Mint Sumac Lemonade",
+        "price": "$8.42",
+        "description": "House Lemon Syrup + Fresh Mint + Sumac + Topo Chico Sparkling Water",
+        "category": "Non-Caffeinated"
+      },
+      {
+        "name": "Blueberry Mint Refresher",
+        "price": "$9.13",
+        "description": "House Blueberry and Lemon Syrups + Fresh Mint + Fresh Blueberries + Topo Chico Sparkling Water",
+        "category": "Non-Caffeinated"
+      },
+      {
+        "name": "Steamed Milk",
+        "price": "$4.21",
+        "description": "Creamy, frothy milk gently steamed for a smooth texture.",
+        "category": "Non-Caffeinated"
+      },
+      {
+        "name": "Topo Chico",
+        "price": "$3.51",
+        "description": "Sparkling mineral water from Topo Chico, known for its crisp, refreshing bubbles and natural mineral content.",
+        "category": "Non-Caffeinated"
+      },
+      {
+        "name": "Monkey Toast",
+        "price": "$11.93",
+        "description": "Natural Peanut Butter + Bananas + Strawberries + Blueberries + Raw Organic Honey + Chia Seeds",
+        "category": "Toasts"
+      },
+      {
+        "name": "Fava Bean Toast",
+        "price": "$12.64",
+        "description": "Mashed Fava Bean + Persian Cucumber + Grape Tomatoes + Parsley + Tahini Sauce + Lemon Slice",
+        "category": "Toasts"
+      },
+      {
+        "name": "Labne Toast",
+        "price": "$11.23",
+        "description": "Labne + Zaatar + Persian Cucumber + Grape Tomatoes + Fresh Mint",
+        "category": "Toasts"
+      },
+      {
+        "name": "Avocado Toast",
+        "price": "$15.44",
+        "description": "Avocado + Arugula + Sliced Radish + Grape Tomatoes + Sea Salt + Aleppo Red Pepper Flakes + Balsamic Glaze + Lemon Slice",
+        "category": "Toasts"
+      },
+      {
+        "name": "Yogurt Parfait",
+        "price": "$14.04",
+        "description": "Creamy yogurt layered with granola, sliced bananas, strawberries, blackberries, and blueberries.",
+        "category": "Yogurt Parfait"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10588",
+    "name": "Morada Restaurant Rancho Santa Fe",
+    "notes": "Restaurant at this address (5951 Linea Del Cielo, Rancho Santa Fe) has been rebranded to \"Lilian's\" -- confirmed via the property's own site, theinnatrsf.com/restaurants-bars/, which lists \"Lilian's\", \"Bing's Bar\", and \"The Cafe\" at this address with no restaurant named Morada; Lilian's own site is liliansrsf.com. Not closed, just renamed -- filing as blocked per rebrand rule rather than not_found.",
+    "blocked": "Restaurant at this address (5951 Linea Del Cielo, Rancho Santa Fe) has been rebranded to \"Lilian's\" -- confirmed via the property's own site, theinnatrsf.com/restaurants-bars/, which lists \"Lilian's\", \"Bing's Bar\", and \"The Cafe\" at this address with no restaurant named Morada; Lilian's own site is liliansrsf.com. Not closed, just renamed -- filing as blocked per rebrand rule rather than not_found.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "7109",
+    "name": "Harvey's",
+    "notes": "Own domain (harveyssd.com) is misconfigured -- TLS cert names an unrelated business (127-west.com, a Fallbrook gastropub), confirmed via that site's own schema.org data. The real Harvey's (8685 Rio San Diego Dr Ste A) is clearly open per recent 2026 Instagram/Facebook posts and review mentions of specific prices (e.g. happy hour $2 off drafts, hush puppies $7, breakfast sandwich $11.95, catfish plate $24), but no delivery-platform page or first-party menu with a structured price list was found -- only scattered anecdotal prices in reviews/blog posts, not a filable menu. Yelp's \"CLOSED - Try Our New Menu\" banner is confirmed to be Yelp's generic template text (identical banner appears on Morada's Yelp page, which is also not actually closed) and is not evidence of closure.",
+    "blocked": "Own domain (harveyssd.com) is misconfigured -- TLS cert names an unrelated business (127-west.com, a Fallbrook gastropub), confirmed via that site's own schema.org data. The real Harvey's (8685 Rio San Diego Dr Ste A) is clearly open per recent 2026 Instagram/Facebook posts and review mentions of specific prices (e.g. happy hour $2 off drafts, hush puppies $7, breakfast sandwich $11.95, catfish plate $24), but no delivery-platform page or first-party menu with a structured price list was found -- only scattered anecdotal prices in reviews/blog posts, not a filable menu. Yelp's \"CLOSED - Try Our New Menu\" banner is confirmed to be Yelp's generic template text (identical banner appears on Morada's Yelp page, which is also not actually closed) and is not evidence of closure.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "12367",
+    "name": "Rush Bowls",
+    "notes": "Own site (rushbowls.com/san-diego and its menu subpages) publishes bowl/smoothie names and descriptions but zero prices anywhere in static HTML. DoorDash store page (address-matched to 1418 Garnet Ave) has full JSON-LD pricing, but a divisor sweep shows dividing every DoorDash price by ~1.15 lands cleanly on .99-ending numbers (e.g. $18.39/1.15=$15.99, $17.24/1.15=$14.99, $16.09/1.15=$13.99, $8.04/1.15=$6.99, $6.89/1.15=$5.99, $4.01/1.15=$3.49) -- a strong, consistent signal of a baked-in ~15% delivery markup across items of different base prices. Per the markup rule, these DoorDash prices were not filed as-is, and no unmarked-up source (own site, Grubhub -- client-rendered empty shell) was found.",
+    "blocked": "Own site (rushbowls.com/san-diego and its menu subpages) publishes bowl/smoothie names and descriptions but zero prices anywhere in static HTML. DoorDash store page (address-matched to 1418 Garnet Ave) has full JSON-LD pricing, but a divisor sweep shows dividing every DoorDash price by ~1.15 lands cleanly on .99-ending numbers (e.g. $18.39/1.15=$15.99, $17.24/1.15=$14.99, $16.09/1.15=$13.99, $8.04/1.15=$6.99, $6.89/1.15=$5.99, $4.01/1.15=$3.49) -- a strong, consistent signal of a baked-in ~15% delivery markup across items of different base prices. Per the markup rule, these DoorDash prices were not filed as-is, and no unmarked-up source (own site, Grubhub -- client-rendered empty shell) was found.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "9788",
+    "name": "Main Street Pour House - Vista",
+    "notes": "Own site (mainstpourhousevista.com / mainstgrillvista.com) is beer-tap-forward (\"40 rotating taps\") with no menu page or prices published, though it does reference burgers in passing. No DoorDash/UberEats/Grubhub presence found for this specific Vista location via search (only differently-named \"Pour House\" restaurants elsewhere). Yelp shows no priced menu text, only a photo gallery. No reachable priced source found.",
+    "blocked": "Own site (mainstpourhousevista.com / mainstgrillvista.com) is beer-tap-forward (\"40 rotating taps\") with no menu page or prices published, though it does reference burgers in passing. No DoorDash/UberEats/Grubhub presence found for this specific Vista location via search (only differently-named \"Pour House\" restaurants elsewhere). Yelp shows no priced menu text, only a photo gallery. No reachable priced source found.",
+    "dishes": []
+  }
+]

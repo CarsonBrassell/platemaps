@@ -56,10 +56,20 @@ import { useAuth } from "@/lib/auth";
  * on the header row, the mobile bar *and* the phone nav, and whichever is on
  * screen resolves — a hidden nav measures 0×0 and is skipped.
  *
- * A move whose anchor is not on the current page renders nothing and waits
- * rather than drawing a spotlight on empty ground. That is why the order is
- * load-bearing: `map` only exists on the feed screen, so the step before it is
- * the one that takes you there, and `feedtab` brings you back for `restaurant`.
+ * A control that is on the page but scrolled out of view is scrolled *into*
+ * view once, when the step starts, and never again — a spotlight on a card
+ * above the fold is a spotlight on nothing, but a spotlight that keeps
+ * dragging the page back is a fight.
+ *
+ * A move whose control is not on the current page at all does not draw on
+ * empty ground, but it does not go silent either — that was the old
+ * behaviour, and it left somebody who had wandered off the feed mid-walk with
+ * a tour that had simply vanished. Now a step that knows where its control
+ * lives (`home`) marks the nav button that leads back there, and one that
+ * cannot find anything for a couple of seconds says so and offers a way on.
+ * The order is still load-bearing: `map` only exists on the feed screen, so
+ * the step before it is the one that takes you there, and `feedtab` brings
+ * you back for `restaurant`.
  */
 
 /**
@@ -83,7 +93,7 @@ type Step = {
   /**
    * A dwell that wants one gesture and nothing else.
    *
-   * `"scroll"` holds pointer presses until "I'm done" while leaving scrolling —
+   * `"scroll"` swallows presses until "I'm done" while leaving scrolling —
    * wheel, trackpad, a vertical drag, the keyboard — completely free. It exists
    * because a dwell that says "have a scroll" and then lets you press Profile
    * does not just lose its own point: the step after it expects an anchor on
@@ -95,6 +105,16 @@ type Step = {
    * to explore a screen they cannot touch.
    */
   lock?: "scroll";
+  /**
+   * The nav control that leads back to the screen this step's control lives
+   * on. Three marks — `map`, `feedtab`, `restaurant` — exist only on the feed
+   * screen; if somebody is anywhere else when one of those steps comes up, the
+   * Feed button is marked instead, with a hint saying why, and the mark moves
+   * to the real control the moment it is back on screen. Pressing the home
+   * control never advances the walk — it just navigates, the way it always
+   * does.
+   */
+  home?: string;
 };
 
 const STEPS: Step[] = [
@@ -111,6 +131,7 @@ const STEPS: Step[] = [
   },
   {
     key: "map",
+    home: "feed",
     title: "The same plates, on a map",
     body: "Pins instead of cards, so you can pick by what is close enough to walk to tonight.",
     hint: "Tap the map",
@@ -121,12 +142,16 @@ const STEPS: Step[] = [
   },
   {
     key: "feedtab",
+    home: "feed",
     title: "Back to the cards",
     body: "The map and the feed are the same plates drawn two ways.",
-    hint: "Tap Feed",
+    /* "Up top": the phone nav has a Feed button too, and pressing that one
+       instead does nothing here — the tab is the control that leaves the map. */
+    hint: "Tap Feed, up top",
   },
   {
     key: "restaurant",
+    home: "feed",
     title: "Open a plate",
     body: "The orange line on a card is the dish. It opens the restaurant it came from.",
     hint: "Tap a dish",
@@ -165,11 +190,58 @@ const STEPS: Step[] = [
   },
 ];
 
+/** What the caption says while a step is marking its `home` control instead. */
+const HOME_HINTS: Record<string, string> = {
+  feed: "Tap Feed to get back",
+};
+
 /** Breathing room between the target's own edge and the edge of the hole. */
 const PAD = 8;
 
+/**
+ * The band at the foot of the viewport that a bottom nav covers — PhoneNav's
+ * arc reserves 96px, MobileNav's bar is ~76px. A control whose rect ends in
+ * this band is "on screen" by the numbers and under a bar in fact, so it does
+ * not count as fully visible.
+ */
+const NAV_RESERVE = 96;
+
+/**
+ * How long a move waits for its control before admitting it cannot find one.
+ * Long enough to cover a page still rendering after a navigation — the feed's
+ * cards arrive a beat after its shell — and short enough that somebody who has
+ * genuinely landed somewhere without the control is not left staring.
+ */
+const LOST_AFTER_MS = 2500;
+
 /** Where the walk is up to, so a route change does not lose it. */
 const STEP_KEY = "pm-coach-step";
+
+/**
+ * The signed-out half of the latch.
+ *
+ * `localStorage` rather than `sessionStorage`, because "I have already had the
+ * tour" should outlive the tab the way the account flag does. Wrapped because a
+ * browser with storage denied throws on the read, and a tour that crashes the
+ * layout is worse than a tour that shows twice.
+ */
+const SEEN_KEY = "pm-tour-seen";
+
+function readLocalSeen(): boolean {
+  try {
+    return window.localStorage.getItem(SEEN_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function writeLocalSeen(): void {
+  try {
+    window.localStorage.setItem(SEEN_KEY, "1");
+  } catch {
+    // Storage denied. Worth nothing more than seeing the tour again.
+  }
+}
 
 function readStep(): number {
   if (typeof window === "undefined") return 0;
@@ -178,49 +250,137 @@ function readStep(): number {
   return Number.isInteger(n) && n >= 0 && n < STEPS.length ? n : 0;
 }
 
+type Visibility = "full" | "part" | "none";
+
+/** How much of a rect a person can actually see and press. */
+function visibility(r: DOMRect): Visibility {
+  if (r.top >= 0 && r.bottom <= window.innerHeight - NAV_RESERVE) return "full";
+  if (r.bottom > 0 && r.top < window.innerHeight) return "part";
+  return "none";
+}
+
 /**
- * The first element carrying this key that is actually on screen.
+ * The element carrying this key that somebody can see best.
  *
  * `getBoundingClientRect` rather than `offsetParent`, because the phone nav's
  * variants and the header row are hidden with `hidden`/`xl:` utilities in
  * different ways, and a zero-area rect is the one signal all of them share.
+ *
+ * Fully visible beats partly visible beats anywhere in the document. Marks like
+ * `restaurant` sit on every feed card, so "the first in the DOM" can easily be a
+ * card scrolled off the top, and "the first on screen" can be one whose dish
+ * line is under the nav bar.
+ *
+ * `held` is the element the previous tick chose. It keeps priority while it is
+ * still fully visible, so a scroll that brings a second card into view does
+ * not make the spotlight hop between them.
  */
-function findAnchor(key: string): HTMLElement | null {
+function findAnchor(key: string, held: HTMLElement | null): HTMLElement | null {
+  if (held?.isConnected && held.dataset.coach === key) {
+    const r = held.getBoundingClientRect();
+    if (r.width > 0 && r.height > 0 && visibility(r) === "full") return held;
+  }
   const live = Array.from(
     document.querySelectorAll<HTMLElement>(`[data-coach="${key}"]`)
   ).filter((el) => {
     const r = el.getBoundingClientRect();
     return r.width > 0 && r.height > 0;
   });
-  /* Prefer one that is actually in the viewport. Marks like `restaurant` sit on
-     every feed card, so "the first in the DOM" can easily be a card scrolled
-     off the top — and a hole drawn above the fold is a spotlight on nothing. */
-  const onScreen = live.find((el) => {
-    const r = el.getBoundingClientRect();
-    return r.bottom > 0 && r.top < window.innerHeight;
-  });
-  return onScreen ?? live[0] ?? null;
+  const full = live.find((el) => visibility(el.getBoundingClientRect()) === "full");
+  const part = full ?? live.find((el) => visibility(el.getBoundingClientRect()) === "part");
+  return part ?? live[0] ?? null;
+}
+
+/** The nearest ancestor that scrolls, or null for the document. */
+function scrollerOf(el: HTMLElement): HTMLElement | null {
+  for (let n = el.parentElement; n; n = n.parentElement) {
+    const o = getComputedStyle(n).overflowY;
+    if ((o === "auto" || o === "scroll") && n.scrollHeight > n.clientHeight) return n;
+  }
+  return null;
+}
+
+/**
+ * Scroll a control that is on the page but out of view into it. Returns
+ * whether anything was scrolled, so the caller knows to measure again rather
+ * than draw the hole where the control *was*.
+ *
+ * Two kinds of ancestor change the answer. A fixed one means the control is
+ * never off screen — it only looks "part" visible because a bottom nav sits in
+ * the reserve band — so there is nothing to do. A sticky one means the control
+ * rides a bar that hides itself as the page scrolls down (PhoneStickyBar), and
+ * that bar declines to re-show for a programmatic scroll of a few pixels — it
+ * only reacts to a *person* scrolling up (measured in Chrome, 2026-09-05).
+ * What it does honour is being back at depth zero, so the scroller goes to the
+ * top, which for a bar that lives at the top of its screen is also the right
+ * place to be.
+ */
+function bringIntoView(el: HTMLElement): boolean {
+  for (let n: HTMLElement | null = el; n; n = n.parentElement) {
+    const pos = getComputedStyle(n).position;
+    if (pos === "fixed") return false;
+    if (pos === "sticky") {
+      const scroller = scrollerOf(n);
+      if (scroller) scroller.scrollTop = 0;
+      else window.scrollTo(0, 0);
+      return true;
+    }
+  }
+  el.scrollIntoView({ block: "center" });
+  return true;
 }
 
 type Rect = { top: number; left: number; width: number; height: number };
 
-export function CoachTour({ onDone }: { onDone: () => void }) {
-  const { updateSettings } = useAuth();
-  /* Not read, but depended on: a route change has to re-run the effect that
-     hunts for the anchor, or the tour keeps measuring the page it left. */
+/**
+ * What the step is pointing at right now: its own control, or — when that is
+ * not on this page — the `home` control that leads back to it.
+ */
+type Target = { kind: "own" | "home"; rect: Rect };
+
+function toRect(r: DOMRect): Rect {
+  return { top: r.top, left: r.left, width: r.width, height: r.height };
+}
+
+function sameTarget(a: Target | null, b: Target): boolean {
+  return (
+    a !== null &&
+    a.kind === b.kind &&
+    a.rect.top === b.rect.top &&
+    a.rect.left === b.rect.left &&
+    a.rect.width === b.rect.width &&
+    a.rect.height === b.rect.height
+  );
+}
+
+export function CoachTour({ onDone, fresh }: { onDone: () => void; fresh: boolean }) {
+  const { account, updateSettings } = useAuth();
   const pathname = usePathname();
 
-  const [index, setIndex] = useState(readStep);
+  /* A `?tour=1` replay always starts at the top. The resume key is for a
+     reload in the middle of a first run; a replay that honoured it would pick
+     up wherever the last abandoned one stopped, which on a signed-in account
+     is the only kind there is. */
+  const [index, setIndex] = useState(() => (fresh ? 0 : readStep()));
   /* The same number, readable from a handler without a stale closure. `advance`
      used to compute the next step inside a `setIndex` updater and call
      `finish` from there — which runs `onDone`, the parent's setState, in the
      middle of a render, and runs twice under strict mode. A ref keeps the
      arithmetic in the handler where side effects belong. */
   const indexRef = useRef(index);
-  const [rect, setRect] = useState<Rect | null>(null);
+  const [target, setTarget] = useState<Target | null>(null);
+  /* The situation a step has given up finding its control in — see the
+     timer below. Compared against the current one rather than reset by an
+     effect, so arriving on a new page or step starts the wait over for free. */
+  const [lostIn, setLostIn] = useState<string | null>(null);
+  const held = useRef<HTMLElement | null>(null);
+  const nudged = useRef<string | null>(null);
   const finished = useRef(false);
 
   const step = STEPS[index] ?? STEPS[0];
+  /* One step on one page. Everything that should happen once per "arrival" —
+     the scroll-into-view, the lost timer — is keyed on this. */
+  const situation = `${index}@${pathname}`;
 
   /*
    * Find the marked control and keep its rectangle current.
@@ -234,14 +394,32 @@ export function CoachTour({ onDone }: { onDone: () => void }) {
   useEffect(() => {
     const key = step.key;
     if (!key) return;
+    const home = step.home;
     const tick = () => {
-      const el = findAnchor(key);
-      if (!el) {
-        setRect(null);
+      const own = findAnchor(key, held.current);
+      held.current = own;
+      if (own) {
+        const r = own.getBoundingClientRect();
+        if (visibility(r) !== "full" && nudged.current !== situation) {
+          nudged.current = situation;
+          // Measure again next tick, once the scroll has happened.
+          if (bringIntoView(own)) return;
+        }
+        const next: Target = { kind: "own", rect: toRect(r) };
+        setTarget((prev) => (sameTarget(prev, next) ? prev : next));
         return;
       }
-      const r = el.getBoundingClientRect();
-      setRect({ top: r.top, left: r.left, width: r.width, height: r.height });
+      /* Not on this page. Point at the way back — unless the way back is
+         where we already are, in which case the control is missing for some
+         other reason (an empty feed, a page still rendering) and marking Feed
+         on the feed would be a lie. */
+      const fallback = home ? findAnchor(home, null) : null;
+      if (fallback && fallback.getAttribute("aria-current") !== "page") {
+        const next: Target = { kind: "home", rect: toRect(fallback.getBoundingClientRect()) };
+        setTarget((prev) => (sameTarget(prev, next) ? prev : next));
+        return;
+      }
+      setTarget((prev) => (prev === null ? prev : null));
     };
 
     const first = window.requestAnimationFrame(tick);
@@ -254,18 +432,29 @@ export function CoachTour({ onDone }: { onDone: () => void }) {
       window.removeEventListener("resize", tick);
       window.removeEventListener("scroll", tick, true);
     };
-  }, [step, pathname]);
+  }, [step, situation]);
+
+  /* The grace period. It always runs; it only matters while nothing is found. */
+  useEffect(() => {
+    if (!step.key) return;
+    const id = window.setTimeout(() => setLostIn(situation), LOST_AFTER_MS);
+    return () => window.clearTimeout(id);
+  }, [step, situation]);
 
   const finish = useCallback(() => {
     if (finished.current) return;
     finished.current = true;
     window.sessionStorage.removeItem(STEP_KEY);
+    /* Both halves of the latch, and the local one unconditionally: a signed-in
+       person who later signs out should not be handed the tour again. */
+    writeLocalSeen();
     // Fire-and-forget. Failing to record it means seeing the tour once more,
     // which is a far smaller cost than a nav press that does not navigate
-    // because a settings write is in flight.
-    void updateSettings({ tourSeen: true });
+    // because a settings write is in flight. Skipped when signed out, where
+    // the write is a guaranteed 401.
+    if (account) void updateSettings({ tourSeen: true });
     onDone();
-  }, [onDone, updateSettings]);
+  }, [account, onDone, updateSettings]);
 
   const advance = useCallback(() => {
     const next = indexRef.current + 1;
@@ -287,6 +476,10 @@ export function CoachTour({ onDone }: { onDone: () => void }) {
    * element, so it survives the anchor being replaced under it (the nav
    * re-renders on every route change) without re-binding, and so it runs before
    * the link's own handler starts a navigation.
+   *
+   * Only ever the step's own key. While a step is pointing at its `home`
+   * control, pressing that just navigates; the walk advances when the real
+   * control is pressed on the page it leads to.
    */
   useEffect(() => {
     const key = step.key;
@@ -308,20 +501,32 @@ export function CoachTour({ onDone }: { onDone: () => void }) {
     return () => document.removeEventListener("keydown", onKey);
   }, [finish]);
 
-  /* A move whose control is not on this page yet. Wait rather than draw. A
-     dwell has nothing to point at and is never held up by this. */
-  if (step.key && !rect) return null;
+  const lost = step.key !== undefined && target === null && lostIn === situation;
 
-  /* Keyed on the step so arriving at the next one *remounts* the mark, which
-     is what resets its "have they wandered off" state. Resetting it from an
-     effect instead would be an extra render and a lint rule's worth of
-     argument for a value that a fresh mount gives free. */
+  /* A move whose control is not on this page yet. Wait rather than draw — but
+     only for the grace period; after that the mark renders in its "lost"
+     form. A dwell has nothing to point at and is never held up by this. */
+  if (step.key && !target && !lost) return null;
+
+  const detour = target?.kind === "home";
+  const markKey = detour ? step.home : step.key;
+  const hint = detour && step.home ? (HOME_HINTS[step.home] ?? step.hint) : step.hint;
+
+  /* Keyed on the situation — step *and* page — so arriving at the next step,
+     or on another screen, *remounts* the mark, which is what resets its
+     "have they wandered off" state. The page is part of it because a mark
+     folded away by a tap on the nav must not stay folded on the screen that
+     tap opened: the way back is the one thing worth showing there. Resetting
+     it from an effect instead would be an extra render and a lint rule's
+     worth of argument for a value that a fresh mount gives free. */
   return (
     <StepMark
-      key={index}
+      key={situation}
       step={step}
       index={index}
-      rect={rect}
+      rect={target?.rect ?? null}
+      markKey={markKey}
+      hint={hint}
       onAdvance={advance}
       onFinish={finish}
     />
@@ -331,17 +536,27 @@ export function CoachTour({ onDone }: { onDone: () => void }) {
 /**
  * One step's mark: the dim, the hole, the caption — and the badge it folds
  * into when somebody would rather look around first.
+ *
+ * `rect` null on a move means the control could not be found anywhere and the
+ * grace period is up: the caption renders in the dwell's form, says so, and
+ * offers a Next — the one place in the walk that has one, because the
+ * alternative is a step nobody can complete.
  */
 function StepMark({
   step,
   index,
   rect,
+  markKey,
+  hint,
   onAdvance,
   onFinish,
 }: {
   step: Step;
   index: number;
   rect: Rect | null;
+  /** The `data-coach` key of whatever the hole is drawn around right now. */
+  markKey?: string;
+  hint?: string;
   onAdvance: () => void;
   onFinish: () => void;
 }) {
@@ -358,23 +573,60 @@ function StepMark({
    * interferes with the press it is reacting to.
    */
   useEffect(() => {
-    const key = step.key;
     // Never on a dwell: it dims nothing and blocks nothing, so there is no
     // overlay in the way to fold — and folding it would hide the one line
-    // telling them what they are meant to be doing while they do it.
-    if (!key || collapsed) return;
+    // telling them what they are meant to be doing while they do it. Nor on
+    // a lost mark, for the same reason: it is already a caption, not a wall.
+    if (!step.key || !rect || collapsed) return;
+    const key = markKey;
+    // A real tap on the previous step's control advances the walk in the
+    // capture phase, and the browser flushes React between the phases of a
+    // user-initiated event — so this mark can be mounted and listening before
+    // that same tap reaches the bubble phase, where it looks like a press
+    // outside the new mark and folds it away on arrival. Any press that began
+    // before this listener existed is not "looking around" on this step.
+    const armedAt = performance.now();
     function onClick(e: MouseEvent) {
+      if (e.timeStamp <= armedAt) return;
       const target = e.target as HTMLElement | null;
       if (!target?.closest) return;
       // The caption is the tour's own furniture, and the marked control has its
-      // own handler that advances the walk. Neither is "looking around".
+      // own handler that advances the walk (or, on a detour, navigates back to
+      // where the walk continues). Neither is "looking around".
       if (target.closest("[data-coach-caption]")) return;
-      if (target.closest(`[data-coach="${key}"]`)) return;
+      if (key && target.closest(`[data-coach="${key}"]`)) return;
       setCollapsed(true);
     }
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
-  }, [collapsed, step]);
+  }, [collapsed, markKey, rect, step]);
+
+  /*
+   * The scroll lock: presses are swallowed at the document, in the capture
+   * phase, before anything under them can react. A tap on a card or a nav
+   * button does nothing until "I'm done"; the caption's own buttons are let
+   * through.
+   *
+   * This used to be a full-screen pane with `touch-action: pan-y`, on the
+   * theory that the browser would hand a vertical pan through to the page.
+   * It does — to the pane's *own* scroll chain, which is the document, and the
+   * document does not scroll under `/m`: `.pm-phone-content` does, and it is
+   * not an ancestor of anything mounted in the root layout. So the step that
+   * said "have a scroll" was the one step on which scrolling did not work
+   * (measured in Chrome, 2026-09-05). Swallowing clicks touches no gesture at
+   * all, which is the whole point of a lock that asks for one.
+   */
+  useEffect(() => {
+    if (step.lock !== "scroll") return;
+    function swallow(e: MouseEvent) {
+      const target = e.target as HTMLElement | null;
+      if (target?.closest?.("[data-coach-caption]")) return;
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    document.addEventListener("click", swallow, true);
+    return () => document.removeEventListener("click", swallow, true);
+  }, [step]);
 
   /*
    * A dwell: a line at the foot of the screen and nothing else.
@@ -384,76 +636,65 @@ function StepMark({
    * — there is nothing to point at, so pointing furniture would only be in the
    * way. It reads as a caption on the app rather than a layer over it, and it
    * stays until "I'm done".
+   *
+   * A lost move borrows the same form: the same caption, a line saying the
+   * control is not here, and Next in place of "I'm done".
    */
   if (!step.key || !rect) {
+    const lost = step.key !== undefined;
     return (
-      <>
-        {/*
-          Holds presses for a scroll dwell, and nothing else. `touch-action:
-          pan-y` is what keeps the gesture it asked for working: the pane
-          swallows taps and drags, and the browser still hands a vertical pan to
-          the page underneath. Wheel and keyboard scrolling were never routed
-          through here at all — this pane is not a scroll container, so they
-          pass to the document on their own.
+      <div
+        data-coach-caption=""
+        className="fixed inset-x-4 bottom-28 z-[60] mx-auto max-w-sm animate-fade-in"
+      >
+        <div className="rounded-2xl bg-pm-charcoal p-4 text-[#F7F4EC]">
+          <div className="flex items-baseline justify-between gap-3">
+            <h2 className="font-display text-[16px] font-semibold leading-tight">
+              {step.title}
+            </h2>
+            <span className="shrink-0 font-mono text-[11px] tabular-nums text-[#F7F4EC]/60">
+              {index + 1} / {STEPS.length}
+            </span>
+          </div>
+          <p className="mt-1.5 text-[13px] leading-snug text-[#F7F4EC]/75">{step.body}</p>
 
-          Under the caption's z-index, so Skip and "I'm done" stay reachable —
-          a lock nobody can leave is a different bug from the one this fixes.
-        */}
-        {step.lock === "scroll" && (
-          <div
-            aria-hidden="true"
-            className="fixed inset-0 z-[59]"
-            style={{ touchAction: "pan-y" }}
-          />
-        )}
+          {/* Says out loud that presses are being held. A tap that silently
+              does nothing reads as a broken app; a tap that does nothing
+              after being told so reads as a rule. */}
+          {step.lock === "scroll" && (
+            <p className="mono-label mt-2.5 text-[#F7F4EC]/45">
+              Scrolling only until you&rsquo;re done
+            </p>
+          )}
 
-        <div
-          data-coach-caption=""
-          className="fixed inset-x-4 bottom-28 z-[60] mx-auto max-w-sm animate-fade-in"
-        >
-          <div className="rounded-2xl bg-pm-charcoal p-4 text-[#F7F4EC]">
-            <div className="flex items-baseline justify-between gap-3">
-              <h2 className="font-display text-[16px] font-semibold leading-tight">
-                {step.title}
-              </h2>
-              <span className="shrink-0 font-mono text-[11px] tabular-nums text-[#F7F4EC]/60">
-                {index + 1} / {STEPS.length}
-              </span>
-            </div>
-            <p className="mt-1.5 text-[13px] leading-snug text-[#F7F4EC]/75">{step.body}</p>
+          {lost && (
+            <p className="mono-label mt-2.5 text-[#F7F4EC]/45">
+              That one is not on this screen
+            </p>
+          )}
 
-            {/* Says out loud that presses are being held. A tap that silently
-                does nothing reads as a broken app; a tap that does nothing
-                after being told so reads as a rule. */}
-            {step.lock === "scroll" && (
-              <p className="mono-label mt-2.5 text-[#F7F4EC]/45">
-                Scrolling only until you&rsquo;re done
-              </p>
-            )}
-
-            <div className="mt-3 flex items-center gap-3">
-              <button
-                type="button"
-                onClick={onFinish}
-                className="mono-label min-h-11 rounded-full px-3 text-[#F7F4EC]/50 transition-colors hover:text-[#F7F4EC] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-              >
-                Skip
-              </button>
-              {/* The only way a dwell moves on. Orange because it is this
-                  screen's primary action, and a filled pill rather than the
-                  move's bare hint text because here it is a button that does
-                  something, not a description of one somewhere else. */}
-              <button
-                type="button"
-                onClick={onAdvance}
-                className="ml-auto min-h-11 rounded-full bg-pm-orange px-5 text-sm font-semibold text-[#F7F4EC] transition-transform hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F7F4EC]"
-              >
-                I&rsquo;m done
-              </button>
-            </div>
+          <div className="mt-3 flex items-center gap-3">
+            <button
+              type="button"
+              onClick={onFinish}
+              className="mono-label min-h-11 rounded-full px-3 text-[#F7F4EC]/50 transition-colors hover:text-[#F7F4EC] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            >
+              Skip
+            </button>
+            {/* The only way a dwell moves on. Orange because it is this
+                screen's primary action, and a filled pill rather than the
+                move's bare hint text because here it is a button that does
+                something, not a description of one somewhere else. */}
+            <button
+              type="button"
+              onClick={onAdvance}
+              className="ml-auto min-h-11 rounded-full bg-pm-orange px-5 text-sm font-semibold text-[#F7F4EC] transition-transform hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F7F4EC]"
+            >
+              {lost ? "Next" : "I’m done"}
+            </button>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 
@@ -484,8 +725,17 @@ function StepMark({
 
   /* The caption goes on whichever side of the hole has room. Placed by an edge
      rather than by a measured height — anchoring the caption's bottom to the
-     hole's top means its own height never has to be known. */
-  const below = hole.y + hole.h < window.innerHeight * 0.55;
+     hole's top means its own height never has to be known.
+
+     Clamped, because the hole tracks its control wherever that goes, and a
+     control half-scrolled off the top would otherwise take the caption with
+     it. The clamps keep roughly a caption's height inside the viewport, above
+     the nav band at the foot and below the edge at the top. */
+  const vh = window.innerHeight;
+  const below = hole.y + hole.h < vh * 0.55;
+  const style = below
+    ? { top: Math.max(8, Math.min(hole.y + hole.h + 12, vh - NAV_RESERVE - 200)) }
+    : { bottom: Math.max(NAV_RESERVE, Math.min(vh - hole.y + 12, vh - 200)) };
 
   return (
     <div
@@ -534,7 +784,7 @@ function StepMark({
       <div
         data-coach-caption=""
         className="pointer-events-auto absolute inset-x-4 mx-auto max-w-sm"
-        style={below ? { top: hole.y + hole.h + 12 } : { bottom: window.innerHeight - hole.y + 12 }}
+        style={style}
       >
         <div className="rounded-2xl bg-white p-4">
           <div className="flex items-baseline justify-between gap-3">
@@ -568,7 +818,7 @@ function StepMark({
             {/* Not a button. The instruction is the affordance — the only way
                 on is the real control, and a Next here would be a second way
                 that skipped the thing the step is about. */}
-            <span className="mono-label ml-auto text-pm-orange-text">{step.hint}</span>
+            <span className="mono-label ml-auto text-pm-orange-text">{hint}</span>
           </div>
         </div>
       </div>
@@ -580,20 +830,55 @@ function StepMark({
  * Whether the tour runs, and the once-per-visit latch that stops it reopening
  * mid-session.
  *
- * The ref matters because the account object is replaced on every settings
- * write and every refresh — without it, somebody who skipped would have the
- * tour thrown back up the moment anything touched their account.
+ * ## It does not wait for a login
+ *
+ * A signed-out visitor is the *most* first-run person there is — somebody who
+ * has just opened the app and is deciding what it is for. Gating the tour on an
+ * account meant the one audience it was written for never saw it, and it made
+ * the thing untestable locally without signing in first. So the latch has two
+ * halves: the account flag when there is an account, `localStorage` when there
+ * is not. Signing in later hands over to the account flag, which is the
+ * durable one.
+ *
+ * `loading` is waited on deliberately. Firing on the first render would open
+ * the tour for a signed-in returner in the moment before `/api/auth/me`
+ * answers, which is exactly the "seen it, do not show me again" case.
  */
 export function useCoachTour() {
-  const { account } = useAuth();
-  const [open, setOpen] = useState(false);
-  const offered = useRef(false);
+  const { account, loading } = useAuth();
+  const [closed, setClosed] = useState(false);
+  /* `?tour=1` replays it on demand — the only way back once either latch is
+     set, and how this gets looked at without clearing site data. Read off
+     `window` rather than `useSearchParams`, which would opt the whole root
+     layout out of static rendering — and read *once*, in the initializer,
+     because the first move navigates to a URL without the flag, and a replay
+     that re-read it there would close itself on its own first step for
+     anyone whose latch is already set. The server sees `false`; nothing is
+     rendered from it until `loading` clears, so the pair of renders that has
+     to match still does. */
+  const [forced] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).get("tour") === "1"
+  );
 
-  useEffect(() => {
-    if (offered.current || !account || account.tourSeen) return;
-    offered.current = true;
-    setOpen(true);
-  }, [account]);
+  /*
+   * Derived every render rather than latched into state by an effect.
+   *
+   * An effect that calls `setOpen` is a second render for something the first
+   * one already knew, and it is exactly the cascade the lint rules here refuse.
+   * Deriving is also what makes closing stick without a second mechanism: both
+   * latches are written before `close` runs, so the next render reads them and
+   * agrees. `closed` covers only the gap where neither latch applies — a
+   * `?tour=1` replay, which by construction ignores them.
+   *
+   * Reading `window` during render is safe here because `loading` starts true:
+   * the server render and the first client render — the pair that has to match
+   * — both bail out above this line.
+   */
+  if (loading) return { open: false, fresh: false, close: () => setClosed(true) };
 
-  return { open, close: () => setOpen(false) };
+  const seen = account ? account.tourSeen : readLocalSeen();
+
+  return { open: !closed && (forced || !seen), fresh: forced, close: () => setClosed(true) };
 }

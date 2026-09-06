@@ -1,0 +1,91 @@
+[
+  {
+    "restaurantId": "11043",
+    "name": "El Mejor Pan de Tecate",
+    "sourceUrl": "https://www.elmejorpandetecate.com/shop",
+    "confidence": "high",
+    "notes": "outside county; Own Wix store page, server-rendered product grid (name + price in DOM). PRICES ARE IN MEXICAN PESOS (MXN), not USD, even though displayed with a $ sign -- restaurant is in Tecate, Baja California, Mexico. 16 products, no pagination found, appears to be the full bakery catalog.",
+    "dishes": [],
+    "verdict": "blocked",
+    "status": "blocked"
+  },
+  {
+    "restaurantId": "13261",
+    "name": "Philippe The Original",
+    "sourceUrl": "https://philippes.com/french-dips/",
+    "confidence": "high",
+    "notes": "outside county; First-party WordPress site, server-rendered menu pages per category (french-dips, breakfast, beverages, desserts, salads-more, sides, soups-chili, wine-beer). 95 dishes across all 8 categories, all core sections (French Dips, sides, breakfast) covered. Coffee ($0.46) appears in both Breakfast and Beverages listings -- both are genuine separate listings on the site, not a scrape duplicate.",
+    "dishes": [],
+    "verdict": "blocked",
+    "status": "blocked"
+  },
+  {
+    "restaurantId": "13877",
+    "name": "Hash House A Go Go",
+    "sourceUrl": "https://order.toasttab.com/online/hash-house-a-go-go-orlando-international-drive-5350-international-drive",
+    "confidence": "high",
+    "notes": "outside county; First-party Toast ordering page for the Orlando (International Drive) location. Rejected Uber Eats as source: divisor sweep found 89% of its prices land on clean cents at divisor 1.17, indicating a baked-in ~17% platform markup. Toast prices are clean at divisor 1.00 (89% already end in .99, the normal restaurant pattern, no division needed) -- used as first-party source of truth instead. 145 items across 7 category groups (category ids on the page are oddly labeled, e.g. \"*New Items*\" holds core breakfast/lunch entrees, not actually new items; \"Specialty\" holds apps/sides/salads).",
+    "dishes": [],
+    "verdict": "blocked",
+    "status": "blocked"
+  },
+  {
+    "restaurantId": "12766",
+    "name": "Sabor a mí Restaurante",
+    "sourceUrl": "https://ggara.com/wp-content/uploads/2026/04/SAM-INGLES-RIO.pdf",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no published price: first-party site (ggara.com/sabor-a-mi) links English and Spanish menu PDFs (SAM-INGLES-RIO.pdf, SAM-ESPANOL-RIO.pdf) for this exact location (Orozco 1415, Zona Urbana Rio Tijuana); both are image/design-heavy PDFs with a real text layer (pdftotext -layout extracted full dish names by section) but zero prices anywhere in either language. The restaurant's own Uber Eats listing at this exact address (Calle Jose Clemente Orozco 1415, Tijuana BC 22320, matched via schema.org PostalAddress) is marked 'no longer available' with no menu schema/prices served. A second Uber Eats listing exists with real MXN prices ('Sabor a Mi Hipodromo') but that is this chain's OTHER branch (Av. Hipodromo 12B) per Instagram/Facebook confirming 2 sucursales -- did not file it since it is a different location's pricing. Restaurant is clearly still operating (active Yelp/Tripadvisor/Instagram/Facebook, reviews through Sept 2026), just no priced source found for the Rio location specifically."
+  },
+  {
+    "restaurantId": "12776",
+    "name": "Mariscos El Mazateño",
+    "sourceUrl": "https://www.yelp.com/biz/mariscos-el-mazate%C3%B1o-tijuana-3",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no matching-location priced source: batch website (mariscos-el-mazateo.shop) redirects to mariscos-el-mazateno.mappway.com, a generic auto-generated place-directory site that mixes real review snippets with fabricated content about unrelated businesses (Alabama coffee shops, a Tucson hot dog cart, etc. under the same template fields) -- not usable. This chain has multiple Tijuana branches with delivery-platform pricing (Uber Eats 'Rio' at Avenida Diego Rivera 9, Uber Eats 'Diaz Ordaz', DiDi/Rappi 'Express' at El Prado Este) but none match this record's address (Calz del Tecnologico 473, Col. Tomas Aquino, phone 664-607-1377, confirmed via Yelp/Apple Maps/Tripadvisor as the flagship/original location). A second first-party-looking domain (elmazateno.restaurantwebexperts.com) turned out to be the web agency's own portfolio demo page for this client, not a live restaurant site -- no menu, no prices. Did not file any other branch's pricing per identity rules. Restaurant is clearly open (active Facebook/Yelp/Instagram/TikTok coverage through 2026)."
+  },
+  {
+    "restaurantId": "11265",
+    "name": "Mr. Pampas Otay",
+    "sourceUrl": "https://www.mrpampas.online/tijuana",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "buffet/no-published-price: Mr. Pampas is a Brazilian rodizio (rotating all-you-can-eat churrascaria) -- guests pay a flat per-person price and servers circulate with skewers of meat, there is no itemized per-dish menu to extract. Confirmed flat pricing only: ADULTOS $450 / NINOS $295 / BABY $170 (mrpampas.online/tijuana), matching OpenTable's 'MXN310 to MXN500' per-person range. The batch website (mrpampas.com) is separately behind an active bot wall (SG-Captcha challenge, HTTP 202, did not attempt to bypass). This chain has 3 Tijuana branches (Rio, Financiera, Otay); could not confirm the flat price is Otay-specific vs chain-wide, moot since there is no itemized menu to file regardless."
+  },
+  {
+    "restaurantId": "10619",
+    "name": "Oceanside Harbor Village",
+    "sourceUrl": "http://oceansideharborvillage.com/eat/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "not a single restaurant: 'Oceanside Harbor Village' is a waterfront commercial complex ('Eat, shop & play') whose own site's tagline confirms it -- the /eat/ page lists 10 separate independently-named, independently-menued restaurants/food businesses at this address: D'Vino Cafe & Wine Bar, Dominic's at the Harbor, Harbor Fish and Chips, Lighthouse Oyster Bar and Grill, Lighthouse Seafood Market, Nana and Pop Pop's Sweet Shop, Rockin' Baja Lobster Coastal Cantina, Stratford at the Harbor, Tony's Sports Bar and Grill (plus shop/stay tenants). There is no unified menu or pricing for 'Oceanside Harbor Village' itself to extract -- filing any one tenant's menu under this restaurantId would misrepresent it as the complex's own food. Flagging for the coordinator to decide whether this record should be split into its constituent restaurants or dropped, rather than guessing."
+  },
+  {
+    "restaurantId": "12643",
+    "name": "Tacos El Franc",
+    "sourceUrl": "http://tacoselfranc.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "wrong-city identity mismatch: batch website (tacoselfranc.com) is titled 'Best Tacos in San Diego' and only lists US locations (Gaslamp Quarter, National City Plaza Bonita) with USD menu/prices via an online ordering widget. This is the same brand's US expansion, not the original: per Facebook press coverage, Tacos El Franc started as a street cart in Tijuana in 1996 at this record's exact address (Blvd. Gral. Rodolfo Sanchez Taboada 9257, Zona Este, Tijuana) and later expanded into San Diego/National City/El Cajon/East LA. Every Uber Eats/DoorDash/Rappi/DiDi listing found is for a US-side location -- none for the original Tijuana address. Did not file the US menu/USD prices under this Tijuana restaurantId per the never-cross-city rule, even though it is the same brand lineage: prices and currency would not reflect this specific location. No itemized priced source found for the Tijuana original."
+  },
+  {
+    "restaurantId": "12773",
+    "name": "Lion Fish",
+    "sourceUrl": "https://lionfishrestaurant.com.mx/menuRio/",
+    "confidence": "high",
+    "crossCheckedAgainst": "address match confirmed (1857 Erasmo Castellanos Q., Zona Urbana Rio, Tijuana) against batch record; menu is first-party photographed menu pages hosted on the restaurant's own site under its Rio-branch page.",
+    "notes": "outside county; Prices are in MXN (Mexican pesos), not USD -- menu footer states: 'Nuestros precios son en moneda nacional e incluyen IVA' (prices in national currency, IVA/VAT included). Footer also notes: half-orders cost 60% of the full-dish price, any modification/added ingredient may cost extra, and listed weights (grs/kg) refer to raw protein weight before cooking. Menu extracted by visually reading two full-resolution photographed menu pages (LF_RIO_ESP1.jpg, LF_RIO_ESP2.jpg) hosted at the sourceUrl; did not transcribe the separate alcoholic-cocktail/bar supplement images (LF_BEB_RIO-ESP_1-4.jpg) since the core food menu plus non-alcoholic beverages, coffee, and the carajillo bar section were already fully captured on the two main pages.",
+    "dishes": [],
+    "verdict": "blocked",
+    "status": "blocked"
+  },
+  {
+    "restaurantId": "10372",
+    "name": "Liberty Public Market",
+    "sourceUrl": "https://libertypublicmarketsd.com/vendors/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "not a single restaurant: Liberty Public Market is a multi-vendor food hall at Liberty Station -- its own meta description calls it 'a vibrant 7-day-a-week marketplace featuring more than two dozen artisans.' The site's /vendors/ page lists 30+ independently-named, independently-menued food and retail stalls (Bistro Europa, BOPJO, Mess Hall Bar, Landini's Pizzeria, Loma Salad Bar, Bao Bar, Talitha Coffee, Pasta Design, Le Parfait Paris, Kebab Craft, Baker & Olive, Barrack 22, Asado Gaucho, Wicked Maine Lobster, Slurp Taiyaki & Ramen, Slurp LPM, Rad Burger, Pure, The Pig's Gig BBQ, Parana Empanadas, Olala Crepe, Mama Made Thai, Kai and Skye, Chris' Ono Grinds, Fluster Cluck Chicken, Liberty Wing Co., Cecilia's Taqueria, The Sushi Stand, Bottlecraft, Berry Fresh, The Mini Donut Company, plus non-food retail like Lo-Fi Barber Shop, The Candy Passport, Mo Records, Nobelrags). There is no unified menu or pricing for 'Liberty Public Market' itself -- same situation as Oceanside Harbor Village (restaurantId 10619) in this same batch. Filing any single vendor's menu under this restaurantId would misrepresent it as the market's own food. Flagging for the coordinator to decide whether this record should be split into constituent vendor restaurants or dropped."
+  }
+]

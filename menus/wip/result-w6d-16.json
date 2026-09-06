@@ -1,0 +1,1268 @@
+[
+  {
+    "restaurantId": "10399",
+    "name": "Crispy Cones - Carlsbad",
+    "sourceUrl": "https://crispycones.com/carlsbad-ca",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site's menu image (cdn-prod.thecrispycones.com/Menu/CC-menu.png) shows calories only, no prices. Only marketplace source found is a DoorDash listing (doordash.com/store/crispy-cones-carlsbad-32979049) whose stated address is 416 Carlsbad Village Dr, which does not match the batch address (2967 Carlsbad Blvd) and has no business registered at it on Google Maps - likely wrong/stale DoorDash address data, so not safely attributable to this branch. Its JSON-LD Menu block also only has 5 items (boxed sets + 2 drinks), missing the core Crispy Cone item entirely - a partial even if it were the right store."
+  },
+  {
+    "restaurantId": "7070",
+    "name": "Kaffa Coffee",
+    "sourceUrl": "https://www.kaffacoffeesd.com/menu",
+    "confidence": "high",
+    "notes": "first-party Wix menu page; address on site (2545 El Cajon Blvd) matches batch. Sized drinks recorded at their base/smallest listed price (8oz hot, 12oz cold); size upcharges and syrup add-ons not included as separate rows.",
+    "dishes": [
+      {
+        "name": "Caffe Latte",
+        "description": "Espresso-based milk beverage, one or two shots, steamed milk, thin froth",
+        "price": "$4.75",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Macchiato",
+        "description": "Espresso with a small amount of steamed or foamed milk",
+        "price": "$4.00",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "Espresso shot covered in thick creamy froth with steamed whole milk",
+        "price": "$5.00",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Ethiopiano (Americano)",
+        "description": "Signature espresso added to hot water",
+        "price": "$4.50",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Espresso",
+        "description": "Concentrated coffee shot",
+        "price": "$1.75",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "Variety of herbs, flavors, caffeinated and caffeine-free teas",
+        "price": "$3.50",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "Chocolate drizzled with sweetened whipped cream",
+        "price": "$3.00",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "Matcha tea powder with steamed milk",
+        "price": "$4.50",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Mocha",
+        "description": "Espresso shot with sweet dark chocolate",
+        "price": "$5.00",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Caramel Latte",
+        "description": "Espresso, steamed milk, caramel syrup, salted caramel drizzle",
+        "price": "$5.00",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Chai Tea Latte",
+        "description": "Steamed milk with spice-infused black tea, topped with cinnamon",
+        "price": "$4.50",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Drip Coffee",
+        "description": "Classic freshly brewed medium roast coffee",
+        "price": "$3.50",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "Slow, low-temperature brew with less acidity",
+        "price": "$6.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Coffee",
+        "description": "Traditionally brewed coffee served over ice",
+        "price": "$3.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Latte",
+        "description": "Espresso shots and chilled milk over ice",
+        "price": "$5.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Ice Tea",
+        "description": "Variety of herbs and teas served over ice",
+        "price": "$4.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Matcha Latte",
+        "description": "Matcha tea powder with chilled milk over ice",
+        "price": "$5.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Ethiopiano (Americano)",
+        "description": "Signature espresso added to chilled water over ice",
+        "price": "$5.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Chai Latte",
+        "description": "Chilled milk with spice-infused black tea over ice",
+        "price": "$5.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Mocha",
+        "description": "Espresso shot with dark chocolate, served over ice",
+        "price": "$6.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Caramel Latte",
+        "description": "Espresso, milk, caramel syrup, salted caramel drizzle, over ice",
+        "price": "$5.50",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Banana Bread",
+        "description": "",
+        "price": "$3.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "Coffee Cake",
+        "description": "",
+        "price": "$3.50",
+        "section": "Pastries"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2209",
+    "name": "Prince Hookah Cafe",
+    "sourceUrl": "https://www.doordash.com/store/prince-hookah-cafe-san-diego-34700843/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "two delivery platforms disagree on prices for the same address (4644 College Ave, confirmed on both). DoorDash JSON-LD: Chicken Tenders $12.99, Falafel $10.99, Hummus $8.99. Grubhub's own search-result snippet for the same restaurant: Chicken Tenders $6.99, Falafel $6.99, Hummus $5.99 - Grubhub page itself is JS-walled (returns a no-JS shell to curl) so could not be fetched directly to confirm, but the snippet is Google's indexed text of it. A 50-85% gap on multiple overlapping items is a real disagreement, not noise; per house rules that is a block, not a merge or a pick-one."
+  },
+  {
+    "restaurantId": "8021",
+    "name": "Paseo RSF (formerly bistro)",
+    "sourceUrl": "https://paseorsf.com/menu",
+    "confidence": "high",
+    "notes": "first-party client-rendered SPA (menu confirmed by grepping the built JS bundle, since curl of the rendered page returns an identical empty shell for every route); address/rebrand confirmed via site SEO meta (6024 Paseo Delicias, Rancho Santa Fe). Separate breakfast and dinner menus are both filed, section-prefixed Breakfast:/Dinner: since both contain a like-named \"Sides\" section with different items/prices. Excluded as adjuncts per playbook: six back-bar liquor-by-brand lists (Vodka, Gin, Rum, Whiskey & Bourbon, Scotch, Tequila & Mezcal) and the \"Brunch Cocktails\" section, which duplicated items/prices already captured under Breakfast: Beverages (Mimosa, Bellini, Bloody Mary, Bottomless Mimosa). One item, \"Flat or Sparkling Water\", was dropped: its raw price field is a two-tier string (\"$6 / $10\" for flat vs sparkling) with no single value to record without inventing one.",
+    "dishes": [
+      {
+        "name": "Paseo Omelet",
+        "description": "Three eggs, choice of three fillings: spinach, mushrooms, tomatoes, onions, cheddar, goat cheese. Served with breakfast potatoes. Choice of protein: bacon, sausage or ham.",
+        "price": "$22.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Paseo Breakfast",
+        "description": "Two eggs any style, applewood bacon or sausage, breakfast potatoes, choice of toast.",
+        "price": "$20.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Huevos Rancheros",
+        "description": "Two eggs, ranchero salsa, black beans, cotija, avocado, cilantro, warm corn tortillas.",
+        "price": "$21.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Red or Green Chilaquiles",
+        "description": "Crispy corn tortillas simmered in red or green salsa, two eggs any style, cotija, crema, avocado, pickled onions, cilantro.",
+        "price": "$21.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Avocado Toast & Egg",
+        "description": "Smashed avocado, poached egg, chili flake, lemon, sea salt, microgreens, sourdough.",
+        "price": "$19.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Bagel & Lox",
+        "description": "House-cured salmon, cream cheese, capers, red onion, tomato, arugula, choice of bagel.",
+        "price": "$24.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Breakfast Burrito",
+        "description": "Scrambled eggs, refried beans, breakfast potatoes, cheddar, pico de gallo, wrapped in a warm flour tortilla. Add bacon, sausage or ham $3 · avocado $4.",
+        "price": "$18.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Breakfast Bowl",
+        "description": "Scrambled eggs, refried beans, breakfast potatoes, cheddar, pico de gallo, avocado. Served over mixed greens or as a rice bowl. Add bacon, sausage or ham $3 · avocado $4.",
+        "price": "$18.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Breakfast Pinsa",
+        "description": "Our signature — whipped ricotta, mozzarella, soft scrambled eggs, crispy pancetta, roasted tomato, basil, Parmigiano Reggiano, extra virgin olive oil. Add-ons: prosciutto $5 · avocado $4 · burrata $6 · Italian sausage $5.",
+        "price": "$22.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Belgian Waffle",
+        "description": "Whipped butter, warm maple syrup, seasonal berries.",
+        "price": "$17.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Classic Buttermilk Pancakes",
+        "description": "Three fluffy pancakes, whipped butter, warm maple syrup.",
+        "price": "$17.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Fruit, Yogurt & Housemade Granola",
+        "description": "Seasonal fruit, Greek yogurt, housemade granola, local honey.",
+        "price": "$17.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Fruit & Yogurt",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast: For the Little Ones"
+      },
+      {
+        "name": "Mini Pancakes",
+        "description": "With maple syrup.",
+        "price": "$9.00",
+        "section": "Breakfast: For the Little Ones"
+      },
+      {
+        "name": "Belgian Waffle",
+        "description": "With maple syrup.",
+        "price": "$9.00",
+        "section": "Breakfast: For the Little Ones"
+      },
+      {
+        "name": "Scrambled Egg, Bacon & Potatoes",
+        "description": "",
+        "price": "$10.00",
+        "section": "Breakfast: For the Little Ones"
+      },
+      {
+        "name": "Applewood Bacon",
+        "description": "",
+        "price": "$7.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Chicken Sausage or Ham",
+        "description": "",
+        "price": "$7.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Breakfast Potatoes",
+        "description": "",
+        "price": "$6.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Toast",
+        "description": "Sourdough, whole wheat, or gluten-free.",
+        "price": "$4.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Bagel",
+        "description": "Everything, plain, cinnamon raisin, or asiago.",
+        "price": "$5.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Seasonal Fruit",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Avocado",
+        "description": "",
+        "price": "$4.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Drip Coffee",
+        "description": "Regular or decaf.",
+        "price": "$6.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$7.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Cappuccino / Latte",
+        "description": "",
+        "price": "$7.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Fresh Orange Juice",
+        "description": "",
+        "price": "$7.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Mimosa",
+        "description": "Choice of orange, grapefruit, or pineapple.",
+        "price": "$14.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Bellini",
+        "description": "Peach, mango, or berry.",
+        "price": "$14.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Bloody Mary",
+        "description": "House recipe with Wheatley Vodka.",
+        "price": "$16.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Bottomless Mimosa",
+        "description": "90 minutes, per guest.",
+        "price": "$28.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Paseo Eggplant",
+        "description": "Eggplant, marinara, parmesan",
+        "price": "$21.00",
+        "section": "Dinner: Appetizers"
+      },
+      {
+        "name": "Baked Brie",
+        "description": "Brie, grapes, local honey, topped with a balsamic onion jam",
+        "price": "$18.00",
+        "section": "Dinner: Appetizers"
+      },
+      {
+        "name": "House Meatballs",
+        "description": "Beef, veal, pork, marinara",
+        "price": "$20.00",
+        "section": "Dinner: Appetizers"
+      },
+      {
+        "name": "Caprese",
+        "description": "Tomato, fresh mozzarella, basil, vinaigrette, balsamic glaze",
+        "price": "$19.00",
+        "section": "Dinner: Appetizers"
+      },
+      {
+        "name": "Lamb Lollipops",
+        "description": "Grilled lamb chops, chimichurri, mixed greens",
+        "price": "$28.00",
+        "section": "Dinner: Appetizers"
+      },
+      {
+        "name": "Escargot",
+        "description": "Garlic butter, Pernod, parsley",
+        "price": "$26.00",
+        "section": "Dinner: Appetizers"
+      },
+      {
+        "name": "Spinach & Goat Cheese",
+        "description": "Spinach, goat cheese, pomodoro",
+        "price": "$23.00",
+        "section": "Dinner: Pinsa Romana"
+      },
+      {
+        "name": "Pepperoni",
+        "description": "Pomodoro, mozzarella, pepperoni",
+        "price": "$20.00",
+        "section": "Dinner: Pinsa Romana"
+      },
+      {
+        "name": "Margherita",
+        "description": "Mozzarella, pomodoro, basil",
+        "price": "$18.00",
+        "section": "Dinner: Pinsa Romana"
+      },
+      {
+        "name": "Paseo Chopped",
+        "description": "Romaine, iceberg, salami, mozzarella, chickpeas, parmesan vinaigrette",
+        "price": "$24.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Cobb",
+        "description": "Chicken, bacon, tomato, avocado, egg, blue cheese, blue cheese crumble dressing",
+        "price": "$28.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Beet Salad",
+        "description": "Roasted beets, arugula, goat cheese, pistachios, balsamic glaze",
+        "price": "$26.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Caesar",
+        "description": "Romaine, parmesan, croutons",
+        "price": "$19.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Tuna or Chicken Salad",
+        "description": "Avocado, mixed greens, tomato, vinaigrette",
+        "price": "$24.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Wedge",
+        "description": "Iceberg, bacon, tomato, red onion, blue cheese crumble dressing",
+        "price": "$22.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Greek Salad",
+        "description": "Cucumbers, tomatoes, kalamata olives, red onion, feta cheese, house vinaigrette",
+        "price": "$23.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Paseo Burger",
+        "description": "½ lb. Prime Brandt beef, American cheese, lettuce, tomato, Thousand Island, fries",
+        "price": "$26.00",
+        "section": "Dinner: Sandwiches"
+      },
+      {
+        "name": "Salmon Burger",
+        "description": "Salmon, lettuce, tomato, tartar sauce",
+        "price": "$28.00",
+        "section": "Dinner: Sandwiches"
+      },
+      {
+        "name": "Albacore Tuna Melt",
+        "description": "Albacore tuna salad, dill relish, mayo, tomato, cheese, fries",
+        "price": "$22.00",
+        "section": "Dinner: Sandwiches"
+      },
+      {
+        "name": "Turkey Club",
+        "description": "Turkey, bacon, tomato, mayo, lettuce, sourdough, fries",
+        "price": "$24.00",
+        "section": "Dinner: Sandwiches"
+      },
+      {
+        "name": "Chicken Avocado Wrap",
+        "description": "Roasted chicken, avocado, sliced tomato, romaine lettuce, chipotle aioli, fries",
+        "price": "$24.00",
+        "section": "Dinner: Sandwiches"
+      },
+      {
+        "name": "Spicy Penne Vodka",
+        "description": "Vodka cream sauce",
+        "price": "$28.00",
+        "section": "Dinner: Pastas"
+      },
+      {
+        "name": "Mushroom Risotto",
+        "description": "Arborio rice, cremini mushrooms, white wine, parmesan",
+        "price": "$32.00",
+        "section": "Dinner: Pastas"
+      },
+      {
+        "name": "Shrimp Scampi",
+        "description": "Angel hair, cherry tomatoes, garlic, white wine, capers",
+        "price": "$36.00",
+        "section": "Dinner: Pastas"
+      },
+      {
+        "name": "Chicken Piccata",
+        "description": "Lemon, capers, white wine",
+        "price": "$34.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Chicken Milanese",
+        "description": "Crispy chicken, creamy lemon caper sauce, arugula",
+        "price": "$36.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Braised Short Rib",
+        "description": "Braised short rib in a red wine jus",
+        "price": "$42.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Airline Chicken",
+        "description": "All-natural free range Jidori chicken, pan-roasted",
+        "price": "$38.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Steak Frites",
+        "description": "8 oz Prime Brandt beef flat iron, au poivre sauce, fries",
+        "price": "$37.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "BBQ Pork Chop",
+        "description": "14oz pork chop, house-made barbecue sauce",
+        "price": "$45.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Filet Mignon",
+        "description": "8oz Prime Brandt beef filet, au poivre sauce",
+        "price": "$65.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Prime NY Steak",
+        "description": "12oz Prime Brandt beef New York strip, au poivre sauce",
+        "price": "$69.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Rack of Lamb",
+        "description": "Australian roasted rack, au poivre sauce",
+        "price": "$52.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Grilled Salmon",
+        "description": "Lemon, capers",
+        "price": "$39.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Dover Sole",
+        "description": "Lemon, white wine, capers",
+        "price": "$43.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Miso Black Cod",
+        "description": "Black cod, miso marinade",
+        "price": "$46.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Brandt Beef Steak",
+        "description": "",
+        "price": "$15.00",
+        "section": "Dinner: Add Protein (add-on)"
+      },
+      {
+        "name": "Tuna or Chicken Salad",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Add Protein (add-on)"
+      },
+      {
+        "name": "Shrimp",
+        "description": "",
+        "price": "$12.00",
+        "section": "Dinner: Add Protein (add-on)"
+      },
+      {
+        "name": "Salmon",
+        "description": "",
+        "price": "$15.00",
+        "section": "Dinner: Add Protein (add-on)"
+      },
+      {
+        "name": "Chicken Breast",
+        "description": "",
+        "price": "$10.00",
+        "section": "Dinner: Add Protein (add-on)"
+      },
+      {
+        "name": "Sautéed Spinach",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Sautéed Mushrooms",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Mashed Potatoes",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Asparagus",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Fries",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Sweet Potato Fries",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Pasta",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "House Salad",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Brownie",
+        "description": "",
+        "price": "$12.00",
+        "section": "Dinner: Desserts"
+      },
+      {
+        "name": "Carrot Cake",
+        "description": "",
+        "price": "$15.00",
+        "section": "Dinner: Desserts"
+      },
+      {
+        "name": "German Chocolate Cake",
+        "description": "",
+        "price": "$15.00",
+        "section": "Dinner: Desserts"
+      },
+      {
+        "name": "Apple Pie à la Mode",
+        "description": "",
+        "price": "$15.00",
+        "section": "Dinner: Desserts"
+      },
+      {
+        "name": "Affogato",
+        "description": "",
+        "price": "$13.00",
+        "section": "Dinner: Desserts"
+      },
+      {
+        "name": "Fresh Orange Juice",
+        "description": "",
+        "price": "$7.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Hibiscus Honey Iced Tea",
+        "description": "",
+        "price": "$5.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "",
+        "price": "$5.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Lemonade",
+        "description": "",
+        "price": "$5.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Sodas",
+        "description": "Coke, Diet Coke, Sprite, Root Beer, Ginger Ale, Diet Dr. Pepper",
+        "price": "$5.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Drip Coffee",
+        "description": "Regular or decaf",
+        "price": "$6.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$7.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Cappuccino / Latte",
+        "description": "",
+        "price": "$7.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Tea Assortment",
+        "description": "",
+        "price": "$5.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9718",
+    "name": "El Tigre Churros Y Platanos",
+    "sourceUrl": "https://www.yelp.com/biz/el-tigre-churros-y-platanos-san-diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website (confirmed via Google Maps - business exists, active, 4.7/195 at 3583 University Ave, San Diego). Not the same business as the churroseltigre.com chain site, which only lists Las Americas/Spring Valley Swap Meet/Plaza Bonita locations, none in City Heights - so that chain menu cannot be attributed here. Only DoorDash listing found for the \"Churros El Tigre\" name is the National City/Plaza Bonita branch, a different address. Yelp business page returned a blocked/captcha shell (776 bytes) to curl; Yahoo Local page fetched fine but its menu module is client-rendered and the static HTML has no prices, even though a search-snippet fragment (\"Churros 8 for \") suggested pricing exists somewhere. No first-party site, ordering platform, or fetchable aggregator page yielded confirmable prices within budget."
+  },
+  {
+    "restaurantId": "10615",
+    "name": "Coco & Jules Cookies",
+    "sourceUrl": "https://www.doordash.com/store/coco-&-jules-cookies-san-diego-35298481/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site (cocojulescookies.com, Wix) renders its Cookie Menu and Cake Menu pages as a client-side ProGallery slider with no baked-in JSON and no prices reachable via curl. DoorDash and Uber Eats both confirm the address (3415 Adams Ave) and independently agree on the same 6 priced items (Classic Chocolate Chip .95, Salt & Coco Brownie .95, S'mores .95, Vegan Chocolate Chip .95, Candy Bar .95, Half Dozen Cookies 7.50), but both are known-truncated captures (the classic DoorDash \"Most Ordered\" single-section pile-up) - a Grubhub search snippet independently names a \"Salted Blondie .95\" not in either capture, and an Uber Eats search snippet names a \"Killer Krispies / Salted Caramel Killer Krispy .50\" line also absent, and the site has an entire separate Cake Menu page not sampled at all. Filing only the 6 agreed items would read as the whole menu when core items are confirmed missing. Grubhub page itself is JS-walled (13.6KB shell) so could not be used to fill the gap."
+  },
+  {
+    "restaurantId": "7092",
+    "name": "Don Jilberto's Mexican Food",
+    "sourceUrl": "https://www.yelp.com/biz/don-jilbertos-mexican-food-spring-valley",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website, no DoorDash/Grubhub/Uber Eats listing found for this address (9569 Jamacha Blvd, Spring Valley) - a Facebook post from the community confirms it is cash-only, which likely explains the absence of any online-ordering platform presence. The only other \"Jilberto's\" delivery-platform listings found (Temecula, Escondido) are separate branches of a different, similarly-named chain (\"Jilberto's Mexican Food\", no \"Don\") at unrelated addresses - not this restaurant. gotoeat.net has a page but is a barred source. Yelp business page returned a blocked/captcha shell (776 bytes) to curl. Restaurant is confirmed open (Waze/MapQuest both show normal operating hours, no closure signal)."
+  },
+  {
+    "restaurantId": "11746",
+    "name": "Brett's BBQ",
+    "sourceUrl": "https://thecoastnews.com/bretts-bbq-slow-cooked-and-beloved-but-soon-to-close/",
+    "confidence": "high",
+    "dishes": [],
+    "notes": "not_found: permanently closed. The Coast News (independent local journalism, not a directory) reported Aug 23 2018 that Brett's BBQ at 1505 Encinitas Blvd, Encinitas was closing for good on Sept 29 2018 after its lease was terminated, matching the batch address exactly. Yelp's own listing title now reads \"BRETTS BBQ - CLOSED\". No re-opening or successor at this address found."
+  },
+  {
+    "restaurantId": "5827",
+    "name": "Red Ribbon Bakeshop",
+    "sourceUrl": "https://www.doordash.com/store/red-ribbon-bakeshop-san-diego-922293/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://www.grubhub.com/restaurant/red-ribbon-bakeshop-8955-mira-mesa-blvd-san-diego/7682832",
+    "notes": "batch-listed website (locations.redribbonbakeshop.com) is a franchise-locator/marketing page, not a priced menu, but confirmed this specific Mira Mesa branch (8955 Mira Mesa Blvd) is on DoorDash with a full location-specific JSON-LD menu (11 categories, 80 items) rather than the chain default. Address matches the DoorDash listing exactly. Grubhub itself is JS-walled to curl, but Google's indexed snippet of the same Grubhub store page independently names 4 overlapping cake-slice items at identical prices (Tiramisu Slice $6.61, Ube Overload Slice $6.61, Yema Caramel Slice $5.99, Mango Supreme Slice $5.99), cross-checking the DoorDash data. The \"Most Ordered\" section held 12 items not duplicated elsewhere in the categorized menu, so all were kept rather than dropped as a carousel duplicate.",
+    "dishes": [
+      {
+        "name": "Arroz Caldo - Individual",
+        "description": "Flavorful chicken and rice congee with shiitake mushrooms, egg slices, green onions and fried garlic",
+        "price": "$9.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Pancit Palabok - Individual",
+        "description": "Red Ribbon’s signature noodle dish topped with our special sauce, sautéed pork, fried garlic, green onions, eggs and chicharon (ground pork crackling).",
+        "price": "$9.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Chicken Empanada - Individual",
+        "description": "Savory dough generously filled with delectable chicken. Best seller!",
+        "price": "$4.49",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Halo-Halo",
+        "description": "A refreshing blend of shaved ice with various sweetened beans & fruits, milk, topped with leche flan (custard) and our signature whipped mango topping!",
+        "price": "$8.74",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Pancit Palabok Family Platter",
+        "description": "Red Ribbon’s signature noodle dish topped with our special sauce, sautéed pork, fried garlic, green onions, eggs and chicharon (ground pork crackling). Serves 2 to 3. ",
+        "price": "$18.74",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Beef Empanada - Individual",
+        "description": "Savory dough generously filled with delectable beef",
+        "price": "$4.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Arroz Caldo with Chicken Empanada",
+        "description": "- Arroz Caldo - Flavorful chicken and rice congee with shiitake mushrooms, egg slices, green onions and fried garlic. AND\r\n- Chicken Empanada - Best seller! Savory dough generously filled with delectable chicken.",
+        "price": "$13.74",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Pork Empanada - Individual",
+        "description": "Savory dough generously filled with delectable pork",
+        "price": "$4.36",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Mango Supreme",
+        "description": "Three layers of moist white chiffon cake, filled with our signature cream, mango glaze and real Philippine mangoes. For its finishing touch, it is loaded with real mango chunks and a maraschino cherry on top. Our best-selling cake!",
+        "price": "$39.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Mango Supreme Slice",
+        "description": "Now with a new look but with the same great taste! Three layers of moist white chiffon cake, filled with real Philippine mangoes, our signature cream, and mango glaze. Our best-selling cake!",
+        "price": "$5.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Pancit Palabok Party Platter",
+        "description": "Red Ribbon’s signature noodle dish topped with our special sauce, sautéed pork, fried garlic, green onions, eggs and chicharon (ground pork crackling). Serves 5 to 8. ",
+        "price": "$46.24",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Spanish Bread",
+        "description": "Fluffy buttery bread rolls with a slightly sweet filling and sprinkled with breadcrumbs.",
+        "price": "$6.24",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Tiramisu Cake",
+        "description": "Three layers of coffee-soaked white chiffon filled with mascarpone cream and topped with cocoa powder.",
+        "price": "$46.24",
+        "section": "Cakes"
+      },
+      {
+        "name": "Chocolate Mousse",
+        "description": "Rich chocolate pound cake with delicious chocolate mousse, finished with our signature cream and chocolate chips",
+        "price": "$39.99",
+        "section": "Cakes"
+      },
+      {
+        "name": "Ube Overload",
+        "description": "Each layer of our ube chiffon cake is filled with real Philippine Ube Halaya, giving you the perfect creamy ube delight!",
+        "price": "$46.24",
+        "section": "Cakes"
+      },
+      {
+        "name": "Yema Caramel Cake",
+        "description": "A light and fluffy white chiffon base cake, filled with luscious Yema caramel custard, covered in creamy Whipped Yema Icing, and topped with mesmerizing swirls of Dulce de Leche",
+        "price": "$42.49",
+        "section": "Cakes"
+      },
+      {
+        "name": "Sans Rival",
+        "description": "Four-layers of meringue wafer, rich buttercream icing and scrumptious cashew nuts. ",
+        "price": "$27.49",
+        "section": "Cakes"
+      },
+      {
+        "name": "Strawberry Dream",
+        "description": "Three layers of moist and fluffy white chiffon cake with a creamy strawberry filling and topped with real strawberries.",
+        "price": "$42.49",
+        "section": "Cakes"
+      },
+      {
+        "name": "Black Forest",
+        "description": "Three layers of moist chocolate chiffon cake filled with light whipped cream and sweet-tart cherry filling. Finished with a dusting of cocoa powder, topped with maraschino cherries, and wrapped in delicate chocolate curls.\r\n",
+        "price": "$43.74",
+        "section": "Cakes"
+      },
+      {
+        "name": "Ube Flan",
+        "description": "Rich moist ube chiffon cake topped with delicious creamy leche flan",
+        "price": "$48.74",
+        "section": "Cakes"
+      },
+      {
+        "name": "Ube Overload Slice",
+        "description": "Each layer of our ube chiffon cake is filled with real Philippine Ube Halaya, giving you the perfect creamy ube delight!",
+        "price": "$6.61",
+        "section": "Cake Slices"
+      },
+      {
+        "name": "Yema Caramel Cake Slice",
+        "description": "A light and fluffy white chiffon base cake, filled with luscious Yema caramel custard, covered in creamy Whipped Yema Icing, and topped with mesmerizing swirls of Dulce de Leche",
+        "price": "$5.99",
+        "section": "Cake Slices"
+      },
+      {
+        "name": "Tiramisu Cake Slice",
+        "description": "Three layers of coffee-soaked white chiffon filled with mascarpone cream and topped with cocoa powder.",
+        "price": "$6.61",
+        "section": "Cake Slices"
+      },
+      {
+        "name": "Black Forest Cake Slice",
+        "description": "Three layers of moist chocolate chiffon cake filled with light whipped cream and sweet-tart cherry filling. Finished with a dusting of cocoa powder, topped with maraschino cherries, and wrapped in delicate chocolate curls.\r\n",
+        "price": "$5.99",
+        "section": "Cake Slices"
+      },
+      {
+        "name": "Mango Buttercream Dedication Cake",
+        "description": "Rich buttercream icing mixed with juicy mango bits tucked in moist chiffon cake. Personalize your cake by writing your own dedication!",
+        "price": "$44.99",
+        "section": "Dedication Cakes"
+      },
+      {
+        "name": "Mocha Dedication Cake",
+        "description": "Creamy mocha icing and filling on a yummy mocha chiffon cake. Personalize this cake with your own special message!",
+        "price": "$44.99",
+        "section": "Dedication Cakes"
+      },
+      {
+        "name": "Triple Chocolate Dedication Cake",
+        "description": "Chocolate chiffon cake with rich fudgy chocolate icing and filling, decorated with colorful sugar candy toppings. Personalize this cake with your own special message!",
+        "price": "$44.99",
+        "section": "Dedication Cakes"
+      },
+      {
+        "name": "Ube Coconut Cream Dedication Cake",
+        "description": "Layers of ube chiffon cake, filled and frosted with smooth, creamy ube coconut cream.",
+        "price": "$44.99",
+        "section": "Dedication Cakes"
+      },
+      {
+        "name": "Classic Mocha Bar Cake",
+        "description": "Creamy mocha icing and filling tucked in moist chiffon cake.\r\n",
+        "price": "$18.74",
+        "section": "Bar Cakes"
+      },
+      {
+        "name": "Mango Buttercream Bar Cake",
+        "description": "Rich buttercream icing mixed with juicy mango bits tucked in moist chiffon cake.\r\n",
+        "price": "$18.74",
+        "section": "Bar Cakes"
+      },
+      {
+        "name": "Triple Chocolate Bar Cake",
+        "description": "Moist Chocolate Chiffon topped with Chocolate Icing and Chocolate Chips.",
+        "price": "$18.74",
+        "section": "Bar Cakes"
+      },
+      {
+        "name": "Ube Coconut Cream Bar Cake",
+        "description": "Layers of ube chiffon cake, filled and frosted with smooth, creamy ube coconut cream.",
+        "price": "$18.74",
+        "section": "Bar Cakes"
+      },
+      {
+        "name": "Classic Mocha Square Cake",
+        "description": "Creamy mocha icing and filling on a yummy mocha chiffon cake\r\n",
+        "price": "$31.24",
+        "section": "Square Cakes"
+      },
+      {
+        "name": "Mango Buttercream Square Cake",
+        "description": "Rich buttercream icing mixed with juicy mango bits tucked in moist chiffon cake.\r\n",
+        "price": "$31.24",
+        "section": "Square Cakes"
+      },
+      {
+        "name": "Triple Chocolate Square Cake",
+        "description": "Moist Chocolate Chiffon topped with Chocolate Icing and Chocolate Chips\r\n",
+        "price": "$31.24",
+        "section": "Square Cakes"
+      },
+      {
+        "name": "Ube Coconut Cream Square Cake",
+        "description": "Layers of ube chiffon cake, filled and frosted with smooth, creamy ube coconut cream.",
+        "price": "$31.24",
+        "section": "Square Cakes"
+      },
+      {
+        "name": "Brazo de Mercedes Roll",
+        "description": "Soft baked meringue with lemon-flavored custard cream, all rolled into one fabulous creation.",
+        "price": "$24.99",
+        "section": "Rolls"
+      },
+      {
+        "name": "Ube Brazo de Mercedes Roll",
+        "description": "Soft-baked meringue layered with creamy ube filling, delicately rolled into one irresistible creation.",
+        "price": "$24.99",
+        "section": "Rolls"
+      },
+      {
+        "name": "Family Deal 4",
+        "description": "Palabok Family Platter and Mango Supreme\r\n- Palabok Family Platter - Red Ribbon’s signature noodle dish topped with our special sauce, sautéed pork, fried garlic, green onions, eggs and chicharon (ground pork crackling). Serves 2 to 3. AND \r\n- Mango Supreme Cake - Three layers of moist white chiffon cake, filled with real Philippine mangoes, our signature cream, and mango glaze. Our best-selling cake! \r\n",
+        "price": "$56.25",
+        "section": "Family Meal Bundles"
+      },
+      {
+        "name": "Family Deal 3a",
+        "description": "Palabok Family Platter + 3 Chicken Empanadas + Any Bar Cake\r\n- Palabok Family Platter - Red Ribbon’s signature noodle dish topped with our special sauce, sautéed pork, fried garlic, green onions, eggs and chicharon (ground pork crackling). Serves 2 to 3. AND\r\n- 3 Chicken Empanada - Best seller! Savory dough generously filled with delectable chicken. AND\r\n-Any Bar Cake\r\n",
+        "price": "$50.00",
+        "section": "Family Meal Bundles"
+      },
+      {
+        "name": "Family Deal 1",
+        "description": "Palabok Family Platter and 3 Chicken Empanadas\r\n- Palabok Family Platter - Red Ribbon’s signature noodle dish topped with our special sauce, sautéed pork, fried garlic, green onions, eggs and chicharon (ground pork crackling). Serves 2 to 3. AND\r\n- 3 Chicken Empanada - Best seller! Savory dough generously filled with delectable chicken.\r\n",
+        "price": "$31.25",
+        "section": "Family Meal Bundles"
+      },
+      {
+        "name": "Family Deal 2a",
+        "description": "Palabok Family Platter and Any Bar Cake\r\n- Palabok Family Platter - Red Ribbon’s signature noodle dish topped with our special sauce, sautéed pork, fried garlic, green onions, eggs and chicharon (ground pork crackling). Serves 2 to 3. AND\r\n- Any Bar cake\r\n",
+        "price": "$35.00",
+        "section": "Family Meal Bundles"
+      },
+      {
+        "name": "Chicken Empanada Value 6-Pack",
+        "description": "Best seller! Savory dough generously filled with delectable chicken.",
+        "price": "$22.50",
+        "section": "Savory Pastries"
+      },
+      {
+        "name": "Beef Empanada Value 6-Pack",
+        "description": "Savory dough generously filled with delectable beef.",
+        "price": "$25.00",
+        "section": "Savory Pastries"
+      },
+      {
+        "name": "Pork Empanada Value 6-Pack",
+        "description": "Savory dough generously filled with delectable pork.",
+        "price": "$22.50",
+        "section": "Savory Pastries"
+      },
+      {
+        "name": "Mix Match Empanada Value 6-Pack",
+        "description": "Savory dough generously filled with delectable spicy chicken.",
+        "price": "$25.00",
+        "section": "Savory Pastries"
+      },
+      {
+        "name": "Mix Match Mamon Value - 6 Pack",
+        "description": "Mix and match six delicious mamon flavors in one value pack.\r\n",
+        "price": "$18.75",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Butter Mamon Value 8-Pack",
+        "description": "8 snack-sized buttery chiffon  pastries.\r\n",
+        "price": "$18.75",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Ube Mamon Value 6-Pack",
+        "description": "6pcs Ube Mamon - Moist and soft chiffon cake bursting with ube flavor",
+        "price": "$18.75",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Butter Mamon Value 5-Pack",
+        "description": "5 snack-sized buttery chiffon  pastries.\r\n",
+        "price": "$12.50",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Cheesy Ensaimada - pack of 6",
+        "description": "Soft, moist bread topped with butter, sugar and cheesy deliciousness",
+        "price": "$18.75",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Mix Match Ensaimada Value - 6 Pack",
+        "description": "Mix and match six delicious ensaimada flavors in one value pack.",
+        "price": "$25.00",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Mocha Mamon Value 6-Pack",
+        "description": "6pcs Mocha Mamon - Moist and soft chiffon bursting with mocha flavor",
+        "price": "$18.75",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Moist Choco Slice - pack of 6",
+        "description": "Rich and moist chocolate pound cake that is full of chocolate goodness",
+        "price": "$17.18",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Ube Spanish Bread",
+        "description": "Soft fluffy Spanish bread filled with rich creamy ube filling",
+        "price": "$6.24",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Pandesal",
+        "description": "Perfectly baked bread rolls now bigger, fluffier, and softer - Pack of 12",
+        "price": "$6.24",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Cheesy Ensaimada",
+        "description": "Soft, moist bread topped with butter, sugar and cheesy deliciousness",
+        "price": "$3.99",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Taisan Loaf",
+        "description": "Moist and light chiffon cake topped with buttery goodness, in loaf size",
+        "price": "$8.61",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Mocha Mamon",
+        "description": "Moist and soft chiffon bursting with mocha flavor\r\n",
+        "price": "$3.74",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Ube Ensaimada",
+        "description": "Your favorite cheesy ensaimada, now filled with real ube halaya!",
+        "price": "$4.49",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Butter Mamon",
+        "description": "The perfect blend of chiffon and 100% butter that delicately melts in your mouth. Best seller!\r\n",
+        "price": "$3.11",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Moist Choco Slice",
+        "description": "Rich and moist chocolate pound cake that is full of chocolate goodness",
+        "price": "$2.86",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Caramel Bar",
+        "description": "Creamy caramel-flavored dessert bar with cashew nuts.",
+        "price": "$2.86",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Ube Mamon",
+        "description": "Moist and soft chiffon cake bursting with ube flavor",
+        "price": "$3.74",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Yema Caramel Ensaimada",
+        "description": "Your favorite cheesy ensaimada filled with creamy yema caramel goodness.",
+        "price": "$4.49",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Cheesy Mamon",
+        "description": "Our best-selling Butter Mamon topped with cheesy goodness.",
+        "price": "$3.74",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Cheesy Mamon Value 6-Pack",
+        "description": "6pcs Cheesy Mamon- Our best-selling Butter Mamon topped with cheesy goodness.\r\n",
+        "price": "$18.75",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Cheesy Ensaimada Family Pack",
+        "description": "Soft, moist bread topped with butter, sugar and cheesy deliciousness",
+        "price": "$29.99",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Ube Ensaimada - pack of 6",
+        "description": "Your favorite cheesy ensaimada, now filled with real ube halaya!",
+        "price": "$26.93",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Ube Pandesal",
+        "description": "Perfectly baked Ube bread rolls now bigger, fluffier, and softer - Pack of 12\r\n",
+        "price": "$8.11",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Brownies - pack of 6",
+        "description": "Moist, rich chocolate fudge bar",
+        "price": "$17.18",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Yema Caramel Ensaimada -pack of 6",
+        "description": "Your favorite cheesy ensaimada filled with creamy yema caramel goodness.",
+        "price": "$26.93",
+        "section": "Sweet Pastries"
+      },
+      {
+        "name": "Pancit Palabok with Cake Slice & Chicken Empanada",
+        "description": "Red Ribbon’s signature noodle dish topped with our special sauce, sautéed pork, fried garlic, green onions, eggs and chicharon (ground pork crackling) with our best seller! Savory dough generously filled with delectable chicken plus a cake slice. ",
+        "price": "$21.24",
+        "section": "Meals"
+      },
+      {
+        "name": "Super Value Meal C",
+        "description": "Arroz Caldo, Mango Supreme Cake Slice, Soda or Water",
+        "price": "$12.50",
+        "section": "Meals"
+      },
+      {
+        "name": "Pancit Palabok with Cake Slice",
+        "description": "Red Ribbon’s signature noodle dish topped with our special sauce, sautéed pork, fried garlic, green onions, eggs and chicharon (ground pork crackling) with a cake slice. ",
+        "price": "$15.61",
+        "section": "Meals"
+      },
+      {
+        "name": "Arroz Caldo with Cake Slice",
+        "description": "- Arroz Caldo - Flavorful chicken and rice congee with shiitake mushrooms, egg slices, green onions and fried garlic. AND\r\n- Mango Supreme Slice - Three layers of moist white chiffon cake, filled with real Philippine mangoes, our signature cream, and mango glaze. Our best-selling cake! OR\r\n- Ube Overload Slide - Each layer of our ube chiffon cake is filled with real Philippine Ube Halaya, giving you the perfect creamy ube delight!",
+        "price": "$15.61",
+        "section": "Meals"
+      },
+      {
+        "name": "Super Value Meal D",
+        "description": "Palabok, Mango Supreme Cake Slice, Soda or Water",
+        "price": "$12.50",
+        "section": "Meals"
+      },
+      {
+        "name": "Super Value Meal B",
+        "description": "2 Chicken Empanada, Mango Supreme Cake Slice",
+        "price": "$14.99",
+        "section": "Meals"
+      },
+      {
+        "name": "Arroz Caldo with Cake Slice & Chicken Empanada",
+        "description": "- Arroz Caldo - Flavorful chicken and rice congee with shiitake mushrooms, egg slices, green onions and fried garlic. AND\r\n- Chicken Empanada - Best seller! Savory dough generously filled with delectable chicken. AND\r\n- Mango Supreme Slice - Three layers of moist white chiffon cake, filled with real Philippine mangoes, our signature cream, and mango glaze. Our best-selling cake! OR\r\n- Ube Overload Slide - Each layer of our ube chiffon cake is filled with real Philippine Ube Halaya, giving you the perfect creamy ube delight!",
+        "price": "$21.24",
+        "section": "Meals"
+      },
+      {
+        "name": "Super Value Meal A",
+        "description": "Chicken Empanada, Moist Choco Cake Slice, Soda or Water",
+        "price": "$8.11",
+        "section": "Meals"
+      }
+    ]
+  },
+  {
+    "restaurantId": "11781",
+    "name": "Rosaria's Pizza",
+    "sourceUrl": "https://www.yelp.com/biz/rosarias-pizza-san-diego-8",
+    "confidence": "medium",
+    "dishes": [],
+    "notes": "not_found: two independent listings both tag this location closed - Yelp's own title reads \"ROSARIA'S PIZZA - CLOSED\" and TripAdvisor's page separately reads \"Rosaria's Pizza - CLOSED\", both for 6305 University Ave. No DoorDash/Uber Eats/Grubhub listing exists for this address at all, unlike a same-named sibling location at 3741 Mission Blvd (Mission Beach) which has an active DoorDash page and an Instagram confirming it is still open - meaning the chain overall is alive but this specific College/Rolando branch is not. MapQuest's listing still carries old present-tense marketing copy (\"we continue to serve...\"), but that page is boilerplate/unmaintained and contradicts the two independent closed tags plus the total absence of any ordering-platform presence at this address."
+  }
+]

@@ -1,0 +1,347 @@
+{
+  "tier": "sonnet",
+  "tried": {
+    "2976": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no website on record; serper found no first-party or platform hit"
+    },
+    "7109": {
+      "platform": null,
+      "outcome": "fetch-failed",
+      "detail": "fetch failed (Hostname/IP does not match certificate's altnames: Host: harveyssd.com. is not in the cert's altnames: DNS:127-west.com) (https://harveyssd.com)"
+    },
+    "7115": {
+      "platform": null,
+      "outcome": "fetch-failed",
+      "detail": "HTTP 404 (http://pokipokifallbrook.com)"
+    },
+    "7367": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no website on record; serper found no first-party or platform hit"
+    },
+    "7393": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no known platform on https://kyodai23togo.menu11.com/"
+    },
+    "7737": {
+      "platform": "toast",
+      "outcome": "wrong-branch",
+      "detail": "payload address \"9379 Poplar Avenue\" vs our \"13465 Camino Canada Ste 105, El Cajon, CA 92021\""
+    },
+    "7741": {
+      "platform": "toast",
+      "outcome": "wrong-branch",
+      "detail": "payload address \"2820 Roosevelt St Carlsbad, CA 92008\" vs our \"3373 Rosecrans St, San Diego, CA 92110\""
+    },
+    "8176": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no known platform on https://www.obsmoothie.com/; serper found no first-party or platform hit"
+    },
+    "8874": {
+      "platform": "toast",
+      "outcome": "wrong-branch",
+      "detail": "payload address \"208 N. Coast Hwy\" vs our \"890 Palomar Airport Rd, Carlsbad, CA 92011\""
+    },
+    "8954": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no known platform on https://jjangkoreanbbq.com/"
+    },
+    "9328": {
+      "platform": null,
+      "outcome": "fetch-failed",
+      "detail": "HTTP 401 (https://www.immersion-coffee.com/)"
+    },
+    "9419": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no known platform on https://alumaraarestaurant.com/"
+    },
+    "9475": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no known platform on https://susiecakes.com/locations/"
+    },
+    "9788": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no known platform on https://www.mainstgrillvista.com/"
+    },
+    "9909": {
+      "platform": "ubereats",
+      "outcome": "wrong-branch",
+      "detail": "[serper] payload address \"1509 West 18th Street\" vs our \"1510 S Mission Rd, Fallbrook, CA 92028\""
+    },
+    "10506": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no known platform on https://www.plantpowerfastfood.com/escondido"
+    },
+    "10588": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no website on record; serper found no first-party or platform hit"
+    },
+    "11196": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no website on record; serper found no first-party or platform hit"
+    },
+    "12163": {
+      "platform": "toast",
+      "outcome": "wrong-branch",
+      "detail": "payload address \"9379 Poplar Avenue\" vs our \"16477 Bernardo Center Dr, San Diego, CA 92128\""
+    },
+    "12367": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no known platform on https://rushbowls.com/san-diego"
+    }
+  },
+  "restaurants": [
+    {
+      "restaurantId": "7741",
+      "name": "Chin's Szechwan - Point Loma",
+      "address": "3373 Rosecrans St, San Diego, CA 92110",
+      "website": "https://www.govisitchins.com/locations/",
+      "reviewCount": 192,
+      "router": {
+        "platform": "toast",
+        "outcome": "wrong-branch",
+        "detail": "payload address \"2820 Roosevelt St Carlsbad, CA 92008\" vs our \"3373 Rosecrans St, San Diego, CA 92110\""
+      }
+    },
+    {
+      "restaurantId": "12163",
+      "name": "Perfect Pizza",
+      "address": "16477 Bernardo Center Dr, San Diego, CA 92128",
+      "website": "https://perfectpizzacorp.toast.site/",
+      "reviewCount": 155,
+      "router": {
+        "platform": "toast",
+        "outcome": "wrong-branch",
+        "detail": "payload address \"9379 Poplar Avenue\" vs our \"16477 Bernardo Center Dr, San Diego, CA 92128\""
+      }
+    },
+    {
+      "restaurantId": "8954",
+      "name": "JJANG Korean bbq",
+      "address": "3637 Avocado Blvd, La Mesa, CA 91941",
+      "website": "https://jjangkoreanbbq.com/",
+      "reviewCount": 138,
+      "router": {
+        "platform": null,
+        "outcome": "no-platform",
+        "detail": "no known platform on https://jjangkoreanbbq.com/"
+      }
+    },
+    {
+      "restaurantId": "9475",
+      "name": "SusieCakes - Carlsbad Forum",
+      "address": "1935 Calle Barcelona, Carlsbad, CA 92009, United States",
+      "website": "https://susiecakes.com/locations",
+      "reviewCount": 124,
+      "router": {
+        "platform": null,
+        "outcome": "no-platform",
+        "detail": "no known platform on https://susiecakes.com/locations/"
+      }
+    },
+    {
+      "restaurantId": "9788",
+      "name": "Main Street Pour House - Vista",
+      "address": "206 Main St, Vista, CA 92084",
+      "website": "https://www.mainstpourhousevista.com/",
+      "reviewCount": 124,
+      "router": {
+        "platform": null,
+        "outcome": "no-platform",
+        "detail": "no known platform on https://www.mainstgrillvista.com/"
+      }
+    },
+    {
+      "restaurantId": "12367",
+      "name": "Rush Bowls",
+      "address": "1418 Garnet Ave, San Diego, CA 92109, United States",
+      "website": "https://rushbowls.com/san-diego",
+      "reviewCount": 123,
+      "router": {
+        "platform": null,
+        "outcome": "no-platform",
+        "detail": "no known platform on https://rushbowls.com/san-diego"
+      }
+    },
+    {
+      "restaurantId": "10588",
+      "name": "Morada Restaurant Rancho Santa Fe",
+      "address": "5951 Linea Del Cielo, Rancho Santa Fe, CA 92067",
+      "website": null,
+      "reviewCount": 123,
+      "router": {
+        "platform": null,
+        "outcome": "no-platform",
+        "detail": "no website on record; serper found no first-party or platform hit"
+      }
+    },
+    {
+      "restaurantId": "7109",
+      "name": "Harvey's",
+      "address": "8685 Rio San Diego Dr Ste A, San Diego, CA 92108",
+      "website": "https://harveyssd.com",
+      "reviewCount": 123,
+      "router": {
+        "platform": null,
+        "outcome": "fetch-failed",
+        "detail": "fetch failed (Hostname/IP does not match certificate's altnames: Host: harveyssd.com. is not in the cert's altnames: DNS:127-west.com) (https://harveyssd.com)"
+      }
+    },
+    {
+      "restaurantId": "9328",
+      "name": "Immersion Coffee",
+      "address": "2100 Kettner Blvd Ste 1500, San Diego, CA 92101, United States",
+      "website": "https://www.immersion-coffee.com/",
+      "reviewCount": 122,
+      "router": {
+        "platform": null,
+        "outcome": "fetch-failed",
+        "detail": "HTTP 401 (https://www.immersion-coffee.com/)"
+      }
+    },
+    {
+      "restaurantId": "7393",
+      "name": "KYODAI 23 SUSHI",
+      "address": "1906 Oceanside Blvd Ste H&I, Oceanside, CA 92054",
+      "website": "https://kyodai23togo.menu11.com/",
+      "reviewCount": 122,
+      "router": {
+        "platform": null,
+        "outcome": "no-platform",
+        "detail": "no known platform on https://kyodai23togo.menu11.com/"
+      }
+    },
+    {
+      "restaurantId": "8176",
+      "name": "OB Smoothies Bar & Subs",
+      "address": "5001A Newport Ave, San Diego, CA 92107",
+      "website": "https://www.obsmoothie.com/",
+      "reviewCount": 109,
+      "router": {
+        "platform": null,
+        "outcome": "no-platform",
+        "detail": "no known platform on https://www.obsmoothie.com/; serper found no first-party or platform hit"
+      }
+    },
+    {
+      "restaurantId": "11196",
+      "name": "Birrieria la Loteria",
+      "address": "1293 Imperial Beach Blvd, Imperial Beach, CA 91932",
+      "website": null,
+      "reviewCount": 86,
+      "router": {
+        "platform": null,
+        "outcome": "no-platform",
+        "detail": "no website on record; serper found no first-party or platform hit"
+      }
+    },
+    {
+      "restaurantId": "2976",
+      "name": "South Park Kitchen",
+      "address": "1521 30th St, San Diego, CA 92102",
+      "website": null,
+      "reviewCount": 85,
+      "router": {
+        "platform": null,
+        "outcome": "no-platform",
+        "detail": "no website on record; serper found no first-party or platform hit"
+      }
+    },
+    {
+      "restaurantId": "8874",
+      "name": "Cosmos Burger Carlsbad",
+      "address": "890 Palomar Airport Rd, Carlsbad, CA 92011",
+      "website": "https://www.burgerscosmos.com/",
+      "reviewCount": 69,
+      "router": {
+        "platform": "toast",
+        "outcome": "wrong-branch",
+        "detail": "payload address \"208 N. Coast Hwy\" vs our \"890 Palomar Airport Rd, Carlsbad, CA 92011\""
+      }
+    },
+    {
+      "restaurantId": "7737",
+      "name": "Boba Tea Spot",
+      "address": "13465 Camino Canada Ste 105, El Cajon, CA 92021",
+      "website": "https://bobateaspot.toast.site/",
+      "reviewCount": 68,
+      "router": {
+        "platform": "toast",
+        "outcome": "wrong-branch",
+        "detail": "payload address \"9379 Poplar Avenue\" vs our \"13465 Camino Canada Ste 105, El Cajon, CA 92021\""
+      }
+    },
+    {
+      "restaurantId": "10506",
+      "name": "Plant Power Fast Food Digital Kitchen",
+      "address": "1309 Simpson Way Unit A, Escondido, CA 92029, United States",
+      "website": "https://www.plantpowerfastfood.com/escondido",
+      "reviewCount": 58,
+      "router": {
+        "platform": null,
+        "outcome": "no-platform",
+        "detail": "no known platform on https://www.plantpowerfastfood.com/escondido"
+      }
+    },
+    {
+      "restaurantId": "9909",
+      "name": "Village Tacos",
+      "address": "1510 S Mission Rd, Fallbrook, CA 92028",
+      "website": null,
+      "reviewCount": 58,
+      "router": {
+        "platform": "ubereats",
+        "outcome": "wrong-branch",
+        "detail": "[serper] payload address \"1509 West 18th Street\" vs our \"1510 S Mission Rd, Fallbrook, CA 92028\""
+      }
+    },
+    {
+      "restaurantId": "9419",
+      "name": "Al Umaraa Restaurant & Market",
+      "address": "867 Jamacha Rd, El Cajon, CA 92019",
+      "website": "https://alumaraarestaurant.com/",
+      "reviewCount": 58,
+      "router": {
+        "platform": null,
+        "outcome": "no-platform",
+        "detail": "no known platform on https://alumaraarestaurant.com/"
+      }
+    },
+    {
+      "restaurantId": "7115",
+      "name": "Poki Poki & Dragonitea - Fallbrook",
+      "address": "1057 S Main Ave Ste A, Fallbrook, CA 92028",
+      "website": "http://pokipokifallbrook.com",
+      "reviewCount": 58,
+      "router": {
+        "platform": null,
+        "outcome": "fetch-failed",
+        "detail": "HTTP 404 (http://pokipokifallbrook.com)"
+      }
+    },
+    {
+      "restaurantId": "7367",
+      "name": "Viche Marina Deli & Coffee",
+      "address": "1880 Harbor Island Dr, San Diego, CA 92101",
+      "website": null,
+      "reviewCount": 57,
+      "router": {
+        "platform": null,
+        "outcome": "no-platform",
+        "detail": "no website on record; serper found no first-party or platform hit"
+      }
+    }
+  ]
+}

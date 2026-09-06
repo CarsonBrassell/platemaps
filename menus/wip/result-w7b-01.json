@@ -1,0 +1,212 @@
+[
+  {
+    "restaurantId": "9285",
+    "name": "Candy Land",
+    "sourceUrl": "https://www.yelp.com/biz/candy-land-escondido",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "retail candy shop (Super Sour Candies, Chamoy, Chocolates, Candy Salads) with no itemized dish menu; Yelp marks it closed but escocandyland.com and a Facebook page (\"Joe's Candyland\", different phone) still show it active — not enough to confirm closure, and no priced menu exists either way"
+  },
+  {
+    "restaurantId": "5919",
+    "name": "Huy Ky Bakery",
+    "sourceUrl": "https://huy-ky-bakery.hey-restaurants.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published; hey-restaurants.com template lists item names (Wedding Cake, Moon Cake, Torte, Birthday Cake) with a bare \"$\" placeholder and no numeric price, confirmed by direct fetch"
+  },
+  {
+    "restaurantId": "7294",
+    "name": "The Honor Bar",
+    "sourceUrl": "https://honorbar.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no priced content found on homepage or /menu path"
+  },
+  {
+    "restaurantId": "10576",
+    "name": "Viewpoint Kitchen + Bar",
+    "sourceUrl": "https://www.sycuan.com/restaurants/viewpoint-kitchen-and-bar/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "menu tab renders client-side; no static price content or PDF/menu link found in the fetched HTML"
+  },
+  {
+    "restaurantId": "7795",
+    "name": "DACAFÉ",
+    "sourceUrl": "https://www.yelp.com/biz/dacaf%C3%A9-san-diego-4",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published; only social media (Instagram) and directory listings naming drinks (Thai Milk Tea, Matcha) with no price list, no first-party website on record"
+  },
+  {
+    "restaurantId": "8778",
+    "name": "Devil and Angel",
+    "sourceUrl": "https://devilnangel.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no priced content found on homepage or /menu path"
+  },
+  {
+    "restaurantId": "9935",
+    "name": "El Primo Birrieria Taco Truck",
+    "sourceUrl": "https://www.doordash.com/store/el-primo-birrieria-and-mexican-food-san-diego-2277555/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "address mismatch: only found same-name locations at 1177 C Street and 444 E San Ysidro Blvd, San Diego; our restaurant is the truck at San Ysidro Blvd & Virginia Ave, not confirmed the same entity"
+  },
+  {
+    "restaurantId": "4464",
+    "name": "F Street Cafe",
+    "sourceUrl": "https://fstreetcafe.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "only 6 priced food dishes found on the site (Breakfast Sandwich, Smoked Salmon Bagel, BLT, Avocado Toast, Classic Egg and Cheese, Acai Bowl); below the 8-dish minimum. Coffee drinks are listed as dual sizes (e.g. \"$3 | $4\") and don't resolve to a single price"
+  },
+  {
+    "restaurantId": "3522",
+    "name": "KD's Donuts",
+    "sourceUrl": "https://www.yelp.com/biz/kds-donuts-ramona",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "multiple same-name branches found online (kdsdonuts.com's own /menu has no fetchable prices; order.online and UberEats hits show priced menus but for a different address, 2102 South Main Street, not our 1433 Main Street Ramona location); could not confirm a branch-matched price list within budget"
+  },
+  {
+    "restaurantId": "9040",
+    "name": "6 7 Deli & Pizza",
+    "sourceUrl": "https://www.67deli.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no priced content found on homepage or /menu path"
+  },
+  {
+    "restaurantId": "6484",
+    "name": "Enoteca Buona Forchetta",
+    "sourceUrl": "https://buonaforchettasd.com/dinner-menu/",
+    "confidence": "high",
+    "notes": "router flagged a Toast payload address of \"3001 Beech Street\" vs our \"3011 Beech St\" (10-digit street-number difference, same block) as a wrong-branch; filed instead from the restaurant group's own first-party dinner-menu page, which is not location-specific. Prices on the page are whole dollars (e.g. \"$15\"); written here as \"$15.00\" per the required format. Add-on toppings (Polpettine, Salsiccia, Guanciale, Chicken, Shrimp, Porcini, Mozzarella, Burrata) were dropped as modifiers, not standalone dishes.",
+    "dishes": [
+      { "name": "Montanara", "description": "Fried pizza bites, chef's creation", "price": "$15.00", "section": "Antipasti" },
+      { "name": "Artichokes", "description": "Artichoke hearts, fresh herbs, evoo, garlic", "price": "$20.00", "section": "Antipasti" },
+      { "name": "Calamari Fritti", "description": "Fried calamari, marinara", "price": "$19.00", "section": "Antipasti" },
+      { "name": "Eggplant Tortino", "description": "Eggplant, marinara, stracciata", "price": "$15.00", "section": "Antipasti" },
+      { "name": "Polpettine", "description": "Beef meatballs, tomato sauce, grated parmigiano", "price": "$16.00", "section": "Antipasti" },
+      { "name": "Bruschettone", "description": "Chef's creation", "price": "$16.00", "section": "Antipasti" },
+      { "name": "Tagliere Misto", "description": "Serves 2 people, artisanal cheeses and meats", "price": "$28.00", "section": "Antipasti" },
+      { "name": "Focaccia", "description": "Woodfire Italian flatbread with rosemary", "price": "$8.00", "section": "Antipasti" },
+      { "name": "Burrata Caprese", "description": "Organic tomatoes, burrata, evoo, balsamic", "price": "$18.00", "section": "Antipasti" },
+      { "name": "Fattore", "description": "Mixed greens, grape tomatoes, walnuts, parmesan cheese", "price": "$13.00", "section": "Salads" },
+      { "name": "Sottoterra", "description": "Carrots, fennel, parsnip, onions, mixed greens, goat cheese", "price": "$16.00", "section": "Salads" },
+      { "name": "Piemonte", "description": "Spinach, gorgonzola cheese, pear, sliced almonds, balsamic", "price": "$15.00", "section": "Salads" },
+      { "name": "Beet Salad", "description": "Organic mixed greens, beets, lentils, goat cheese, parmigiano, balsamic", "price": "$16.00", "section": "Salads" },
+      { "name": "Radicchio", "description": "Radicchio and cauliflower salad, salami", "price": "$16.00", "section": "Salads" },
+      { "name": "Insalata Vegana", "description": "Organic baby spinach, chickpeas, cranberries, Italian balsamic dressing", "price": "$15.00", "section": "Salads" },
+      { "name": "Tagliere Vegano", "description": "Serves 2-3 people", "price": "$26.00", "section": "Salads" },
+      { "name": "Spaghetti Puttanesca", "description": "Cherry tomatoes, black olives, capers, onions and garlic", "price": "$21.00", "section": "Pasta" },
+      { "name": "Penne al Funghi", "description": "Shallots, garlic, parsley, mixed mushrooms", "price": "$20.00", "section": "Pasta" },
+      { "name": "Ravioli Vegan", "description": "Stuffed ravioli with asparagus puree", "price": "$26.00", "section": "Pasta" },
+      { "name": "Amatriciana", "description": "Organic tomatoes, pork guanciale, onions, pecorino cheese", "price": "$22.00", "section": "Pasta" },
+      { "name": "Cacio E Pepe", "description": "Pecorino cheese, black pepper", "price": "$21.00", "section": "Pasta" },
+      { "name": "Bolognese", "description": "Ground Angus beef, tomatoes", "price": "$23.00", "section": "Pasta" },
+      { "name": "Pesto", "description": "Aged parmesan, evoo, basil, pine nuts (contains nuts)", "price": "$22.00", "section": "Pasta" },
+      { "name": "Carbonara", "description": "Egg yolk, pecorino cheese, pork guanciale", "price": "$23.00", "section": "Pasta" },
+      { "name": "Due Pomodori", "description": "Organic tomatoes, garlic, basil", "price": "$19.00", "section": "Pasta" },
+      { "name": "Buona Forchetta", "description": "Cream, egg yolk, parmigiano, spicy marinara, black pepper", "price": "$21.00", "section": "Pasta" },
+      { "name": "Aglio Olio E Peperoncino", "description": "Garlic, evoo and fresh chili pepper", "price": "$18.00", "section": "Pasta" },
+      { "name": "Lasagna Bolognese", "description": "Fresh homemade pasta and ground beef ragu, parmesan cheese", "price": "$26.00", "section": "Baked Specialties" },
+      { "name": "Eggplant Parmigiana", "description": "Fried eggplant, smoked mozzarella, marinara, parmesan, basil", "price": "$24.00", "section": "Baked Specialties" },
+      { "name": "Lasagna Vegetariana", "description": "Fresh homemade pasta, zucchini, asparagus, smoked mozzarella", "price": "$24.00", "section": "Baked Specialties" },
+      { "name": "Broccolini", "description": "Broccolini with shallot, evoo and black pepper", "price": "$9.00", "section": "Sides" },
+      { "name": "Roasted Potatoes", "description": "Roasted potatoes with rosemary", "price": "$9.00", "section": "Sides" },
+      { "name": "Sauteed Mixed Mushrooms", "description": "Sauteed mixed mushrooms with parsley and garlic", "price": "$9.00", "section": "Sides" },
+      { "name": "Sauteed Baby Spinach", "description": "Sauteed baby spinach with butter and parmesan cheese", "price": "$9.00", "section": "Sides" },
+      { "name": "Brussels Sprouts", "description": "Brussels sprouts with smoked pancetta", "price": "$9.00", "section": "Sides" },
+      { "name": "Margherita", "description": "San Marzano tomatoes, mozzarella, basil, evoo", "price": "$18.00", "section": "Pizza" },
+      { "name": "Marinara", "description": "San Marzano tomatoes, oregano, garlic, grape tomatoes", "price": "$15.00", "section": "Pizza" },
+      { "name": "Regina Margherita", "description": "Mozzarella di bufala, grape tomatoes, basil, parmigiano", "price": "$20.00", "section": "Pizza" },
+      { "name": "Puttanesca", "description": "Mozzarella, capers, anchovies, olives, tomatoes", "price": "$19.00", "section": "Pizza" },
+      { "name": "Andrea", "description": "Provola, roasted potatoes, sausage, parmigiano", "price": "$20.00", "section": "Pizza / Le Bianche" },
+      { "name": "Marisa", "description": "Mozzarella, pesto, ricotta, grape tomatoes, pine nuts", "price": "$20.00", "section": "Pizza / Le Bianche" },
+      { "name": "Barbara", "description": "Mozzarella di bufala, provola, gorgonzola, parmigiano", "price": "$20.00", "section": "Pizza / Le Bianche" },
+      { "name": "Isabella", "description": "Mozzarella di bufala, sun-dried tomatoes, onions, goat cheese", "price": "$19.00", "section": "Pizza / Le Bianche" },
+      { "name": "Michelle", "description": "Caramelized onions, gorgonzola, speck, mozzarella", "price": "$22.00", "section": "Pizza / Le Bianche" },
+      { "name": "Alexa", "description": "Provola, fennel sausage, broccolini", "price": "$20.00", "section": "Pizza / Le Bianche" },
+      { "name": "Lina", "description": "Pepperoni, nduja, mozzarella, stracciata, spicy honey", "price": "$23.00", "section": "Pizza / Le Bianche" },
+      { "name": "Piera", "description": "Pesto, grape tomatoes, caramelized onions, mushrooms", "price": "$20.00", "section": "Pizza / Le Bianche" },
+      { "name": "Gabriele", "description": "Spinach, porcini, grape tomatoes", "price": "$20.00", "section": "Pizza / Le Bianche" },
+      { "name": "Sofia", "description": "Mozzarella, prosciutto cotto, artichokes, mushrooms", "price": "$21.00", "section": "Pizza / Le Rosse" }
+    ]
+  },
+  {
+    "restaurantId": "5770",
+    "name": "Rancho's Taco Shop And Seafood",
+    "sourceUrl": "https://www.yelp.com/biz/ranchos-restaurant-escondido",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published; listed website redirects to the barred directory farm ranchos-seafood.edan.io, and no alternate first-party or platform source with prices was found"
+  },
+  {
+    "restaurantId": "7641",
+    "name": "Olive Branch Eatery",
+    "sourceUrl": "https://olivebrancheatery.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "only 4 sandwich prices found (Sicilian, Capri, Sienna, Venice); remaining priced items are retail grocery goods (olive oil, dry pasta), not prepared dishes. Below the 8-dish minimum"
+  },
+  {
+    "restaurantId": "6280",
+    "name": "Larisa's Mexican Bakery",
+    "sourceUrl": "https://www.yelp.com/biz/panaderia-larisa-san-diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published; no first-party website on record, only Yelp/Instagram/directory listings with no itemized price list"
+  },
+  {
+    "restaurantId": "8822",
+    "name": "Corner Office Pizza and Craft Bar",
+    "sourceUrl": "https://www.cornerofficebar.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no priced content found on homepage or /menu path"
+  },
+  {
+    "restaurantId": "11013",
+    "name": "Golden Grill",
+    "sourceUrl": "https://goldenacorncasino.com/golden-grill/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no itemized menu found; the casino site's homepage and the golden-grill subpage only show jackpot/promo content and a $9.99 weekend buffet special, no priced dish list"
+  },
+  {
+    "restaurantId": "10737",
+    "name": "Cafe Nordstrom",
+    "sourceUrl": "https://www.nordstrom.com/store-details/united-states/ca/san-diego/nordstrom-fashion-valley",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published; the Nordstrom store-details page has no itemized cafe menu content"
+  },
+  {
+    "restaurantId": "6416",
+    "name": "Aurora's Bakery",
+    "sourceUrl": "https://www.yelp.com/biz/auroras-bakery-escondido-2",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published; no first-party website on record, only Yelp/Tripadvisor/Facebook listings with no itemized price list"
+  },
+  {
+    "restaurantId": "6348",
+    "name": "Jimmy's Cafe & Pub",
+    "sourceUrl": "https://www.yelp.com/biz/jimmys-cafe-and-pub-san-diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "brand rebrand: Yelp lists this business as CLOSED at 6450 Sequence Dr, and the same address now operates as \"Jimmy's @ Verge Cafe\" / \"Jimmy's at Verge\" (Tripadvisor, joe.coffee — a needs-browser platform). Not filing the successor's menu under this id"
+  },
+  {
+    "restaurantId": "7963",
+    "name": "Phology Noodle House - Pho Vietnamese Chula Vista CA",
+    "sourceUrl": "https://phologynoodle.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "site now resolves (retry succeeded after the router's DNS timeout) but returns no priced content and no menu/ordering-platform links on the homepage"
+  }
+]

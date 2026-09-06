@@ -1,0 +1,1251 @@
+[
+  {
+    "restaurantId": "9464",
+    "name": "Mexi-Cocina Restaurant",
+    "sourceUrl": "http://www.themexicanbar.com/",
+    "confidence": "high",
+    "notes": "Address 12213 Poway Road confirmed via the Toast ordering page's own JSON. The page identifies the current occupant as 'MexicanBar Poway | Modern Mexican Restaurant & Tequila Bar', described as 'Locally owned and freshly remodeled'. Two separate Yelp listings for Mexicocina Restaurant & Cantina at this address say 'CLOSED - Try Our New Menu' / 'Yelpers report this location has closed', and Tripadvisor confirms 'This place has changed ownership'. Mexi-Cocina Restaurant is confirmed closed/replaced at its address by a differently-named business.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5869",
+    "name": "Wahoo's Fish Taco",
+    "sourceUrl": "https://order.online/store/wahoo's-fish-taco-encinitas-68381",
+    "confidence": "high",
+    "crossCheckedAgainst": "",
+    "notes": "First-party white-label ordering system for this exact address (1006 N El Camino Real confirmed in the page JSON). Prices embedded in escaped JSON as literal '$$X.XX' (doubled dollar sign, an escaping artifact of the page's JS template-literal payload) -- normalized to single '$'. Dropped section/category header objects whose 'name' field (Most Ordered, Entrees, Salads/Soup, Burritos, Desserts, Drinks, Just for kids, Shared Plates, Online Sides, Tacos & Enchiladas, BOWL, Chips and Salsa) matched a nearby child item's price rather than being a real dish, and dropped one 'Wahoo's Fish Taco' row that was the store name, not a dish. Cent distribution mixed and conventional (.00/.25/.50/.75/.95/.65/.40/.10/.45/.30/.85 etc), no uniform-markup signature; no divisor sweep applied. 61 dishes filed.",
+    "dishes": [
+      {
+        "name": "MAUI BOWL",
+        "description": "",
+        "price": "$15.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "WAHOO'S BOWL",
+        "description": "",
+        "price": "$13.75",
+        "section": "Bowls"
+      },
+      {
+        "name": "Loaded Nachos",
+        "description": "",
+        "price": "$11.75",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "1988 Burrito",
+        "description": "",
+        "price": "$12.55",
+        "section": "Burritos"
+      },
+      {
+        "name": "Banzai Bowl",
+        "description": "",
+        "price": "$13.75",
+        "section": "Bowls"
+      },
+      {
+        "name": "Outer Reef Burrito",
+        "description": "",
+        "price": "$12.75",
+        "section": "Burritos"
+      },
+      {
+        "name": "Taquitos",
+        "description": "",
+        "price": "$8.95",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "Loaded Quesadilla",
+        "description": "",
+        "price": "$11.75",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "Protein Bowl",
+        "description": "",
+        "price": "$15.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Chicken Tortilla Soup",
+        "description": "",
+        "price": "$7.65",
+        "section": "Salads & Soup"
+      },
+      {
+        "name": "Citrus Slaw Burrito",
+        "description": "",
+        "price": "$12.75",
+        "section": "Burritos"
+      },
+      {
+        "name": "Kids bowl",
+        "description": "",
+        "price": "$8.45",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Hawaiian Burrito",
+        "description": "",
+        "price": "$14.10",
+        "section": "Burritos"
+      },
+      {
+        "name": "Black Bean, Rice, & Cheese Burrito",
+        "description": "",
+        "price": "$8.45",
+        "section": "Burritos"
+      },
+      {
+        "name": "Wahoo's Salad",
+        "description": "",
+        "price": "$13.75",
+        "section": "Salads & Soup"
+      },
+      {
+        "name": "Chips Salsa & Guacamole",
+        "description": "",
+        "price": "$6.50",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "Kids Quesadilla",
+        "description": "",
+        "price": "$7.25",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Tacos de Papa",
+        "description": "",
+        "price": "$9.40",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Banzai Burrito",
+        "description": "",
+        "price": "$13.10",
+        "section": "Burritos"
+      },
+      {
+        "name": "Kids Plate",
+        "description": "",
+        "price": "$8.25",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "1988 Taco",
+        "description": "",
+        "price": "$5.15",
+        "section": "Tacos & Entrees"
+      },
+      {
+        "name": "Crispy Fish Taco",
+        "description": "",
+        "price": "$5.15",
+        "section": "Tacos & Entrees"
+      },
+      {
+        "name": "Entree #1",
+        "description": "",
+        "price": "$10.40",
+        "section": "Tacos & Entrees"
+      },
+      {
+        "name": "Scream'n Burrito",
+        "description": "",
+        "price": "$12.75",
+        "section": "Burritos"
+      },
+      {
+        "name": "Entree #2",
+        "description": "",
+        "price": "$13.65",
+        "section": "Tacos & Entrees"
+      },
+      {
+        "name": "Street Taco Combo",
+        "description": "",
+        "price": "$13.65",
+        "section": "Tacos & Entrees"
+      },
+      {
+        "name": "Crispy Fish Sandwich",
+        "description": "",
+        "price": "$12.50",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Regular Fountain Drink",
+        "description": "",
+        "price": "$3.10",
+        "section": "Drinks"
+      },
+      {
+        "name": "Large Fountain Drink",
+        "description": "",
+        "price": "$3.60",
+        "section": "Drinks"
+      },
+      {
+        "name": "Two Ensenada Tacos Entree",
+        "description": "",
+        "price": "$13.65",
+        "section": "Tacos & Entrees"
+      },
+      {
+        "name": "One Ensenada Taco Entree",
+        "description": "",
+        "price": "$10.40",
+        "section": "Tacos & Entrees"
+      },
+      {
+        "name": "Sunset Salad",
+        "description": "",
+        "price": "$13.75",
+        "section": "Salads & Soup"
+      },
+      {
+        "name": "CHIPOTLE SALAD",
+        "description": "",
+        "price": "$13.75",
+        "section": "Salads & Soup"
+      },
+      {
+        "name": "Churro Chips",
+        "description": "",
+        "price": "$4.99",
+        "section": "Desserts"
+      },
+      {
+        "name": "Brownie",
+        "description": "",
+        "price": "$3.50",
+        "section": "Desserts"
+      },
+      {
+        "name": "Brewed Iced Tea",
+        "description": "",
+        "price": "$2.90",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bubly Sparkling",
+        "description": "",
+        "price": "$3.30",
+        "section": "Drinks"
+      },
+      {
+        "name": "Pepsi Bottle",
+        "description": "",
+        "price": "$2.85",
+        "section": "Drinks"
+      },
+      {
+        "name": "Pepsi Zero Bottle",
+        "description": "",
+        "price": "$2.85",
+        "section": "Drinks"
+      },
+      {
+        "name": "Milk",
+        "description": "",
+        "price": "$2.65",
+        "section": "Drinks"
+      },
+      {
+        "name": "Dole Juice",
+        "description": "",
+        "price": "$4.30",
+        "section": "Drinks"
+      },
+      {
+        "name": "Monster",
+        "description": "",
+        "price": "$4.20",
+        "section": "Drinks"
+      },
+      {
+        "name": "Poppi Doc Pop",
+        "description": "",
+        "price": "$3.85",
+        "section": "Drinks"
+      },
+      {
+        "name": "Poppi Raspberry Rose",
+        "description": "",
+        "price": "$3.85",
+        "section": "Drinks"
+      },
+      {
+        "name": "Poppi Orange",
+        "description": "",
+        "price": "$3.85",
+        "section": "Drinks"
+      },
+      {
+        "name": "Poppi Strawberry Lemon",
+        "description": "",
+        "price": "$3.85",
+        "section": "Drinks"
+      },
+      {
+        "name": "Maui Onion Rings",
+        "description": "",
+        "price": "$7.25",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$5.00",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "Side of Tortilla",
+        "description": "",
+        "price": "$1.25",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "Pico de Gallo",
+        "description": "",
+        "price": "$2.50",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "SD Citrus Slaw",
+        "description": "",
+        "price": "$2.30",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "Sour Cream*",
+        "description": "",
+        "price": "$0.60",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "Side Teriyaki Veggies",
+        "description": "",
+        "price": "$3.00",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "Mr. Lee's",
+        "description": "",
+        "price": "$1.00",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "Side of Queso Fresco",
+        "description": "",
+        "price": "$0.75",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "3oz side of Meat",
+        "description": "",
+        "price": "$2.95",
+        "section": "Shared Plates & Sides"
+      },
+      {
+        "name": "Enchilada",
+        "description": "",
+        "price": "$5.15",
+        "section": "Tacos & Entrees"
+      },
+      {
+        "name": "Citrus Slaw Taco",
+        "description": "",
+        "price": "$5.15",
+        "section": "Tacos & Entrees"
+      },
+      {
+        "name": "Street Taco",
+        "description": "",
+        "price": "$3.00",
+        "section": "Tacos & Entrees"
+      },
+      {
+        "name": "Ensenada Fish Taco",
+        "description": "",
+        "price": "$5.15",
+        "section": "Tacos & Entrees"
+      },
+      {
+        "name": "Spicy Ensenada Shrimp Taco",
+        "description": "",
+        "price": "$5.15",
+        "section": "Tacos & Entrees"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8619",
+    "name": "Ryan Bros Coffee of San Marcos",
+    "sourceUrl": "https://tmt.spotapps.co/ordering-menu/?spot_id=30938&images=yes&accordion=true",
+    "confidence": "medium",
+    "notes": "First-party Spot ordering widget embedded on ryanbroscoffee.com's homepage, whose banner headline names 'Ryan Bros Coffee - San Marcos -- 133 N Twin Oaks Valley Rd Ste110, San Marcos, CA 92069' (exact batch address) as the page's primary location; the widget's spot_id (30938) is the single sitewide ordering config, so the branch tie is inferred from that banner rather than an explicit location field in the menu payload itself -- hence medium not high. Ryan Bros is a small multi-location local chain (also Barrio Logan, City Heights, Rancho Bernardo, Navy Base Pacific Beacon, Downtown); this page is the only one confirmed tied to the San Marcos address. Deduped exact-duplicate cards (Avocado Toast, Acai Bowl, Hot Nitro Draft each appeared twice identically). 58 dishes (drinks + food) filed across Food / Hot & Cold Coffee Drinks / Smoothies & Specialty.",
+    "dishes": [
+      {
+        "name": "Main Street Special",
+        "description": "",
+        "price": "$10.25",
+        "section": "Food"
+      },
+      {
+        "name": "Chorizo Mexicano",
+        "description": "",
+        "price": "$10.25",
+        "section": "Food"
+      },
+      {
+        "name": "Veggie Lover",
+        "description": "",
+        "price": "$10.25",
+        "section": "Food"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "",
+        "price": "$8.95",
+        "section": "Food"
+      },
+      {
+        "name": "Almond Butter Toast",
+        "description": "",
+        "price": "$5.95",
+        "section": "Food"
+      },
+      {
+        "name": "Cream Cheese Bagel",
+        "description": "",
+        "price": "$3.75",
+        "section": "Food"
+      },
+      {
+        "name": "Staying Classy",
+        "description": "",
+        "price": "$11.40",
+        "section": "Food"
+      },
+      {
+        "name": "The Farmer",
+        "description": "",
+        "price": "$11.40",
+        "section": "Food"
+      },
+      {
+        "name": "South of the Border",
+        "description": "",
+        "price": "$11.40",
+        "section": "Food"
+      },
+      {
+        "name": "Burrito Bowl",
+        "description": "",
+        "price": "$10.20",
+        "section": "Food"
+      },
+      {
+        "name": "Yogurt Bowl",
+        "description": "",
+        "price": "$9.30",
+        "section": "Food"
+      },
+      {
+        "name": "Acai Bowl",
+        "description": "",
+        "price": "$9.30",
+        "section": "Food"
+      },
+      {
+        "name": "Quesadilla & Soup",
+        "description": "",
+        "price": "$12.50",
+        "section": "Food"
+      },
+      {
+        "name": "T.A.B.",
+        "description": "",
+        "price": "$12.25",
+        "section": "Food"
+      },
+      {
+        "name": "Tuna",
+        "description": "",
+        "price": "$12.25",
+        "section": "Food"
+      },
+      {
+        "name": "Panini",
+        "description": "",
+        "price": "$12.25",
+        "section": "Food"
+      },
+      {
+        "name": "Hot Nitro Draft",
+        "description": "12oz",
+        "price": "$3.40",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Hot Nitro Draft",
+        "description": "16oz",
+        "price": "$4.10",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Americano",
+        "description": "12oz",
+        "price": "$4.05",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Americano",
+        "description": "16oz",
+        "price": "$4.45",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "12oz",
+        "price": "$4.70",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "16oz",
+        "price": "$5.20",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Latte",
+        "description": "12oz",
+        "price": "$4.70",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Latte",
+        "description": "16oz",
+        "price": "$5.20",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Chai Tea Latte",
+        "description": "16oz",
+        "price": "$4.70",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Chai Tea Latte",
+        "description": "12oz",
+        "price": "$5.20",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Flavored Latte",
+        "description": "12oz",
+        "price": "$5.25",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Flavored Latte",
+        "description": "16oz",
+        "price": "$5.75",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Mocha",
+        "description": "12oz",
+        "price": "$5.50",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Mocha",
+        "description": "16oz",
+        "price": "$6.50",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "12oz",
+        "price": "$5.50",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "16oz",
+        "price": "$6.20",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Pour Over",
+        "description": "12oz",
+        "price": "$5.50",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Pour Over",
+        "description": "16oz",
+        "price": "$6.00",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "12oz",
+        "price": "$4.35",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "16oz",
+        "price": "$5.05",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Java Chip",
+        "description": "16oz",
+        "price": "$6.30",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Mocha",
+        "description": "16oz",
+        "price": "$6.30",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Peanut Butter",
+        "description": "16oz",
+        "price": "$6.55",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Caramel",
+        "description": "16oz",
+        "price": "$6.55",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Cookie's N' Cream",
+        "description": "16oz",
+        "price": "$6.55",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Funky Monkey",
+        "description": "16oz",
+        "price": "$8.65",
+        "section": "Smoothies & Specialty"
+      },
+      {
+        "name": "Hawaiian",
+        "description": "16oz",
+        "price": "$8.65",
+        "section": "Smoothies & Specialty"
+      },
+      {
+        "name": "Super Lean Green",
+        "description": "16oz",
+        "price": "$8.65",
+        "section": "Smoothies & Specialty"
+      },
+      {
+        "name": "Mexican Mocha",
+        "description": "16oz",
+        "price": "$6.20",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "French Vanilla Latte",
+        "description": "16oz",
+        "price": "$6.20",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Raceway Espresso",
+        "description": "16oz",
+        "price": "$6.20",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Dirty Chai",
+        "description": "16oz",
+        "price": "$6.20",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Caramel",
+        "description": "16oz",
+        "price": "$6.20",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Horchata",
+        "description": "16oz",
+        "price": "$6.20",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Cold Brew Tea",
+        "description": "16oz",
+        "price": "$6.20",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Trifecta",
+        "description": "16oz",
+        "price": "$6.20",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Cold Brew Flight",
+        "description": "",
+        "price": "$14.95",
+        "section": "Smoothies & Specialty"
+      },
+      {
+        "name": "Freestyle Xpressot",
+        "description": "4oz",
+        "price": "$4.05",
+        "section": "Hot & Cold Coffee Drinks"
+      },
+      {
+        "name": "Blended Matcha Crème",
+        "description": "16oz cold",
+        "price": "$9.00",
+        "section": "Smoothies & Specialty"
+      },
+      {
+        "name": "Bon Fire Cold",
+        "description": "16oz cold",
+        "price": "$9.00",
+        "section": "Smoothies & Specialty"
+      },
+      {
+        "name": "Bon Fire Hot",
+        "description": "2 oz. hot",
+        "price": "$6.50",
+        "section": "Smoothies & Specialty"
+      },
+      {
+        "name": "Bon Fire Hot",
+        "description": "16.oz hot",
+        "price": "$7.95",
+        "section": "Smoothies & Specialty"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3492",
+    "name": "Cafe Bella Drive Thru",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser/no-priced-source: cafebellaob.com (WordPress/Porto theme) publishes no prices, only a '#menu' anchor with no content. Cafe Bella is a small multi-location chain (Voltaire St, Bacon St, Newport Ave x2); Uber Eats and Grubhub listings found are for the Bacon St branch, not this Voltaire St address (4984 Voltaire St, confirmed via Maps), so per identity rules they were not used. No DoorDash/Uber Eats/Grubhub listing found specifically for the Voltaire St location within budget. joe.coffee has a page for this address but is app-only ordering with no prices in the page."
+  },
+  {
+    "restaurantId": "8588",
+    "name": "Golden Bagel",
+    "sourceUrl": "https://www.ubereats.com/store/golden-bagel-black-mountain-rd/mBWk0wXMXfq3h3jfUmW7-w",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "fee-baked-in: 13289 Black Mountain Rd address confirmed via the Uber Eats JSON-LD (schema.org Restaurant/Menu block, 58 priced items after dedup, coherent full menu -- Breakfast Bagels/Bagels/Spreads/Salads/Melts/Sandwiches/Focaccia/Bowls/Drinks/Smoothies, not a truncated carousel). Divisor sweep 1.00-1.35 found 1.20 clears 58 of 58 items to conventional .95/.75/.50/.99 round numbers (e.g. $13.14->$10.95, $7.14->$5.95, $2.70->$2.25, $9.54->$7.95) -- a textbook 20% marketplace markup, not the wall price. Grubhub shows the identical marked-up numbers ($13.14, $13.80), so it is not an independent cross-check. First-party goldenbagelsd.com publishes no prices. No pre-fee source found."
+  },
+  {
+    "restaurantId": "7174",
+    "name": "Off The 8 Café",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-priced-source: listed website redirects to barred farm domain offtherails.top. No DoorDash/Uber Eats/Grubhub/Toast/Square presence found for 1730 Alpine Blvd Ste 110, Alpine. Only price mention found was a Yelp review ('Patty Melts were $17.45') -- hearsay, not a source per rules."
+  },
+  {
+    "restaurantId": "3495",
+    "name": "Veronica's Kitchen",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-priced-source: address confirmed as 24680 Viejas Grade Rd, Descanso, CA 91916 (batch record said '24680 Viejas Boulevard' with no city; Descanso is in San Diego County) via Yelp/Tripadvisor/Apple Maps. No first-party website. SinglePlatform and Orangebook listings both carry the item list with prices stripped (documented SinglePlatform failure mode). A Facebook comment references DoorDash but no priced DoorDash/Uber Eats listing was found for this address."
+  },
+  {
+    "restaurantId": "1894",
+    "name": "Royal India Express",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-priced-source: listed website (royalindiaexpress.com) is a parked HugeDomains listing. Grubhub confirms 'Not available on Grubhub anymore.' No DoorDash/Uber Eats listing found for 4545 La Jolla Village Dr Ste E-22. sirved.com (single tier-5 aggregator, text-extracted only per policy) shows only 1 priced item, below the 5-item floor for a menu."
+  },
+  {
+    "restaurantId": "9278",
+    "name": "MammaMia Deli Market - Gino & Gianni's Pizzeria",
+    "sourceUrl": "https://mammamiasd.com/",
+    "confidence": "high",
+    "crossCheckedAgainst": "",
+    "notes": "First-party site, address 4231 Spring Street, La Mesa confirmed directly in the page. Prices are consistently conventional (.99/.49 endings), no uniform-markup signature. Note Grubhub lists the same items at ~20-25% higher prices (e.g. Gianni Special Pizza $21.99 first-party vs $26.99 on Grubhub) -- confirms the marketplace markup pattern seen elsewhere in this batch; first-party price used, Grubhub not used. 90 dishes filed across sandwiches, subs, pizzas, pasta, trays, desserts and drinks.",
+    "dishes": [
+      {
+        "name": "MammaMia Combo Sandwich",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nMortadella, Pistachio Cream, Stracciatella, Pistachio Crumbles, Provolone Cheese served on our signature Schiaciatta Bread, made fresh daily.",
+        "price": "$22.99"
+      },
+      {
+        "name": "Tutto Veggie Combo Sandwich",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nSpecialty Sandwich served on signature Schiaciatta Bread, made fresh daily, with Grilled Eggplant, Grilled Zucchini, Grilled Artichoke.",
+        "price": "$22.99"
+      },
+      {
+        "name": "That's Amore Combo Sandwich",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nSpecialty Sandwich served on signature Schiaciatta Bread, made fresh daily, with Mortadella, Parmigiano Shreds, Balsamic Glaze.",
+        "price": "$22.99"
+      },
+      {
+        "name": "MammaMia Torpedo Combo Sub",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nMortadella. Salami, Ham, Provolone, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE",
+        "price": "$20.99"
+      },
+      {
+        "name": "Spicy Sicilian Combo Sub",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nSpicy Mortadella, Gabagool (Capicola), Spicy Soppressata, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$20.99"
+      },
+      {
+        "name": "Mortadella Combo Sub",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nMortadella, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$20.99"
+      },
+      {
+        "name": "Salami Combo Sub",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nSalami, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$20.99"
+      },
+      {
+        "name": "Pastrami Combo Sub",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nPastrami, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$22.99"
+      },
+      {
+        "name": "Caprese Combo Sub",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nMozzarella, Tomato, Basil, all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$20.99"
+      },
+      {
+        "name": "Whole Lotta Ties Turkey Combo Sub",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nTurkey, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$20.99"
+      },
+      {
+        "name": "Ham & Swiss Combo Sub",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nHam, Swiss Cheese, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$20.99"
+      },
+      {
+        "name": "La Dolce Vita Combo Sandwich",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nNutella, Mortadella, Stracciatella, Hazelnut Crumbles all served on our signature Italian Bread, made fresh daily.",
+        "price": "$21.99"
+      },
+      {
+        "name": "Miricanu (Americano) Combo Sandwich",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nTurkey, Fresh Mozzarella, Tomato, Crema di Peperoni Arrostiti (Roasted Peppers Cream) all served on our signature Schiacciatta Bread, made fresh daily.",
+        "price": "$22.99"
+      },
+      {
+        "name": "Crazy Calabrese Combo Sandwich",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nSpianata (Spicy Salami), Spicy Gabagool (Cappicola), Stracciatella, Arugula, Calabrian Chili Spread, Calabrian Chili Honey all served on our signature Schiacciatta Bread, made fresh daily.",
+        "price": "$25.99"
+      },
+      {
+        "name": "How Ya Doin Combo Sandwich",
+        "description": "Combo includes your choice of Italian Drink and Italian Chips.\n\nProsciutto, Pesto alla Sangiovese (with pine nuts), Parmigiano Shreds, Cherry Tomatoes all served on our signature Schiacciatta Bread, made fresh daily.",
+        "price": "$25.99"
+      },
+      {
+        "name": "Mamma Mia Torpedo Sub",
+        "description": "Mortadella, Salami, Ham, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$14.99"
+      },
+      {
+        "name": "Spicy Sicilian Sub",
+        "description": "Spicy Mortadella, Gabagool (Capicola), Spicy Soppressata, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$14.99"
+      },
+      {
+        "name": "Mortadella Sub",
+        "description": "Mortadella, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$14.99"
+      },
+      {
+        "name": "Salami Sub",
+        "description": "Salami, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$14.99"
+      },
+      {
+        "name": "Pastrami Sub",
+        "description": "Pastrami, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$16.99"
+      },
+      {
+        "name": "Caprese Sub",
+        "description": "Mozzarella, Tomato, Basil, all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$14.99"
+      },
+      {
+        "name": "Whole Lotta Ties Turkey Sub",
+        "description": "Turkey, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$14.99"
+      },
+      {
+        "name": "Ham & Swiss Sub",
+        "description": "Ham, Swiss Cheese, Provolone Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$14.99"
+      },
+      {
+        "name": "Cheese Lovers Sub",
+        "description": "Provolone, Swiss, and Pepperjack Cheese, Lettuce, Tomato, Onions, Mustard, Mayo, Salt & Pepper all served on our signature Italian Bread, made fresh daily. ITALIAN DRESSING SERVED ON THE SIDE.",
+        "price": "$14.99"
+      },
+      {
+        "name": "Prosciutto Sub",
+        "description": "Imported prosciutto crudo from Italy, provolone cheese, lettuce, tomato, onions, mustard, mayo, salt & pepper, served on our signature Italian bread, made fresh daily. Italian dressing served on the side.",
+        "price": "$16.99"
+      },
+      {
+        "name": "MammaMia Meatball Cuzzetiello",
+        "description": "Homemade Meatballs with Sauce Combo on Signature Italian Bread.",
+        "price": "$19.99"
+      },
+      {
+        "name": "MammaMia Chicken Cutlet",
+        "description": "Smoked Mozzarella, Sweet Peppadew Peppers, Chipotle Mayo, and Balsamic Glaze on Signature Italian Bread.",
+        "price": "$19.99"
+      },
+      {
+        "name": "MammaMia Chicken Cutlet BLT",
+        "description": "Our homemade chicken cutlet, bruschetta, thick cut bacon, & fresh sliced lettuce topped with a chipotle gourmaize sauce.",
+        "price": "$19.99"
+      },
+      {
+        "name": "Chicken Caesar Sub",
+        "description": "Our homemade chicken cutlet, fresh chopped romaine, shaved parmigiano, topped with our house Caesar dressing.",
+        "price": "$19.99"
+      },
+      {
+        "name": "MammaMia Signature Sandwich",
+        "description": "Mortadella, Pistachio Cream, Stracciatella, Pistachio Crumbles, Provolone Cheese served on our signature Schiaciatta Bread, made fresh daily.",
+        "price": "$16.99"
+      },
+      {
+        "name": "The Godfather / Il Padrino Sandwich",
+        "description": "Specialty Sandwich served on signature Schiaciatta Bread, made fresh daily, with Prosciutto, Fig Jam, Arugula, Grilled Zucchini, Roasted Tomato.",
+        "price": "$16.99"
+      },
+      {
+        "name": "Tutto Veggie Sandwich",
+        "description": "Grilled Eggplant, Grilled Zucchini, Grilled Artichoke, all served on  specialty signature Schiaciatta Bread, made fresh daily.",
+        "price": "$16.99"
+      },
+      {
+        "name": "That's Amore Sandwich",
+        "description": "Mortadella, Parmigiano Shreds, Balsamic Glaze, all served on specialty signature Schiaciatta Bread, made fresh daily.",
+        "price": "$16.99"
+      },
+      {
+        "name": "La Dolce Vita Sandwich",
+        "description": "Nutella, Mortadella, Stracciatella, Hazelnut Crumbles all served on specialty signature Schiaciatta Bread, made fresh daily.",
+        "price": "$16.99"
+      },
+      {
+        "name": "Miricanu (Americano) Sandwich",
+        "description": "Turkey, Fresh Mozzarella, Tomato, Crema di Peperoni Arrostiti (Roasted Peppers Cream)  all served on specialty signature Schiaciatta Bread, made fresh daily.",
+        "price": "$16.99"
+      },
+      {
+        "name": "Crazy Calabrese Sandwich",
+        "description": "Spianata (Spicy Salami), Spicy Gabagool (Cappicola), Stracciatella, Arugula, Calabrian Chili Spread, Calabrian Chili Honey all served on specialty signature Schiaciatta Bread, made fresh daily.",
+        "price": "$19.99"
+      },
+      {
+        "name": "How Ya Doin Sandwich",
+        "description": "Prosciutto, Pesto alla Sangiovese (with pine nuts), Parmigiano Shreds, Cherry Tomatoes all served on specialty signature Schiaciatta Bread, made fresh daily.",
+        "price": "$19.99"
+      },
+      {
+        "name": "Mambo Italiano Sandwich",
+        "description": "Prosciutto, Mortadella, Crema di Carciofi, Arugula, Muffuletta, Stracciatella, Balsamic Glaze, Served on our Schiacciata Bread",
+        "price": "$19.99"
+      },
+      {
+        "name": "Gianni Special (Cheese) Pizza",
+        "description": "Homemade tomato sauce, mozzarella cheese.",
+        "price": "$21.99"
+      },
+      {
+        "name": "Gino Special (Pepperoni) Pizza",
+        "description": "Cup N Char pepperoni",
+        "price": "$26.99"
+      },
+      {
+        "name": "Gino & Gianni's Vodka-Roni Special Pizza",
+        "description": "Homemade vodka sauce, pepperoni, stracciatella, hot honey, grated parmesan, fresh basil.",
+        "price": "$34.99"
+      },
+      {
+        "name": "Mob Ties Special Pizza",
+        "description": "Pepperoni, homemade sausage, homemade meatballs (chopped), jalapeños, grated parmesan",
+        "price": "$34.99"
+      },
+      {
+        "name": "Margherita Pie Pizza",
+        "description": "Homemade tomato sauce, Fior di latte cheese, fresh basil",
+        "price": "$23.99"
+      },
+      {
+        "name": "The Don Pizza",
+        "description": "Nduja, sautéed belpepper with kalamata olives, fresh basil, ricotta",
+        "price": "$33.99"
+      },
+      {
+        "name": "Burrata Speciale",
+        "description": "Homemade red sauce base, grated Pecorino Romano, fresh basil, burrata, hot honey drizzle",
+        "price": "$32.99"
+      },
+      {
+        "name": "Diavola",
+        "description": "Homemade red sauce base, spicy spianata calabrese salami, smoked mozzarella, fresh basil, hot honey drizzle",
+        "price": "$34.99"
+      },
+      {
+        "name": "Capricciosa",
+        "description": "Homemade red sauce base, ham, artichokes, marinated mushrooms, sliced black olives, fresh mozzarella",
+        "price": "$34.99"
+      },
+      {
+        "name": "The Godfather Pizza",
+        "description": "Mozzarella base, fig jam, pancetta, burrata cheese",
+        "price": "$34.99"
+      },
+      {
+        "name": "MammaMia Signature Pizza",
+        "description": "Mortadella, stracciatella, drizzled pistachio cream",
+        "price": "$27.99"
+      },
+      {
+        "name": "Buffalo (BBQ) Chicken Pizza",
+        "description": "Chopped chicken, pancetta, black olives, pepperoncini drizzled with your choice of buffalo or BBQ sauce",
+        "price": "$29.99"
+      },
+      {
+        "name": "Popeye Special Pizza",
+        "description": "Sautéed spinach with garlic, ricotta, grated romano",
+        "price": "$26.99"
+      },
+      {
+        "name": "Fortunatu Pizza",
+        "description": "Nduja, pancetta, stracciatella, drizzled with balsamic glaze",
+        "price": "$32.99"
+      },
+      {
+        "name": "Build Your Own Pizza",
+        "description": "Create your perfect pie! Choose your toppings as you like. Fresh ingredients. Made to order. Always delicious. Mamma Mia!",
+        "price": "$21.99"
+      },
+      {
+        "name": "Fettuccine Alfredo",
+        "description": "Our creamy homemade Fettucine sauce, Béchamel, & Fettucine pasta.. with your choice to add chopped marinated chicken breast",
+        "price": "$16.99"
+      },
+      {
+        "name": "Rigatoni Bolognese",
+        "description": "Our homemade savory Bolognese sauce served with Rigatoni cut pasta",
+        "price": "$18.99"
+      },
+      {
+        "name": "Pesto Pasta",
+        "description": "Our homemade pesto sauce served with Penne Rigate pasta",
+        "price": "$16.99"
+      },
+      {
+        "name": "Vodka Gnocchi",
+        "description": "Our signature to die for vodka sauce served fresh with Gnocchi Di patate pasta",
+        "price": "$21.99"
+      },
+      {
+        "name": "Spaghetti Marinara",
+        "description": "Nothing brings comfort like the traditional classic Spaghetti pasta with our homemade Marinara sauce.",
+        "price": "$13.99"
+      },
+      {
+        "name": "Cesar Salad",
+        "description": "Fresh chopped Romaine, Croutons, Parmiggiano Shreds, House Cesar",
+        "price": "$11.99"
+      },
+      {
+        "name": "House Salad",
+        "description": "Fresh Chopped Romaine, Cherry Tomato, Onions, Fresh Mozzarella, homemade Italian Dress",
+        "price": "$11.99"
+      },
+      {
+        "name": "Classic Tray",
+        "description": "Mortadella (1lb), Prosciutto (1lb), Ham (1lb), Salami (1lb), Provolone (1lb), Swiss Cheese (1lb). Centerpiece of assorted Olives.",
+        "price": "$129.99"
+      },
+      {
+        "name": "Spicy Tray",
+        "description": "Spicy Mortadella (1lb), Spicy Soppressata (1lb), Capicollo (1lb), Smoked Provolone (1lb), Pepperjack Cheese (1lb). Centerpiece of assorted Olives.",
+        "price": "$159.99"
+      },
+      {
+        "name": "Americano Tray",
+        "description": "Ham (1lb), Turkey (1lb), Pastrami (1lb), Swiss (1lb), Cheddar (1lb). Centerpiece of assorted Olives.",
+        "price": "$129.99"
+      },
+      {
+        "name": "MammaMia!",
+        "description": "5 MammaMia subs of choice and a 5LB tray of traditional pasta salad.",
+        "price": "$119.99"
+      },
+      {
+        "name": "The Don",
+        "description": "10 MammaMia subs of choice and a 10LB tray of traditional pasta salad.",
+        "price": "$219.99"
+      },
+      {
+        "name": "Homemade Pasta Salad",
+        "description": "A main staple in any traditional Italian home, Our homemade Pasta salad will transport you to Italy in one bite. Served with Tri Color Fusilli pasta, chopped vegetables, spices & a mouthwatering oil & vinegar that will have you saying &quot;MammaMia!&quot;",
+        "price": "$3.99"
+      },
+      {
+        "name": "Garlic Knots",
+        "description": "Served with our homemade marinara",
+        "price": "$5.99"
+      },
+      {
+        "name": "Arancini",
+        "description": "Sicilian Rice ball fried, stuffed with our homemade Ragu meat sauce, peas & Fresh Mozarella, Sicilian Style.",
+        "price": "$12.99"
+      },
+      {
+        "name": "Cannoli",
+        "description": "Made in house fresh everyday. Our Cannoli's are the best in town, served Sicilian style with ricotta, chocolate chips, & small pieces of candied orange.. One bite will have you saying MammaMia!\n\n1 Cannoli",
+        "price": "$9.99"
+      },
+      {
+        "name": "Tiramisu",
+        "description": "Made in house fresh. Rich & creamy but light as air. Savoiardi (Ladyfingers) dipped in Coffee, with a smooth & creamy mascarpone filling. MammaMia!",
+        "price": "$13.99"
+      },
+      {
+        "name": "Assorted Cookies",
+        "description": "The delicious treats in our Italian Assortment Cookies pack give you a taste of authentic Italian dessert, meticulously baked to perfection, offering a unique blend of color, texture, taste and the most important recipe of all, LOVE. Our in house made assortment includes Gigulena, cucidati, Tiralli, amaretti marmelati tatu.",
+        "price": "$21.99"
+      },
+      {
+        "name": "Dirty Sea Salt Potato Chips",
+        "description": "Crisp, kettle-cooked potato chips seasoned with a simple, classic sea salt flavor for a pure and satisfying crunch.",
+        "price": "$3.49"
+      },
+      {
+        "name": "Dirty Maui Onion Potato Chips",
+        "description": "Savory kettle-cooked chips seasoned with a sweet and tangy Maui onion flavor, inspired by the flavors of Hawaii.",
+        "price": "$3.49"
+      },
+      {
+        "name": "Dirty Jalapeno Heat Potato Chips",
+        "description": "Bold and spicy kettle-cooked chips infused with fiery jalapeno seasoning, delivering a perfect balance of heat and crunch.",
+        "price": "$3.49"
+      },
+      {
+        "name": "Dirty Mesquite BBQ Potato Chips",
+        "description": "Smoky mesquite BBQ-flavored kettle chips offering a rich, tangy, and slightly sweet barbecue taste with every bite.",
+        "price": "$3.49"
+      },
+      {
+        "name": "La Dolce Vita Bitter Blond",
+        "description": "A lighter, more aromatic alternative to traditional dark bitters. With pleasant hints of citrus, combined with a bold bitter flavor, this classic Italian drink is perfect to drink on its own as an aperitif, or to mix for more complex drinks.",
+        "price": "$3.49"
+      },
+      {
+        "name": "La Dolce Vita Bitter Red",
+        "description": "This traditional Italian bitter, presents a complex flavor profile of rich citrus, combined with rhubarb and gentian, creating for a distinctly bitter flavor. Iconic as an aperitif, or as a base in cocktails such as negroni.",
+        "price": "$3.49"
+      },
+      {
+        "name": "Sanpellegrino Pompelmo",
+        "description": "Italian creativity and craftsmanship come together in this unique, thirst-quenching grapefruit drink. A soothing yellow in color, like the early morning glow over the endless rows of citrus trees, it opens with the fresh bouquet of juicy grapefruit, a prelude to its dramatic flavor experience.\n\nOne sip reveals a full flavor profile that is carried through the pleasant fizz of its fine bubbles, presenting the perfect balance of sweet and bitter. The delicious notes of squeezed grapefruit travel across your entire palate, lingering with a softness you will never forget.",
+        "price": "$2.49"
+      },
+      {
+        "name": "Sanpellegrino Aranciata Rossa",
+        "description": "This authentic premium drink is made from a unique blend of sun-ripened oranges and blood oranges from Italy. Each can or bottle captures the bright, intense aroma of oranges that pop through its fine bubbles, in a rose tinted drink that takes its color from the juices of genuine ingredients from natural origins.\n\nRefined, refreshing Sanpellegrino Aranciata Rossa is a medium bodied drink with a delicate sweetness that persists sip after sip, allowing you fully savor the complex flavor of quality Italian oranges and blood oranges.",
+        "price": "$2.49"
+      },
+      {
+        "name": "Sanpellegrino Limonata",
+        "description": "Its soft yellow colour with bright green undertones is just like the perfectly ripe lemon glowing under the sun in the lemon grove. Open the bottle and its bold personality is immediately apparent thanks to the intense bouquet of lemons that fills the air.\n\nRefreshingly dry with a bright lemon flavor, delicate citrus notes linger on the palate sip after sip. Sanpellegrino Limonata is the premium lemon drink with only the best of Italian lemons to give you the authentic Italian drinking experience.",
+        "price": "$2.49"
+      },
+      {
+        "name": "A' Siciliana Limonata",
+        "description": "A'Siciliana Lemon Soda is crafted from fresh lemons harvested along the scenic coasts of Sicily. Popular throughout Italy, this soda offers a refreshing taste that will transport you to citrus groves and the cool Mediterranean breeze. Enjoy a &quot;Limonata&quot; with the perfect balance of sweet, tart, and zesty flavors. Serve it over ice with a sprig of fresh mint or use it to create delightful cocktails.",
+        "price": "$3.49"
+      },
+      {
+        "name": "A' Siciliana Aranciata",
+        "description": "Lightly carbonated and lightly sweetened fruit drinks made with freshly squeezed Arancia Rossa di Sicilia blood oranges harvested along the Sicilian coast. Blood oranges have a unique, distinct raspberry flavor in addition to citrus notes.\n\nThe climate of Sicily is perfect for the cultivation of citrus because these fruits love to bask in the Mediterranean's sunny days and breezy nights. And when the climate of Sicily is matched with the rich volcanic soil surrounding Mt. Etna, the result is a deliciously refreshing sparkling beverage.\n\nPackaged in cans and bottles with iconic artwork reminiscent of &quot;la dolce vita&quot; era, every sip of A' Siciliana is the very essence of the sweet life.",
+        "price": "$3.49"
+      },
+      {
+        "name": "La Dolce Vita Negroni Soda",
+        "description": "A Taste of Italy in Every Sip\nExperience the classic flavors of Italy with La Dolce Vita Negroni Soda. Imported directly from Italy, this sophisticated beverage captures the essence of the iconic Negroni cocktail in a refreshing, non-alcoholic soda.\n\nRefreshingly Bubbly and Balanced\nEach 11oz can is perfectly carbonated, delivering a crisp and bubbly experience with every sip. Whether you're relaxing at home or entertaining guests, this soda offers a delightful and sophisticated alternative to traditional beverages.",
+        "price": "$3.49"
+      },
+      {
+        "name": "La Dolce Vita Coffee Soda",
+        "description": "LA DOLCE VITA Coffee Soda: Delight in the unexpected fusion of bold Italian coffee and refreshing bubbles with LA DOLCE VITA Coffee Soda. Crafted with rich, aromatic coffee and a touch of natural sweetness, this sparkling beverage offers a unique balance of robust flavor and crisp effervescence. Perfect as a midday pick-me-up or a sophisticated mixer, it's gluten-free, vegan-friendly, and made with only natural ingredients. Elevate your coffee experience with this innovative twist on Italian tradition. Sip, refresh, and enjoy la dolce vita in every effervescent drop!",
+        "price": "$3.49"
+      },
+      {
+        "name": "La Dolce Vita Limonata (Lemonade)",
+        "description": "LA DOLCE VITA Italian Limonata: Indulge in the crisp, zesty flavors of Italy with this authentic Italian lemon soda. Made with sun-ripened Italian lemons, LA DOLCE VITA Limonata offers a delightful balance of tart citrus and refreshing sweetness. Perfectly sparkling, it's a versatile drink to enjoy on its own or as a complement to your favorite cocktails. Gluten-free, vegan-friendly, and crafted without artificial ingredients, this premium beverage brings a taste of la dolce vita to every occasion. Refresh your day with the essence of the Mediterranean!",
+        "price": "$3.49"
+      },
+      {
+        "name": "La Dolce Vita Spritz",
+        "description": "LA DOLCE VITA Spritz Non-Alcoholic: Embrace the spirit of Italy with this non-alcoholic twist on the classic spritz. LA DOLCE VITA Spritz delivers a harmonious blend of zesty citrus, herbal notes, and effervescent bubbles, perfectly capturing the refreshing taste of an Italian aperitivo—without the alcohol. Ideal for any time of day, this guilt-free beverage is gluten-free, vegan-friendly, and crafted with natural ingredients. Enjoy it over ice with a slice of orange for a taste of la dolce vita, wherever you are. Perfect for celebrations, gatherings, or a relaxing moment of indulgence!",
+        "price": "$3.49"
+      },
+      {
+        "name": "La Dolce Vita Chinotto",
+        "description": "The soft drink flavored with Chinotto di Calabria is a refreshing and aromatic option which expertly combines the characteristic taste of chinotto. Fruit of an infusion of chinotto, a bitter citrus fruit typical of the Calabrian region, this drink enchants the senses with its tasting complexity. \n\nNON-ALCOHOLIC",
+        "price": "$3.49"
+      },
+      {
+        "name": "La Dolce Vita Italian Cola",
+        "description": "Unique and satisfying experience: this Cola drink captures the bold and vibrant soul of its traditional roots. With an exclusive blend of selected ingredients, it offers a rich and enveloping taste, with notes of spices and a balanced sweetness. \n\nNON-ALCOHOLIC",
+        "price": "$3.49"
+      },
+      {
+        "name": "La Dolce Vita Aranciata Rossa",
+        "description": "LA DOLCE VITA Blood Orange Soda: Experience the vibrant essence of Italy with every sip of this refreshing blood orange soda. Crafted with real Italian blood oranges, this sparkling beverage delivers a perfect balance of tangy citrus flavor and natural sweetness. Ideal for enjoying on its own or as a mixer, LA DOLCE VITA Blood Orange Soda brings a burst of Mediterranean sunshine to your day. Gluten-free, vegan-friendly, and made without artificial flavors, it's the perfect choice for those who crave authentic, high-quality refreshment. Taste the dolce vita lifestyle in every can!\n\nNON-ALCOHOLIC",
+        "price": "$3.49"
+      },
+      {
+        "name": "La Dolce Vita Bergamot Soda",
+        "description": "LA DOLCE VITA Bergamot Soda: Savor the elegant and aromatic taste of Italy with this premium Bergamot soda. Infused with the essence of bergamot citrus, renowned for its fragrant and slightly floral notes, this sparkling beverage delivers a refreshing blend of tangy and sweet flavors. Perfect for enjoying on its own or as a refined mixer, LA DOLCE VITA Bergamot Soda brings a sophisticated touch to any occasion. Naturally gluten-free, vegan-friendly, and free from artificial additives, it's a delightful way to experience the true taste of Italian tradition. Refresh your palate with a sip of elegance!\n\nNON-ALCOHOLIC",
+        "price": "$3.49"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5732",
+    "name": "Arrieros",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-priced-source: no first-party website. Confirmed at 431 W 13th Ave Ste A, Escondido via Yelp/Mapquest. A Facebook comment states this chain avoids DoorDash/Uber Eats specifically to skip commission fees, and Uber Eats itself shows 'Closed on Uber Eats as of Sep 12, 2023'. Only priced source found is allmenus.com, a single tier-5 aggregator, which cannot be filed alone per standing rules."
+  }
+]

@@ -1,0 +1,465 @@
+[
+  {
+    "restaurantId": "11004",
+    "name": "Akari Sushi",
+    "address": "7441 Girard Ave, La Jolla, CA 92037, United States",
+    "sourceUrl": "https://www.yelp.com/biz/akari-sushi-la-jolla",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no priced first-party source found; no website (Google Maps lists none); only reachable sources are a Yelp menu tab (barred) and akarijapaneserestaurant.restaurants-us.com (barred farm domain, prices also in CA$ not USD); an Instagram post shows a menu photo but was not verified within time budget"
+  },
+  {
+    "restaurantId": "10982",
+    "name": "Shake Smart",
+    "address": "55th St, San Diego, CA 92182",
+    "sourceUrl": "https://shakesmart.com/menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: shakesmart.com/menu lists every item (shakes, bowls, coffee, sandwiches) with protein-gram counts only, no prices anywhere on the chain's own site; the ordering platform (self-ordering.shakesmart.com/order) is a client-rendered store-picker SPA that only prices after a location is selected"
+  },
+  {
+    "restaurantId": "3840",
+    "name": "Suki Hana",
+    "address": "4545 La Jolla Village Dr, San Diego, CA 92122",
+    "sourceUrl": "https://www.ubereats.com/store/suki-hana-utc/tmOIcGnUViO7Gq8AmINhtA",
+    "confidence": "medium",
+    "notes": "restaurant's own site sukihanautc.com timed out (connection refused); read from Uber Eats schema.org JSON-LD @type:Menu block, hasMenu is small (~3KB) and matches the pill-nav item set exactly (Teriyaki, Drinks, Side, Extra Meat) confirming completeness for this mall food-court teriyaki concept; address 4545 La Jolla Village Dr confirmed in payload; prices are conventional (.99/.49/.29/.79/.19), no markup pattern",
+    "dishes": [
+      {
+        "name": "Chicken Teriyaki",
+        "description": "Grilled chicken glazed with sweet teriyaki sauce.",
+        "price": "$11.99",
+        "section": "Teriyaki"
+      },
+      {
+        "name": "Chicken & Beef Teriyaki",
+        "description": "Savory blend of chicken and beef in a sweet teriyaki sauce.",
+        "price": "$16.19",
+        "section": "Teriyaki"
+      },
+      {
+        "name": "Beef & Shrimp Teriyaki",
+        "description": "Savory beef and shrimp in a sweet teriyaki sauce.",
+        "price": "$14.99",
+        "section": "Teriyaki"
+      },
+      {
+        "name": "Beef Teriyaki",
+        "description": "Tender beef strips glazed with a sweet teriyaki sauce.",
+        "price": "$13.49",
+        "section": "Teriyaki"
+      },
+      {
+        "name": "Chicken & Shrimp Teriyaki",
+        "description": "Savory dish featuring chicken and shrimp in a sweet teriyaki sauce.",
+        "price": "$14.29",
+        "section": "Teriyaki"
+      },
+      {
+        "name": "Shrimp Teriyaki",
+        "description": "Succulent shrimp in a sweet teriyaki sauce.",
+        "price": "$13.79",
+        "section": "Teriyaki"
+      },
+      {
+        "name": "Chicken & Beef & Shrimp Teriyaki",
+        "description": "Savory dish featuring chicken, beef, and shrimp in a sweet teriyaki sauce.",
+        "price": "$19.49",
+        "section": "Teriyaki"
+      },
+      {
+        "name": "Veggie Delight Teriyaki",
+        "description": "Stir-fried vegetables in a sweet teriyaki sauce.",
+        "price": "$8.29",
+        "section": "Teriyaki"
+      },
+      {
+        "name": "Fountain Drink",
+        "description": "Refreshing drink to quench your thirst.",
+        "price": "$2.60",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "Fresh and refreshing, perfect for any occasion.",
+        "price": "$2.39",
+        "section": "Drinks"
+      },
+      {
+        "name": "Chicken Dumpling",
+        "description": "Tender chicken wrapped in a savory dumpling.",
+        "price": "$4.99",
+        "section": "Side"
+      },
+      {
+        "name": "Veggie Spring Roll",
+        "description": "Crisp roll filled with vegetables.",
+        "price": "$2.99",
+        "section": "Side"
+      },
+      {
+        "name": "Chicken Egg Roll",
+        "description": "Crispy roll filled with chicken and egg.",
+        "price": "$2.99",
+        "section": "Side"
+      },
+      {
+        "name": "Extra Beef",
+        "description": "Additional serving of beef.",
+        "price": "$4.49",
+        "section": "Extra Meat"
+      },
+      {
+        "name": "Extra Chicken",
+        "description": "Additional serving of chicken.",
+        "price": "$3.49",
+        "section": "Extra Meat"
+      },
+      {
+        "name": "Extra Shrimp",
+        "description": "Additional serving of succulent shrimp.",
+        "price": "$4.49",
+        "section": "Extra Meat"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4360",
+    "name": "1904 Street Dogs",
+    "address": "600 West Broadway",
+    "sourceUrl": "https://www.google.com/maps",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website found for this business; unable to locate any ordering platform, aggregator, or priced menu source within time budget; only Google Maps/Yelp listings found, no menu tab with real prices"
+  },
+  {
+    "restaurantId": "4662",
+    "name": "Sandwich Place",
+    "address": "7112 Convoy Ct, San Diego, CA 92111",
+    "sourceUrl": "https://thesandwichplace.netwaiter.com/san-diego/menu/GetMenu",
+    "confidence": "low",
+    "notes": "own NetWaiter ordering platform GetMenu endpoint returns {\"Groups\":[],\"ExternalType\":null} (genuinely empty menu, not a fetch failure); site's own /about page loads fine confirming the business is active; no other priced source found (address distinct from a nearby but different Grab & Go Subs at 7701 Convoy Ct, confirmed via maps search, not conflated)",
+    "dishes": [],
+    "blocked": "own NetWaiter ordering platform has zero menu items published (empty Groups array); no other priced first-party or aggregator source located within time budget"
+  },
+  {
+    "restaurantId": "6282",
+    "name": "Forum Deli",
+    "address": "3132 Tiger Run Ct, Carlsbad, CA 92010",
+    "sourceUrl": "https://www.doordash.com",
+    "confidence": "low",
+    "notes": "own site forumdelicarlsbad.com is EatStreet-embedded and renders menu client-side, no dish data in shell HTML; DoorDash JSON-LD capture extracted 73 deduped priced items across 10 sections but per-category counts under-report vs the page's own rendered MenuBookCategory numItems in 5 of 10 sections, indicating truncation despite a coincidentally matching grand total; Grubhub page is a JS shell with no data",
+    "dishes": [],
+    "blocked": "needs-browser: only reachable priced source (DoorDash) is truncated per category-count cross-check; own site and Grubhub render menu client-side with no static data"
+  },
+  {
+    "restaurantId": "4201",
+    "name": "Royal Pearl Tea",
+    "address": "6939 Federal Boulevard",
+    "sourceUrl": "https://www.royalpearltea.com",
+    "confidence": "low",
+    "notes": "royaltpearltea.com is a parked/hijacked domain serving an ad-redirect script (router.parklogic.com) instead of real site content; joe.coffee aggregator listing's hasMenu links back to the same parked domain and carries no real prices",
+    "dishes": [],
+    "blocked": "restaurant's own domain has been parked/hijacked (ad-redirect script, not real content); no working website; no priced aggregator or delivery listing found within time budget"
+  },
+  {
+    "restaurantId": "9949",
+    "name": "Dirty Birds La Jolla",
+    "address": "9500 Gilman Dr, Price Center #1420, La Jolla, CA 92093",
+    "sourceUrl": "https://www.dirtybirdsbarandgrill.com/quick-menu",
+    "confidence": "high",
+    "notes": "chain's general /menu page explicitly excludes the UCSD location; this UCSD-specific /quick-menu page (titled \"THE DIRTY BIRD'S UCSD MENU\") is image-based menu boards (dated 2026 in filenames), read directly and transcribed; batch address zip 92161 appears to be an error, confirmed real address via the page's own UCSD Price Center location text; flavor-only wing sauces and modifier add-ons (sub halal chicken, add cheese, sauces/dips) omitted as they carry no standalone price beyond the base item",
+    "dishes": [
+      {
+        "name": "Cheese/Pepperoni Slice",
+        "description": "",
+        "price": "$4.55",
+        "section": "Pizza"
+      },
+      {
+        "name": "Specialty Slice",
+        "description": "",
+        "price": "$5.55",
+        "section": "Pizza"
+      },
+      {
+        "name": "Dirty Chicken Sandwich",
+        "description": "Chopped chicken, bacon, tossed in dirty ranch with cheese on a warm hoagie",
+        "price": "$9.85",
+        "section": "Burgers & Sandwiches"
+      },
+      {
+        "name": "Halal Chicken Sandwich",
+        "description": "Lettuce, tomato, onion, pickle spear (cooked to order)",
+        "price": "$10.25",
+        "section": "Burgers & Sandwiches"
+      },
+      {
+        "name": "Chopped Chicken Sandwich",
+        "description": "Chopped chicken tossed in a sauce of your choice, topped with melted cheese and lettuce on a warm hoagie, served with a pickle spear",
+        "price": "$9.85",
+        "section": "Burgers & Sandwiches"
+      },
+      {
+        "name": "Classic Burger",
+        "description": "Lettuce, tomato, onion, pickle spear",
+        "price": "$9.25",
+        "section": "Burgers & Sandwiches"
+      },
+      {
+        "name": "The Beyond Burger",
+        "description": "Plant protein; lettuce, tomato, onion, pickle spear",
+        "price": "$9.45",
+        "section": "Burgers & Sandwiches"
+      },
+      {
+        "name": "Small House Salad",
+        "description": "Romaine lettuce, shredded carrots, diced tomato, onion, croutons, dressing of your choice",
+        "price": "$5.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Small Caesar Salad",
+        "description": "Romaine lettuce, parmesan cheese, croutons, caesar dressing",
+        "price": "$5.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Large House Salad",
+        "description": "Romaine lettuce, shredded carrots, diced tomato, onion, croutons, dressing of your choice",
+        "price": "$9.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Large Caesar Salad",
+        "description": "Romaine lettuce, parmesan cheese, croutons, caesar dressing",
+        "price": "$9.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Wings (5 Piece)",
+        "description": "Served with ranch, celery & carrot sticks",
+        "price": "$9.75",
+        "section": "Wings"
+      },
+      {
+        "name": "Wings (10 Piece)",
+        "description": "Served with ranch, celery & carrot sticks",
+        "price": "$18.25",
+        "section": "Wings"
+      },
+      {
+        "name": "Boneless Wings (Half Pound)",
+        "description": "Served with ranch, celery & carrot sticks",
+        "price": "$9.75",
+        "section": "Wings"
+      },
+      {
+        "name": "Boneless Wings (Full Pound)",
+        "description": "Served with ranch, celery & carrot sticks",
+        "price": "$18.25",
+        "section": "Wings"
+      },
+      {
+        "name": "Tots or Fries (Half Order)",
+        "description": "",
+        "price": "$3.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Tots or Fries (Full Order)",
+        "description": "",
+        "price": "$7.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mozzarella Sticks",
+        "description": "",
+        "price": "$9.85",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Green Beans",
+        "description": "",
+        "price": "$9.55",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Onion Rings",
+        "description": "",
+        "price": "$8.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Pickles",
+        "description": "",
+        "price": "$9.55",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Cheddar Breaded Cauliflower",
+        "description": "",
+        "price": "$10.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Dirty Chicken Fries or Tots",
+        "description": "Chopped chicken & bacon tossed in dirty ranch & smothered in cheese",
+        "price": "$14.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Buffalo Blue Fries or Tots",
+        "description": "Chopped chicken tossed in dirty blue, topped with blue cheese crumbles & a dirty blue drizzle",
+        "price": "$14.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Daily Lunch Combo: 5 Wings or Half Pound Boneless and Soda",
+        "description": "Mon-Fri, 10am-2pm",
+        "price": "$11.75",
+        "section": "Specials"
+      },
+      {
+        "name": "Daily Lunch Combo: Jumbo Cheese or Pepperoni Slice and Soda",
+        "description": "Mon-Fri, 10am-2pm",
+        "price": "$6.65",
+        "section": "Specials"
+      },
+      {
+        "name": "Daily Lunch Combo: Jumbo Specialty Slice and Soda",
+        "description": "Mon-Fri, 10am-2pm",
+        "price": "$7.65",
+        "section": "Specials"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9947",
+    "name": "RiseUp BBQ San Diego",
+    "address": "2479 Broadway Ste A, San Diego, CA 92102",
+    "sourceUrl": "https://postmates.com/store/riseup-bbq-san-diego/4iFIX61jQf-ncqnDiDO2xQ",
+    "confidence": "medium",
+    "notes": "own site risebbq.com times out (connection refused) on repeated attempts; read from Postmates (Uber Eats family) schema.org JSON-LD, 18 items across 6 sections (Proteins, Sandwiches, Sides, Plate Options, Kid Menu, Platters), address 2479 Broadway/San Diego confirmed in payload; a Grubhub search snippet shows a differently-priced Pulled Pork Sandwich ($20 vs $17 here) but Grubhub's own listing is explicitly labeled \"Sandwiches (Archived)\" indicating a stale/outdated menu, not a live conflicting source; DoorDash capture was also pulled but its per-category item counts under-report the page's own MenuBookCategory numItems (e.g. Plate Options 1 vs 3, Proteins 2 vs 4) so it was discarded as truncated in favor of this complete Postmates capture",
+    "dishes": [
+      {
+        "name": "1 Thick Beef Ribs",
+        "description": "Thick Beef Rib with homemade Chimichurri and our RiseUp BBQ Sauce",
+        "price": "$23.00",
+        "section": "Proteins"
+      },
+      {
+        "name": "Sliced Turkey",
+        "description": "",
+        "price": "$18.75",
+        "section": "Proteins"
+      },
+      {
+        "name": "Brisket",
+        "description": "",
+        "price": "$17.50",
+        "section": "Proteins"
+      },
+      {
+        "name": "Pork Ribs",
+        "description": "Topped with our maple bourbon honey glaze.",
+        "price": "$16.50",
+        "section": "Proteins"
+      },
+      {
+        "name": "Smoked Pulled Pork Sandwich",
+        "description": "Tender, slow-smoked pulled pork piled high on a soft, buttery brioche bun and topped with our homemade Blood Orange Honey Citrus Coleslaw. Smoky, juicy, sweet, and citrusy with the perfect fresh crunch—a RiseUp BBQ twist on a classic pulled pork sandwich.",
+        "price": "$17.00",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Smoked tri-tip sandwich",
+        "description": "Tender, smoked tri-tip piled high on a soft, buttery brioche bun, topped with our fresh homemade chimichurri and finished with RiseUp BBQ’s signature barbecue sauce. Smoky, juicy, savory, and packed with bold flavor in every bite.",
+        "price": "$17.00",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Brisket Sandwich",
+        "description": "Tender, slow-smoked brisket piled high on a soft, buttery brioche bun, topped with our fresh homemade chimichurri and finished with RiseUp BBQ’s signature barbecue sauce. Smoky, savory, and packed with bold flavor in every bite.",
+        "price": "$19.00",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Cajun Mac and Cheese",
+        "description": "Rich, creamy mac and cheese made with a blend of cheeses and seasoned with our Cajun-inspired spices. Smooth, cheesy, and full of bold Southern flavor—the perfect side to pair with our slow-smoked BBQ.",
+        "price": "$6.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Collard Greens with Smoked Turkey",
+        "description": "Slow-cooked collard greens made from scratch and loaded with tender meat from our house-smoked turkey legs. Seasoned with bold Southern flavors and simmered until perfectly tender for a rich, smoky, soulful side that pairs perfectly with our BBQ.",
+        "price": "$5.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Nola Dirty Rice",
+        "description": "A true taste of New Orleans, made from our family recipe passed down from my mama. Savory, perfectly seasoned rice prepared with traditional Creole flavors and the soulful taste of home. Authentic New Orleans comfort food made the way our family has been making it for years.",
+        "price": "$6.88",
+        "section": "Sides"
+      },
+      {
+        "name": "Southern Candied Yams",
+        "description": "",
+        "price": "$6.88",
+        "section": "Sides"
+      },
+      {
+        "name": "1 Beef Ribs Plate",
+        "description": "Comes with 2 sides. All plates come with 8 oz sides.",
+        "price": "$31.00",
+        "section": "Plate Options"
+      },
+      {
+        "name": "3 Bone Pork Rib Plate",
+        "description": "Topped with our maple bourbon honey glaze. Comes with 2 sides. All plates come with 8 oz sides.",
+        "price": "$25.50",
+        "section": "Plate Options"
+      },
+      {
+        "name": "Half Pound Brisket Plate",
+        "description": "Comes with 2 sides. All plates come with 8 oz sides.",
+        "price": "$27.88",
+        "section": "Plate Options"
+      },
+      {
+        "name": "Turkey",
+        "description": "",
+        "price": "$23.50",
+        "section": "Plate Options"
+      },
+      {
+        "name": "Kids 2 Pork Ribs",
+        "description": "Comes with 1 side. All kid meals come with 1 8 oz side. 12 and under.",
+        "price": "$20.63",
+        "section": "Kid Menu"
+      },
+      {
+        "name": "Family Meal",
+        "description": "2 Cali-Meal Rockets,1/2 lb brisket,1/2 rack pork ribs,1/2 lb turkey,(4) 8 oz sides.",
+        "price": "$90.00",
+        "section": "Platters"
+      },
+      {
+        "name": "XL Family Meal",
+        "description": "4 Cali-Meal Rockets,1/2 lb brisket,Full rack pork ribs,1/2 lb turkey,1 beef rib,(4) 16 oz sides.",
+        "price": "$180.00",
+        "section": "Platters"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6005",
+    "name": "Caffe Positano, Fairbanks",
+    "address": "16079 San Dieguito Rd, Rancho Santa Fe, CA 92067",
+    "sourceUrl": "https://www.yelp.com/biz/caffe-positano-fairbanks-rancho-santa-fe-3",
+    "confidence": "low",
+    "notes": "no website; this is the Fairbanks Ranch location, a separate small independent coffee/pastry shop from the Village location (6027 Paseo Delicias) which has its own joe.coffee page - the Fairbanks joe.coffee listing has no online ordering set up; no DoorDash/UberEats/Toast/Square presence found; only sources are Yelp (menu tab, barred) and a landlord/plaza-adjacent listing (delrayovillage.com), neither with usable USD prices",
+    "dishes": [],
+    "blocked": "small independent cafe with no digital ordering platform and no priced first-party source; only Yelp menu tab (barred) and directory/social listings found"
+  }
+]

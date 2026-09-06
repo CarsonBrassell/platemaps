@@ -1,0 +1,228 @@
+[
+  {
+    "restaurantId": "9917",
+    "name": "Diego's Pizza - Serving San Diego",
+    "sourceUrl": "https://diegospizza.com/menu",
+    "confidence": "high",
+    "notes": "Read from the embedded FoodTec ordering-widget JSON on the /menu page (item name/description/price fields). Router had marked this no-platform, but the widget is server-rendered into the page HTML and fetchable with a plain GET.",
+    "dishes": [
+      { "name": "Pepperoni Pizzarolla", "description": "Garlic Sauce Crust, Dirty Parmesan Seasoning, White American Cheese and Pepperoni.", "price": "$7.99", "section": "Pizzarollas" },
+      { "name": "Pepperoni and Sausage Pizzarolla", "description": "Garlic Sauce Crust, Dirty Parmesan Seasoning, White American Cheese, Pepperoni and Italian Sausage.", "price": "$7.99", "section": "Pizzarollas" },
+      { "name": "Buffalo Chicken Pizzarolla", "description": "Garlic Sauce Crust, Dirty Parmesan Seasoning, White American Cheese, Grilled Chicken and Buffalo Sauce.", "price": "$7.99", "section": "Pizzarollas" },
+      { "name": "Chicken, Bacon, Ranch Pizzarolla", "description": "Garlic Sauce Crust, Dirty Parmesan Seasoning, White American Cheese, Grilled Chicken and Bacon.", "price": "$7.99", "section": "Pizzarollas" },
+      { "name": "Cup - Banana Peppers", "description": "", "price": "$0.99", "section": "Dip Cups" },
+      { "name": "Cup - Blue Cheese", "description": "", "price": "$0.99", "section": "Dip Cups" },
+      { "name": "Cup - Garlic Butter", "description": "", "price": "$0.99", "section": "Dip Cups" },
+      { "name": "Cup - Garlic Parmesan", "description": "", "price": "$0.99", "section": "Dip Cups" },
+      { "name": "Cup - Jalapenos", "description": "", "price": "$0.99", "section": "Dip Cups" },
+      { "name": "Cup - Mango Habanero", "description": "", "price": "$0.99", "section": "Dip Cups" },
+      { "name": "Cup - Mike's Hot Honey", "description": "", "price": "$1.79", "section": "Dip Cups" },
+      { "name": "Cup - Mild Buffalo", "description": "", "price": "$0.99", "section": "Dip Cups" },
+      { "name": "Cup - Pizza Sauce", "description": "", "price": "$0.99", "section": "Dip Cups" },
+      { "name": "Cup - Ranch", "description": "", "price": "$0.99", "section": "Dip Cups" },
+      { "name": "Cup - Tangy BBQ", "description": "", "price": "$0.99", "section": "Dip Cups" },
+      { "name": "Cup - Vanilla Icing", "description": "", "price": "$0.99", "section": "Dip Cups" },
+      { "name": "Dressing - Blue Cheese", "description": "", "price": "$0.99", "section": "Dressings" },
+      { "name": "Dressing - Caesar", "description": "", "price": "$0.99", "section": "Dressings" },
+      { "name": "Dressing - Greek Vinaigrette", "description": "", "price": "$0.99", "section": "Dressings" },
+      { "name": "Dressing - Italian", "description": "", "price": "$0.99", "section": "Dressings" },
+      { "name": "Dressing - Ranch", "description": "", "price": "$0.99", "section": "Dressings" },
+      { "name": "Special Breadsticks", "description": "Garlic Sauce Crust, Pizza Sauce Cup and Dirty Parmesan Seasoning.", "price": "$3.99", "section": "Sides" },
+      { "name": "Italian Feast", "description": "Italian Dressing, Provolone, Ham, Salami, Sliced Roma Tomatoes, Red Onions and Croutons.", "price": "$8.95", "section": "Salads" },
+      { "name": "Grilled Chicken Caesar", "description": "Caesar Dressing, Shaved Parmesan, Grilled Chicken and Croutons.", "price": "$8.95", "section": "Salads" },
+      { "name": "Fresh Market", "description": "Ranch Dressing, Cheddar, Black Olives, Red Onions, Green Peppers, Sliced Roma Tomatoes and Croutons.", "price": "$8.95", "section": "Salads" },
+      { "name": "Olympian Greek", "description": "Greek Dressing, Feta, Black Olives, Sliced Roma Tomatoes, Red Onions and Banana Peppers.", "price": "$8.95", "section": "Salads" },
+      { "name": "Coke", "description": "", "price": "$1.79", "section": "Drinks" },
+      { "name": "Pepsi", "description": "", "price": "$1.79", "section": "Drinks" },
+      { "name": "Diet Coke", "description": "", "price": "$1.79", "section": "Drinks" },
+      { "name": "Coke Zero", "description": "", "price": "$1.79", "section": "Drinks" },
+      { "name": "Sprite", "description": "", "price": "$1.79", "section": "Drinks" },
+      { "name": "Dr. Pepper", "description": "", "price": "$1.79", "section": "Drinks" },
+      { "name": "Fanta", "description": "", "price": "$1.79", "section": "Drinks" },
+      { "name": "Mtn Dew", "description": "", "price": "$1.79", "section": "Drinks" },
+      { "name": "Manzanita Sol", "description": "", "price": "$1.79", "section": "Drinks" },
+      { "name": "Bottled Water", "description": "", "price": "$2.99", "section": "Drinks" },
+      { "name": "CinnaBites", "description": "Warm, golden pastry brushed with butter, sprinkled with cinnamon and sugar, and paired with creamy vanilla icing.", "price": "$6.99", "section": "Desserts" },
+      { "name": "Chocolate CinnaBites", "description": "Warm, golden pastry brushed with butter, sprinkled with cinnamon and sugar, topped with a delicate chocolate drizzle and creamy vanilla icing.", "price": "$7.99", "section": "Desserts" },
+      { "name": "Caramel CinnaBites", "description": "Warm, golden pastry brushed with butter, sprinkled with cinnamon and sugar, topped with a delicate caramel drizzle and creamy vanilla icing.", "price": "$7.99", "section": "Desserts" },
+      { "name": "Ghiradelli Chocolate Brownie", "description": "Rich chocolate drizzled with decadent Ghirardelli sauce.", "price": "$9.99", "section": "Desserts" },
+      { "name": "10pc Wings", "description": "", "price": "$12.99", "section": "Wings" },
+      { "name": "20pc Wings", "description": "", "price": "$24.99", "section": "Wings" },
+      { "name": "30pc Wings", "description": "", "price": "$32.99", "section": "Wings" },
+      { "name": "50pc Wings", "description": "", "price": "$54.99", "section": "Wings" },
+      { "name": "100pc Wings", "description": "", "price": "$109.99", "section": "Wings" },
+      { "name": "Snack Attack", "description": "15 boneless or bone-in wings, breadsticks or veggie sticks, plus a selection of house-favorite dipping sauces.", "price": "$19.99", "section": "Deals" },
+      { "name": "Family Feast", "description": "24 boneless or bone-in wings, breadsticks or veggie sticks, plus a selection of house-favorite dipping sauces.", "price": "$33.99", "section": "Deals" },
+      { "name": "Flavor Squad", "description": "30 boneless or bone-in wings, breadsticks or veggie sticks, plus a selection of house-favorite dipping sauces.", "price": "$38.99", "section": "Deals" },
+      { "name": "Wing Rally", "description": "40 boneless or bone-in wings, breadsticks or veggie sticks, plus a selection of house-favorite dipping sauces.", "price": "$50.99", "section": "Deals" },
+      { "name": "Feast Mode", "description": "50 boneless or bone-in wings, breadsticks or veggie sticks, plus a selection of house-favorite dipping sauces.", "price": "$61.99", "section": "Deals" },
+      { "name": "Cheesy Stix", "description": "Garlic Sauce Crust, Dirty Parmesan Seasoning, Ranch Cup and Pizza Sauce Cup.", "price": "$6.99", "section": "Sides" },
+      { "name": "Meatballs Al Forno", "description": "Fresh Cheese Blend, Parmesan Seasoning, Meatballs and Italian Sausage.", "price": "$12.99", "section": "Sides" },
+      { "name": "Breadsticks", "description": "Garlic Sauce Crust, Pizza Sauce Cup and Dirty Parmesan Seasoning.", "price": "$5.99", "section": "Sides" },
+      { "name": "DIY Diego (Make Your Own Pizza)", "description": "Classic Crust, Red Sauce and Fresh Cheese Blend.", "price": "$4.95", "section": "Build Your Own" },
+      { "name": "Pepperoni Primo", "description": "Classic Crust, Garlic Sauce Crust, Dirty Parmesan Seasoning, Red Sauce, Fresh Cheese Blend, Old World Pepperoni and Pepperoni.", "price": "$8.95", "section": "Specialty Pizzas" },
+      { "name": "Ultimate Cheese", "description": "Classic Crust, Parmesan Seasoning, Garlic Sauce Crust, Red Sauce, Fresh Cheese Blend, Shaved Parmesan and Cheddar Cheese.", "price": "$8.95", "section": "Specialty Pizzas" },
+      { "name": "Del Mar Deluxe", "description": "Classic Crust, Red Sauce, Fresh Cheese Blend, Black Olives, Pepperoni, Italian Sausage, Onions, Green Peppers and Mushrooms.", "price": "$8.95", "section": "Specialty Pizzas" },
+      { "name": "Mission Luau", "description": "Classic Crust, Red Sauce, Fresh Cheese Blend, Pineapple, Bacon, Grilled Chicken and Ham.", "price": "$8.95", "section": "Specialty Pizzas" },
+      { "name": "Hillcrest Grinder", "description": "Classic Crust, Red Sauce, Fresh Cheese Blend, Pepperoni, Ham, Italian Sausage and Bacon.", "price": "$8.95", "section": "Specialty Pizzas" },
+      { "name": "SoCal Smokehouse", "description": "Classic Crust, BBQ Drizzle, Light Red Sauce, Fresh Cheese Blend, Onions, Bacon and Grilled Chicken.", "price": "$8.95", "section": "Specialty Pizzas" },
+      { "name": "Torrey Pie", "description": "Classic Crust, Red Sauce, Fresh Cheese Blend, Tomatoes, Black Olives, Feta Cheese, Onions and Mushrooms.", "price": "$8.95", "section": "Specialty Pizzas" },
+      { "name": "Vegan Rebel", "description": "Classic Crust, Red Sauce, Dairy Free Mozzarella, Vegan Pepperoni, Mushrooms, Red Onions, Spinach, Green Peppers and Black Olives.", "price": "$8.95", "section": "Specialty Pizzas" },
+      { "name": "Liberty Steak", "description": "Classic Crust, White American, Steak, Onions, Green Peppers and Mushrooms.", "price": "$8.95", "section": "Specialty Pizzas" },
+      { "name": "Pacific Heat", "description": "Classic Crust, Hot Honey Drizzle, Red Sauce, Fresh Cheese Blend, Premium Red Pepper Flakes, Pepperoni and Italian Sausage.", "price": "$8.95", "section": "Specialty Pizzas" },
+      { "name": "La Jolla Verde", "description": "Classic Crust, Pesto, Fresh Cheese Blend, Grilled Chicken, Mushrooms, Spinach, Tomatoes and Shaved Parmesan.", "price": "$8.95", "section": "Specialty Pizzas" },
+      { "name": "Coronado White", "description": "Classic Crust, White Sauce, Fresh Cheese Blend, Bacon, Onions, Tomatoes and Feta Cheese.", "price": "$8.95", "section": "Specialty Pizzas" },
+      { "name": "Sunset Florentine", "description": "Classic Crust, White Sauce, Fresh Cheese Blend, Spinach, Tomatoes, Feta Cheese and Red Onions.", "price": "$8.95", "section": "Specialty Pizzas" }
+    ]
+  },
+  {
+    "restaurantId": "9918",
+    "name": "Los sushi lovers",
+    "sourceUrl": "https://www.grubhub.com/restaurant/los-sushi-lovers-431-n-highland-ave-national-city/11530160",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "prices visible only in Grubhub/Postmates/UberEats search snippets; all three marketplace pages bot-wall curl fetches (near-empty responses), and the router's direct UberEats link 404s"
+  },
+  {
+    "restaurantId": "9919",
+    "name": "Carnitas la Bendición",
+    "sourceUrl": "http://ordercarnitaslabendicion.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: themenustar6.com ordering widget requires login/JS to load priced items; homepage and menus.php only expose delivery-fee text and a login modal, no item prices in the HTML"
+  },
+  {
+    "restaurantId": "10323",
+    "name": "Silver Hoof Creamery",
+    "sourceUrl": "https://silverhoofcreamery.com/menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (Divi/WordPress menu page fetched in full, lists day/hours headers only, no priced items found)"
+  },
+  {
+    "restaurantId": "8907",
+    "name": "Altered State venue",
+    "sourceUrl": "https://www.yelp.com/biz/altered-state-san-diego-4",
+    "confidence": "high",
+    "dishes": []
+  },
+  {
+    "restaurantId": "7313",
+    "name": "La Michoacana Elite",
+    "sourceUrl": "https://lamichocanaelitesd.my.canva.site/michoacana",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (Canva site fetched in full, is image/text marketing only, no priced menu found)"
+  },
+  {
+    "restaurantId": "13931",
+    "name": "Salt & Fin",
+    "sourceUrl": "https://www.tripadvisor.com/Restaurant_Review-g12385474-d6260429-Reviews-The_Oyster_Bar_at_Salt_Fin-Funner_California.html",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "brand rebrand: Yelp lists Salt & Fin as CLOSED; TripAdvisor shows the space now operating as The Oyster Bar at Salt & Fin at Harrah's Resort Southern California, a casino-resort dining concept"
+  },
+  {
+    "restaurantId": "10684",
+    "name": "The Trap Shack",
+    "sourceUrl": "https://www.yelp.com/biz/the-trap-shack-carlsbad",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (website 404s; Yelp/Instagram/Facebook describe menu items like lobster rolls and seafood tacos but no priced menu found)"
+  },
+  {
+    "restaurantId": "12180",
+    "name": "Lonchera Mariscos El Gordo",
+    "sourceUrl": "http://www.mariscoselgordo.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (site is a parked Squarespace \"Coming Soon\" page; only a stray Facebook post mentions two prices, not an itemised menu)"
+  },
+  {
+    "restaurantId": "10254",
+    "name": "Come Back Coffee Co.",
+    "sourceUrl": "https://comebackcoffee.co/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (first-party /menu and homepage carry no prices; the site's Shopify /products.json is retail merchandise/packaged goods per router, not a cafe menu)"
+  },
+  {
+    "restaurantId": "9923",
+    "name": "Jaybird Superette",
+    "sourceUrl": "https://www.instagram.com/jaybirdsuperette/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (Instagram/Facebook/Yelp describe a rotating sandwich menu, no prices found anywhere)"
+  },
+  {
+    "restaurantId": "8894",
+    "name": "Teaspoon Escondido",
+    "sourceUrl": "https://www.teaspoonlife.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (Squarespace /menu page fetched in full - 1.8MB - no priced items found, only nutrition/allergen PDFs linked)"
+  },
+  {
+    "restaurantId": "10391",
+    "name": "Seven Seas Roasting Co.",
+    "sourceUrl": "https://sevenseasroasting.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (prices found on-site are retail coffee-bag products in Shopify price spans, matching router's retail-catalog finding; no separate cafe food menu with prices found)"
+  },
+  {
+    "restaurantId": "10351",
+    "name": "Loving Hut Vegan Express (City Heights/Talmadge)",
+    "sourceUrl": "https://www.happycow.net/reviews/loving-hut-vegan-express-city-heights-san-diego-261436",
+    "confidence": "high",
+    "dishes": []
+  },
+  {
+    "restaurantId": "10985",
+    "name": "Cafe Dawny",
+    "sourceUrl": "https://joe.coffee/locations/ca/carlsbad/cafe-dawny-carlsbad-fcc6f24e-2964-4401-804d-2c163ed53643/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: joe.coffee storefront renders its catalog client-side; no API path found"
+  },
+  {
+    "restaurantId": "10300",
+    "name": "Starbread Bakery",
+    "sourceUrl": "https://www.doordash.com/en/business/starbread-bakery-469372/menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "prices visible only in a DoorDash search snippet; the first-party starbreadbakery.org site has no pricing, and the DoorDash page itself bot-walls curl fetches"
+  },
+  {
+    "restaurantId": "10501",
+    "name": "Pan paulitas mexican bakery",
+    "sourceUrl": "https://www.yelp.com/biz/pan-paulitas-mexican-bakery-escondido",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (no first-party website found; every hit is a directory/gift-card listing with no prices)"
+  },
+  {
+    "restaurantId": "9926",
+    "name": "El Cajon taco shop",
+    "sourceUrl": "http://orderelcajontacoshop.com/menus.php",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: themenustar7.com ordering widget requires login/JS to load priced items (same platform/template as restaurant 9919)"
+  },
+  {
+    "restaurantId": "9925",
+    "name": "Polanco Kitchen & Bar",
+    "sourceUrl": "https://www.hilton.com/en/hotels/sanmvhf-hilton-san-diego-mission-valley/dining/polanco-kitchen-and-bar",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (Hilton hotel dining page fetched in full, carries no menu content; search only turns up happy-hour specials, not a full priced menu)"
+  },
+  {
+    "restaurantId": "10817",
+    "name": "California Bean",
+    "sourceUrl": "https://www.californiabean.com/our-menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published (WordPress menu page lists item names under Coffees/Teas/Specialty Drinks headings but no prices)"
+  }
+]

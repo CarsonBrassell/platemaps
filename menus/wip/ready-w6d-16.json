@@ -1,0 +1,738 @@
+[
+  {
+    "restaurantId": "7070",
+    "name": "Kaffa Coffee",
+    "sourceUrl": "https://www.kaffacoffeesd.com/menu",
+    "confidence": "high",
+    "notes": "first-party Wix menu page; address on site (2545 El Cajon Blvd) matches batch. Sized drinks recorded at their base/smallest listed price (8oz hot, 12oz cold); size upcharges and syrup add-ons not included as separate rows.",
+    "dishes": [
+      {
+        "name": "Caffe Latte",
+        "description": "Espresso-based milk beverage, one or two shots, steamed milk, thin froth",
+        "price": "$4.75",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Macchiato",
+        "description": "Espresso with a small amount of steamed or foamed milk",
+        "price": "$4.00",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "Espresso shot covered in thick creamy froth with steamed whole milk",
+        "price": "$5.00",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Ethiopiano (Americano)",
+        "description": "Signature espresso added to hot water",
+        "price": "$4.50",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Espresso",
+        "description": "Concentrated coffee shot",
+        "price": "$1.75",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "Variety of herbs, flavors, caffeinated and caffeine-free teas",
+        "price": "$3.50",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "Chocolate drizzled with sweetened whipped cream",
+        "price": "$3.00",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "Matcha tea powder with steamed milk",
+        "price": "$4.50",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Mocha",
+        "description": "Espresso shot with sweet dark chocolate",
+        "price": "$5.00",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Caramel Latte",
+        "description": "Espresso, steamed milk, caramel syrup, salted caramel drizzle",
+        "price": "$5.00",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Chai Tea Latte",
+        "description": "Steamed milk with spice-infused black tea, topped with cinnamon",
+        "price": "$4.50",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Drip Coffee",
+        "description": "Classic freshly brewed medium roast coffee",
+        "price": "$3.50",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "Slow, low-temperature brew with less acidity",
+        "price": "$6.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Coffee",
+        "description": "Traditionally brewed coffee served over ice",
+        "price": "$3.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Latte",
+        "description": "Espresso shots and chilled milk over ice",
+        "price": "$5.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Ice Tea",
+        "description": "Variety of herbs and teas served over ice",
+        "price": "$4.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Matcha Latte",
+        "description": "Matcha tea powder with chilled milk over ice",
+        "price": "$5.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Ethiopiano (Americano)",
+        "description": "Signature espresso added to chilled water over ice",
+        "price": "$5.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Chai Latte",
+        "description": "Chilled milk with spice-infused black tea over ice",
+        "price": "$5.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Mocha",
+        "description": "Espresso shot with dark chocolate, served over ice",
+        "price": "$6.00",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Iced Caramel Latte",
+        "description": "Espresso, milk, caramel syrup, salted caramel drizzle, over ice",
+        "price": "$5.50",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Banana Bread",
+        "description": "",
+        "price": "$3.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "Coffee Cake",
+        "description": "",
+        "price": "$3.50",
+        "section": "Pastries"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8021",
+    "name": "Paseo RSF (formerly bistro)",
+    "sourceUrl": "https://paseorsf.com/menu",
+    "confidence": "high",
+    "notes": "first-party client-rendered SPA (menu confirmed by grepping the built JS bundle, since curl of the rendered page returns an identical empty shell for every route); address/rebrand confirmed via site SEO meta (6024 Paseo Delicias, Rancho Santa Fe). Separate breakfast and dinner menus are both filed, section-prefixed Breakfast:/Dinner: since both contain a like-named \"Sides\" section with different items/prices. Excluded as adjuncts per playbook: six back-bar liquor-by-brand lists (Vodka, Gin, Rum, Whiskey & Bourbon, Scotch, Tequila & Mezcal) and the \"Brunch Cocktails\" section, which duplicated items/prices already captured under Breakfast: Beverages (Mimosa, Bellini, Bloody Mary, Bottomless Mimosa). One item, \"Flat or Sparkling Water\", was dropped: its raw price field is a two-tier string (\"$6 / $10\" for flat vs sparkling) with no single value to record without inventing one.",
+    "dishes": [
+      {
+        "name": "Paseo Omelet",
+        "description": "Three eggs, choice of three fillings: spinach, mushrooms, tomatoes, onions, cheddar, goat cheese. Served with breakfast potatoes. Choice of protein: bacon, sausage or ham.",
+        "price": "$22.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Paseo Breakfast",
+        "description": "Two eggs any style, applewood bacon or sausage, breakfast potatoes, choice of toast.",
+        "price": "$20.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Huevos Rancheros",
+        "description": "Two eggs, ranchero salsa, black beans, cotija, avocado, cilantro, warm corn tortillas.",
+        "price": "$21.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Red or Green Chilaquiles",
+        "description": "Crispy corn tortillas simmered in red or green salsa, two eggs any style, cotija, crema, avocado, pickled onions, cilantro.",
+        "price": "$21.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Avocado Toast & Egg",
+        "description": "Smashed avocado, poached egg, chili flake, lemon, sea salt, microgreens, sourdough.",
+        "price": "$19.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Bagel & Lox",
+        "description": "House-cured salmon, cream cheese, capers, red onion, tomato, arugula, choice of bagel.",
+        "price": "$24.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Breakfast Burrito",
+        "description": "Scrambled eggs, refried beans, breakfast potatoes, cheddar, pico de gallo, wrapped in a warm flour tortilla. Add bacon, sausage or ham $3 · avocado $4.",
+        "price": "$18.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Breakfast Bowl",
+        "description": "Scrambled eggs, refried beans, breakfast potatoes, cheddar, pico de gallo, avocado. Served over mixed greens or as a rice bowl. Add bacon, sausage or ham $3 · avocado $4.",
+        "price": "$18.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Breakfast Pinsa",
+        "description": "Our signature — whipped ricotta, mozzarella, soft scrambled eggs, crispy pancetta, roasted tomato, basil, Parmigiano Reggiano, extra virgin olive oil. Add-ons: prosciutto $5 · avocado $4 · burrata $6 · Italian sausage $5.",
+        "price": "$22.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Belgian Waffle",
+        "description": "Whipped butter, warm maple syrup, seasonal berries.",
+        "price": "$17.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Classic Buttermilk Pancakes",
+        "description": "Three fluffy pancakes, whipped butter, warm maple syrup.",
+        "price": "$17.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Fruit, Yogurt & Housemade Granola",
+        "description": "Seasonal fruit, Greek yogurt, housemade granola, local honey.",
+        "price": "$17.00",
+        "section": "Breakfast: Mains"
+      },
+      {
+        "name": "Fruit & Yogurt",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast: For the Little Ones"
+      },
+      {
+        "name": "Mini Pancakes",
+        "description": "With maple syrup.",
+        "price": "$9.00",
+        "section": "Breakfast: For the Little Ones"
+      },
+      {
+        "name": "Belgian Waffle",
+        "description": "With maple syrup.",
+        "price": "$9.00",
+        "section": "Breakfast: For the Little Ones"
+      },
+      {
+        "name": "Scrambled Egg, Bacon & Potatoes",
+        "description": "",
+        "price": "$10.00",
+        "section": "Breakfast: For the Little Ones"
+      },
+      {
+        "name": "Applewood Bacon",
+        "description": "",
+        "price": "$7.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Chicken Sausage or Ham",
+        "description": "",
+        "price": "$7.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Breakfast Potatoes",
+        "description": "",
+        "price": "$6.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Toast",
+        "description": "Sourdough, whole wheat, or gluten-free.",
+        "price": "$4.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Bagel",
+        "description": "Everything, plain, cinnamon raisin, or asiago.",
+        "price": "$5.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Seasonal Fruit",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Avocado",
+        "description": "",
+        "price": "$4.00",
+        "section": "Breakfast: Sides"
+      },
+      {
+        "name": "Drip Coffee",
+        "description": "Regular or decaf.",
+        "price": "$6.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$7.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Cappuccino / Latte",
+        "description": "",
+        "price": "$7.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Fresh Orange Juice",
+        "description": "",
+        "price": "$7.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Mimosa",
+        "description": "Choice of orange, grapefruit, or pineapple.",
+        "price": "$14.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Bellini",
+        "description": "Peach, mango, or berry.",
+        "price": "$14.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Bloody Mary",
+        "description": "House recipe with Wheatley Vodka.",
+        "price": "$16.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Bottomless Mimosa",
+        "description": "90 minutes, per guest.",
+        "price": "$28.00",
+        "section": "Breakfast: Beverages"
+      },
+      {
+        "name": "Paseo Eggplant",
+        "description": "Eggplant, marinara, parmesan",
+        "price": "$21.00",
+        "section": "Dinner: Appetizers"
+      },
+      {
+        "name": "Baked Brie",
+        "description": "Brie, grapes, local honey, topped with a balsamic onion jam",
+        "price": "$18.00",
+        "section": "Dinner: Appetizers"
+      },
+      {
+        "name": "House Meatballs",
+        "description": "Beef, veal, pork, marinara",
+        "price": "$20.00",
+        "section": "Dinner: Appetizers"
+      },
+      {
+        "name": "Caprese",
+        "description": "Tomato, fresh mozzarella, basil, vinaigrette, balsamic glaze",
+        "price": "$19.00",
+        "section": "Dinner: Appetizers"
+      },
+      {
+        "name": "Lamb Lollipops",
+        "description": "Grilled lamb chops, chimichurri, mixed greens",
+        "price": "$28.00",
+        "section": "Dinner: Appetizers"
+      },
+      {
+        "name": "Escargot",
+        "description": "Garlic butter, Pernod, parsley",
+        "price": "$26.00",
+        "section": "Dinner: Appetizers"
+      },
+      {
+        "name": "Spinach & Goat Cheese",
+        "description": "Spinach, goat cheese, pomodoro",
+        "price": "$23.00",
+        "section": "Dinner: Pinsa Romana"
+      },
+      {
+        "name": "Pepperoni",
+        "description": "Pomodoro, mozzarella, pepperoni",
+        "price": "$20.00",
+        "section": "Dinner: Pinsa Romana"
+      },
+      {
+        "name": "Margherita",
+        "description": "Mozzarella, pomodoro, basil",
+        "price": "$18.00",
+        "section": "Dinner: Pinsa Romana"
+      },
+      {
+        "name": "Paseo Chopped",
+        "description": "Romaine, iceberg, salami, mozzarella, chickpeas, parmesan vinaigrette",
+        "price": "$24.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Cobb",
+        "description": "Chicken, bacon, tomato, avocado, egg, blue cheese, blue cheese crumble dressing",
+        "price": "$28.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Beet Salad",
+        "description": "Roasted beets, arugula, goat cheese, pistachios, balsamic glaze",
+        "price": "$26.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Caesar",
+        "description": "Romaine, parmesan, croutons",
+        "price": "$19.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Tuna or Chicken Salad",
+        "description": "Avocado, mixed greens, tomato, vinaigrette",
+        "price": "$24.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Wedge",
+        "description": "Iceberg, bacon, tomato, red onion, blue cheese crumble dressing",
+        "price": "$22.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Greek Salad",
+        "description": "Cucumbers, tomatoes, kalamata olives, red onion, feta cheese, house vinaigrette",
+        "price": "$23.00",
+        "section": "Dinner: Salads"
+      },
+      {
+        "name": "Paseo Burger",
+        "description": "½ lb. Prime Brandt beef, American cheese, lettuce, tomato, Thousand Island, fries",
+        "price": "$26.00",
+        "section": "Dinner: Sandwiches"
+      },
+      {
+        "name": "Salmon Burger",
+        "description": "Salmon, lettuce, tomato, tartar sauce",
+        "price": "$28.00",
+        "section": "Dinner: Sandwiches"
+      },
+      {
+        "name": "Albacore Tuna Melt",
+        "description": "Albacore tuna salad, dill relish, mayo, tomato, cheese, fries",
+        "price": "$22.00",
+        "section": "Dinner: Sandwiches"
+      },
+      {
+        "name": "Turkey Club",
+        "description": "Turkey, bacon, tomato, mayo, lettuce, sourdough, fries",
+        "price": "$24.00",
+        "section": "Dinner: Sandwiches"
+      },
+      {
+        "name": "Chicken Avocado Wrap",
+        "description": "Roasted chicken, avocado, sliced tomato, romaine lettuce, chipotle aioli, fries",
+        "price": "$24.00",
+        "section": "Dinner: Sandwiches"
+      },
+      {
+        "name": "Spicy Penne Vodka",
+        "description": "Vodka cream sauce",
+        "price": "$28.00",
+        "section": "Dinner: Pastas"
+      },
+      {
+        "name": "Mushroom Risotto",
+        "description": "Arborio rice, cremini mushrooms, white wine, parmesan",
+        "price": "$32.00",
+        "section": "Dinner: Pastas"
+      },
+      {
+        "name": "Shrimp Scampi",
+        "description": "Angel hair, cherry tomatoes, garlic, white wine, capers",
+        "price": "$36.00",
+        "section": "Dinner: Pastas"
+      },
+      {
+        "name": "Chicken Piccata",
+        "description": "Lemon, capers, white wine",
+        "price": "$34.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Chicken Milanese",
+        "description": "Crispy chicken, creamy lemon caper sauce, arugula",
+        "price": "$36.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Braised Short Rib",
+        "description": "Braised short rib in a red wine jus",
+        "price": "$42.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Airline Chicken",
+        "description": "All-natural free range Jidori chicken, pan-roasted",
+        "price": "$38.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Steak Frites",
+        "description": "8 oz Prime Brandt beef flat iron, au poivre sauce, fries",
+        "price": "$37.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "BBQ Pork Chop",
+        "description": "14oz pork chop, house-made barbecue sauce",
+        "price": "$45.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Filet Mignon",
+        "description": "8oz Prime Brandt beef filet, au poivre sauce",
+        "price": "$65.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Prime NY Steak",
+        "description": "12oz Prime Brandt beef New York strip, au poivre sauce",
+        "price": "$69.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Rack of Lamb",
+        "description": "Australian roasted rack, au poivre sauce",
+        "price": "$52.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Grilled Salmon",
+        "description": "Lemon, capers",
+        "price": "$39.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Dover Sole",
+        "description": "Lemon, white wine, capers",
+        "price": "$43.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Miso Black Cod",
+        "description": "Black cod, miso marinade",
+        "price": "$46.00",
+        "section": "Dinner: Entrées"
+      },
+      {
+        "name": "Brandt Beef Steak",
+        "description": "",
+        "price": "$15.00",
+        "section": "Dinner: Add Protein (add-on)"
+      },
+      {
+        "name": "Tuna or Chicken Salad",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Add Protein (add-on)"
+      },
+      {
+        "name": "Shrimp",
+        "description": "",
+        "price": "$12.00",
+        "section": "Dinner: Add Protein (add-on)"
+      },
+      {
+        "name": "Salmon",
+        "description": "",
+        "price": "$15.00",
+        "section": "Dinner: Add Protein (add-on)"
+      },
+      {
+        "name": "Chicken Breast",
+        "description": "",
+        "price": "$10.00",
+        "section": "Dinner: Add Protein (add-on)"
+      },
+      {
+        "name": "Sautéed Spinach",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Sautéed Mushrooms",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Mashed Potatoes",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Asparagus",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Fries",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Sweet Potato Fries",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Pasta",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "House Salad",
+        "description": "",
+        "price": "$8.00",
+        "section": "Dinner: Sides"
+      },
+      {
+        "name": "Brownie",
+        "description": "",
+        "price": "$12.00",
+        "section": "Dinner: Desserts"
+      },
+      {
+        "name": "Carrot Cake",
+        "description": "",
+        "price": "$15.00",
+        "section": "Dinner: Desserts"
+      },
+      {
+        "name": "German Chocolate Cake",
+        "description": "",
+        "price": "$15.00",
+        "section": "Dinner: Desserts"
+      },
+      {
+        "name": "Apple Pie à la Mode",
+        "description": "",
+        "price": "$15.00",
+        "section": "Dinner: Desserts"
+      },
+      {
+        "name": "Affogato",
+        "description": "",
+        "price": "$13.00",
+        "section": "Dinner: Desserts"
+      },
+      {
+        "name": "Fresh Orange Juice",
+        "description": "",
+        "price": "$7.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Hibiscus Honey Iced Tea",
+        "description": "",
+        "price": "$5.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "",
+        "price": "$5.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Lemonade",
+        "description": "",
+        "price": "$5.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Sodas",
+        "description": "Coke, Diet Coke, Sprite, Root Beer, Ginger Ale, Diet Dr. Pepper",
+        "price": "$5.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Drip Coffee",
+        "description": "Regular or decaf",
+        "price": "$6.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$7.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Cappuccino / Latte",
+        "description": "",
+        "price": "$7.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Tea Assortment",
+        "description": "",
+        "price": "$5.00",
+        "section": "Dinner: Non-Alcoholic Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "11746",
+    "name": "Brett's BBQ",
+    "sourceUrl": "https://thecoastnews.com/bretts-bbq-slow-cooked-and-beloved-but-soon-to-close/",
+    "confidence": "high",
+    "dishes": [],
+    "notes": "not_found: permanently closed. The Coast News (independent local journalism, not a directory) reported Aug 23 2018 that Brett's BBQ at 1505 Encinitas Blvd, Encinitas was closing for good on Sept 29 2018 after its lease was terminated, matching the batch address exactly. Yelp's own listing title now reads \"BRETTS BBQ - CLOSED\". No re-opening or successor at this address found."
+  },
+  {
+    "restaurantId": "11781",
+    "name": "Rosaria's Pizza",
+    "sourceUrl": "https://www.yelp.com/biz/rosarias-pizza-san-diego-8",
+    "confidence": "medium",
+    "dishes": [],
+    "notes": "not_found: two independent listings both tag this location closed - Yelp's own title reads \"ROSARIA'S PIZZA - CLOSED\" and TripAdvisor's page separately reads \"Rosaria's Pizza - CLOSED\", both for 6305 University Ave. No DoorDash/Uber Eats/Grubhub listing exists for this address at all, unlike a same-named sibling location at 3741 Mission Blvd (Mission Beach) which has an active DoorDash page and an Instagram confirming it is still open - meaning the chain overall is alive but this specific College/Rolando branch is not. MapQuest's listing still carries old present-tense marketing copy (\"we continue to serve...\"), but that page is boilerplate/unmaintained and contradicts the two independent closed tags plus the total absence of any ordering-platform presence at this address."
+  }
+]

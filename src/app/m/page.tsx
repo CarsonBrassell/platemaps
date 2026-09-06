@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { BrandMark, WordMark } from "@/components/BrandMark";
 import { PhoneDiscoverSearch } from "@/components/mobile/PhoneDiscoverSearch";
 import { PhoneFilterBar } from "@/components/mobile/PhoneFilterBar";
@@ -8,15 +7,9 @@ import type {
   PhoneFilterModel,
 } from "@/components/mobile/PhoneFilterSheet";
 import { PhoneStickyBar } from "@/components/mobile/PhoneStickyBar";
-import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
+import { PhoneDiscoverResults } from "@/components/mobile/PhoneDiscoverResults";
 import { getDiscoverPage, parseShown, PAGE_SIZE } from "@/lib/discover";
-import { packColumns } from "@/lib/photoShape";
-import {
-  QUICK_FILTERS,
-  activeFilterCount,
-  matchMarksFor,
-  type FacetOption,
-} from "@/lib/discoverFilters";
+import { QUICK_FILTERS, activeFilterCount, type FacetOption } from "@/lib/discoverFilters";
 
 /**
  * Discover, phone version.
@@ -346,81 +339,17 @@ export default async function PhoneDiscover({
         </div>
       </PhoneStickyBar>
 
-      {page.results.length === 0 ? (
-        <div className="px-4 py-16 text-center">
-          <p className="font-display text-lg text-zinc-900">Nothing matches that</p>
-          {/* Points at the sheet rather than guessing which filter did it: every
-              row in there prints what it would return, and the ones reading 0
-              are the ones ruling everything out. */}
-          <p className="mx-auto mt-1 max-w-[15rem] text-sm leading-snug text-pm-grey-text">
-            Every row under Filters shows how many places it would return.
-          </p>
-          <Link
-            href={clearHref}
-            className="mt-5 inline-flex min-h-11 items-center rounded-full bg-pm-orange px-5 text-sm font-medium text-[#F7F4EC] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-          >
-            Clear filters
-          </Link>
-        </div>
-      ) : (
-        /* Two across, and uneven — each photo keeps its own proportions and the
-           columns are packed shortest-first (lib/photoShape.ts).
+      {/* The wall, its empty state and Show more live in a client component:
+          once the browser knows where the visitor is, the same query is
+          re-answered against that position (a distance on every card, a
+          search ordered by it) and the server's unlocated answer is swapped
+          out. The hrefs are built here because they need `nav`. */}
+      <PhoneDiscoverResults
+        page={page}
+        clearHref={clearHref}
+        moreHref={hrefWith({ shown: String(page.shown + PAGE_SIZE) })}
+      />
 
-           This was three across with every photo squared off. Three fit more on
-           screen and made all of them small and identical, which on a screen
-           that is mostly photograph is the wrong thing to optimise: at two the
-           food is legible and the ragged column edges give the eye somewhere to
-           land. Packed on the server, because unlike the web grid this column
-           count is fixed rather than a media query, so there is nothing for the
-           browser to work out. */
-        <div className="grid grid-cols-2 items-start gap-2 px-4">
-          {packColumns(page.results, 2).map((column, i) => (
-            // A column is a position, not a thing — see the same note in
-            // DiscoverBrowser. Index is its identity.
-            <div key={i} className="grid auto-rows-min content-start gap-2">
-              {column.map((restaurant, index) => (
-                <PhoneRestaurantCardGrid
-                  key={restaurant.id}
-                  restaurant={restaurant}
-                  score={restaurant.plateScore}
-                  priority={index < 2}
-                  matchedCuisine={matchMarksFor(restaurant, filters).cuisine}
-                  /* Only while a category filter is on, and only for a
-                     restaurant that actually scored in it — `getDiscoverPage`
-                     attaches `aspectScore` under exactly those conditions, so
-                     the two halves of this check are the same condition read
-                     twice rather than two guesses. */
-                  aspect={
-                    filters.aspect && restaurant.aspectScore !== undefined
-                      ? {
-                          aspect: filters.aspect,
-                          score: restaurant.aspectScore.score,
-                          praised: restaurant.aspectScore.praised,
-                        }
-                      : null
-                  }
-                />
-              ))}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {page.total > page.shown && (
-        <div className="px-4 pt-4">
-          <Link
-            href={hrefWith({ shown: String(page.shown + PAGE_SIZE) })}
-            /* Full width and 48px tall: at the bottom of a long scroll this is
-               a thumb target, not a text link. */
-            className="flex min-h-12 w-full items-center justify-center rounded-full bg-white text-sm font-medium text-zinc-900 transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-          >
-            Show more
-            <span className="ml-1.5 font-mono text-xs tabular-nums text-zinc-500">
-              {page.shown} / {page.total}
-            </span>
-          </Link>
-        </div>
-      )}
     </div>
   );
 }

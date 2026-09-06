@@ -1,0 +1,1655 @@
+[
+  {
+    "restaurantId": "7753",
+    "name": "Breakers",
+    "sourceUrl": "https://breakersencinitas.com/menu",
+    "confidence": "high",
+    "notes": "First-party site. The /menu landing page only lists Brunch (Island Style Eggs, Sweet and Savory, Breakers Specials, Brunch Sides); the Plate Lunch and Tropical Cocktails sections are not linked from that page's nav but each dish has its own server-rendered page found via /sitemap.xml (e.g. /menu/kalua-pork), read individually and cross-checked via each page's 'relatedItems' JSON. All 10 Brunch-Sides/Brunch items plus 10 Plate Lunch/Cocktail items combined below for a complete 22-item capture across both halves of the menu.",
+    "dishes": [
+      {
+        "name": "Spam and Eggs",
+        "description": "Served with your choice of white rice or Breakfast Potatoes",
+        "price": "$16.00",
+        "section": "Island Style Eggs"
+      },
+      {
+        "name": "Kahlua Pork Scramble",
+        "description": "Served With Breakfast Potatoes",
+        "price": "$16.00",
+        "section": "Island Style Eggs"
+      },
+      {
+        "name": "Eggs And Toast",
+        "description": "Two Eggs Served Your Way W/Sourdough Toast",
+        "price": "$10.00",
+        "section": "Island Style Eggs"
+      },
+      {
+        "name": "Breakers Breakfast Sando",
+        "description": "Croissant with house made bacon spread, Eggs, Tomato, and cheese",
+        "price": "$12.00",
+        "section": "Island Style Eggs"
+      },
+      {
+        "name": "Egg & Cheese Croissant",
+        "description": "Croissant with Scrambled Egg and Cheese",
+        "price": "$8.00",
+        "section": "Island Style Eggs"
+      },
+      {
+        "name": "Hawaiian Bread French Toast",
+        "description": "Topped With Fresh Strawberries and Powdered Sugar",
+        "price": "$11.99",
+        "section": "Sweet and Savory"
+      },
+      {
+        "name": "Belgium Waffles",
+        "description": "Served with Warm Syrup and Butter",
+        "price": "$11.99",
+        "section": "Sweet and Savory"
+      },
+      {
+        "name": "Mochichis",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sweet and Savory"
+      },
+      {
+        "name": "Loco Moco",
+        "description": "Plate of rice, Topped with hamburger patty, Gravy, and One Fried Egg",
+        "price": "$20.00",
+        "section": "Breakers Specials"
+      },
+      {
+        "name": "Meat Lovers Breakfast Burrito",
+        "description": "Scrambled eggs, spam, bacon, Polish sausage, cheese, and pico de gallo",
+        "price": "$16.00",
+        "section": "Breakers Specials"
+      },
+      {
+        "name": "Breakers Fried Rice",
+        "description": "With One Fried Egg",
+        "price": "$16.00",
+        "section": "Breakers Specials"
+      },
+      {
+        "name": "Kalua Pork Breakfast Burrito",
+        "description": "W/ Scrambled Eggs, Pico De Gallo and a Side of \"Pineapple Lava\" Salsa",
+        "price": "$15.00",
+        "section": "Breakers Specials"
+      },
+      {
+        "name": "Breakfast Potatos",
+        "description": "",
+        "price": "$7.00",
+        "section": "Brunch Sides"
+      },
+      {
+        "name": "One Egg",
+        "description": "",
+        "price": "$4.00",
+        "section": "Brunch Sides"
+      },
+      {
+        "name": "Bacon",
+        "description": "",
+        "price": "$6.00",
+        "section": "Brunch Sides"
+      },
+      {
+        "name": "Sausage",
+        "description": "",
+        "price": "$5.00",
+        "section": "Brunch Sides"
+      },
+      {
+        "name": "Spam",
+        "description": "",
+        "price": "$4.00",
+        "section": "Brunch Sides"
+      },
+      {
+        "name": "Sourdough Toast",
+        "description": "",
+        "price": "$3.00",
+        "section": "Brunch Sides"
+      },
+      {
+        "name": "Kalua Pork",
+        "description": "",
+        "price": "$18.00",
+        "section": "Plate Lunch"
+      },
+      {
+        "name": "Teriyaki Chicken",
+        "description": "",
+        "price": "$18.00",
+        "section": "Plate Lunch"
+      },
+      {
+        "name": "Poke Bowl",
+        "description": "",
+        "price": "$18.00",
+        "section": "Plate Lunch"
+      },
+      {
+        "name": "Blackened Ahi",
+        "description": "",
+        "price": "$24.00",
+        "section": "Plate Lunch"
+      },
+      {
+        "name": "Kalbi Beef Ribs",
+        "description": "",
+        "price": "$21.00",
+        "section": "Plate Lunch"
+      },
+      {
+        "name": "Spam Musubi",
+        "description": "",
+        "price": "$3.00",
+        "section": "Plate Lunch"
+      },
+      {
+        "name": "Breakers Mai Tai",
+        "description": "",
+        "price": "$16.00",
+        "section": "Tropical Cocktails"
+      },
+      {
+        "name": "Lehua Margarita",
+        "description": "",
+        "price": "$15.00",
+        "section": "Tropical Cocktails"
+      },
+      {
+        "name": "Guava Mama",
+        "description": "",
+        "price": "$16.00",
+        "section": "Tropical Cocktails"
+      },
+      {
+        "name": "Dawn Patrol",
+        "description": "",
+        "price": "$16.00",
+        "section": "Tropical Cocktails"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9214",
+    "name": "El Kafecito",
+    "sourceUrl": "https://page-service.doordash.com/store/el-kafecito-vista-23447928/",
+    "confidence": "medium",
+    "notes": "DoorDash JSON-LD Menu block (page-service.doordash.com mirror, www.doordash.com 403s). Address confirmed 949 South Santa Fe Avenue matches batch. Dropped 12-item 'Most Ordered' carousel (all duplicates of named sections). Coffee/drinks drive-thru hut; prices are the base/smallest-size price, drinks are offered in 12/16/18oz per the descriptions but only one price is published per item. Cents distribution conventional (.00/.50/.75), no markup signature.",
+    "dishes": [
+      {
+        "name": "Cold Brew",
+        "description": "Available in 12 oz, 16 oz, 18 oz.",
+        "price": "$4.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Cortado",
+        "description": "12 oz.",
+        "price": "$3.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Americano",
+        "description": "Espresso diluted with hot water, available in 12 oz, 16 oz, 18 oz.",
+        "price": "$3.00",
+        "section": "Classics"
+      },
+      {
+        "name": "House Coffee",
+        "description": "Choice of 12 oz, 16 oz, or 18 oz servings.",
+        "price": "$2.50",
+        "section": "Classics"
+      },
+      {
+        "name": "Tea",
+        "description": "12 oz.",
+        "price": "$2.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Dulce de Leche Latte",
+        "description": "Dulce de leche latte blended into rich coffee. Options include 12 oz, 16 oz, 18 oz sizes and a variety of milks: coconut, oat, almond, soy, whole, fat free.",
+        "price": "$5.00",
+        "section": "Specialities"
+      },
+      {
+        "name": "Horchata Latte",
+        "description": "Horchata base infused latte. Options for 12 oz, 16 oz, 18 oz. Milk choices: coconut, oat, almond, soy, whole, fat-free.",
+        "price": "$5.00",
+        "section": "Specialities"
+      },
+      {
+        "name": "Vanilla Latte",
+        "description": "Vanilla latte with choice of 12 oz, 16 oz, or 18 oz. Options include coconut, oat, almond, soy, fat-free, or whole milk substitution.",
+        "price": "$4.75",
+        "section": "Specialities"
+      },
+      {
+        "name": "De la Olla Latte",
+        "description": "Traditional coffee latte. Size options: 12 oz, 16 oz, 18 oz. Milk choices: oat, almond, soy, whole, fat-free.",
+        "price": "$5.00",
+        "section": "Specialities"
+      },
+      {
+        "name": "Mazapán Latte",
+        "description": "Coffee latte with choice of milk: coconut, oat, almond, soy, whole, or fat-free. Available in 12 oz, 16 oz, 18 oz sizes.",
+        "price": "$5.00",
+        "section": "Specialities"
+      },
+      {
+        "name": "Mexican Mocha",
+        "description": "Rich mocha infused with Mexican spices. Choose from 12 oz, 16 oz, 18 oz. Options for coconut, oat, almond, soy, fat-free, or whole milk.",
+        "price": "$5.00",
+        "section": "Specialities"
+      },
+      {
+        "name": "Tres Leches Latte",
+        "description": "Creamy coffee blend with rich milk flavors, offered in 12 oz, 16 oz, or 18 oz sizes.",
+        "price": "$5.00",
+        "section": "Specialities"
+      },
+      {
+        "name": "Sugar Free Vanilla Latte",
+        "description": "Sugar free vanilla latte with choice of coconut, oat, almond, soy, or whole milk. Available in 12 oz, 16 oz, 18 oz sizes.",
+        "price": "$4.75",
+        "section": "Specialities"
+      },
+      {
+        "name": "Caramel Latte",
+        "description": "espresso blended with steamed milk, infused with rich caramel. Options include 12 oz, 16 oz, 18 oz sizes, and choice of milk substitutions from coconut to whole milk.",
+        "price": "$5.00",
+        "section": "Specialities"
+      },
+      {
+        "name": "White Chocolate Mocha",
+        "description": "Rich espresso blended with smooth white chocolate syrup. Choice of sizes (12 oz, 16 oz, 18 oz) and milk options include plant-based and dairy.",
+        "price": "$5.00",
+        "section": "Specialities"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "Authentic matcha blended smooth, choice of 12 oz, 16 oz, 18 oz sizes. Milk options include coconut, oat, almond, soy, or whole.",
+        "price": "$5.00",
+        "section": "Specialities"
+      },
+      {
+        "name": "Hazelnut Latte",
+        "description": "Hazelnut latte with options for 12 oz, 16 oz, 18 oz sizes. Choice of coconut, oat, almond, soy, whole, or fat-free milk.",
+        "price": "$4.75",
+        "section": "Specialities"
+      },
+      {
+        "name": "Chai Latte",
+        "description": "Chai latte with choice of 12 oz, 16 oz, or 18 oz. Options for milk include coconut, oat, almond, soy, fat-free, or whole.",
+        "price": "$4.50",
+        "section": "Specialities"
+      },
+      {
+        "name": "Sugar Free Hazelnut Latte",
+        "description": "Coffee latte with a hint of hazelnut, no added sugar. Choices of 12 oz, 16 oz, or 18 oz and various milk substitutions including plant-based options.",
+        "price": "$4.75",
+        "section": "Specialities"
+      },
+      {
+        "name": "Choco Mazapán",
+        "description": "Rich chocolate and sweet marzipan blended coffee. Available in 12 oz, 16 oz, 18 oz sizes.",
+        "price": "$5.00",
+        "section": "Blended"
+      },
+      {
+        "name": "Banana Nut Chai",
+        "description": "Chai tea blended with banana and nut flavors. Available in 12 oz, 16 oz, or 18 oz sizes.",
+        "price": "$5.00",
+        "section": "Blended"
+      },
+      {
+        "name": "Choco Banana",
+        "description": "Rich chocolate and ripe banana blended smoothie. Choice of 12 oz, 16 oz, or 18 oz.",
+        "price": "$5.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry & Banana",
+        "description": "Strawberry and banana blended smoothie, available in 12 oz, 16 oz, and 18 oz sizes.",
+        "price": "$5.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry",
+        "description": "Strawberry blend, available in 12 oz, 16 oz, 18 oz sizes.",
+        "price": "$4.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Banana",
+        "description": "Banana smoothie in choice of 12 oz, 16 oz, or 18 oz.",
+        "price": "$4.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Banana",
+        "description": "Banana, typically served as a simple, fresh fruit snack.",
+        "price": "$2.00",
+        "section": "Snacks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8096",
+    "name": "Grandson Steaks",
+    "sourceUrl": "https://grandsonsteaks.com/",
+    "confidence": "high",
+    "notes": "First-party site, Divi/WordPress single-page menu, plain HTML with a $/dollar figure for essentially every line. 'Grandson Specialty' listed as '$8 ea.' (priced per slider, not per plate) and 'Ribeye Family Fest' offers two tiers (Choice/Prime) filed as two rows.",
+    "dishes": [
+      {
+        "name": "Ribeye — Choice",
+        "description": "Served with Two Flour or Corn Quesadillas, and our Signature Grilled Onions and Peppers",
+        "price": "$37.00",
+        "section": "Steaks"
+      },
+      {
+        "name": "Ribeye — ★ Prime",
+        "description": "Served with Two Flour or Corn Quesadillas, and our Signature Grilled Onions and Peppers",
+        "price": "$47.00",
+        "section": "Steaks"
+      },
+      {
+        "name": "Tomahawk — Choice",
+        "description": "Served with Two Flour or Corn Quesadillas, and our Signature Grilled Onions and Peppers",
+        "price": "$79.00",
+        "section": "Steaks"
+      },
+      {
+        "name": "New York — ★ Prime",
+        "description": "Served with Two Flour or Corn Quesadillas, and our Signature Grilled Onions and Peppers",
+        "price": "$45.00",
+        "section": "Steaks"
+      },
+      {
+        "name": "Beef Milanesa",
+        "description": "Hand-breaded Steak Cutlet. Served with Fries",
+        "price": "$28.00",
+        "section": "Classics"
+      },
+      {
+        "name": "The Burger",
+        "description": "Cheese, bacon, lettuce, tomato",
+        "price": "$22.00",
+        "section": "Classics"
+      },
+      {
+        "name": "Grandson Specialty",
+        "description": "Bone Marrow, House Guacamole, Fried Beans, Creamy Salad (priced per slider)",
+        "price": "$8.00",
+        "section": "Slides To Share"
+      },
+      {
+        "name": "Steakhouse Classics",
+        "description": "Mashed Potatoes, French Fries, Vinaigrette Salad",
+        "price": "$22.00",
+        "section": "Slides To Share"
+      },
+      {
+        "name": "Ribeye Family Fest — Choice",
+        "description": "24 oz Ribeye, 1/2lb Adobada, 1/2lb Birria, 8 Quesadillas, Guacamole, Fried Beans, Grilled Onions & Peppers, 6 Tortillas. Serves up to 4",
+        "price": "$95.00",
+        "section": "For the Table"
+      },
+      {
+        "name": "Ribeye Family Fest — ★ Prime",
+        "description": "24 oz Ribeye, 1/2lb Adobada, 1/2lb Birria, 8 Quesadillas, Guacamole, Fried Beans, Grilled Onions & Peppers, 6 Tortillas. Serves up to 4",
+        "price": "$115.00",
+        "section": "For the Table"
+      },
+      {
+        "name": "Octopus Carpaccio",
+        "description": "Sliced Octopus with Parmesan and Matcha-Infused Oil",
+        "price": "$26.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Citrus-Cured Ceviche",
+        "description": "Fresh Fish and Shrimp Cured in Lime Juice, Red Onions, Cilantro and Tomato",
+        "price": "$19.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Guacamole + Chips",
+        "description": "Fresh Hand-Made Guac with Tomato, Onions, Cilantro, Sea Salt, Lime Juice, and Pepper",
+        "price": "$16.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Thin Sliced Steak Ribeye (1)",
+        "description": "One Taco in a Flour Tortilla, Guac, Pickled Red Onions",
+        "price": "$12.00",
+        "section": "Grandson Tacos"
+      },
+      {
+        "name": "Ribeye + Porkbelly (1)",
+        "description": "One Taco in a Flour Tortilla, Mozzarella Cheese, Guac, Pickled Red Onions",
+        "price": "$14.00",
+        "section": "Grandson Tacos"
+      },
+      {
+        "name": "Pork Adobada (2)",
+        "description": "Two Tacos in Corn Tortilla, Onions, Cilantro",
+        "price": "$14.00",
+        "section": "Grandson Tacos"
+      },
+      {
+        "name": "Quesa-Birria (2)",
+        "description": "Two Tacos in Corn Tortilla, Mozzarella Cheese, Onions, Cilantro",
+        "price": "$14.00",
+        "section": "Grandson Tacos"
+      },
+      {
+        "name": "Baja Fish Taco (2)",
+        "description": "Two Tacos in Corn Tortilla, Coleslaw, Creamy Sauce",
+        "price": "$16.00",
+        "section": "Grandson Tacos"
+      },
+      {
+        "name": "Grilled Shrimp + Bacon (2)",
+        "description": "Two Tacos in Flour Tortilla, Mozzarella Cheese, Pickled Red Onion",
+        "price": "$16.00",
+        "section": "Grandson Tacos"
+      },
+      {
+        "name": "Baja Shrimp Taco (2)",
+        "description": "Two Tacos in Corn Tortilla, Coleslaw, Creamy Sauce",
+        "price": "$16.00",
+        "section": "Grandson Tacos"
+      },
+      {
+        "name": "Octopus + Marrow (1)",
+        "description": "One Taco in Corn Tortilla, Mozzarella Cheese, and Bone Marrow",
+        "price": "$16.00",
+        "section": "Grandson Tacos"
+      },
+      {
+        "name": "Shrimp Baja Cocktail",
+        "description": "Cocktail Sauce, Red Onions, Cucumber, Cilantro",
+        "price": "$6.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Yellowfin Tuna Tostada",
+        "description": "Mango Sauce, Chipotle Mayo, and House Ponzu",
+        "price": "$12.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Shrimp Aguachile",
+        "description": "Shrimp Cooked in Citrus Sauce, Cilantro, Peppers, and Cucumber",
+        "price": "$16.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "4 Grilled Oysters + Marrow",
+        "description": "Grilled with Butter and Bone Marrow Ponzu Sauce",
+        "price": "$16.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Vinaigrette Salad",
+        "description": "Baby Greens, House-Made Vinaigrette Dressing, Grated Parmesan, and Seasonal Toppings",
+        "price": "$17.00",
+        "section": "Chef Salads"
+      },
+      {
+        "name": "Creamy Salad",
+        "description": "Baby Greens, House-Made Creamy Dressing, Grated Parmesan, Avocado, and Croutons",
+        "price": "$17.00",
+        "section": "Chef Salads"
+      },
+      {
+        "name": "Add 4 oz Protein",
+        "description": "Mango Yellowfin Tuna, or Grilled Ribeye",
+        "price": "$8.00",
+        "section": "Chef Salads"
+      },
+      {
+        "name": "House Favorites",
+        "description": "",
+        "price": "$10.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Specialty",
+        "description": "",
+        "price": "$12.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Agua Fresca",
+        "description": "",
+        "price": "$6.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coffee or Espresso",
+        "description": "",
+        "price": "$5.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Can Soda",
+        "description": "",
+        "price": "$7.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Latte, Matcha, Chai",
+        "description": "",
+        "price": "$7.00",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4503",
+    "name": "Bale French Sandwiches",
+    "sourceUrl": "https://www.doordash.com/store/bale-french-sandwiches-san-diego-31728395/",
+    "confidence": "medium",
+    "notes": "Restaurant's own site (balefrenchsandwiches.twupro.com) is the barred farm-domain shape (twupro.com); sourced from DoorDash's schema.org Menu JSON-LD instead. Address in the DoorDash payload (9396 Mira Mesa Blvd) differs by one digit from the batch record's address (9363 Mira Mesa Boulevard #C) but the website URL given in the batch record matches exactly and phone/name are identical -- treating the batch address as a transposition typo, not a different location. Dropped 12-item 'Most Ordered' carousel (duplicates of named sections). Cents distribution: 59 of 64 on round dollars, 4 on .50, 1 on .75 -- no markup signature.",
+    "dishes": [
+      {
+        "name": "Nem Nướng Cuốn / BBQ Pork Rolls",
+        "description": "3 rolls.",
+        "price": "$9.00",
+        "section": "Khai Vi / Appetizer"
+      },
+      {
+        "name": "Bánh Bèo / Steamed Rice Cake",
+        "description": "Steamed rice cake garnished with dried shrimp, scallion oil, fried shallots and mung bean paste. Fish Sauce is included",
+        "price": "$9.00",
+        "section": "Khai Vi / Appetizer"
+      },
+      {
+        "name": "Bánh Cuốn / Flat Rice, Steam Mushroom, Pork",
+        "description": "Delicate steamed rice rolls filled with mushrooms and pork, garnished with fresh herbs and crispy fried shallots, served with dipping sauce and pickled vegetables.",
+        "price": "$9.00",
+        "section": "Khai Vi / Appetizer"
+      },
+      {
+        "name": "Gỏi Cuốn / Spring Rolls",
+        "description": "3 rolls.",
+        "price": "$9.00",
+        "section": "Khai Vi / Appetizer"
+      },
+      {
+        "name": "Bánh It Tran /Mochi Pork Dumpling",
+        "description": "Banh it tran is a sticky rice dough dumpling. Filled pork and garnished with green onions, ground shrimp, fried shallots and mung beans. Fish Sauce is included",
+        "price": "$9.00",
+        "section": "Khai Vi / Appetizer"
+      },
+      {
+        "name": "Bánh Bột Lọc Trần / Tapioca Shrimp Dumpling",
+        "description": "Bánh bột lọc is a small, clear-looking, chewy tapioca dumpling. Filled with dried shrimp and topped with fried shallots, green onions and scallion oil. Fish sauce is included.",
+        "price": "$9.00",
+        "section": "Khai Vi / Appetizer"
+      },
+      {
+        "name": "Nem Chua (Sour Pork)",
+        "description": "Nem chua is a fermented pork dish. It is mainly composed of a mixture of lean pork and thin strips of cooked rind, garnished with garlic and chili.",
+        "price": "$8.00",
+        "section": "Khai Vi / Appetizer"
+      },
+      {
+        "name": "Bánh Gio / Rice Pork Dumpling",
+        "description": "Each.",
+        "price": "$5.00",
+        "section": "Khai Vi / Appetizer"
+      },
+      {
+        "name": "Bánh Bao / Steamed Pork Bun",
+        "description": "Steamed Pork bun with egg and Chinese sausage",
+        "price": "$5.00",
+        "section": "Khai Vi / Appetizer"
+      },
+      {
+        "name": "Pate Chaud - Vietnamese puff pastry",
+        "description": "Vietnamese puff pastry with pork meat inside. Savory",
+        "price": "$2.50",
+        "section": "Khai Vi / Appetizer"
+      },
+      {
+        "name": "Chả Giò / Egg Rolls",
+        "description": "Our egg rolls are chicken. Price is for 1 egg roll",
+        "price": "$1.50",
+        "section": "Khai Vi / Appetizer"
+      },
+      {
+        "name": "5. Thịt Nướng / Char-grilled BBQ Pork",
+        "description": "Lemon grass grilled pork",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "1. Đặc Biệt / Cold Cut Combo (w/Pate)",
+        "description": "Meatloaf, Ham and Pate",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "7. Gà Nướng / BBQ Chicken",
+        "description": "Lemon grass chicken",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "9. Xá Xíu / Sweet Roasted Pork (w/Pate)",
+        "description": "Sweet roasted pork, pâté, baguette. Toasted (recommended) or untoasted bread options.",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "11. Bò / Beef",
+        "description": "Lemon grass beef patty",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "12. Cha Lua / Bologna (w/Pate)",
+        "description": "Vietnamese-style sandwich with pork bologna and pâté. Choice of toasted or untoasted bread.",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "6. Thịt Nguội / Ham (w/Pate)",
+        "description": "Ham with pâté in French baguette. Bread options: toasted or untoasted.",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "10. Cá / Tuna",
+        "description": "Tuna sandwich on choice of toasted (recommended) or untoasted bread.",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "13. Chay / Vegetarian",
+        "description": "Our tofu veggie is a medley of vegetarian ham, fried tofu skin, carrots, and fried rice noodles",
+        "price": "$8.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "2. Chà Bông / Dry Pork",
+        "description": "Dry pork with choice of toasted or untoasted bread.",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "4. Nem Chua / Sour Pork",
+        "description": "Sour pork with choice of toasted or untoasted bread.",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "8. Xiu Mái / Grounded Meatball",
+        "description": "Ground meatball sandwich. Toasted or untoasted bread.",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "15. Lap Xuong / Chinese Sausage",
+        "description": "Chinese sausage Bánh Mì. Choice of bread: Toasted (recommended) or untoasted.",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "17. Ba Chi / Cured Pork (w/Pate)",
+        "description": "Cured pork with pate, choice of toasted or untoasted bread.",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "21. Tôm / Shrimp",
+        "description": "Shrimp, on toasted or untoasted bread.",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "16. Trung Op La / Egg",
+        "description": "Egg bánh mì with your choice of toasted or untoasted bread.",
+        "price": "$8.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "20. Nem Chả Lụa / Sour Pork and Bologna(w/Pate)",
+        "description": "Sour pork and bologna with pâté on a baguette. Bread options: toasted (recommended) or untoasted.",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "19. Trứng Lạp Xưởng / Egg & Chinese Sausage",
+        "description": "Egg and Chinese sausage on a banh mi. Choice of toasted or untoasted bread.",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "14. Cá Mỏi / Sardine",
+        "description": "Sardine banh mi. Choice of toasted or untoasted bread.",
+        "price": "$8.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "3. Nem Nướng / BBQ Pork Sausage",
+        "description": "BBQ pork sausage with your choice of toasted (recommended) or untoasted bread.",
+        "price": "$9.00",
+        "section": "Bánh Mì / Sandwiches"
+      },
+      {
+        "name": "Bánh Bò Nuong / Honeycomb Cake",
+        "description": "Vietnamese chewy song cake with Pandan flavoring. It is called honeycomb due to the look of its texture resembling a honeycomb with sliced.",
+        "price": "$16.00",
+        "section": "Not Too Sweet Treats"
+      },
+      {
+        "name": "Banh Kep / Waffle Cookie",
+        "description": "Hand rolled waffle cookies with a coconut milk and sesame base. ",
+        "price": "$9.00",
+        "section": "Not Too Sweet Treats"
+      },
+      {
+        "name": "Banh Cam / Red Bean Sesame Balls",
+        "description": "Fried pastries with a sweet red bean paste filling and a crunchy sesame seed coating. Each serving comes with 3. ",
+        "price": "$2.00",
+        "section": "Not Too Sweet Treats"
+      },
+      {
+        "name": " Café Sua Da/ Vietnamese Iced Coffee",
+        "description": "Slow dripped espresso shots paired with condensed milk and ice.",
+        "price": "$4.00",
+        "section": "Giải Khát / Drinks"
+      },
+      {
+        "name": "Rau Má / Penny Leaf",
+        "description": "Fresh Penny Leaf Juice",
+        "price": "$4.75",
+        "section": "Giải Khát / Drinks"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "Sweet and creamy Thai tea. Optional: Boba pearls.",
+        "price": "$4.50",
+        "section": "Giải Khát / Drinks"
+      },
+      {
+        "name": "Milk Tea",
+        "description": "Sweet beverage with a choice of adding tapioca pearls (boba).",
+        "price": "$4.50",
+        "section": "Giải Khát / Drinks"
+      },
+      {
+        "name": "7. Banana",
+        "description": "Banana smoothie with optional boba. Adjustable sugar levels: 100%, 75%, 50%, 25%, or 0%.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "18. Watermelon",
+        "description": "Fresh watermelon blended into a refreshing smoothie. Choice of boba or no boba, and sugar levels from 0% to 100%.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "33. Caramel Latte",
+        "description": "Caramel latte smoothie. Boba optional. Sugar levels: 100%, 75%, 50%, 25%, 0%.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "14. Soursop",
+        "description": "Soursop smoothie with optional boba and customizable sugar levels.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "32. Coconut/Banana",
+        "description": "Coconut and banana smoothie. Options: with or without boba, choose sugar level from 0% to 100%.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "8. Durian",
+        "description": "Durian smoothie with optional boba and customizable sugar levels.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "1. Mocha",
+        "description": "Mocha smoothie. Options: boba addition and customizable sugar levels.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "26. Pineapple",
+        "description": "Pineapple smoothie with optional boba. Choose sugar level: 100%, 75%, 50%, 25%, or 0%.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "28. Papaya/Banana",
+        "description": "Papaya and banana smoothie, with optional boba and adjustable sugar levels.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "34. Vanilla Latte",
+        "description": "Vanilla latte smoothie with customizable sugar levels.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "25. Strawberry/Banana",
+        "description": "Strawberry and banana smoothie with customizable options. Choose to add boba or not, and adjust sugar level from 100% down to 0%.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "29. Honeydew",
+        "description": "Refreshing honeydew blended drink. Optional boba; adjustable sugar levels: 100%, 75%, 50%, 25%, or 0%.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "6. Coconut",
+        "description": "Coconut smoothie with customizable sugar levels and optional Boba.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "10. Avocado",
+        "description": "Creamy avocado smoothie with optional boba. Customize sugar level: 100%, 75%, 50%, 25%, or 0%.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "11. Wildberry",
+        "description": "Wildberry smoothie with optional boba and customizable sugar levels. Choices: no boba or add boba, sugar from 0% to 100%.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "12. Green Tea/Matcha",
+        "description": "Green tea or matcha smoothie. Optional boba. Choose sugar level.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "13. Penny Leaf & Mung Bean ",
+        "description": "Penny leaf and mung bean smoothie. Option to add boba. Sugar levels: 100%, 75%, 50%, 25%, 0%.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "16. Lychee",
+        "description": "Sweet lychee smoothie. Options for boba and customizable sugar levels.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "23. Mango/Pineapple",
+        "description": "Mango and pineapple blended smoothie. Options: boba addition, adjustable sugar levels.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "24. Pineapple/Coconut",
+        "description": "Pineapple-coconut blend. Choose boba or no boba. Adjustable sugar levels: 100%, 75%, 50%, 25%, or 0%.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "31. Papaya",
+        "description": "Papaya smoothie. Available with or without boba. Choose sugar level: 100%, 75%, 50%, 25%, 0%.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "9. Taro",
+        "description": "Taro smoothie with optional boba and various sugar levels.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "30. Passion Fruit",
+        "description": "Passion fruit smoothie. Option to add boba.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "4. Strawberry",
+        "description": "Fresh strawberry blend, choice of boba, adjustable sugar levels.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "5. Jackfruit",
+        "description": "Jackfruit smoothie with optional boba and adjustable sugar levels.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      },
+      {
+        "name": "3. Mango",
+        "description": "Mango smoothie. Options: with or without boba, sugar levels vary.",
+        "price": "$6.00",
+        "section": "Sinh Tố / Smoothies"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8756",
+    "name": "Little Mexico",
+    "sourceUrl": "https://www.doordash.com/en/business/little-mexico-95138/menu/",
+    "confidence": "medium",
+    "notes": "Restaurant's listed website (littlemex.top) is the barred directory farm per the router; sourced instead from DoorDash's escaped Next.js RSC 'menus' payload (page carried no schema.org JSON-LD). Identity confirmed via the 'Little Mexico Sampler' at $20.50 matching the 'House Sampler $20.5' figure seen in search results for this same address/phone. Full 116-item menu across breakfast, lunch/dinner, sides, beverages and dessert -- no truncation signature (not 79/91, every core section present). Cents distribution conventional: 40 on .00, 64 on .50, 9 on .75, 2 on .25, 1 on .95.",
+    "dishes": [
+      {
+        "name": "Ground Beef Patty Taco (1)",
+        "description": "A unique blend of ground beef patty, typically includes lettuce, cheese, and tomatoes, encased in a soft tortilla.",
+        "price": "$4.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Chicken Rolled Taco (1)",
+        "description": "Rolled taco filled with shredded chicken, typically includes cheese and lettuce, served in a crispy tortilla shell.",
+        "price": "$4.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Shredded Beef Taco (1)",
+        "description": "Shredded beef taco typically includes a hard shell filled with shredded beef, lettuce, and cheese.",
+        "price": "$5.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "QuesaBirria Taco (1)",
+        "description": "QuesaBirria taco with juice",
+        "price": "$6.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada Taco (1)",
+        "description": "Grilled steak topped with chopped onions, tomatoes, and fresh cilantro on a soft tortilla.",
+        "price": "$6.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Seca Tacos (1)",
+        "description": "Carne seca, typically accompanied by pico de gallo and guacamole, served in a corn tortilla.",
+        "price": "$6.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Fish Taco (1)",
+        "description": "Beer-battered fish nestled in a soft corn tortilla, typically includes white sauce, cabbage, and fresh tomatoes.",
+        "price": "$6.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Shrimp Taco (1)",
+        "description": "Shrimp taco typically includes grilled shrimp, lettuce, tomato, cilantro, onions, sour cream, cotija cheese, and avocado, served in a soft tortilla.",
+        "price": "$6.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "B1 -Bean, Potato, Egg & Cheese",
+        "description": "Scrambled eggs, beans, diced potatoes, and melted cheese wrapped in a flour tortilla.",
+        "price": "$12.50",
+        "section": "Breakfast Burros served till 4pm"
+      },
+      {
+        "name": "B2- Chorizo with Egg Burros",
+        "description": "Spicy chorizo and scrambled eggs wrapped in a flour tortilla.",
+        "price": "$13.50",
+        "section": "Breakfast Burros served till 4pm"
+      },
+      {
+        "name": "B3- Chorizo with Potato Burros",
+        "description": "Chorizo and potato, typically accompanied by eggs and cheese, wrapped in a flour tortilla.",
+        "price": "$13.50",
+        "section": "Breakfast Burros served till 4pm"
+      },
+      {
+        "name": "B4- Carne Seca with Egg Burros",
+        "description": "Carne seca and scrambled eggs wrapped in a flour tortilla, typically includes cheese and salsa.",
+        "price": "$14.50",
+        "section": "Breakfast Burros served till 4pm"
+      },
+      {
+        "name": "B5- Mexican Burro",
+        "description": "Eggs, tomato, onion & green chile.",
+        "price": "$12.50",
+        "section": "Breakfast Burros served till 4pm"
+      },
+      {
+        "name": "B6- Gringo Burro",
+        "description": "Eggs, potato (sausage or bacon).",
+        "price": "$13.50",
+        "section": "Breakfast Burros served till 4pm"
+      },
+      {
+        "name": "B7 -Little Mexico Breakfast Sandwich",
+        "description": "Scrambled egg, hash browns, sliced cheese on toasted Mexican bread. Consuming ra: Consuming raw or under or undercooked meats, poultry ed meats, poultry, seafood, shellfish food, shellfish or eggs major eggs may increase your risk of four risk of foodborne illness, especially foodborne illness, especially if you fall into a high ou fall into a high risk group or group or have a medical condition.",
+        "price": "$13.50",
+        "section": "Breakfast Burros served till 4pm"
+      },
+      {
+        "name": "1. Two Eggs",
+        "description": "hashbrown or beans, toast or tortilla.  Consuming ra:  Consuming raw or under or undercooked meats,  poultry ed meats,  poultry, seafood,  shellfish food, shellfish or eggs major eggs may increase your risk of four risk of foodborne illness,  especially foodborne illness,  especially if you fall into a high ou fall into a high risk group or group or have a medical condition.",
+        "price": "$12.50",
+        "section": "BREAKFAST COMBINATIONS - served till 4pm"
+      },
+      {
+        "name": "2. Two Egg with Bacon or Sausage",
+        "description": "Consuming ra: Consuming raw or under or undercooked meats, poultry ed meats, poultry, seafood, shellfish food, shellfish or eggs major eggs may increase your risk of four risk of foodborne illness, especially foodborne illness, especially if you fall into a high ou fall into a high risk group or group or have a medical condition.",
+        "price": "$16.50",
+        "section": "BREAKFAST COMBINATIONS - served till 4pm"
+      },
+      {
+        "name": "3. Two Egg with Ham Steak",
+        "description": "Consuming ra: Consuming raw or under or undercooked meats, poultry ed meats, poultry, seafood, shellfish food, shellfish or eggs major eggs may increase your risk of four risk of foodborne illness, especially foodborne illness, especially if you fall into a high ou fall into a high risk group or group or have a medical condition.",
+        "price": "$19.50",
+        "section": "BREAKFAST COMBINATIONS - served till 4pm"
+      },
+      {
+        "name": "5. Huevos a La Mexicana",
+        "description": "Scrambled eggs with green chile, green onion & tomato.",
+        "price": "$14.50",
+        "section": "BREAKFAST COMBINATIONS - served till 4pm"
+      },
+      {
+        "name": "6. Huevos Rancheros",
+        "description": "Eggs served on top of corn tortilla with tomatillo salsa. Consuming ra: Consuming raw or under or undercooked meats, poultry ed meats, poultry, seafood, shellfish food, shellfish or eggs major eggs may increase your risk of four risk of foodborne illness, especially foodborne illness, especially if you fall into a high ou fall into a high risk group or group or have a medical condition.",
+        "price": "$14.50",
+        "section": "BREAKFAST COMBINATIONS - served till 4pm"
+      },
+      {
+        "name": "7. Mexican Omelet",
+        "description": "Green onions, green chile, tomatoes & cheese.",
+        "price": "$14.50",
+        "section": "BREAKFAST COMBINATIONS - served till 4pm"
+      },
+      {
+        "name": "7B. Sausage & Bacon Omelet",
+        "description": "Sausage and bacon omelet. Options: bacon or sausage protein; beans or home fries as side.",
+        "price": "$16.50",
+        "section": "BREAKFAST COMBINATIONS - served till 4pm"
+      },
+      {
+        "name": "7C. Ham & Cheese Omelet",
+        "description": "Omelet stuffed with ham and cheese. Choice of side: beans or home fries.",
+        "price": "$16.50",
+        "section": "BREAKFAST COMBINATIONS - served till 4pm"
+      },
+      {
+        "name": "8. Carne Seca with Eggs",
+        "description": "Consuming ra: Consuming raw or under or undercooked meats, poultry ed meats, poultry, seafood, shellfish food, shellfish or eggs major eggs may increase your risk of four risk of foodborne illness, especially foodborne illness, especially if you fall into a high ou fall into a high risk group or group or have a medical condition.",
+        "price": "$18.00",
+        "section": "BREAKFAST COMBINATIONS - served till 4pm"
+      },
+      {
+        "name": "9. Two Tamales with Eggs",
+        "description": "Red chile or green corn. Consuming ra: Consuming raw or under or undercooked meats, poultry ed meats, poultry, seafood, shellfish food, shellfish or eggs major eggs may increase your risk of four risk of foodborne illness, especially foodborne illness, especially if you fall into a high ou fall into a high risk group or group or have a medical condition.",
+        "price": "$18.00",
+        "section": "BREAKFAST COMBINATIONS - served till 4pm"
+      },
+      {
+        "name": "Egg, Potato & Beans, Sausage & Bacon",
+        "description": "Kids breakfast served till 4pm: Egg prepared your way, with options for bacon or sausage. Choose beans or potato as a side.",
+        "price": "$11.50",
+        "section": "KIDS MEALS - BREAKFAST  served till 4pm"
+      },
+      {
+        "name": "French Toast with Egg",
+        "description": "W/BACON OR SAUSAGE",
+        "price": "$11.50",
+        "section": "KIDS MEALS - BREAKFAST  served till 4pm"
+      },
+      {
+        "name": "Pancake with Egg",
+        "description": "W/BACON OR SAUSAGE",
+        "price": "$11.50",
+        "section": "KIDS MEALS - BREAKFAST  served till 4pm"
+      },
+      {
+        "name": "Eggs",
+        "description": "Eggs cooked to choice: over easy, hard, medium; scrambled; sunny side up.",
+        "price": "$2.75",
+        "section": "BREAKFAST SIDES"
+      },
+      {
+        "name": "HASHBROWNS",
+        "description": "Crispy and golden breakfast potatoes, perfect for starting your day off right.",
+        "price": "$5.50",
+        "section": "BREAKFAST SIDES"
+      },
+      {
+        "name": "Chilaquiles",
+        "description": "Crispy tortilla chips topped with melted cheese, green onions, and a savory sauce, paired with a fried egg.",
+        "price": "$11.50",
+        "section": "BREAKFAST SIDES"
+      },
+      {
+        "name": "Pancakes (1)",
+        "description": "2 pieces.",
+        "price": "$5.50",
+        "section": "BREAKFAST SIDES"
+      },
+      {
+        "name": "Ham Steak",
+        "description": "A thick slice of ham, typically grilled to enhance its natural flavors, serving as a hearty addition to any breakfast.",
+        "price": "$11.00",
+        "section": "BREAKFAST SIDES"
+      },
+      {
+        "name": "French Toast",
+        "description": "Classic French Toast with a hint of sweetness and a golden, fluffy texture.",
+        "price": "$10.50",
+        "section": "BREAKFAST SIDES"
+      },
+      {
+        "name": "Sausage",
+        "description": "Savory, perfectly seasoned sausage links, a classic breakfast favorite.",
+        "price": "$8.75",
+        "section": "BREAKFAST SIDES"
+      },
+      {
+        "name": "Bacon",
+        "description": "Crispy thick-cut, smoked to perfection.",
+        "price": "$8.75",
+        "section": "BREAKFAST SIDES"
+      },
+      {
+        "name": "Cheese Crisp with Chicken or Carne Asada",
+        "description": "Thin, crispy tortilla topped with melted cheese and choice of carne asada or chicken.",
+        "price": "$21.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Cheese Crisp with Shrimp",
+        "description": "Crispy cheese base topped with succulent shrimp, typically served as a light and crunchy appetizer.",
+        "price": "$21.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Quesadilla 13\" tortilla",
+        "description": "Cheese-filled tortilla, option for small or large size.",
+        "price": "$13.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Guacamole Fresca small",
+        "description": "Fresh avocado mixed with salsa fresca.",
+        "price": "$9.75",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Hot Wings-(12) Jumbo-Boned",
+        "description": "Franks Red Hot, Lemon Pepper, BBQ Or Honey Garlic.",
+        "price": "$19.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Little Mexico Cheese Crisp",
+        "description": "(Green Chile, Onions & Tomatoes).",
+        "price": "$18.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Little Mexico Super Nacho Grande",
+        "description": "Beans, Enchilada Sauce, Cheese, Black Olives, Onions, Jalapenos, Sour Cream & Guacamole Fresca.",
+        "price": "$18.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Little Mexico Sampler",
+        "description": "3-Assorted Mini Chimichangas, 3-Chicken Taquitos & Mini, Quesadilla.",
+        "price": "$20.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Caldo De Queso - DAILY     ",
+        "description": "Cheese and potato soup.",
+        "price": "$6.00",
+        "section": "Soups"
+      },
+      {
+        "name": "Cazuela - DAILY  ",
+        "description": "Carne seca potato and green chile soup.",
+        "price": "$7.00",
+        "section": "Soups"
+      },
+      {
+        "name": "Tortilla Soup - DAILY   ",
+        "description": "Tortilla Soup: A choice of sizes; large-quart, small-pint, or cup. Includes options for corn tortilla, flour tortilla, or pan birote. Cup size excludes tortilla.",
+        "price": "$7.00",
+        "section": "Soups"
+      },
+      {
+        "name": "White Menudo - DAILY  ",
+        "description": "",
+        "price": "$7.00",
+        "section": "Soups"
+      },
+      {
+        "name": "Red Menudo   *** FRI - SAT - SUN***",
+        "description": "FRIDAY SAT & SUNDAYS ONLY",
+        "price": "$7.00",
+        "section": "Soups"
+      },
+      {
+        "name": "Albondingas - WEND & SUNDAYS",
+        "description": "Mexican meatball soup, available Wednesdays. Options: large-quart, small-pint, cup (no tortilla). Tortilla choices: corn, flour, or pan birote.",
+        "price": "$7.00",
+        "section": "Soups"
+      },
+      {
+        "name": "Pozole - THUR **",
+        "description": "Pozole available Thursday only - hominy-based soup with choice of size: large-quart, small-pint, or cup (no tortilla included). Tortilla options: birote, corn, or flour.",
+        "price": "$7.00",
+        "section": "Soups"
+      },
+      {
+        "name": "Topoppo Salad",
+        "description": "Chicken or beef. w/ Shrimp.",
+        "price": "$15.50",
+        "section": "Salads"
+      },
+      {
+        "name": "Taco Salad",
+        "description": "w/ Carne or Chicken Asada.",
+        "price": "$15.50",
+        "section": "Salads"
+      },
+      {
+        "name": "Grilled Salmon Salad",
+        "description": "Grilled salmon atop mixed greens. choice of ranch, bleu cheese, italian, 1000, raspberry vinaigrette dressing.",
+        "price": "$20.50",
+        "section": "Salads"
+      },
+      {
+        "name": "Beef Fajita Salad",
+        "description": "Beef fajita strips on mixed greens. Options for 1000, bleu cheese, Italian, ranch, raspberry vinaigrette dressings.",
+        "price": "$19.50",
+        "section": "Salads"
+      },
+      {
+        "name": "Shrimp Fajita Salad",
+        "description": "Served with fruit, cottage cheese, and chicken breast.",
+        "price": "$20.50",
+        "section": "Salads"
+      },
+      {
+        "name": "Cheese Enchilada (1)",
+        "description": "Soft corn tortilla filled with cheese, typically smothered in a traditional red sauce.",
+        "price": "$5.50",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Beef Enchilada (1)",
+        "description": "Soft corn tortilla filled with shredded beef, typically includes tomatoes, bell peppers, onions, enchilada sauce, and cheese.",
+        "price": "$5.50",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Chicken Enchilada (1)",
+        "description": "Shredded chicken wrapped in a corn tortilla, typically includes enchilada sauce and cheese.",
+        "price": "$5.50",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Sour Cream Chicken Enchilada (1)",
+        "description": "Soft corn tortilla filled and rolled with shredded chicken, typically includes sour cream and is topped with traditional red sauce and cheese.",
+        "price": "$6.50",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Flat Enchilada (1)",
+        "description": "Soft corn tortilla, typically includes a filling of choice, smothered in traditional enchilada sauce and topped with cheese.",
+        "price": "$6.50",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Shrimp Enchilada (1)",
+        "description": "Beans and rice.",
+        "price": "$7.50",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Bean Tostada (1)",
+        "description": "Crispy fried corn tortilla topped with refried beans, shredded lettuce, and a blend of cheddar and cotija cheese.",
+        "price": "$8.75",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Chorizo with Bean Tostada (1)",
+        "description": "Crispy corn tortilla topped with chorizo and beans, typically includes lettuce and cheese.",
+        "price": "$8.75",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Bean Tostada (1)",
+        "description": "Crispy corn tortilla topped with shredded beef, typically includes beans, lettuce, and cheese.",
+        "price": "$6.50",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Guacamole Fresca Tostada (1)",
+        "description": "Crispy flat corn tortilla topped with freshly made guacamole, typically includes onions, tomatoes, and cilantro.",
+        "price": "$8.00",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Chicken Fajitas",
+        "description": "With beans and rice.",
+        "price": "$22.00",
+        "section": "Fajitas"
+      },
+      {
+        "name": "Beef Fajita",
+        "description": "Served with beans and rice.",
+        "price": "$25.00",
+        "section": "Fajitas"
+      },
+      {
+        "name": "Shrimp Fajita",
+        "description": "Served with beans and rice.",
+        "price": "$26.00",
+        "section": "Fajitas"
+      },
+      {
+        "name": "Combination of 2 Fajitas",
+        "description": "Two fajitas with choice of beef, chicken, or shrimp. Served with corn tortilla, flour tortilla, or pan birote. Mix and match proteins available.",
+        "price": "$26.00",
+        "section": "Fajitas"
+      },
+      {
+        "name": "Combination of 3 Fajitas",
+        "description": "Beef, chicken and shrimp.",
+        "price": "$28.00",
+        "section": "Fajitas"
+      },
+      {
+        "name": "Chicken Ranchero",
+        "description": "Grilled chicken breast with salsa ranchera and potatoes.",
+        "price": "$26.00",
+        "section": "Chicken"
+      },
+      {
+        "name": "CHICKEN CHIPOLTE",
+        "description": "Grilled chicken, lettuce, tomato, swiss cheese, and homemade chipotle sauce.",
+        "price": "$26.00",
+        "section": "Chicken"
+      },
+      {
+        "name": "Grilled Salmon",
+        "description": "Served with salad, rice and beans. Consuming raw or undercooked meats, poultry, seafood, shellfish or eggs may increase your risk of foodborne illness, especially if you fall into a high risk group or have a medical condition.",
+        "price": "$29.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Shrimp Culichi",
+        "description": "Served in green chile crema sauce and cheese, served with salad, rice and beans.",
+        "price": "$27.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Fish & Chips",
+        "description": "Crispy battered fish, golden fries, choice of salad dressing: ranch, bleu cheese, italian, 1000, raspberry vinaigrette.",
+        "price": "$22.00",
+        "section": "Breaded Seafood"
+      },
+      {
+        "name": "Beer Battered Shrimp",
+        "description": "Beer battered shrimp, with a choice of salad dressings: 1000 Island, bleu cheese, Italian, ranch, raspberry vinaigrette.",
+        "price": "$27.00",
+        "section": "Breaded Seafood"
+      },
+      {
+        "name": "Beer Battered Shrimp & Fish Combo",
+        "description": "Beer battered shrimp and fish combo served with a choice of salad dressings: 1000, bleu cheese, Italian, ranch, or raspberry vinaigrette.",
+        "price": "$30.00",
+        "section": "Breaded Seafood"
+      },
+      {
+        "name": "Bean Burro",
+        "description": "Refried beans wrapped in a soft flour tortilla, typically includes cheese, lettuce, and pico de gallo.",
+        "price": "$12.00",
+        "section": "A La Carte - Burros"
+      },
+      {
+        "name": "Red or Green Chile or Shredded Beef or Chicken or Birria Burro",
+        "description": "Burrito with choice of birria, chicken, or three chile variations.",
+        "price": "$14.00",
+        "section": "A La Carte - Burros"
+      },
+      {
+        "name": "Carne Seca or Carne Asada Burro",
+        "description": "Carne Asada or Carne Seca wrapped in a soft flour tortilla.",
+        "price": "$15.00",
+        "section": "A La Carte - Burros"
+      },
+      {
+        "name": "Bean Chimichanga",
+        "description": "Crispy fried burrito filled with beans, typically includes cheese and topped with guacamole, sour cream, and cheddar cheese.",
+        "price": "$14.00",
+        "section": "A La Carte - Chimichangas"
+      },
+      {
+        "name": "Red or Green Chile or Shredded Beef or Chicken or Birria",
+        "description": "Chimichanga.",
+        "price": "$16.00",
+        "section": "A La Carte - Chimichangas"
+      },
+      {
+        "name": "Carne Seca & Carne Asada",
+        "description": "Carne asada or carne seca, served in chimichanga style.",
+        "price": "$17.00",
+        "section": "A La Carte - Chimichangas"
+      },
+      {
+        "name": "C5. Flat Enchiladas, Beans & Rice (2)",
+        "description": "Flat enchiladas served with a side of beans and rice, typically includes corn tortillas layered with filling, smothered in red or green sauce.",
+        "price": "$19.00",
+        "section": "Mexican Combination Plates"
+      },
+      {
+        "name": "C5. Flat Enchiladas with Chicken or Beef (2)",
+        "description": "Served with beans & rice.",
+        "price": "$20.00",
+        "section": "Mexican Combination Plates"
+      },
+      {
+        "name": "C6. Cheese Enchilada, Shredded Beef Taco, Beans & Rice",
+        "description": "A cheese enchilada paired with a shredded beef taco, complemented by beans and rice. The enchilada is typically filled with cheese and the taco with shredded beef.",
+        "price": "$17.50",
+        "section": "Mexican Combination Plates"
+      },
+      {
+        "name": "C7. Chimichanga W/ Beans & Rice",
+        "description": "Chimichanga with choice of birria, chicken, or chile, served with beans and rice. Option for shredded beef available.",
+        "price": "$22.50",
+        "section": "Mexican Combination Plates"
+      },
+      {
+        "name": "C7. Chimichanga, with Carne Asada & Carne Seca",
+        "description": "Includes beans and rice.",
+        "price": "$23.50",
+        "section": "Mexican Combination Plates"
+      },
+      {
+        "name": "C8. Shredded Beef Taco, Cheese Enchilada, RC Tamale",
+        "description": "Served with beans & rice.",
+        "price": "$20.50",
+        "section": "Mexican Combination Plates"
+      },
+      {
+        "name": "C9. Red or Green Chile Con Carne or Birria Plate",
+        "description": "Beans, rice & tortilla.",
+        "price": "$20.50",
+        "section": "Mexican Combination Plates"
+      },
+      {
+        "name": "C10. Carne Seca & Carne Asada, Beans, Rice & Flour Tortilla",
+        "description": "C10: Carne seca or asada, accompanied by beans, rice, and flour tortilla.",
+        "price": "$22.50",
+        "section": "Mexican Combination Plates"
+      },
+      {
+        "name": "C11. Chile Rellenos, Beans, Rice & Flour Tortilla (2)",
+        "description": "Two chile rellenos filled with cheese, accompanied by beans, rice, and served with flour tortillas.",
+        "price": "$23.00",
+        "section": "Mexican Combination Plates"
+      },
+      {
+        "name": "Half Pound Angus Burger with Buffalo Seasoned Fries",
+        "description": "Consuming ra Consuming raw or under or undercooked meats, poultry ed meats, poultry, seafood, shellfish or eggs ma food, shellfish or eggs may increase your risk of four risk of foodborne illness, especially food borne illness, especially if you fall into a high risk gr ou fall into a high risk group or group or have a medical a medical condition.condition.",
+        "price": "$17.50",
+        "section": "BURGERS & SANDWICHES"
+      },
+      {
+        "name": "Little Mexico Double 1 Lb Angus Burger",
+        "description": "Consuming ra Consuming raw or under or undercooked meats, poultry ed meats, poultry, seafood, shellfish or eggs ma food, shellfish or eggs may increase your risk of four risk of foodborne illness, especially food borne illness, especially if you fall into a high risk gr ou fall into a high risk group or group or have a medical a medical condition.condition.",
+        "price": "$21.00",
+        "section": "BURGERS & SANDWICHES"
+      },
+      {
+        "name": "Grilled Mexican Chicken Breast Sandwich",
+        "description": "Served on toasted mexican bread with green chile strips, lettuce, tomato and seasoned. .. ..",
+        "price": "$17.50",
+        "section": "BURGERS & SANDWICHES"
+      },
+      {
+        "name": "Mexican Steak Sandwich",
+        "description": "8 oz ribeye.",
+        "price": "$23.00",
+        "section": "BURGERS & SANDWICHES"
+      },
+      {
+        "name": "Breaded Chicken Tenders W Buffalo Fries",
+        "description": "Breaded chicken tenders accompanied by fries tossed in buffalo sauce.",
+        "price": "$18.00",
+        "section": "BURGERS & SANDWICHES"
+      },
+      {
+        "name": "K6. Grilled Cheese with Fries",
+        "description": "American cheese melted between slices of buttery grilled bread, accompanied by french fries.",
+        "price": "$13.50",
+        "section": "Kids Meals - Lunch & Dinner"
+      },
+      {
+        "name": "K8. Mini Burro",
+        "description": "W/ bean, beef, chicken, or carne asada",
+        "price": "$13.50",
+        "section": "Kids Meals - Lunch & Dinner"
+      },
+      {
+        "name": "K5. Burger with Fries",
+        "description": "Ground beef burger typically served plain with fries, designed for a kid's appetite.",
+        "price": "$13.50",
+        "section": "Kids Meals - Lunch & Dinner"
+      },
+      {
+        "name": "K10. Rolled Chicken Taco or Ground Beef Patty Taco, Beans & Rice",
+        "description": "Kids meal featuring choice of ground beef patty or rolled chicken in a taco, served with beans & rice.",
+        "price": "$13.50",
+        "section": "Kids Meals - Lunch & Dinner"
+      },
+      {
+        "name": "K9. Mini Chimi - Beef, Chicken or Bean",
+        "description": "With beans or rice.",
+        "price": "$13.50",
+        "section": "Kids Meals - Lunch & Dinner"
+      },
+      {
+        "name": "K4. Chicken Tenders with Fries",
+        "description": "Breaded chicken tenders, typically served with fries, are a popular choice in this kids' meal.",
+        "price": "$13.50",
+        "section": "Kids Meals - Lunch & Dinner"
+      },
+      {
+        "name": "Chile Relleno",
+        "description": "Stuffed pepper with a tantalizing filling, perfect for those craving the essence of Mexican cuisine.",
+        "price": "$8.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Calabacitas",
+        "description": "Sautéed zucchini, corn, onions, and tomatoes topped with melted cheese.",
+        "price": "$7.95",
+        "section": "Sides"
+      },
+      {
+        "name": "Tamales",
+        "description": "Corn masa filled with choice of green or red salsa, steamed in a husk.",
+        "price": "$7.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Sour Cream",
+        "description": "A side of smooth, tangy sour cream, often used as a condiment or topping.",
+        "price": "$3.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Tortilla",
+        "description": "Corn or flour.",
+        "price": "$2.75",
+        "section": "Sides"
+      },
+      {
+        "name": "Avocado Slices",
+        "description": "Freshly sliced avocado, ripe and creamy - perfect for enhancing any dish.",
+        "price": "$5.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Buffalo Fries",
+        "description": "Golden fries topped with buffalo sauce, typically including a sprinkle of blue cheese.",
+        "price": "$6.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Culiche Style",
+        "description": "Chili infused with culiche style influences, typically includes a blend of spices and meats simmered to develop depth of flavor.",
+        "price": "$3.75",
+        "section": "Sides"
+      },
+      {
+        "name": "Non Refillable Beverage",
+        "description": " Horchata, Lemonade , Apple Juice, Orange Juice, ",
+        "price": "$4.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Beverages",
+        "description": "Coke, Coke Zero, Sprite, Dr. Pepper, Diet Dr. Pepper, Root Beer, Powerade, Lemonade,\nPassion Fruit Tea, Sweet Cinnamon Tea, Regular Tea, ",
+        "price": "$4.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Kids Beverage",
+        "description": "Coke, Coke Zero, Sprite, Dr. Pepper, Diet Dr. Pepper, Root Beer, Powerade,\nPassion Fruit Tea, Sweet Cinnamon Tea, Regular Tea, ",
+        "price": "$3.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Fruit Chimi",
+        "description": "Fruit-filled chimichanga, options include apple, cherry, peach.",
+        "price": "$8.50",
+        "section": "Desserts"
+      }
+    ]
+  }
+]

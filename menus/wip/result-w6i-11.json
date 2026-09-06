@@ -1,0 +1,840 @@
+[
+  {
+    "restaurantId": "2223",
+    "name": "Pub 1795",
+    "address": "1795 W Barnett Cir, Oceanside, CA 92058",
+    "sourceUrl": "https://pendleton.usmc-mccs.org/dining-entertainment/dining/restaurants",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "military-base venue: mccscp.com/food and pendleton.usmc-mccs.org both return HTTP 403 Access Denied; the only menu found (a Dec 2022 PDF linked from the MCCS restaurants page) is behind the same wall and would be stale even if reachable"
+  },
+  {
+    "restaurantId": "9354",
+    "name": "Milonga Empanadas Fashion Valley",
+    "address": "7007 Friars Rd, San Diego, CA 92108",
+    "sourceUrl": "https://www.doordash.com/store/milonga-empanadas-san-diego-37903271/",
+    "confidence": "medium",
+    "notes": "restaurant's own site (milongaempanadas.com) is a client-rendered React SPA with no priced menu in its bundle; confirmed same Fashion Valley address (7007 Friars Rd) via DoorDash JSON-LD Menu block; dropped duplicate 'Most Ordered' carousel rows (same name+price as Empanadas section)",
+    "dishes": [
+      {
+        "name": "Cheese & Onion",
+        "description": "A decadent blend of melted Mozzarella and sharp Provolone cheese, topped with sweet roasted onions and chives. A Buenos Aires Classic.",
+        "price": "$6.00",
+        "section": "Empanadas"
+      },
+      {
+        "name": "Spinach Ricotta",
+        "description": "Fresh spinach leaves blended with creamy ricotta, nutmeg, Parmesan and Muzzarella. A sophisticated, silky filling that melts in your mouth. Lighter but full of flavor.",
+        "price": "$6.00",
+        "section": "Empanadas"
+      },
+      {
+        "name": "Caprese (Tomato & Pesto)",
+        "description": "Italian Heritage, Argentine Soul. Fresh seasonal tomatoes paired with melted Mozzarella and our signature basil pesto. A vibrant, aromatic bite that brings the freshness of the Mediterranean to your table.",
+        "price": "$6.00",
+        "section": "Empanadas"
+      },
+      {
+        "name": "Pepperoni",
+        "description": "Mozzarella, Pepperoni, calabrian chilies and organic honey.",
+        "price": "$6.00",
+        "section": "Empanadas"
+      },
+      {
+        "name": "Pellegrino Sparking Water",
+        "description": "8.45fl oz small glass bottle",
+        "price": "$3.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Mexican Coke",
+        "description": "Coca Cola in a classic glass bottle - made with cane sugar in Mexico.",
+        "price": "$4.00",
+        "section": "Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7669",
+    "name": "Las Ricas Tortas",
+    "address": "1879 Logan Ave Ste i, San Diego, CA 92113",
+    "sourceUrl": "https://www.ubereats.com/store/las-ricas-tortas/JJDjoD4lQ0ixGcc56ceWwg",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "two priced sources disagree on the same items beyond a uniform markup: order.online (google-indexed snippet) lists Chicken Torta $15.99 and Napolitana Torta $17.75, while Uber Eats lists the same dishes at $14.25 and $15.20 (ratios 1.122 and 1.168 -- not a consistent divisor). Cannot tell which price is real; filing either would be a guess."
+  },
+  {
+    "restaurantId": "9901",
+    "name": "La Barbacoa Autentica De Borrego",
+    "address": "4340 Myrtle Ave, San Diego, CA 92105",
+    "sourceUrl": "https://www.yelp.com/biz/la-barbacoa-autentica-de-borrego-san-diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website, no DoorDash/UberEats/Grubhub listing found; only Yelp and directory pages (Tripadvisor, Wanderlog, MapQuest) with reviews but no priced menu -- a small weekend-only stand with no reachable priced source"
+  },
+  {
+    "restaurantId": "9154",
+    "name": "Nutrition Solution",
+    "address": "7137 Broadway, Lemon Grove, CA 91945",
+    "sourceUrl": "https://nutritionsolutionlemongrove.com/menu",
+    "confidence": "high",
+    "notes": "restaurant's own site menu page embeds three photographed menu boards (leadconnectorhq document images) rather than text; transcribed directly from the photos. Confirmed address (7137 Broadway, Lemon Grove) matches. All shakes are one price ($9), all refreshers ($5), all Mega Teas ($9); add-on boosters (protein, probiotic, fiber, etc.) omitted as modifiers rather than dishes.",
+    "dishes": [
+      {
+        "name": "Apple Pie Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Butter Pecan Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Cookie Monster Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Mint Chip Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Banana Berry Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Caramel Latte Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Mango Pineapple Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Mazapan Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Strawberry Cheesecake Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Banana Split Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Chocolate Mocha Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Cinnamon Crunch Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Snickers Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Birthday Cake Shake",
+        "description": "meal-replacement protein shake, 24g protein",
+        "price": "$9.00",
+        "section": "Shakes"
+      },
+      {
+        "name": "Cucumber-Lime Refresher",
+        "description": "herbal tea + aloe vera, served iced or hot",
+        "price": "$5.00",
+        "section": "Refreshers"
+      },
+      {
+        "name": "Watermelon-Lime Refresher",
+        "description": "herbal tea + aloe vera, served iced or hot",
+        "price": "$5.00",
+        "section": "Refreshers"
+      },
+      {
+        "name": "Raspberry-Mango Refresher",
+        "description": "herbal tea + aloe vera, served iced or hot",
+        "price": "$5.00",
+        "section": "Refreshers"
+      },
+      {
+        "name": "Chai-Mandarin Refresher",
+        "description": "herbal tea + aloe vera, served iced or hot",
+        "price": "$5.00",
+        "section": "Refreshers"
+      },
+      {
+        "name": "Dragon Fruit Refresher",
+        "description": "herbal tea + aloe vera, served iced or hot",
+        "price": "$5.00",
+        "section": "Refreshers"
+      },
+      {
+        "name": "Strawberry-Kiwi Refresher",
+        "description": "herbal tea + aloe vera, served iced or hot",
+        "price": "$5.00",
+        "section": "Refreshers"
+      },
+      {
+        "name": "Blue Blast Mega Tea",
+        "description": "180mg caffeine, collagen, C & B vitamins",
+        "price": "$9.00",
+        "section": "Mega Tea"
+      },
+      {
+        "name": "Passion Fruit Mega Tea",
+        "description": "180mg caffeine, collagen, C & B vitamins",
+        "price": "$9.00",
+        "section": "Mega Tea"
+      },
+      {
+        "name": "Pack A Punch Mega Tea",
+        "description": "180mg caffeine, collagen, C & B vitamins",
+        "price": "$9.00",
+        "section": "Mega Tea"
+      },
+      {
+        "name": "Sunrise Mega Tea",
+        "description": "180mg caffeine, collagen, C & B vitamins",
+        "price": "$9.00",
+        "section": "Mega Tea"
+      },
+      {
+        "name": "Chile Mango Mega Tea",
+        "description": "180mg caffeine, collagen, C & B vitamins",
+        "price": "$9.00",
+        "section": "Mega Tea"
+      },
+      {
+        "name": "Peach Ring Mega Tea",
+        "description": "180mg caffeine, collagen, C & B vitamins",
+        "price": "$9.00",
+        "section": "Mega Tea"
+      },
+      {
+        "name": "Strawberry Lemonade Mega Tea",
+        "description": "180mg caffeine, collagen, C & B vitamins",
+        "price": "$9.00",
+        "section": "Mega Tea"
+      },
+      {
+        "name": "Watermelon Sour Patch Mega Tea",
+        "description": "180mg caffeine, collagen, C & B vitamins",
+        "price": "$9.00",
+        "section": "Mega Tea"
+      },
+      {
+        "name": "ImmuniTEA",
+        "description": "",
+        "price": "$9.00",
+        "section": "Special Drinks"
+      },
+      {
+        "name": "Bombita",
+        "description": "",
+        "price": "$10.00",
+        "section": "Special Drinks"
+      },
+      {
+        "name": "Detox",
+        "description": "",
+        "price": "$10.00",
+        "section": "Special Drinks"
+      },
+      {
+        "name": "Revive Tea",
+        "description": "",
+        "price": "$16.00",
+        "section": "Special Drinks"
+      },
+      {
+        "name": "Herbachata",
+        "description": "dual-action hunger control and fat reduction powder",
+        "price": "$12.00",
+        "section": "Fat Burning Drinks"
+      },
+      {
+        "name": "Fat Burning Coffee",
+        "description": "dual-action hunger control and fat reduction powder",
+        "price": "$12.00",
+        "section": "Fat Burning Drinks"
+      },
+      {
+        "name": "Fat Burner Shot",
+        "description": "",
+        "price": "$7.00",
+        "section": "Fat Burning Drinks"
+      },
+      {
+        "name": "Mocha",
+        "description": "22g protein, 150 calories, served iced or hot",
+        "price": "$8.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Houseblend",
+        "description": "22g protein, 150 calories, served iced or hot",
+        "price": "$8.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Caramel Macchiato",
+        "description": "22g protein, 150 calories, served iced or hot",
+        "price": "$8.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Chocolate Donut",
+        "description": "13g protein, 125 calories",
+        "price": "$4.00",
+        "section": "Donuts"
+      },
+      {
+        "name": "Almond Donut",
+        "description": "13g protein, 125 calories",
+        "price": "$4.00",
+        "section": "Donuts"
+      },
+      {
+        "name": "Sprinkle Donut",
+        "description": "13g protein, 125 calories",
+        "price": "$4.00",
+        "section": "Donuts"
+      },
+      {
+        "name": "Waffles",
+        "description": "full meal replacement, 30g protein, sugar-free syrups, whip cream and granola",
+        "price": "$12.00",
+        "section": "Guilt Free"
+      },
+      {
+        "name": "Berry Protein Bowl",
+        "description": "full meal replacement, 28g protein, topped with peanut butter, coconut flakes, almonds and granola",
+        "price": "$12.00",
+        "section": "Protein Bowls"
+      },
+      {
+        "name": "Mango-Pineapple Protein Bowl",
+        "description": "full meal replacement, 28g protein, topped with peanut butter, coconut flakes, almonds and granola",
+        "price": "$12.00",
+        "section": "Protein Bowls"
+      },
+      {
+        "name": "Snickers Protein Bowl",
+        "description": "full meal replacement, 28g protein, topped with peanut butter, coconut flakes, almonds and granola",
+        "price": "$12.00",
+        "section": "Protein Bowls"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9066",
+    "name": "Bean Me Up Coffee",
+    "address": "2231 Sunset Cliffs Blvd, San Diego, CA 92107",
+    "sourceUrl": "https://joe.coffee/locations/ca/san-diego/bean-me-up-coffee-san-diego-58ab2628-df9a-422e-8a5e-2af4a0ca8f53/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website, no DoorDash/UberEats/Grubhub listing at this San Diego address (a same-name DoorDash store found is a different Bean Me Up in Tehachapi, CA); joe.coffee ordering page is client-rendered with no visible prices; only priced source is allmenus.com, a barred tier-5 aggregator"
+  },
+  {
+    "restaurantId": "8932",
+    "name": "Red Dragon Asian Bistro",
+    "address": "7680 El Camino Real #103, Carlsbad, CA 92009, United States",
+    "sourceUrl": "https://www.doordash.com/store/red-dragon-asian-bistro-carlsbad-31996555/",
+    "confidence": "medium",
+    "notes": "Grubhub/Seamless listings at the same address are client-rendered with no accessible prices; used DoorDash instead. DoorDash embedded its schema.org JSON-LD twice (152 raw items, 64 unique after deduping on name+price) -- confirmed known duplicate-block pattern.",
+    "dishes": [
+      {
+        "name": "Crispy Garlic Beef",
+        "description": "Slightly thin batter fried beef in garlic tangy sauce, slightly sweet and a touch of Homemade spicy garlic, & topped with crispy basil.",
+        "price": "$20.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Spicy General Tso",
+        "description": "Spicy. Slightly sweet, garlicky, tangy & spicy, scallion, & choice of crispy chicken or crispy tofu or vegan meat.",
+        "price": "$16.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Chow Mein",
+        "description": "Stir fry egg noodles, baby bok choy, carrots, cabbage, sliced white onion, & scallion in garlic brown sauce.",
+        "price": "$16.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Pad Thai",
+        "description": "Thin rice noodles, egg, scallion, shredded cabbage, roasted peanut, & fresh lime.",
+        "price": "$16.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Crispy Mandarin Orange",
+        "description": "Homemade orange sauce, sweet & tangy, & choice of crispy chicken or crispy tofu or vegan meat.",
+        "price": "$16.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Pad See Ew",
+        "description": "Wide rice noodles, egg, broccoli, carrots, & garlic.",
+        "price": "$16.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Thai Drunken",
+        "description": "Wide rice noodles, Homemade garlic jalapeno basil, broccoli, sliced white onions, carrots, & fresh basil.",
+        "price": "$16.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Pan Fried Pork Pot Stickers (5)",
+        "description": "Pan-fried dumplings filled with ground pork and napa cabbage, served with pot sticker sauce.",
+        "price": "$13.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Hong Kong Garlic Rice",
+        "description": "Egg, sliced white onion, carrots, scallion, & garlic.",
+        "price": "$16.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Filipino Pork & Shrimp Lumpia (5)",
+        "description": "Pork and shrimp mixed with vegetables, wrapped in an eggroll and deep-fried. Typically includes a sweet chili dipping sauce.",
+        "price": "$11.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Fried Veggie Egg Roll (5)",
+        "description": "Crispy fried veggie egg rolls filled with cabbage, mushrooms, and scallions, typically served with a house-made dipping sauce.",
+        "price": "$11.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Steamed Vegetables",
+        "description": "Freshly Steamed Seasonal Vegetables, Lightly Seasoned to Perfection",
+        "price": "$5.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Red Bean Sesame Balls (6)",
+        "description": "Deep-fried sticky rice balls covered in sesame seeds and filled with sweet red bean paste.",
+        "price": "$9.95",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "Fried Veggie Pot Sticker (8)",
+        "description": "Pan-fried dumplings filled with a mix of finely chopped vegetables.",
+        "price": "$10.95",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "Pan Fried Chicken Pot Sticker (5)",
+        "description": "Pan-fried dumplings filled with ground chicken, kale, mushrooms, and bamboo shoots.",
+        "price": "$13.95",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "Hong Kong BBQ Pork Bun (2)",
+        "description": "Steamed buns filled with sweet and savory barbecue pork. One order includes two pieces.",
+        "price": "$8.95",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "Pan Fried Pork Pot Sticker (5)",
+        "description": "Pan-fried dumplings filled with seasoned pork, napa cabbage, and scallions.",
+        "price": "$13.95",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "Shrimp & Pork Shumai (4)",
+        "description": "Shrimp & pork shumai: Steamed dumplings filled with shrimp, pork, and shiitake mushrooms.",
+        "price": "$10.95",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "Fried Chicken Egg Roll (2)",
+        "description": "Chicken, cabbage, celery, and carrots wrapped in a crispy egg roll, deep-fried to golden perfection.",
+        "price": "$10.95",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "Sticky Rice w/ Lotus Leaf (2)",
+        "description": "Contain pork.",
+        "price": "$11.95",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "Sweet Custard Bun (3)",
+        "description": "Soft, steamed buns typically filled with a sweet custard made from eggs and milk. One order includes three pieces.",
+        "price": "$9.95",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "Real Crab Rangoon (5)",
+        "description": "Wonton wrappers filled with real crab and cream cheese, deep fried until crispy.",
+        "price": "$12.95",
+        "section": "Starter"
+      },
+      {
+        "name": "Pan Fried Chicken Pot Stickers (5)",
+        "description": "Pan-fried dumplings filled with ground chicken, kale, mushrooms, and bamboo shoots.",
+        "price": "$13.95",
+        "section": "Starter"
+      },
+      {
+        "name": "Veggie Egg Rolls (5)",
+        "description": "Vegetarian.",
+        "price": "$11.95",
+        "section": "Starter"
+      },
+      {
+        "name": "Chicken Egg Rolls (2)",
+        "description": "Shredded chicken, cabbage, carrots, and onions wrapped in a crispy wonton skin.",
+        "price": "$10.95",
+        "section": "Starter"
+      },
+      {
+        "name": "Crispy Fried Tofu",
+        "description": "With plum sauce.",
+        "price": "$8.95",
+        "section": "Starter"
+      },
+      {
+        "name": "Edamame",
+        "description": "Steamed and salted young soybeans in the pod, a classic and healthy appetizer.",
+        "price": "$6.95",
+        "section": "Starter"
+      },
+      {
+        "name": "Egg Drop Soup",
+        "description": "Classic Chinese soup with silky strands of egg in a savory, flavorful broth.",
+        "price": "$8.95",
+        "section": "Soup (16 oz) & Salad"
+      },
+      {
+        "name": "Mixed Green Salad",
+        "description": "With house dressing.",
+        "price": "$11.95",
+        "section": "Soup (16 oz) & Salad"
+      },
+      {
+        "name": "Tom Yum",
+        "description": "Traditional Thai aromatic clear hot & sour broth, infused with locally grown lemongrass, gallanga, kaffir lime leave, white mushroom, & scallion (contains shell fish).",
+        "price": "$8.95",
+        "section": "Soup (16 oz) & Salad"
+      },
+      {
+        "name": "Tom Kha",
+        "description": "Lemongrass coconut soup (contains shell fish).",
+        "price": "$8.95",
+        "section": "Soup (16 oz) & Salad"
+      },
+      {
+        "name": "Pork Wonton Soup",
+        "description": "Pork wontons in chicken broth with shredded BBQ pork and scallions.",
+        "price": "$8.95",
+        "section": "Soup (16 oz) & Salad"
+      },
+      {
+        "name": "Miso Tofu Soup",
+        "description": "Soybean paste broth with tofu, seaweed, and scallions.",
+        "price": "$8.95",
+        "section": "Soup (16 oz) & Salad"
+      },
+      {
+        "name": "BBQ Pork Wonton Noodle Soup",
+        "description": "Egg noodles, thin sliced hong kong honey BBQ pork, wontons, & vegetables.",
+        "price": "$18.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "Tom Yum Noodle",
+        "description": "Thin rice noodles, Thai lemongrass hot sour soup, mushroom, & scallions. (contains shell fish)",
+        "price": "$17.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "Khao-Soi",
+        "description": "Egg noodles with house special coconut curry, sliced red onion, Homemade pickled napa, & crispy wonton. Choice of chicken or tofu.",
+        "price": "$19.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "House Beef Noodle Soup",
+        "description": "Thin rice noodles, beef bone broth, beef, meat balls, herbs, & vegetables.",
+        "price": "$18.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "Chicken Glass Noodle Soup",
+        "description": "Glass noodles, chicken, chicken bone broth, & vegetables.",
+        "price": "$17.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "Simple Chicken Noodle Soup",
+        "description": "Clear chicken broth with chicken, scallions, house seasoning, and rice noodle.",
+        "price": "$15.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "Vegan Tofu Noodle Soup",
+        "description": "Thin rice noodles, tofu, veggie broth, & vegetables.",
+        "price": "$16.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "Yellow Curry",
+        "description": "Housemade yellow curry paste, creamy Thai coconut milk, sliced white onion, carrots, potatoes",
+        "price": "$19.95",
+        "section": "Curry"
+      },
+      {
+        "name": "Thai Green Curry",
+        "description": "Homemade green chili curry paste, coconut milk, lemongrass, kaffir lime leaves, bamboo, sliced carrots, sliced white onions, and Thai sweet basil leaves.",
+        "price": "$19.95",
+        "section": "Curry"
+      },
+      {
+        "name": "Red Curry (Kaeng Phet)",
+        "description": "Authentic Thai red curry, Naknon Prathom coconut milk, sweet basil, leaves, bamboo, sliced carrots, sliced white onions, and Thai herbs balanced of spicy, sweet, and savory flavors.",
+        "price": "$19.95",
+        "section": "Curry"
+      },
+      {
+        "name": "Panang Curry",
+        "description": "Housemade panang paste, Thai creamy coconut, fresh basil, organic kaffir lime leaves, & choice of chicken or tofu or vegetables.",
+        "price": "$19.95",
+        "section": "Curry"
+      },
+      {
+        "name": "Massamun Curry (Limited Time)",
+        "description": "Creamy Thai coconut milk, potato, peanut, sliced white onion, carrots with Massamun curry paste, aromatic mild, warm spice, savory, and slightly sweet.",
+        "price": "$19.95",
+        "section": "Curry"
+      },
+      {
+        "name": "Pineapple Curry",
+        "description": "Homemade red curry in creamy Thai coconut milk, basil, & pineapple.",
+        "price": "$19.95",
+        "section": "Curry"
+      },
+      {
+        "name": "Hawaiian Pineapple Fried Rice",
+        "description": "Chicken, shrimp, sliced white onions, pea carrot, & scallions topped with roasted cashew nuts.",
+        "price": "$19.95",
+        "section": "Chef Special"
+      },
+      {
+        "name": "Japchae Beef",
+        "description": "Korean sweet potato glass noodles, sliced beef, mushroom, veggies, & touch of sesame oil.",
+        "price": "$19.95",
+        "section": "Chef Special"
+      },
+      {
+        "name": "Honey Walnut Shrimp",
+        "description": "Thin batter crispy shrimps tossed in Homemade honey mayonnaise & topped with glazed honey walnuts. Served with steamed jasmine rice.",
+        "price": "$19.95",
+        "section": "Chef Special"
+      },
+      {
+        "name": "Honey Sesame Crispy Beef",
+        "description": "Golden crispy beef tossed in a sweet honey sesame glaze served on the bed of wonton chips and steamed jasmine rice.",
+        "price": "$20.95",
+        "section": "Chef Special"
+      },
+      {
+        "name": "Kimchi Fried Rice",
+        "description": "Fried rice with kimchi, gochujang, scallion, touch of sesame oil, topped with fried egg. choice of chicken or beef.",
+        "price": "$19.95",
+        "section": "Chef Special"
+      },
+      {
+        "name": "Szechuan Noodle",
+        "description": "Wide rice noodle, baby bok choy, sliced white onion, scallion, & housemade Szechuan garlic paste.",
+        "price": "$16.95",
+        "section": "Noodles & Fried Rice"
+      },
+      {
+        "name": "Spicy Homemade Sriracha Chow Mein",
+        "description": "Spicy. Stir fry egg noodles, broccoli, & carrots in garlic jalapeño brown sauce.",
+        "price": "$16.95",
+        "section": "Noodles & Fried Rice"
+      },
+      {
+        "name": "Garlic Basil Fried Rice",
+        "description": "Fresh basil, sliced white onion, & garlic basil jalapeño.",
+        "price": "$16.95",
+        "section": "Noodles & Fried Rice"
+      },
+      {
+        "name": "Crispy Sesame Honey",
+        "description": "Housemade sesame honey sauce, slightly sweet, toasted sesame seeds",
+        "price": "$16.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "Cashew Nut",
+        "description": "Sliced white onion, carrots, scallion, garlic, topped with roasted cashew, & choice of protein.",
+        "price": "$16.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "Broccoli & Snow Pea",
+        "description": "Broccoli, carrots, snow pea, garlic brown sauce, & choice of protein.",
+        "price": "$16.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "Sautéed Mixed Vegetables",
+        "description": "Broccoli, baby bok choy, snow pea, sliced carrots in garlic brown sauce, & choice of protein.",
+        "price": "$16.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "Crispy Teriyaki",
+        "description": "Homemade teriyaki sauce, scallion, toasted sesame seed, & choice of crispy chicken or crispy tofu or vegan meat.",
+        "price": "$16.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "Kung Pao",
+        "description": "Sliced white onion, water chestnuts, carrots, scallion, garlic spicy sauce, topped with roasted peanuts, & choice of protein.",
+        "price": "$16.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "Mongolian",
+        "description": "Sliced beef, bamboo shoot, garlic, sliced white onion, & scallion.",
+        "price": "$16.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "Sweet & Sour",
+        "description": "Crispy Chicken or Tofu with tangy sauce. Jasmine or Japanese Brown Rice on the side.",
+        "price": "$16.95",
+        "section": "Rice Plates"
+      },
+      {
+        "name": "Steamed Jasmine Rice",
+        "description": "Fragrant Jasmine Rice, Perfectly Steamed to Fluffy Perfection",
+        "price": "$3.00",
+        "section": "Side Order"
+      },
+      {
+        "name": "Japanese Brown Rice",
+        "description": "Steamed Japanese brown rice, typically includes a nutty flavor and chewy texture.",
+        "price": "$3.50",
+        "section": "Side Order"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3567",
+    "name": "Alohana Açaí Bowls",
+    "address": "5671 Palmer Way H, Carlsbad, CA 92010",
+    "sourceUrl": "https://www.ubereats.com/store/alohana-acai-bowls-carlsbad/vVHhnCwJRZWcI8NeJczNtw",
+    "confidence": "medium",
+    "notes": "router flagged the popmenu payload as wrong-branch (Murrieta address); confirmed correct Carlsbad location (5671 Palmer Way) via a separate Uber Eats store listing with matching address. Only one 'Bowls' category exists (no separate smoothies section on the page), 9 named bowls -- reads as a complete small-menu capture, not a carousel sample.",
+    "dishes": [
+      {
+        "name": "Campground Bowl",
+        "description": "The Campground is the best of both worlds. The base is half organic açai and half organic pitaya (dragon fruit) with blueberry flax seed granola and fresh strawberries, bananas, and blueberries.",
+        "price": "$10.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Doho Bowl",
+        "description": "If you like Nutella this is your bowl!. The base is organic açai topped with blueberry flaxseed granola, fresh strawberries, fresh bananas, nutella, and coconut flakes.",
+        "price": "$11.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Lowers Bowl",
+        "description": "The Lowers is for all those peanut butter lovers out there. The base is organic açai topped with blueberry flax seed granola, fresh strawberries, bananas, and of course, a generous portion of peanut butter drizzle.",
+        "price": "$10.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Moonlight Bowl",
+        "description": "Acai Sorbet, Blueberry Flax Granola, Strawberries, Banana, and Mango",
+        "price": "$10.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Ponto Pitaya Bowl",
+        "description": "So refreshing. The base is pitaya (dragon fruit) topped with blueberry flaxseed granola, fresh strawberries, and bananas.",
+        "price": "$10.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Stone Steps Bowl",
+        "description": "A base of protein-rich acai is topped with crunchy granola, creamy peanut butter, fresh strawberries, ripe bananas, sliced almonds, and nutrient-packed hemp seeds.",
+        "price": "$11.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Swamis Bowl",
+        "description": "Simple, but so refreshing. The base is organic açai topped with blueberry flaxseed granola, fresh strawberries, and bananas.",
+        "price": "$10.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "T-Street Bowl",
+        "description": "The T-Street açai bowl comes packed with all the traditional topping. The base is organic açai topped with blueberry flax seed granola. We then add fresh strawberries, bananas, and blueberries. Lastly, it's finished with a generous amount of honey and coconut shavings. No disappointments here!",
+        "price": "$11.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Uppers Bowl",
+        "description": "The Uppers is for all those Reese's Peanut Butter Cup lovers. The base is organic açai and is topped with blueberry flax seed granola, fresh strawberries and bananas. Added to that is a little peanut butter and Nutella drizzle . . . Delicious!",
+        "price": "$11.50",
+        "section": "Bowls"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9906",
+    "name": "Carnitas La Caldera",
+    "address": "1397 E Mission Rd, Fallbrook, CA 92028",
+    "sourceUrl": "https://www.yelp.com/biz/carnitas-la-caldera-fallbrook",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "cash-only food truck/stand open Sunday only (6:30am-12pm per Yelp); no website, no delivery platform listing found; no reachable priced source"
+  },
+  {
+    "restaurantId": "11151",
+    "name": "Hopnonymous Brewing - Normal Heights",
+    "address": "3514 Adams Ave, San Diego, CA 92116",
+    "sourceUrl": "https://hopnonymousbrewing.com/locations/adams-ave/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "taproom's only food is a recurring scheduled pop-up event ('Lucy's Maes Kitchen', a rotating outside kitchen/food-truck vendor on the events calendar), not an in-house menu; no fixed priced food menu found on the brewery's own site or elsewhere"
+  }
+]

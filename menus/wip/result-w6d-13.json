@@ -1,0 +1,1656 @@
+[
+ {
+  "restaurantId": "9133",
+  "name": "California Bean",
+  "sourceUrl": "https://www.californiabean.com/our-menu/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "no-prices-published: own site (/our-menu/) lists only drink/coffee names with no prices; drink menu page and marketing photos also carry no prices; business appears open (matches Yelp hours 5:30am-2:30pm) but never publishes pricing anywhere online"
+ },
+ {
+  "restaurantId": "10287",
+  "name": "Achilles Coffee Roasters @ The Rey",
+  "sourceUrl": "https://order.toasttab.com/online/achilles-coffee-roasters-the-rey-800-b-st",
+  "confidence": "high",
+  "crossCheckedAgainst": "https://achillescoffeeroasters.com/",
+  "notes": "Toast ordering page for The Rey branch confirmed via payload address1 \"800 B St\" matching batch address exactly; dropped 3 duplicate items from a \"Featured Items\" carousel (Breakfast Burrito, Build Your Own Bagel, Vanilla Cinnamon Latte) that already appear in their proper category sections",
+  "dishes": [
+   {
+    "name": "Espresso",
+    "description": "Double Shot of our single origin espresso.",
+    "price": "$4.25",
+    "section": "Espresso"
+   },
+   {
+    "name": "Macchiato",
+    "description": "Double espresso lightly marked with foam.",
+    "price": "$4.50",
+    "section": "Espresso"
+   },
+   {
+    "name": "Cortado",
+    "description": "Equal espresso and milk, warm and balanced. 4oz",
+    "price": "$4.75",
+    "section": "Espresso"
+   },
+   {
+    "name": "Cappuccino",
+    "description": "Double espresso topped with dry, airy foam. 8oz",
+    "price": "$5.25",
+    "section": "Espresso"
+   },
+   {
+    "name": "Flat white",
+    "description": "Double espresso topped with velvety microfoam. 8oz",
+    "price": "$5.25",
+    "section": "Espresso"
+   },
+   {
+    "name": "Americano",
+    "description": "Espresso floated on top of water. Available Hot or Iced.",
+    "price": "$4.50",
+    "section": "Espresso"
+   },
+   {
+    "name": "Latte",
+    "description": "Smooth double espresso with silky microfoam.",
+    "price": "$5.50",
+    "section": "Lattes"
+   },
+   {
+    "name": "Vanilla Latte",
+    "description": "House-made vanilla syrup and espresso with silky microfoam",
+    "price": "$6.25",
+    "section": "Lattes"
+   },
+   {
+    "name": "Pistachio Latte",
+    "description": "Smooth double espresso and pistachio syrup, topped with pistachio dust.",
+    "price": "$6.25",
+    "section": "Lattes"
+   },
+   {
+    "name": "Caramel Latte",
+    "description": "Buttery caramel and espresso in silky microfoam.",
+    "price": "$6.25",
+    "section": "Lattes"
+   },
+   {
+    "name": "Honey Cinnamon Latte",
+    "description": "Honey and warm cinnamon over silky microfoam.",
+    "price": "$6.25",
+    "section": "Lattes"
+   },
+   {
+    "name": "Vanilla Cinnamon Latte",
+    "description": "Vanilla and cinnamon balanced in silky microfoam.",
+    "price": "$6.25",
+    "section": "Lattes"
+   },
+   {
+    "name": "Mocha",
+    "description": "House-made rich cocoa syrup and espresso in silky microfoam.",
+    "price": "$6.25",
+    "section": "Lattes"
+   },
+   {
+    "name": "Hot Chocolate",
+    "description": "",
+    "price": "$3.50",
+    "section": "Lattes"
+   },
+   {
+    "name": "Milk",
+    "description": "",
+    "price": "$3.25",
+    "section": "Lattes"
+   },
+   {
+    "name": "Pumpkin Spice Latte",
+    "description": "House-made rich cocoa syrup with peppermint and espresso in silky microfoam.",
+    "price": "$6.25",
+    "section": "Lattes"
+   },
+   {
+    "name": "Batch Brew",
+    "description": "Our Achilles Blend of South and Central American coffees.",
+    "price": "$4.00",
+    "section": "Batch Brew & Pour Over Coffee"
+   },
+   {
+    "name": "Hot Tea",
+    "description": "Selection of black, green and herbal teas.",
+    "price": "$4.25",
+    "section": "Tea, Matcha & Chai"
+   },
+   {
+    "name": "Iced Tea",
+    "description": "Selection of black, green and herbal teas.",
+    "price": "$4.50",
+    "section": "Tea, Matcha & Chai"
+   },
+   {
+    "name": "Chai Latte",
+    "description": "House brewed aromatic spiced black tea blended with steamed milk. Available Hot or Iced.",
+    "price": "$6.00",
+    "section": "Tea, Matcha & Chai"
+   },
+   {
+    "name": "Dirty Chai Latte",
+    "description": "House brewed aromatic spiced black tea blended with steamed milk and a shot of espresso. Available Hot or Iced.",
+    "price": "$7.50",
+    "section": "Tea, Matcha & Chai"
+   },
+   {
+    "name": "Matcha Latte",
+    "description": "Japanese ceremonial grade matcha whisked with silky microfoam.",
+    "price": "$6.50",
+    "section": "Tea, Matcha & Chai"
+   },
+   {
+    "name": "Lemonade",
+    "description": "House-made lemonade made with fresh lemons, sugar, and water.",
+    "price": "$5.50",
+    "section": "Juice & Lemonade"
+   },
+   {
+    "name": "Single Origin Cold Brew",
+    "description": "Our Single Origin Cold Brew is smooth & chocolatey with a rich body.",
+    "price": "$5.50",
+    "section": "Cold Brew"
+   },
+   {
+    "name": "Nitro Cold Brew",
+    "description": "Creamy nitrogen-infused cold brew with natural sweetness. Served without ice.",
+    "price": "$5.75",
+    "section": "Cold Brew"
+   },
+   {
+    "name": "Finest City",
+    "description": "Vanilla, cinnamon, and cold brew with silky cream.",
+    "price": "$6.25",
+    "section": "Cold Brew"
+   },
+   {
+    "name": "El Cortez",
+    "description": "Brown sugar, mint, cardamom, and silk cream.",
+    "price": "$6.25",
+    "section": "Cold Brew"
+   },
+   {
+    "name": "The Aztec",
+    "description": "House-made mocha syrup and cinnamon, and silky cream.",
+    "price": "$6.25",
+    "section": "Cold Brew"
+   },
+   {
+    "name": "East Village",
+    "description": "Vanilla cold foam and caramel drizzle.",
+    "price": "$6.75",
+    "section": "Cold Brew"
+   },
+   {
+    "name": "Julian",
+    "description": "House-made vanilla syrup and orange sweet cold foam.",
+    "price": "$6.75",
+    "section": "Cold Brew"
+   },
+   {
+    "name": "Windnsea",
+    "description": "House-made mocha syrup and coconut almond sweet cold foam.",
+    "price": "$6.75",
+    "section": "Cold Brew"
+   },
+   {
+    "name": "Pumpkin Pie Cold Brew",
+    "description": "House-made mocha syrup and coconut almond sweet cold foam.",
+    "price": "$6.75",
+    "section": "Cold Brew"
+   },
+   {
+    "name": "Adobe",
+    "description": "Refreshing blend of berry harvest tea, lemonade, mint, and simple syrup.",
+    "price": "$5.75",
+    "section": "Specialty Iced Teas"
+   },
+   {
+    "name": "Three Sisters",
+    "description": "Refreshing blend of ceremonial grade matcha tea, lemonade, and simple syrup.",
+    "price": "$6.00",
+    "section": "Specialty Iced Teas"
+   },
+   {
+    "name": "Carlsbad",
+    "description": "Iced Matcha Latte sweetened with Vanilla Syrup and layered with a Strawberry Cold Foam.",
+    "price": "$7.00",
+    "section": "Specialty Iced Teas"
+   },
+   {
+    "name": "Torrey Pines",
+    "description": "Iced Berry or Assam Tara tea sweetened with lavender and topped with a Rose Cold Foam",
+    "price": "$6.75",
+    "section": "Specialty Iced Teas"
+   },
+   {
+    "name": "Sticky Mango Coconut Matcha*",
+    "description": "Iced Matcha Latte sweetened with Mango and layered with a Coconut Cold Foam.",
+    "price": "$7.00",
+    "section": "Specialty Iced Teas"
+   },
+   {
+    "name": "Scramble",
+    "description": "Two Eggs served scrambled with Spinach, Heirloom Tomatoes, Potatoes, Onions, White Cheddar & choice of Protein. Served with a side of Toast.",
+    "price": "$13.00",
+    "section": "Eggs"
+   },
+   {
+    "name": "Breakfast Burrito",
+    "description": "Scrambled Eggs, Spinach, Heirloom Tomato, Potatoes, Onion, White Cheddar & Your Choice of Protein in a Plain Tortilla. Served with a side of salsa.",
+    "price": "$13.00",
+    "section": "Eggs"
+   },
+   {
+    "name": "Banker's Hill",
+    "description": "Over Medium Egg, Bacon, Turkey, White Cheddar, Spinach, Fig Jam on a Toasted Pretzel Bun.",
+    "price": "$13.25",
+    "section": "Egg Sandwiches"
+   },
+   {
+    "name": "Harbor Island",
+    "description": "2 Scrambled Eggs, Ham, White Cheddar, Heirloom Tomato, Garlic Aioli, Served on Grilled Brioche Bread. Our Harbor Island will crush any hunger!",
+    "price": "$13.50",
+    "section": "Egg Sandwiches"
+   },
+   {
+    "name": "Hillcrest",
+    "description": "Scrambled Egg, Havarti, Spinach, Garlic Aioli, on a Toasted Pretzel Bun.",
+    "price": "$11.50",
+    "section": "Egg Sandwiches"
+   },
+   {
+    "name": "Park West",
+    "description": "Over Medium Egg, Havarti, Spinach, Sriracha Aioli on a Toasted English Muffin.",
+    "price": "$9.00",
+    "section": "Egg Sandwiches"
+   },
+   {
+    "name": "Pt. Loma",
+    "description": "Two Over Medium Eggs, Avocado & Arugula on Jalapeno Cheddar Toast.",
+    "price": "$14.00",
+    "section": "Toasts"
+   },
+   {
+    "name": "Tourmaline",
+    "description": "Smashed Avocado, Heirloom Tomato, Arugula, drizzled with Olive Oil & Sea Salt on Toasted Sourdough",
+    "price": "$10.75",
+    "section": "Toasts"
+   },
+   {
+    "name": "Ocean Beach",
+    "description": "Almond Butter, Banana, Cinnamon Drizzled with Honey on Toasted Multigrain.",
+    "price": "$10.25",
+    "section": "Toasts"
+   },
+   {
+    "name": "Oats",
+    "description": "Quick Oats Served Hot with Walnuts, Currants, House-Made Granola, Fresh Fruit.",
+    "price": "$9.00",
+    "section": "Bowls"
+   },
+   {
+    "name": "Acai Bowl",
+    "description": "Acai, Granola, Fresh Fruit, Honey, Shredded Coconut.",
+    "price": "$13.00",
+    "section": "Bowls"
+   },
+   {
+    "name": "Build Your Own Bagel",
+    "description": "Build a Bagel Sandwich Anyway You Want. Keep It Classic With Cream Cheese or Create Your Own Masterpiece.",
+    "price": "$3.85",
+    "section": "Build Your Own Bagel"
+   },
+   {
+    "name": "The Cove",
+    "description": "Toasted Bagel, Smoked Salmon, Dijon Dill Cream Cheese, Pickled Onion, Garnished with Capers and Lemon",
+    "price": "$14.00",
+    "section": "Bagel Sandwiches"
+   },
+   {
+    "name": "Mt. Laguna",
+    "description": "Turkey Breast, Bacon, White Cheddar, Spinach, Heirloom Tomato, Fig Jam on Toasted Ciabatta.",
+    "price": "$14.00",
+    "section": "Lunch"
+   },
+   {
+    "name": "Carmel Valley",
+    "description": "Turkey, Bacon, Havarti, Heirloom Tomato, Arugula, and Pesto Served on Toasted Sourdough",
+    "price": "$14.00",
+    "section": "Lunch"
+   },
+   {
+    "name": "Coronado",
+    "description": "Avocado, Bacon, Havarti, Heirloom Tomato, Arugula, Sriracha Aioli on Toasted Ciabatta.",
+    "price": "$13.50",
+    "section": "Lunch"
+   },
+   {
+    "name": "Encinitas",
+    "description": "Avocado, Hummus, Spinach, Heirloom Tomato, House-Made Pickled Slaw, Cucumber on Multigrain Bread.",
+    "price": "$12.00",
+    "section": "Lunch"
+   },
+   {
+    "name": "Newport Ave.",
+    "description": "A smooth blend of cold brew, almond milk, banana, almond butter, agave, and a touch of cinnamon for a naturally energizing, creamy pick-me-up.",
+    "price": "$9.00",
+    "section": "Smoothies"
+   },
+   {
+    "name": "Broadway",
+    "description": "Organic Brazilian açaí blended with almond milk, peanut butter, spinach, banana, and agave — rich, smooth, and naturally energizing.",
+    "price": "$9.00",
+    "section": "Smoothies"
+   },
+   {
+    "name": "Prospect St.",
+    "description": "A bright, fruity blend of strawberries, blueberry, pineapple, banana, and agave — refreshing and naturally sweet.",
+    "price": "$9.00",
+    "section": "Smoothies"
+   },
+   {
+    "name": "Park Blvd.",
+    "description": "A refreshing green blend of pineapple, celery, ginger, apple, cucumber, kale, spinach, and agave — crisp, bright, and revitalizing.",
+    "price": "$9.00",
+    "section": "Smoothies"
+   },
+   {
+    "name": "Orange Juice (Bottle)",
+    "description": "Fresh squeezed Orange Juice fresh from our Kitchen. 12oz Bottle",
+    "price": "$8.00",
+    "section": "Side Items"
+   },
+   {
+    "name": "Lemonade (Bottle)",
+    "description": "House-made lemonade fresh from our Kitchen. Just lemons, water, and sugar. 12oz Bottle",
+    "price": "$5.50",
+    "section": "Side Items"
+   },
+   {
+    "name": "Sparkling Water (Small)",
+    "description": "",
+    "price": "$3.50",
+    "section": "Side Items"
+   },
+   {
+    "name": "Arrowhead",
+    "description": "",
+    "price": "$3.00",
+    "section": "Side Items"
+   },
+   {
+    "name": "Chips",
+    "description": "",
+    "price": "$2.25",
+    "section": "Side Items"
+   }
+  ]
+ },
+ {
+  "restaurantId": "7277",
+  "name": "Main Street Donuts & Deli",
+  "sourceUrl": "https://www.lacuisinecustomcatering.com/mainstreetdonutsanddeli",
+  "confidence": "high",
+  "notes": "read from the restaurant's own Squarespace page, full priced menu (breakfast items, salads, signature sandwiches)",
+  "dishes": [
+   {
+    "name": "Bagel Breakfast Sandwich",
+    "description": "Choice of: Ham, Sausage, or Bacon with Egg & Cheese",
+    "price": "$7.99",
+    "section": "Breakfast Items"
+   },
+   {
+    "name": "Croissant Breakfast Sandwich",
+    "description": "Choice of Ham, Sausage, or Bacon with Egg & Cheese",
+    "price": "$9.99",
+    "section": "Breakfast Items"
+   },
+   {
+    "name": "Any Bagel with Cream Cheese",
+    "description": "",
+    "price": "$4.50",
+    "section": "Breakfast Items"
+   },
+   {
+    "name": "Avocado Toast on Everything Bagel",
+    "description": "",
+    "price": "$4.99",
+    "section": "Breakfast Items"
+   },
+   {
+    "name": "Assorted Muffins",
+    "description": "",
+    "price": "$2.50",
+    "section": "Breakfast Items"
+   },
+   {
+    "name": "Mediterranean Salad",
+    "description": "Spring Mix, Tomato, Cucumber, Red Onion, Feta Cheese, Balsamic Dressing",
+    "price": "$9.00",
+    "section": "Salads"
+   },
+   {
+    "name": "Fall Fruit Salad",
+    "description": "Spring Mix, Apples, Glazed Walnuts, Gorgonzola Cheese, White Balsamic Dressing",
+    "price": "$9.00",
+    "section": "Salads"
+   },
+   {
+    "name": "California Cobb Salad",
+    "description": "Spring Mix, Bacon, Hard Boiled Egg, Tomato, Cheddar Cheese, Grilled Chicken Ranch Dressing",
+    "price": "$14.95",
+    "section": "Salads"
+   },
+   {
+    "name": "The Plaintiff",
+    "description": "Turkey Breast, Swiss Cheese, Mixed Greens, Tomato, Cranberry Aioli",
+    "price": "$13.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The Right to Remain Cilantro",
+    "description": "Turkey Breast, Pepper Jack, Mixed Greens, Tomato, Avocado and Cilantro Aioli",
+    "price": "$13.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The Bailiff",
+    "description": "Black Forest Ham, Swiss Cheese, Mixed Greens, Tomato, Mayo, Dijon Mustard",
+    "price": "$13.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The JailBird (Served Hot)",
+    "description": "Grilled Chicken Breast, Tomato, Provolone with Pesto Aioli **WALNUT ALLERGY**",
+    "price": "$14.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The Felony (Served Hot)",
+    "description": "Grilled Chicken Breast, Tomato, Jalapenos, Pepper Jack with Jalapeno Aioli",
+    "price": "$14.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The Judge (Served Hot)",
+    "description": "Pastrami, Swiss Cheese, Bacon, Mayo, Dijon",
+    "price": "$14.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The Misdemeanor",
+    "description": "Roast Beef, Cheddar, Tomato, Red Onion, Mixed Greens with Horseradish Aioli",
+    "price": "$14.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "Failure to Appear (The Cali VEGGIE)",
+    "description": "Cucumber, Tomato, Cheddar, Avocado, Sprouts, Herbed Cream Cheese",
+    "price": "$13.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The DA (The Club)",
+    "description": "Turkey, Ham, Bacon, Mixed Greens, Tomato, Cheddar, Mayo and Mustard",
+    "price": "$17.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The PD (Italian Sub)",
+    "description": "Ham, Prosciutto, Salami, Tomato, Mixed Greens, Provolone, Mayo and Mustard with Vinegar and Oil",
+    "price": "$16.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The Philly PD (Our Version of Philly Cheesesteak) (Served Hot)",
+    "description": "Philly Beef Steak with Mushrooms, Provolone & Garlic Aioli on Roll",
+    "price": "$15.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The Infraction (Chicken Salad made to order)",
+    "description": "Shredded Chicken, Mayonnaise, Onion, Celery, Cranberries, Walnuts, Mixed Greens and Provolone",
+    "price": "$13.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The Witness (Tuna made to order)",
+    "description": "Solid White Albacore Tuna, Celery, Onion, Mixed Greens, Tomato and Provolone",
+    "price": "$13.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The Rookie",
+    "description": "Peanut Butter, Strawberry Jelly and Bacon",
+    "price": "$9.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The Court Reporter",
+    "description": "Bacon, Lettuce, Tomato and Mayonnaise",
+    "price": "$10.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "The CHP",
+    "description": "Turkey, Bacon, Provolone, Avocado, Tomato, Mixed Greens, Chipotle Aioli",
+    "price": "$14.95",
+    "section": "Signature Sandwiches"
+   },
+   {
+    "name": "Build Your Own Sandwiches",
+    "description": "Meats: Turkey, Ham, Roast Beef, Pastrami. Cheeses: Swiss, Cheddar, Provolone, Pepper Jack, Herbed Cream Cheese. Spreads: Mayo, Mustard, Chipotle Aioli, Cilantro Aioli, Cranberry Aioli, Jalapeno Aioli, Dijon, Horseradish Aioli, Pesto Aioli. Veggies: Mixed Greens, Cucumber, Red Onion, Tomato, Jalapeno, Pepperoncini, Pickles, Sprouts",
+    "price": "$14.95",
+    "section": "Signature Sandwiches"
+   }
+  ]
+ },
+ {
+  "restaurantId": "7197",
+  "name": "Sunny Side Solana",
+  "sourceUrl": "http://web.archive.org/web/20251111225716/https://www.opentable.com/r/sunny-side-solana-solana-beach",
+  "confidence": "high",
+  "crossCheckedAgainst": "https://www.yelp.com/biz/sunny-side-solana-solana-beach",
+  "notes": "own domain sunnysidesolana.com no longer resolves (confirmed dead DNS via multiple independent resolvers, not a sandbox artifact) but business is clearly open (Yelp \"Our New Menu\", Instagram \"OPEN 7AM-2:30PM EVERYDAY\", recent reviews); full menu recovered from a Wayback Machine snapshot (2025-11-11) of the restaurant's OpenTable page, a third-party marketplace; dropped 13 \"Toppings Bar\" items with no price (bundled free toppings)",
+  "dishes": [
+   {
+    "name": "My Way or Hwy 101",
+    "description": "eggs your style, choice of bacon, mild italian sausage or canadian ham, roasted potatoes, choice toast",
+    "price": "$17.00",
+    "section": "Sunny Side Favorites"
+   },
+   {
+    "name": "Fruit & Granola",
+    "description": "fresh organic fruit, plain yogurt, granola",
+    "price": "$12.00",
+    "section": "Sunny Side Favorites"
+   },
+   {
+    "name": "Chorizo Burrito",
+    "description": "scrambled eggs, chorizo or bacon, onion, cilantro, oaxaca cheese, roasted potatoes, black beans, salsa",
+    "price": "$14.00",
+    "section": "Sunny Side Favorites"
+   },
+   {
+    "name": "Short Rib Hash",
+    "description": "slow braised short rib, roasted potatoes, onion, two eggs your style",
+    "price": "$19.00",
+    "section": "Sunny Side Favorites"
+   },
+   {
+    "name": "Country Fried Steak & Eggs",
+    "description": "two eggs your style, country fried steak, sausage gravy, roasted potatoes",
+    "price": "$19.00",
+    "section": "Sunny Side Favorites"
+   },
+   {
+    "name": "Chilaquiles",
+    "description": "eggs your style, crispy corn tortilla, salsa, queso fresco, black beans",
+    "price": "$18.00",
+    "section": "Sunny Side Favorites"
+   },
+   {
+    "name": "Short Rib Mac & Cheese",
+    "description": "buttermilk biscuit croutons, slow braised short ribs, creamy cheddar cheese, poached eggs",
+    "price": "$19.00",
+    "section": "Sunny Side Favorites"
+   },
+   {
+    "name": "Sunny Side Sliders",
+    "description": "sunny side eggs, mild italian sausage, american cheese, toasted buns",
+    "price": "$15.00",
+    "section": "Sunny Side Favorites"
+   },
+   {
+    "name": "Grilled Steak & Eggs",
+    "description": "grilled dry aged usda 8oz ribeye, eggs your style, roasted potatoes",
+    "price": "$22.00",
+    "section": "Sunny Side Favorites"
+   },
+   {
+    "name": "Lox And Bagel Platter",
+    "description": "toasted bagel, norwegian smoked salmon, cream cheese, capers, lemon",
+    "price": "$18.00",
+    "section": "Sunny Side Favorites"
+   },
+   {
+    "name": "Fruit Platter",
+    "description": "assorted organic fresh fruit",
+    "price": "$12.00",
+    "section": "Sunny Side Favorites"
+   },
+   {
+    "name": "It's All White",
+    "description": "scrambled egg whites, roasted mushroom, goat cheese, tomatoes, basil",
+    "price": "$16.00",
+    "section": "Scrambowls"
+   },
+   {
+    "name": "I'm Vegan Hungry",
+    "description": "vegan scramble or soyriso, vegan cheddar, maple apple sausage, grilled tomatoes, olive oil roasted potatoes, basil",
+    "price": "$17.00",
+    "section": "Scrambowls"
+   },
+   {
+    "name": "Cheddar",
+    "description": "scrambled eggs, bacon, ham, cheddar cheese, roasted potatoes",
+    "price": "$15.00",
+    "section": "Scrambowls"
+   },
+   {
+    "name": "Chorizo",
+    "description": "scrambled eggs, chorizo, oaxaca cheese, avocado, tortilla, crema fresca",
+    "price": "$17.00",
+    "section": "Scrambowls"
+   },
+   {
+    "name": "Buttermilk Pancakes",
+    "description": "served with whipped butter, maple syrup",
+    "price": "$11.00",
+    "section": "Pancakes & French Toast"
+   },
+   {
+    "name": "Nutella Banana Pancakes",
+    "description": "creamy nutella, sliced banana",
+    "price": "$14.00",
+    "section": "Pancakes & French Toast"
+   },
+   {
+    "name": "Blueberry Compote Pancakes",
+    "description": "warm blueberry compote, homemade whipped cream",
+    "price": "$14.00",
+    "section": "Pancakes & French Toast"
+   },
+   {
+    "name": "Strawberry Dream French Toast",
+    "description": "fluffy french toast, strawberries, homemade whipped cream",
+    "price": "$15.00",
+    "section": "Pancakes & French Toast"
+   },
+   {
+    "name": "Pineapple Bananas Fosters French Toast",
+    "description": "pineapple & bananas, caramelized brown sugar",
+    "price": "$16.00",
+    "section": "Pancakes & French Toast"
+   },
+   {
+    "name": "Build Your Own",
+    "description": "start with a naked stack of pancakes or classic french toast add up to 3 toppings",
+    "price": "$15.00",
+    "section": "Pancakes & French Toast"
+   },
+   {
+    "name": "Herb & Mushroom",
+    "description": "roasted mushrooms, butter, herbs, goat cheese",
+    "price": "$16.00",
+    "section": "Omelets"
+   },
+   {
+    "name": "Bacon Cheddar",
+    "description": "chopped bacon, melted cheddar cheese",
+    "price": "$16.00",
+    "section": "Omelets"
+   },
+   {
+    "name": "Solana Omelet",
+    "description": "chorizo, avocado, tomatoes",
+    "price": "$17.00",
+    "section": "Omelets"
+   },
+   {
+    "name": "Neapolitan",
+    "description": "mozzarella, tomato, basil",
+    "price": "$16.00",
+    "section": "Omelets"
+   },
+   {
+    "name": "Veggie & Cheese",
+    "description": "assorted veggies, mozzarella",
+    "price": "$15.00",
+    "section": "Omelets"
+   },
+   {
+    "name": "The Sailor Man",
+    "description": "sauteed spinach, mushroom, tomatoes",
+    "price": "$16.00",
+    "section": "Benedicts"
+   },
+   {
+    "name": "Salmon",
+    "description": "sliced smoked salmon, cream cheese",
+    "price": "$17.00",
+    "section": "Benedicts"
+   },
+   {
+    "name": "Traditional",
+    "description": "canadian bacon",
+    "price": "$16.00",
+    "section": "Benedicts"
+   },
+   {
+    "name": "Short Rib",
+    "description": "slow braised short rib",
+    "price": "$18.00",
+    "section": "Benedicts"
+   },
+   {
+    "name": "Goat Cheese Pesto",
+    "description": "goat cheese, pesto",
+    "price": "$14.00",
+    "section": "Lets Make a Toast"
+   },
+   {
+    "name": "Bacon Tomato",
+    "description": "bacon, sliced tomato",
+    "price": "$14.00",
+    "section": "Lets Make a Toast"
+   },
+   {
+    "name": "Slamin Salmon",
+    "description": "smoked salmon, crema fresca, red onion",
+    "price": "$17.00",
+    "section": "Lets Make a Toast"
+   },
+   {
+    "name": "Fluffy Butter Milk Pancake",
+    "description": "",
+    "price": "$5.00",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Organic Free Range Egg Your Style",
+    "description": "",
+    "price": "$4.00",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Applewood Smoked Bacon",
+    "description": "",
+    "price": "$6.00",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Fresh Fruit",
+    "description": "",
+    "price": "$6.00",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Hollandaise Sauce",
+    "description": "",
+    "price": "$2.00",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Seasonal Berries",
+    "description": "",
+    "price": "$6.00",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Mild Italian Sausage",
+    "description": "",
+    "price": "$5.00",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Sliced California Avocado",
+    "description": "",
+    "price": "$4.00",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Sunny Side Black Beans",
+    "description": "",
+    "price": "$5.00",
+    "section": "Breakfast Sides"
+   },
+   {
+    "name": "Gluten Free Bread",
+    "description": "",
+    "price": "$4.00",
+    "section": "Bread"
+   },
+   {
+    "name": "Toasted Bagel",
+    "description": "",
+    "price": "$3.00",
+    "section": "Bread"
+   },
+   {
+    "name": "Sourdough Toast",
+    "description": "",
+    "price": "$3.00",
+    "section": "Bread"
+   },
+   {
+    "name": "White Toast",
+    "description": "",
+    "price": "$3.00",
+    "section": "Bread"
+   },
+   {
+    "name": "Toasted Ciabatta",
+    "description": "",
+    "price": "$3.00",
+    "section": "Bread"
+   },
+   {
+    "name": "Warm Flour Tortilla",
+    "description": "",
+    "price": "$3.00",
+    "section": "Bread"
+   },
+   {
+    "name": "English Muffin",
+    "description": "",
+    "price": "$3.00",
+    "section": "Bread"
+   },
+   {
+    "name": "Whole Grain Toast",
+    "description": "",
+    "price": "$3.00",
+    "section": "Bread"
+   },
+   {
+    "name": "Sunny Side Fried Goat Cheese",
+    "description": "fried goat cheese, honey, candied pecans",
+    "price": "$10.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Caprese",
+    "description": "mozzarella, tomatoes, basil, pesto",
+    "price": "$10.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Crispy Buttermilk Fried Chicken Wings",
+    "description": "with blue cheese or cilantro ranch dressing",
+    "price": "$12.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Sunny Side Loaded Fries",
+    "description": "french fried potatoes, crispy bacon, cheddar cheese, crema fresca",
+    "price": "$8.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Fried Calamari",
+    "description": "crispy fried calamari, spicy marinara & ranch",
+    "price": "$16.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Mounds of Joy",
+    "description": "two homemade meatballs, marinara, melted mozzarella",
+    "price": "$11.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Bruschetta",
+    "description": "tomato, basil, pesto, toast",
+    "price": "$10.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Old Macdonald Had a Salad",
+    "description": "smash fried chicken breast, bacon, boiled egg, crumbled blue cheese, fresh greens, avocado, tomatoes, house vinaigrette",
+    "price": "$17.00",
+    "section": "Salads"
+   },
+   {
+    "name": "Sunny Side Berry Salad",
+    "description": "spinach, seasonal berries, goat cheese fritter, maple pecans, fennel vinaigrette",
+    "price": "$14.00",
+    "section": "Salads"
+   },
+   {
+    "name": "Caesar",
+    "description": "romaine, parmesan, buttermilk biscuit croutons, caesar dressing",
+    "price": "$14.00",
+    "section": "Salads"
+   },
+   {
+    "name": "Salmon",
+    "description": "fresh greens, seared salmon, red onion, avocado, mango, house vinaigrette",
+    "price": "$20.00",
+    "section": "Salads"
+   },
+   {
+    "name": "Chopped Italian",
+    "description": "grilled chicken, tomatoes, iceberg lettuce, italian dressing",
+    "price": "$17.00",
+    "section": "Salads"
+   },
+   {
+    "name": "Grilled Chicken Nicoise",
+    "description": "grilled chicken breast, tomatoes, olive oil, potatoes, olives, romaine, house vinaigrette",
+    "price": "$19.00",
+    "section": "Salads"
+   },
+   {
+    "name": "Dry Aged Ribeye Grilled Sliced",
+    "description": "",
+    "price": "$16.00",
+    "section": "Add On & On & On"
+   },
+   {
+    "name": "Grilled Marinated Free Range Chicken Breast",
+    "description": "",
+    "price": "$7.00",
+    "section": "Add On & On & On"
+   },
+   {
+    "name": "Homemade Meatball",
+    "description": "",
+    "price": "$8.00",
+    "section": "Add On & On & On"
+   },
+   {
+    "name": "Mild Italian Sausage",
+    "description": "",
+    "price": "$7.00",
+    "section": "Add On & On & On"
+   },
+   {
+    "name": "Seared Wild Salmon",
+    "description": "",
+    "price": "$14.00",
+    "section": "Add On & On & On"
+   },
+   {
+    "name": "Sunny Side up Organic Free Range Egg",
+    "description": "",
+    "price": "$3.00",
+    "section": "Add On & On & On"
+   },
+   {
+    "name": "Grilled Shrimp",
+    "description": "",
+    "price": "$8.00",
+    "section": "Add On & On & On"
+   },
+   {
+    "name": "Burger",
+    "description": "8oz usda angus beef, bacon, american cheese, onion, tomato, homemade aioli, toasted brioche",
+    "price": "$17.00",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Unbuckle Your Seat",
+    "description": "braised short rib, macaroni and cheese, toasted brioche",
+    "price": "$18.00",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Say Cheese",
+    "description": "melted cheddar cheese, toasted white",
+    "price": "$14.00",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "B.L.A.T.",
+    "description": "smoked bacon, fresh greens, avocado, tomatoes, homemade lemon aioli, toasted white",
+    "price": "$16.00",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Patti's Meltdown",
+    "description": "ground chuck, melted american cheese, grilled onion, toasted sourdough",
+    "price": "$17.00",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "The Carnivorian",
+    "description": "sliced grilled usda ribeye steak, grilled onion, homemade lemon aioli, greens, toasted ciabatta",
+    "price": "$20.00",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "The Sky is Falling!",
+    "description": "smashed fried chicken breast, american cheese, pickles, toasted brioche",
+    "price": "$16.00",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Turkey Club",
+    "description": "sliced turkey, fresh greens, applewood bacon, tomatoes, mozzarella, thick toast",
+    "price": "$16.00",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Goat Cheese & Chicken",
+    "description": "grilled marinated chicken, caramelized onions, tomatoes, goat cheese spread, iceberg lettuce, toasted ciabatta",
+    "price": "$16.00",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Rigatoni Martini",
+    "description": "vodka tomato cream sauce, rigatoni pasta",
+    "price": "$17.00",
+    "section": "Entrees"
+   },
+   {
+    "name": "Spaghetti Meatballs",
+    "description": "homemade meatballs, marinara, spaghetti",
+    "price": "$18.00",
+    "section": "Entrees"
+   },
+   {
+    "name": "Chicken Marsala",
+    "description": "buttermilk mashed potatoes, mushroom marsala wine sauce, asparagus",
+    "price": "$19.00",
+    "section": "Entrees"
+   },
+   {
+    "name": "Chicken Parmesan",
+    "description": "breaded chicken, melted mozzarella, marinara, buttermilk mashed potatoes",
+    "price": "$19.00",
+    "section": "Entrees"
+   },
+   {
+    "name": "Green Beans",
+    "description": "",
+    "price": "$5.00",
+    "section": "Sides"
+   },
+   {
+    "name": "Grilled Asparagus",
+    "description": "",
+    "price": "$7.00",
+    "section": "Sides"
+   },
+   {
+    "name": "Roasted Potatoes",
+    "description": "",
+    "price": "$5.00",
+    "section": "Sides"
+   },
+   {
+    "name": "Buttermilk Mashed Potatoes",
+    "description": "",
+    "price": "$5.00",
+    "section": "Sides"
+   },
+   {
+    "name": "French Fries",
+    "description": "",
+    "price": "$5.00",
+    "section": "Sides"
+   },
+   {
+    "name": "Roasted Mushrooms",
+    "description": "",
+    "price": "$5.00",
+    "section": "Sides"
+   },
+   {
+    "name": "Sauteed Spinach",
+    "description": "",
+    "price": "$6.00",
+    "section": "Sides"
+   },
+   {
+    "name": "Honey Glazed Carrots",
+    "description": "",
+    "price": "$6.00",
+    "section": "Sides"
+   },
+   {
+    "name": "Fresh Squeezed OJ",
+    "description": "",
+    "price": "$5.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Pellegrino",
+    "description": "",
+    "price": "$4.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Acqua Panna",
+    "description": "",
+    "price": "$4.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Coke",
+    "description": "",
+    "price": "$3.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Diet Coke",
+    "description": "",
+    "price": "$3.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Fanta",
+    "description": "",
+    "price": "$3.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Iced Tea",
+    "description": "",
+    "price": "$3.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Lemonade",
+    "description": "",
+    "price": "$3.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Cappuccino",
+    "description": "",
+    "price": "$5.00",
+    "section": "Organic Coffee & Tea"
+   },
+   {
+    "name": "Espresso",
+    "description": "",
+    "price": "$4.00",
+    "section": "Organic Coffee & Tea"
+   },
+   {
+    "name": "Classic Coffee",
+    "description": "",
+    "price": "$4.00",
+    "section": "Organic Coffee & Tea"
+   },
+   {
+    "name": "Assorted Tea",
+    "description": "",
+    "price": "$3.00",
+    "section": "Organic Coffee & Tea"
+   },
+   {
+    "name": "Americano",
+    "description": "",
+    "price": "$5.00",
+    "section": "Organic Coffee & Tea"
+   },
+   {
+    "name": "Latte",
+    "description": "",
+    "price": "$5.00",
+    "section": "Organic Coffee & Tea"
+   }
+  ]
+ },
+ {
+  "restaurantId": "7281",
+  "name": "Le Coq",
+  "sourceUrl": "https://www.lecoq.com/dinner",
+  "confidence": "high",
+  "notes": "read from restaurant's own Squarespace dinner-menu page; dropped Dry-Aged Ribeye (MKT, no fixed price) and modifier-only add-ons (butter upcharge, sauce-for-all-proteins charge)",
+  "dishes": [
+   {
+    "name": "Pamplie Butter (Baguette)",
+    "description": "Choose one",
+    "price": "$12.00",
+    "section": "Baguette"
+   },
+   {
+    "name": "Chicken Skin Butter (Baguette)",
+    "description": "Choose one",
+    "price": "$12.00",
+    "section": "Baguette"
+   },
+   {
+    "name": "Steak Tartare",
+    "description": "Beef, Cornichon, Capers, Pippara, Smoked Mayo, Potato Chips",
+    "price": "$23.00",
+    "section": "Hors d'Oeuvres"
+   },
+   {
+    "name": "Bluefin Tuna Tartare",
+    "description": "Olive Tempenade, Shoestring Potato, Egg, Green Strawberry",
+    "price": "$23.00",
+    "section": "Hors d'Oeuvres"
+   },
+   {
+    "name": "Hamachi Crudo",
+    "description": "English Peas, Marigold Vinegar, Yuzu",
+    "price": "$25.00",
+    "section": "Hors d'Oeuvres"
+   },
+   {
+    "name": "Celery Salad",
+    "description": "Almond, Celery Seed Vinaigrette, Golden Raisin, P'tit Basque",
+    "price": "$16.00",
+    "section": "Hors d'Oeuvres"
+   },
+   {
+    "name": "Charred Snap Pea Salad",
+    "description": "Charred JR Snap Pea, Radish, Creamy Cilantro Dressing, Chrysanthemum, Speck",
+    "price": "$21.00",
+    "section": "Hors d'Oeuvres"
+   },
+   {
+    "name": "Chicken Liver Mousse",
+    "description": "Land & Feast Farms, Dried Cherry Aigre Doux, Caramelized Onion Salt, Opal Basil Amaranth",
+    "price": "$18.00",
+    "section": "Hors d'Oeuvres"
+   },
+   {
+    "name": "Stuffed Chicken Wing",
+    "description": "Tsukane, Speck, Raclette, Egg Yolk, Nikiri Shoyu",
+    "price": "$23.00",
+    "section": "Hors d'Oeuvres"
+   },
+   {
+    "name": "Mussels à la Paris",
+    "description": "White Wine, Blue Cheese, Spigarello",
+    "price": "$25.00",
+    "section": "Hors d'Oeuvres"
+   },
+   {
+    "name": "Onion Tart",
+    "description": "Short Rib, Caramelized Onion, Gruyère",
+    "price": "$18.00",
+    "section": "Hors d'Oeuvres"
+   },
+   {
+    "name": "Rockfish & Cabbage Dumplings",
+    "description": "Bolzano Tomato, Ponzu, Ginger, Garlic",
+    "price": "$20.00",
+    "section": "Hors d'Oeuvres"
+   },
+   {
+    "name": "Semolina Parisian Gnocchi",
+    "description": "Duck Confit, Swiss Chard, Mushroom, Preserved Lemon",
+    "price": "$36.00",
+    "section": "Les Plats"
+   },
+   {
+    "name": "Roasted Chicken",
+    "description": "Mary's Chicken, Jus Gras, Summer Squash, Jimmy Nardelo Pepper",
+    "price": "$44.00",
+    "section": "Les Plats"
+   },
+   {
+    "name": "Steak Frites",
+    "description": "Eye of Ribeye, Au Poivre Sauce",
+    "price": "$49.00",
+    "section": "Les Plats"
+   },
+   {
+    "name": "Char Sui Pork Collar",
+    "description": "Beet Glaze, Chicory, Tarragon Spaetzle, Hot Mustard Soubise",
+    "price": "$37.00",
+    "section": "Les Plats"
+   },
+   {
+    "name": "Rosé Snapper",
+    "description": "English Peas, Calamansi Beurre Blanc",
+    "price": "$44.00",
+    "section": "Les Plats"
+   },
+   {
+    "name": "Zucchini Katsu",
+    "description": "Zucchini, Pickled Turnip, Cabbage Slaw, Remoulade",
+    "price": "$28.00",
+    "section": "Les Plats"
+   },
+   {
+    "name": "Hamburger et Frites",
+    "description": "Wagyu Beef, Tara Burger Sauce, American Cheese, Shaved Onion",
+    "price": "$25.00",
+    "section": "Les Plats"
+   },
+   {
+    "name": "Filet",
+    "description": "",
+    "price": "$55.00",
+    "section": "Les Viandes"
+   },
+   {
+    "name": "Denver",
+    "description": "",
+    "price": "$62.00",
+    "section": "Les Viandes"
+   },
+   {
+    "name": "Pork Tomahawk",
+    "description": "",
+    "price": "$60.00",
+    "section": "Les Viandes"
+   },
+   {
+    "name": "Australian Wagyu New York",
+    "description": "",
+    "price": "$140.00",
+    "section": "Les Viandes"
+   },
+   {
+    "name": "Mushroom & Onions",
+    "description": "Veal Demi, Egg Yolk",
+    "price": "$17.00",
+    "section": "Plat D'Accompagnement"
+   },
+   {
+    "name": "Green Beans",
+    "description": "Garlic, Shallots, Ume Vinegar",
+    "price": "$14.00",
+    "section": "Plat D'Accompagnement"
+   },
+   {
+    "name": "Creamed Spinach",
+    "description": "Spinach, Onion Soubise",
+    "price": "$14.00",
+    "section": "Plat D'Accompagnement"
+   },
+   {
+    "name": "Caulilini",
+    "description": "Chili Vinaigrette, Sesame Puree, Cashews",
+    "price": "$14.00",
+    "section": "Plat D'Accompagnement"
+   },
+   {
+    "name": "Pomme Puree",
+    "description": "Cream & Butter Mashed Potatoes",
+    "price": "$12.00",
+    "section": "Plat D'Accompagnement"
+   },
+   {
+    "name": "$98 Date Night (Three Courses to Share)",
+    "description": "Charred Snap Pea Salad & Baguette; Surf & Turf (Denver Steak & Seared Tuna); Chocolate Mousse",
+    "price": "$98.00",
+    "section": "Specials"
+   }
+  ]
+ },
+ {
+  "restaurantId": "7423",
+  "name": "Charli's Landing",
+  "sourceUrl": "https://www.charlislanding.com/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "needs-browser: site is a client-rendered single-page app; homepage and all menu subpages (breakfast/lunch-dinner/sides/kids-menu/drinks) return only a JS bundle shell with no static text, and direct subpage fetches 404 server-side"
+ },
+ {
+  "restaurantId": "8958",
+  "name": "Happy Lemon San Marcos",
+  "sourceUrl": "https://custom.order.online/store/happy-lemon-san-marcos-24153953",
+  "confidence": "high",
+  "crossCheckedAgainst": "https://postmates.com/store/happy-lemon-san-marcos/-A15OsMpWgaKZqSK321GWw",
+  "notes": "own site (happylemonusa.com) is a client-rendered Vue app with dish names but no prices; full priced menu recovered from order.online (DoorDash white-label) embedded JSON payload; dropped \"Most Ordered\" carousel section (8 items, all duplicates of items in their proper category sections)",
+  "dishes": [
+   {
+    "name": "G2. Taro Milkshake",
+    "description": "Additional request under \"special instructions\" will not be honored.",
+    "price": "$8.15",
+    "section": "Seasonal Drinks"
+   },
+   {
+    "name": "H1. Original Bubble Waffle",
+    "description": "Additional request under \"special instructions\" will not be honored.",
+    "price": "$7.65",
+    "section": "Bubble Waffle Series"
+   },
+   {
+    "name": "H2. Oreo Bubble Waffle",
+    "description": "Additional request under \"\"special instructions\"\" will not be honored.",
+    "price": "$7.90",
+    "section": "Bubble Waffle Series"
+   },
+   {
+    "name": "H3. Cheese Bubble Waffle",
+    "description": "Additional request under \"special instructions\" will not be honored.",
+    "price": "$7.90",
+    "section": "Bubble Waffle Series"
+   },
+   {
+    "name": "Puff Cream (Dipping Sauce)",
+    "description": "",
+    "price": "$1.90",
+    "section": "Bubble Waffle Series"
+   },
+   {
+    "name": "Salted Cheese (Dipping Sauce)",
+    "description": "",
+    "price": "$1.90",
+    "section": "Bubble Waffle Series"
+   },
+   {
+    "name": "A1. Classic Milk Tea",
+    "description": "Additional request under \"\"special instructions\"\" will not be honored.",
+    "price": "$6.90",
+    "section": "Classic Tea Series"
+   },
+   {
+    "name": "A2. Boba Milk Tea",
+    "description": "Iced Large. Recommended.",
+    "price": "$7.65",
+    "section": "Classic Tea Series"
+   },
+   {
+    "name": "A6. Jasmine Green Milk Tea",
+    "description": "Lactose free. additional request under \"special instructions\" will not be honored.",
+    "price": "$7.10",
+    "section": "Classic Tea Series"
+   },
+   {
+    "name": "A7. Brown Sugar Boba Milk Tea",
+    "description": "Recommended. Caffeine Free",
+    "price": "$8.10",
+    "section": "Classic Tea Series"
+   },
+   {
+    "name": "A8. Taro Milk Tea",
+    "description": "Caffeine Free",
+    "price": "$7.40",
+    "section": "Classic Tea Series"
+   },
+   {
+    "name": "A9. Green Tea",
+    "description": "Additional request under \"special instructions\" will not be honored.",
+    "price": "$6.65",
+    "section": "Classic Tea Series"
+   },
+   {
+    "name": "A10. Black Tea",
+    "description": "Additional request under \"\"special instructions\"\" will not be honored.",
+    "price": "$6.65",
+    "section": "Classic Tea Series"
+   },
+   {
+    "name": "A11. Matcha Latte",
+    "description": "Additional request under \"special instructions\" will not be honored.",
+    "price": "$7.40",
+    "section": "Classic Tea Series"
+   },
+   {
+    "name": "A12. Wintermelon with Fresh Milk",
+    "description": "Recommended. Caffeine",
+    "price": "$7.65",
+    "section": "Classic Tea Series"
+   },
+   {
+    "name": "G6. Strawberry Matcha Latte",
+    "description": "",
+    "price": "$8.70",
+    "section": "Classic Tea Series"
+   },
+   {
+    "name": "B1. Jasmine Green Tea with Salted Cheese",
+    "description": "Recommended.",
+    "price": "$7.65",
+    "section": "Salted Cheese Series"
+   },
+   {
+    "name": "B2. Black Tea with Salted Cheese",
+    "description": "Additional request under \"\"special instructions\"\" will not be honored.",
+    "price": "$7.65",
+    "section": "Salted Cheese Series"
+   },
+   {
+    "name": "B3. Milk Tea with Salted Cheese",
+    "description": "Recommended. Substitute soy milk for an additional charge.",
+    "price": "$8.10",
+    "section": "Salted Cheese Series"
+   },
+   {
+    "name": "B4. Strawberry Green Tea with Salted Cheese",
+    "description": "Iced Large. Recommended.",
+    "price": "$8.40",
+    "section": "Salted Cheese Series"
+   },
+   {
+    "name": "B5. Strawberry Black Tea with Salted Cheese",
+    "description": "Iced. Large",
+    "price": "$8.40",
+    "section": "Salted Cheese Series"
+   },
+   {
+    "name": "B6. Matcha Latte with Salted Cheese",
+    "description": "ubstitute soy milk for an additional charge.",
+    "price": "$8.10",
+    "section": "Salted Cheese Series"
+   },
+   {
+    "name": "E1. Mango Matcha Smoothie (Large)",
+    "description": "Recommended.",
+    "price": "$8.65",
+    "section": "Smoothie Series"
+   },
+   {
+    "name": "E3. Strawberry Shortcake  (Large)",
+    "description": "Caffeine Free",
+    "price": "$8.65",
+    "section": "Smoothie Series"
+   },
+   {
+    "name": "E4. Mango Smoothie (Large)",
+    "description": "Caffeine Free",
+    "price": "$8.65",
+    "section": "Smoothie Series"
+   },
+   {
+    "name": "E5. Avocado Matcha Smoothie （Large)",
+    "description": "Real Avocado no syrup",
+    "price": "$8.85",
+    "section": "Smoothie Series"
+   },
+   {
+    "name": "E6. Avocado Smoothie (Large)",
+    "description": "Real Avocado no syrup. Caffeine Free",
+    "price": "$8.85",
+    "section": "Smoothie Series"
+   },
+   {
+    "name": "C1. Freshly Squeezed Lemon Black Tea",
+    "description": "Recommended.",
+    "price": "$7.90",
+    "section": "Lemon Series"
+   },
+   {
+    "name": "C2. Freshly Squeezed Lemon Jasmine Green Tea",
+    "description": "Hi dear customers. please choose any the following drinks in this category for the deal package. no substitute for any of the drinks.",
+    "price": "$7.90",
+    "section": "Lemon Series"
+   },
+   {
+    "name": "C3. Freshly Squeezed Lemon Honey Jasmine Green Tea",
+    "description": "Iced (l).",
+    "price": "$7.90",
+    "section": "Lemon Series"
+   },
+   {
+    "name": "C4. Kumquat Lemon Jasmine Green Tea",
+    "description": "Recommended.",
+    "price": "$7.90",
+    "section": "Lemon Series"
+   },
+   {
+    "name": "C5. Yakult Lemon Jasmine Green Tea (Large)",
+    "description": "Iced (L).",
+    "price": "$7.90",
+    "section": "Lemon Series"
+   },
+   {
+    "name": "C6. Strawberry Lemonade (Large)",
+    "description": "Iced (L).",
+    "price": "$7.65",
+    "section": "Lemon Series"
+   },
+   {
+    "name": "C7. Mango Lemonade (Large)",
+    "description": "Iced (L).",
+    "price": "$7.65",
+    "section": "Lemon Series"
+   },
+   {
+    "name": "C8. Lemonade (Large)",
+    "description": "Iced (L).",
+    "price": "$7.65",
+    "section": "Lemon Series"
+   },
+   {
+    "name": "F1. Mango Jasmine Green Tea (Large)",
+    "description": "",
+    "price": "$7.40",
+    "section": "Fruit Tea Series"
+   },
+   {
+    "name": "F2. Strawberry Green Tea with Lychee Jelly (Large)",
+    "description": "Recommended.",
+    "price": "$8.10",
+    "section": "Fruit Tea Series"
+   },
+   {
+    "name": "F3. Strawberry Black Tea with Lychee Jelly (Large)",
+    "description": "",
+    "price": "$8.10",
+    "section": "Fruit Tea Series"
+   },
+   {
+    "name": "F4. Passionfruit Jasmine Green Tea (Large)",
+    "description": "Recommended.",
+    "price": "$7.90",
+    "section": "Fruit Tea Series"
+   }
+  ]
+ },
+ {
+  "restaurantId": "10495",
+  "name": "Jilberto's",
+  "sourceUrl": "https://www.ubereats.com/store/jilbertos-taco-shop-nordahl-rd/Z-dEqZD4Ui2hEpuzMDJ1yg",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "bot-wall: this exact address (538 Nordahl Rd) is one of 11 chain locations; the chain's own site (jilbertosmexican.com) lists it as \"Online Ordering Coming Soon\" with no prices; the matching UberEats/Postmates listing (confirmed via Serper snippet showing real menu items/prices, e.g. \"Huevos Rancheros Plate $15.50\") redirects to an Uber anti-bot challenge page on fetch and has no Wayback snapshot; other Grubhub/DoorDash listings found are for different branch addresses (336 W Valley Pkwy etc.) and must not be filed under this record"
+ },
+ {
+  "restaurantId": "9671",
+  "name": "Ranch Market & Deli",
+  "sourceUrl": "https://order.online/store/the-ranch-market-&-deli-rancho-santa-fe-1656654",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "needs-browser: order.online, DoorDash, and Grubhub listings for this exact address (16236 San Dieguito Rd #213) all confirmed via Serper snippets showing real prices (e.g. \"Genoa Salami Sandwich $13.99\"), but every static fetch (order.online, DoorDash, Grubhub) returns only a JS-hydration shell with a single preview MenuPageItem embedded server-side; the full multi-section menu (Breakfast/Dessert/Dinner/Grill/Lunch/Pizza/Salads per Grubhub) loads client-side only and could not be recovered without a browser"
+ },
+ {
+  "restaurantId": "5793",
+  "name": "Sunrise Deli & Grill",
+  "sourceUrl": "https://www.yelp.com/biz/sunrise-deli-san-diego",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "bot-wall: confirmed open and correctly identified via Google Maps (exact address 7920 Silverton Ave AB, San Diego, 4.8 stars / 278 reviews matching batch reviewCount exactly) and Yelp (same address, phone (858) 433-7139); no own website (batch website is null, none found); no delivery-platform listing exists for this exact address (DoorDash/UberEats/Grubhub results for \"Sunrise Deli\" are all different same-named businesses in other cities: Spring Valley, West Haven, Woodside NY, San Francisco, Brooklyn); Yelp itself (which hosts owner photos mentioned in reviews as the pricing reference) returns 403 to automated fetches; sunrise-deli.hey-restaurants.com is a barred farm domain and was not used"
+ }
+]

@@ -1,3 +1,4 @@
+import type { CSSProperties, ReactNode } from "react";
 import { rankByKey, type RankKey } from "@/lib/ranks";
 
 /**
@@ -28,11 +29,44 @@ const STAR_PATH = "M50 8l2.5 5.1 5.7.8-4.1 4 1 5.6-5.1-2.7-5.1 2.7 1-5.6-4.1-4 5
 
 type Placed = { x: number; y: number; scale: number };
 
-function Star({ x, y, scale }: Placed) {
+/**
+ * `i` is the star's place in its row, which `.crest-pop` (globals.css) turns
+ * into a stagger so a rank-up pops the stars in one after another. The outer
+ * <g> carries the class and no transform of its own, so its fill-box is the
+ * star itself and the pop scales around the star's centre.
+ */
+function Star({ x, y, scale, i = 0 }: Placed & { i?: number }) {
   return (
-    <g transform={`translate(${x} ${y}) scale(${scale}) translate(-50 -15.8)`}>
-      <path d={STAR_PATH} fill="var(--pm-orange)" />
+    <g className="crest-star" style={{ "--d": `${i * 70}ms` } as CSSProperties}>
+      <g transform={`translate(${x} ${y}) scale(${scale}) translate(-50 -15.8)`}>
+        <path d={STAR_PATH} fill="var(--pm-orange)" />
+      </g>
     </g>
+  );
+}
+
+/**
+ * The plate, cutlery and laurel are one group (`.crest-body`) so the rank-up
+ * pop can settle the body as a unit while the stars arrive over it. Draw
+ * order is preserved: Critic and Institution paint their stars *under* the
+ * laurel, so those pass `starsFirst`.
+ */
+function Crest({
+  body,
+  stars,
+  starsFirst = false,
+}: {
+  body: ReactNode;
+  stars: Placed[];
+  starsFirst?: boolean;
+}) {
+  const row = stars.map((s, i) => <Star key={i} {...s} i={i} />);
+  return (
+    <>
+      {starsFirst && row}
+      <g className="crest-body">{body}</g>
+      {!starsFirst && row}
+    </>
   );
 }
 
@@ -64,7 +98,7 @@ function CrossedCutlery({ x, y, scale }: Placed) {
 function Plate({ cy, r, faceR }: { cy: number; r: number; faceR: number }) {
   return (
     <>
-      <circle cx="50" cy={cy} r={r} fill="var(--pm-grey-tint)" />
+      <circle className="crest-plate-rim" cx="50" cy={cy} r={r} fill="var(--pm-grey-tint)" />
       <circle cx="50" cy={cy} r={faceR} fill="#ffffff" />
     </>
   );
@@ -73,7 +107,7 @@ function Plate({ cy, r, faceR }: { cy: number; r: number; faceR: number }) {
 /** Critic's wreath: two arcs sweeping up from the base, open at the top. */
 function LaurelHalf() {
   return (
-    <g className="text-zinc-400">
+    <g className="crest-laurel text-zinc-400">
       <g stroke="currentColor" strokeWidth="2.4" fill="none" strokeLinecap="round">
         <path d="M44 88c-13-3.4-21-12-22.5-24" />
         <path d="M56 88c13-3.4 21-12 22.5-24" />
@@ -99,7 +133,7 @@ function LaurelHalf() {
  */
 function LaurelFull() {
   return (
-    <g className="text-zinc-400" transform="translate(50 63) scale(0.82) translate(-50 -61)">
+    <g className="crest-laurel text-zinc-400" transform="translate(50 63) scale(0.82) translate(-50 -61)">
       <g stroke="currentColor" strokeWidth="2.9" fill="none" strokeLinecap="round">
         <path d="M44 88c-16-4-25-16-24-33 .5-9 4-16 10-21" />
         <path d="M56 88c16-4 25-16 24-33-.5-9-4-16-10-21" />
@@ -141,52 +175,76 @@ function Mark({ rank }: { rank: RankKey }) {
       );
     case "regular":
       return (
-        <>
-          <Plate cy={57} r={23} faceR={16} />
-          <CrossedCutlery x={50} y={57} scale={0.76} />
-          <Star x={50} y={15} scale={0.7} />
-        </>
+        <Crest
+          body={
+            <>
+              <Plate cy={57} r={23} faceR={16} />
+              <CrossedCutlery x={50} y={57} scale={0.76} />
+            </>
+          }
+          stars={[{ x: 50, y: 15, scale: 0.7 }]}
+        />
       );
     case "local":
       return (
-        <>
-          <Plate cy={57} r={23} faceR={16} />
-          <CrossedCutlery x={50} y={57} scale={0.76} />
-          <Star x={41} y={16} scale={0.7} />
-          <Star x={59} y={16} scale={0.7} />
-        </>
+        <Crest
+          body={
+            <>
+              <Plate cy={57} r={23} faceR={16} />
+              <CrossedCutlery x={50} y={57} scale={0.76} />
+            </>
+          }
+          stars={[
+            { x: 41, y: 16, scale: 0.7 },
+            { x: 59, y: 16, scale: 0.7 },
+          ]}
+        />
       );
     case "critic":
       return (
-        <>
-          <Star x={34} y={17} scale={0.55} />
-          <Star x={50} y={11} scale={0.55} />
-          <Star x={66} y={17} scale={0.55} />
-          <LaurelHalf />
-          <Plate cy={52} r={18} faceR={12.5} />
-          <CrossedCutlery x={50} y={52} scale={0.58} />
-        </>
+        <Crest
+          starsFirst
+          stars={[
+            { x: 34, y: 17, scale: 0.55 },
+            { x: 50, y: 11, scale: 0.55 },
+            { x: 66, y: 17, scale: 0.55 },
+          ]}
+          body={
+            <>
+              <LaurelHalf />
+              <Plate cy={52} r={18} faceR={12.5} />
+              <CrossedCutlery x={50} y={52} scale={0.58} />
+            </>
+          }
+        />
       );
     case "institution":
       return (
-        <>
-          <Star x={32} y={17} scale={0.5} />
-          <Star x={41} y={12} scale={0.5} />
-          <Star x={50} y={9} scale={0.5} />
-          <Star x={59} y={12} scale={0.5} />
-          <Star x={68} y={17} scale={0.5} />
-          <LaurelFull />
-          <Plate cy={62} r={15} faceR={10.5} />
-          <CrossedCutlery x={50} y={62} scale={0.5} />
-          {/* The banner closing the wreath. The crest's only other accent. */}
-          <path
-            d="M40 92h20"
-            fill="none"
-            stroke="var(--pm-orange)"
-            strokeWidth="4.5"
-            strokeLinecap="round"
-          />
-        </>
+        <Crest
+          starsFirst
+          stars={[
+            { x: 32, y: 17, scale: 0.5 },
+            { x: 41, y: 12, scale: 0.5 },
+            { x: 50, y: 9, scale: 0.5 },
+            { x: 59, y: 12, scale: 0.5 },
+            { x: 68, y: 17, scale: 0.5 },
+          ]}
+          body={
+            <>
+              <LaurelFull />
+              <Plate cy={62} r={15} faceR={10.5} />
+              <CrossedCutlery x={50} y={62} scale={0.5} />
+              {/* The banner closing the wreath. The crest's only other accent. */}
+              <path
+                d="M40 92h20"
+                fill="none"
+                stroke="var(--pm-orange)"
+                strokeWidth="4.5"
+                strokeLinecap="round"
+              />
+            </>
+          }
+        />
       );
   }
 }
@@ -195,6 +253,7 @@ export function RankInsignia({
   rank,
   size = 76,
   showCard = false,
+  pop = false,
   className = "",
 }: {
   rank: RankKey;
@@ -207,6 +266,12 @@ export function RankInsignia({
    * wreath. Turn it on to put the crest on cream or on a photo.
    */
   showCard?: boolean;
+  /**
+   * Play the arrival: the body settles in and the stars pop on one by one.
+   * Once, on mount — remount (change the `key`) to play it again. Used by
+   * `RankRing` when a title is earned; honours `prefers-reduced-motion`.
+   */
+  pop?: boolean;
   className?: string;
 }) {
   const { title } = rankByKey(rank);
@@ -217,7 +282,7 @@ export function RankInsignia({
       height={size}
       role="img"
       aria-label={`${title} rank`}
-      className={`text-pm-grey-text ${className}`}
+      className={`text-pm-grey-text ${pop ? "crest-pop" : ""} ${className}`}
     >
       {showCard ? <rect x="2" y="2" width="96" height="96" rx="14" fill="#ffffff" /> : null}
       <Mark rank={rank} />

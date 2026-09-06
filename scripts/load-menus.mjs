@@ -100,6 +100,8 @@ async function withRetry(fn, attempts = 8) {
 }
 
 const entries = JSON.parse(await readFile(path, "utf8"));
+// Agents sometimes write restaurantId as a number; restaurants.id is TEXT.
+if (Array.isArray(entries)) for (const e of entries) if (e && e.restaurantId != null) e.restaurantId = String(e.restaurantId);
 
 if (!Array.isArray(entries)) {
   console.error("Expected the file to hold an array of menus.");

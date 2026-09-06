@@ -16,5 +16,5 @@ import { CoachTour, useCoachTour } from "@/components/tour/CoachTour";
 export function CoachTourMount() {
   const tour = useCoachTour();
   if (!tour.open) return null;
-  return <CoachTour onDone={tour.close} />;
+  return <CoachTour onDone={tour.close} fresh={tour.fresh} />;
 }

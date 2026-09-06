@@ -56,6 +56,16 @@ import { EMPTY_PLATE_SCORE } from "@/lib/plateScore";
  */
 const CACHE_CONTROL = "public, s-maxage=60, stale-while-revalidate=300";
 
+/**
+ * How many rows `?q=&fields=map` may return. The map's search is a filter,
+ * not a typeahead: every restaurant the term matches is lit and every other
+ * one is dimmed, so a cap that cuts the answer short dims real matches as if
+ * they had failed it — at the default 60, "mexican" lit 60 places and put a
+ * few hundred more out. High enough that no cuisine or neighbourhood in the
+ * corpus reaches it; a term that does ("a") is not a search anyone framed.
+ */
+const MAP_SEARCH_LIMIT = 2500;
+
 export async function GET(req: Request) {
   const params = new URL(req.url).searchParams;
   const q = params.get("q")?.trim();
@@ -84,6 +94,30 @@ export async function GET(req: Request) {
    * and the trending flag. See `getRestaurantMapRows`.
    */
   if (params.get("fields") === "map") {
+    /*
+     * With a term, the map wants the OTHER thing: not the corpus, which it
+     * already holds, but which of it matches — every id, plus the fields the
+     * client-side predicate in useMapSearch re-checks and the point it frames.
+     * No plate scores, no hours: the map reads those off the row it has.
+     */
+    if (q) {
+      const hits = await searchRestaurants(q, MAP_SEARCH_LIMIT);
+      return NextResponse.json(
+        {
+          restaurants: hits.map((r) => ({
+            id: r.id,
+            name: r.name,
+            lat: r.lat,
+            lng: r.lng,
+            cuisine: r.cuisine,
+            cuisineTags: r.cuisineTags,
+            neighborhood: r.neighborhood,
+            ...(r.matchedDish ? { matchedDish: r.matchedDish } : {}),
+          })),
+        },
+        { headers: { "Cache-Control": CACHE_CONTROL } },
+      );
+    }
     const [rows, plates] = await Promise.all([
       getRestaurantMapRows(),
       getAllRestaurantPlateScores(),

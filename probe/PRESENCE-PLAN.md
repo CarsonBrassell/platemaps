@@ -287,3 +287,56 @@ logs to data/serper-cells.json, not the ledger; Serper's dashboard is truth).
   review_count as low as 5; my imports keep the 20 floor. Decision pending.
 - Agent accident: `rm -rf scratchpad` deleted ~140 untracked scratch files
   (backups included). Not recoverable from git.
+
+### Sweep finished 2026-09-04 21:45 PT
+3,850 queries, 9,703 unique places, 6,489 already ours, 596 not food, 128
+chains, 2,490 survivors -> imported. Result: 11492 of 13949 restaurants listed (was 9004).
+Serper ledger: 26,340 of 52,500 credits. Marginal yield fell from ~1.0 new
+place per query (first 1,000) to ~0.5 (last 2,600); a second pass is worth
+trying only at page 2 or with new categories (bakery, food truck, brewery,
+juice), see sweep-serper.mjs CATEGORIES.
+
+### Incident 2026-09-05 00:30 PT: the sweep imported 2,557 out-of-county rows
+
+Serper ignored the area in queries like "bakery in North Coastal, Cardiff,
+CA" and returned Cardiff (Wales), London, Los Angeles, Tijuana, Angels Camp.
+sweep-serper.mjs only filtered type/closure/chain/known-id, so they imported
+and, because the listing gate is now hold+coords, listed. Their cities then
+fed the sweep's own area list (built from the corpus), the page-2 run had
+20,000 queries instead of 7,700 and spent 11,700 credits on other cities.
+Page-2 results: 9,292 survivors, 9,253 outside the county. Not imported.
+
+Fix: held all 2,557 (bbox lat 32.50-33.55, lng -117.65 to -116.00, plus
+Mexico addresses) with hold_reason 'outside San Diego County (sweep result)',
+snapshot $TEMP/oob-snapshot.json. Listed 11,525 -> 8,968. sweep-serper.mjs
+and import-deh.mjs are getting a bbox guard, area list restricted to
+in-county listed rows with >= 3 rows per label, and an `ll` centre on every
+Serper call. Credits: 38,190 of 52,500 used; ~14,300 left.
+Net in-county gain from the whole sweep: about 230 listed rows over the
+8,740 it started from. The category sweep is a poor buy at this point.
+Follow-up 00:50 PT: bbox now also excludes the Orange County corner
+(lat > 33.39 and lng < -117.58: San Clemente, Dana Point; Camp Pendleton
+stays). 126 more San Clemente sweep rows held (2,683 total). Cache rebuilt
+under the new area list (215 areas): 1 survivor, imported. Listed 8,843 of
+13,983. Net gain from the whole sweep over its 8,740 start: 103 rows for
+~26,000 credits. Do not run the category sweep again; the corpus already
+covers what Google Maps surfaces for these categories in the county.
+
+### Permit-only retry 2026-09-05 11:55 PT (scripts/retry-permit-only.mjs)
+
+Second Serper /maps pass over the 404 `permit-only: no public listing found`
+rows, query "<name>, <city>, CA" with `ll` centred on the permit geocode
+(the first pass used name + street). Match rules: same street number within
+1 km AND one shared name word, or whole-name agreement within 400 m; primary
+Google type must be food; matched title checked against the chain list.
+Result: 17 chain holds, 20 matched and listed, 63 duplicates of rows already
+on the site, 22 not a restaurant (hotels, a country club, a food bank, a
+church, a biotech cafeteria), 1 grocery sushi counter held by hand, 282 no
+match. 304 permit-only rows remain and stay held; Google has nothing for
+them under either query shape. Cost 1,161 credits (39,351 of 52,500 used,
+~13,150 left). Listed 8,843 -> 8,862 of 13,983.
+Lesson: a hold written as 'excluded: generic chain (...)' on a row whose own
+name does not match a pattern is released by exclude-chains.mjs on its next
+run; holds derived from the matched Google title now use 'permit-only: not a
+restaurant (chain premises: ...)'. Pick Up Stix and Mountain Mike's Pizza
+matched and are listed; neither is in data/excluded-chains.json.

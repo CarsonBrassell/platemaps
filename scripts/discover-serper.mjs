@@ -2,7 +2,8 @@
  * Finds restaurants that none of our three sources carry, through Google Maps
  * via Serper.
  *
- *   node --env-file=.env.local scripts/discover-serper.mjs --fetch [--limit N]
+ *   node --env-file=.env.local scripts/discover-serper.mjs --fetch [--limit N] [--query cafe]
+ *   node --env-file=.env.local scripts/discover-serper.mjs --deep [--limit N]
  *   node --env-file=.env.local scripts/discover-serper.mjs --report
  *   node --env-file=.env.local scripts/discover-serper.mjs --import [--dry]
  *
@@ -64,8 +65,13 @@ const has = (f) => args.includes(f);
 const limitIdx = args.indexOf("--limit");
 const LIMIT = limitIdx >= 0 ? Number(args[limitIdx + 1]) : Infinity;
 const DRY = has("--dry");
+// --query <word> runs the cell walk with a different search term. "restaurants"
+// misses what Google types as a cafe, bar or bakery; each word keeps its own
+// cell ledger so the passes are independently resumable.
+const queryIdx = args.indexOf("--query");
+const QUERY = queryIdx >= 0 ? args[queryIdx + 1] : "restaurants";
 
-const CELLS_PATH = "data/serper-cells.json";
+const CELLS_PATH = QUERY === "restaurants" ? "data/serper-cells.json" : `data/serper-cells-${QUERY.replace(/[^a-z0-9]+/gi, "-")}.json`;
 const PLACES_PATH = "data/serper-places.json";
 const OUT_PATH = "data/serper-discovered.json";
 
@@ -81,7 +87,7 @@ async function serperMaps(ll, page) {
   const res = await fetch("https://google.serper.dev/maps", {
     method: "POST",
     headers: { "X-API-KEY": process.env.SERPER_API_KEY, "Content-Type": "application/json" },
-    body: JSON.stringify({ q: "restaurants", ll, gl: "us", hl: "en", page }),
+    body: JSON.stringify({ q: QUERY, ll, gl: "us", hl: "en", page }),
   });
   if (!res.ok) throw new Error(`serper ${res.status} for ${ll} p${page}`);
   const data = await res.json();
@@ -99,7 +105,8 @@ async function fetchCells() {
   if (!process.env.SERPER_API_KEY) { console.error("SERPER_API_KEY is not set"); process.exit(1); }
   const rows = await sql`
     SELECT DISTINCT round(lat::numeric, 2) AS lat, round(lng::numeric, 2) AS lng
-    FROM restaurants WHERE lat IS NOT NULL AND lng IS NOT NULL ORDER BY 1, 2`;
+    FROM restaurants WHERE lat IS NOT NULL AND lng IS NOT NULL
+      AND lat BETWEEN 32.534 AND 33.44 AND lng BETWEEN -117.6 AND -116.08 ORDER BY 1, 2`;
   const done = new Set(await loadJson(CELLS_PATH, []));
   const places = await loadJson(PLACES_PATH, {});
   const todo = rows.map((r) => `${Number(r.lat).toFixed(2)},${Number(r.lng).toFixed(2)}`).filter((k) => !done.has(k)).slice(0, LIMIT);
@@ -123,7 +130,7 @@ async function fetchCells() {
       }
       for (const p of got) {
         const id = p.cid ?? p.placeId; if (!id) continue;
-        if (!places[id]) { found++; places[id] = { ...p, cell: key }; }
+        if (!places[id]) { found++; places[id] = { ...p, cell: key, query: QUERY }; }
       }
       done.add(key);
       if (done.size % 25 === 0) { await saveJson(CELLS_PATH, [...done]); await saveJson(PLACES_PATH, places); console.log(`  ${done.size} cells, ${Object.keys(places).length} places, ${credits} credits`); }
@@ -134,10 +141,63 @@ async function fetchCells() {
   console.log(`done: ${done.size} cells, ${Object.keys(places).length} distinct places (+${found} new), ${credits} credits this run`);
 }
 
+// ---------------------------------------------------------------- deep
+//
+// A 16z page-1 call returns 20 places. In downtown, North Park, Convoy and
+// Hillcrest a cell holds far more than that, so the first pass saw only the
+// most prominent 20 and the rest were never asked for. This pass takes every
+// cell that came back full — 20+ places landing inside its square, or 18+
+// first seen there — and spends up to six more credits on it: pages 2 and 3
+// at 16z, then the four quarter-cell centres at 17z (page 2 too when full).
+// `data/serper-deep.json` records finished cells so a re-run is free.
+
+const DEEP_PATH = "data/serper-deep.json";
+
+async function deepCells() {
+  if (!process.env.SERPER_API_KEY) { console.error("SERPER_API_KEY is not set"); process.exit(1); }
+  const done = new Set(await loadJson(CELLS_PATH, []));
+  const deepDone = new Set(await loadJson(DEEP_PATH, []));
+  const places = await loadJson(PLACES_PATH, {});
+  const inSquare = new Map(), firstSeen = new Map();
+  for (const p of Object.values(places)) {
+    if (p.latitude) { const k = `${p.latitude.toFixed(2)},${p.longitude.toFixed(2)}`; inSquare.set(k, (inSquare.get(k) ?? 0) + 1); }
+    firstSeen.set(p.cell, (firstSeen.get(p.cell) ?? 0) + 1);
+  }
+  const todo = [...done].filter((k) => !deepDone.has(k) && ((inSquare.get(k) ?? 0) >= 20 || (firstSeen.get(k) ?? 0) >= 18)).slice(0, LIMIT);
+  console.log(`${done.size} cells, ${deepDone.size} deepened, deepening ${todo.length}`);
+  let credits = 0, found = 0;
+  const take = (got) => { for (const p of got) { const id = p.cid ?? p.placeId; if (!id) continue; if (!places[id]) { found++; places[id] = { ...p, cell: "deep" }; } } };
+  const CONCURRENCY = 4;
+  let i = 0;
+  const worker = async () => {
+    while (i < todo.length) {
+      const key = todo[i++];
+      const [lat, lng] = key.split(",").map(Number);
+      try {
+        const ll = `@${lat},${lng},16z`;
+        const p2 = await serperMaps(ll, 2); credits++; take(p2);
+        if (p2.length >= 20) { take(await serperMaps(ll, 3)); credits++; }
+        for (const [dy, dx] of [[0.0025, 0.0025], [0.0025, -0.0025], [-0.0025, 0.0025], [-0.0025, -0.0025]]) {
+          const sub = `@${(lat + dy).toFixed(4)},${(lng + dx).toFixed(4)},17z`;
+          const s1 = await serperMaps(sub, 1); credits++; take(s1);
+          if (s1.length >= 20) { take(await serperMaps(sub, 2)); credits++; }
+        }
+      } catch (e) {
+        console.error(`cell ${key}: ${e.message}`); continue;
+      }
+      deepDone.add(key);
+      if (deepDone.size % 10 === 0) { await saveJson(DEEP_PATH, [...deepDone]); await saveJson(PLACES_PATH, places); console.log(`  ${deepDone.size} deepened, ${Object.keys(places).length} places, ${credits} credits`); }
+    }
+  };
+  await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+  await saveJson(DEEP_PATH, [...deepDone]); await saveJson(PLACES_PATH, places);
+  console.log(`done: ${deepDone.size} cells deepened, ${Object.keys(places).length} distinct places (+${found} new), ${credits} credits this run`);
+}
+
 // ---------------------------------------------------------------- report
 
 const NON_FOOD = /grocery|supermarket|gas station|convenience|liquor|hotel|motel|caterer|catering|banquet|wedding|event venue|school|church|hospital|casino|movie theater|golf|park$|stadium|arena|meal delivery|food bank|distributor|wholesale|manufacturer|corporate office|apartment|store$|shop$|beach|public|^house$|^cottage$|salon|cleaners|playground|supplier|processing|producer|company/i;
-const FOOD = /restaurant|cafe|café|coffee|bar$|bar &|grill|pizza|taco|bakery|deli|food|kitchen|bistro|eatery|diner|sushi|bbq|barbecue|brewery|brewpub|pub|tea|boba|ice cream|dessert|juice|donut|bagel|sandwich|burger|noodle|ramen|pho|wings?|seafood|steak|buffet|taqueria|creperie|gelato|cafeteria|lounge|bakeshop|patisserie|chicken|hot dog|smoothie|acai|poke|dumpling|dim sum|hot pot|kebab|shawarma|falafel|pastry|cupcake|frozen yogurt|churro|empanada|takeout|brunch|breakfast|wine bar|cocktail|gastropub|tavern|cantina|pupuseria|panaderia|birria|mariscos|fish|lobster|pasta|pizzeria|taqueria|tortas|ceviche|crab|oyster|espresso|cakes?|pies?|waffle|crepe|hawaiian|teriyaki|curry|thai|vietnamese|filipino|halal|mediterranean|greek|indian|korean|japanese|chinese|italian|mexican|salvadoran|peruvian|ethiopian|kabob|gyro|burrito|wings|nachos|pancake|omelet|brunch/i;
+const FOOD = /restaurant|cafe|café|coffee|bar$|bar &|grill|pizza|taco|bakery|deli|food|kitchen|bistro|eatery|diner|sushi|bbq|barbecue|brewery|brewpub|\bpub\b|\btea\b|boba|ice cream|dessert|juice|donut|bagel|sandwich|burger|noodle|ramen|\bpho\b|\bwings?\b|seafood|steak|buffet|taqueria|creperie|gelato|cafeteria|lounge|bakeshop|patisserie|chicken|hot dog|smoothie|acai|poke|dumpling|dim sum|hot pot|kebab|shawarma|falafel|pastry|cupcake|frozen yogurt|churro|empanada|takeout|brunch|breakfast|wine bar|cocktail|gastropub|tavern|cantina|pupuseria|panaderia|birria|mariscos|fish|lobster|pasta|pizzeria|taqueria|tortas|ceviche|\bcrab\b|oyster|espresso|\bcakes?\b|\bpies?\b|waffle|crepe|hawaiian|teriyaki|curry|thai|vietnamese|filipino|halal|mediterranean|greek|indian|korean|japanese|chinese|italian|mexican|salvadoran|peruvian|ethiopian|kabob|gyro|burrito|wings|nachos|pancake|omelet|brunch/i;
 
 // Venue-shaped names: a shopping centre, resort or bowling alley that Google
 // typed as a bare "Restaurant" because something inside it serves food.
@@ -147,6 +207,23 @@ const VENUE_ALWAYS = /\b(casino|dispensary|cannabis|k1 speed|lucky strike|bowlin
 // Hard venue words: skipped even when the name carries a food word ("Costco Food Court").
 const VENUE_HARD = /costco|food court|dispensary|cannabis|smoke shop|hookah|k1 speed|lucky strike|farmers'? market|cinemas?|cin[eé]polis/i;
 const COUNTY_ZIP = /\bCA\s+9(19\d\d|2[01]\d\d)\b/;
+// Not open to a visitor: military galleys and base exchanges, campus and
+// clinic cafeterias, members' clubs, park concessions, corporate offices, and
+// businesses Google typed as restaurants that only tour, deliver or sell
+// groceries. Found in the 2026-09-05 deep pass; every one has Google reviews.
+const NOT_PUBLIC_NAME = /dining facility|recreation center|(^|[^a-z0-9])mcrd([^a-z0-9]|$)|support center|food tours?|(^|[^a-z0-9])vfw([^a-z0-9]|$)|beach club|concessions?|scripps clinic|nicholson commons|navy exchange|(^|[^a-z0-9])nex([^a-z0-9]|$)|(^|[^a-z0-9])nbsd([^a-z0-9]|$)|(^|[^a-z0-9])nab([^a-z0-9]|$)|(^|[^a-z0-9])nasni([^a-z0-9]|$)|duncan hall|canyonside snack bar|fairway cafe|بقاله|grocery/i;
+const NOT_PUBLIC_ADDR = /camp pendleton|guadalcanal rd|callagan hwy|boyington rd|(^|[^a-z0-9])mcrd([^a-z0-9]|$)|brinser st|mchugh st|3750 anderson ave|nicholson commons|navy exchange|womble st|(^|[^a-z0-9])s r ave([^a-z0-9]|$)|rotary park/i;
+const NOT_PUBLIC_TYPE = /tour operator|delivery service|corporate office/i;
+// The "cafe" and "bar" query words (2026-09-05) return everything Google calls
+// a bar: brow bars, wax bars, IV drip bars, dog cafes, grocery-store bakeries.
+// Only types that are unambiguously food service get through that pass, and
+// bars keep the same rule as restaurants: no nightclubs, cigar lounges,
+// billiard halls, liquor stores, hotel lobbies, wholesale roasters, Herbalife
+// "nutrition" clubs, or anything inside an airport, zoo, theme park, campus
+// or hospital.
+const SERVICE_TYPE = /eyebrow|waxing|hair|facial|spa$|groomer|skin care|clinic|tour agency|art center|car rental|non-profit|cycling|sports complex|music venue|therapist|make-up|makeup|fishing|therapy|beautician|vacation|exporter|storage|check cashing|party service|mental health|vending|day care|dog cafe|cat cafe|hookah|karaoke|seafood market|food court|cafeteria|dessert buffet|nightclub|night club|adult|strip club/i;
+const BAR_VENUE_NAME = new RegExp("nightclub|night club|cigar|billiard|liquor|home brew mart|barworks|bartending|axe throwing|golf & game|roaster|roasting|roastery|nutrition|candy buffet|cpo club|athlete connections|mama's kitchen|youth venture|^cafeteria$|vacation|cottage|hotel|" + "(^|[^a-z0-9])inn([^a-z0-9]|$)" + "|" + "(^|[^a-z0-9])bw([^a-z0-9]|$)" + "|thrift|beauty|brows?|lash|wax|threading|grooming|boarding|barnes & noble|el super|food 4 less|albertsons|vons|farm fresh market|natural market|harvest market|pool club|pool bar|lobby|sapphire lounge|rental car|zoofari|paratha point|sheraton|middle earth|catering|venue$|pool lounge|corner pin|crowbeard", "i");
+const BAR_VENUE_ADDR = /terminal|admiral boland|gate 1[0-9][0-9]|zoo pl|sea world dr|legoland|gilman dr|athena cir|frost st|^1 park blvd|hotel cir|harney st|zoofari|balboa park|^n[/]a|human resources|parking lot|please call/i;
 const MIN_REVIEWS = 5;
 
 const loose = (s) => (s ?? "").toLowerCase().replace(/&/g, "and").replace(/\b(the|restaurant|cafe|café|bar|grill|kitchen|co|inc|llc)\b/g, "").replace(/[^a-z0-9]/g, "");
@@ -170,7 +247,7 @@ async function report() {
     return out;
   };
 
-  const skip = { ours: 0, nonFood: 0, outsideCounty: 0, noCoords: 0, fewReviews: 0, venue: 0 };
+  const skip = { ours: 0, nonFood: 0, outsideCounty: 0, noCoords: 0, fewReviews: 0, venue: 0, notPublic: 0 };
   const newOnes = [];
   const venueSkips = [];
   for (const p of places) {
@@ -190,6 +267,10 @@ async function report() {
     if (VENUE_HARD.test(title)) { skip.venue++; venueSkips.push(title); continue; }
     if (!foodName && VENUE_NAME.test(title) && (primary === "Restaurant" || primary === "")) { skip.venue++; venueSkips.push(title); continue; }
     if (!foodName && VENUE_ALWAYS.test(title)) { skip.venue++; venueSkips.push(title); continue; }
+    if (NOT_PUBLIC_TYPE.test(primary) || NOT_PUBLIC_NAME.test(title) || NOT_PUBLIC_ADDR.test(p.address ?? "")) { skip.notPublic++; venueSkips.push(title); continue; }
+    if (SERVICE_TYPE.test(primary) || BAR_VENUE_NAME.test(title) || BAR_VENUE_ADDR.test(p.address ?? "") || /3225 n harbor dr/i.test(p.address ?? "")) { skip.notPublic++; venueSkips.push(title); continue; }
+    // No street number and no cross-street: a campus lounge or a town name, not a door.
+    if (!/[0-9]/.test(p.address ?? "") && !/&/.test(p.address ?? "")) { skip.notPublic++; venueSkips.push(title); continue; }
     if ((p.ratingCount ?? 0) < MIN_REVIEWS) { skip.fewReviews++; continue; }
     if ((p.placeId && byPlaceId.has(p.placeId)) || byCid.has(String(p.cid))) { skip.ours++; continue; }
     const ln = loose(p.title), fw = firstWord(p.title), sn = streetNo(p.address);
@@ -243,6 +324,7 @@ async function importNew() {
 }
 
 if (has("--fetch")) await fetchCells();
+else if (has("--deep")) await deepCells();
 else if (has("--report")) await report();
 else if (has("--import")) await importNew();
-else { console.error("usage: discover-serper.mjs --fetch [--limit N] | --report | --import [--dry]"); process.exit(1); }
+else { console.error("usage: discover-serper.mjs --fetch [--limit N] | --deep [--limit N] | --report | --import [--dry]"); process.exit(1); }

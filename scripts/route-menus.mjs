@@ -7,7 +7,7 @@
  *   node --env-file=.env.local scripts/route-menus.mjs --ids <gated ids> --no-cache   (the noon re-run)
  *
  * For every restaurant in the extraction queue (the same predicate
- * `cut-batches.mjs` uses) that has a website, it fetches the site, works out
+ * `cut-batches.mjs` uses), it fetches the listed website, works out
  * which ordering platform the restaurant is on, and reads the priced payload
  * that platform serves - the recipes in `probe/PLAYBOOK.md` section 9, run
  * mechanically instead of one agent at a time.
@@ -51,6 +51,19 @@
  *   restaurant's own platforms have nothing, their captures go through the
  *   same markup test as everything else, and the note on the entry says the
  *   prices are the platform's rather than the restaurant's.
+ *
+ * ## Serper fallback (2026-09-08)
+ *
+ * A row with NO website on record, or whose real site carries no platform
+ * this file knows how to read, gets exactly ONE `scripts/serper.mjs`-style
+ * search (`"<name>" <city> doordash OR ubereats OR toasttab OR menufy`)
+ * before giving up. Any first-party or platform hit it returns goes through
+ * `attemptOnce` exactly like a listed website - the same address/city/name
+ * identity checks gate it, so a same-name restaurant in another city is never
+ * filed under this one's id. A miss is still just a NOTE, never a verdict -
+ * see `serperFallback` and `route()`. This is the reason the invariant below
+ * still holds: adding a second, paid lookup must never turn "the router found
+ * nothing" into "the restaurant has no menu".
  *
  * ## Caching
  *
@@ -2730,13 +2743,12 @@ const sql = neon(process.env.DATABASE_URL);
 
 const queue = IDS
   ? await sql.query(
-      `SELECT r.id, r.name, r.address,
+      `SELECT r.id, r.name, r.address, r.city, r.neighborhood,
               /* An explicit --ids run is a re-read of a restaurant we already
                * know something about, so it may start from the menu URL the
-               * ledger already holds. That is the only way the DoorDash-
-               * truncated restaurants with no website on file can be re-read
-               * at all. The unattended queue below is untouched: it still
-               * routes from a real website and nothing else. */
+               * ledger already holds. A row with neither a website nor a prior
+               * source_url is not an error any more - see the SERPER FALLBACK
+               * below, which is exactly for that case (2026-09-08). */
               COALESCE(r.website, (SELECT m.source_url FROM menu_lookups m
                                     WHERE m.restaurant_id = r.id
                                       AND m.source_url IS NOT NULL
@@ -2744,20 +2756,28 @@ const queue = IDS
               r.review_count
          FROM restaurants r
         WHERE r.id = ANY($1::text[])
-          AND (r.website IS NOT NULL
-               OR EXISTS (SELECT 1 FROM menu_lookups m
-                           WHERE m.restaurant_id = r.id AND m.source_url IS NOT NULL))
         ORDER BY review_count DESC NULLS LAST`,
       [IDS],
     )
   : await sql.query(
-      `SELECT r.id, r.name, r.address, r.website, r.review_count
+      /*
+       * Same predicate as cut-batches.mjs, MINUS the "already spoken for /
+       * recently blocked" file-based exclusions - this query alone decides
+       * the router's queue, so it stays a pure SQL predicate. It used to
+       * require `r.website IS NOT NULL`, which meant every no-website row
+       * (1,023 of them on 2026-09-08) was invisible to the router and went
+       * straight to a Sonnet agent for the one thing a single Serper search
+       * can usually settle instead. See SERPER FALLBACK below.
+       */
+      `SELECT r.id, r.name, r.address, r.city, r.neighborhood, r.website, r.review_count
          FROM restaurants r
         WHERE r.hold_reason IS NULL
-          AND r.website IS NOT NULL
+          AND r.lat BETWEEN 32.534 AND 33.44 AND r.lng BETWEEN -117.6 AND -116.08
+          AND (r.address IS NULL OR r.address ~ 'CA[[:space:]]+9(19[0-9][0-9]|2[01][0-9][0-9])' OR r.address !~ '[A-Z]{2}[[:space:]]+[0-9]{5}')
+          AND (r.address IS NULL OR r.address !~* 'tijuana|tecate|rosarito|ensenada|baja|m[eé]xico')
           AND NOT EXISTS (SELECT 1 FROM dishes d WHERE d.restaurant_id = r.id)
           AND NOT EXISTS (SELECT 1 FROM menu_lookups m WHERE m.restaurant_id = r.id)
-        ORDER BY r.review_count DESC NULLS LAST`,
+        ORDER BY r.website IS NOT NULL DESC, r.review_count DESC NULLS LAST`,
     );
 
 /*
@@ -2774,9 +2794,10 @@ for (const row of await sql.query(
 }
 
 const work = queue.slice(0, Number.isFinite(LIMIT) ? LIMIT : queue.length);
+const withSiteCount = queue.filter((r) => r.website).length;
 console.log(
-  `queue ${queue.length} with a website; routing ${work.length}` +
-    `${DRY ? " (dry - nothing will be written)" : ""} at concurrency ${CONCURRENCY}\n`,
+  `queue ${queue.length} (${withSiteCount} with a website, ${queue.length - withSiteCount} via serper fallback only); ` +
+    `routing ${work.length}${DRY ? " (dry - nothing will be written)" : ""} at concurrency ${CONCURRENCY}\n`,
 );
 
 const results = [];
@@ -2826,18 +2847,129 @@ function persist() {
 
 let done = 0;
 
-async function route(r) {
+/* --------------------------------------------------------- serper fallback */
+
+/*
+ * SERPER FALLBACK (2026-09-08)
+ *
+ * A queue row with no website on record, or whose real site carries no
+ * platform this router knows how to read, gets exactly ONE Serper search -
+ * never more, so the cost per restaurant is bounded and predictable. The
+ * query names the four platforms this file already has extractors for
+ * (`toasttab OR ubereats OR doordash OR menufy`); a hit on any OTHER known
+ * platform (Clover, ChowNow, Popmenu, Slice, Kwickmenu, SpotHopper, Owner,
+ * Olo, NetWaiter) still gets read normally, it just was not what the query
+ * asked for by name.
+ *
+ * The search returns a candidate URL, never a verdict. It is run through
+ * `attemptOnce` exactly like a listed website - the SAME identity checks
+ * (street number, city, name-overlap) gate anything it returns, so a
+ * same-name restaurant in another city is never filed under this one's id
+ * just because it was the top hit. A miss here is still just a NOTE, never a
+ * verdict, for the same reason a bad `website` is: a search that finds
+ * nothing is a fact about the search, not about the restaurant. See the file
+ * header - this is the one invariant that must never break.
+ */
+if (!process.env.SERPER_API_KEY) {
+  console.error(
+    "SERPER_API_KEY is not set - the no-website / no-platform fallback will be skipped for every row.",
+  );
+}
+
+const PLATFORM_HOST_RE =
+  /(^|\.)toasttab\.com$|(^|\.)ubereats\.com$|(^|\.)doordash\.com$|(^|\.)order\.online$|(^|\.)menufy\.com$|(^|\.)chownow\.com$|(^|\.)clover\.com$|(^|\.)popmenu\.com$|(^|\.)slicelife\.com$|(^|\.)kwickmenu\.com$|(^|\.)spotapps\.co$|(^|\.)owner\.com$|(^|\.)olo\.com$|(^|\.)netwaiter\.com$/i;
+
+/* Hosts a hit is never worth trying - directories, socials, review farms, the
+ * same aggregators the extraction brief bars outright. Getting this list
+ * wrong costs one wasted fetch, not a bad menu: identity checks still gate
+ * anything `attemptOnce` is handed. */
+const SEARCH_NOISE_RE =
+  /(^|\.)yelp\.com$|tripadvisor\.|(^|\.)facebook\.com$|(^|\.)instagram\.com$|linktr\.ee$|(^|\.)tiktok\.com$|(^|\.)youtube\.com$|maps\.google|goo\.gl$|restaurantguru|allmenus|menupix|zmenu|sirved|beyondmenu|foodboss|menutoeat|(^|\.)opentable\.com$|(^|\.)reddit\.com$/i;
+
+const serperCache = new Map();
+
+/** One Serper `/search` call, cached so a retry within the same run is free. */
+async function serperSearch(query) {
+  if (serperCache.has(query)) return serperCache.get(query);
+  const key = process.env.SERPER_API_KEY;
+  let organic = [];
+  if (key) {
+    try {
+      const res = await fetch("https://google.serper.dev/search", {
+        method: "POST",
+        headers: { "X-API-KEY": key, "Content-Type": "application/json" },
+        body: JSON.stringify({ q: query, num: 8, gl: "us", hl: "en" }),
+      });
+      if (res.ok) organic = (await res.json()).organic ?? [];
+    } catch {
+      organic = [];
+    }
+  }
+  serperCache.set(query, organic);
+  return organic;
+}
+
+/**
+ * ONE Serper search for restaurant `r`, returning the best candidate URL to
+ * run through the normal extractor pipeline, or null. A known-platform hit
+ * outranks a first-party hit; both still go through the identity checks in
+ * `attemptOnce` before anything is filed.
+ */
+async function serperFallback(r) {
+  const place = r.city || r.neighborhood || "San Diego";
+  const query = `"${r.name}" ${place} doordash OR ubereats OR toasttab OR menufy`;
+  const organic = await serperSearch(query);
+  let platformHit = null;
+  let firstPartyHit = null;
+  for (const hit of organic) {
+    const link = hit?.link;
+    if (!link) continue;
+    const host = hostOf(link);
+    if (!host || SEARCH_NOISE_RE.test(host)) continue;
+    /* A bare platform homepage (no store path) is never a menu; skip it
+     * rather than spend a fetch confirming that. */
+    if (!platformHit && PLATFORM_HOST_RE.test(host) && (() => { try { return new URL(link).pathname.length > 1; } catch { return false; } })()) {
+      platformHit = link;
+    }
+    if (!firstPartyHit && !PLATFORM_HOST_RE.test(host) && namesOverlap(r.name, host)) firstPartyHit = link;
+  }
+  return platformHit ?? firstPartyHit ?? null;
+}
+
+/*
+ * The whole per-restaurant read, parameterised by which URL to fetch.
+ *
+ * `viaSerper: true` is the second attempt, after a first pass with `r.website`
+ * (or no website at all) came back with nothing to read. On that second
+ * attempt every exit is final - there is no third try, which is what keeps
+ * "one Serper search" true regardless of how the read then goes. On the FIRST
+ * attempt, the two exits that mean "nothing here, but the restaurant might
+ * still have a menu somewhere else" (no website at all / no known platform on
+ * the site) return `{ retry: true }` instead of recording, so `route()` can
+ * try the fallback before writing anything down.
+ */
+async function attemptOnce(r, website, { viaSerper = false } = {}) {
   const id = String(r.id);
   const record = (platform, outcome, detail) => {
-    notes.push({ restaurantId: id, name: r.name, website: r.website, platform: platform ?? null, outcome, detail });
+    notes.push({
+      restaurantId: id,
+      name: r.name,
+      website,
+      platform: platform ?? null,
+      outcome,
+      detail: viaSerper ? `[serper] ${detail}` : detail,
+    });
     bump(platform, outcome);
+    return { done: true };
   };
 
-  const ctx = await loadContext(r.website);
+  if (!website) return { retry: true };
+
+  const ctx = await loadContext(website);
   if (ctx.error) {
-    if (ctx.wall) record(null, "needs-browser", `${ctx.wall} on ${r.website}`);
-    else record(null, "fetch-failed", `${ctx.error} (${r.website})`);
-    return;
+    if (ctx.wall) return record(null, "needs-browser", `${ctx.wall} on ${website}`);
+    if (!viaSerper) return { retry: true };
+    return record(null, "fetch-failed", `${ctx.error} (${website})`);
   }
 
   /*
@@ -2848,12 +2980,12 @@ async function route(r) {
    */
   const homeHost = hostOf(ctx.homeUrl);
   if (BARRED_HOSTS.some((re) => re.test(homeHost))) {
-    record(null, "no-platform", `listed website redirects to the barred directory farm ${homeHost}`);
-    return;
+    if (!viaSerper) return { retry: true };
+    return record(null, "no-platform", `listed website redirects to the barred directory farm ${homeHost}`);
   }
   if (/hugedomains\.com|sedoparking|afternic\.com|dan\.com|domain_profile/i.test(ctx.homeUrl)) {
-    record(null, "no-platform", `listed website is a parked domain for sale (${ctx.homeUrl})`);
-    return;
+    if (!viaSerper) return { retry: true };
+    return record(null, "no-platform", `listed website is a parked domain for sale (${ctx.homeUrl})`);
   }
 
   let platform = null;
@@ -2863,18 +2995,15 @@ async function route(r) {
     try {
       out = await fn(ctx);
     } catch (err) {
-      record(name, "fetch-failed", `extractor threw: ${String(err?.message ?? err).slice(0, 120)}`);
-      return;
+      return record(name, "fetch-failed", `extractor threw: ${String(err?.message ?? err).slice(0, 120)}`);
     }
     if (!out) continue;
     platform = name;
     if (out.needsBrowser) {
-      record(name, "needs-browser", out.needsBrowser);
-      return;
+      return record(name, "needs-browser", out.needsBrowser);
     }
     if (out.retail) {
-      record(name, "screened-out", out.retail);
-      return;
+      return record(name, "screened-out", out.retail);
     }
     got = out;
     break;
@@ -2882,9 +3011,9 @@ async function route(r) {
 
   if (!got) {
     const browserOnly = browserOnlyIn(ctx.allLinks, ctx.homeBody);
-    if (browserOnly) record(browserOnly, "needs-browser", `${browserOnly} detected; no fetchable payload`);
-    else record(null, "no-platform", `no known platform on ${ctx.homeUrl}`);
-    return;
+    if (browserOnly) return record(browserOnly, "needs-browser", `${browserOnly} detected; no fetchable payload`);
+    if (!viaSerper) return { retry: true };
+    return record(null, "no-platform", `no known platform on ${ctx.homeUrl}`);
   }
 
   const dishes = cleanRows(got.rows);
@@ -2994,6 +3123,36 @@ async function route(r) {
     dishes,
   });
   record(platform, "filed", `${dishes.length} dishes from ${got.sourceUrl}`);
+}
+
+/*
+ * One restaurant, start to finish: the listed website first (or straight to
+ * the fallback when there is none), then ONE Serper search when that leaves
+ * nothing to read. Exactly one note (or one filed result) comes out of this,
+ * whichever attempt finishes it - `attemptOnce` never records on the `retry`
+ * exits, so there is no double-note for a restaurant that goes through both.
+ */
+async function route(r) {
+  const first = await attemptOnce(r, r.website, { viaSerper: false });
+  if (!first?.retry) return;
+
+  const candidate = await serperFallback(r);
+  if (!candidate) {
+    const id = String(r.id);
+    notes.push({
+      restaurantId: id,
+      name: r.name,
+      website: r.website ?? null,
+      platform: null,
+      outcome: "no-platform",
+      detail: r.website
+        ? `no known platform on ${r.website}; serper found no first-party or platform hit`
+        : "no website on record; serper found no first-party or platform hit",
+    });
+    bump(null, "no-platform");
+    return;
+  }
+  await attemptOnce(r, candidate, { viaSerper: true });
 }
 
 async function worker(queueRef) {

@@ -1,0 +1,494 @@
+[
+  {
+    "restaurantId": "9992",
+    "name": "Las Flautas 664",
+    "sourceUrl": "https://themenustar6.com/webspace/menus.php?code=orderlasflautas664.com",
+    "confidence": "high",
+    "notes": "First-party MenuStar ordering backend embedded on the restaurant's own orderlasflautas664.com. Fetched per-category via POST function=get_items to themenustar6.com/webspace/functions/restaurant.php with restaurant_id=120284. Subtraction test on size-tiered items passed: Flautas 5/4/3 = $11.65/$9.32/$6.99 (diff $2.33 both times); Taco Of Pressed Pork Rinds 5/4/3 = $13.75/$11.00/$8.25 (diff $2.75 both times) - consistent per-unit modifier, confirms genuine pricing.",
+    "dishes": [
+      {
+        "name": "Flautas Order Of 5",
+        "description": "",
+        "price": "$11.65",
+        "section": "Flautas"
+      },
+      {
+        "name": "Flautas Order Of 4",
+        "description": "",
+        "price": "$9.32",
+        "section": "Flautas"
+      },
+      {
+        "name": "Flautas Order Of 3",
+        "description": "",
+        "price": "$6.99",
+        "section": "Flautas"
+      },
+      {
+        "name": "Flautas Tray Of 50",
+        "description": "",
+        "price": "$100.00",
+        "section": "Flautas"
+      },
+      {
+        "name": "Flautas Tray Of 30",
+        "description": "",
+        "price": "$60.00",
+        "section": "Flautas"
+      },
+      {
+        "name": "Flautas Tray Of 40",
+        "description": "",
+        "price": "$80.00",
+        "section": "Flautas"
+      },
+      {
+        "name": "Fried Potato Tacos Order Of 5",
+        "description": "",
+        "price": "$11.65",
+        "section": "Fried Potato Tacos"
+      },
+      {
+        "name": "Fried Potato Tacos Order Of 4",
+        "description": "",
+        "price": "$9.32",
+        "section": "Fried Potato Tacos"
+      },
+      {
+        "name": "Fried Potato Tacos Order Of 3",
+        "description": "",
+        "price": "$6.99",
+        "section": "Fried Potato Tacos"
+      },
+      {
+        "name": "Taco Of Pressed Pork Rinds Order Of 5",
+        "description": "",
+        "price": "$13.75",
+        "section": "Taco Of Pressed Pork Rinds"
+      },
+      {
+        "name": "Taco Of Pressed Pork Rinds Order Of 3",
+        "description": "",
+        "price": "$8.25",
+        "section": "Taco Of Pressed Pork Rinds"
+      },
+      {
+        "name": "Taco Of Pressed Pork Rinds Order Of 4",
+        "description": "",
+        "price": "$11.00",
+        "section": "Taco Of Pressed Pork Rinds"
+      },
+      {
+        "name": "Sopes Order Of 3",
+        "description": "",
+        "price": "$9.99",
+        "section": "Sopes"
+      },
+      {
+        "name": "Tostada Especial",
+        "description": "",
+        "price": "$6.87",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Tostada Of Pork Leg In Vinegar",
+        "description": "",
+        "price": "$7.50",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Tostadas Of Shredded Beef",
+        "description": "",
+        "price": "$6.23",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Tostadas Of Pork Rinds",
+        "description": "",
+        "price": "$6.23",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Fried Pollo En Crema De Chipotle Quesadilla",
+        "description": "",
+        "price": "$7.06",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Simple Fried Quesadilla",
+        "description": "",
+        "price": "$6.56",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Fried Rajas Quesadilla",
+        "description": "",
+        "price": "$7.06",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Flour Chicharrón With Pork Rinds In Vinegar",
+        "description": "",
+        "price": "$8.73",
+        "section": "Flour Chicharron With Pork Rinds In Vinegar"
+      },
+      {
+        "name": "Flavor Water",
+        "description": "",
+        "price": "$4.68",
+        "section": "Drinks"
+      },
+      {
+        "name": "Can Soda",
+        "description": "",
+        "price": "$3.43",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottle Soda",
+        "description": "",
+        "price": "$4.68",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "12191",
+    "name": "Rams Hill Golf Club Restaurant",
+    "sourceUrl": "https://ramshill.com/wp-content/uploads/2026/05/Summer-Dinner-Menu-2026.pdf",
+    "confidence": "high",
+    "crossCheckedAgainst": "https://ramshill.com/wp-content/uploads/2026/05/SUMMER-Breakfast-Lunch-Menu-June.pdf",
+    "notes": "First-party PDF menus linked from ramshill.com/dining/ (own domain). Breakfast/Lunch served Sun-Thu 6:30am-2:30pm, Fri-Sat 6:30am-4pm; Dinner served Fri-Sat 4-7pm. Flatbread flavor variants (Italian/Meat Lovers/Caprese) share one base price stated once on the PDF ($13); deduped identical items appearing on both PDFs (Ahi Tacos, Di Giorgio Chop Chop Salad, flatbreads) to one entry each. Dropped priced add-on modifiers (e.g. \"Add Grilled Greek Chicken $7\") as they are not standalone dishes.",
+    "dishes": [
+      {
+        "name": "1st Tee Breakfast Burrito",
+        "description": "",
+        "price": "$16.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Breakfast Sand Wedge",
+        "description": "",
+        "price": "$15.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Yacht Club Breakfast",
+        "description": "",
+        "price": "$19.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "The Ram Bowl",
+        "description": "",
+        "price": "$16.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Tom Fazio Club Sandwich",
+        "description": "",
+        "price": "$23.00",
+        "section": "Handhelds"
+      },
+      {
+        "name": "Ahi Tacos",
+        "description": "",
+        "price": "$18.00",
+        "section": "Handhelds"
+      },
+      {
+        "name": "Chipotle Crispy Chicken & Smoked Bacon Wrap",
+        "description": "",
+        "price": "$20.00",
+        "section": "Handhelds"
+      },
+      {
+        "name": "Rams Hill Signature Quesadilla",
+        "description": "",
+        "price": "$17.00",
+        "section": "Handhelds"
+      },
+      {
+        "name": "Rams Hill Brandt Beef Angus Burger",
+        "description": "",
+        "price": "$19.00",
+        "section": "Handhelds"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "",
+        "price": "$14.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Di Giorgio Chop Chop Salad",
+        "description": "",
+        "price": "$21.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Rams Hill Salad",
+        "description": "",
+        "price": "$10.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Coconut Shrimp",
+        "description": "",
+        "price": "$23.00",
+        "section": "Shareables"
+      },
+      {
+        "name": "Big Birdie Wings (1 LB)",
+        "description": "",
+        "price": "$19.00",
+        "section": "Shareables"
+      },
+      {
+        "name": "Big Birdie Wings (2 LB)",
+        "description": "",
+        "price": "$28.00",
+        "section": "Shareables"
+      },
+      {
+        "name": "Crispy Brussels Sprouts",
+        "description": "",
+        "price": "$12.00",
+        "section": "Shareables"
+      },
+      {
+        "name": "Queso Bravo Nachos",
+        "description": "",
+        "price": "$13.00",
+        "section": "Shareables"
+      },
+      {
+        "name": "Italian Flatbread",
+        "description": "",
+        "price": "$13.00",
+        "section": "Flatbreads"
+      },
+      {
+        "name": "Meat Lovers Flatbread",
+        "description": "",
+        "price": "$13.00",
+        "section": "Flatbreads"
+      },
+      {
+        "name": "Caprese Flatbread",
+        "description": "",
+        "price": "$13.00",
+        "section": "Flatbreads"
+      },
+      {
+        "name": "Salsa De Pomodoro Rigatoni De Cecco",
+        "description": "",
+        "price": "$27.00",
+        "section": "Pasta"
+      },
+      {
+        "name": "Labella's Spaghetti & Meatballs",
+        "description": "",
+        "price": "$24.00",
+        "section": "Pasta"
+      },
+      {
+        "name": "14 oz Brandt Beef New York Steak",
+        "description": "",
+        "price": "$47.00",
+        "section": "Land & Sea"
+      },
+      {
+        "name": "14 oz Duroc Pork Tomahawk",
+        "description": "",
+        "price": "$45.00",
+        "section": "Land & Sea"
+      },
+      {
+        "name": "Regal Crest Signature Boneless Smoked Chicken",
+        "description": "",
+        "price": "$23.00",
+        "section": "Land & Sea"
+      },
+      {
+        "name": "Seared Scottish Salmon",
+        "description": "",
+        "price": "$31.00",
+        "section": "Land & Sea"
+      },
+      {
+        "name": "Seared European Branzino Filet",
+        "description": "",
+        "price": "$32.00",
+        "section": "Land & Sea"
+      },
+      {
+        "name": "Steak & Frites",
+        "description": "",
+        "price": "$34.00",
+        "section": "Land & Sea"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9994",
+    "name": "Tacos oasis",
+    "sourceUrl": "https://wanderboat.ai/attractions/united-states/escondido/kids-empire-escondido-north-county-mall/2uq1MRW3Tt-ArAOoXPjCaQ",
+    "confidence": "high",
+    "notes": "Yelp/MapQuest report closed (\"Yelpers report this location has closed\" / \"Permanently closed\"), and independently a different business - Kids Empire, an indoor kids' playground - is now listed at the exact same suite, 200 E Via Rancho Pkwy Spc 424, Escondido (Westfield North County mall). tacosoasis.com / Grubhub / Square listings found are a same-name Tacos Oasis in Everman, Texas (817 area code) - a different restaurant, not this one.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "7396",
+    "name": "Donut Bros",
+    "sourceUrl": "https://www.doordash.com/store/donut-bros-el-cajon-33535299/",
+    "confidence": "medium",
+    "notes": "DoorDash schema.org @type:Menu JSON-LD, deduped name+price. Address confirmed via the multi-location city page (doordash.com/es/city/el-cajon-ca/b/donut-bros-215148/) which lists store id 33535299 as \"1558 N Magnolia Ave, El Cajon\" - matching this restaurant's address exactly; the OTHER DoorDash/Postmates/Uber Eats store ids for \"Donut Bros\" resolve to a different branch at 524/526 N 2nd Street and were excluded (same-name other-branch trap). \"Popular Items\" section holds items (bagel melts, croissants, variety boxes) not duplicated under Regular Donut/Featured Item/Beverages, so kept rather than dropped as a carousel; count (24) is well clear of the 79/91 truncation-signature range.",
+    "dishes": [
+      {
+        "name": "Dozen Variety",
+        "description": "",
+        "price": "$21.58",
+        "section": "Popular Items"
+      },
+      {
+        "name": "Half Dozen Variety",
+        "description": "",
+        "price": "$11.10",
+        "section": "Popular Items"
+      },
+      {
+        "name": "Apple Fritters",
+        "description": "",
+        "price": "$3.30",
+        "section": "Popular Items"
+      },
+      {
+        "name": "Cinnamon Rolls",
+        "description": "",
+        "price": "$3.30",
+        "section": "Popular Items"
+      },
+      {
+        "name": "Breakfast Sandwich",
+        "description": "",
+        "price": "$10.00",
+        "section": "Popular Items"
+      },
+      {
+        "name": "Ham & Cheese",
+        "description": "",
+        "price": "$6.00",
+        "section": "Popular Items"
+      },
+      {
+        "name": "Bear Claws",
+        "description": "",
+        "price": "$3.30",
+        "section": "Popular Items"
+      },
+      {
+        "name": "Donut Holes Dozens",
+        "description": "",
+        "price": "$3.60",
+        "section": "Popular Items"
+      },
+      {
+        "name": "Chocolate Milk",
+        "description": "",
+        "price": "$3.30",
+        "section": "Popular Items"
+      },
+      {
+        "name": "Plain Croissant",
+        "description": "",
+        "price": "$3.30",
+        "section": "Popular Items"
+      },
+      {
+        "name": "Turkey Melt",
+        "description": "",
+        "price": "$13.20",
+        "section": "Popular Items"
+      },
+      {
+        "name": "Twists",
+        "description": "",
+        "price": "$1.98",
+        "section": "Regular Donut"
+      },
+      {
+        "name": "Glazed",
+        "description": "",
+        "price": "$1.98",
+        "section": "Regular Donut"
+      },
+      {
+        "name": "Bars",
+        "description": "",
+        "price": "$1.98",
+        "section": "Regular Donut"
+      },
+      {
+        "name": "Cake Donuts",
+        "description": "",
+        "price": "$1.92",
+        "section": "Regular Donut"
+      },
+      {
+        "name": "Old Fashion",
+        "description": "",
+        "price": "$1.92",
+        "section": "Regular Donut"
+      },
+      {
+        "name": "Buttermilk Bar",
+        "description": "",
+        "price": "$2.04",
+        "section": "Regular Donut"
+      },
+      {
+        "name": "Filled",
+        "description": "",
+        "price": "$3.00",
+        "section": "Featured Item"
+      },
+      {
+        "name": "Coffee",
+        "description": "",
+        "price": "$2.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Gatorade",
+        "description": "",
+        "price": "$2.70",
+        "section": "Beverages"
+      },
+      {
+        "name": "Bottled Soda",
+        "description": "",
+        "price": "$2.70",
+        "section": "Beverages"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$2.40",
+        "section": "Beverages"
+      },
+      {
+        "name": "Yoohoo",
+        "description": "",
+        "price": "$1.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$1.20",
+        "section": "Beverages"
+      }
+    ]
+  }
+]

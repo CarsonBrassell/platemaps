@@ -662,5 +662,734 @@
       }
     ],
     "notes": "router pre-screened the Clover COLO2 storefront (missionbajatacos.cloveronline.com/menu/all) out for a markup: 109/138 prices divide cleanly by 1.0400 onto round dollars, a ~4% fee. Went to the restaurant's own site instead (top of the source ladder) rather than dividing that out. missionbajatacos.com is a Next.js single page whose schema.org Restaurant/hasMenu JSON-LD carries the full 68-item, 10-section menu (Tacos, Burritos, Breakfast, Quesadillas, Plates, Favorites, Vegetarian, Ceviche, Kids, Sides & Drinks); address in the JSON-LD (3819 Mission Blvd, San Diego, CA 92109) matches the batch exactly. Cross-checked several JSON-LD prices against the same items rendered directly on the page (Carne Asada taco $5.25, Al Pastor $4.99, grilled fish $5.50, grilled shrimp $5.75) -- all matched, and the page explicitly labels these \"Cash prices shown. Card accepted.\" The site itself also advertises \"Order Direct - Commission-free. No extra fees added\" as an alternative to the marked-up delivery/Clover path, confirming this is the fee-free sibling. All 68 prices are clean conventional endings (.99/.50/.25/.75), consistent with a genuine printed menu."
+  },
+  {
+    "restaurantId": "7541",
+    "name": "T&T Tacos & Tequila Grill & Cantina",
+    "sourceUrl": "https://www.tacostequilacantinagroup.com",
+    "confidence": "high",
+    "dishes": [
+      {
+        "name": "Chorizo Burrito",
+        "description": "Eggs with Mexican Sausage, Cheese & Potatoes",
+        "price": "$15.00",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "El Grande Burrito",
+        "description": "Bacon, Ham, Sausage, Eggs, Potatoes, Cheese & Sour Cream",
+        "price": "$17.00",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Ham & Egg Burrito",
+        "description": "Eggs with Ham, Potatoes, Beans & Cheese",
+        "price": "$15.00",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Machaca Burrito",
+        "description": "Eggs with Shredded Beef, Bell Peppers, Cheese & Onion",
+        "price": "$15.00",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Sausage Burrito",
+        "description": "Eggs with Sausage, Potatoes, Cheese & Sour Cream",
+        "price": "$15.00",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Steak & Egg Burrito",
+        "description": "Eggs with Steak Strips, Potatoes & Cheese",
+        "price": "$16.00",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Crema Poblano Chilaquiles",
+        "description": "Sliced Tortilla Strips. topped with Creamy Poblano Sauce, Two Eggs Any Style, Sour Cream & Pickled Onions. Served With Beans & Homestyle Potatoes.",
+        "price": "$18.00",
+        "section": "Chilaquiles"
+      },
+      {
+        "name": "Divorciados Chilaquiles",
+        "description": "Sliced Tortilla Strips. topped with Red & Green Chile Sauce, Two Eggs Any Style, Sour Cream & Pickled Onions. Served With Beans and Homestyle potatoes.",
+        "price": "$18.00",
+        "section": "Chilaquiles"
+      },
+      {
+        "name": "Mole Chilaquiles",
+        "description": "Sliced Tortilla Strips. topped with Mole Sauce, Two Eggs Any Style, Sour Cream & Pickled Onions. Served With Beans & Homestyle Potatoes..",
+        "price": "$18.00",
+        "section": "Chilaquiles"
+      },
+      {
+        "name": "Traditional Chilaquiles",
+        "description": "Sliced Tortilla Strips. topped with Red or Green Chile Sauce, Two Eggs Any Style, Sour Cream & Pickled Onions. Served With Beans & Homestyle Potatoes.",
+        "price": "$18.00",
+        "section": "Chilaquiles"
+      },
+      {
+        "name": "Huevos a la Mexicana",
+        "description": "Scrambled Eggs with Bell Peppers, Onions, & Tomatoes. Served With Beans, Homestyle Potatoes & Tortillas.",
+        "price": "$18.00",
+        "section": "Huevos"
+      },
+      {
+        "name": "Huevos Con Chorizo",
+        "description": "Scrambled Eggs with Chorizo. Served With Beans, Homestyle Potatoes, & Tortillas.",
+        "price": "$18.00",
+        "section": "Huevos"
+      },
+      {
+        "name": "Huevos Divorciados",
+        "description": "Two Over Easy Eggs coverd with Green & Red Sauce, Topped with Cheese. Served with Chilaquiles, Beans, Sour Cream &Homestvle Potatoes.",
+        "price": "$18.00",
+        "section": "Huevos"
+      },
+      {
+        "name": "Huevos Machaca",
+        "description": "Scrambled Eggs with Shredded Beef, Onions, & Bell Peppers. Served with Beans, Homestyle Potatoes, & Tortillas.",
+        "price": "$18.00",
+        "section": "Huevos"
+      },
+      {
+        "name": "Huevos Rancheros",
+        "description": "Eggs Topped with Ranchero Sauce. Served with Beans, Homestyle Potatoes & Tortillas.",
+        "price": "$18.00",
+        "section": "Huevos"
+      },
+      {
+        "name": "Rancheros Omelete",
+        "description": "Bell Peppers, Onions, Tomatoes, & Cheese. Topped with Ranchero Sauce & Melted Cheese. Served with Beans & Homestyle Potatoes.",
+        "price": "$16.00",
+        "section": "Omeletes"
+      },
+      {
+        "name": "Sausage Omelete",
+        "description": "Sausage Omelet with Bell Peppers, Onions, & Cheese. Topped with melted Cheese. Served with Beans & Homestyle Potatoes.",
+        "price": "$16.00",
+        "section": "Omeletes"
+      },
+      {
+        "name": "Chicharron De Ribeye",
+        "description": "Fried Ribeye Steak Chunks on Top of a Bed of Guacamole. Topped with Cotija Cheese.",
+        "price": "$23.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fiesta Platter",
+        "description": "A Little Bit of Everything! Mini Beef Burritos, Quesadillas, Chicken Wings & Rolled Tacos. Served with Muddled Avocado, Sour Cream, & Cotija Cheese.",
+        "price": "$23.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Guacamole Appetizer",
+        "description": "Freshly Muddled Avocado. Mixed with Pico de Gallo & Fresh Lime Juice. Topped with Cotija Cheese.",
+        "price": "$13.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Holy Guacamoly",
+        "description": "Carne Asada Steak Over a Bed of Guacamole. Topped with Cotija Cheese.",
+        "price": "$16.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mini Chimi's",
+        "description": "Shrimp Chimichangas. Covered with Chipotle Cream. Served with Muddled Avocado. Topped with Cotija Cheese.",
+        "price": "$18.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Queso Fundido",
+        "description": "Fondue Cheese. Topped with Chorizo & Slices of Poblano Chile.",
+        "price": "$16.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Ribeye Aguachile",
+        "description": "Grilled Ribeye Steak. Sliced & Drenched with our Savory Curated Sauce, Serranos & Pickled onions.",
+        "price": "$30.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "T&T Chips",
+        "description": "Chips Topped with Grilled Steak, Monterrey Jack Cheese, Sour Cream, Muddled Avocado, & Cotija Cheese.",
+        "price": "$16.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "T&T Fries",
+        "description": "Fries Topped with Grilled Steak, Monterrey Jack Cheese, Sour Cream, Muddled Avocado, & Cotija Cheese.",
+        "price": "$16.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Queso Dip",
+        "description": "A Rich Creamy Blend of Melted Cheeses Infused With Mexican Chorizo With a Kick of Fresh Jalapeños.",
+        "price": "$15.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Ceviche Rojo",
+        "description": "Shrimp with Spicy Red Lime Sauce, Pico de Gallo, Cucumber, & Avocado.",
+        "price": "$20.00",
+        "section": "Seafood Appetizers"
+      },
+      {
+        "name": "Ceviche Trio",
+        "description": "Our Delicious Ceviche Sampler with Green, Red & Spicy Tuna Ceviche.",
+        "price": "$25.00",
+        "section": "Seafood Appetizers"
+      },
+      {
+        "name": "Ceviche Verde",
+        "description": "Shrimp in Our Special Green Sauce, Pico de Gallo, Cucumber, & Avocado.",
+        "price": "$20.00",
+        "section": "Seafood Appetizers"
+      },
+      {
+        "name": "Coctel Campechana",
+        "description": "Cocktail with Whole Shrimp, Octopus, Avocado, Cucumber, & Pico de Gallo.",
+        "price": "$23.00",
+        "section": "Seafood Appetizers"
+      },
+      {
+        "name": "Coctel De Camaron",
+        "description": "Shrimp Cocktail. Prepared with Cucumber, Pico de Gallo & Avocado.",
+        "price": "$18.00",
+        "section": "Seafood Appetizers"
+      },
+      {
+        "name": "Torre De Mariscos",
+        "description": "Seafood Medley with Cooked & Raw Shrimp. Octopus, Pico de Gallo, Red Onions & Cucumber. Topped with Avocado.",
+        "price": "$25.00",
+        "section": "Seafood Appetizers"
+      },
+      {
+        "name": "Torre De Tuna",
+        "description": "Tuna Cured in Habanero Lime Juice. Mixed with Pico de Gallo. Cucumber & Chopped Mango. Topped with Avocado.",
+        "price": "$27.00",
+        "section": "Seafood Appetizers"
+      },
+      {
+        "name": "Tostada Campechana",
+        "description": "Shrimp & Octopus Topped with Sliced Avocado.",
+        "price": "$15.00",
+        "section": "Seafood Appetizers"
+      },
+      {
+        "name": "Tostada De Ceviche",
+        "description": "Ceviche Shrimp Topped with Sliced Avocado.$12",
+        "price": "$12.00",
+        "section": "Seafood Appetizers"
+      },
+      {
+        "name": "Tostada De Tuna",
+        "description": "Tuna with Cucumbers, Onions, Tomatoes, & Special Sauce. Topped with Sliced Avocado & Pickled Red Onions.",
+        "price": "$15.00",
+        "section": "Seafood Appetizers"
+      },
+      {
+        "name": "(3) Mini Vegan Tacos",
+        "description": "Choice of Mushroom or Zucchini, with Serrano Peppers, Cabbage, Pickled Onions, and Garlic Sauce.",
+        "price": "$10.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "(3) Potato Tacos",
+        "description": "Potato Tacos Topped with Lettuce, Salsa Fresca, Sour Cream, & Cotija Cheese.",
+        "price": "$12.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "(3) Tacos Ursula",
+        "description": "Three Mini Hand Made Corn Tortilla Tacos. Tender Octopus Chunks Drenched in a Special Sauce. Topped with Pickled Red Onions.",
+        "price": "$16.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "(5) Roll Tacos",
+        "description": "Shredded Beef Rolled Tacos Topped with Muddled Avocado, Lettuce, Tomatoes, and Cheese.",
+        "price": "$10.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Baja Fish Taco",
+        "description": "Breaded Fish, Cabbage, Chipotle Cream, & Pico de Gallo.",
+        "price": "$6.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Baja Shrimp Taco",
+        "description": "Breaded Shrimp, Cabbage, Chipotle Cream, & Pico de Gallo.",
+        "price": "$7.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Blackened Fish Taco",
+        "description": "Blackened Fish with Our own Rustic Seasonings. Thinly Sliced Cabbage, Pickled Red Onions, & Sour Cream.",
+        "price": "$7.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "(5) T&T Rolled Tacos",
+        "description": "Shredded Beef Rolled Tacos Topped with Muddled Avocado, Lettuce, Pico de Gallo, Cheese, with Carne Asada on Top.",
+        "price": "$12.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "T&T Shrimp Taco",
+        "description": "Shrimp with Anaheim Peppers, Cheese Sour Cream, Pickled Onions, and Mole Salsa.",
+        "price": "$8.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Camaron Enchilado",
+        "description": "Shrimp in a Spicy Sauce with Monterrey Jack Cheese. Topped with Pickled Onions.",
+        "price": "$7.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Dorado",
+        "description": "Shredded Beef Taco Served with Lettuce, Tomato, & Monterrey Jack Cheese.",
+        "price": "$5.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Gobernador",
+        "description": "Diced Shrimp with Grilled Onions. Bell Peppers & Melted Monterrey Jack Cheese.",
+        "price": "$7.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "(2) Birria Taco",
+        "description": "Two Corn Tortilla Tacos Filled With a Tender, Slow-Braised Beef Drenched In a Rich, Savory Consommé With Onions, And Cilantro. Served With a Side of Dipping Broth For The Ultimate Flavor Experience.",
+        "price": "$16.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "(2) Quesa Tacos",
+        "description": "Two Corn Tortilla Tacos Filled With a Tender, Slow-Braised Beef Drenched In a Rich, Savory Consommé With Melted Cheese, Onions, And Cilantro. Served With a Side of Dipping Broth For The Ultimate Flavor Experience",
+        "price": "$18.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "(2) Sonoran Tacos",
+        "description": "Two Flour Tortilla Tacos Filled With Grilled Steak, Whole Beans, Muddled Avocado, Cabbage, Pico De Gallo",
+        "price": "$18.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada Burrito",
+        "description": "A Burrito Stuffed with Grilled Steak, Grilled Pico de Gallo & Muddled Avocados.",
+        "price": "$18.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Asado Burrito",
+        "description": "A Burrito Stuffed with Grilled Chicken, Grilled Pico de Gallo, & Muddled Avocados.",
+        "price": "$17.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chile Verde Burrito",
+        "description": "A Burrito Stuffed with Tender Chunks of Pork Smothered in Our Famous Green Tomatillo Saucestuffed with Rice & Beans.",
+        "price": "$18.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "T&T Burrito",
+        "description": "A Burrito Stuffed with Grilled Steak, Shrimp, Pico de Gallo, Fries, Chipotle Cream, Muddled Avocado, & Cheese.",
+        "price": "$20.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Surf & Turf Burrito",
+        "description": "A Burrito Stuffed with Grilled Steak, Shrimp, Monterrey Jack Cheese, Rice, & Chipotle Cream.",
+        "price": "$20.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Fish Burrito",
+        "description": "Fish, Lettuce, Cabbage, Pico De Gallo, Chipotle Cream",
+        "price": "$15.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Mix Burrito",
+        "description": "Shredded Beef, Ranchero Salsa & Beans",
+        "price": "$18.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Veggie Burrito",
+        "description": "Rice, Beans, Lettuce, Pico De Gallo & Muddled Avocado",
+        "price": "$12.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shrimp Burrito",
+        "description": "Shrimp, Onions, Bell Peppers, Rice, Ranchero Sauce",
+        "price": "$20.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carne Asada (Quesadilla)",
+        "description": "A Cheesy Tortilla Stuffed with Grilled Steak & Monterrey Jack Cheese. With a Side of Muddled Avocado, Sour Cream, and Pico de Gallo.",
+        "price": "$18.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Cheese Quesadilla",
+        "description": "Flour Tortilla Stuffed With Cheese",
+        "price": "$11.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Pollo Asado (Quesadilla)",
+        "description": "A Cheesy Tortilla Stuffed with Grilled Chicken & Monterrey Jack Cheese. With a Side of Muddled Avocado, Sour Cream, and Pico de Gallo.",
+        "price": "$18.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Surf & Turf (Quesadilla)",
+        "description": "A Cheesy Tortilla Stuffed with Grilled Steak, Shrimp, & Monterrey Jack Cheese. With a Side of Muddled Avocado, Sour Cream, and Pico de Gallo.",
+        "price": "$20.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Shrimp (Quesadilla)",
+        "description": "A Cheesy Tortilla Stuffed with Shrimp & Monterey Jack Cheese. With a Side of Muddled Avocado, Sour Cream, and Pico de Gallo.",
+        "price": "$25.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Arrachera Asada",
+        "description": "Grilled Skirt Steak Served with Muddled Avocado, Blistered Serrano, Rice, Beans, & Tortillas.",
+        "price": "$28.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Beef Taco & (2) Rolled Tacos",
+        "description": "Served with Rice & Beans.",
+        "price": "$17.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Beef Taco & Enchilada",
+        "description": "Crispy Shredded Beef Taco & Cheese Enchilada. Served with Rice & Beans.",
+        "price": "$17.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Carnitas Michoacan",
+        "description": "Tender Chunks of Pork Served with Muddled Avocado, Pico de Gallo, Pickled Jalapeño, Rice, Beans, & Tortillas.",
+        "price": "$25.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Chile Relleno & Enchilada",
+        "description": "Served with Rice, Beans, & Sour Cream.",
+        "price": "$25.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Chile Verde Plate",
+        "description": "Tender Chunks of Pork. Prepared in Green Tomatillo Sauce with Rice, Beans, & Tortillas.",
+        "price": "$25.00",
+        "section": "Plates"
+      },
+      {
+        "name": "La Tablita",
+        "description": "Grilled Arrachera Steak. Grilled Chicken & Carnitas. Served on a Wooden Platter. Served with Rice, Beans, Muddled Avocado, Pickled Jalapeños, & Tortillas. (Serves 2)",
+        "price": "$55.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Molcajete",
+        "description": "Steak, Chicken, & Shrimp. With Chorizo, Queso Fresco, Nopales, & Smothered in Molcajete Salsa. Served with Muddled Avocado Beans, Rice, & Tortillas.",
+        "price": "$38.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Naked Poblano",
+        "description": "Poblano Pepper Stuffed with Shrimp. Topped with Poblano Sauce & Cheese. Served with Rice, Beans, & Tortillas.",
+        "price": "$25.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Pollo al Jalapeno",
+        "description": "Grilled Chicken Breast. Topped with a Mild Creamy Sauce made with Jalapenos & Sun Dried Tomatoes. Served with Rice & Beans.",
+        "price": "$25.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Pollo al Parrila",
+        "description": "Grilled Chicken Breast. Served with Rice, Beans, Muddled Avocado, Salsa Fresca, & Tortillas.",
+        "price": "$25.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Tampiquena",
+        "description": "Grilled Skirt Steak Paired with a Monterrey jack Cheese Mole Enchilada. Served with Muddled Avocado, Blistered Serrano, Beans & Tortillas.",
+        "price": "$28.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Birria Plate",
+        "description": "Tender, Slow-Braised Beef In a Rich, Savory Consommé With Onions, And Cilantro Served With Whole Beans, Rice & Tortillas.",
+        "price": "$25.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Pasta Jalapeño",
+        "description": "Al Dente Pasta Tossed In A Mild Creamy Sauce Made with Jalapeños & Sun Dried Tomatoes Topped With Cilantro.",
+        "price": "$22.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Pasta Poblano",
+        "description": "Al Dente Pasta Tossed In A Mild Creamy Poblano Sauce With A Touch Of Habanero Topped With Cilantro.",
+        "price": "$22.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Mixed Fajitas",
+        "description": "Grilled Fajitas with Onions & Bell Peppers. Served with Rice, Beans, Muddled Avocado & Tortillas. Topped with Sliced Skirt Steak, Grilled Chicken Breast, Grilled Shrimp",
+        "price": "$25.00",
+        "section": "Fajitas"
+      },
+      {
+        "name": "Shrimp Fajitas",
+        "description": "Grilled Shrimp Fajitas with Onions & Bell Peppers. Served with Rice, Beans, Muddled Avocado & Tortillas.",
+        "price": "$25.00",
+        "section": "Fajitas"
+      },
+      {
+        "name": "Steak Fajitas",
+        "description": "Sliced Skirt Steak Fajitas with Onions & Bell Peppers. Served with Rice, Beans, Muddled Avocado & Tortillas.",
+        "price": "$25.00",
+        "section": "Fajitas"
+      },
+      {
+        "name": "Vegetarian Fajitas",
+        "description": "Grilled Onions & Bell Peppers. Served with Rice, Beans, Muddled Avocado & Tortillas.",
+        "price": "$25.00",
+        "section": "Fajitas"
+      },
+      {
+        "name": "Camarón al Jalapeno",
+        "description": "Shrimp Smothered in our Special Jalapeno Sauce. Served with Rice Beans, & Tortillas.",
+        "price": "$26.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Camarón Al Mojo De Ajo",
+        "description": "Shrimp Smothered in a Savory Garlic Sauce. Served with Rice, Beans, & Tortillas.",
+        "price": "$26.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Camarón Poblano",
+        "description": "Shrimp Smothered in a Cheesy Poblano Sauce. Served with Rice, Beans, & Tortillas.",
+        "price": "$26.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Camarón Rancheros",
+        "description": "Shrimp Smothered in our Ranchero Sauce. Served with Rice, Beans & Tortillas.",
+        "price": "$26.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Fish Fillet a la Diabla",
+        "description": "Fish Fillet In a deliciously Spicy Chile Sauce. Served with Rice Beans, & Tortillas.",
+        "price": "$25.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Fish Fillet al Jalapeno",
+        "description": "Fish Fillet in our Special Jalapeno Sauce. Served with Rice Beans & Tortillas,",
+        "price": "$25.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Ceasar Salad",
+        "description": "Add Shrimp or Chicken + $5",
+        "price": "$15.00",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "House Salad",
+        "description": "Bell Peppers, Tomatoes, Romaine Lettuce, Cabbage, Carrots",
+        "price": "$12.00",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Pozole",
+        "description": "Hominy And Tender Pork In A Red Chili Broth, Garnished With Cabbage, Radish, Onion, And Lime.",
+        "price": "$20.00",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Tortilla Soup (Bowl)",
+        "description": "Seasoned Tomato Broth With Queso Fresco, Sour Cream And Spices. Topped With Crispy Tortilla Strips, Avocado Slices",
+        "price": "$18.00",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Tortilla Soup (Cup)",
+        "description": "Seasoned Tomato Broth With Queso Fresco, Sour Cream And Spices. Topped With Crispy Tortilla Strips, Avocado Slices",
+        "price": "$12.00",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Tostada Supreme",
+        "description": "Flour Shell Tostada Your Choice of Shredded Beef or Shredded Chicken Topped With Beans, Lettuce, Pico De Gallo, Monterey Cheese, Cotija Cheese, Guacamole & Sour Cream",
+        "price": "$20.00",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "K: Cheese Quesadilla",
+        "description": "Includes a choice of Rice & Beans or French Fries",
+        "price": "$10.00",
+        "section": "Kids Meal"
+      },
+      {
+        "name": "K: Chicken Strips",
+        "description": "Includes a choice of Rice & Beans or French Fries",
+        "price": "$10.00",
+        "section": "Kids Meal"
+      },
+      {
+        "name": "K: Plain Soft Taco",
+        "description": "Carne Asada or Pollo Asado. Includes a choice of Rice & Beans or French Fries",
+        "price": "$10.00",
+        "section": "Kids Meal"
+      },
+      {
+        "name": "Bacon & Egg Burrito",
+        "description": "Eggs with Bacon, Potatoes & Cheese",
+        "price": "$15.00",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Crema Chipotle Chilaquiles",
+        "description": "Sliced Tortilla Strips. topped with Chipotle Cream, Two Eggs Any Style, Sour Cream & Pickled Onions. Served With Beans & Homestyle Potatoes.",
+        "price": "$18.00",
+        "section": "Chilaquiles"
+      },
+      {
+        "name": "Arrachera Steak & Eggs",
+        "description": "Arracherra Steak & Two Eggs Any Style. Served with Beans, Homestyle Potatoes & Tortillas.",
+        "price": "$22.00",
+        "section": "Huevos"
+      },
+      {
+        "name": "Ham & Cheese Omelete",
+        "description": "Ham & Cheese Omelete. Topped with melted Cheese. Served with Beans & Homestyle Potatoes.",
+        "price": "$16.00",
+        "section": "Omeletes"
+      },
+      {
+        "name": "Side of (3) Buttermilk Pancakes",
+        "description": "",
+        "price": "$5.00",
+        "section": "Pancakes"
+      },
+      {
+        "name": "Botana Del Campo",
+        "description": "4 Rolled Beef Tacos & 3 Crunchy Potato Tacos. Topped with Muddled Avocado, Sour Cream, & Cotija Cheese.",
+        "price": "$16.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Aguachile",
+        "description": "Lime Juice Cooked Shrimp Drenched in Either Red or Green Sauce. Along with Cucumber & Pickled Red Onions.",
+        "price": "$23.00",
+        "section": "Seafood Appetizers"
+      },
+      {
+        "name": "(3) Mini Tacos",
+        "description": "Hand Made Tortillas with the Choice of Carne Asada, Carnitas, Pollo Asado, or Al Pastor Topped With Onion, Cilantro & Muddled Avocado.",
+        "price": "$14.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Bean & Cheese Burrito",
+        "description": "",
+        "price": "$9.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Al Pastor (Quesadilla)",
+        "description": "A Cheesy Tortilla Stuffed with Al Pastor & Monterrey Jack Cheese. With a Side of Muddled Avocado, Sour Cream, and Pico de Gallo.",
+        "price": "$18.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "(2)Enchiladas Plate",
+        "description": "Your Choice of Chicken, Shredded Beef, or Monterrey Jack Cheese. Served with Rice & Beans. Topped with Sour Cream & Cheese and a Choice of Mole or Green Tomatillo Salsa.",
+        "price": "$23.00",
+        "section": "Plates"
+      },
+      {
+        "name": "Chicken Fajitas",
+        "description": "Grilled Chicken Fajitas with Onions & Bell Peppers. Served with Rice, Beans, Muddled Avocado & Tortillas.",
+        "price": "$25.00",
+        "section": "Fajitas"
+      },
+      {
+        "name": "Camarón a la Diabla",
+        "description": "Shrimp in a deliciously Spicy Chile Sauce. Served with Rice, Beans, & Tortillas.",
+        "price": "$26.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Caldo De Res",
+        "description": "Traditional Mexican Beef And Vegetable Soup With Carrots, Potatoes, Zucchini, Cilantro And Corn.",
+        "price": "$20.00",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "K: Bean & Cheese Burrito",
+        "description": "Includes a choice of Rice & Beans or French Fries",
+        "price": "$10.00",
+        "section": "Kids Meal"
+      },
+      {
+        "name": "Churro Cheesecake",
+        "description": "",
+        "price": "$15.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Churro's & Ice Cream",
+        "description": "",
+        "price": "$12.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Grandmother's Mexican Flan",
+        "description": "",
+        "price": "$12.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "T&T Fried Ice Cream",
+        "description": "",
+        "price": "$12.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Tres Leches",
+        "description": "",
+        "price": "$12.00",
+        "section": "Desserts"
+      }
+    ],
+    "notes": "no ordering platform on file (router: no-platform); restaurant's own homepage links a SkyTab Online storefront (online.skytab.com/4a7ad792...) whose public store-metadata endpoint (apps-api.shift4payments.com/online-ordering/mars/api/v2/stores/<guid>) confirmed identity (name, locationRef, city/state/zip) but whose dedicated .../menu endpoint returned HTTP 401 Unauthorized -- a genuine auth gate, not yet bypassed. Fell back to the restaurant's own site instead: tacostequilacantinagroup.com is a Next.js SPA with no server-rendered prices in the raw HTML, but its React Server Component streaming payload (self.__next_f.push chunks) carries the complete first-party menu as {name, description, price, available} objects, unmarked-up and matching the plain-text \"Bacon & Egg Burrito. $15.00\" snippet Google's own index shows for this same URL. Extracted all 16 menu subcategories (Breakfast Burritos, Chilaquiles, Huevos, Omeletes, Pancakes, Appetizers, Seafood Appetizers, Tacos, Burritos, Quesadillas, Plates, Fajitas, Seafood, Soups & Salads, Kids Meal, Desserts), 120 available items total; one item (Bean Tostada, $8) was marked available:false in the same payload and excluded as 86'd/not currently sold. Address discrepancy: batch lists \"12205 Scripps Poway Pkwy e101\" but both this site's own contact block and the SkyTab store record say \"SUITE E103\" -- same plaza/phone/name, flagging as a likely stale suite number in the batch rather than a different business."
   }
 ]

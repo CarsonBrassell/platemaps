@@ -1,0 +1,288 @@
+[
+  {
+    "restaurantId": "8819",
+    "name": "Mia Sorella Chimney Cakes - San Diego",
+    "sourceUrl": "https://www.miasorellaco.com/orderonline",
+    "confidence": "high",
+    "notes": "First-party Squarespace order page. Whipped cream +$2.00 and mini-chimney add-on +$5/ea are modifiers, not listed as standalone dishes.",
+    "dishes": [
+      {
+        "name": "Original",
+        "description": "Covered in cinnamon sugar, coconut, walnuts, or glazed",
+        "price": "$8.00",
+        "section": "Chimney Cakes"
+      },
+      {
+        "name": "Prague",
+        "description": "Chimney cone rolled in walnuts with chocolate ganache, fresh strawberries and whipped cream",
+        "price": "$13.00",
+        "section": "Chimney Cakes"
+      },
+      {
+        "name": "Cranberry Goat Cheese",
+        "description": "Covered in walnuts with cranberry goat cheese and fresh strawberries",
+        "price": "$13.00",
+        "section": "Chimney Cakes"
+      },
+      {
+        "name": "Herbs & Cheese",
+        "description": "Fresh herbs and parmesan cheese, artichoke spread, arugula, tomato and lemon vinaigrette salad",
+        "price": "$16.00",
+        "section": "Chimney Cakes"
+      },
+      {
+        "name": "Apple Streusel",
+        "description": "Apple pie filling layered with crunchy streusel and home-made whipped cream",
+        "price": "$13.00",
+        "section": "Chimney Cakes"
+      },
+      {
+        "name": "Smoked Salmon",
+        "description": "Atlantic smoked salmon, artichoke spread, arugula, salad, lemon, tomatoes, onions, cucumbers, parmesan",
+        "price": "$17.00",
+        "section": "Chimney Cakes"
+      },
+      {
+        "name": "Mini Chimney Cake Box (4 chimneys)",
+        "description": "Mix and match sweet and savory chimney cakes",
+        "price": "$26.00",
+        "section": "Boxes"
+      },
+      {
+        "name": "Mini Chimney Cake Box (6 chimneys)",
+        "description": "Mix and match sweet and savory chimney cakes",
+        "price": "$36.00",
+        "section": "Boxes"
+      },
+      {
+        "name": "Mini Chimney Cake Box (8 chimneys)",
+        "description": "Mix and match sweet and savory chimney cakes",
+        "price": "$48.00",
+        "section": "Boxes"
+      },
+      {
+        "name": "Mini Chimney Cake Box (12 chimneys)",
+        "description": "Mix and match sweet and savory chimney cakes",
+        "price": "$65.00",
+        "section": "Boxes"
+      },
+      {
+        "name": "Custom Belgian Chocolate Signs",
+        "description": "",
+        "price": "$3.00",
+        "section": "Extras"
+      },
+      {
+        "name": "Artisan Cheese Board (Personal)",
+        "description": "Seasonal charcuterie, comes with chimney cake rings",
+        "price": "$30.00",
+        "section": "Cheese Boards"
+      },
+      {
+        "name": "Artisan Cheese Board (Good for Two)",
+        "description": "With 2 stuffed chimney cakes",
+        "price": "$55.00",
+        "section": "Cheese Boards"
+      },
+      {
+        "name": "Artisan Cheese Board (Four to Six People)",
+        "description": "",
+        "price": "$65.00",
+        "section": "Cheese Boards"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9996",
+    "name": "Burgers & Shakes",
+    "sourceUrl": "https://www.jamulcasino.com/static/169ed25de2ceaf5281dfdd1db9cdd03f/202605_BS.pdf",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own-source PDF found (Jamul Marketplace food-hall vendor's official menu) but the numbered combo/burger items use superscript-styled prices that lose their decimal point and their name-price pairing in both -layout and -raw text extraction (e.g. '$1199' cannot be safely read as $11.99 vs. a different pairing); only the SIDES/DESSERTS/SHAKES list extracts cleanly via dot-leaders, and that is not the core burger/sandwich offering. Needs visual/rendered read of the PDF."
+  },
+  {
+    "restaurantId": "9381",
+    "name": "Immersion Express / Coffee and Matcha",
+    "sourceUrl": "https://joe.coffee/locations/ca/carlsbad/immersion-express-coffee-and-matcha-carlsbad-ecde6ff8-c441-4141-95dc-1354096f7a55/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: joe.coffee ordering page is a client-rendered app with no prices in the static HTML; own IG requires login; Windmill Food Hall page (windmillfoodhall.com/immersion) and Windmill homepage list the vendor but publish no prices."
+  },
+  {
+    "restaurantId": "8933",
+    "name": "Al Chile Mexican Food",
+    "sourceUrl": "https://www.grubhub.com/restaurant/al-chile-4211-camino-de-la-plaza-san-diego/10321664",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: Grubhub and Seamless (same owner) listings are pure client-rendered app shells with no server-rendered menu data (Google's own indexed snippet shows priced items like Guacamole and Chips $13.00+, Carne Asada Fries $18.90, but the page itself carries none of that on fetch); no first-party website; DoorDash business page found only unrelated Al Chile Dallas locations."
+  },
+  {
+    "restaurantId": "9997",
+    "name": "DEN",
+    "sourceUrl": "https://www.marriott.com/en-us/hotels/sanmv-san-diego-marriott-mission-valley/dining/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "hotel restaurant with no published priced menu: Marriott dining page and DineEntertainNetwork page describe the concept ('elevated American cuisine') with no menu PDF or itemized prices; no marketplace (DoorDash/UberEats/Grubhub) listing found; Yelp mentions prices only as hearsay in reviews ('$12.89 for a Budweiser', 'prices are steep')."
+  },
+  {
+    "restaurantId": "9995",
+    "name": "Family Tacos",
+    "sourceUrl": "https://www.mapquest.com/us/california/family-tacos-662449596",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website, no DoorDash/UberEats/Grubhub listing found; described (MapQuest) as a family-owned taco trailer in Southcrest; IG page (@family_tacos1) has no legible priced menu in static fetch; Yelp/atly mention dish names only, no prices. Cash-only small operation, not confirmed closed."
+  },
+  {
+    "restaurantId": "7924",
+    "name": "Manila Bistro",
+    "sourceUrl": "https://www.facebook.com/manilabistro.sd/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no itemized a-la-carte menu found; Facebook posts publish only the weekend All-You-Can-Eat buffet price (Adults $24.99, Kids $12.99), which is a buffet and not fileable; a 'Full Menu' bit.ly link on Facebook could not be resolved without login. 'Villa Manila' (500 E 8th St) and bistromanila.ca are different businesses, not this one (933 S Harbison Ave)."
+  },
+  {
+    "restaurantId": "11015",
+    "name": "Tuggamomma Smokehouse",
+    "sourceUrl": "https://www.doordash.com/store/tuggamomma-smokehouse-campo-32985875/",
+    "confidence": "medium",
+    "notes": "Own domain tuggamomma.com returned HTTP 402; read from DoorDash's standalone @type:Menu JSON-LD block (hasMenuSection -> hasMenuItem -> offers.price). 24 items across 7 sections, all round-dollar prices, well below the 79/91 truncation-signature counts, so treated as complete.",
+    "dishes": [
+      {
+        "name": "Pulled Pork",
+        "price": "$14.00",
+        "section": "Meats"
+      },
+      {
+        "name": "Pork Ribs",
+        "price": "$11.00",
+        "section": "Meats"
+      },
+      {
+        "name": "6 Chicken Wings",
+        "price": "$15.00",
+        "section": "Meats"
+      },
+      {
+        "name": "Brisket",
+        "price": "$18.00",
+        "section": "Meats"
+      },
+      {
+        "name": "Banana Pudding",
+        "price": "$5.00",
+        "section": "Finger Food"
+      },
+      {
+        "name": "Hamburger",
+        "price": "$10.00",
+        "section": "Finger Food"
+      },
+      {
+        "name": "Hamburger with Cheese",
+        "price": "$12.00",
+        "section": "Finger Food"
+      },
+      {
+        "name": "Burger with Works / Bacon / Smoked Pork Belly",
+        "price": "$14.00",
+        "section": "Finger Food"
+      },
+      {
+        "name": "Brisket Twinkies",
+        "price": "$5.00",
+        "section": "Finger Food"
+      },
+      {
+        "name": "Egg Rolls",
+        "price": "$5.00",
+        "section": "Finger Food"
+      },
+      {
+        "name": "Junior Junior Meal",
+        "price": "$10.00",
+        "section": "Kid's Meal"
+      },
+      {
+        "name": "Mash & Meat",
+        "price": "$10.00",
+        "section": "Kid's Meal"
+      },
+      {
+        "name": "3 Rib Plate",
+        "price": "$17.50",
+        "section": "Classics + 8 Oz Side"
+      },
+      {
+        "name": "Pulled Pork Plate",
+        "price": "$21.50",
+        "section": "Classics + 8 Oz Side"
+      },
+      {
+        "name": "6 Chicken Wings Plate",
+        "price": "$21.00",
+        "section": "Classics + 8 Oz Side"
+      },
+      {
+        "name": "Brisket Plate",
+        "price": "$24.00",
+        "section": "Classics + 8 Oz Side"
+      },
+      {
+        "name": "Meat Platter",
+        "price": "$30.00",
+        "section": "Platters"
+      },
+      {
+        "name": "Ribs, Wings & Side Combo",
+        "price": "$26.00",
+        "section": "Platters"
+      },
+      {
+        "name": "Potato Salad",
+        "price": "$6.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Mac & Cheese",
+        "price": "$6.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Smoked Mash",
+        "price": "$6.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Coleslaw",
+        "price": "$6.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Baked Beans",
+        "price": "$6.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Soft Drink",
+        "price": "$3.00",
+        "section": "Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4482",
+    "name": "Thérapie Bistro",
+    "sourceUrl": "https://therapiebistro.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own /menu page is prose-only ('seasonal menu... evolves throughout the year') with zero itemized prices; no PDF or menu images found on the site; no DoorDash/UberEats/Toast listing found (searches returned unrelated same-word restaurants: Heat Bistro, Pizza Therapy, Bistro 39); Yelp mentions 'sandwich, salad, bowls' as hearsay only."
+  },
+  {
+    "restaurantId": "4389",
+    "name": "FiveO3 Pupusas",
+    "sourceUrl": "https://www.fiveo3pupusas.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "partial: own site's Signature Pupusas section prices 7 of 8 items (Chicharron y Queso has no price listed at all); Sides (Empanadas, Nuegados, Fried Plantains, Side of Beans, Side of Sour Cream) and Drinks (Aguas Frescas, Cola, Mexican Coca Cola, Fiji) are listed with no prices whatsoever; call-in-only ordering (760-777-0318), no DoorDash/UberEats/Toast listing found to supplement."
+  }
+]

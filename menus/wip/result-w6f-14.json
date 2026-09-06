@@ -1,0 +1,2157 @@
+[
+  {
+    "restaurantId": "9136",
+    "name": "Deli Mart",
+    "sourceUrl": "https://www.doordash.com/en/store/deli-mart-san-diego-526727/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "DoorDash and Uber Eats both carry priced JSON-LD menus for this store (confirmed same address, 9210 Dowdy Dr), but 24 matched items disagree by 11-42% (DoorDash consistently higher: e.g. Torpedo $16.95 DD vs $12.95 UE, Sinatra Wrap $16.95 vs $11.95), spanning sandwiches, wraps and even bottled sodas. Neither is confirmed as the wall price and no dine-in artefact was found to arbitrate; per standing rule, disagreeing ordering channels are a block, not a merge."
+  },
+  {
+    "restaurantId": "8926",
+    "name": "Ayumi",
+    "sourceUrl": "https://www.ubereats.com/store/ayumi-sushi-%26-chinese-cuisine/71ffidDwReeg0iobUK6gxg",
+    "confidence": "medium",
+    "notes": "Uber Eats schema.org JSON-LD, address matches exactly (9735 Campo Road, Suite 250). 272 deduped dishes across 20 sections (appetizers, sashimi, nigiri, maki, Chinese entrees by protein, fried rice, lomein, drinks, sides) — well clear of the 79/91 truncation range. Cent distribution conventional (.95 x173, .50 x92), no markup divisor pattern found. Own site (mylightspeed.app, Lightspeed Order Anywhere) is a client-rendered SPA shell with no embedded menu data; Grubhub returned an empty/blocked page. DoorDash not checked (Uber Eats already gave a large clean capture).",
+    "dishes": [
+      {
+        "name": "Tempura Shrimp (4pcs).",
+        "description": "",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Calamari.",
+        "description": "",
+        "price": "$9.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Vegetarian Egg Roll (4pcs).",
+        "description": "",
+        "price": "$7.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Cream Cheese Wonton (6pcs)",
+        "description": "",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Gyoza (6pcs).",
+        "description": "",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Steam Gyoza (6 pcs)",
+        "description": "",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Tempura Vegetables",
+        "description": "",
+        "price": "$10.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mix Tempura Vegetables",
+        "description": "",
+        "price": "$13.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Edamame",
+        "description": "",
+        "price": "$7.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Garlic Edamame",
+        "description": "",
+        "price": "$9.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Popcorn Green Beans",
+        "description": "",
+        "price": "$15.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Jalapeno Poppers",
+        "description": "",
+        "price": "$9.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Oyster",
+        "description": "",
+        "price": "$9.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Spicy Tofu",
+        "description": "",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Takoyaki",
+        "description": "",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "(Small) Steam Rice",
+        "description": "",
+        "price": "$3.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "(Small) Fried Rice",
+        "description": "",
+        "price": "$4.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Hamachi Kama",
+        "description": "",
+        "price": "$14.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Ayumi Appetizer Box",
+        "description": "Great combination of super selective appetizer dishes that elevate your experience. IncludesCream cheese Wontons (6pcs)Fried Calamari (6pcs)Takoyaki (6pcs)EggRolls (4pcs)Tempura Veggies",
+        "price": "$55.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Spicy Dumpling",
+        "description": "",
+        "price": "$12.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "(Small) Steam Vegetables",
+        "description": "",
+        "price": "$6.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "(Large) Steam Vegetables",
+        "description": "",
+        "price": "$9.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Avocado",
+        "description": "",
+        "price": "$7.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Avocado With Cheese",
+        "description": "",
+        "price": "$9.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Kid’s Meal (Teriyaki Chicken & Lomein)",
+        "description": "",
+        "price": "$12.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "(Large) Steam Rice",
+        "description": "",
+        "price": "$5.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "(Large) Fried Rice",
+        "description": "",
+        "price": "$6.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "(Small) Plain Lomein",
+        "description": "",
+        "price": "$6.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "(Large) Plain Lomein",
+        "description": "",
+        "price": "$10.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "(Small) Egg Drop Soup",
+        "description": "",
+        "price": "$5.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "(Large) Egg Drop Soup",
+        "description": "",
+        "price": "$12.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "(Small) Miso Soup",
+        "description": "",
+        "price": "$5.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "(Small) Hot & Sour Soup",
+        "description": "",
+        "price": "$6.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "(Large) Hot & Sour Soup",
+        "description": "",
+        "price": "$13.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "(Small) Wonton Soup",
+        "description": "",
+        "price": "$6.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "Udon Noodle Soup",
+        "description": "",
+        "price": "$17.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "Seafood Salad",
+        "description": "",
+        "price": "$17.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "Sashimi Mango Salad",
+        "description": "",
+        "price": "$17.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "Poke Tuna",
+        "description": "",
+        "price": "$12.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "Tako Salad",
+        "description": "",
+        "price": "$12.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "(Large) Miso Soup",
+        "description": "",
+        "price": "$12.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "(Large) Wonton Soup",
+        "description": "",
+        "price": "$14.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "(Small) Salad",
+        "description": "",
+        "price": "$5.50",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "(Large) Salad",
+        "description": "",
+        "price": "$7.50",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "Cucumber Salad",
+        "description": "",
+        "price": "$7.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "Seaweed Salad",
+        "description": "",
+        "price": "$7.50",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "Egg Fried Rice",
+        "description": "",
+        "price": "$13.50",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "Shrimp Noodle Soup",
+        "description": "",
+        "price": "$16.95",
+        "section": "Soup & Salad"
+      },
+      {
+        "name": "Dynamite Don",
+        "description": "",
+        "price": "$17.95",
+        "section": "Sushi Don"
+      },
+      {
+        "name": "Poke Don",
+        "description": "",
+        "price": "$16.95",
+        "section": "Sushi Don"
+      },
+      {
+        "name": "Tuna Avocado Don",
+        "description": "",
+        "price": "$15.95",
+        "section": "Sushi Don"
+      },
+      {
+        "name": "Unagi Don",
+        "description": "",
+        "price": "$17.95",
+        "section": "Sushi Don"
+      },
+      {
+        "name": "Spicy Crab Don",
+        "description": "",
+        "price": "$14.95",
+        "section": "Sushi Don"
+      },
+      {
+        "name": "Spicy Tuna Don",
+        "description": "",
+        "price": "$15.95",
+        "section": "Sushi Don"
+      },
+      {
+        "name": "619 Roll",
+        "description": "Inside: Cream Cheese, Avocado, and Imitation Crab(Deep Fried)Top: Spicy Imitation Crab, Sweet Chili Sauce, Spicy Mayo-Eel Sauce and Rice Seasoning",
+        "price": "$17.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Adam and Eve Roll",
+        "description": "Inside: Tempura Shrimp, Imitation Crab, Cream Cheese & AvocadoTop: Sear Ahi, Albacore, Eel Sauce, Spicy Mayo, Chopped Jalapeno, Cilantro and Dry Garlic",
+        "price": "$16.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Alaska Roll",
+        "description": "Inside: Scallops, Avocado & CucumberTop: Salmon, Massago",
+        "price": "$16.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Ayumi Roll",
+        "description": "Inside: Tempura Shrimp, Cucumber, and Spicy Imitation CrabTop: Avocado, chopped jalapeno and cilantro, Dry shallot, and Spicy Mayo-Eel Sauce",
+        "price": "$16.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Baked Scallop Roll",
+        "description": "Inside: Spicy Imitation Crab & AvocadoTop: Scallops, Spicy Imitation Crab, Rice Seasoning, Eel Sauce & Spicy Mayo",
+        "price": "$21.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Caterpillar Roll",
+        "description": "Inside: Smoked Eel, Imitation Crab & CucumberTop: Avocado and Drizzled w/ Eel Sauce, Mayo",
+        "price": "$15.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Ceviche Roll",
+        "description": "Inside: Spicy Tuna, Cucumber & AvocadoTopped with Salmon, Jalapeno, Cilantro, Chef’s Sauce, Mango Salsa, and Wrap in Soy Paper",
+        "price": "$23.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Citrus Roll",
+        "description": "Inside: Avocado, Cucumber, Spicy TunaTop: Hamachi, Lemon, Yuzu Jalapeno Citrus, Cilantro, and Massago",
+        "price": "$19.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Crunchy Roll",
+        "description": "Inside: Tempura Shrimp, Spicy Imitation Crab & AvocadoTop: Crunchy Flakes, Eel Sauce & Spicy Mayo",
+        "price": "$12.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Fractures Roll",
+        "description": "Inside: Asparagus, Imitation Crab, Tempura ShrimpTop: White Tuna, Eel Sauce, Spicy Mayo, Rice Seasoning and wrap in Soy Paper",
+        "price": "$17.50",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Gold Dust Roll",
+        "description": "Inside: Salmon, Avocado & CucumberTop: Seared Salmon, Masago, Spicy Mayo & Chili Oil",
+        "price": "$17.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Hamachi Heaven Roll",
+        "description": "Inside: Hamachi, Avocado & Cucumber Top: Sear Hamachi, Masago, Chopped Jalapeno & Cilantro, Drizzled w/ Spicy Mayo-Eel Sauce",
+        "price": "$18.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Heatwave Roll",
+        "description": "Inside: Spicy Tuna & CucumberTop: Sear Ahi, Masago, Poke Sauce, Chili Oil,  Sriracha & Scallions",
+        "price": "$17.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Kamikaze Roll",
+        "description": "Inside: Spicy Imitation Crab, Ebi & AvocadoTop: Salmon, Tuna, Massago & Ponzu Sauce",
+        "price": "$16.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Las Vegas Roll",
+        "description": "(Deep Fried) (8pcs)Inside: Salmon, Cream Cheese & AvocadoOutside: Topped w/ Slice Jalapenos, Spicy Mayo-Eel Sauce",
+        "price": "$15.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Lunar Roll",
+        "description": "Inside: Tempura Shrimp, Cucumber & Imitation CrabTop: Smoked Eel, Avocado, Eel sauce & Mayo",
+        "price": "$17.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Mystic Garden Roll",
+        "description": "Inside: Asparagus, Avocado & CucumberTop: Avocado, Yuzu Jalapeno Citrus, Mango Salsa, Chopped Jalapeno & Cilantro",
+        "price": "$17.50",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Protein Machine Roll",
+        "description": "(No Rice) Inside: Tuna, Spicy Imitation Crab, Avocado & CucumberTop: Wrapped in Soy Paper, Topped w/ Seared Ahi, Albacore, Chopped Jalapeno & Cilantro, Drizzled w/ Spicy Mayo-Eel Sauce",
+        "price": "$20.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Rainbow Roll",
+        "description": "Inside: Imitation Crab, Avocado & CucumberTop: Assorted Fish",
+        "price": "$14.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Shogun Roll",
+        "description": "Inside: Tempura Shrimp, Avocado & CucumberTop: Seared Ahi, Albacore, Rice Seasoning, and Spicy Mayo-Eel Sauce",
+        "price": "$16.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Shrimp Lover Roll",
+        "description": "Inside: Tempura Shrimp, Cream Cheese, Avocado & CucumberTop: Ebi, Crunchy Flakes, Cilantro, Sweet Chili Sauce & Drizzled Mayo-Eel Sauce",
+        "price": "$17.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Spring Valley Roll",
+        "description": "Inside: Avocado, Cucumber, and Spicy TunaTop: Albacore, Mango Salsa, Chop Jalapeno and Cilantro, w/ Yuzu Jalapeno Citrus",
+        "price": "$18.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Submarine Roll",
+        "description": "Inside: Hamachi, Tuna, Albacore, Escolar, Massago & OnionOutside: Wrapped in Soy Paper",
+        "price": "$17.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Sunrise Serenity Roll",
+        "description": "Inside: Tempura Shrimp, Avocado, & Cream CheeseTop: Salmon, Spicy Imitation Crab, Massago & Spicy Mayo",
+        "price": "$17.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Sunset Bliss Roll",
+        "description": "Inside: Tempura Shrimp, Avocado, & Cream CheeseTop: Tuna, Spicy Imitation Crab, Massago & Spicy Mayo",
+        "price": "$17.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Superhuman Roll",
+        "description": "(No Rice)Inside: Salmon, Tuna, Escolar & Imitation CrabOutside: Cucumber Wrapped top w/ Mango Salsa, Yuzu Jalapeno Citrus and Chopped Jalapeno & Cilantro",
+        "price": "$18.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Sushi Burrito",
+        "description": "Inside: Tempura Shrimp, Spicy Imitation Crab, Spicy Tuna, Cream Cheese, Avocado, Cucumber, Chopped Jalapeno & CilantroOutside: Wrapped in Soy Paper & Spicy Mayo-Eel Sauce",
+        "price": "$15.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "The Last Samurai Roll",
+        "description": "Inside: Tuna, Avocado & CucumberOutside: Wrapped in Soy Paper, Topped with Hamachi, Spicy Tuna, Jalapeno Citrus, Chopped Jalapeno & Cilantro",
+        "price": "$19.50",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Tiger Roll",
+        "description": "Inside: Tempura Shrimp, Avocado, and Cucumber Top: Ebi drizzled with Mayo-Eel Sauce",
+        "price": "$16.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Ayumi Box",
+        "description": "Feast on Ayumi’s star-studded lineup: Ayumi Roll, Tiger Roll, Caterpillar Roll, Lunar Roll, and 619 Roll. All cooked, all delicious!",
+        "price": "$105.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Classic Box",
+        "description": "A delightful mix of a California Roll, Spicy Crab Roll, Spicy Salmon Roll, Spicy Tuna Roll, Tempura Shrimp Roll, plus Sake Nigiri (2 pieces) and Tuna Nigiri (2 pieces).",
+        "price": "$68.69",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Sea Box",
+        "description": "Dive in with five popular sushi rolls featuring Spring Valley, Citrus, Gold Dust, Adam & Eve, and Sweet Hawaiian rolls, plus a side of Poke Tuna.",
+        "price": "$110.69",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Leave It To The Chef",
+        "description": "Let our Chef “Wow” You With Their Creativity",
+        "price": "$19.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Pizza Roll",
+        "description": "(Baked Roll)Inside: Avocado & Imitation CrabTop: Spicy Mayo & Eel Sauce",
+        "price": "$12.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Sweet Hawaiian Roll",
+        "description": "Inside: Tempura Shrimp, Imitation Crab, Avocado & CucumberTop: Spicy Tuna, Micro Green, Spicy Mayo and Eel Sauce",
+        "price": "$16.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Deluxe Box",
+        "description": "Ayumi Top tier box that includesSashimi (10 pcs)Mix Nigiri (7 pcs)Spicy Tuna RollShrimp Lover RollLeave it to the Chef RollSeaweed Salad",
+        "price": "$115.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Monkey Roll",
+        "description": "",
+        "price": "$14.95",
+        "section": "Ayumi Special Roll"
+      },
+      {
+        "name": "Salmon Sashimi (5 pcs)",
+        "description": "",
+        "price": "$9.50",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Mix Sashimi (10 pcs)",
+        "description": "",
+        "price": "$25.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Mix Sashimi (15pcs)",
+        "description": "",
+        "price": "$35.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Albacore Carpaccio",
+        "description": "",
+        "price": "$19.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Hamachi Carpaccio",
+        "description": "",
+        "price": "$21.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Salmon Carpaccio",
+        "description": "",
+        "price": "$19.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Tuna Carpaccio",
+        "description": "",
+        "price": "$19.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Albacore Sashimi (5 pcs)",
+        "description": "",
+        "price": "$14.45",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Hamachi Sashimi (5 pcs)",
+        "description": "",
+        "price": "$15.45",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Seared Ahi Sashimi (5 pcs)",
+        "description": "",
+        "price": "$14.50",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Tako Sashimi (5 pcs)",
+        "description": "",
+        "price": "$15.45",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Tuna Sashimi (5 pcs)",
+        "description": "",
+        "price": "$14.50",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Mix Sashimi (6 pcs)",
+        "description": "",
+        "price": "$14.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Carpaccio Deluxe",
+        "description": "",
+        "price": "$23.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Seared Ahi Carpaccio",
+        "description": "",
+        "price": "$17.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Avocado Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "California Roll",
+        "description": "",
+        "price": "$8.95",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Spicy Eel Roll",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Spicy Tuna Roll",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Spicy Hamachi Roll",
+        "description": "",
+        "price": "$10.95",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Spicy Scallop Roll",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Fried Calamari Roll",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Philadelphia Roll",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Crazy Roll",
+        "description": "",
+        "price": "$11.50",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Baked Salmon Roll",
+        "description": "",
+        "price": "$14.50",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Cucumber Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Spicy Albacore Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Spicy Crab Roll",
+        "description": "",
+        "price": "$8.95",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Spicy Salmon Roll",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Spicy Shrimp Roll",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Tempura Salmon Roll",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Tempura Shrimp Roll",
+        "description": "",
+        "price": "$8.95",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Tempura Tuna Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Salmon Skin Roll",
+        "description": "",
+        "price": "$8.95",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Vegetable Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Cut Roll"
+      },
+      {
+        "name": "Spicy Salmon Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Spicy Scallop Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Spicy Tuna Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Tempura Shrimp Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Avocado Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "California Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Cucumber Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Philadelphia Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Salmon Skin Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Sear Ahi Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Spicy Albacore Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Spicy Crab Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Spicy Eel Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Spicy Hamachi Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Spicy Shrimp Hand Roll",
+        "description": "",
+        "price": "$8.50",
+        "section": "Sushi Hand Roll (Temaki)"
+      },
+      {
+        "name": "Hamachi (2 pcs)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Ika (2 pcs)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Salmon (2 pcs)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Surf Clam (2 pcs)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Tako (2 pcs)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Unagi (2 pcs)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Nigiri (4pcs Chef’s Choice)",
+        "description": "(Served with Spicy Tuna Roll 8pcs )",
+        "price": "$15.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Nigiri (7 Pcs Chef’s Choice)",
+        "description": "(Served with Spicy Tuna Roll 8pcs )",
+        "price": "$20.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Albacore (2 pcs)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Ebi (2 pcs)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Escolar (2 pcs)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Kanikama (2 pcs)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Massago (2 pcs)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Sear Ahi (2pcs)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Sear Salmon (2pcs)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Spicy Tuna (2pcs)",
+        "description": "",
+        "price": "$7.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Symphony (2pcs)",
+        "description": "",
+        "price": "$10.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "The Islander (2 pcs)",
+        "description": "( Scallop & Tuna)",
+        "price": "$14.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Tuna (2 pcs)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Nigiri (10 Pcs Chef’s Choice)",
+        "description": "(Served with Spicy Tuna Roll 8pcs )",
+        "price": "$27.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "California Maki (6pcs)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Tekka Maki (6pcs)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Hamachi Maki (6pcs)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Kappa Maki (6pcs)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Salmon Maki (6pcs)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Salt & Pepper Chicken Wings",
+        "description": "SPICY(Crispy Chicken Wings Stir-fried w/ Garlic, Red and Green Bell Pepper and Onions Flavor)",
+        "price": "$21.95",
+        "section": "Chef's Signature Dishes"
+      },
+      {
+        "name": "Salt & Pepper Shrimp",
+        "description": "SPICY(Crispy Jumbo Shrimp Stir-fired w/ Garlic, Red and Green Bell Pepper and Onions Flavor)",
+        "price": "$20.95",
+        "section": "Chef's Signature Dishes"
+      },
+      {
+        "name": "Salt & Pepper Tofu",
+        "description": "SPICY(Crispy Tofu Stir-fired w/ Garlic, Red and Green Bell Pepper and Onions Flavor)",
+        "price": "$19.95",
+        "section": "Chef's Signature Dishes"
+      },
+      {
+        "name": "Salt & Pepper White Meat Chicken",
+        "description": "SPICY( Crispy Breaded White Meat Chicken Stir-fired w/ Garlic, Red and Green Bell Pepper and Onions Flavor)",
+        "price": "$21.95",
+        "section": "Chef's Signature Dishes"
+      },
+      {
+        "name": "Ayumi Special Tofu",
+        "description": "",
+        "price": "$20.95",
+        "section": "Chef's Signature Dishes"
+      },
+      {
+        "name": "Sweet & Sour Pork (Spare Rib)",
+        "description": "",
+        "price": "$20.95",
+        "section": "Chef's Signature Dishes"
+      },
+      {
+        "name": "Pepper Beef Steak",
+        "description": "",
+        "price": "$20.95",
+        "section": "Chef's Signature Dishes"
+      },
+      {
+        "name": "Salt & Pepper Dark Meat Chicken",
+        "description": "SPICY( Crispy Breaded Dark Chicken Stir-fired w/ Garlic, Red and Green Bell Pepper and Onions Flavor)",
+        "price": "$19.95",
+        "section": "Chef's Signature Dishes"
+      },
+      {
+        "name": "Kung Pao Trio",
+        "description": "SPICY(Chicken, Beef, and Shrimp Stir-fried w/ chili, Golden Peanuts, Celery, Scallion, and Water Chestnuts)",
+        "price": "$19.95",
+        "section": "Chef's Signature Dishes"
+      },
+      {
+        "name": "Garlic Trio",
+        "description": "(Chicken, Beef, and Shrimp Sauté w/ Vegetables in Garlic Sauce)",
+        "price": "$19.95",
+        "section": "Chef's Signature Dishes"
+      },
+      {
+        "name": "Assorted Chop Suey",
+        "description": "",
+        "price": "$18.50",
+        "section": "Chef's Signature Dishes"
+      },
+      {
+        "name": "Teriyaki Chicken Bowl",
+        "description": "",
+        "price": "$14.95",
+        "section": "Chinese Bowl"
+      },
+      {
+        "name": "Teriyaki Shrimp Bowl",
+        "description": "",
+        "price": "$15.95",
+        "section": "Chinese Bowl"
+      },
+      {
+        "name": "Chicken Vegetables Bowl",
+        "description": "",
+        "price": "$14.95",
+        "section": "Chinese Bowl"
+      },
+      {
+        "name": "Orange Chicken Bowl",
+        "description": "(Crispy Breaded Chicken Stir-Fried in Orange Sauce)",
+        "price": "$15.95",
+        "section": "Chinese Bowl"
+      },
+      {
+        "name": "Teriyaki Beef Bowl",
+        "description": "",
+        "price": "$15.95",
+        "section": "Chinese Bowl"
+      },
+      {
+        "name": "Teriyaki Vegetables Bowl",
+        "description": "",
+        "price": "$12.50",
+        "section": "Chinese Bowl"
+      },
+      {
+        "name": "Garlic Shrimp Bowl",
+        "description": "(Seared Bell Peppers and Onions in Brown Garlic Sauce, Stir-fried with Shrimp, Carrots and Celery)",
+        "price": "$14.50",
+        "section": "Chinese Bowl"
+      },
+      {
+        "name": "Shrimp Vegetables Bowl",
+        "description": "(Shrimp Sautee with Zucchini, Broccoli, Carrots, Celery, Snow-peas, Water-Chestnuts, Mushrooms & Napa in Light Garlic Sauce)",
+        "price": "$15.95",
+        "section": "Chinese Bowl"
+      },
+      {
+        "name": "Kung Pao Chicken Bowl",
+        "description": "SPICY(Chicken with a Spicy Sauce Stir-fried with Chili, Celery,Golden Peanut, Scallions, and Water-Chestnuts)",
+        "price": "$14.95",
+        "section": "Chinese Bowl"
+      },
+      {
+        "name": "Mongolian Beef Bowl",
+        "description": "(Tender Beef Stir-fried with Green Onions, White Onions,and Served on a Bed of Rice Noodles)",
+        "price": "$15.95",
+        "section": "Chinese Bowl"
+      },
+      {
+        "name": "Broccoli Beef Bowl",
+        "description": "(Tender Beef Stir-fried with Broccoli, Carrots, and Scallions in Chef Garlic Brown Sauce)",
+        "price": "$15.95",
+        "section": "Chinese Bowl"
+      },
+      {
+        "name": "General T'so Chicken",
+        "description": "SPICY(Breaded Chicken Cooked in Spicy Chef’s Sauce Combined with Red Bell Peppers, Green Bell Peppers, and White Onions)",
+        "price": "$18.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Orange Chicken",
+        "description": "(Crispy Breaded Chicken Stir-Fried in Orange Sauce)",
+        "price": "$16.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Sweet Pungent Chicken",
+        "description": "SPICY",
+        "price": "$19.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Kung Pao Chicken",
+        "description": "SPICY(Chicken with a Spicy Sauce Stir-fried with Chili, Celery,Golden Peanut, Scallions, and Water-Chestnuts)",
+        "price": "$18.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Sweet and Sour Chicken",
+        "description": "(Crispy Breaded White Meat Chicken Served with Pineapple, Bell Peppers, Carrots, and Onions in Sweet & Sour Sauce)",
+        "price": "$18.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Garlic Chicken",
+        "description": "",
+        "price": "$18.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Honey Walnut Chicken",
+        "description": "",
+        "price": "$19.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Cashew Chicken",
+        "description": "",
+        "price": "$18.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Chicken Chop Suey",
+        "description": "",
+        "price": "$18.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Chicken Green Beans",
+        "description": "",
+        "price": "$18.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Szechuan Chicken",
+        "description": "SPICY( White Meat Chicken Stir-fried with White Onions, Green Onions, Celery, and Carrots in Chef’s Brown Chili Sauce)",
+        "price": "$18.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Teriyaki Chicken",
+        "description": "",
+        "price": "$18.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Chicken Vegetables",
+        "description": "",
+        "price": "$16.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Mongolian Chicken",
+        "description": "",
+        "price": "$18.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Mongolian Beef",
+        "description": "(Tender Beef Stir-fried with Green Onions, White Onions,and Served on a Bed of Rice Noodles)",
+        "price": "$19.50",
+        "section": "Beef"
+      },
+      {
+        "name": "Szechuan Beef",
+        "description": "SPICY(Marinated Beef Stir-fried with White Onions, Green Onions, Celery, and Carrots in Chef’s Brown Chili Sauce)",
+        "price": "$19.50",
+        "section": "Beef"
+      },
+      {
+        "name": "Beef Vegetables",
+        "description": "",
+        "price": "$19.50",
+        "section": "Beef"
+      },
+      {
+        "name": "Kung Pao Beef",
+        "description": "SPICY(Tender Beef with a Spicy Sauce Stir-fried with Chili, Celery, Golden Peanut, Scallions, and Water-Chestnuts)",
+        "price": "$19.50",
+        "section": "Beef"
+      },
+      {
+        "name": "Beef Chop Suey",
+        "description": "",
+        "price": "$19.50",
+        "section": "Beef"
+      },
+      {
+        "name": "Beef Green Beans",
+        "description": "",
+        "price": "$17.95",
+        "section": "Beef"
+      },
+      {
+        "name": "Pepper Beef",
+        "description": "",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "Broccoli Beef",
+        "description": "(Tender Beef Stir-fried with Broccoli, Carrots, and Scallions in Chef Garlic Brown Sauce)",
+        "price": "$19.50",
+        "section": "Beef"
+      },
+      {
+        "name": "Honey Walnut Shrimp",
+        "description": "",
+        "price": "$19.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Sweet & Pungent Shrimp",
+        "description": "SPICY",
+        "price": "$20.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Shrimp Vegetables",
+        "description": "(Shrimp Sautee with Zucchini, Broccoli, Carrots, Celery, Snow-peas, Water-Chestnuts, Mushrooms & Napa in Light Garlic Sauce)",
+        "price": "$19.50",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Garlic Shrimp",
+        "description": "(Seared Bell Peppers and Onions in Brown Garlic Sauce, Stir-fried with Shrimp, Carrots and Celery)",
+        "price": "$19.50",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Kung Pao Shrimp",
+        "description": "",
+        "price": "$19.50",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Broccoli Shrimp",
+        "description": "",
+        "price": "$19.50",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Shrimp Chop Suey",
+        "description": "",
+        "price": "$19.50",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Shrimp in Lobster Sauce",
+        "description": "",
+        "price": "$19.50",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Szechuan Shrimp",
+        "description": "SPICY(Shrimp Stir-fried with White Onions, Green Onions, Celery, and Carrots in Chef’s Brown Chili Sauce)",
+        "price": "$19.50",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Sweet and Sour Pork",
+        "description": "(Crispy Breaded Pork Served with Pineapple, Bell Peppers, Carrots, and Onions in Sweet & Sour Sauce)",
+        "price": "$18.95",
+        "section": "Pork"
+      },
+      {
+        "name": "Mongolian BBQ Pork",
+        "description": "(BBQ Pork Stir-fried with Green Onions, White Onions and Served on a Bed of Rice Noodles)",
+        "price": "$19.50",
+        "section": "Pork"
+      },
+      {
+        "name": "BBQ Pork Chop Suey",
+        "description": "",
+        "price": "$19.50",
+        "section": "Pork"
+      },
+      {
+        "name": "BBQ Pork Broccoli",
+        "description": "",
+        "price": "$19.50",
+        "section": "Pork"
+      },
+      {
+        "name": "BBQ Pork Green Beans",
+        "description": "",
+        "price": "$19.50",
+        "section": "Pork"
+      },
+      {
+        "name": "Tofu Vegetables",
+        "description": "(Stir Fried Tofu with Fresh Vegetables in Chef’s White  Garlic Sauce)",
+        "price": "$15.95",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Kung Pao Tofu",
+        "description": "SPICY",
+        "price": "$16.95",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Kung Pao Vegetables",
+        "description": "",
+        "price": "$15.95",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Stir-Fried Garlic Green Beans",
+        "description": "",
+        "price": "$17.95",
+        "section": "Vegetables"
+      },
+      {
+        "name": "BBQ PK Fried Rice",
+        "description": "",
+        "price": "$18.95",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Assorted Fried Rice",
+        "description": "",
+        "price": "$17.95",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Beef Fried Rice",
+        "description": "",
+        "price": "$17.95",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Chicken Fried Rice",
+        "description": "",
+        "price": "$17.95",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Shrimp Fried Rice",
+        "description": "",
+        "price": "$17.95",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Vegetables Fried Rice",
+        "description": "",
+        "price": "$16.95",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Assorted Lomein",
+        "description": "",
+        "price": "$17.95",
+        "section": "Lomein"
+      },
+      {
+        "name": "BBQ PK Lomein",
+        "description": "",
+        "price": "$18.95",
+        "section": "Lomein"
+      },
+      {
+        "name": "Beef Lomein",
+        "description": "",
+        "price": "$17.95",
+        "section": "Lomein"
+      },
+      {
+        "name": "Chicken Lomein",
+        "description": "",
+        "price": "$17.95",
+        "section": "Lomein"
+      },
+      {
+        "name": "Shrimp Lomein",
+        "description": "",
+        "price": "$17.95",
+        "section": "Lomein"
+      },
+      {
+        "name": "Vegetables Lomein",
+        "description": "",
+        "price": "$16.95",
+        "section": "Lomein"
+      },
+      {
+        "name": "Brown Sugar Milk Drink",
+        "description": "Top with brown sugar boba",
+        "price": "$6.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "",
+        "price": "$5.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Green Thai Tea",
+        "description": "",
+        "price": "$6.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Fresh Lemon Green Tea",
+        "description": "",
+        "price": "$6.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Mango Green Tea",
+        "description": "",
+        "price": "$6.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Passion Fruit Green Tea",
+        "description": "",
+        "price": "$6.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Peach Green Tea",
+        "description": "",
+        "price": "$6.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Strawberry Green Tea",
+        "description": "",
+        "price": "$6.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Green Iced Tea",
+        "description": "",
+        "price": "$3.50",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Regular Iced Tea",
+        "description": "",
+        "price": "$3.50",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Coke",
+        "description": "",
+        "price": "$2.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Diet Coke",
+        "description": "",
+        "price": "$2.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Sprite",
+        "description": "",
+        "price": "$2.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Fanta",
+        "description": "",
+        "price": "$2.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Root Beer",
+        "description": "",
+        "price": "$2.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Fresh Lemon Black Tea",
+        "description": "",
+        "price": "$6.95",
+        "section": "Ayumi Crafty Drink"
+      },
+      {
+        "name": "Sweet & Sour Sauce",
+        "description": "",
+        "price": "$0.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Chili Oil Sauce",
+        "description": "",
+        "price": "$0.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Siracha",
+        "description": "",
+        "price": "$0.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Sweet Chili Sauce",
+        "description": "",
+        "price": "$0.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Tempura Sauce",
+        "description": "",
+        "price": "$0.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Hot Mustard",
+        "description": "",
+        "price": "$0.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Salad Dressing",
+        "description": "",
+        "price": "$0.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Wasabi",
+        "description": "",
+        "price": "$0.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Ginger",
+        "description": "",
+        "price": "$0.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Spicy Mayo.",
+        "description": "",
+        "price": "$0.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Eel Sauce.",
+        "description": "",
+        "price": "$0.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Ponzu Sauce",
+        "description": "",
+        "price": "$0.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Side Slice Jalapenos.",
+        "description": "",
+        "price": "$0.75",
+        "section": "Side Order"
+      },
+      {
+        "name": "Lemon.",
+        "description": "",
+        "price": "$0.50",
+        "section": "Side Order"
+      },
+      {
+        "name": "Crunchy Flakes.",
+        "description": "",
+        "price": "$2.95",
+        "section": "Side Order"
+      },
+      {
+        "name": "Half Avocado Slice",
+        "description": "",
+        "price": "$3.95",
+        "section": "Side Order"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10679",
+    "name": "The Story Caffè",
+    "sourceUrl": "http://www.thestorycaffe.com/uploads/5/0/2/7/50273561/web_menu.pdf",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own-site PDF (address matches: 1330 Poinsettia Ln) has a real text layer with 8+ priced food items (Breakfast Sandwich .25, Cajun Turkey Sandwich .75, Pesto-Caprese .75, Ham & Havarti .75, Mediterranean Salad , Quiche .25, 3 Avocado Toast variants -.50), but the entire coffee/drink page (Drip Coffee, Pour Over, Latte, Cappuccino, Mocha, teas) carries NO prices anywhere, only an add-on note (Alt Milks +.00). Confirmed no image-glyph prices via extract_pdf_images.js (small decorative images only, no rendered price text). For a cafe named for its coffee, the core drink menu is unpriced; no priced DoorDash/Grubhub/UberEats listing found. Needs the coffee price list from elsewhere."
+  },
+  {
+    "restaurantId": "9298",
+    "name": "Ellie's Wood Fired Pizza",
+    "sourceUrl": "http://www.ellieswoodfiredpizza.com/",
+    "confidence": "high",
+    "notes": "First-party one-page site (address matches exactly: 4852 Voltaire St, San Diego CA 92107). The shop's own FAQ/announcement confirms the menu is deliberately limited to exactly 5 pizzas (one 12in size only) plus one side sauce — a small menu that is the whole menu, not a partial capture.",
+    "dishes": [
+      {
+        "name": "Chester's Cheese",
+        "description": "San Marzano tomato sauce, shredded mozzarella, fresh parmesan (Vegetarian)",
+        "price": "$16.00",
+        "section": "Our Pizzas"
+      },
+      {
+        "name": "Mishka's Margherita",
+        "description": "San Marzano tomato sauce, fresh mozzarella chunks, fresh basil, topped with olive oil (Vegetarian)",
+        "price": "$18.00",
+        "section": "Our Pizzas"
+      },
+      {
+        "name": "Hilde's Pepperoni",
+        "description": "San Marzano tomato sauce, shredded mozzarella, pepperoni, fresh parmesan",
+        "price": "$18.00",
+        "section": "Our Pizzas"
+      },
+      {
+        "name": "Django's Pepperoni Sausage",
+        "description": "San Marzano tomato, shredded mozzarella, italian sausage, pepperoni, chopped red onion, fresh parmesan",
+        "price": "$20.00",
+        "section": "Our Pizzas"
+      },
+      {
+        "name": "House Special",
+        "description": "Mishka's Margherita with pepperoni and red onions added",
+        "price": "$20.00",
+        "section": "Our Pizzas"
+      },
+      {
+        "name": "Housemade Ranch",
+        "description": "",
+        "price": "$1.00",
+        "section": "Sides"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7345",
+    "name": "JamPinoy",
+    "sourceUrl": "https://www.ubereats.com/store/jam-pinoy/8wMSHn8JW6KY7pqmLYm4mQ",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://www.doordash.com/store/jampinoy-vista-30899235/",
+    "notes": "27 dishes across Filipino Combo Plates, Filipino/Jamaican A La Carte, Jamaican Plates, Sides, Jamaican Patty, Dessert and a Friday Special. Address matches (1906 Hacienda Dr, Vista). Cross-checked 5 overlapping items against DoorDash (25 dishes, same sections minus Patty/Dessert/Special): prices agree within $0.01 (rounding), no markup pattern.",
+    "dishes": [
+      {
+        "name": "Combo Plate (1 Item)",
+        "description": "Comes with choice of entree, and choice of All White Rice or Half Rice / Half Pancit (Noodles).",
+        "price": "$12.75",
+        "section": "Filipino Combo Plates"
+      },
+      {
+        "name": "Combo Plate (2 Items)",
+        "description": "Comes with choice of 2 entree items, choice of All White Rice or Half Rice / Half Pancit (Noodles).",
+        "price": "$15.75",
+        "section": "Filipino Combo Plates"
+      },
+      {
+        "name": "Pancit Bihon (Noodles) (Medium)",
+        "description": "Pancit Bihon is a special Filipino dish packed with chewy rice noodles and veggies. You'll find this at every Filipino celebration!",
+        "price": "$6.75",
+        "section": "Filipino / Jamaican A La Carte"
+      },
+      {
+        "name": "Pancit Bihon (Noodles) (Large)",
+        "description": "Pancit Bihon is a special Filipino dish packed with chewy rice noodles and veggies. You'll find this at every Filipino celebration!",
+        "price": "$7.49",
+        "section": "Filipino / Jamaican A La Carte"
+      },
+      {
+        "name": "Pork Giniling",
+        "description": "The ultimate filipino comfort food, also known as the filipino picadillo, made with ground pork along with veggies simmered in a delicious tomato based sauce.",
+        "price": "$6.49",
+        "section": "Filipino / Jamaican A La Carte"
+      },
+      {
+        "name": "Pork Sinigang",
+        "description": "Pork Sinigang is Filipino classic– a delightful sour soup made with pork, vegetables, and tamarind-flavored broth.",
+        "price": "$7.99",
+        "section": "Filipino / Jamaican A La Carte"
+      },
+      {
+        "name": "Chicken Adobo",
+        "description": "A Filipino classic, this chicken adobo is tender and oh-so-delicious made with braised chicken, soy sauce, bay leaf, garlic, onions and vinegar.",
+        "price": "$6.49",
+        "section": "Filipino / Jamaican A La Carte"
+      },
+      {
+        "name": "Pork Adobo",
+        "description": "A Filipino classic, this pork adobo is tender and oh-so-delicious made with braised pork, soy sauce, bay leaf, garlic, onions and vinegar. Note - this is Pork Adobo a-la-carte, does not come with other items in photo.",
+        "price": "$6.49",
+        "section": "Filipino / Jamaican A La Carte"
+      },
+      {
+        "name": "Pinakbet",
+        "description": "Pinakbet is made with a variety of mixed vegetables and shrimp, flavored with bagoóng. Note - this is Pinakbet a-la-carte, does not come with other items in photo.",
+        "price": "$6.49",
+        "section": "Filipino / Jamaican A La Carte"
+      },
+      {
+        "name": "Jerk Chicken \"A la carte\"",
+        "description": "Jamaican-style jerk-seasoned chicken, served a la carte.",
+        "price": "$12.99",
+        "section": "Filipino / Jamaican A La Carte"
+      },
+      {
+        "name": "Oxtail\"A la carte\"",
+        "description": "Tender bone-in oxtail in savory brown gravy.",
+        "price": "$15.59",
+        "section": "Filipino / Jamaican A La Carte"
+      },
+      {
+        "name": "Curry Chicken   \"A la Carte\"",
+        "description": "Boneless chicken in a savory curry sauce. A la carte portion.",
+        "price": "$12.99",
+        "section": "Filipino / Jamaican A La Carte"
+      },
+      {
+        "name": "Oxtail\"A la carte\" Large",
+        "description": "Large a la carte portion of tender bone-in oxtail in savory brown gravy.",
+        "price": "$18.59",
+        "section": "Filipino / Jamaican A La Carte"
+      },
+      {
+        "name": "Jerk Chicken Plate (Boneless)",
+        "description": "Comes with veggies, plantains and choice of Jamaican Rice & Peas or Jasmine White Rice.",
+        "price": "$14.69",
+        "section": "Jamaican Plates"
+      },
+      {
+        "name": "Curry Chicken (Plate)",
+        "description": "Comes with veggies, plantains and choice of Jamaican Rice & Peas or Jasmine White Rice.",
+        "price": "$14.69",
+        "section": "Jamaican Plates"
+      },
+      {
+        "name": "Oxtail Plate (LG)",
+        "description": "Comes with veggies, plantains and choice of Jamaican Rice & Peas or Jasmine White Rice.",
+        "price": "$24.49",
+        "section": "Jamaican Plates"
+      },
+      {
+        "name": "Veggie Plate (LG)",
+        "description": "Comes with veggies, plantains and choice of Jamaican Rice & Peas or Jasmine White Rice.",
+        "price": "$14.49",
+        "section": "Jamaican Plates"
+      },
+      {
+        "name": "Steamed Cabbage",
+        "description": "Fresh steamed cabbage.",
+        "price": "$3.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Plantains",
+        "description": "Sweet and starchy plantains.",
+        "price": "$4.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Rice and Peas",
+        "description": "Simple rice dish with peas.",
+        "price": "$4.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Lumpia/Eggrolls (6 Pcs)",
+        "description": "Crispy Filipino-style egg rolls served in a set of six.",
+        "price": "$3.59",
+        "section": "Sides"
+      },
+      {
+        "name": "Veggie Lumpia (3 pc)",
+        "description": "Crispy vegetable spring rolls served in a set of three.",
+        "price": "$2.25",
+        "section": "Sides"
+      },
+      {
+        "name": "Jasmine White Rice",
+        "description": "Fragrant and fluffy white rice infused with jasmine essence.",
+        "price": "$2.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Beef Jamaican Patty (1 pc)",
+        "description": "Savory beef patty with Jamaican spices.",
+        "price": "$4.49",
+        "section": "Jamaican Patty"
+      },
+      {
+        "name": "Ground Chicken Jamaican Patty (1pc)",
+        "description": "Savory ground chicken in a Jamaican-inspired patty.",
+        "price": "$4.49",
+        "section": "Jamaican Patty"
+      },
+      {
+        "name": "Famous Homemade Filipino Halo Halo",
+        "description": "Sweet Filipino-style shaved ice dessert with various toppings.",
+        "price": "$9.49",
+        "section": "Dessert"
+      },
+      {
+        "name": "Sisig Large (Pork)",
+        "description": "Our Sisig is made from pork belly, seasoned with calamansi, onions, and chili peppers, and served hot, . It originated as a way to use off-cuts from pigs and has evolved to include variations like pork belly, tuna, or tofu, with a savory, tangy, and spicy flavor profile.",
+        "price": "$11.79",
+        "section": "Friday Special."
+      }
+    ]
+  },
+  {
+    "restaurantId": "9364",
+    "name": "Tierra Mia Coffee Drive Thru",
+    "sourceUrl": "https://tierramiacoffee.square.site/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: own domain (tierramiacoffee.com) times out on curl (confirmed, matches router log); tierramiacoffee.square.site is a Square Online storefront that renders client-side with no Oceanside location or prices in the served HTML (only shows a different CA location). No DoorDash/Uber Eats storefront found for this specific 1420 Mission Ave Oceanside address. tierramiamenu.us has prices but is an explicit farm site — its own disclaimer-bar reads \"Independent resource — not affiliated with, endorsed by, or associated with Tierra Mia Coffee\" — not used per standing rule on unaffiliated menu farms."
+  },
+  {
+    "restaurantId": "9434",
+    "name": "Alpine Chill",
+    "sourceUrl": "https://alpinechill.com/flavors-toppings/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "self-serve frozen yogurt shop (address confirmed: 2963 Alpine Blvd #106, Alpine); own site lists ~15 flavors and 30+ toppings with no prices anywhere (priced by weight at the register). No DoorDash/Uber Eats storefront found. A Yelp review mentions \".99 for a small cup\" but that is hearsay inside a review, not a source. Open business that simply does not publish prices, not a not-found."
+  },
+  {
+    "restaurantId": "9308",
+    "name": "Immersion Coffee",
+    "sourceUrl": "https://www.yelp.com/biz/immersion-coffee-san-diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "boutique specialty coffee shop (6905 La Jolla Blvd, Windansea) with no independent website found — only third-party profile pages (Yelp, Mapquest, wanderlog, lajolla.ca, sandiegocoffee.co). No DoorDash/Uber Eats/Toast storefront located. Yelp itself returned an empty response (bot-walled) so its dated menu photos could not be checked. A Yelp review snippet mentions \"Orange latte, .50\" but that is hearsay inside a review, not a source."
+  },
+  {
+    "restaurantId": "10509",
+    "name": "Plume & Brew Coffee",
+    "dishes": [],
+    "sourceUrl": "https://plume-brew-coffee.wheree.com/menu",
+    "confidence": "low",
+    "blocked": "needs-browser/no-priced-source: open drive-thru coffee shop, address confirmed (30160 Old California 76, Bonsall, CA 92003) via Maps/Instagram/Facebook. No own website, no DoorDash/Uber Eats storefront found. joe.coffee location page states mobile ordering unavailable here. wheree.com photo-menu aggregator has zero visible prices. Yelp fetch returned empty/bot-blocked shell. Facebook/Instagram show item names only, no prices."
+  },
+  {
+    "restaurantId": "7321",
+    "name": "The Crimson Cake",
+    "sourceUrl": "https://www.crimsoncake.com/price-list",
+    "confidence": "high",
+    "dishes": [
+      {
+        "name": "Smash Cake, Basic (Round)",
+        "description": "",
+        "price": "$25.00",
+        "section": "Round Cakes"
+      },
+      {
+        "name": "Smash Cake, Decorated (Round)",
+        "description": "",
+        "price": "$45.00",
+        "section": "Round Cakes"
+      },
+      {
+        "name": "6\" Round Cake",
+        "description": "Serves 8-16",
+        "price": "$135.00",
+        "section": "Round Cakes"
+      },
+      {
+        "name": "8\" Round Cake",
+        "description": "Serves 20-25",
+        "price": "$190.00",
+        "section": "Round Cakes"
+      },
+      {
+        "name": "10\" Round Cake",
+        "description": "Serves 36-40",
+        "price": "$275.00",
+        "section": "Round Cakes"
+      },
+      {
+        "name": "12\" Round Cake",
+        "description": "Serves 50-65",
+        "price": "$400.00",
+        "section": "Round Cakes"
+      },
+      {
+        "name": "14\" Round Cake",
+        "description": "Serves 60-80",
+        "price": "$600.00",
+        "section": "Round Cakes"
+      },
+      {
+        "name": "16\" Round Cake",
+        "description": "Serves 75-100",
+        "price": "$750.00",
+        "section": "Round Cakes"
+      },
+      {
+        "name": "Smash Cake, Basic (Square)",
+        "description": "",
+        "price": "$30.00",
+        "section": "Square Cakes"
+      },
+      {
+        "name": "Smash Cake, Decorated (Square)",
+        "description": "",
+        "price": "$50.00",
+        "section": "Square Cakes"
+      },
+      {
+        "name": "6\" Square Cake",
+        "description": "Serves 12-20",
+        "price": "$145.00",
+        "section": "Square Cakes"
+      },
+      {
+        "name": "8\" Square Cake",
+        "description": "Serves 25-36",
+        "price": "$225.00",
+        "section": "Square Cakes"
+      },
+      {
+        "name": "10\" Square Cake",
+        "description": "Serves 36-50",
+        "price": "$300.00",
+        "section": "Square Cakes"
+      },
+      {
+        "name": "12\" Square Cake",
+        "description": "Serves 45-70",
+        "price": "$450.00",
+        "section": "Square Cakes"
+      },
+      {
+        "name": "14\" Square Cake",
+        "description": "Serves 65-90",
+        "price": "$675.00",
+        "section": "Square Cakes"
+      },
+      {
+        "name": "16\" Square Cake",
+        "description": "Serves 90-120",
+        "price": "$850.00",
+        "section": "Square Cakes"
+      },
+      {
+        "name": "Quarter Sheet Cake",
+        "description": "Serves approx 20-25",
+        "price": "$195.00",
+        "section": "Sheet Cakes"
+      },
+      {
+        "name": "Half Sheet Cake",
+        "description": "Serves approx 40-50",
+        "price": "$350.00",
+        "section": "Sheet Cakes"
+      },
+      {
+        "name": "3-D / Sculpted Cake",
+        "description": "Starting price per serving; $300 minimum order",
+        "price": "$10.00",
+        "section": "3-D + Sculpted"
+      },
+      {
+        "name": "Tiered Cake, Naked",
+        "description": "Price per serving",
+        "price": "$8.00",
+        "section": "Tiered Cakes"
+      },
+      {
+        "name": "Tiered Cake, Buttercream Simple",
+        "description": "Starting price per serving",
+        "price": "$9.00",
+        "section": "Tiered Cakes"
+      },
+      {
+        "name": "Tiered Cake, Fondant Decorated",
+        "description": "Starting price per serving; $300 minimum order",
+        "price": "$10.00",
+        "section": "Tiered Cakes"
+      },
+      {
+        "name": "Cupcakes, Regular Size, Simple Frosted",
+        "description": "Per dozen",
+        "price": "$48.00",
+        "section": "Cupcakes"
+      },
+      {
+        "name": "Cupcakes, Regular Size, Fondant Decorated",
+        "description": "Starting price per dozen",
+        "price": "$60.00",
+        "section": "Cupcakes"
+      },
+      {
+        "name": "Cupcakes, Mini Size, Simple Frosted",
+        "description": "Per dozen",
+        "price": "$24.00",
+        "section": "Cupcakes"
+      },
+      {
+        "name": "Cupcakes, Mini Size, Fondant Decorated",
+        "description": "Starting price per dozen",
+        "price": "$36.00",
+        "section": "Cupcakes"
+      },
+      {
+        "name": "French Macarons",
+        "description": "Per dozen",
+        "price": "$24.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Chocolate Dipped Strawberries",
+        "description": "Per dozen",
+        "price": "$30.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Lemon Bars",
+        "description": "Per dozen",
+        "price": "$24.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Eclairs / Cream Puffs",
+        "description": "Per dozen",
+        "price": "$30.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Cake Pops",
+        "description": "Starting price, each",
+        "price": "$2.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "Fruit Tarts",
+        "description": "Per dozen",
+        "price": "$30.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Chocolate Dipped Oreos",
+        "description": "Per dozen",
+        "price": "$30.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Chocolate Dipped Marshmallows or Crispies",
+        "description": "Per dozen",
+        "price": "$36.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Chocolate Dipped Pretzels",
+        "description": "Per dozen",
+        "price": "$15.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Custom Sugar Cookies",
+        "description": "Starting price per dozen, simple designs; pricing varies by size/design",
+        "price": "$60.00",
+        "section": "Cookies"
+      },
+      {
+        "name": "American Favorites Cookies (Chocolate Chip/Oatmeal/Snickerdoodle)",
+        "description": "Per dozen",
+        "price": "$30.00",
+        "section": "Cookies"
+      },
+      {
+        "name": "Italian Wedding Cookies",
+        "description": "Per dozen",
+        "price": "$36.00",
+        "section": "Cookies"
+      },
+      {
+        "name": "Amaretti Cookies",
+        "description": "Per dozen",
+        "price": "$36.00",
+        "section": "Cookies"
+      },
+      {
+        "name": "Vegan Cookies (Lemon Poppy, Strawberry, Double Chocolate, Spice)",
+        "description": "Per dozen",
+        "price": "$30.00",
+        "section": "Cookies"
+      }
+    ],
+    "notes": "Custom cake/bakery shop, address matches batch record exactly (3800 Oceanic Dr #118, Oceanside, CA 92056). Main /menu page is client-rendered Wix (no SSR content, isSEO:false), but /price-list is server-rendered with full official pricing for cakes, cupcakes, pastries and cookies. Several prices are published as 'starting at' or '+' minimums (noted in description); base/starting dollar amount used per no-invented-price rule. Custom cake/tiered/3-D pricing carries a stated $300 minimum order (noted)."
+  }
+]

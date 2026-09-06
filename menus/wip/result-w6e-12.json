@@ -1,0 +1,487 @@
+[
+  {
+    "restaurantId": "7130",
+    "name": "Finca",
+    "sourceUrl": "https://fincanorthpark.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "bot wall: fincanorthpark.com redirects every path (/, /menu, /menus) through /.well-known/sgcaptcha/ challenge; OpenTable listing page also timed out on fetch. No reachable priced source found within budget."
+  },
+  {
+    "restaurantId": "5862",
+    "name": "Hancock Street Cafe",
+    "sourceUrl": "https://www.sandiegoville.com/2026/03/san-diegos-hancock-street-cafe-to-close.html",
+    "confidence": "high",
+    "notes": "Independent local news source (SanDiegoVille, published March 2026) confirmed the cafe would close permanently in May 2026 after ~25 years; today is Sept 2026, past that date. Also Yelp lists it CLOSED and its own domain now resolves to an expired-domain/parking page (hancockstreetcafego.site). UberEats listing also flagged 'Closed on Uber Eats as of Apr 14, 2025'.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5927",
+    "name": "Caffe Positano, Village",
+    "sourceUrl": "https://joe.coffee/locations/ca/rancho-santa-fe/caffe-positano-village-rancho-santa-fe/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website on record; a small coffee/pastry shop (croissants, coffee, frozen yogurt per delraovillage.com listing) with no priced menu found on its joe.coffee ordering page, no DoorDash/UberEats presence found via search. Not a bot wall, just no priced source located within budget."
+  },
+  {
+    "restaurantId": "8832",
+    "name": "Fresh Café",
+    "sourceUrl": "https://fresh-n-go-escondido-2.cloveronline.com/menu/all",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: Clover storefront (address confirmed matching, 258 E 2nd Ave) is a Next.js app shell with no menu data embedded in the initial HTML (client-side rendered via API call); router had already flagged the same catalog as looking doubled (21 of 60 rows repeating by name+price across differently-named sections). Needs a Playwright pass."
+  },
+  {
+    "restaurantId": "9177",
+    "name": "Reds Whites and Brews",
+    "sourceUrl": "https://www.mapquest.com/us/california/reds-whites-brews-369988251",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "wine/beer bar; own site (redswhitesandbrews.wine) 404s. Multiple sources describe it as a bar with 'no food, occasionally they'll have a food truck' (Mapquest) — food status unclear/no regular kitchen, no priced food menu found."
+  },
+  {
+    "restaurantId": "1149",
+    "name": "Deano's Pub",
+    "sourceUrl": "http://www.deanospub.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site (deanospub.com) connect-timeouts on fetch and its /menu path 404s; a DoorDash 'business' SEO landing page exists (deanos-202319) but carries no JSON-LD menu data and no link to an actual store page was found within budget. Pub food mentioned in reviews (steaks, prime rib, salmon, pizza, wings) but no priced source located."
+  },
+  {
+    "restaurantId": "7965",
+    "name": "Colosseo Cucina Italiana",
+    "sourceUrl": "https://www.colosseosd.com/menu",
+    "confidence": "high",
+    "notes": "read from the restaurant's own Squarespace dinner menu (tabbed sections). Prices for ANTIPASTI/PRIMI/SALADS AND SOUP/WOODFIRE PIZZA/MAIN COURSES read from paired currency-sign+decimal-sign spans (menu-item-price-top, duplicated in price-bottom, deduped). KIDS MENU and SIDES prices were typed as bare numbers directly in the description field (no currency markup) rather than the price field — read at face value as dollar amounts since each of those items has no other description text. Dropped 'MAKE IT AMERICAN' add-on modifiers (ADD BURRATA +8 etc, a la carte surcharges not standalone dishes), Lasagna del Giorno and Soup of the Day (no price, 'ask your server'), and *GLUTEN FREE CRUST/PASTA surcharge lines.",
+    "dishes": [
+      {
+        "name": "CARCIOFI ALLA ROMANA",
+        "description": "Roman-style artichokes with herbs, garlic, and olive oil",
+        "price": "$22.00",
+        "section": "Antipasti"
+      },
+      {
+        "name": "BURRATA E POMODORINI",
+        "description": "Imported burrata with cherry tomatoes, basil, and olive oil",
+        "price": "$20.00",
+        "section": "Antipasti"
+      },
+      {
+        "name": "GAMBERI AL FUOCO",
+        "description": "Sautéed shrimp with spicy tomato sauce",
+        "price": "$24.00",
+        "section": "Antipasti"
+      },
+      {
+        "name": "CARPACCIO DI MANZO",
+        "description": "Beef carpaccio over arugula with olive oil, parmesan shavings, capers, and lemon",
+        "price": "$24.00",
+        "section": "Antipasti"
+      },
+      {
+        "name": "FRITTO DI CALAMARI E GAMBERI",
+        "description": "Crispy fried calamari and shrimp served with marinara sauce",
+        "price": "$22.00",
+        "section": "Antipasti"
+      },
+      {
+        "name": "POLPETTE",
+        "description": "Beef meatballs served in tomato and cacio e pepe sauce",
+        "price": "$20.00",
+        "section": "Antipasti"
+      },
+      {
+        "name": "SCOTTADITO",
+        "description": "Lamb lollipops with chimichurri sauce",
+        "price": "$26.00",
+        "section": "Antipasti"
+      },
+      {
+        "name": "BRUSCHETTA SPECIALE",
+        "description": "Gorgonzola, pear, crunchy prosciutto",
+        "price": "$18.00",
+        "section": "Antipasti"
+      },
+      {
+        "name": "CAVOLETTI CROCCANTI",
+        "description": "Crispy brussels sprouts, EVOO, balsamic reduction",
+        "price": "$19.00",
+        "section": "Antipasti"
+      },
+      {
+        "name": "FOCACCIA",
+        "description": "Sliced focaccia with sea salt and rosemary, served with garlic tomato sauce",
+        "price": "$9.00",
+        "section": "Antipasti"
+      },
+      {
+        "name": "PENNE SICILIANE",
+        "description": "Ground beef, peas, eggplant, mozzarella, pink sauce",
+        "price": "$28.00",
+        "section": "Primi"
+      },
+      {
+        "name": "SPAGHETTI CARBONARA",
+        "description": "Egg yolk, guanciale, pecorino romano",
+        "price": "$26.00",
+        "section": "Primi"
+      },
+      {
+        "name": "FETTUCCINE CACIO E PEPE",
+        "description": "Fettuccine with cream, butter, parmesan",
+        "price": "$24.00",
+        "section": "Primi"
+      },
+      {
+        "name": "CAMPO DEI FIORI",
+        "description": "Rigatoni, artichoke cream, shrimp, tomatoes, pistachio granola",
+        "price": "$30.00",
+        "section": "Primi"
+      },
+      {
+        "name": "PAPPARDELLE COLOSSEO",
+        "description": "Slow cooked braised short ribs and nonna sugo",
+        "price": "$30.00",
+        "section": "Primi"
+      },
+      {
+        "name": "GRANCHIO",
+        "description": "Spaghetti, crab meat, garlic, olive oil, vodka pink sauce",
+        "price": "$32.00",
+        "section": "Primi"
+      },
+      {
+        "name": "GNOCCHI DI CASA",
+        "description": "Pesto sauce, burrata, shaved parmigiano",
+        "price": "$28.00",
+        "section": "Primi"
+      },
+      {
+        "name": "EGGPLANT PARMIGIANA",
+        "description": "Thin sliced fried eggplant, mozzarella, basil, parmigiano, EVOO",
+        "price": "$24.00",
+        "section": "Primi"
+      },
+      {
+        "name": "RAVIOLI ALL'ARAGOSTA",
+        "description": "Lobster-filled ravioli in zucchini creamy sauce",
+        "price": "$38.00",
+        "section": "Primi"
+      },
+      {
+        "name": "AMATRICIANA",
+        "description": "Rigatoni, tomato sauce, guanciale, pecorino romano",
+        "price": "$26.00",
+        "section": "Primi"
+      },
+      {
+        "name": "CESARE",
+        "description": "Classic Caesar Salad",
+        "price": "$15.00",
+        "section": "Salads and Soup"
+      },
+      {
+        "name": "PIA",
+        "description": "Spinach, beets, Gorgonzola, walnuts, pomegranate-champagne dressing",
+        "price": "$16.00",
+        "section": "Salads and Soup"
+      },
+      {
+        "name": "MARIELLA",
+        "description": "Arugula, pear, dry cranberries, shaved parmigiano, balsamic dressing",
+        "price": "$16.00",
+        "section": "Salads and Soup"
+      },
+      {
+        "name": "ROSALIA",
+        "description": "Heirloom tomatoes, cucumber, red onion, olives, oregano, EVOO",
+        "price": "$16.00",
+        "section": "Salads and Soup"
+      },
+      {
+        "name": "PIZZA NAPOLI",
+        "description": "San Marzano tomato sauce, mozzarella fior di latte, basil",
+        "price": "$18.00",
+        "section": "Woodfire Pizza"
+      },
+      {
+        "name": "PIZZA ROMA",
+        "description": "Tomato sauce, mozzarella fior di latte, mushrooms, artichokes, olives",
+        "price": "$21.00",
+        "section": "Woodfire Pizza"
+      },
+      {
+        "name": "PIZZA CALABRIA",
+        "description": "Tomato sauce, mozzarella fior di latte, spicy soppressata, red onions, spicy honey",
+        "price": "$20.00",
+        "section": "Woodfire Pizza"
+      },
+      {
+        "name": "PIZZA GENOVA",
+        "description": "Mozzarella, pesto, chicken, cherry tomatoes, parmigiano",
+        "price": "$22.00",
+        "section": "Woodfire Pizza"
+      },
+      {
+        "name": "CALZONE PALERMO",
+        "description": "Mozzarella fior di latte, provolone, gorgonzola, parmigiano, arugula, burrata with a drizzle of Bronte pistachio cream",
+        "price": "$22.00",
+        "section": "Woodfire Pizza"
+      },
+      {
+        "name": "PIZZA CAPRI",
+        "description": "Prosciutto, mozzarella fior di latte, cherry tomatoes, arugula, shaved Parmesan",
+        "price": "$25.00",
+        "section": "Woodfire Pizza"
+      },
+      {
+        "name": "PIZZA VENEZIA",
+        "description": "Provola, sausage, rosemary potatoes, mozzarella fior di latte",
+        "price": "$20.00",
+        "section": "Woodfire Pizza"
+      },
+      {
+        "name": "PIZZA COLOSSEO",
+        "description": "Provolone, short rib, onions, shaved parmigiano",
+        "price": "$25.00",
+        "section": "Woodfire Pizza"
+      },
+      {
+        "name": "POLLO PARMIGIANA",
+        "description": "Old-style breaded chicken breast topped with tomato sauce and mozzarella, served with a side of spaghetti",
+        "price": "$32.00",
+        "section": "Main Courses"
+      },
+      {
+        "name": "FILETTO AURELIO",
+        "description": "Beef filet served with grilled asparagus, potato purée & a Barolo wine reduction",
+        "price": "$49.00",
+        "section": "Main Courses"
+      },
+      {
+        "name": "SALMONE AL LIMONE",
+        "description": "Salmon in a lemon-butter sauce with capers, served with potato purée and broccolini",
+        "price": "$36.00",
+        "section": "Main Courses"
+      },
+      {
+        "name": "ABBACCCHIO",
+        "description": "Grilled Roman-style lamb chops, served with roasted potatoes and tapenade olive sauce",
+        "price": "$48.00",
+        "section": "Main Courses"
+      },
+      {
+        "name": "GAMBERONI ARRABBIATI",
+        "description": "Prawns served in a spicy garlic marinara sauce, served with spaghetti",
+        "price": "$39.00",
+        "section": "Main Courses"
+      },
+      {
+        "name": "BRASATO DI VITELLO",
+        "description": "Slow cooked short ribs, celery, carrot, onions, red wine reduction, served over mashed potatoes and broccolini",
+        "price": "$42.00",
+        "section": "Main Courses"
+      },
+      {
+        "name": "BRANZINO",
+        "description": "Grilled filet of Mediterranean seabass, served with mashed potatoes and sautéed spinach",
+        "price": "$46.00",
+        "section": "Main Courses"
+      },
+      {
+        "name": "CHEESE PIZZA",
+        "description": "",
+        "price": "$14.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "PEPPERONI PIZZA",
+        "description": "",
+        "price": "$14.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "CHICKEN COTOLETTA AND FRIES",
+        "description": "",
+        "price": "$16.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "SPAGHETTI AND MEATBALLS",
+        "description": "",
+        "price": "$16.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "PENNE WITH BUTTER OR OLIVE OIL",
+        "description": "",
+        "price": "$12.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "ROSEMARY ROASTED POTATOES",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sides"
+      },
+      {
+        "name": "TRUFFLE FRIES",
+        "description": "",
+        "price": "$14.00",
+        "section": "Sides"
+      },
+      {
+        "name": "GRILLED ASPARAGUS",
+        "description": "",
+        "price": "$16.00",
+        "section": "Sides"
+      },
+      {
+        "name": "GARLIC BROCCOLINI",
+        "description": "",
+        "price": "$14.00",
+        "section": "Sides"
+      },
+      {
+        "name": "MASHED POTATOES",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sides"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8689",
+    "name": "Paraná Empanadas",
+    "sourceUrl": "https://www.doordash.com/store/parana-empanadas-san-diego-32745527/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://www.grubhub.com/restaurant/parana-empanadas-utc-4545-la-jolla-village-dr-san-diego/2120520",
+    "notes": "own site (paranaempanadas.com) blocked by the same sgcaptcha wall as Finca. DoorDash store address (4545 La Jolla Village Dr) matches the batch record exactly. JSON-LD embedded 5x (some as 'Most Ordered' carousel duplicates of the same items); deduped on name+price. Grubhub's independent listing for the same UTC location shows matching $4.18 empanada prices, corroborating. Full catalog is small (counter-style empanada shop): 10 empanada flavors + dessert + 2 jarred items + 5 drinks, all round/quarter-dollar pricing, plausible for 2026.",
+    "dishes": [
+      {
+        "name": "BF. Beef",
+        "description": "Traditionally seasoned ground beef, green olive, roasted red bell pepper, sauteed onion.",
+        "price": "$4.18",
+        "section": "Empanadas"
+      },
+      {
+        "name": "CC. Chicken Chipotle",
+        "description": "Chipotle seasoned shredded chicken, cilantro, roasted red bell pepper, green onion, sautéed onion.",
+        "price": "$4.18",
+        "section": "Empanadas"
+      },
+      {
+        "name": "CN. Corn",
+        "description": "Corn, mozzarella, roasted red bell pepper, sautéed onion.",
+        "price": "$4.18",
+        "section": "Empanadas"
+      },
+      {
+        "name": "CK. Chicken",
+        "description": "Seasoned shredded chicken, roasted red bell pepper, green onion, sautéed onion.",
+        "price": "$4.18",
+        "section": "Empanadas"
+      },
+      {
+        "name": "MH. Mushrooms",
+        "description": "Champignon, portobello, porcini, mozzarella, parmesan, sautéed onion.",
+        "price": "$4.18",
+        "section": "Empanadas"
+      },
+      {
+        "name": "MB. Malbec Beef",
+        "description": "24-Hour ground beef marinated in Argentinian wine, raisins, sautéed onion.",
+        "price": "$4.18",
+        "section": "Empanadas"
+      },
+      {
+        "name": "MG. Margherita",
+        "description": "Fresh tomatoes, mozzarella, parmesan, fresh basil.",
+        "price": "$4.18",
+        "section": "Empanadas"
+      },
+      {
+        "name": "SB. Spicy Beef",
+        "description": "Ground and diced beef seasoned with a variety of chilies, carrots, celery, sauteed onion.",
+        "price": "$4.18",
+        "section": "Empanadas"
+      },
+      {
+        "name": "SP. Spinach",
+        "description": "Spinach, mozzarella, feta, sautéed onion.",
+        "price": "$4.18",
+        "section": "Empanadas"
+      },
+      {
+        "name": "JF. Jackfruit",
+        "description": "Vegan. Jackfruit, celery, carrot and sautéed onion. Try it with chipotle chimi.",
+        "price": "$4.18",
+        "section": "Empanadas"
+      },
+      {
+        "name": "Alfajores",
+        "description": "shortbread cookie sandwich with dulce de leche",
+        "price": "$4.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Sauce jar",
+        "description": "Glass 8oz jar of your choice of sauce",
+        "price": "$6.50",
+        "section": "Jars"
+      },
+      {
+        "name": "Dulce de Leche jar",
+        "description": "Glass 8oz jar of argentinian dulce de leche.",
+        "price": "$6.50",
+        "section": "Jars"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "Made from U.S. grown fresh apples, this apple juice offers a pure and refreshing taste.",
+        "price": "$2.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Yerba Mate Lemonade",
+        "description": "Iced yerba mate tea with lemon juice.",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Water Can",
+        "description": "Canned water: Pure and hydrating water, conveniently packaged in a can for refreshing hydration.",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Soda",
+        "description": "Choose from: coke, diet coke, or sprite.",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Yerba Mate Latte",
+        "description": "Iced yerba mate tea with coconut milk.",
+        "price": "$3.00",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "1028",
+    "name": "Mike's Cocktails",
+    "sourceUrl": "https://www.atly.com/location/Mike's-Cocktails",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website on record; consistently described as a dive/cocktail bar (cash-only per one aggregator) with no food menu found anywhere - Yelp, Tripadvisor, Instagram, Facebook, Mapquest all mention only drinks. Food status unclear/likely drinks-only, not confirmed enough for not_found."
+  },
+  {
+    "restaurantId": "11455",
+    "name": "garage.79",
+    "sourceUrl": "https://www.tripadvisor.com/Attraction_Review-g33237-d28113306-Reviews-Garage_79-Warner_Springs_California.html",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "craft beer/wine bar with no kitchen of its own - food comes from rotating food trucks/pop-up vendors (e.g. Temecula Grilled Cheese Co) on a changing schedule, per Tripadvisor, Facebook, Instagram and thepathlesschoiced.com. Multi-vendor/rotating-vendor food situation with no fixed priced menu; a Yelp review quotes prices ($16 quesadilla, $8 chicken salad, $6 burger) but that is hearsay from a review, not a source."
+  }
+]

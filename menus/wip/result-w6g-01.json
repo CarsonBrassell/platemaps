@@ -1,0 +1,894 @@
+[
+  {
+    "restaurantId": "9519",
+    "name": "Twin Peaks",
+    "sourceUrl": "https://www.regencycenters.com/property/detail/651/Twin-Peaks",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "landlord/plaza site: the listed website is the shopping center's own leasing page (Regency Centers), not a restaurant; the Twin Peaks restaurant chain's own locations page has no Poway location, and no independently-operated restaurant named Twin Peaks was found at this Pomerado Rd address"
+  },
+  {
+    "restaurantId": "10419",
+    "name": "Lake Cuyamaca Restaurant & Store",
+    "sourceUrl": "https://www.lakecuyamaca.org/",
+    "confidence": "medium",
+    "dishes": [],
+    "blocked": "renamed/rebranded at the same address: the restaurant at 15027 CA-79, Julian now operates as \"The Pub at Lake Cuyamaca\" (same location, same lake concession); not closed, just rebranded, so filing under the old name would be wrong and the old site is stale"
+  },
+  {
+    "restaurantId": "6299",
+    "name": "Taco Bar",
+    "sourceUrl": "https://www.tacobarsanmarcos.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site (tacobarsanmarcos.com) publishes no prices; Uber Eats catalog (158 items) shows a clear computed markup - divisor sweep found 143/146 non-zero-priced items land on conventional cent endings (.00/.25/.50/.75/.95/.99) at divisor 1.30, vs only 17/146 at raw scale - so displayed prices are inflated by a delivery fee baked in; Grubhub is an unreachable JS shell; no fee-free priced source found"
+  },
+  {
+    "restaurantId": "6374",
+    "name": "Umai Sushi",
+    "sourceUrl": "https://www.ubereats.com/store/umai-sushi/",
+    "confidence": "medium",
+    "notes": "own site (umaisanmarcos.com) publishes no menu/prices; read from Uber Eats JSON-LD Menu payload, 113 items across 20 sections; prices are 100% conventional (no markup signature found in divisor sweep, unlike Taco Bar)",
+    "dishes": [
+      {
+        "name": "Garlic Edamame",
+        "description": "Steamed soybeans infused with garlic.",
+        "price": "$7.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Cream Cheese Wrap  (5 pcs)",
+        "description": "Crispy wrap filled with cream cheese, served in a set of 5 pieces.",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Takoyaki (5 pcs)",
+        "description": "Takoyaki (5 pcs) ball shaped Japanese snack filled with chopped octopus and fried. Topped with mayonnaise, takoyaki sauce, and fish flaked.",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mushroom Special (4 pcs)",
+        "description": "Fried whole mushroom, topped with spicy crab, eel sauce, spicy mayonnaise, and sriracha sauce.",
+        "price": "$7.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Gyoza (5 pcs)",
+        "description": "Pan-seared dumplings filled with savory ingredients.",
+        "price": "$7.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Edamame",
+        "description": "Boiled soybeans in their pods, a traditional Japanese appetizer.",
+        "price": "$5.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Vegetable Tempura",
+        "description": "Lightly battered and fried vegetables.",
+        "price": "$7.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Jalapeno Bomb (4 pcs)",
+        "description": "Stuffed jalapeno topped with spicy tuna, cream cheese, and shrimp. Deep fried, topped with three different sauce.",
+        "price": "$9.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Vegetable Egg Rolls (4 pcs)",
+        "description": "Crisp rolls filled with vegetables and eggs.",
+        "price": "$7.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Shrimp Tempura (4 pcs)",
+        "description": "Lightly battered and fried shrimp served in a set of four.",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Karaage",
+        "description": "Fried chicken nugget.",
+        "price": "$10.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Oyster (4 pcs)",
+        "description": "Crispy fried oysters served in a set of four.",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Calamari Tempura",
+        "description": "Crispy fried squid rings served with a side.",
+        "price": "$10.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Soft Shell Crab Fried",
+        "description": "Crispy fried soft shell crab with a tender center.",
+        "price": "$10.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Agedashi Tofu",
+        "description": "Silky tofu in a light broth.",
+        "price": "$7.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Hamachi Kama",
+        "description": "Broiled.",
+        "price": "$12.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Jumbo Bulgogi Beef Gyoza (5pcs)",
+        "description": "Five jumbo dumplings filled with bulgogi-marinated beef.",
+        "price": "$10.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Bulgogi Fries",
+        "description": "Crispy french fries topped with cheddar cheese and Bulgogi beef, drizzled with ranch sauce, ketchup",
+        "price": "$13.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Korean Spicy Chicken Wings (7pcs)",
+        "description": "Spicy Korean-style chicken wings, served in a set of 7 pieces.",
+        "price": "$15.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "French Kiss (3 pcs)",
+        "description": "Albacore nigiri with crabmeat sensation, avocado, ponzu, spicy mayonnaise, and sriracha sauce.",
+        "price": "$11.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Crispy Rice Spicy Tuna",
+        "description": "Rice fried topped spicy tuna, eel sauce, spicy mayonnaise, and mango paste.",
+        "price": "$11.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Fish Tower",
+        "description": "Crabmeat sensation, avocado, stacked with sashimi seasoned with spicy sunshine sauce, complete with green onion, and masago.",
+        "price": "$18.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Yellowtail Carpaccio (6 pcs)",
+        "description": "Yellow tail and chopped fresh garlic toasted in hot olive oil pour over the yellow tail and sprinkled with truffle salt.",
+        "price": "$18.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Golden Mountain",
+        "description": "In: crabmeat sensation, cream cheese, avocado, and jalapeno. Top: panko deep fried, spicy mayonnaise, and eel sauce. In: salmon tempura, cucumber, and avocado. Top: fried salmon, eel sauce, and white sauce.",
+        "price": "$14.00",
+        "section": "Tempura Rolls"
+      },
+      {
+        "name": "Philly Tempura Roll",
+        "description": "In: salmon, cream cheese, and avocado. Top: fried and eel sauce. In: salmon tempura, cucumber, and avocado. Top: fried salmon, eel sauce, and white sauce.",
+        "price": "$12.00",
+        "section": "Tempura Rolls"
+      },
+      {
+        "name": "California Tempura Roll",
+        "description": "in: crabmeat sensation, avocado, and cucumber. Top: Fried, eel sauce, and white sauce. In: salmon tempura, cucumber, and avocado.",
+        "price": "$12.00",
+        "section": "Tempura Rolls"
+      },
+      {
+        "name": "Spicy Tuna Tempura Roll",
+        "description": "In: spicy tuna and cucumber. Top: tempura batter, eel sauce, spicy mayonnaise, and white sauce. In: salmon tempura, cucumber, and avocado. Top: fried salmon, eel sauce, and white sauce.",
+        "price": "$12.00",
+        "section": "Tempura Rolls"
+      },
+      {
+        "name": "Dynamite Roll",
+        "description": "In: crabmeat sensation, cucumber, avocado, and deep fried. Top: with baked l, lobster, eel sauce, spicy mayonnaise, and white sauce. In: salmon tempura, cucumber, and avocado. Top: fried salmon, eel sauce, and white sauce.",
+        "price": "$19.00",
+        "section": "Baked Rolls"
+      },
+      {
+        "name": "Baked Salmon",
+        "description": "In: crabmeat sensation, avocado, and cucumber. Top: salmon, baked in oven, spicy mayonnaise, eel sauce, masago, and onion.",
+        "price": "$14.00",
+        "section": "Baked Rolls"
+      },
+      {
+        "name": "Tsunami Roll (Baked)",
+        "description": "In: spicy tuna and cucumber. Top: salmon, deep fried onion, eel sauce, sriracha sauce, and white sauce.",
+        "price": "$19.00",
+        "section": "Baked Rolls"
+      },
+      {
+        "name": "Cucumber Wrap Roll (No Rice)",
+        "description": "In: tuna, salmon, yellow tail, crabmeat sensation, and avocado. Top: cucumber wrap and ponzu sauce.",
+        "price": "$17.00",
+        "section": "No Rice Rolls"
+      },
+      {
+        "name": "Green Aqua Roll (No Rice)",
+        "description": "In: tuna, salmon, yellow tail, and crabmeat sensation. Top: soy paper, avocado, three different tobiko, and ponzu sauce.",
+        "price": "$18.00",
+        "section": "No Rice Rolls"
+      },
+      {
+        "name": "California Roll",
+        "description": "Crabmeat sensation, avocado, and cucumber roll.",
+        "price": "$8.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Philadelphia Roll",
+        "description": "Smoked salmon, cream cheese, and cucumber roll.",
+        "price": "$9.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Spicy Tuna",
+        "description": "Fresh tuna mixed with spicy seasoning.",
+        "price": "$9.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Unagi Roll",
+        "description": "Grilled eel wrapped in sushi rice and nori seaweed.",
+        "price": "$9.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Salmon Roll",
+        "description": "Fresh salmon wrapped in a delicate roll.",
+        "price": "$9.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Avocado Roll",
+        "description": "Fresh avocado wrapped in sushi rice.",
+        "price": "$8.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Shrimp Tempura Roll",
+        "description": "Crisp shrimp wrapped in a delicate roll.",
+        "price": "$10.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Spicy Crab Roll",
+        "description": "Crab and spices come together in a flavorful roll.",
+        "price": "$9.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Tuna Roll",
+        "description": "Fresh tuna wrapped in a roll.",
+        "price": "$9.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Hamachi and Green Onion Roll",
+        "description": "Fresh hamachi and green onion wrapped in a delicate roll.",
+        "price": "$10.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Salmon Skin Roll (Baked)",
+        "description": "Crispy salmon skin wrapped in a delicate roll.",
+        "price": "$8.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Soft Shell Crab Roll",
+        "description": "Soft shell crab wrapped in a delicate roll.",
+        "price": "$13.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Cucumber Roll",
+        "description": "Fresh cucumber wrapped in sushi rice.",
+        "price": "$8.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Vege Tempura Roll",
+        "description": "Crispy tempura bits wrapped in a roll with vegetables.",
+        "price": "$10.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Salmon Tempura Roll",
+        "description": "Crisp tempura roll filled with salmon.",
+        "price": "$11.00",
+        "section": "Regular Cut Rolls"
+      },
+      {
+        "name": "Crunch Roll",
+        "description": "In: shrimp tempura, crabmeat sensation, avocado, and cucumber. Top: tempura batter, eel sauce, and white sauce.",
+        "price": "$13.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Girls Night Roll",
+        "description": "In: spicy tuna, avocado, and cucumber. Top: salmon, yellow tail, and sunshine sauce.",
+        "price": "$14.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Lemon",
+        "description": "In: crabmeat sensation, avocado, and cucumber. Top: yellowtail, salmon, lemon slice, and ponzu sauce.",
+        "price": "$14.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Rainbow Roll",
+        "description": "In: crabmeat sensation, cucumber, and avocado. Top: fresh sashimi and avocado.",
+        "price": "$14.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Super Crunch Roll",
+        "description": "In: shrimp tempura, crab meat sensation, avocado, and cucumber. Top: salmon seared, crunch, and eel sauce.",
+        "price": "$15.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Spicy Cilantro",
+        "description": "In: shrimp tempura, crabmeat sensation, and avocado. Top: spicy crabmeat, cilantro, and spicy mayonnaise.",
+        "price": "$14.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Recon",
+        "description": "In: shrimp tempura, crabmeat sensation, and cucumber. Top: blackened tuna, seared albacore, shrimp, avocado, spicy mayonnaise, and eel sauce.",
+        "price": "$14.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Caterpillar Roll",
+        "description": "In: eel, crabmeat sensation, and cucumber. Top: sliced avocado and eel sauce.",
+        "price": "$14.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Black Edge Roll",
+        "description": "In: shrimp tempura, crabmeat sensation, and cucumber. Top: blackened tuna, avocado, spicy mayonnaise, and eel sauce.",
+        "price": "$14.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Jungle Fever Roll",
+        "description": "In: soft shell crab, shrimp temp, cucumber, and crabmeat sensation. Top: spicy tuna, avocado, jalapeno, eel sauce, and spicy mayonnaise.",
+        "price": "$23.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Ninja Roll",
+        "description": "In: spicy tuna, crabmeat sensation, and cucumber. Top: spicy scallop, eel sauce, and spicy mayonnaise.",
+        "price": "$16.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Tangy Mango Roll",
+        "description": "In: salmon, white tuna (ono), and avocado. Top: slice mango, ponzu sauce, and whip cream.",
+        "price": "$17.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Tuna Revenge Roll",
+        "description": "In: spicy tuna and cucumber. Top: blackened tuna and cilantro sauce.",
+        "price": "$18.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Sushi Burrito",
+        "description": "In: rice, crabmeat sensation, and three different fishes. Out: soy paper and four different sauces.",
+        "price": "$15.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Kelly Roll",
+        "description": "In: crabmeat sensation, cilantro, and cucumber. Top: yellow tail, avocado, green onion, and ponzu sauce.",
+        "price": "$14.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Hawaiian Roll",
+        "description": "In: shrimp tempura, crabmeat sensation, and avocado. Top: spicy tuna, crunch, spicy mayonnaise, and eel sauce.",
+        "price": "$14.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Albacore Special Roll",
+        "description": "In: albacore seasoned with delight sauce and cucumber. Top: albacore, ponzu sauce, and spicy albacore sauce.",
+        "price": "$17.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Panda Roll",
+        "description": "In: calamari tempura, fried asparagus, and crabmeat sensation. Top: blackened tuna, avocado, spicy mayonnaise, and eel sauce.",
+        "price": "$15.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "White House",
+        "description": "In: spicy tuna and cucumber. Top: white tuna (ono) touched, spicy mayonnaise, and eel sauce.",
+        "price": "$14.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Rainbow and Spider Crab",
+        "description": "In: fried soft shell crab, crabmeat sensation, avocado, and cucumber. Top: fresh sashimi and avocado.",
+        "price": "$21.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Pink Ocean Roll",
+        "description": "In: spicy tuna and cucumber. Top: salmon, caper, and spicy mayonnaise.",
+        "price": "$18.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Dragon King Roll",
+        "description": "In: crabmeat sensation, avocado, and cucumber. Top: whole fresh water eel, bonito, and eel sauce.",
+        "price": "$21.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Macadamia Roll",
+        "description": "In: macadamia nut, real crab, avocado, and cucumber. Out: soy paper and eel sauce.",
+        "price": "$16.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Surf and Turf Roll",
+        "description": "In: shrimp tempura, crabmeat sensation, avocado, and cucumber. Top: beef seared, eel sauce, and capelin roe (masago).",
+        "price": "$17.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Popping Soft Shell Roll",
+        "description": "In: shrimp tempura, crabmeat sensation, and cucumber. Top: avocado slices, fried soft shell crab sauced with spicy mayonnaise, eel sauce, and white sauce.",
+        "price": "$20.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Mr. Sunshine Roll",
+        "description": "In: crabmeat sensation, avocado, and cucumber. Top: sashimi seasoned with sunshine sauce.",
+        "price": "$19.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Wasabi Lover Roll",
+        "description": "In: sashimi seasoned with wasabi sauce and cucumber. Top: soy paper and fresh wasabi.",
+        "price": "$17.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Fire Haus Roll",
+        "description": "In: spicy tuna and cucumber. Top: sliced avocado and hot sauce.",
+        "price": "$14.00",
+        "section": "Fancy Rolls"
+      },
+      {
+        "name": "Poki Bowl",
+        "description": "Assorted sashimi seaweed salad, avocado, cucumber, onion masago, and sesame seed.",
+        "price": "$18.95",
+        "section": "Lunch Sushi Bar"
+      },
+      {
+        "name": "Tempura Udon",
+        "description": "Thick Japanese noodles served in a hot broth with crispy tempura bits.",
+        "price": "$13.95",
+        "section": "Udon"
+      },
+      {
+        "name": "Nabe Udon",
+        "description": "Thick Japanese noodles served in a hot broth.",
+        "price": "$13.95",
+        "section": "Udon"
+      },
+      {
+        "name": "Tonkotsu Ramen",
+        "description": "Rich pork broth served with noodles.",
+        "price": "$14.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Black Garlic Ramen",
+        "description": "Rich, savory broth with black garlic and noodles.",
+        "price": "$16.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Miso Ramen",
+        "description": "Rich, savory broth served with noodles.",
+        "price": "$15.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Spicy Seafood Ramen",
+        "description": "Savoury seafood broth with a spicy kick, served with noodles.",
+        "price": "$21.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Chicken Yakisoba",
+        "description": "Stir-fried noodles with chicken.",
+        "price": "$15.95",
+        "section": "Yakisoba"
+      },
+      {
+        "name": "Beef Yakisoba",
+        "description": "Stir-fried beef with noodles.",
+        "price": "$15.95",
+        "section": "Yakisoba"
+      },
+      {
+        "name": "Vegetable Yakisoba",
+        "description": "Stir-fried vegetables in a savory Japanese-inspired noodle dish.",
+        "price": "$12.95",
+        "section": "Yakisoba"
+      },
+      {
+        "name": "Shrimp Yakisoba",
+        "description": "Stir-fried noodles with shrimp.",
+        "price": "$16.95",
+        "section": "Yakisoba"
+      },
+      {
+        "name": "Chicken Teriyaki",
+        "description": "Chicken in a sweet and savory teriyaki sauce.",
+        "price": "$15.95",
+        "section": "Dinner Kitchen"
+      },
+      {
+        "name": "Bibim-Bob",
+        "description": "The ultimate rice bowl with seasoned vegetable, egg, and bulgogi beef with spicy chili sauce.",
+        "price": "$15.95",
+        "section": "Dinner Kitchen"
+      },
+      {
+        "name": "Bulgogi Teriyaki",
+        "description": "Marinated beef in a sweet and savory teriyaki sauce.",
+        "price": "$17.95",
+        "section": "Dinner Kitchen"
+      },
+      {
+        "name": "Salmon Teriyaki",
+        "description": "Salmon glazed with sweet teriyaki sauce.",
+        "price": "$18.95",
+        "section": "Dinner Kitchen"
+      },
+      {
+        "name": "Beef Teriyaki",
+        "description": "Tender beef in a sweet teriyaki sauce.",
+        "price": "$21.95",
+        "section": "Dinner Kitchen"
+      },
+      {
+        "name": "Spicy Tofu Hotpot",
+        "description": "Spicy soft tofu casserole prepared in hot clay pot. Choice of vegetable, pork, beef, or shrimp.",
+        "price": "$15.95",
+        "section": "Dinner Kitchen"
+      },
+      {
+        "name": "Vegetable Teriyaki",
+        "description": "Stir-fried vegetables in a sweet teriyaki sauce.",
+        "price": "$12.95",
+        "section": "Dinner Kitchen"
+      },
+      {
+        "name": "Pork Katsu",
+        "description": "Breaded and deep-fried pork cutlet.",
+        "price": "$16.95",
+        "section": "Katsu"
+      },
+      {
+        "name": "Chicken Katsu",
+        "description": "Breaded and fried chicken cutlet served with a side.",
+        "price": "$16.95",
+        "section": "Katsu"
+      },
+      {
+        "name": "Chicken Fried Rice",
+        "description": "Savory rice dish featuring chicken.",
+        "price": "$15.95",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Shrimp Fried Rice",
+        "description": "Stir-fried rice with shrimp.",
+        "price": "$16.95",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Beef Fried Rice",
+        "description": "Savory beef and rice combination.",
+        "price": "$15.95",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Vege Fried Rice",
+        "description": "Stir-fried rice with vegetables.",
+        "price": "$12.95",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Bibim-Bob",
+        "description": "The ultimate rice bowl with seasoned vegetable, egg, and bulgogi beef with spicy chili sauce.",
+        "price": "$15.95",
+        "section": "Lunch Kitchen"
+      },
+      {
+        "name": "Spicy Tofu Hotpot",
+        "description": "Spicy soft tofu casserole prepared in hot clay pot. Choice of vegetable, pork, beef, or shrimp.",
+        "price": "$15.95",
+        "section": "Lunch Kitchen"
+      },
+      {
+        "name": "Katsu Curry",
+        "description": "Chicken or pork.",
+        "price": "$18.95",
+        "section": "Curry"
+      },
+      {
+        "name": "Chicken Curry",
+        "description": "Tender chicken in a rich and flavorful curry sauce.",
+        "price": "$15.95",
+        "section": "Curry"
+      },
+      {
+        "name": "Beef Curry",
+        "description": "Tender beef in a rich and flavorful curry sauce.",
+        "price": "$15.95",
+        "section": "Curry"
+      },
+      {
+        "name": "Vegetable Curry",
+        "description": "Mixed vegetables in a flavorful curry sauce.",
+        "price": "$12.95",
+        "section": "Curry"
+      },
+      {
+        "name": "Unagi Donburi",
+        "description": "Grilled eel served over a bed of rice.",
+        "price": "$21.95",
+        "section": "Donburi"
+      },
+      {
+        "name": "Chicken Teriyaki kids",
+        "description": "Tender chicken in a sweet teriyaki sauce.",
+        "price": "$10.95",
+        "section": "Kids' Menu"
+      },
+      {
+        "name": "Bulgogi kids",
+        "description": "Marinated beef served with a sweet and savory Korean-inspired sauce.",
+        "price": "$10.95",
+        "section": "Kids' Menu"
+      },
+      {
+        "name": "Fried Banana with Ice Cream",
+        "description": "Sweet banana slices paired with a scoop of creamy ice cream.",
+        "price": "$10.95",
+        "section": "Desserts"
+      },
+      {
+        "name": "Green Tea Ice Cream",
+        "description": "Creamy and refreshing dessert infused with green tea flavor.",
+        "price": "$7.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Miso soup (8oz)",
+        "description": "Traditional Japanese soup made with miso paste.",
+        "price": "$2.00",
+        "section": "Side order"
+      },
+      {
+        "name": "White rice",
+        "description": "Steamed Japanese-style rice.",
+        "price": "$2.00",
+        "section": "Side order"
+      },
+      {
+        "name": "Fresh wasabi",
+        "description": "Pungent and aromatic Japanese horseradish.",
+        "price": "$3.00",
+        "section": "Side order"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3740",
+    "name": "Rosemonts Cafe",
+    "sourceUrl": "https://Rosemontscafe.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: own site's static HTML has no prices or images under the food/drink menu anchors (likely lazy-loaded client-side); Grubhub returns an unreachable ~13.6KB JS shell with no JSON-LD; no DoorDash/Uber Eats listing found; only an unverified Grubhub price snippet exists via search, not independently confirmable"
+  },
+  {
+    "restaurantId": "5802",
+    "name": "Uncle Biffs California Killer Cookies",
+    "sourceUrl": "https://www.ubereats.com/store/uncle-biffs-california-killer-cookies/",
+    "confidence": "medium",
+    "notes": "own site (unclebiffskillercookies.com) publishes no reachable prices; read from Uber Eats JSON-LD Menu payload, 22 items across 3 sections (Specialty/Drinks/Cookies), all conventional cents; a Yelp snippet showed $3.50 for some cookies vs Uber Eats $2.75 - treated the unverified Yelp figure as stale and used the priced marketplace source instead",
+    "dishes": [
+      {
+        "name": "UB Half Dozen",
+        "description": "Dive into a mix of Chocolate Chip, Oatmeal Raisin, BifferDoodle, Golden Oatie, California Killer w/ Nuts, Peanut Butter, and more cookie delights.  Our newest cookie is a traditional SUGAR cookie!",
+        "price": "$16.50",
+        "section": "Specialty"
+      },
+      {
+        "name": "UB Dozen",
+        "description": "Dive into a mix of Chocolate Chip, Oatmeal Raisin, BifferDoodle, Golden Oatie, California Killer w/ Nuts, Peanut Butter, and more cookie delights.  Our newest cookie is a traditional SUGAR cookie!",
+        "price": "$33.00",
+        "section": "Specialty"
+      },
+      {
+        "name": "Dark Chocolate Fudge Brownie",
+        "description": "Made with Guittard Oban Wafers - truly for the chocoholic",
+        "price": "$3.75",
+        "section": "Specialty"
+      },
+      {
+        "name": "Cold White Milk",
+        "description": "Cup of whole White Milk",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Cold Chocolate Milk",
+        "description": "Cup of 1% chocolate milk",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coffee",
+        "description": "We have Peet's, Pike Place, and Caribou Coffee",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "16 ounce cold bottled water",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Oreo Stuffed Chocolate Chip",
+        "description": "Guittard semi-sweet chocolate chip cookies surrounding a real Oreo cookie!",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "Semi-Sweet Chocolate Chip",
+        "description": "This cookie has been named the best chocolate chip cookie in Arizona - we only use Guittard Chocolate",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "Salted Caramel Chocolate Chip",
+        "description": "Guittard semi-sweet chocolate chip cookie with a \"slug\" of salted caramel!",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "Golden Oatie - Oatmeal Chocolate Chip",
+        "description": "Oatmeal and Guittard semi-sweet chocolate chips",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "Milk Chocolate Chip",
+        "description": "Guittard milk chocolate chips",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "Double Peanut Butter",
+        "description": "Mouth-watering peanut butter cookie",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "Semi-Sweet Chocolate Chip w/ Walnuts",
+        "description": "Guittard Semi-Sweet chocolate with walnuts",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "Unc's Chunk Peanut Butter Chocolate Chip",
+        "description": "Our peanut butter cookie with Guittard chocolate chips",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "Double Fudge",
+        "description": "Guittard semi-sweet chocolate melted into a cookie",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "BifferDoodle",
+        "description": "Uncle Biff's version of the snickerdoodle cookie.",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "White Chocolate Chip",
+        "description": "Guittard white chocolate chip cookie",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "Oatmeal Raisin",
+        "description": "Traditional oatmeal raisin cookie; maybe better than Mother's",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "California Killer w/ Nuts",
+        "description": "Guittard semi-sweet and white chocolate with Pecans and Walnuts",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "Sea Salt Chocolate Chip",
+        "description": "Guittard semi-sweet chocolate chip cookie with Maldon Sea Salt",
+        "price": "$2.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "Cookie Dough",
+        "description": "Bake your own cookies - one pound of cookie dough of your choice",
+        "price": "$11.00",
+        "section": "Cookies"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4508",
+    "name": "Donuts Plus",
+    "sourceUrl": "https://findaloco.com/en/directory/donuts-plus/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "small cash-only donut shop with no itemized online menu; own directory listing (findaloco.com) and search snippets only mention vague amounts in reviews (e.g. one customer paid $6.50 for a Vietnamese iced coffee), no published per-item price list found anywhere"
+  },
+  {
+    "restaurantId": "5821",
+    "name": "La Mixteca",
+    "sourceUrl": "https://www.mixtecaicecream.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "paleteria/ice cream shop (mixtecaicecream.com); own site's Menu page lists items with no prices anywhere in the static HTML (Wix site, likely image-based menu with no itemized pricing)"
+  },
+  {
+    "restaurantId": "5599",
+    "name": "Pizza Mania",
+    "sourceUrl": "https://www.legoland.com/california/plan-your-visit/dining/",
+    "confidence": "medium",
+    "dishes": [],
+    "blocked": "this is LEGOLAND California's all-you-can-eat Pizza & Pasta Buffet concession, not the unrelated pizzamaniawhittier.com listed in the batch record (wrong city - that one is in Whittier); LEGOLAND's own dining page and independent reviews only cite per-person admission-style buffet pricing (~$24-28 adult / ~$13-15 kids), never itemized dish prices"
+  },
+  {
+    "restaurantId": "6311",
+    "name": "Sweet Revenge Bakery",
+    "sourceUrl": "https://www.sweetrevengesd.com/dessert-menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "custom-order bakery; own site's Dessert Menu page lists items with no prices in the static HTML (image-based menu, \"click on the picture to learn more\", custom cake orders by consultation) - no itemized pricing published"
+  }
+]

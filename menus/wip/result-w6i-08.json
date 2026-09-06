@@ -1,0 +1,417 @@
+[
+  {
+    "restaurantId": "11847",
+    "name": "AWOL",
+    "address": "1475 University Ave #1469, San Diego, CA 92103, United States",
+    "sourceUrl": "https://www.yelp.com/biz/awol-canteena-san-diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "military-themed gay bar in Hillcrest (also listed as AWOL Canteena); Instagram/reviews mention tacos, cochinita pibil, birria, carne asada but no itemized priced menu found anywhere; listed domain awolcanteena.com does not resolve (DNS failure), no Toast/Square/ChowNow storefront found, Marriott Eat Around Town listing is client-rendered with no data. Food status/pricing unclear."
+  },
+  {
+    "restaurantId": "9118",
+    "name": "Harbor Island Deli & Spirits",
+    "address": "2040 Harbor Island Dr, San Diego, CA 92101, United States",
+    "sourceUrl": "http://places.singleplatform.com/harbor-island-west-marina/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Yelp lists as CLOSED but Google Maps still shows it active (4.1, 63 reviews) with no closed flag, so closure is not independently confirmed (MapQuest's 'permanently closed' only quotes Yelp). Only priced source is a SinglePlatform widget (tier-4, restaurant-submitted, no update date) with breakfast-era prices ($2.50 bagel, $5.99 egg sandwich) that read as stale; cannot confirm current. Blocking rather than filing possibly-stale prices or retiring an ambiguously-closed business."
+  },
+  {
+    "restaurantId": "9897",
+    "name": "The Parks Cafe",
+    "address": "12241 Woodside Ave, Lakeside, CA 92040",
+    "sourceUrl": "https://www.instagram.com/theparkscafe/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "protein-shake/nutrition cafe (aka Parks Nutrition & Fitness) in Lakeside; joe.coffee listing has no menu/prices/ordering URL, no own website found, Facebook posts reference a shake/tea menu but prices could not be confirmed as belonging to this exact location/address. No filable priced source found."
+  },
+  {
+    "restaurantId": "9896",
+    "name": "Maranello Restaurant",
+    "address": "2101 Kettner Blvd, San Diego, CA 92101",
+    "sourceUrl": "https://www.toasttab.com/local/order/maranellosd",
+    "confidence": "high",
+    "notes": "Read from the restaurant's Toast storefront __OO_STATE__ payload (site's own maranellosd.com is a Duda builder with no priced content in HTML, but Toast page found via search under maranellosd short URL). Address in payload matches exactly (2101 Kettner Boulevard, San Diego, CA 92101). FOOD menu is complete per its own itemCount metadata (36/36 items across Appetizers, Salads, Main Course, Desserts, Sides, Entrées). Also included the Happy Hour menu (18 priced items, prefixed 'Happy Hour /'). Dropped a 'restaurant week' menu (18 items) as a limited-time promotional prix-fixe with mostly empty prices ($5 filet upgrade, $10 cheese wheel upgrade, $49 3-course) - not a standing menu.",
+    "dishes": [
+      {
+        "name": "MARANELLO BRUSCHETTA",
+        "description": "",
+        "price": "$16.00",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "TARTAR DI MANZO",
+        "description": "",
+        "price": "$22.00",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "CARCIOFI ZAFFERANO",
+        "description": "",
+        "price": "$19.00",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "HEIRLOOM TOMATO BURRATA",
+        "description": "",
+        "price": "$20.00",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "GRILLED LAMB LOLLIPOS",
+        "description": "",
+        "price": "$24.00",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "ROMAGNA CHARCOAL BREAD",
+        "description": "",
+        "price": "$12.00",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "WAGYU MEATBALLS",
+        "description": "",
+        "price": "$21.00",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "TORTELLINI IN BRODO",
+        "description": "",
+        "price": "$18.00",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "CRAB CAKE",
+        "description": "",
+        "price": "$22.00",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "SILVERSTONE",
+        "description": "",
+        "price": "$14.00",
+        "section": "SALADS"
+      },
+      {
+        "name": "MONZA",
+        "description": "",
+        "price": "$14.00",
+        "section": "SALADS"
+      },
+      {
+        "name": "MONACO",
+        "description": "",
+        "price": "$14.00",
+        "section": "SALADS"
+      },
+      {
+        "name": "IMOLA",
+        "description": "",
+        "price": "$14.00",
+        "section": "SALADS"
+      },
+      {
+        "name": "MARANELLO CAESAR SALAD",
+        "description": "",
+        "price": "$14.00",
+        "section": "SALADS"
+      },
+      {
+        "name": "PACCHERI ALL'ANATRA",
+        "description": "",
+        "price": "$28.00",
+        "section": "MAIN COURSE"
+      },
+      {
+        "name": "PICI TESTAROSSA",
+        "description": "",
+        "price": "$38.00",
+        "section": "MAIN COURSE"
+      },
+      {
+        "name": "LASAGNA EMILIANA",
+        "description": "",
+        "price": "$26.00",
+        "section": "MAIN COURSE"
+      },
+      {
+        "name": "PAPPARDELLE ALLA GUANCIA",
+        "description": "",
+        "price": "$32.00",
+        "section": "MAIN COURSE"
+      },
+      {
+        "name": "GNOCCHI DI ZUCCA",
+        "description": "",
+        "price": "$26.00",
+        "section": "MAIN COURSE"
+      },
+      {
+        "name": "RUOTINE DI MARE",
+        "description": "",
+        "price": "$32.00",
+        "section": "MAIN COURSE"
+      },
+      {
+        "name": "PORCINI MUSCHROOM RAVIOLI",
+        "description": "",
+        "price": "$29.00",
+        "section": "MAIN COURSE"
+      },
+      {
+        "name": "kids butter",
+        "description": "",
+        "price": "$12.00",
+        "section": "MAIN COURSE"
+      },
+      {
+        "name": "kids red salsa",
+        "description": "",
+        "price": "$12.00",
+        "section": "MAIN COURSE"
+      },
+      {
+        "name": "CARBONARA MARANELLO",
+        "description": "",
+        "price": "$27.00",
+        "section": "MAIN COURSE"
+      },
+      {
+        "name": "lemon cake",
+        "description": "",
+        "price": "$14.00",
+        "section": "DESSERTS"
+      },
+      {
+        "name": "TIRAMISU",
+        "description": "",
+        "price": "$15.00",
+        "section": "DESSERTS"
+      },
+      {
+        "name": "CANNOLO",
+        "description": "",
+        "price": "$12.00",
+        "section": "DESSERTS"
+      },
+      {
+        "name": "GRILLED ASPARAGUS",
+        "description": "",
+        "price": "$14.00",
+        "section": "SIDES"
+      },
+      {
+        "name": "ROSEMARY ROASTED POTATO",
+        "description": "",
+        "price": "$14.00",
+        "section": "SIDES"
+      },
+      {
+        "name": "ROASTED BRUSSELS SPROUT",
+        "description": "",
+        "price": "$12.00",
+        "section": "SIDES"
+      },
+      {
+        "name": "WILD MUSHROOM TRIFOLATI",
+        "description": "",
+        "price": "$14.00",
+        "section": "SIDES"
+      },
+      {
+        "name": "TRUFFLE FRIES",
+        "description": "",
+        "price": "$14.00",
+        "section": "SIDES"
+      },
+      {
+        "name": "FILETTO ALLA ENZO",
+        "description": "",
+        "price": "$49.00",
+        "section": "ENTRÉES"
+      },
+      {
+        "name": "POLLO  RIPIENO",
+        "description": "",
+        "price": "$32.00",
+        "section": "ENTRÉES"
+      },
+      {
+        "name": "TAGLIATA AL BALSAMICO",
+        "description": "",
+        "price": "$42.00",
+        "section": "ENTRÉES"
+      },
+      {
+        "name": "SALMON",
+        "description": "",
+        "price": "$32.00",
+        "section": "ENTRÉES"
+      },
+      {
+        "name": "grocco fritto hh",
+        "description": "",
+        "price": "$12.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "caesar salad  hh",
+        "description": "",
+        "price": "$10.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "silverstone salad h h",
+        "description": "",
+        "price": "$10.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "HH bruschetta",
+        "description": "",
+        "price": "$10.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "wagyu meatballs h h",
+        "description": "",
+        "price": "$14.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "truffe fries h h",
+        "description": "",
+        "price": "$8.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "frech fries reg hh",
+        "description": "",
+        "price": "$6.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "radiatori salsiccia h h",
+        "description": "",
+        "price": "$18.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "cheese wheel happy hour 50%off",
+        "description": "",
+        "price": "$28.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "peroni h h",
+        "description": "",
+        "price": "$5.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "cocktail happy hour ....",
+        "description": "",
+        "price": "$10.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "GL HH maranello red",
+        "description": "",
+        "price": "$6.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "Btl HH maranello  red",
+        "description": "",
+        "price": "$24.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "GL HH maranello   white",
+        "description": "",
+        "price": "$6.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "Btl HH maranello white",
+        "description": "",
+        "price": "$24.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "GL HH  PROSECCO h h",
+        "description": "",
+        "price": "$10.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "btL HH PROSECCO",
+        "description": "",
+        "price": "$40.00",
+        "section": "Happy Hour / happy hours"
+      },
+      {
+        "name": "TAGLIERE HAPPY HOUR ADD CARAFFA",
+        "description": "",
+        "price": "$32.00",
+        "section": "Happy Hour / happy hours"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7962",
+    "name": "Nova Boba and Coffee shop",
+    "address": "13348 Poway Rd, Poway, CA 92064",
+    "sourceUrl": "https://pos.chowbus.com/online-ordering/store/Nova-Boba-Tea-House/23095",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: Chowbus online-ordering storefront is a client-side fetched Next.js app; raw HTML has zero dollar-formatted prices and zero embedded price/menu JSON. No API endpoint could be found within budget."
+  },
+  {
+    "restaurantId": "4581",
+    "name": "Cui Daore",
+    "address": "8680 Miralani Drive #122",
+    "sourceUrl": "https://www.yelp.com/biz/cui-daore-san-diego-4",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "sushi/omakase restaurant with no own website found; only sources are Yelp (menu tab barred as sole source), Instagram (no itemized prices, just specials), and a vague aggregator listing ('Price≈$30' bucket, not itemized). No filable priced source found."
+  },
+  {
+    "restaurantId": "6074",
+    "name": "Culture Craft Coffee & Espresso",
+    "address": "1205 Auto Park Way, Escondido, CA 92029",
+    "sourceUrl": "http://www.culturecraftcoffee.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own domain culturecraftcoffee.com returns a generic 'Error. Page cannot be displayed' error page (195 bytes) on both homepage and /menu - broken/parked, not merely uncached. No delivery-platform or directory source with itemized prices found for this exact address."
+  },
+  {
+    "restaurantId": "4620",
+    "name": "The Golf Bar",
+    "address": "16771 Bernardo Center Drive",
+    "sourceUrl": "http://www.thegolfbar.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "bot wall: both thegolfbar.com and www.thegolfbar.com redirect to an sgcaptcha challenge (HTTP 202, /.well-known/sgcaptcha/ redirect) on homepage and /menu; confirmed on repeated fetches, not transient."
+  },
+  {
+    "restaurantId": "6453",
+    "name": "The Grillery",
+    "address": "14077 Stowe Dr, Poway, CA 92064",
+    "sourceUrl": "https://www.foodbooking.com/ordering/restaurant/menu?restaurant_uid=c5b859dd-3285-4bf0-9437-a84147a0ee16",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "menu exists (Google snippet of Grubhub page shows Steve Steak Sandwich $16.99, Knucklehead Sandwich $16.99, BBQ Pork Banh Mi $9.99) but not extractable: own foodbooking.com ordering page is an hCaptcha-gated Angular SPA with no embedded price data in raw HTML; Grubhub and DoorDash pages are likewise client-rendered/bot-walled (DoorDash 403, Grubhub 0 embedded prices); nearby-res.com is a generic scraped-content aggregator site (auto-generated template, ad-heavy) and not used as a source."
+  },
+  {
+    "restaurantId": "4337",
+    "name": "Ba Le French Sandwich Shop",
+    "address": "4879 University Avenue",
+    "sourceUrl": "https://balefrenchsandwichshop.netwaiter.com/san-diego/menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "genuine empty menu: the NetWaiter storefront's nav has no 'Menu' link at all (only About/Promotions), and /san-diego/menu/ serves the About page content with zero prices - no online-ordering menu is published for this location. Note: a same-named 'Bale French Sandwiches' branch on Mira Mesa Blvd has priced Grubhub/DoorDash/UberEats listings, but that is a different address/location and was correctly excluded. No delivery app or first-party priced source found for the 4879 University Ave (City Heights) location specifically."
+  }
+]

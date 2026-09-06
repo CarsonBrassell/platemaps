@@ -1,0 +1,1292 @@
+[
+  {
+    "restaurantId": "4341",
+    "name": "Pinoy Express Fastfood",
+    "sourceUrl": "https://pinoyexpress.godaddysites.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: first-party site (GoDaddy Website Builder) unreachable from this environment (connection timeout on both resolved IPs), r.jina.ai proxy fallback hit a Cloudflare challenge page, no Wayback Machine snapshot exists. Open business per serper snippets, no fetchable priced menu found in time budget."
+  },
+  {
+    "restaurantId": "8003",
+    "name": "Michoacana Mia - Vista",
+    "sourceUrl": "https://order.online/store/michoacana-mia-ice-cream-vista-2556685",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: order.online RSC payload extracted 54 nominally-priced items but failed verification - divisor sweep found no clean markup fit (best only 22% hit rate), raw conventional cent-ending rate only 9%, subtraction test on size-variant pairs (Chamango, Fresas Con Crema, Dubai Chocolate Milkshake) showed inconsistent differences, and a cross-check against a Grubhub snippet showed a price disagreement for the same item (Choco Banana $6.17 vs $7.13). Treated as computed/garbled field per PLAYBOOK.md rule, not filed."
+  },
+  {
+    "restaurantId": "9271",
+    "name": "Cowboy Coffee",
+    "sourceUrl": "https://www.doordash.com/business/cowboy-coffee-inc-12700256/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://coffeemenuz.com/cowboy-coffee-menu-us/",
+    "notes": "read from DoorDash's doubly-escaped embedded menu blob (no schema.org JSON-LD present on this page); 86 unique priced items across 17 menu sections; first-party site (burgiofeedandsupply.com) unreachable from this environment so this marketplace listing is the source; divisor sweep found no uniform markup factor (best 19/86 at 1.14), but a repeated exact modifier difference (Rockstar Blended vs Single, $1.35 both times) confirms real, non-computed pricing",
+    "dishes": [
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$4.40",
+        "section": "Traditional Coffees ☕️"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$5.40",
+        "section": "Traditional Coffees ☕️"
+      },
+      {
+        "name": "House Coffee",
+        "description": "",
+        "price": "$3.35",
+        "section": "Traditional Coffees ☕️"
+      },
+      {
+        "name": "Espresso ",
+        "description": "",
+        "price": "$4.05",
+        "section": "Traditional Coffees ☕️"
+      },
+      {
+        "name": "Latte*",
+        "description": "",
+        "price": "$5.40",
+        "section": "Traditional Coffees ☕️"
+      },
+      {
+        "name": "Americano*",
+        "description": "",
+        "price": "$4.05",
+        "section": "Traditional Coffees ☕️"
+      },
+      {
+        "name": "Snickers ",
+        "description": "",
+        "price": "$7.05",
+        "section": "Favorites ☕️"
+      },
+      {
+        "name": "Share The Love",
+        "description": "",
+        "price": "$7.05",
+        "section": "Favorites ☕️"
+      },
+      {
+        "name": "White Snickers ",
+        "description": "",
+        "price": "$7.05",
+        "section": "Favorites ☕️"
+      },
+      {
+        "name": "Mexican Mocha",
+        "description": "",
+        "price": "$7.05",
+        "section": "Favorites ☕️"
+      },
+      {
+        "name": "Lane Frost ",
+        "description": "",
+        "price": "$7.05",
+        "section": "Favorites ☕️"
+      },
+      {
+        "name": "Jesse James ",
+        "description": "",
+        "price": "$7.05",
+        "section": "Favorites ☕️"
+      },
+      {
+        "name": "Annie Oakley",
+        "description": "",
+        "price": "$7.05",
+        "section": "Favorites ☕️"
+      },
+      {
+        "name": "Almond Joy",
+        "description": "",
+        "price": "$7.05",
+        "section": "Favorites ☕️"
+      },
+      {
+        "name": "Calamity Jane ",
+        "description": "",
+        "price": "$7.05",
+        "section": "Favorites ☕️"
+      },
+      {
+        "name": "White Coffee ",
+        "description": "",
+        "price": "$7.05",
+        "section": "Favorites ☕️"
+      },
+      {
+        "name": "Cup of Juice ",
+        "description": "",
+        "price": "$4.40",
+        "section": "Non Coffee Drinks 🫖"
+      },
+      {
+        "name": "Chai Tea Latte* ",
+        "description": "",
+        "price": "$6.40",
+        "section": "Non Coffee Drinks 🫖"
+      },
+      {
+        "name": "Italian Soda ",
+        "description": "",
+        "price": "$4.40",
+        "section": "Non Coffee Drinks 🫖"
+      },
+      {
+        "name": "London Fog Latte",
+        "description": "",
+        "price": "$4.70",
+        "section": "Non Coffee Drinks 🫖"
+      },
+      {
+        "name": "Chocolate Milk",
+        "description": "",
+        "price": "$4.40",
+        "section": "Non Coffee Drinks 🫖"
+      },
+      {
+        "name": "Matcha Latte* ",
+        "description": "",
+        "price": "$6.40",
+        "section": "Non Coffee Drinks 🫖"
+      },
+      {
+        "name": "Steamer ",
+        "description": "",
+        "price": "$4.40",
+        "section": "Non Coffee Drinks 🫖"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "",
+        "price": "$2.05",
+        "section": "Non Coffee Drinks 🫖"
+      },
+      {
+        "name": "Hot Chocolate ",
+        "description": "",
+        "price": "$4.40",
+        "section": "Non Coffee Drinks 🫖"
+      },
+      {
+        "name": "Water",
+        "description": "",
+        "price": "$1.05",
+        "section": "Non Coffee Drinks 🫖"
+      },
+      {
+        "name": "Build Your Own Breakfast Sandwich ",
+        "description": "",
+        "price": "$7.40",
+        "section": "Breakfast 🍳 🥯"
+      },
+      {
+        "name": "All Meat - Breakfast Sandwich ",
+        "description": "",
+        "price": "$11.40",
+        "section": "Breakfast 🍳 🥯"
+      },
+      {
+        "name": "The 'Ty Special' Breakfast Sandwich ",
+        "description": "",
+        "price": "$12.75",
+        "section": "Breakfast 🍳 🥯"
+      },
+      {
+        "name": "Avocado  Toast ",
+        "description": "",
+        "price": "$11.75",
+        "section": "Breakfast 🍳 🥯"
+      },
+      {
+        "name": "The 'Morgan Special' Breakfast Sandwich ",
+        "description": "",
+        "price": "$13.10",
+        "section": "Breakfast 🍳 🥯"
+      },
+      {
+        "name": "Biscuits & Gravy ",
+        "description": "",
+        "price": "$8.75",
+        "section": "Breakfast 🍳 🥯"
+      },
+      {
+        "name": "GF Cookie",
+        "description": "",
+        "price": "$5.30",
+        "section": "Sweet Treats 🧁"
+      },
+      {
+        "name": "Muffin Tops",
+        "description": "",
+        "price": "$5.30",
+        "section": "Sweet Treats 🧁"
+      },
+      {
+        "name": "Protein Puck ",
+        "description": "",
+        "price": "$5.05",
+        "section": "Sweet Treats 🧁"
+      },
+      {
+        "name": "Cinnamon Roll",
+        "description": "",
+        "price": "$7.05",
+        "section": "Sweet Treats 🧁"
+      },
+      {
+        "name": "Donut Holes",
+        "description": "",
+        "price": "$6.65",
+        "section": "Sweet Treats 🧁"
+      },
+      {
+        "name": "Bag of Choc. Espresso Beans",
+        "description": "",
+        "price": "$1.70",
+        "section": "Sweet Treats 🧁"
+      },
+      {
+        "name": "Coffee Cake ",
+        "description": "",
+        "price": "$5.70",
+        "section": "Sweet Treats 🧁"
+      },
+      {
+        "name": "Scone",
+        "description": "",
+        "price": "$6.40",
+        "section": "Sweet Treats 🧁"
+      },
+      {
+        "name": "Lemon Loaf ",
+        "description": "",
+        "price": "$5.70",
+        "section": "Sweet Treats 🧁"
+      },
+      {
+        "name": "BLTA Sandwich ",
+        "description": "",
+        "price": "$16.10",
+        "section": "Lunch 🥪"
+      },
+      {
+        "name": "Blended w/ Milk ",
+        "description": "",
+        "price": "$7.40",
+        "section": "Blended Drinks 🌪️"
+      },
+      {
+        "name": "Blended Coffee ",
+        "description": "",
+        "price": "$7.40",
+        "section": "Blended Drinks 🌪️"
+      },
+      {
+        "name": "Blended Chai ",
+        "description": "",
+        "price": "$7.40",
+        "section": "Blended Drinks 🌪️"
+      },
+      {
+        "name": "Blended Hot Chocolate ",
+        "description": "",
+        "price": "$5.70",
+        "section": "Blended Drinks 🌪️"
+      },
+      {
+        "name": "Blended Coffee* ",
+        "description": "",
+        "price": "$7.40",
+        "section": "Blended Drinks 🌪️"
+      },
+      {
+        "name": "Bagel",
+        "description": "",
+        "price": "$5.40",
+        "section": "Bagels 🥯"
+      },
+      {
+        "name": "Lemonade 🍋",
+        "description": "",
+        "price": "$4.05",
+        "section": "☀️ Summer Specials ☀️"
+      },
+      {
+        "name": "Refresher* ",
+        "description": "",
+        "price": "$5.05",
+        "section": "☀️ Summer Specials ☀️"
+      },
+      {
+        "name": "Arnold Palmer ",
+        "description": "",
+        "price": "$5.05",
+        "section": "☀️ Summer Specials ☀️"
+      },
+      {
+        "name": "Red, White & Blue Lemonade 4th ",
+        "description": "",
+        "price": "$4.05",
+        "section": "☀️ Summer Specials ☀️"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "",
+        "price": "$3.70",
+        "section": "☀️ Summer Specials ☀️"
+      },
+      {
+        "name": "Kids - Blended 9oz ",
+        "description": "",
+        "price": "$4.70",
+        "section": "Kids 🤠"
+      },
+      {
+        "name": "Kids - Steamer ",
+        "description": "",
+        "price": "$3.70",
+        "section": "Kids 🤠"
+      },
+      {
+        "name": "Kids - Cold Milk (Whole) 🥛 ",
+        "description": "",
+        "price": "$3.35",
+        "section": "Kids 🤠"
+      },
+      {
+        "name": "Kids - Whip Cream Cup - 9oz ",
+        "description": "",
+        "price": "$2.05",
+        "section": "Kids 🤠"
+      },
+      {
+        "name": "Kids - Ice Cream Cone 🍦 ",
+        "description": "",
+        "price": "$3.70",
+        "section": "Kids 🤠"
+      },
+      {
+        "name": "Kids Hot Chocolate ",
+        "description": "",
+        "price": "$3.70",
+        "section": "Kids 🤠"
+      },
+      {
+        "name": "Kids - Lemonade 🍋 ",
+        "description": "",
+        "price": "$3.70",
+        "section": "Kids 🤠"
+      },
+      {
+        "name": "Kids - Juice 🧃 ",
+        "description": "",
+        "price": "$3.70",
+        "section": "Kids 🤠"
+      },
+      {
+        "name": "Kids - Chocolate Milk ",
+        "description": "",
+        "price": "$3.70",
+        "section": "Kids 🤠"
+      },
+      {
+        "name": "Signature Blend ",
+        "description": "",
+        "price": "$20.10",
+        "section": "Retail Coffee"
+      },
+      {
+        "name": "PH Smoothies*",
+        "description": "",
+        "price": "$8.75",
+        "section": "Smoothies 🍓 🍌 🫐"
+      },
+      {
+        "name": "Red Bull - 1 CAN ",
+        "description": "",
+        "price": "$5.30",
+        "section": "Redbull ⚡️"
+      },
+      {
+        "name": "SF Red Bull*  ",
+        "description": "",
+        "price": "$6.70",
+        "section": "Redbull ⚡️"
+      },
+      {
+        "name": "Red Bull* ",
+        "description": "",
+        "price": "$6.70",
+        "section": "Redbull ⚡️"
+      },
+      {
+        "name": "Red Bull Italian Soda*",
+        "description": "",
+        "price": "$9.75",
+        "section": "Redbull ⚡️"
+      },
+      {
+        "name": "Maple Bar Latte",
+        "description": "",
+        "price": "$5.40",
+        "section": "4th of July Featured"
+      },
+      {
+        "name": "Golden Hour",
+        "description": "",
+        "price": "$5.40",
+        "section": "4th of July Featured"
+      },
+      {
+        "name": "Cowboy BOOT - 4th Special ",
+        "description": "",
+        "price": "$6.70",
+        "section": "4th of July Featured"
+      },
+      {
+        "name": "Rockstar Blended Regular",
+        "description": "",
+        "price": "$9.40",
+        "section": "Rockstar ⚡️"
+      },
+      {
+        "name": "Rockstar Blended Sugar Free",
+        "description": "",
+        "price": "$9.40",
+        "section": "Rockstar ⚡️"
+      },
+      {
+        "name": "Rockstar Rocket Pop - 4th",
+        "description": "",
+        "price": "$8.05",
+        "section": "Rockstar ⚡️"
+      },
+      {
+        "name": "Rockstar Sugar Free Single ",
+        "description": "",
+        "price": "$8.05",
+        "section": "Rockstar ⚡️"
+      },
+      {
+        "name": "Rockstar Regular Single",
+        "description": "",
+        "price": "$8.05",
+        "section": "Rockstar ⚡️"
+      },
+      {
+        "name": "Lotus Special Price",
+        "description": "",
+        "price": "$5.70",
+        "section": "Lotus 🪷"
+      },
+      {
+        "name": "Lotus",
+        "description": "",
+        "price": "$5.70",
+        "section": "Lotus 🪷"
+      },
+      {
+        "name": "Lotus - BLENDED ",
+        "description": "",
+        "price": "$1.35",
+        "section": "Lotus 🪷"
+      },
+      {
+        "name": "Lotus Lemonade Blast",
+        "description": "",
+        "price": "$7.40",
+        "section": "Lotus 🪷"
+      },
+      {
+        "name": "Love It Up Lotus ",
+        "description": "",
+        "price": "$5.70",
+        "section": "Lotus 🪷"
+      },
+      {
+        "name": "Lotus Italian Soda ",
+        "description": "",
+        "price": "$7.40",
+        "section": "Lotus 🪷"
+      },
+      {
+        "name": "Lotus Sunrise",
+        "description": "",
+        "price": "$5.70",
+        "section": "Lotus 🪷"
+      },
+      {
+        "name": "Caramel Apple Lotus ",
+        "description": "",
+        "price": "$5.70",
+        "section": "Lotus 🪷"
+      },
+      {
+        "name": "16oz Syrup Latte ",
+        "description": "",
+        "price": "$6.40",
+        "section": "Happy Hour 🤩 (Tuesday's 12-2)"
+      },
+      {
+        "name": "16oz Latte -No Flavor",
+        "description": "",
+        "price": "$5.70",
+        "section": "Happy Hour 🤩 (Tuesday's 12-2)"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10000",
+    "name": "Rey Tj Burger's San Diego",
+    "sourceUrl": "https://www.grubhub.com/restaurant/rey-tj-burgers-san-diego-8783-troy-st-spring-valley/12856696",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: Grubhub page is a client-rendered shell with no embedded data (confirmed dead end in this environment); the address-matching UberEats listing found (rey-tj-burgers/DNF7A9mvWz-KCqj-7lr6OQ) is a different Rey TJ Burgers location (1655 Broadway, Chula Vista, not 8783 Troy St, Spring Valley); search snippets surfaced only 3-4 partial/range prices (e.g. Cheeseburger $9.90+), not enough for a reliable full menu and marked '+' so not filed per no-construct rule; website field is null, no first-party site found."
+  },
+  {
+    "restaurantId": "10001",
+    "name": "The Other Side Bar and Grill",
+    "sourceUrl": "https://www.yelp.com/biz/the-other-side-bar-and-grill-san-diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: no delivery-platform listing located despite an Instagram post claiming presence on DoorDash, UberEats, ChowNow and Grubhub; searches for this address (6690 Mission Gorge Rd Ste D, San Diego) on each platform returned no matching store page; website field is null, no first-party site found in time budget."
+  },
+  {
+    "restaurantId": "7203",
+    "name": "Premier Mart & Deli",
+    "sourceUrl": "https://www.ubereats.com/store/premier-mart-and-deli/K80rv6fASJOv7rYYzwQ3QQ",
+    "confidence": "high",
+    "notes": "read from UberEats JSON-LD (hasMenu.hasMenuSection); exact street-address match (428 G St, San Diego, CA 92101); 71 unique priced items after excluding non-food convenience-store sections (Premier Gum, Premier Tolietries) and one $0 placeholder row (Pizza by the Slice, priced-by-weight with no listed price); conventional cent-ending distribution, judged reliable",
+    "dishes": [
+      {
+        "name": "Whole Pepperoni Pizza",
+        "description": "",
+        "price": "$14.95",
+        "section": "Premier Pizza"
+      },
+      {
+        "name": "Whole Cheese Pizza",
+        "description": "",
+        "price": "$14.95",
+        "section": "Premier Pizza"
+      },
+      {
+        "name": "The Bacon Dog",
+        "description": "",
+        "price": "$8.99",
+        "section": "Premier Hot Dogs"
+      },
+      {
+        "name": "The Philly Dog",
+        "description": "",
+        "price": "$8.99",
+        "section": "Premier Hot Dogs"
+      },
+      {
+        "name": "The Chili Cheese Dog",
+        "description": "",
+        "price": "$8.99",
+        "section": "Premier Hot Dogs"
+      },
+      {
+        "name": "The Diego Dog",
+        "description": "",
+        "price": "$8.99",
+        "section": "Premier Hot Dogs"
+      },
+      {
+        "name": "The Chicago Dog",
+        "description": "",
+        "price": "$8.99",
+        "section": "Premier Hot Dogs"
+      },
+      {
+        "name": "The New York Dog",
+        "description": "",
+        "price": "$8.99",
+        "section": "Premier Hot Dogs"
+      },
+      {
+        "name": "The Texas Dog",
+        "description": "",
+        "price": "$8.99",
+        "section": "Premier Hot Dogs"
+      },
+      {
+        "name": "Naked Dog",
+        "description": "",
+        "price": "$8.49",
+        "section": "Premier Hot Dogs"
+      },
+      {
+        "name": "The Club Sandwich",
+        "description": "",
+        "price": "$13.99",
+        "section": "Premier Sandwiches"
+      },
+      {
+        "name": "The Veggie Delight Sandwich",
+        "description": "",
+        "price": "$13.99",
+        "section": "Premier Sandwiches"
+      },
+      {
+        "name": "Beef Burger",
+        "description": "",
+        "price": "$12.95",
+        "section": "Premier Hamburgers"
+      },
+      {
+        "name": "Chicken Burger",
+        "description": "",
+        "price": "$12.95",
+        "section": "Premier Hamburgers"
+      },
+      {
+        "name": "Butter Pecan",
+        "description": "",
+        "price": "$10.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "Cookies n Cream",
+        "description": "",
+        "price": "$10.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "Pistachio Ice Cream",
+        "description": "",
+        "price": "$10.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "Chocolate Ice Cream",
+        "description": "",
+        "price": "$10.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "Vanilla Ice Cream",
+        "description": "",
+        "price": "$10.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "Strawberry Ice Cream",
+        "description": "",
+        "price": "$10.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "Mango Ice Cream",
+        "description": "",
+        "price": "$10.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "Rocky Road",
+        "description": "",
+        "price": "$10.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "Choco Taco Ice Cream",
+        "description": "",
+        "price": "$6.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "Blue Bunny Ice Cream Sandwich",
+        "description": "",
+        "price": "$5.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "Haagen-Dagz Ice Cream",
+        "description": "",
+        "price": "$5.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "Snickers Ice Cream Bar",
+        "description": "",
+        "price": "$5.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "Big King Vanilla Sundae Cone",
+        "description": "",
+        "price": "$5.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "M&Ms Cookie Sandwich",
+        "description": "",
+        "price": "$5.95",
+        "section": "Premier Ice Cream"
+      },
+      {
+        "name": "Nacho",
+        "description": "",
+        "price": "$13.95",
+        "section": "Premier Nachos"
+      },
+      {
+        "name": "TostiLocos",
+        "description": "",
+        "price": "$14.95",
+        "section": "Premier Cravings"
+      },
+      {
+        "name": "TostiNachos",
+        "description": "",
+        "price": "$9.95",
+        "section": "Premier Cravings"
+      },
+      {
+        "name": "Chamango",
+        "description": "",
+        "price": "$14.95",
+        "section": "Premier Cravings"
+      },
+      {
+        "name": "Hot Cheetos W/ Cheese",
+        "description": "",
+        "price": "$6.95",
+        "section": "Premier Cravings"
+      },
+      {
+        "name": "TakisLocos",
+        "description": "",
+        "price": "$14.95",
+        "section": "Premier Cravings"
+      },
+      {
+        "name": "Salad",
+        "description": "",
+        "price": "$13.95",
+        "section": "Premier Salads"
+      },
+      {
+        "name": "Sour Patch",
+        "description": "",
+        "price": "$4.95",
+        "section": "Premier Candy :)"
+      },
+      {
+        "name": "M&Ms",
+        "description": "",
+        "price": "$4.95",
+        "section": "Premier Candy :)"
+      },
+      {
+        "name": "Twix",
+        "description": "",
+        "price": "$4.95",
+        "section": "Premier Candy :)"
+      },
+      {
+        "name": "Tic Tac",
+        "description": "",
+        "price": "$4.95",
+        "section": "Premier Candy :)"
+      },
+      {
+        "name": "Starburst",
+        "description": "",
+        "price": "$4.95",
+        "section": "Premier Candy :)"
+      },
+      {
+        "name": "Snickers",
+        "description": "",
+        "price": "$4.95",
+        "section": "Premier Candy :)"
+      },
+      {
+        "name": "Mentos",
+        "description": "",
+        "price": "$4.95",
+        "section": "Premier Candy :)"
+      },
+      {
+        "name": "Ice Breakers Mint",
+        "description": "",
+        "price": "$4.95",
+        "section": "Premier Candy :)"
+      },
+      {
+        "name": "Skittles",
+        "description": "",
+        "price": "$4.95",
+        "section": "Premier Candy :)"
+      },
+      {
+        "name": "MilkyWay",
+        "description": "",
+        "price": "$4.95",
+        "section": "Premier Candy :)"
+      },
+      {
+        "name": "Red Bull",
+        "description": "",
+        "price": "$5.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Soda",
+        "description": "",
+        "price": "$3.49",
+        "section": "Beverages"
+      },
+      {
+        "name": "Gatorade",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Ocean Spray",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Tropicana",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "V8 Juice",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Snapple",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Nestle Water",
+        "description": "",
+        "price": "$2.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Fiji Water",
+        "description": "",
+        "price": "$5.49",
+        "section": "Beverages"
+      },
+      {
+        "name": "Aquafina Water",
+        "description": "",
+        "price": "$3.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Perrier Water",
+        "description": "",
+        "price": "$3.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Vitamin Water",
+        "description": "",
+        "price": "$3.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Coconut Water",
+        "description": "",
+        "price": "$3.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Monster",
+        "description": "",
+        "price": "$5.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Rockstar",
+        "description": "",
+        "price": "$5.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Gatorade Zero",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Dole Pineapple Juice",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Celsius",
+        "description": "",
+        "price": "$5.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Starbucks Mocha Coffee",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Sweet Tea",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Prime",
+        "description": "",
+        "price": "$5.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Brut Henri Parcel Champagne",
+        "description": "",
+        "price": "$14.95",
+        "section": "Premier Alcohol"
+      },
+      {
+        "name": "California Champagne",
+        "description": "",
+        "price": "$14.95",
+        "section": "Premier Alcohol"
+      },
+      {
+        "name": "Prosecco Champagne",
+        "description": "",
+        "price": "$14.95",
+        "section": "Premier Alcohol"
+      },
+      {
+        "name": "Methode Champagne",
+        "description": "",
+        "price": "$14.95",
+        "section": "Premier Alcohol"
+      },
+      {
+        "name": "Buzz Ball",
+        "description": "",
+        "price": "$9.95",
+        "section": "Premier Alcohol"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10003",
+    "name": "Beach Street Tacos",
+    "sourceUrl": "https://www.legoland.com/california/water-park/",
+    "confidence": "high",
+    "dishes": [],
+    "blocked": "park concession, hold candidate: confirmed a food stand inside the LEGOLAND California Water Park (Surfers' Cove), serving cantina-style tacos; address (1 Legoland Dr, Carlsbad) and website (legoland.com water park page) both confirm this is a theme-park concession, not an independent restaurant."
+  },
+  {
+    "restaurantId": "10220",
+    "name": "Xicanitos",
+    "sourceUrl": "https://www.instagram.com/xicanitos/?hl=en",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: Yelp/MapQuest list this as CLOSED, but Instagram (@xicanitos, 'Xicanitos Catering') posts confirm continued weekend operation in 2026 at the exact batch address (2100 Logan Ave) taking pre-orders, so per AGENT-BRIEF.md a Yelp CLOSED label alone is not sufficient for not_found. It is a weekend pop-up/catering operation with no delivery-platform listing found and no published price list located."
+  },
+  {
+    "restaurantId": "11730",
+    "name": "Netta's Bakery",
+    "sourceUrl": "https://www.nettasbakery.com/",
+    "confidence": "high",
+    "dishes": [],
+    "blocked": "cottage-food/home-kitchen, out of scope: first-party site explicitly describes this as a home-based/cottage-food bakery operation (MEHKO-style), not a storefront restaurant; per AGENT-BRIEF.md and standing policy this stays out of coverage rather than being filed or retired."
+  },
+  {
+    "restaurantId": "11166",
+    "name": "Dos Palmas Cafe - Parkway Plaza",
+    "sourceUrl": "https://www.ubereats.com/store/dos-palmas-cafe-parkway-plaza/e13alwcoVGqIv7vDDcm3xA",
+    "confidence": "high",
+    "notes": "read from UberEats JSON-LD (hasMenu.hasMenuSection); exact street-address match (415 Fletcher Pkwy Ste 721, El Cajon, CA 92020), distinguishing this location from Dos Palmas' other San Diego branches; 44 unique priced items across Grilled Paninis, Cold Coffees/Teas, Acai, Toasts, Crepes, Pastries, Juices/Sodas; first-party site (dospalmascafe.com) is captcha-gated so this marketplace listing is the source; clean conventional cent-ending distribution",
+    "dishes": [
+      {
+        "name": "Somethin', Egg & Cheese",
+        "description": "",
+        "price": "$9.49",
+        "section": "Grilled Paninis"
+      },
+      {
+        "name": "Breakfast",
+        "description": "",
+        "price": "$12.49",
+        "section": "Grilled Paninis"
+      },
+      {
+        "name": "Pesto Turkey",
+        "description": "",
+        "price": "$14.99",
+        "section": "Grilled Paninis"
+      },
+      {
+        "name": "Chipotle Turkey",
+        "description": "",
+        "price": "$14.99",
+        "section": "Grilled Paninis"
+      },
+      {
+        "name": "The Pig",
+        "description": "",
+        "price": "$15.49",
+        "section": "Grilled Paninis"
+      },
+      {
+        "name": "Zesty Italian",
+        "description": "",
+        "price": "$15.49",
+        "section": "Grilled Paninis"
+      },
+      {
+        "name": "Grilled Cheese",
+        "description": "",
+        "price": "$12.49",
+        "section": "Grilled Paninis"
+      },
+      {
+        "name": "Veggie",
+        "description": "",
+        "price": "$14.49",
+        "section": "Grilled Paninis"
+      },
+      {
+        "name": "Build Your Own Panini",
+        "description": "",
+        "price": "$5.49",
+        "section": "Grilled Paninis"
+      },
+      {
+        "name": "Mini Panini",
+        "description": "",
+        "price": "$0.49",
+        "section": "Grilled Paninis"
+      },
+      {
+        "name": "Iced Latte",
+        "description": "",
+        "price": "$5.99",
+        "section": "Cold Coffees/Teas"
+      },
+      {
+        "name": "Iced Chai Latte",
+        "description": "",
+        "price": "$5.99",
+        "section": "Cold Coffees/Teas"
+      },
+      {
+        "name": "Iced Mocha Latte",
+        "description": "",
+        "price": "$6.49",
+        "section": "Cold Coffees/Teas"
+      },
+      {
+        "name": "Iced Mexican Mocha Latte",
+        "description": "",
+        "price": "$6.49",
+        "section": "Cold Coffees/Teas"
+      },
+      {
+        "name": "Iced Matcha Latte",
+        "description": "",
+        "price": "$5.99",
+        "section": "Cold Coffees/Teas"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$5.49",
+        "section": "Cold Coffees/Teas"
+      },
+      {
+        "name": "Horchata Cold Brew",
+        "description": "",
+        "price": "$6.49",
+        "section": "Cold Coffees/Teas"
+      },
+      {
+        "name": "Iced Americano",
+        "description": "",
+        "price": "$4.99",
+        "section": "Cold Coffees/Teas"
+      },
+      {
+        "name": "Chocolate Milk",
+        "description": "",
+        "price": "$3.99",
+        "section": "Cold Coffees/Teas"
+      },
+      {
+        "name": "Cold Milk",
+        "description": "",
+        "price": "$3.49",
+        "section": "Cold Coffees/Teas"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "",
+        "price": "$4.49",
+        "section": "Cold Coffees/Teas"
+      },
+      {
+        "name": "Iced Horchata Latte",
+        "description": "",
+        "price": "$6.49",
+        "section": "Cold Coffees/Teas"
+      },
+      {
+        "name": "Açaí Bowl",
+        "description": "",
+        "price": "$12.99",
+        "section": "Açaí"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "",
+        "price": "$12.49",
+        "section": "Toasts"
+      },
+      {
+        "name": "Chocolate Toast",
+        "description": "",
+        "price": "$11.99",
+        "section": "Toasts"
+      },
+      {
+        "name": "Chocolate Delight Crepe",
+        "description": "",
+        "price": "$12.99",
+        "section": "Crepes"
+      },
+      {
+        "name": "Gooey Goodness Crepe",
+        "description": "",
+        "price": "$9.99",
+        "section": "Crepes"
+      },
+      {
+        "name": "Brownie",
+        "description": "",
+        "price": "$4.99",
+        "section": "Pastries"
+      },
+      {
+        "name": "Oatmeal Raisin Cookie",
+        "description": "",
+        "price": "$2.49",
+        "section": "Pastries"
+      },
+      {
+        "name": "Croissant (chocolate)",
+        "description": "",
+        "price": "$4.99",
+        "section": "Pastries"
+      },
+      {
+        "name": "Carrot Cake",
+        "description": "",
+        "price": "$6.99",
+        "section": "Pastries"
+      },
+      {
+        "name": "Tiramisu",
+        "description": "",
+        "price": "$6.49",
+        "section": "Pastries"
+      },
+      {
+        "name": "Cheesecake",
+        "description": "",
+        "price": "$6.49",
+        "section": "Pastries"
+      },
+      {
+        "name": "Caramel Fudge Cheesecake",
+        "description": "",
+        "price": "$7.49",
+        "section": "Pastries"
+      },
+      {
+        "name": "Soda (plastic)",
+        "description": "",
+        "price": "$3.49",
+        "section": "Juices / Sodas"
+      },
+      {
+        "name": "Soda (glass)",
+        "description": "",
+        "price": "$3.99",
+        "section": "Juices / Sodas"
+      },
+      {
+        "name": "Sparkling Water",
+        "description": "",
+        "price": "$3.99",
+        "section": "Juices / Sodas"
+      },
+      {
+        "name": "Water Btl",
+        "description": "",
+        "price": "$1.99",
+        "section": "Juices / Sodas"
+      },
+      {
+        "name": "Chips",
+        "description": "",
+        "price": "$2.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Side Bacon",
+        "description": "",
+        "price": "$2.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Side Egg",
+        "description": "",
+        "price": "$2.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Fruit Cup 10z",
+        "description": "",
+        "price": "$5.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Potato Salad",
+        "description": "",
+        "price": "$5.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Side of Sauce",
+        "description": "",
+        "price": "$0.49",
+        "section": "Sides"
+      }
+    ]
+  }
+]
