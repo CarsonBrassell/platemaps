@@ -222,8 +222,14 @@ function ProfileOverview() {
       const url = await uploadAvatar(await resizeImageToJpeg(file));
       const error = await updateAvatar(url);
       if (error) setAvatarError(error);
-    } catch {
-      setAvatarError("Couldn't read that image, try another.");
+    } catch (err) {
+      /* The reason, not a guess at it. This used to say "couldn't read that
+         image, try another" for every failure — a decode that ran out of
+         memory, a canvas the browser refused, an upload the server rejected —
+         and trying another photo fixes only the first of those. */
+      setAvatarError(
+        err instanceof Error ? err.message : "Couldn't read that image, try another.",
+      );
     }
     setUploading(false);
   }
