@@ -822,6 +822,18 @@ html.pm-lock-scroll body {
  * `.pm-phone-content` would re-anchor every fixed overlay in the app for the
  * length of a drag.
  */
+/* The room a pinned bar's gap is taking, held below the bar so the cards sit
+   under it (PhoneStickyBar). It answers the same `--pm-pull` the gap is sized
+   by, and it has to close on the same curve: the property jumps the moment the
+   finger lifts, and without a transition here the list would snap home while
+   the dial was still winding shut above it. The duration is carried in
+   `--pm-pull-ease` rather than written here because only the component setting
+   the pull knows whether this move is a finger's or its own — 0s under a drag,
+   0.22s for everything else. */
+.pm-phone-shell .pm-sticky-spacer {
+  transition: height var(--pm-pull-ease, 0s) cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
 .pm-phone-shell .phone-refresh {
   position: relative;
   height: var(--pm-pull, 0px);

@@ -440,63 +440,59 @@ export function PhoneFeedScreen() {
           search asks for its 36, so the row is over on the sort switch alone.
           Both rows below the tabs are modifiers on the feed the tabs pick,
           which is also why they wear rank 3 and the tabs wear rank 2. */}
-      {/* Only the tabs are pinned, and the split is the point.
+      {/* Two tiers, and which row is in which is the whole design.
 
-          All three rows held the top for a day and it cost 90pt of a screen
-          with roughly 640 usable ones — a seventh of the feed, permanently, to
-          keep two controls in reach that a reader is not reaching for. The tabs
-          are the one row that earns it: which feed you are reading is a
-          question you ask *while* scrolling, and the hide-on-scroll version
-          answered it by making you scroll back to the top first, which on a
-          feed that pages is the round trip the whole sticky bar exists to
-          remove. How it is sorted and what it is narrowed to are questions you
-          ask before you start, so those two ride the content away and come back
-          when you return to the top — which is where you already are when you
-          want them.
+          The tabs never move: they are welded to the top and they are what you
+          navigate with, so they are reachable at any depth. The sort switch and
+          the search field sit in the tier below, and they come and go — hidden
+          on the way down, back on the first upward pixel with the tabs, and at
+          rest they travel down with the cards when the feed is pulled. Leaving
+          them in the ordinary flow (which is where they were for a day) meant
+          the only way back to them was scrolling all the way home, and on a
+          feed that pages that is the round trip this bar exists to remove.
 
-          Which also puts them the right way round for the refresh: the gap
-          below opens under the pinned row, so at rest the sort switch and the
-          search field travel down with the cards and the dial arrives in front
-          of them rather than behind. */}
-      <PhoneStickyBar pinned>
-        <div className="px-4">
-          <PhoneFeedTabs active={tab} onChange={setTab} />
-        </div>
-      </PhoneStickyBar>
+          The refresh goes *between* the tiers rather than under both, which is
+          what lets the lower tier ride the gap down while the tabs hold — see
+          PhoneStickyBar's `gap` prop, and PhonePullToRefresh for why the gap
+          is a height and never a transform.
 
-      {/* Drag down from the top to re-read the feed. Directly under the pinned
-          tabs and in the flow, so the gap it opens pushes everything below —
-          the sort switch, the search field and the cards — down together, and
-          the dial slides out from behind the tab row. The row it is pinned to
-          does not move, which is what makes the gap read as space rather than
-          as the page coming loose. See PhonePullToRefresh for why this is a
-          height and not a transform.
-
-          Disabled while the comments screen is up — it is a fixed overlay with
-          its own scroller, so the gesture is not meant for the list behind it —
-          and while the post-publish flash is covering, where a refresh the
-          composer already triggered would be racing the celebration it is
-          playing under.
+          Refresh is disabled while the comments screen is up — it is a fixed
+          overlay with its own scroller, so the gesture is not meant for the
+          list behind it — and while the post-publish flash is covering, where a
+          refresh the composer already triggered would be racing the
+          celebration it is playing under.
 
           `reloadFeed` is usePostFeed's own re-read and returns a promise, so
           the wheel spins for exactly as long as the request takes rather than
           for a duration someone picked. The "Try again" button below keeps
-          `reloadKey`: it has nothing to wait for. */}
-      <PhonePullToRefresh onRefresh={reloadFeed} disabled={commentsPostId !== null || flashOpen} />
+          `reloadKey`: it has nothing to wait for.
 
-      {/* Search owns this row and takes the sort switch as its left half — see
-          PhoneFeedSearch for why the two rows it spans have to live in one
+          Search owns the lower row and takes the sort switch as its left half —
+          see PhoneFeedSearch for why the two rows it spans have to live in one
           component. Here a search narrows the list already on screen; the map
           tab's copy of this control lives in the branch above, in the corner,
-          and keeps the navigate-to-Discover default.
-
-          Plain flow, under the pinned tabs: it scrolls away with the feed. */}
-      <div className="mt-0.5">
-        <PhoneFeedSearch
-          leading={tab === "discover" ? <FeedSortSwitch active={sort} onChange={setSort} /> : null}
-          onSearch={setRestaurantFilter}
-        />
-      </div>
+          and keeps the navigate-to-Discover default. `pt-0.5` and not `mt-0.5`:
+          the tier is measured with `offsetHeight`, which a margin is not part
+          of, and two points of drift between the spacer and the row is exactly
+          the kind of gap that shows. */}
+      <PhoneStickyBar
+        pinned
+        gap={
+          <PhonePullToRefresh onRefresh={reloadFeed} disabled={commentsPostId !== null || flashOpen} />
+        }
+        lower={
+          <div className="pt-0.5">
+            <PhoneFeedSearch
+              leading={tab === "discover" ? <FeedSortSwitch active={sort} onChange={setSort} /> : null}
+              onSearch={setRestaurantFilter}
+            />
+          </div>
+        }
+      >
+        <div className="px-4">
+          <PhoneFeedTabs active={tab} onChange={setTab} />
+        </div>
+      </PhoneStickyBar>
 
       <div className="px-4 pt-2">
         {offline && <OfflineBanner />}

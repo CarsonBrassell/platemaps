@@ -124,6 +124,34 @@ export function PhonePullToRefresh({
   const [phase, setPhase] = useState<Phase>("idle");
   const [pull, setPull] = useState(0);
 
+  /* The pull is published as a custom property on the *scroller*, not on the
+     block below, because the gap is no longer the only thing sized by it: the
+     control bar's spacer grows by the same amount (PhoneStickyBar), and a
+     property set on the gap itself is invisible to a sibling.
+
+     Written straight to the DOM rather than through the render, and that is
+     the point. The alternative — lifting `pull` into PhoneFeedScreen so both
+     readers get it in one commit — re-renders the whole card list on every
+     frame of a drag. This way the number reaches both places synchronously,
+     inside the touch handler, while React re-renders nothing but this
+     component's own dial. */
+  const scrollerRef = useRef<HTMLElement | null>(null);
+  const applyPull = useCallback((next: number, instant = false) => {
+    setPull(next);
+    const el = scrollerRef.current;
+    if (!el) return;
+    /* The gap's own transition is switched off by `data-phase` below; the
+       spacer reading this property is not in a position to see that attribute,
+       so the duration travels with the value. Zero while a finger is setting
+       the number — a transition there is a lag between the drag and the cards —
+       and the gap's own duration for every move the component makes on its own:
+       the snap back from a cancelled pull, the drop to REST when the wheel
+       starts, and the close when it stops. Without it the cards jump home in
+       one frame while the dial is still winding closed underneath them. */
+    el.style.setProperty("--pm-pull", `${next}px`);
+    el.style.setProperty("--pm-pull-ease", instant ? "0s" : "0.22s");
+  }, []);
+
   /* The listeners are attached once and read the live values through refs:
      re-binding a non-passive touchmove every time `pull` changes would mean
      tearing down and re-adding a listener on every frame of the drag.
@@ -154,7 +182,7 @@ export function PhonePullToRefresh({
 
   const runRefresh = useCallback(async () => {
     setPhase("refreshing");
-    setPull(REST);
+    applyPull(REST);
     const started = Date.now();
     try {
       await onRefreshRef.current();
@@ -166,16 +194,17 @@ export function PhonePullToRefresh({
       settleTimer.current = setTimeout(() => {
         if (!alive.current) return;
         setPhase("idle");
-        setPull(0);
+        applyPull(0);
       }, held);
     }
-  }, []);
+  }, [applyPull]);
 
   useEffect(() => {
     /* Same lookup PhoneStickyBar makes, and for the same reason: the document
        does not scroll under /m, `.pm-phone-content` does (phone.css). */
     const scroller = anchorRef.current?.closest<HTMLElement>(".pm-phone-content");
     if (!scroller) return;
+    scrollerRef.current = scroller;
 
     /* The point the pull is measured from. Not where the touch began: while
        the scroller is still moving this is rewritten every frame, so it ends up
@@ -225,7 +254,7 @@ export function PhonePullToRefresh({
         engaged = false;
         if (travelled > 0) {
           travelled = 0;
-          setPull(0);
+          applyPull(0);
           setPhase("idle");
         }
         return;
@@ -251,7 +280,7 @@ export function PhonePullToRefresh({
            of empty cream under the bar until the screen is remounted. */
         if (engaged || travelled > 0) {
           if (travelled > 0) {
-            setPull(0);
+            applyPull(0);
             setPhase("idle");
           }
           return release();
@@ -304,7 +333,7 @@ export function PhonePullToRefresh({
       if (next === travelled && phaseRef.current === "pulling") return;
       travelled = next;
       setPhase("pulling");
-      setPull(travelled);
+      applyPull(travelled, true);
     };
 
     const onEnd = () => {
@@ -315,7 +344,7 @@ export function PhonePullToRefresh({
         void runRefresh();
       } else {
         setPhase("idle");
-        setPull(0);
+        applyPull(0);
       }
     };
 
@@ -328,8 +357,13 @@ export function PhonePullToRefresh({
       scroller.removeEventListener("touchmove", onMove);
       scroller.removeEventListener("touchend", onEnd);
       scroller.removeEventListener("touchcancel", onEnd);
+      /* Leaving it behind would hold the bar's spacer open on a screen with no
+         gap left to fill. */
+      scroller.style.removeProperty("--pm-pull");
+      scroller.style.removeProperty("--pm-pull-ease");
+      scrollerRef.current = null;
     };
-  }, [runRefresh]);
+  }, [runRefresh, applyPull]);
 
   /* How far along the pull is, 0-1: the dial fades and grows into place on it,
      and turns a half rotation over the same distance so the wheel is already
@@ -346,9 +380,11 @@ export function PhonePullToRefresh({
       <div
         className="phone-refresh"
         data-phase={phase}
+        /* `--pm-pull` is not here: it lives on the scroller so the bar's spacer
+           can read it too (above). These two only ever dress the dial inside
+           this box, so they stay local. */
         style={
           {
-            "--pm-pull": `${pull}px`,
             "--pm-pull-lead": progress,
             "--pm-pull-turn": `${progress * 180}deg`,
           } as React.CSSProperties

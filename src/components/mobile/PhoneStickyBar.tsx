@@ -143,11 +143,28 @@ export function PhoneStickyBar({
   children,
   className = "",
   pinned = false,
+  gap,
+  lower,
 }: {
   children: React.ReactNode;
   className?: string;
   /** Never ride up out of the way; hold the top for the life of the screen. */
   pinned?: boolean;
+  /**
+   * Pinned only. Something that opens *between* the two tiers and whose height
+   * is `--pm-pull` — in practice PhonePullToRefresh, and the reason the tiers
+   * are two slots rather than one block of children: the gap has to push the
+   * lower tier down while the upper one stays welded to the top, which it can
+   * only do from between them. Passing it here is also what tells the spacer to
+   * grow with the pull; a bar without a gap keeps a fixed one.
+   */
+  gap?: React.ReactNode;
+  /**
+   * Pinned only. The second tier, below the gap. Hides and returns with the
+   * first — one box, one offset, so the two rows cannot drift apart — but
+   * unlike the first it travels down with a pull.
+   */
+  lower?: React.ReactNode;
 }) {
   const anchorRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
@@ -160,6 +177,8 @@ export function PhoneStickyBar({
   /* The pinned build's outer, `position: fixed` box. Null in the sticky build,
      where the bar and its box are the same element. */
   const frameRef = useRef<HTMLDivElement>(null);
+  /* The lower tier's box. Null unless `lower` was passed. */
+  const lowerRef = useRef<HTMLDivElement>(null);
   const [hidden, setHidden] = useState(false);
   /* Drawn only once something has actually scrolled under the bar. At rest the
      row sits on the same cream as the screen and a line across it would be a
@@ -174,6 +193,11 @@ export function PhoneStickyBar({
      `height` here parked it an inset short and left the bottom of the tabs
      showing under the clock. */
   const [frameHeight, setFrameHeight] = useState(0);
+  /* The lower tier's own height, kept apart from `height` because the spacer
+     wants the two rows *without* the gap between them — the gap's share is the
+     live `--pm-pull`, added in CSS rather than measured, so the cards move in
+     the same frame as the finger instead of a ResizeObserver's. */
+  const [lowerHeight, setLowerHeight] = useState(0);
 
   useEffect(() => {
     const bar = barRef.current;
@@ -193,14 +217,17 @@ export function PhoneStickyBar({
     const frameTop = () => (scroller ? scroller.getBoundingClientRect().top : 0);
 
     const frameBox = frameRef.current;
+    const lowerBox = lowerRef.current;
     const measure = () => {
       setHeight(bar.offsetHeight);
       if (frameBox) setFrameHeight(frameBox.offsetHeight);
+      if (lowerBox) setLowerHeight(lowerBox.offsetHeight);
     };
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(bar);
     if (frameBox) observer.observe(frameBox);
+    if (lowerBox) observer.observe(lowerBox);
 
     let insetPx = 0;
     const measureInset = () => {
@@ -338,13 +365,32 @@ export function PhoneStickyBar({
           <div ref={barRef} className={className}>
             {children}
           </div>
+          {/* Between the tiers, so a pull holds the top row still and carries
+              the lower one down with the cards — which is the shape of the
+              gesture: the thing you navigate with stays put, the things you
+              were reading move. */}
+          {gap}
+          {lower ? <div ref={lowerRef}>{lower}</div> : null}
         </div>
         {/* What the bar used to occupy. Measured rather than guessed: the row's
             height changes with the sort switch and with a long search value,
             and a hardcoded number would put the first card under the bar the
-            first time it wrapped. Only the row itself — the scroller's own
-            `padding-top` has already reserved the inset above it. */}
-        <div aria-hidden="true" style={{ height }} />
+            first time it wrapped. Only the rows — the scroller's own
+            `padding-top` has already reserved the inset above them.
+
+            The pull is added in CSS, off the property PhonePullToRefresh
+            writes to the scroller, rather than measured off the frame: an
+            observer delivers the new frame height a beat after the gap has
+            already grown, and a spacer one frame behind the finger is the
+            cards shearing away from the bar on every drag. Only a bar with a
+            gap opts in — nothing else has a pull to answer to. */}
+        <div
+          aria-hidden="true"
+          className="pm-sticky-spacer"
+          style={{
+            height: gap ? `calc(${height + lowerHeight}px + var(--pm-pull, 0px))` : height,
+          }}
+        />
       </>
     );
   }
