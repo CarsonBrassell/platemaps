@@ -204,6 +204,19 @@ const built = [
      artwork instead of the retired one. */
   await mark(660, "public/logo.png"),
   await square(512, "src/app/icon.png").then(() => "src/app/icon.png — 512x512"),
+  /* Home-screen icons, for the phone tree used as an installed web app.
+     `square` strips alpha by default, which is what these want too: iOS masks
+     the corners itself and paints black wherever the source was transparent,
+     so a cut-out icon lands on the home screen inside a black box. Opaque
+     cream is the same reason the iOS AppIcon below strips it.
+
+     apple-icon.png is a filename Next recognises: it emits the
+     <link rel="apple-touch-icon"> for it, the way it already does for
+     icon.png. The two public/ sizes are for the web manifest, which needs
+     stable URLs rather than Next's hashed metadata routes. */
+  await square(180, "src/app/apple-icon.png").then(() => "src/app/apple-icon.png — 180x180"),
+  await square(192, "public/app-icon-192.png").then(() => "public/app-icon-192.png — 192x192"),
+  await square(512, "public/app-icon-512.png").then(() => "public/app-icon-512.png — 512x512"),
   await favicon("src/app/favicon.ico", [16, 32, 48]),
   await square(1024, "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png").then(
     () => "ios AppIcon-512@2x.png — 1024x1024, no alpha",

@@ -26,6 +26,35 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   title: "PlateMaps",
   description: "Find great food near you in San Diego, ranked by what's happening right now.",
+  /**
+   * `appleWebApp` is what makes an added-to-home-screen PlateMaps open as the
+   * app rather than inside Safari. iOS ignores the web manifest's `display`
+   * field — `manifest.ts` still declares it for Android — so without this the
+   * icon is a bookmark that opens a browser tab with a URL bar above it.
+   *
+   * `statusBarStyle: "default"` keeps dark text on the light status bar, which
+   * is what the cream ground needs. The alternative worth knowing about is
+   * "black-translucent", which extends the page under the status bar — the
+   * layout already spends `env(safe-area-inset-top)` (see the viewport export
+   * below), so it would not break, but it would put the clock over the header
+   * on every screen rather than above it.
+   */
+  appleWebApp: {
+    capable: true,
+    title: "PlateMaps",
+    statusBarStyle: "default",
+  },
+  /**
+   * `appleWebApp.capable` makes Next emit only the modern
+   * `mobile-web-app-capable`; it dropped the `apple-` prefixed name because
+   * Chrome warns about it. Older iOS reads only the prefixed one, so standalone
+   * mode depends on which iOS a friend happens to have. Emitting both removes
+   * the question — the legacy tag is two dozen bytes and is ignored by every
+   * browser that prefers the standard one.
+   */
+  other: {
+    "apple-mobile-web-app-capable": "yes",
+  },
 };
 
 /**
