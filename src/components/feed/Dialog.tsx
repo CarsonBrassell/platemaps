@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  type PointerEvent as ReactPointerEvent,
-  type ReactNode,
-} from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ChevronIcon, CloseIcon } from "@/components/icons";
 
 const FOCUSABLE =
@@ -59,8 +53,15 @@ const SWIPE_AXIS: Record<Variant, "x" | "y"> = {
   screen: "x",
 };
 
-/** Travel before a gesture is read as a drag rather than a tap, in px. */
-const SLOP = 10;
+/**
+ * Travel before the direction of a gesture can be read at all, in px.
+ *
+ * Deliberately tiny. The browser decides whether a touch is a scroll on the
+ * first `touchmove` it is allowed to keep, and every move after that one is
+ * uncancelable — so waiting for a comfortable ten pixels of clean signal
+ * means the answer always arrives too late to act on.
+ */
+const DECIDE_AT = 4;
 /** Share of the panel it has to cross to count as thrown away. */
 const DISMISS_FRACTION = 0.26;
 /** px/ms that dismisses whatever the distance — a flick, not a shove. */
@@ -122,16 +123,6 @@ export function Dialog({
   const restoreRef = useRef<HTMLElement | null>(null);
 
   const axis = SWIPE_AXIS[variant];
-  const gestureRef = useRef<{
-    id: number;
-    x: number;
-    y: number;
-    /** Timestamp and travel of the current velocity sample. */
-    markAt: number;
-    markTravel: number;
-    settled: boolean;
-    owned: boolean;
-  } | null>(null);
   /**
    * `null` until something is dragged, so an untouched dialog leaves its
    * entry keyframes alone rather than being pinned at `translate(0)` by an
@@ -179,77 +170,135 @@ export function Dialog({
     };
   }, [onClose]);
 
-  const travelled = (e: { clientX: number; clientY: number }, from: { x: number; y: number }) =>
-    Math.max(0, axis === "x" ? e.clientX - from.x : e.clientY - from.y);
-
   /**
-   * Swipe to dismiss. Touch only — a mouse has the back arrow, the backdrop
-   * and Escape, and a click-drag across a thread is a text selection.
+   * Swipe to dismiss.
+   *
+   * Native listeners rather than JSX props, and that is the whole of the fix:
+   * React registers `touchmove` on its root as a *passive* listener, so a
+   * handler written as a prop cannot call `preventDefault`. Without that call
+   * the WebView stays free to start scrolling the moment a finger drifts
+   * off-axis, and the first thing it does on claiming the gesture is fire a
+   * cancel at us — so a thumb that arcs downward mid-swipe, which is what a
+   * real thumb does, killed the swipe every time.
+   *
+   * Touch only. A mouse has the back arrow, the backdrop and Escape, and a
+   * click-drag across a thread is a text selection.
    */
-  function onPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
-    if (e.pointerType !== "touch" || gestureRef.current) return;
-    // A field keeps its own caret and selection handles.
-    if ((e.target as HTMLElement).closest?.("input,textarea,select,[contenteditable='true']"))
-      return;
-    gestureRef.current = {
-      id: e.pointerId,
-      x: e.clientX,
-      y: e.clientY,
-      markAt: e.timeStamp,
-      markTravel: 0,
-      settled: false,
-      owned: false,
-    };
-  }
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
 
-  function onPointerMove(e: ReactPointerEvent<HTMLDivElement>) {
-    const g = gestureRef.current;
-    if (!g || g.id !== e.pointerId) return;
+    let g: {
+      id: number;
+      x: number;
+      y: number;
+      /** Timestamp and travel of the current velocity sample. */
+      markAt: number;
+      markTravel: number;
+      settled: boolean;
+      owned: boolean;
+    } | null = null;
 
-    const dx = e.clientX - g.x;
-    const dy = e.clientY - g.y;
+    /** Hands the panel back without dismissing it. */
+    function release() {
+      const dragging = g?.owned;
+      g = null;
+      if (dragging) setDrag({ offset: 0, live: false });
+    }
 
-    // Settled once, the moment the finger leaves the slop circle, and never
-    // revisited: a gesture that starts as a scroll stays a scroll even if it
-    // curls sideways later. That is what keeps a thread from sliding away
-    // under a thumb that is only reading.
-    if (!g.settled) {
-      if (Math.abs(dx) < SLOP && Math.abs(dy) < SLOP) return;
-      g.settled = true;
+    function onStart(e: TouchEvent) {
+      // A second finger is a pinch or a two-handed scroll; neither is ours.
+      if (e.touches.length !== 1) {
+        release();
+        return;
+      }
+      // A field keeps its own caret and selection handles.
+      if ((e.target as HTMLElement).closest?.("input,textarea,select,[contenteditable='true']"))
+        return;
+      const t = e.touches[0];
+      g = {
+        id: t.identifier,
+        x: t.clientX,
+        y: t.clientY,
+        markAt: e.timeStamp,
+        markTravel: 0,
+        settled: false,
+        owned: false,
+      };
+    }
+
+    function onMove(e: TouchEvent) {
+      if (!g) return;
+      const t = e.touches[0];
+      if (e.touches.length !== 1 || !t || t.identifier !== g.id) {
+        release();
+        return;
+      }
+
+      const dx = t.clientX - g.x;
+      const dy = t.clientY - g.y;
       const along = axis === "x" ? dx : dy;
       const across = axis === "x" ? dy : dx;
-      g.owned =
-        along > 0 &&
-        Math.abs(along) > Math.abs(across) &&
-        ownsGesture(axis, e.target, panelRef.current);
+
+      if (!g.settled) {
+        if (Math.abs(dx) < DECIDE_AT && Math.abs(dy) < DECIDE_AT) return;
+        g.settled = true;
+        g.owned =
+          along > 0 &&
+          Math.abs(along) >= Math.abs(across) &&
+          ownsGesture(axis, e.target, panel) &&
+          // Already scrolling: this move cannot be cancelled, so taking the
+          // gesture now would slide the panel and the thread at once, which
+          // is worse than not taking it.
+          e.cancelable;
+      }
+      if (!g.owned) return;
+
+      // Every move, not only the first. This is what stops the WebView
+      // claiming the gesture partway through and cancelling it, and it is why
+      // the drag survives a finger that wanders off-axis once it is under way.
+      e.preventDefault();
+
+      const offset = Math.max(0, along);
+      if (e.timeStamp - g.markAt > VELOCITY_WINDOW) {
+        g.markAt = e.timeStamp;
+        g.markTravel = offset;
+      }
+      setDrag({ offset, live: true });
     }
-    if (!g.owned) return;
 
-    const offset = travelled(e, g);
-    if (e.timeStamp - g.markAt > VELOCITY_WINDOW) {
-      g.markAt = e.timeStamp;
-      g.markTravel = offset;
+    function onEnd(e: TouchEvent) {
+      const t = e.changedTouches[0];
+      if (!g || !g.owned || !t || t.identifier !== g.id) {
+        release();
+        return;
+      }
+      const offset = Math.max(0, axis === "x" ? t.clientX - g.x : t.clientY - g.y);
+      const span = (axis === "x" ? panel?.offsetWidth : panel?.offsetHeight) || 1;
+      const speed = (offset - g.markTravel) / Math.max(1, e.timeStamp - g.markAt);
+      g = null;
+
+      if (offset > span * DISMISS_FRACTION || speed > DISMISS_VELOCITY) {
+        onClose();
+        return;
+      }
+      setDrag({ offset: 0, live: false });
     }
-    setDrag({ offset, live: true });
-  }
 
-  function onPointerEnd(e: ReactPointerEvent<HTMLDivElement>) {
-    const g = gestureRef.current;
-    if (!g || g.id !== e.pointerId) return;
-    gestureRef.current = null;
-    if (!g.owned) return;
+    panel.addEventListener("touchstart", onStart, { passive: true });
+    panel.addEventListener("touchmove", onMove, { passive: false });
+    panel.addEventListener("touchend", onEnd);
+    // A cancel is never a dismissal — it means something else took the finger,
+    // and a panel that closes on it closes at random.
+    panel.addEventListener("touchcancel", release);
 
-    const offset = travelled(e, g);
-    const panel = panelRef.current;
-    const span = (axis === "x" ? panel?.offsetWidth : panel?.offsetHeight) || 1;
-    const speed = (offset - g.markTravel) / Math.max(1, e.timeStamp - g.markAt);
-
-    if (offset > span * DISMISS_FRACTION || speed > DISMISS_VELOCITY) {
-      onClose();
-      return;
-    }
-    setDrag({ offset: 0, live: false });
-  }
+    return () => {
+      panel.removeEventListener("touchstart", onStart);
+      panel.removeEventListener("touchmove", onMove);
+      panel.removeEventListener("touchend", onEnd);
+      panel.removeEventListener("touchcancel", release);
+    };
+  }, [axis, onClose]);
 
   const headingId = labelledBy ?? `dialog-${title.replace(/\W+/g, "-").toLowerCase()}`;
 
@@ -266,10 +315,6 @@ export function Dialog({
         aria-modal="true"
         aria-labelledby={headingId}
         className={PANEL_CLASS[variant]}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerEnd}
-        onPointerCancel={onPointerEnd}
         style={{
           /* A screen claims sideways panning; the browser keeps the vertical
              so the thread still scrolls under the gesture. */

@@ -11,8 +11,15 @@ import { usePathname, useRouter } from "next/navigation";
  * of pressing the thing it landed on.
  */
 const EDGE = 28;
-/** Travel before a gesture is read as a drag rather than a tap, in px. */
-const SLOP = 10;
+/**
+ * Travel before the direction of a gesture can be read at all, in px.
+ *
+ * Deliberately tiny — see the note on the same constant in `Dialog`. The
+ * browser settles whether a touch is a scroll on the first `touchmove` it
+ * keeps, so a decision made after ten clean pixels is a decision made too
+ * late to act on.
+ */
+const DECIDE_AT = 4;
 /** Share of the screen it has to cross to count as a back. */
 const BACK_FRACTION = 0.3;
 /** px/ms that goes back whatever the distance — a flick, not a shove. */
@@ -114,9 +121,23 @@ export function PhoneSwipeBack() {
       | null = null;
     let leaving = false;
 
-    function onDown(e: PointerEvent) {
-      if (e.pointerType !== "touch" || gesture || leaving) return;
-      if (e.clientX > EDGE) return;
+    /** Hands the screen back without navigating. */
+    function release() {
+      const dragging = gesture?.owned;
+      gesture = null;
+      if (!dragging || !content) return;
+      content.style.transition = `transform ${EXIT_MS}ms cubic-bezier(0.2,0,0,1)`;
+      content.style.transform = "translateX(0px)";
+    }
+
+    function onStart(e: TouchEvent) {
+      if (leaving) return;
+      if (e.touches.length !== 1) {
+        release();
+        return;
+      }
+      const t = e.touches[0];
+      if (t.clientX > EDGE) return;
       // The first screen has nothing behind it; a swipe there would leave the
       // app rather than the page.
       if (depth.current <= 1) return;
@@ -126,9 +147,9 @@ export function PhoneSwipeBack() {
       if ((e.target as HTMLElement).closest?.(".maplibregl-map,[data-no-swipe-back]")) return;
 
       gesture = {
-        id: e.pointerId,
-        x: e.clientX,
-        y: e.clientY,
+        id: t.identifier,
+        x: t.clientX,
+        y: t.clientY,
         markAt: e.timeStamp,
         markTravel: 0,
         settled: false,
@@ -136,22 +157,31 @@ export function PhoneSwipeBack() {
       };
     }
 
-    function onMove(e: PointerEvent) {
+    function onMove(e: TouchEvent) {
       const g = gesture;
-      if (!g || g.id !== e.pointerId) return;
+      if (!g) return;
+      const t = e.touches[0];
+      if (e.touches.length !== 1 || !t || t.identifier !== g.id) {
+        release();
+        return;
+      }
 
-      const dx = e.clientX - g.x;
-      const dy = e.clientY - g.y;
+      const dx = t.clientX - g.x;
+      const dy = t.clientY - g.y;
 
-      // Settled once, at the edge of the slop circle, and never revisited: a
-      // gesture that starts as a scroll stays a scroll even if it curls
-      // sideways later.
       if (!g.settled) {
-        if (Math.abs(dx) < SLOP && Math.abs(dy) < SLOP) return;
+        if (Math.abs(dx) < DECIDE_AT && Math.abs(dy) < DECIDE_AT) return;
         g.settled = true;
-        g.owned = dx > 0 && dx > Math.abs(dy);
+        // `e.cancelable` is false once the page has started scrolling, and a
+        // drag we cannot stop the scroll under is one we should not start.
+        g.owned = dx > 0 && dx >= Math.abs(dy) && e.cancelable;
       }
       if (!g.owned) return;
+
+      // Every move. A passive listener here — which is what a pointer handler
+      // on `document` amounted to — let the WebView take the gesture the
+      // instant the thumb arced downward, and cancel the swipe with it.
+      e.preventDefault();
 
       const offset = Math.max(0, dx);
       if (e.timeStamp - g.markAt > VELOCITY_WINDOW) {
@@ -162,13 +192,16 @@ export function PhoneSwipeBack() {
       content!.style.transform = `translateX(${offset}px)`;
     }
 
-    function onEnd(e: PointerEvent) {
+    function onEnd(e: TouchEvent) {
       const g = gesture;
-      if (!g || g.id !== e.pointerId) return;
+      const t = e.changedTouches[0];
+      if (!g || !g.owned || !t || t.identifier !== g.id) {
+        release();
+        return;
+      }
       gesture = null;
-      if (!g.owned) return;
 
-      const offset = Math.max(0, e.clientX - g.x);
+      const offset = Math.max(0, t.clientX - g.x);
       const span = content!.clientWidth || 1;
       const speed = (offset - g.markTravel) / Math.max(1, e.timeStamp - g.markAt);
 
@@ -196,16 +229,18 @@ export function PhoneSwipeBack() {
       content!.style.transform = "translateX(0px)";
     }
 
-    document.addEventListener("pointerdown", onDown, { passive: true });
-    document.addEventListener("pointermove", onMove, { passive: true });
-    document.addEventListener("pointerup", onEnd, { passive: true });
-    document.addEventListener("pointercancel", onEnd, { passive: true });
+    document.addEventListener("touchstart", onStart, { passive: true });
+    document.addEventListener("touchmove", onMove, { passive: false });
+    document.addEventListener("touchend", onEnd);
+    // A cancel is never a navigation — it means something else took the
+    // finger, and a screen that goes back on it goes back at random.
+    document.addEventListener("touchcancel", release);
 
     return () => {
-      document.removeEventListener("pointerdown", onDown);
-      document.removeEventListener("pointermove", onMove);
-      document.removeEventListener("pointerup", onEnd);
-      document.removeEventListener("pointercancel", onEnd);
+      document.removeEventListener("touchstart", onStart);
+      document.removeEventListener("touchmove", onMove);
+      document.removeEventListener("touchend", onEnd);
+      document.removeEventListener("touchcancel", release);
       content.style.transition = "";
       content.style.transform = "";
       contentRef.current = null;
