@@ -19,21 +19,31 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * being decorated — the spinner and the refetch arrive together, and the
  * spinner is honest because it is waiting on a real request.
  *
- * ## Why the content does not move
+ * ## Why a gap opens instead of the list being translated
  *
- * Every other pull-to-refresh drags the list down behind the spinner. That is
- * off the table here, and for a documented reason rather than taste: a
- * transformed element becomes the containing block for every `position: fixed`
- * descendant, which is the trick `phone.css` uses deliberately on the shell and
- * the trap `PhoneStickyBar` avoids. Translating `.pm-phone-content` would
- * re-anchor the nav, the comments screen, the filter sheet and the post flash
- * to the scroller for the length of the gesture — the exact failure that file
- * describes, on every drag.
+ * Every other pull-to-refresh drags the list down behind the spinner, and the
+ * obvious way to build that — `translateY` on the scroller — is off the table
+ * here for a documented reason rather than taste: a transformed element becomes
+ * the containing block for every `position: fixed` descendant, which is the
+ * trick `phone.css` uses deliberately on the shell and the trap
+ * `PhoneStickyBar` avoids. Translating `.pm-phone-content` would re-anchor the
+ * nav, the comments screen, the filter sheet and the post flash to the scroller
+ * for the length of the gesture — the exact failure that file describes, on
+ * every drag.
  *
- * So only the dial travels. It is `position: fixed`, which inside
- * `.pm-phone-shell` means the phone frame on a desktop and the viewport on a
- * handset (the same call `.post-flash` makes), and it slides out from behind
- * the top edge as the finger pulls.
+ * So the list does move, but nothing is transformed to move it: this component
+ * is an in-flow block whose *height* is the pull. Growing it opens a real gap
+ * and pushes the cards below down by exactly that much — the gesture everyone
+ * expects, paid for with a layout rather than with a re-anchored app.
+ *
+ * It is mounted immediately under the pinned control bar (PhoneFeedScreen), so
+ * the gap opens below the tabs and the search field and the dial slides down
+ * out from behind them. The bar itself never moves; it is the thing you are
+ * pulling away from.
+ *
+ * The height only ever changes while the scroller sits at `scrollTop: 0` — the
+ * gesture is armed nowhere else — so growing it cannot shove a reading position
+ * around.
  *
  * ## The gesture
  *
@@ -238,7 +248,8 @@ export function PhonePullToRefresh({
   return (
     <>
       {/* Zero height, and only here so the effect can find the scroller from
-          inside the tree rather than querying the document for it. */}
+          inside the tree rather than querying the document for it. Kept
+          separate from the block below, whose height is the pull itself. */}
       <div ref={anchorRef} aria-hidden="true" className="h-0" />
 
       <div
@@ -252,6 +263,8 @@ export function PhonePullToRefresh({
           } as React.CSSProperties
         }
       >
+        {/* Parked at the bottom of the gap, so it arrives from behind the
+            control bar rather than fading in mid-air — phone.css. */}
         <span className="phone-refresh-dial">
           {/* A stroked SVG arc rather than a bordered div: DESIGN.md's
               no-borders rule is about the shape language of the UI, and a

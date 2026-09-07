@@ -432,18 +432,6 @@ export function PhoneFeedScreen() {
           takes a `subtitle` for the screens that want one. */}
       <PhoneFeedHeader />
 
-      {/* Drag down from the top to re-read the feed. Disabled while the
-          comments screen is up — it is a fixed overlay with its own scroller,
-          so the gesture is not meant for the list behind it — and while the
-          post-publish flash is covering, where a refresh the composer already
-          triggered would be racing the celebration it is playing under.
-
-          `reloadFeed` is usePostFeed's own re-read and returns a promise, so
-          the wheel spins for exactly as long as the request takes rather than
-          for a duration someone picked. The "Try again" button below keeps
-          `reloadKey`: it has nothing to wait for. */}
-      <PhonePullToRefresh onRefresh={reloadFeed} disabled={commentsPostId !== null || flashOpen} />
-
       {/* Tabs get the row to themselves; the sort and search share the next
           one. All three on one row is what this was, and it did not fit — and
           it fits less now that the tabs are 16px: measured at 390px they take
@@ -452,12 +440,20 @@ export function PhoneFeedScreen() {
           search asks for its 36, so the row is over on the sort switch alone.
           Both rows below the tabs are modifiers on the feed the tabs pick,
           which is also why they wear rank 3 and the tabs wear rank 2. */}
-      {/* Both rows ride up out of the way as you read down the feed and come
-          back on the first upward scroll — see PhoneStickyBar. They are one bar
-          rather than two because they are one thing: the tabs pick a feed and
-          the row under them modifies it, and a sort switch that outlives the
-          tabs it belongs to is a control with no subject. */}
-      <PhoneStickyBar>
+      {/* One bar rather than two because they are one thing: the tabs pick a
+          feed and the row under them modifies it, and a sort switch that
+          outlives the tabs it belongs to is a control with no subject.
+
+          `pinned`, so unlike discover's bar this one holds the top the whole
+          way down instead of riding up and coming back on an upward scroll.
+          Which feed you are reading, how it is sorted and what it is narrowed
+          to are questions you ask *while* scrolling — and the hide-on-scroll
+          version answered them by making you scroll up first, which on a feed
+          that pages is the round trip the sticky bar was built to remove. The
+          height is affordable because the header above it still scrolls away:
+          at rest you get the brand row and the bar, and from the first card on
+          you get the bar. */}
+      <PhoneStickyBar pinned>
         <div className="px-4">
           <PhoneFeedTabs active={tab} onChange={setTab} />
         </div>
@@ -474,6 +470,25 @@ export function PhoneFeedScreen() {
           />
         </div>
       </PhoneStickyBar>
+
+      {/* Drag down from the top to re-read the feed. Directly under the bar and
+          in the flow, so the gap it opens pushes the cards down and the dial
+          slides out from behind the search row — the bar it is pinned to does
+          not move, which is what makes the gap read as space rather than as the
+          page coming loose. See PhonePullToRefresh for why this is a height and
+          not a transform.
+
+          Disabled while the comments screen is up — it is a fixed overlay with
+          its own scroller, so the gesture is not meant for the list behind it —
+          and while the post-publish flash is covering, where a refresh the
+          composer already triggered would be racing the celebration it is
+          playing under.
+
+          `reloadFeed` is usePostFeed's own re-read and returns a promise, so
+          the wheel spins for exactly as long as the request takes rather than
+          for a duration someone picked. The "Try again" button below keeps
+          `reloadKey`: it has nothing to wait for. */}
+      <PhonePullToRefresh onRefresh={reloadFeed} disabled={commentsPostId !== null || flashOpen} />
 
       <div className="px-4 pt-2">
         {offline && <OfflineBanner />}

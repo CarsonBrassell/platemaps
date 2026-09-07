@@ -86,13 +86,28 @@ import { useEffect, useRef, useState } from "react";
  *
  * On desktop the inset is 0: the slab is a 0-height strip, inert, and nothing
  * else changes.
+ *
+ * ## `pinned`
+ *
+ * The hide-on-scroll behaviour above is the default and stays the default for
+ * discover, where the bar is search plus filters and reading the wall is the
+ * point. The feed asks for the opposite: its bar is the tab picker, the sort
+ * switch and the search field — three controls that answer "which feed am I
+ * even looking at", which is a question you ask *while* scrolling, not before
+ * you start. `pinned` keeps the row on screen the whole way down.
+ *
+ * It only suppresses the hiding. `stuck` still tracks, so the hairline and the
+ * status-bar slab still arrive exactly when content first passes underneath.
  */
 export function PhoneStickyBar({
   children,
   className = "",
+  pinned = false,
 }: {
   children: React.ReactNode;
   className?: string;
+  /** Never ride up out of the way; hold the top for the life of the screen. */
+  pinned?: boolean;
 }) {
   const anchorRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
@@ -108,6 +123,13 @@ export function PhoneStickyBar({
      border around nothing. */
   const [stuck, setStuck] = useState(false);
   const [height, setHeight] = useState(0);
+
+  /* Read inside `settle`, which is bound once — see the ref block in
+     PhonePullToRefresh for the same reason. */
+  const pinnedRef = useRef(pinned);
+  useEffect(() => {
+    pinnedRef.current = pinned;
+  });
 
   useEffect(() => {
     const bar = barRef.current;
@@ -156,6 +178,15 @@ export function PhoneStickyBar({
          would sit `insetPx` above the frame, which is `depth > -insetPx`. On
          desktop `insetPx` is 0 and this is exactly the old comparison. */
       setStuck(depth > -insetPx);
+
+      /* A pinned bar has nowhere to go, so everything below is dead weight —
+         and the early return also keeps `hidden` false, which matters if the
+         flag is ever flipped back off mid-screen. */
+      if (pinnedRef.current) {
+        setHidden(false);
+        last = y;
+        return;
+      }
 
       /* Not stuck far enough to hide into. Hiding right at the stick point
          would be legal but puts the whole animation on screen at the moment
@@ -247,7 +278,7 @@ export function PhoneStickyBar({
            Plain `0`, not the safe-area inset: the scroller's padding already
            places the sticky origin under the clock — see the header note on
            why adding the inset here doubled it. */
-        style={{ top: hidden ? `-${height}px` : 0 }}
+        style={{ top: hidden && !pinned ? `-${height}px` : 0 }}
       >
         {children}
       </div>
