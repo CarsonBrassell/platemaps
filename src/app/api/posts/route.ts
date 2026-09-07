@@ -146,25 +146,35 @@ export async function POST(req: NextRequest) {
      rewritten: a 1-5 number stored as a percent would read as a 4% plate, and
      silently coercing it would put that in the average every restaurant score
      is now derived from. */
-  let parsedRating: number | undefined;
-  let parsedRatingKind: "dish" | undefined;
-  if (rating !== undefined && rating !== null && rating !== "") {
-    if (body.ratingKind !== undefined && body.ratingKind !== "dish") {
-      return NextResponse.json(
-        { error: "Ratings are a percentage on a plate. There is no restaurant rating to write." },
-        { status: 400 },
-      );
-    }
-    parsedRatingKind = "dish";
-    const n = Number(rating);
-    if (Number.isNaN(n)) {
-      return NextResponse.json({ error: "Rating must be a number." }, { status: 400 });
-    }
-    if (n < 0 || n > 100) {
-      return NextResponse.json({ error: "A rating is 0 to 100%." }, { status: 400 });
-    }
-    parsedRating = Math.round(n);
+  /* And every new post carries one. The unrated post — "just leave a comment"
+     — is retired: both composers now walk one path that ends at the meter, and
+     a write with no rating is refused here rather than stored as a row no
+     plate score, no aspect tally and no dish sheet number can ever read.
+
+     This is a rule about *new* rows only. Unrated rows written before the fork
+     came out still exist and still render; nothing about this route rewrites
+     or hides them. */
+  if (rating === undefined || rating === null || rating === "") {
+    return NextResponse.json(
+      { error: "Every post rates a plate. Give it a percent." },
+      { status: 400 },
+    );
   }
+  if (body.ratingKind !== undefined && body.ratingKind !== "dish") {
+    return NextResponse.json(
+      { error: "Ratings are a percentage on a plate. There is no restaurant rating to write." },
+      { status: 400 },
+    );
+  }
+  const parsedRatingKind = "dish" as const;
+  const ratingNumber = Number(rating);
+  if (Number.isNaN(ratingNumber)) {
+    return NextResponse.json({ error: "Rating must be a number." }, { status: 400 });
+  }
+  if (ratingNumber < 0 || ratingNumber > 100) {
+    return NextResponse.json({ error: "A rating is 0 to 100%." }, { status: 400 });
+  }
+  const parsedRating = Math.round(ratingNumber);
 
   /* Aspect verdicts. Unknown labels are dropped rather than rejected — the
      client picks from a fixed chip list.

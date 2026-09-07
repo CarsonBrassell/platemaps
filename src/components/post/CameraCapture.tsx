@@ -459,7 +459,7 @@ export function CameraCapture({
 
       {/* Nothing to offer here but the truth and the other door: the picker
           that used to sit under this copy is gone on purpose (see the note at
-          the top), so the comment button below is the whole recovery. */}
+          the top), so the skip button below is the whole recovery. */}
       {status !== "live" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-pm-charcoal px-8 text-center">
           <CameraIcon className="h-8 w-8 text-white/35" />
@@ -472,7 +472,7 @@ export function CameraCapture({
             <p className="max-w-xs text-xs leading-relaxed text-white/55">
               {status === "blocked"
                 ? "PlateMaps takes the photo itself, so this screen needs camera permission. Turn it on in your phone's Settings app under PlateMaps → Camera (or your browser's site settings on the web) and come back — or post without one."
-                : "This browser doesn't offer a camera, and PlateMaps only posts photos it takes. You can still leave a comment."}
+                : "This browser doesn't offer a camera, and PlateMaps only posts photos it takes. You can still post without one."}
             </p>
           )}
         </div>

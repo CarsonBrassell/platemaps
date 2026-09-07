@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/auth";
@@ -9,7 +9,6 @@ import { discardPhoto, uploadPhotos, type PhotoDraft } from "@/lib/photos";
 import { BEST_AT } from "@/data/reviewScales";
 import { CloseIcon, ChevronIcon } from "@/components/icons";
 import { CameraCapture } from "@/components/post/CameraCapture";
-import { KindChooser, type PostKind } from "@/components/post/KindChooser";
 import { RestaurantPicker, type PickableRestaurant } from "@/components/post/RestaurantPicker";
 import { DishPicker, type PickedDish } from "@/components/post/DishPicker";
 import { PercentMeter, bandForPercent } from "@/components/post/PercentMeter";
@@ -39,7 +38,13 @@ import { tapFlash } from "@/lib/tapFlash";
  * - **Every destination is a `/m` one**, and every link carries `?nav=` so the
  *   variant switcher survives a post (see `PhoneNav`).
  */
-type Step = "photo" | "kind" | "rate" | "where" | "dish" | "detail";
+type Step = "photo" | "rate" | "where" | "dish" | "detail";
+
+/* One path, no fork — the web composer's list, and it has to stay the web
+   composer's list. See the long note there for why the order follows the meal,
+   why `where` must precede `dish`, and why the unrated comment branch is gone.
+   Two versions of the site, one flow. */
+const STEPS: Step[] = ["photo", "where", "dish", "rate", "detail"];
 
 const noteField =
   "w-full rounded-xl bg-pm-grey-tint/60 px-3.5 py-2.5 text-base transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange";
@@ -65,7 +70,6 @@ export default function PhonePost() {
     return `${href}${href.includes("?") ? "&" : "?"}nav=${nav}`;
   };
 
-  const [kind, setKind] = useState<PostKind | null>(null);
   // Always the camera: there is no longer a way to arrive holding photos, so
   // no step to skip past. See CameraCapture on why the pickers went.
   const [index, setIndex] = useState(0);
@@ -165,18 +169,8 @@ export default function PhonePost() {
     if (error) errorRef.current?.scrollIntoView({ block: "center" });
   }, [error]);
 
-  /* Photo, where, dish, then the fork — the web composer's order, and it has
-     to stay the web composer's order. See the long note there for why it
-     follows the meal rather than the form, and why `where` must precede
-     `dish`. Two versions of the site, one flow. */
-  const steps = useMemo<Step[]>(() => {
-    if (!kind) return ["photo", "where", "dish", "kind"];
-    if (kind === "comment") return ["photo", "where", "dish", "kind", "detail"];
-    return ["photo", "where", "dish", "kind", "rate", "detail"];
-  }, [kind]);
-
-  const step = steps[Math.min(index, steps.length - 1)];
-  const isLast = index === steps.length - 1;
+  const step = STEPS[Math.min(index, STEPS.length - 1)];
+  const isLast = index === STEPS.length - 1;
   /* The camera takes the whole screen, so this step has no title row, no
      progress bar and no action bar — it carries its own. See CameraCapture. */
   const cameraStep = step === "photo" && isSignedIn && !loading;
@@ -200,26 +194,10 @@ export default function PhonePost() {
     setIndex(next);
   }
 
-  function chooseKind(next: PostKind) {
-    // Switching branches after backing up would otherwise carry a dish or a
-    // rating into a flow that has no place to show it.
-    if (kind && kind !== next) {
-      setDish(null);
-      setPct(80);
-      setBestAt(null);
-      setWorstAt(null);
-    }
-    setKind(next);
-    // `kind` is index 3 now — see the web composer's note on this number.
-    go(4);
-  }
-
   function title() {
     switch (step) {
       case "photo":
         return "What are you eating?";
-      case "kind":
-        return "What are you posting?";
       case "where":
         return "Where were you?";
       case "dish":
@@ -227,13 +205,12 @@ export default function PhonePost() {
       case "rate":
         return "How good was it?";
       case "detail":
-        return kind === "comment" ? "What do you want to say?" : "Anything else?";
+        return "Anything else?";
     }
   }
 
   /** What sits under the heading, when it adds something the heading doesn't. */
   function subtitle(): string | null {
-    // `kind` sits after the place and the dish now, so it gets the line too.
     if (step === "photo") return null;
     return [dish?.name, place?.name].filter(Boolean).join(" · ") || null;
   }
@@ -243,7 +220,7 @@ export default function PhonePost() {
     if (current === "photo" && photos.length === 0) {
       return "Take a photo, or use “post without a photo” below.";
     }
-    // The fork is downstream of this step now — no branch here to exempt.
+    // Every post names its restaurant; there is no branch left to exempt.
     if (current === "where" && !place) {
       return "Pick the restaurant so the post lands in the right place on the map.";
     }
@@ -253,9 +230,7 @@ export default function PhonePost() {
     // The meter has no unset state — it opens at 80 and every position is a
     // real answer — so the rate step is never incomplete.
     if (current === "detail" && !note.trim()) {
-      return kind === "comment"
-        ? "Write your comment before posting."
-        : "Say something about it — a rating on its own doesn't tell anyone what to order.";
+      return "Say something about it — a rating on its own doesn't tell anyone what to order.";
     }
     return null;
   }
@@ -284,21 +259,19 @@ export default function PhonePost() {
     };
 
     // One rating, one scale: the meter's 0-100 percent, tagged `dish` because
-    // that is what it is about.
-    if (kind === "dish") {
-      return {
-        ...shared,
-        text: note.trim(),
-        dishName: dish?.name,
-        price: dish?.price,
-        rating: pct,
-        ratingKind: "dish" as const,
-        vibe: bestAt ?? undefined,
-        bestAspect: bestAt ?? undefined,
-        worstAspect: worstAt ?? undefined,
-      };
-    }
-    return { ...shared, text: note.trim() };
+    // that is what it is about. Every post carries one — the route refuses a
+    // post that doesn't.
+    return {
+      ...shared,
+      text: note.trim(),
+      dishName: dish?.name,
+      price: dish?.price,
+      rating: pct,
+      ratingKind: "dish" as const,
+      vibe: bestAt ?? undefined,
+      bestAspect: bestAt ?? undefined,
+      worstAspect: worstAt ?? undefined,
+    };
   }
 
   async function publish() {
@@ -434,7 +407,7 @@ export default function PhonePost() {
             The number itself is never restated here: POINT_RULES owns it. */}
         <div className="mb-2 flex items-center justify-between gap-3 font-mono text-[11px] tabular-nums text-pm-grey-text">
           <span>
-            Step {index + 1} of {steps.length}
+            Step {index + 1} of {STEPS.length}
           </span>
           <span>Upvotes &amp; replies earn points</span>
         </div>
@@ -442,12 +415,12 @@ export default function PhonePost() {
           <div
             className="step-progress h-full w-full rounded-full bg-pm-orange"
             style={{
-              transform: `translateX(${((index + 1) / steps.length - 1) * 100}%)`,
+              transform: `translateX(${((index + 1) / STEPS.length - 1) * 100}%)`,
             }}
             role="progressbar"
             aria-valuenow={index + 1}
             aria-valuemin={1}
-            aria-valuemax={steps.length}
+            aria-valuemax={STEPS.length}
             aria-label="Posting progress"
           />
         </div>
@@ -457,18 +430,6 @@ export default function PhonePost() {
         <div key={step} className={back ? "step-in-back" : "step-in"}>
           {/* No `photo` branch: that step is the full-screen camera above,
               rendered instead of this layout rather than inside it. */}
-
-          {step === "kind" && (
-            <>
-              {photos.length > 0 && (
-                <p className="mb-3 rounded-xl bg-pm-orange-tint/60 px-3.5 py-2.5 text-sm text-pm-orange-text">
-                  {photos.length} {photos.length === 1 ? "photo" : "photos"} ready — they go on
-                  whichever you pick.
-                </p>
-              )}
-              <KindChooser onChoose={chooseKind} />
-            </>
-          )}
 
           {step === "where" && (
             <RestaurantPicker
@@ -480,14 +441,6 @@ export default function PhonePost() {
                 // Next would be asking the same question twice.
                 go(index + 1);
               }}
-              onSkip={
-                kind === "comment"
-                  ? () => {
-                      setPlace(null);
-                      go(index + 1);
-                    }
-                  : undefined
-              }
             />
           )}
 
@@ -503,7 +456,7 @@ export default function PhonePost() {
             />
           )}
 
-          {step === "rate" && kind === "dish" && (
+          {step === "rate" && (
             <div className="rounded-2xl bg-white p-5">
               {/* Your own number for the plate, not a prediction about someone
                   else — a restaurant's percent is the average of these. */}
@@ -518,16 +471,15 @@ export default function PhonePost() {
 
           {step === "detail" && (
             <div className="space-y-5">
-              {/* No photo section here on any branch — the camera screen already
-                  asked, and asking twice reads as though the first answer was
-                  lost. */}
+              {/* No photo section here — the camera screen already asked, and
+                  asking twice reads as though the first answer was lost. */}
               <div>
                 {/* Label and counter share the line: the number belongs to the
                     field it caps, and stacking it under the textarea puts it
                     below the fold once the keyboard is up. */}
                 <div className="mb-1.5 flex items-baseline justify-between gap-3">
                   <label htmlFor="note" className={`${legend} mb-0`}>
-                    {kind === "comment" ? "Your comment" : "In your words"}
+                    In your words
                   </label>
                   <CharCount value={note} />
                 </div>
@@ -535,105 +487,97 @@ export default function PhonePost() {
                   id="note"
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
-                  placeholder={
-                    kind === "comment"
-                      ? "The line outside moves faster than it looks."
-                      : "Crispy crust, spicy honey, worth ordering again."
-                  }
-                  rows={kind === "comment" ? 5 : 3}
+                  placeholder="Crispy crust, spicy honey, worth ordering again."
+                  rows={3}
                   maxLength={MAX_POST_TEXT}
                   className={`${noteField} resize-none`}
                 />
               </div>
 
-              {kind === "dish" && (
-                <fieldset>
-                  <legend className={legend}>
-                    What was this restaurant best at?{" "}
-                    {/* `nowrap` because `.mono-label`'s 0.18em tracking makes the
-                        legend wrap at 390px, and it was breaking mid-parenthetical. */}
-                    <span className="whitespace-nowrap normal-case text-zinc-400">(optional, pick one)</span>
-                  </legend>
-                  <div className="flex flex-wrap gap-1.5">
-                    {BEST_AT.map((b) => {
-                      const on = bestAt === b.label;
-                      return (
-                        <button
-                          key={b.label}
-                          type="button"
-                          aria-pressed={on}
-                          // Tapping the chosen one again clears it — "best at"
-                          // is a claim, and there has to be a way to unmake it.
-                          onClick={(e) => {
-                            /* Flash only, no hold: a chip toggles in place, so
-                               there is no step change to wait for. */
-                            tapFlash(e.currentTarget);
-                            setBestAt(on ? null : b.label);
-                          }}
-                          className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
-                            on
-                              ? "bg-pm-orange text-[#F7F4EC]"
-                              : "bg-pm-grey-tint text-pm-grey-text hover:text-zinc-900"
-                          }`}
-                        >
-                          <span aria-hidden="true">{b.emoji}</span>
-                          {b.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </fieldset>
-              )}
+              <fieldset>
+                <legend className={legend}>
+                  What was this restaurant best at?{" "}
+                  {/* `nowrap` because `.mono-label`'s 0.18em tracking makes the
+                      legend wrap at 390px, and it was breaking mid-parenthetical. */}
+                  <span className="whitespace-nowrap normal-case text-zinc-400">(optional, pick one)</span>
+                </legend>
+                <div className="flex flex-wrap gap-1.5">
+                  {BEST_AT.map((b) => {
+                    const on = bestAt === b.label;
+                    return (
+                      <button
+                        key={b.label}
+                        type="button"
+                        aria-pressed={on}
+                        // Tapping the chosen one again clears it — "best at"
+                        // is a claim, and there has to be a way to unmake it.
+                        onClick={(e) => {
+                          /* Flash only, no hold: a chip toggles in place, so
+                             there is no step change to wait for. */
+                          tapFlash(e.currentTarget);
+                          setBestAt(on ? null : b.label);
+                        }}
+                        className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
+                          on
+                            ? "bg-pm-orange text-[#F7F4EC]"
+                            : "bg-pm-grey-tint text-pm-grey-text hover:text-zinc-900"
+                        }`}
+                      >
+                        <span aria-hidden="true">{b.emoji}</span>
+                        {b.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </fieldset>
 
               {/* The other half of the signal. Without it the only thing a
                   restaurant can ever be rated on is what it's best at, so no
                   weakness is visible anywhere in the app. Optional on purpose;
                   the chip already chosen as "best" is disabled here, since the
                   same aspect can't be both. */}
-              {kind === "dish" && (
-                <fieldset>
-                  <legend className={legend}>
-                    Anything let you down?{" "}
-                    <span className="whitespace-nowrap normal-case text-zinc-400">(optional)</span>
-                  </legend>
-                  <div className="flex flex-wrap gap-1.5">
-                    {BEST_AT.map((b) => {
-                      const on = worstAt === b.label;
-                      const isBest = bestAt === b.label;
-                      return (
-                        <button
-                          key={b.label}
-                          type="button"
-                          aria-pressed={on}
-                          disabled={isBest}
-                          onClick={(e) => {
-                            /* Flash only, no hold: a chip toggles in place, so
-                               there is no step change to wait for. */
-                            tapFlash(e.currentTarget);
-                            setWorstAt(on ? null : b.label);
-                          }}
-                          /* Orange, not the `red-700` DESIGN.md gives "let you
-                             down" — both chip groups wear the one accent now.
-                             That makes hue useless as the tell, and these two
-                             rows render the *same* BEST_AT emoji and labels, so
-                             the picked fault is struck through instead: a
-                             strength and a fault can no longer read alike. */
-                          className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
-                            isBest
-                              ? "cursor-not-allowed bg-pm-grey-tint/40 text-zinc-400"
-                              : on
-                                ? "bg-pm-orange text-[#F7F4EC]"
-                                : "bg-pm-grey-tint text-pm-grey-text hover:text-pm-orange-text"
-                          }`}
-                        >
-                          <span aria-hidden="true">{b.emoji}</span>
-                          <span className={on ? "line-through" : undefined}>{b.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </fieldset>
-              )}
+              <fieldset>
+                <legend className={legend}>
+                  Anything let you down?{" "}
+                  <span className="whitespace-nowrap normal-case text-zinc-400">(optional)</span>
+                </legend>
+                <div className="flex flex-wrap gap-1.5">
+                  {BEST_AT.map((b) => {
+                    const on = worstAt === b.label;
+                    const isBest = bestAt === b.label;
+                    return (
+                      <button
+                        key={b.label}
+                        type="button"
+                        aria-pressed={on}
+                        disabled={isBest}
+                        onClick={(e) => {
+                          /* Flash only, no hold: a chip toggles in place, so
+                             there is no step change to wait for. */
+                          tapFlash(e.currentTarget);
+                          setWorstAt(on ? null : b.label);
+                        }}
+                        /* Orange, not the `red-700` DESIGN.md gives "let you
+                           down" — both chip groups wear the one accent now.
+                           That makes hue useless as the tell, and these two
+                           rows render the *same* BEST_AT emoji and labels, so
+                           the picked fault is struck through instead: a
+                           strength and a fault can no longer read alike. */
+                        className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
+                          isBest
+                            ? "cursor-not-allowed bg-pm-grey-tint/40 text-zinc-400"
+                            : on
+                              ? "bg-pm-orange text-[#F7F4EC]"
+                              : "bg-pm-grey-tint text-pm-grey-text hover:text-pm-orange-text"
+                        }`}
+                      >
+                        <span aria-hidden="true">{b.emoji}</span>
+                        <span className={on ? "line-through" : undefined}>{b.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </fieldset>
 
               {/* A last look at what the card will say, so posting isn't a leap. */}
               <div className="rounded-2xl bg-white px-4 py-3">
@@ -645,21 +589,16 @@ export default function PhonePost() {
                   )}
                 </p>
                 <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-zinc-600">
-                  {kind === "dish" && (
-                    <span>
-                      <span className="font-mono tabular-nums">{pct}%</span> · {bandForPercent(pct)}
-                      {dish?.price ? (
-                        <>
-                          {" · "}
-                          <span className="font-mono tabular-nums">{dish.price}</span>
-                        </>
-                      ) : null}
-                      {bestAt && ` · best at ${bestAt.toLowerCase()}`}
-                    </span>
-                  )}
-                  {kind === "comment" && (
-                    <span>{note.trim() ? "Comment only — no rating" : "Nothing written yet"}</span>
-                  )}
+                  <span>
+                    <span className="font-mono tabular-nums">{pct}%</span> · {bandForPercent(pct)}
+                    {dish?.price ? (
+                      <>
+                        {" · "}
+                        <span className="font-mono tabular-nums">{dish.price}</span>
+                      </>
+                    ) : null}
+                    {bestAt && ` · best at ${bestAt.toLowerCase()}`}
+                  </span>
                 </div>
               </div>
             </div>
@@ -765,19 +704,18 @@ export default function PhonePost() {
               {index === 0 ? "Cancel" : "Back"}
             </button>
 
-            {/* The chooser and the two pickers answer themselves on tap, so a
-                Next button there would be a second way to do the same thing. */}
-            {step !== "kind" && (
-              <button
-                type="submit"
-                form="phone-post-form"
-                disabled={submitting}
-                className="ml-auto flex min-h-11 items-center gap-1.5 rounded-full bg-pm-orange px-6 text-sm font-semibold text-[#F7F4EC] transition-transform active:scale-[0.97] disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-              >
-                {isLast ? (submitting ? "Posting…" : "Post it") : "Next"}
-                {!isLast && <ChevronIcon className="h-4 w-4" />}
-              </button>
-            )}
+            {/* Always here now. The pickers still answer themselves on tap, but
+                the one step that had no Next button at all — the chooser — is
+                gone with the comment branch. */}
+            <button
+              type="submit"
+              form="phone-post-form"
+              disabled={submitting}
+              className="ml-auto flex min-h-11 items-center gap-1.5 rounded-full bg-pm-orange px-6 text-sm font-semibold text-[#F7F4EC] transition-transform active:scale-[0.97] disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            >
+              {isLast ? (submitting ? "Posting…" : "Post it") : "Next"}
+              {!isLast && <ChevronIcon className="h-4 w-4" />}
+            </button>
           </div>
         </div>
       )}

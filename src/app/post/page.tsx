@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { Suspense, useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
@@ -9,7 +9,6 @@ import { discardPhoto, uploadPhotos, type PhotoDraft } from "@/lib/photos";
 import { BEST_AT } from "@/data/reviewScales";
 import { CloseIcon, ChevronIcon } from "@/components/icons";
 import { CameraCapture } from "@/components/post/CameraCapture";
-import { KindChooser, type PostKind } from "@/components/post/KindChooser";
 import { RestaurantPicker, type PickableRestaurant } from "@/components/post/RestaurantPicker";
 import { DishPicker, type PickedDish } from "@/components/post/DishPicker";
 import { PercentMeter, bandForPercent } from "@/components/post/PercentMeter";
@@ -28,23 +27,42 @@ import { tapFlash } from "@/lib/tapFlash";
  * the camera, not the flow.
  *
  * What follows it is the meal, not the form: where you are, what you ordered,
- * and only then whether you are scoring it or just talking about it. See the
- * note on `steps` for why the fork moved to fourth.
+ * how good it was, and then the words. Nothing in it branches — see the note on
+ * `STEPS`.
  *
  * ## One instrument
  *
  * There is one rating in the product and it is a percent on a plate. The meter
  * is the only instrument here; the five-star restaurant review that used to sit
- * beside it is gone, and with it the fork that made a poster choose between two
- * scales before they could say anything. A restaurant's own number is no longer
- * entered by anyone — it is what its plates add up to (lib/plateScore.ts).
+ * beside it is gone, and so is the unrated comment that used to sit past it. A
+ * restaurant's own number is no longer entered by anyone — it is what its plates
+ * add up to (lib/plateScore.ts).
  *
  * The place-level chips ride along on the plate review rather than getting their
  * own flow: you were at the restaurant to eat the dish, so "best at" and "what
  * let you down" are answerable on the same screen as the caption. That is what
  * keeps the per-category scores alive without a second door to walk through.
  */
-type Step = "photo" | "kind" | "rate" | "where" | "dish" | "detail";
+type Step = "photo" | "rate" | "where" | "dish" | "detail";
+
+/**
+ * Photo, where, dish, rate, words — one path, every time.
+ *
+ * It follows the meal rather than the form: you photograph the plate, say where
+ * you are, say what it is, put a number on it, then write it up. Nothing here
+ * branches, which is why the list is a constant rather than state.
+ *
+ * The fork that used to sit fourth — rate a plate, or just leave a comment — is
+ * gone, and with it the whole unrated post. Every post is a plate review with a
+ * score on it: a write-up carrying no number never fed the one thing the
+ * product is for, which is knowing what a plate is worth ordering, and it left
+ * the dish sheet holding opinions that no percent was built from.
+ *
+ * `where` before `dish` is load-bearing and not a preference: `DishPicker`
+ * browses the chosen restaurant's menu, so it has nothing to show until there
+ * is a place.
+ */
+const STEPS: Step[] = ["photo", "where", "dish", "rate", "detail"];
 
 const shell = "mx-auto w-full max-w-7xl pb-12";
 const noteField =
@@ -58,7 +76,6 @@ function PostComposer() {
   const searchParams = useSearchParams();
   const { account, isSignedIn, loading, refresh } = useAuth();
 
-  const [kind, setKind] = useState<PostKind | null>(null);
   // Always the camera: there is no longer a way to arrive holding photos, so
   // no step to skip past. See CameraCapture on why the pickers went.
   const [index, setIndex] = useState(0);
@@ -153,33 +170,8 @@ function PostComposer() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /**
-   * The order is: photo, where, dish, what-kind-of-post, then the rest.
-   *
-   * It follows the meal rather than the form. You photograph the plate, say
-   * where you are, say what it is — three questions you can answer without
-   * deciding anything — and only then choose whether you are scoring it or just
-   * talking about it. The fork used to come second, so the composer asked
-   * "rate a plate or leave a comment?" before it knew what the plate *was*.
-   *
-   * `where` before `dish` is load-bearing and not a preference: `DishPicker`
-   * browses the chosen restaurant's menu, so it has nothing to show until there
-   * is a place. Everything after `kind` is the branch — a comment has no rating
-   * step, a plate does.
-   *
-   * Because `dish` now sits ahead of the fork, a comment carries a dish too.
-   * That is the intended trade: it costs a comment one extra tap and it puts
-   * every comment in that dish's sheet, which is where someone deciding what to
-   * order is actually looking.
-   */
-  const steps = useMemo<Step[]>(() => {
-    if (!kind) return ["photo", "where", "dish", "kind"];
-    if (kind === "comment") return ["photo", "where", "dish", "kind", "detail"];
-    return ["photo", "where", "dish", "kind", "rate", "detail"];
-  }, [kind]);
-
-  const step = steps[Math.min(index, steps.length - 1)];
-  const isLast = index === steps.length - 1;
+  const step = STEPS[Math.min(index, STEPS.length - 1)];
+  const isLast = index === STEPS.length - 1;
 
   function go(next: number) {
     setBack(next < index);
@@ -187,27 +179,10 @@ function PostComposer() {
     setIndex(next);
   }
 
-  function chooseKind(next: PostKind) {
-    // Switching branches after backing up would otherwise carry a dish or a
-    // rating into a flow that has no place to show it.
-    if (kind && kind !== next) {
-      setDish(null);
-      setPct(80);
-      setBestAt(null);
-      setWorstAt(null);
-    }
-    setKind(next);
-    // `kind` is index 3 now, so the step after it is 4 — the meter for a plate,
-    // the caption for a comment. Moving the fork means moving this number.
-    go(4);
-  }
-
   function title() {
     switch (step) {
       case "photo":
         return "What are you eating?";
-      case "kind":
-        return "What are you posting?";
       case "where":
         return "Where were you?";
       case "dish":
@@ -215,15 +190,14 @@ function PostComposer() {
       case "rate":
         return "How good was it?";
       case "detail":
-        return kind === "comment" ? "What do you want to say?" : "Anything else?";
+        return "Anything else?";
     }
   }
 
   /** What sits under the heading, when it adds something the heading doesn't. */
   function subtitle(): string | null {
     // Only the camera has nothing to sit under it. From `where` on, whatever
-    // has been answered so far rides along — including on `kind`, which now
-    // comes after the place and the dish rather than before them.
+    // has been answered so far rides along.
     if (step === "photo") return null;
     return [dish?.name, place?.name].filter(Boolean).join(" · ") || null;
   }
@@ -233,8 +207,7 @@ function PostComposer() {
     if (current === "photo" && photos.length === 0) {
       return "Take a photo, or use “post without a photo” below.";
     }
-    // No `kind` check any more: the fork is downstream of this step now, so
-    // there is no branch here to exempt. Every post names its restaurant.
+    // Every post names its restaurant; there is no branch left to exempt.
     if (current === "where" && !place) {
       return "Pick the restaurant so the post lands in the right place on the map.";
     }
@@ -244,9 +217,7 @@ function PostComposer() {
     // The meter has no unset state — it opens at 80 and every position is a
     // real answer — so the rate step is never incomplete.
     if (current === "detail" && !note.trim()) {
-      return kind === "comment"
-        ? "Write your comment before posting."
-        : "Say something about it — a rating on its own doesn't tell anyone what to order.";
+      return "Say something about it — a rating on its own doesn't tell anyone what to order.";
     }
     return null;
   }
@@ -279,27 +250,24 @@ function PostComposer() {
     // that is what it is about. `ratingKind` stays on the wire even though only
     // one value is ever written — rows from before the star review was retired
     // still carry `restaurant`, and the feed reads the tag to render those back
-    // as what they were. The API route re-validates the range; this isn't the
-    // only place it's enforced.
-    if (kind === "dish") {
-      return {
-        ...shared,
-        text: note.trim(),
-        dishName: dish?.name,
-        price: dish?.price,
-        rating: pct,
-        ratingKind: "dish" as const,
-        // `vibe` keeps carrying the best-at pick so existing post cards keep
-        // rendering their chip; bestAspect/worstAspect are what the per-aspect
-        // scores are actually built from. These used to ride on the restaurant
-        // review and now ride here, which is the only place they can — see the
-        // note at the top of this file.
-        vibe: bestAt ?? undefined,
-        bestAspect: bestAt ?? undefined,
-        worstAspect: worstAt ?? undefined,
-      };
-    }
-    return { ...shared, text: note.trim() };
+    // as what they were. The API route re-validates the range and refuses a
+    // post with no rating at all; this isn't the only place it's enforced.
+    return {
+      ...shared,
+      text: note.trim(),
+      dishName: dish?.name,
+      price: dish?.price,
+      rating: pct,
+      ratingKind: "dish" as const,
+      // `vibe` keeps carrying the best-at pick so existing post cards keep
+      // rendering their chip; bestAspect/worstAspect are what the per-aspect
+      // scores are actually built from. These used to ride on the restaurant
+      // review and now ride here, which is the only place they can — see the
+      // note at the top of this file.
+      vibe: bestAt ?? undefined,
+      bestAspect: bestAt ?? undefined,
+      worstAspect: worstAt ?? undefined,
+    };
   }
 
   async function publish() {
@@ -366,8 +334,8 @@ function PostComposer() {
           <h1 className="font-display text-2xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-[28px]">
             {title()}
           </h1>
-          {/* Context line, not an echo: the heading already names the restaurant
-              on the star step and the dish on the meter step. */}
+          {/* Context line, not an echo: the heading already names the question
+              each step is asking, and the meter step names the dish. */}
           {subtitle() && <p className="mt-1 truncate text-sm text-zinc-500">{subtitle()}</p>}
         </div>
         <Link
@@ -382,7 +350,7 @@ function PostComposer() {
       <div className="mb-6">
         <div className="mb-2 flex items-center justify-between text-[11px] font-medium text-zinc-400">
           <span>
-            Step {index + 1} of {steps.length}
+            Step {index + 1} of {STEPS.length}
           </span>
           <span>Upvotes &amp; replies earn points</span>
         </div>
@@ -390,12 +358,12 @@ function PostComposer() {
           <div
             className="step-progress h-full w-full rounded-full bg-pm-orange"
             style={{
-              transform: `translateX(${((index + 1) / steps.length - 1) * 100}%)`,
+              transform: `translateX(${((index + 1) / STEPS.length - 1) * 100}%)`,
             }}
             role="progressbar"
             aria-valuenow={index + 1}
             aria-valuemin={1}
-            aria-valuemax={steps.length}
+            aria-valuemax={STEPS.length}
             aria-label="Posting progress"
           />
         </div>
@@ -419,18 +387,6 @@ function PostComposer() {
             />
           )}
 
-          {step === "kind" && (
-            <>
-              {photos.length > 0 && (
-                <p className="mb-3 rounded-xl bg-pm-orange-tint/60 px-3.5 py-2.5 text-sm text-pm-orange-text">
-                  {photos.length} {photos.length === 1 ? "photo" : "photos"} ready — they go on
-                  whichever you pick.
-                </p>
-              )}
-              <KindChooser onChoose={chooseKind} />
-            </>
-          )}
-
           {step === "where" && (
             <RestaurantPicker
               restaurants={restaurants}
@@ -441,14 +397,6 @@ function PostComposer() {
                 // Next would be asking the same question twice.
                 go(index + 1);
               }}
-              onSkip={
-                kind === "comment"
-                  ? () => {
-                      setPlace(null);
-                      go(index + 1);
-                    }
-                  : undefined
-              }
             />
           )}
 
@@ -464,7 +412,7 @@ function PostComposer() {
             />
           )}
 
-          {step === "rate" && kind === "dish" && (
+          {step === "rate" && (
             <div className="rounded-2xl bg-white p-5">
               {/* Your own number for the plate, not a prediction about someone
                   else — "how good was it" is the question the whole product's
@@ -481,16 +429,15 @@ function PostComposer() {
 
           {step === "detail" && (
             <div className="space-y-5">
-              {/* No photo section here on any branch — the camera screen already
-                  asked, and asking twice reads as though the first answer was
-                  lost. */}
+              {/* No photo section here — the camera screen already asked, and
+                  asking twice reads as though the first answer was lost. */}
               <div>
                 {/* Label and counter share the line: the number belongs to the
                     field it caps, and stacking it under the textarea puts it
                     below the fold on a phone once the keyboard is up. */}
                 <div className="mb-1.5 flex items-baseline justify-between gap-3">
                   <label htmlFor="note" className={`${legend} mb-0`}>
-                    {kind === "comment" ? "Your comment" : "In your words"}
+                    In your words
                   </label>
                   <CharCount value={note} />
                 </div>
@@ -498,57 +445,51 @@ function PostComposer() {
                   id="note"
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
-                  placeholder={
-                    kind === "comment"
-                      ? "The line outside moves faster than it looks."
-                      : "Crispy crust, spicy honey, worth ordering again."
-                  }
-                  rows={kind === "comment" ? 5 : 3}
+                  placeholder="Crispy crust, spicy honey, worth ordering again."
+                  rows={3}
                   maxLength={MAX_POST_TEXT}
                   className={`${noteField} resize-none`}
                 />
               </div>
 
-              {kind === "dish" && (
-                <fieldset>
-                  {/* "Besides the food" is doing real work, not softening the
-                      question: the rating above already scored the food, and
-                      without this line the missing Food chip reads as an
-                      oversight rather than as the point. */}
-                  <legend className={legend}>
-                    Besides the food, what was this place best at?{" "}
-                    <span className="normal-case text-zinc-400">(optional, pick one)</span>
-                  </legend>
-                  <div className="flex flex-wrap gap-1.5">
-                    {BEST_AT.map((b) => {
-                      const on = bestAt === b.label;
-                      return (
-                        <button
-                          key={b.label}
-                          type="button"
-                          aria-pressed={on}
-                          // Tapping the chosen one again clears it — "best at"
-                          // is a claim, and there has to be a way to unmake it.
-                          onClick={(e) => {
-                            /* Flash only, no hold: a chip toggles in place, so
-                               there is no step change to wait for. */
-                            tapFlash(e.currentTarget);
-                            setBestAt(on ? null : b.label);
-                          }}
-                          className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
-                            on
-                              ? "bg-pm-orange text-[#F7F4EC]"
-                              : "bg-pm-grey-tint text-pm-grey-text hover:text-zinc-900"
-                          }`}
-                        >
-                          <span aria-hidden="true">{b.emoji}</span>
-                          {b.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </fieldset>
-              )}
+              <fieldset>
+                {/* "Besides the food" is doing real work, not softening the
+                    question: the rating above already scored the food, and
+                    without this line the missing Food chip reads as an
+                    oversight rather than as the point. */}
+                <legend className={legend}>
+                  Besides the food, what was this place best at?{" "}
+                  <span className="normal-case text-zinc-400">(optional, pick one)</span>
+                </legend>
+                <div className="flex flex-wrap gap-1.5">
+                  {BEST_AT.map((b) => {
+                    const on = bestAt === b.label;
+                    return (
+                      <button
+                        key={b.label}
+                        type="button"
+                        aria-pressed={on}
+                        // Tapping the chosen one again clears it — "best at"
+                        // is a claim, and there has to be a way to unmake it.
+                        onClick={(e) => {
+                          /* Flash only, no hold: a chip toggles in place, so
+                             there is no step change to wait for. */
+                          tapFlash(e.currentTarget);
+                          setBestAt(on ? null : b.label);
+                        }}
+                        className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
+                          on
+                            ? "bg-pm-orange text-[#F7F4EC]"
+                            : "bg-pm-grey-tint text-pm-grey-text hover:text-zinc-900"
+                        }`}
+                      >
+                        <span aria-hidden="true">{b.emoji}</span>
+                        {b.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </fieldset>
 
               {/* The other half of the signal. Without it the only thing a
                   restaurant can ever be rated on is what it's best at, so no
@@ -559,52 +500,50 @@ function PostComposer() {
                   means this review has nothing negative to report rather than
                   everything being fine. The chip already chosen as "best" is
                   disabled here, since the same aspect can't be both. */}
-              {kind === "dish" && (
-                <fieldset>
-                  <legend className={legend}>
-                    Anything let you down?{" "}
-                    <span className="normal-case text-zinc-400">(optional)</span>
-                  </legend>
-                  <div className="flex flex-wrap gap-1.5">
-                    {BEST_AT.map((b) => {
-                      const on = worstAt === b.label;
-                      const isBest = bestAt === b.label;
-                      return (
-                        <button
-                          key={b.label}
-                          type="button"
-                          aria-pressed={on}
-                          disabled={isBest}
-                          onClick={(e) => {
-                            /* Flash only, no hold: a chip toggles in place, so
-                               there is no step change to wait for. */
-                            tapFlash(e.currentTarget);
-                            setWorstAt(on ? null : b.label);
-                          }}
-                          className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
-                            isBest
-                              ? "cursor-not-allowed bg-pm-grey-tint/40 text-zinc-400"
-                              : on
-                          /* Orange, not the `red-700` DESIGN.md gives "let you
-                             down" — both chip groups wear the one accent now.
-                             That makes hue useless as the tell, and these two
-                             rows render the *same* BEST_AT emoji and labels, so
-                             the picked fault is struck through instead. Kept in
-                             step with the phone composer deliberately: these two
-                             files are one flow, and a colour they disagree about
-                             is a bug (CLAUDE.md). */
-                                ? "bg-pm-orange text-[#F7F4EC]"
-                                : "bg-pm-grey-tint text-pm-grey-text hover:text-pm-orange-text"
-                          }`}
-                        >
-                          <span aria-hidden="true">{b.emoji}</span>
-                          <span className={on ? "line-through" : undefined}>{b.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </fieldset>
-              )}
+              <fieldset>
+                <legend className={legend}>
+                  Anything let you down?{" "}
+                  <span className="normal-case text-zinc-400">(optional)</span>
+                </legend>
+                <div className="flex flex-wrap gap-1.5">
+                  {BEST_AT.map((b) => {
+                    const on = worstAt === b.label;
+                    const isBest = bestAt === b.label;
+                    return (
+                      <button
+                        key={b.label}
+                        type="button"
+                        aria-pressed={on}
+                        disabled={isBest}
+                        onClick={(e) => {
+                          /* Flash only, no hold: a chip toggles in place, so
+                             there is no step change to wait for. */
+                          tapFlash(e.currentTarget);
+                          setWorstAt(on ? null : b.label);
+                        }}
+                        className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
+                          isBest
+                            ? "cursor-not-allowed bg-pm-grey-tint/40 text-zinc-400"
+                            : on
+                        /* Orange, not the `red-700` DESIGN.md gives "let you
+                           down" — both chip groups wear the one accent now.
+                           That makes hue useless as the tell, and these two
+                           rows render the *same* BEST_AT emoji and labels, so
+                           the picked fault is struck through instead. Kept in
+                           step with the phone composer deliberately: these two
+                           files are one flow, and a colour they disagree about
+                           is a bug (CLAUDE.md). */
+                              ? "bg-pm-orange text-[#F7F4EC]"
+                              : "bg-pm-grey-tint text-pm-grey-text hover:text-pm-orange-text"
+                        }`}
+                      >
+                        <span aria-hidden="true">{b.emoji}</span>
+                        <span className={on ? "line-through" : undefined}>{b.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </fieldset>
 
               {/* A last look at what the card will say, so posting isn't a leap. */}
               <div className="rounded-xl bg-pm-grey-tint/50 px-4 py-3">
@@ -621,16 +560,11 @@ function PostComposer() {
                   )}
                 </p>
                 <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-zinc-600">
-                  {kind === "dish" && (
-                    <span>
-                      {pct}% · {bandForPercent(pct)}
-                      {dish?.price ? ` · ${dish.price}` : ""}
-                      {bestAt && ` · best at ${bestAt.toLowerCase()}`}
-                    </span>
-                  )}
-                  {kind === "comment" && (
-                    <span>{note.trim() ? "Comment only — no rating" : "Nothing written yet"}</span>
-                  )}
+                  <span>
+                    {pct}% · {bandForPercent(pct)}
+                    {dish?.price ? ` · ${dish.price}` : ""}
+                    {bestAt && ` · best at ${bestAt.toLowerCase()}`}
+                  </span>
                 </div>
               </div>
             </div>
@@ -699,19 +633,18 @@ function PostComposer() {
               {index === 0 ? "Cancel" : "Back"}
             </button>
 
-            {/* The chooser and the two pickers answer themselves on tap, so a
-                Next button there would be a second way to do the same thing. */}
-            {step !== "kind" && (
-              <button
-                type="submit"
-                form="post-form"
-                disabled={submitting}
-                className="ml-auto flex min-h-11 items-center gap-1.5 rounded-full bg-pm-orange px-6 text-sm font-semibold text-white transition-transform hover:brightness-105 active:scale-[0.97] disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-              >
-                {isLast ? (submitting ? "Posting…" : "Post it") : "Next"}
-                {!isLast && <ChevronIcon className="h-4 w-4" />}
-              </button>
-            )}
+            {/* Always here now. The pickers still answer themselves on tap, but
+                the one step that had no Next button at all — the chooser — is
+                gone with the comment branch. */}
+            <button
+              type="submit"
+              form="post-form"
+              disabled={submitting}
+              className="ml-auto flex min-h-11 items-center gap-1.5 rounded-full bg-pm-orange px-6 text-sm font-semibold text-white transition-transform hover:brightness-105 active:scale-[0.97] disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            >
+              {isLast ? (submitting ? "Posting…" : "Post it") : "Next"}
+              {!isLast && <ChevronIcon className="h-4 w-4" />}
+            </button>
           </div>
         </div>
       )}
