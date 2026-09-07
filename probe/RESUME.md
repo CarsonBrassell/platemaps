@@ -22,6 +22,127 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
 
 ## Since 2026-09-05 (newest decisions, read these)
 
+- **Friends' Table shows everyone's rank, not kitchen stations (2026-09-07,
+  uncommitted).** Calvin asked for "Head chef" etc. to go from the phone
+  leaderboard and for every row to show its rank instead. `RankChip` in
+  `PhoneFriendsLeaderboard.tsx` now prints `rankFor(points).title` (Newcomer
+  … Institution, `lib/ranks.ts`) on every row, tan on all of them; the `№`
+  still carries the podium. `lib/stations.ts` survives only for the web
+  `LeaderboardRow`, which nothing imports. Comments in `ranks.ts` and both
+  profile pages updated to say the rank now shows in three places. Verified
+  by screenshot on a throwaway `/m` page, since deleted. Note: the dev server
+  intermittently 500s the whole `/m` tree on another session's in-flight
+  suggest work (`hrefForSuggestion` missing from untracked `useSuggest.ts`).
+
+- **Overlays swipe away; the comments header clears the notch (2026-09-07,
+  pushed as e363f2e).** In the app the comments screen's back arrow, title and
+  count sat behind the status bar: `Dialog`'s `screen` panel is
+  `fixed inset-0`, so it is not in `.pm-phone-content` and never got that
+  scroller's `env(safe-area-inset-top)`. Its header now carries
+  `pt-[max(0.75rem,env(safe-area-inset-top))]` itself — inert in a browser,
+  where the inset is 0. Same file gained swipe-to-dismiss for every variant:
+  `screen` goes right, sheets and modals go down, touch only, with the
+  nearest scroller on that axis deciding who owns the drag. That guard has
+  to check computed `overflow` first — `truncate` is `overflow: hidden` and
+  reports scrollWidth > clientWidth like a real scroller, so without it the
+  dialog's own title swallowed every swipe and nothing moved.
+  `PhoneSwipeBack` (new, mounted in `PhoneShell`) adds the same gesture for
+  pushed /m routes from the left 28px, standing down while any
+  `[role="dialog"]` is open. Its depth counter lives in `history.state`
+  (`__pmDepth`, merged so the App Router keeps its key): a ref cannot tell a
+  back from a push and climbs by one every round trip until the root screen
+  thinks it is deep and swipes the user out of the app.
+  Both gestures use **native `touchmove` listeners registered
+  `{ passive: false }`**, and that is not a detail: React registers its own
+  `touchmove` passively, so a handler written as a JSX prop cannot call
+  `preventDefault`. The first version shipped on pointer events and never
+  prevented anything, so the WebView started scrolling the moment a thumb
+  drifted off-axis and cancelled the swipe with it — every arced swipe died.
+  The axis is now decided on the first move carrying 4px (the browser settles
+  scroll-vs-not on the first move it keeps, so a decision made after a clean
+  10px arrives too late to act on), it is refused outright when `e.cancelable`
+  is already false, and a cancel snaps back rather than dismissing.
+- **Search is ranked and has a dropdown, web + phone (2026-09-07,
+  uncommitted).** Calvin's report: a restaurant with one letter wrong returned
+  nothing, and "a bunch of random shit came up". Both halves are now built —
+  `probe/SEARCH-PLAN.md` is the full record, read its `## Status` section, not
+  this bullet. The four rules that must survive any later edit: **a name match
+  outranks every cuisine and dish match, misspelled or not** (`TIER` in
+  `lib/textMatch.ts`, floor `SIMILAR_ENOUGH = 0.65`, calibrated against 4,016
+  generated typos — do not raise it by feel); **corrections are all-or-nothing
+  across the four dropdown groups** (`withoutStrayCorrections`); **picking a
+  cuisine/neighbourhood/dish row drops `?q=`**, because ANDing a misspelling
+  against the right filter is what produced the empty grids; and
+  **`lib/suggestTypes.ts` imports nothing**, so client components can hold the
+  wire types without dragging the Neon driver into the browser bundle.
+  `promote()` now leaves a term alone when it is exactly a restaurant's name —
+  one place in the corpus, `Pizza` in University Heights, which was otherwise
+  unreachable by name. Still to do: **B4** (dish precision) and **B5** (SQL
+  parity in `searchRestaurants`), both optional and neither blocking.
+
+- **Phone feed bar is pinned; pull-to-refresh opens a gap under it (2026-09-07,
+  committed 91b2add / e25b8ba / abf8c5c / c69963b).** `PhoneStickyBar` takes a
+  `pinned` prop and `PhoneFeedScreen` passes it to **the tab row only** —
+  Feed/Friends feed/Map. New/Trending and the search field were pinned with it
+  for a day and came back out (c69963b): three rows cost 90pt of a ~640pt
+  screen, and only the tabs answer a question you ask *while* scrolling. Those
+  two now sit in the ordinary flow below the refresh gap and travel with the
+  cards. Discover (/m) is unchanged.
+
+  Pinned still hides on the way down and returns on the way up, off the same
+  `settle` as the sticky build — there is no pinned early return any more. It
+  hides to `-frameHeight` and **not** `-height`: the fixed box wears the inset
+  as padding (below), so it only clears the screen once it has travelled its
+  content plus the inset, and `height` parked it an inset short with the
+  bottom of the tabs showing under the clock. The offset animates through
+  `top`, never a transform.
+
+  **Pinned is `position: fixed`, not sticky, and that is not a style choice.**
+  Sticky held `top: 0` correctly in a desktop browser and drifted a few points
+  up and down on the phone through every scroll ("it still shifts up and down a
+  tad bit"): sticky is recomputed against the scrollport each frame, and this
+  scroller has a non-passive `touchmove` listener plus a `scroll` listener, so
+  while a finger is down WebKit scrolls from the main thread and the offset
+  lands a frame late. The fixed build leaves the flow, drops a measured spacer
+  in its place, and carries `padding-top: env(safe-area-inset-top)` itself —
+  the one place the "never add the inset to `top`" rule in that file's header is
+  reversed, because fixed pins above the scroller's padding rather than below
+  it. That padding replaces the separate slab. Do not put the feed bar back on
+  sticky.
+
+  `PhonePullToRefresh` stopped being a `position: fixed` dial over the list —
+  it is now an in-flow block mounted directly under the bar whose *height* is
+  the pull (`.phone-refresh` in phone.css: `position: relative;
+  height: var(--pm-pull); overflow: hidden; align-items: flex-end`), so the drag
+  opens a real gap, the cards below move and the dial slides down out from
+  behind the tab row. Still a height and never a transform — a transformed
+  ancestor would re-anchor every `position: fixed` overlay in the app for the
+  length of the drag.
+
+  It also arms **mid-touch**: reading down the feed and dragging back up is one
+  continuous downward drag that reaches the top with the finger still moving,
+  and arming only on `touchstart` refused that whole touch, so scrolling home
+  got the platform's bare bounce and no wheel. The touch is tracked wherever it
+  starts and `startY` is rewritten every frame the scroller is still moving, so
+  the pull is measured from where the finger was when the list ran out.
+  `.pm-phone-content` went `overscroll-behavior: contain` → `none` for the same
+  reason: a drag that reaches the top mid-touch cannot cancel the rubber-band
+  (WebKit commits on a touch's opening moves), so bounce and gap would have run
+  together and the list would have travelled twice as far.
+
+  There is deliberately **no second threshold** for a pull inherited from a
+  scroll. One existed for a day — PICKUP, 28pt of extra travel to arm
+  (cbdf2c6) — on the theory that a finger arriving at the end of the list is
+  still wandering as it slows and would twitch the gap open and shut at SLOP.
+  It was removed in c69963b: "if you start scrolled down and scroll up it
+  smoothly transition to the loading animation and not stop at the top" — and
+  stopping at the top is exactly what it did, the list running out and nothing
+  happening until you had dragged another 28pt. Do not add it back. What holds
+  the twitch down instead is a dip back over the baseline **re-baselining**
+  rather than ending the touch (so a wobble never accumulates and a deliberate
+  drag still pays SLOP in one motion), plus a guard against re-rendering a pull
+  value that has not changed.
+
 - **Map bubbles ~15% larger; downvote arrow fixed (2026-09-07, uncommitted).**
   `arrowGlyph` in RestaurantMap.tsx rotated the downvote with `transform` on
   the outer `<svg>`, which browsers ignore, so both arrows pointed up; it now
@@ -377,3 +498,168 @@ prices at `menutoeat.com`, which is deliberately on screen-menus.mjs's tier-5
 UNTRUSTED list. Left quarantined - it needs corroboration from a second source,
 not an exemption. Worth the effort: 3,661 reviews, 56 clean dishes ready in
 `menus/wip/result-chrome-02.json`.
+
+## 2026-09-06 - the never-browsed class is measured, and it is thin
+
+The supervisor (`scripts/noplatform-supervisor.sh`) has now put a real browser
+on 400 of the rows `browser-menus.mjs:781` had been silently skipping. Outcome
+mix over those 400:
+
+    261  needs-browser   opened, rendered, still no priced menu
+     90  fetch-failed    site dead, parked, or refusing the client
+     28  gated
+     12  gate-personal
+      7  filed           <- 1.75%
+      2  wrong-branch
+
+**7 menus per 400 rows.** The earlier 11% projection came from the
+`needs-browser` class and does not transfer: the router marked these rows
+`no-platform` because there usually is no platform, and behind that there is
+usually no published price either. F Street Cafe and Docent Brewing were real,
+but they were the good end of the distribution, not the middle of it.
+
+412 rows remain in the backlog; at this rate they are worth ~7 more menus.
+Zero tokens, so it is still worth finishing - but this lever is nearly spent
+and it does not move listed coverage much (5,764 -> 5,768 so far, 63.8%).
+
+What this says about the $50 Serper question: the gap is not mostly a discovery
+problem. 90 of 400 sites could not even be fetched and 261 rendered fine with
+no prices on them. Finding a website for a restaurant that never published
+prices buys nothing. Treat 100-150 menus as the optimistic end and sample 100
+rows before committing the rest of the credits.
+
+### Correction: `fetch-failed` was mostly our own resolver
+
+The 1.75% number above stands, but the reason I gave for it does not. I told
+Calvin "90 of 400 sites could not even be fetched" and used it as evidence the
+gap is intrinsically hard. It is not evidence of anything about those sites.
+
+Classifying every `fetch-failed` note by its Chromium error code gave 441 listed
+gap rows as `ERR_NAME_NOT_RESOLVED`. A plain `dns.lookup` on the 40 highest-review
+"dead" domains resolved **38 of them** - mamakats.com, rubios.com, sammyspizza.com,
+jimbos.com, parakeetcafe.com. Several browser passes were running at once
+(supervisor + absorb loop + 20 orphaned Chromium processes from the hung run) and
+Chromium's resolver collapsed under it.
+
+`probe/mk-retry-feed.mjs` now resolves every host in Node before feeding it back,
+so "dead domain" means something. Of 567 fetch-failed gap rows, **524 resolve**
+and 43 genuinely do not (`probe/genuinely-unresolvable.json`).
+
+Two rules follow:
+
+  1. **Run one browser pass at a time.** Concurrency here does not buy speed, it
+     manufactures false negatives that look like data.
+  2. **Never classify a network error as a fact about the site** without
+     re-testing it on a quiet connection.
+
+`scripts/retry-supervisor.sh` runs the 524 in 11 chunks of 50, same hard-timeout
+shape as the no-platform supervisor, feed sliced up front by `probe/split-feed.mjs`.
+
+### Retry result: access was the problem, prices are the problem, 0 menus
+
+All 524 DNS-verified rows retried, 11 chunks, no chunk hit the cap.
+
+    357  needs-browser   opened, rendered, no priced menu
+    114  fetch-failed    still failed even single-threaded
+     24  gated
+     10  gate-personal
+      8  filed
+      7  screened-out
+      4  wrong-branch
+
+**410 of 524 (78%) reached the site this time** - rows that had all previously
+been written off as fetch-failed. The resolver diagnosis was correct and the fix
+worked. The remaining 114 are slow or genuinely unreliable hosts, not resolver
+noise.
+
+**Menus loaded: 0.** All 8 filed rows were quarantined as partial captures.
+
+This is the cleanest possible answer to the question the whole pass was asking.
+It is not an access problem. We now reach these sites and they do not publish
+prices. Every free lever on the website-having gap is spent:
+
+  - never-browsed class: 815 rows -> 15 filed (1.8%)
+  - fetch-failed retry:  524 rows ->  8 filed, 0 loaded
+
+Listed coverage 5,769 / 9,043 = 63.8%, unmoved by the retry.
+
+**Recommendation on the $50 of Serper credits: don't.** Serper buys websites.
+This pass proves a website is not what is missing.
+
+### Open decision for Calvin: the 8-dish floor is holding real menus
+
+Seven rows were quarantined as "likely a partial capture" purely for being small:
+
+    Burgeon Beer Company  4      Noodles        5
+    Camp Coffee Company   5      Merenda        7
+    Mama Made Thai        5      Sushi Heights  7
+    Veggyjess             6
+
+A coffee shop with five drinks has a complete menu, not a truncated one. The
+floor (`MIN_DISHES`, default 5 in browser-menus, 8 in the screener) was written
+to catch scrapes that stopped early, and it does - but at the small end it
+cannot tell "stopped early" from "that is the whole menu". Not changed: lowering
+it puts thin menus on live restaurant pages, which is Calvin's call, not mine.
+
+## 2026-09-07 - the supervisors were killing Calvin's browser, not Playwright's
+
+`taskkill /F /IM chrome.exe` in both supervisors did exactly the opposite of
+what it was written to do.
+
+  - It killed **Calvin's Chrome** - tabs, sessions, and the Claude-in-Chrome
+    extension - 29 times across the two runs on 2026-09-06.
+  - It **never killed a single Playwright process.** Headless Playwright runs
+    `chrome-headless-shell.exe` out of `%LOCALAPPDATA%\ms-playwright`, not
+    `chrome.exe`. Proof: after both runs "cleaned up", 6 ms-playwright
+    processes were still alive on the box and 0 of Calvin's Chrome were.
+
+`scripts/kill-playwright.ps1` replaces it and filters on the executable PATH
+(`*ms-playwright*`) rather than the image name, which is what makes it safe -
+every Playwright browser lives under that directory and no user-installed
+Chrome does, while a `--headed` run's real `chrome.exe` still matches because
+it launches from there too. Verified: matched and killed the 6 orphans, left
+user Chrome untouched, exit 0. Both supervisors now call it.
+
+**Rule: never kill by image name on this box.** Match the path.
+
+### Not a bug: the busyness labels are dead data
+
+651 listed rows carry `status_label` wait copy ("Filling up", "No wait", "Busy
+right now", "Seated quickly") and I first reported this as PRODUCT.md's retired
+wait-time copy leaking onto the live site. It is not. `rowToRestaurant`
+(src/lib/db.ts:2668) maps it onto the full `Restaurant` type and **no component
+renders it** - nothing under src/app, src/components or src/lib reads
+`statusLabel`. Visitors do not see it.
+
+Worth removing eventually, because a field sitting on the type is an invitation
+to render it again, but it is cruft and not a live violation. Not touched.
+
+### Cannonball is fine (asked 2026-09-07)
+
+Row 167, Mission Beach, 4,943 reviews, 30 priced dishes, listed, no hold.
+`/restaurant/167` returns 200 with dishes rendering, it is in `/api/restaurants`
+and matches `/?q=cannonball`. Nothing was wrong with it.
+
+### Discover search: fuzzy matching and ranking shipped (2026-09-07)
+
+Calvin's report — a restaurant with one letter wrong returned nothing while
+"a bunch of random shit came up" — is fixed. `?q=kairoa brewng` now returns
+Kairoa Brewing Company first; it used to return nothing.
+
+The plan and the measurements are in **`probe/SEARCH-PLAN.md`**; read its
+`## Status` section first. Step 1 of 7 is done. What is left, in order: dish
+precision (B4), the `?dish=` dimension (A2), the suggest endpoint (A3), the
+typeahead dropdown with spell-corrected rows (A4/A5), narrowing `promote()`
+(A6), SQL parity in `searchRestaurants` (B5).
+
+Two probes, both read-only:
+
+```bash
+npx tsx --env-file=.env.local probe/search-check.mts "kairoa brewng"
+npx tsx --env-file=.env.local probe/typo-calibrate.mts --sample=600
+```
+
+The second is the one that decides `SIMILAR_ENOUGH` in `src/lib/textMatch.ts`
+(0.65). **Re-run it rather than nudging that number by feel** — the sweep says
+accuracy is flat below 0.65 and falls above it, and the corpus is 9,043 listed
+names, not the 8,935 this file used to say.
