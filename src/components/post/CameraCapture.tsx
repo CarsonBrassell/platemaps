@@ -95,6 +95,24 @@ export function CameraCapture({
    * telling someone to go there is a dead end they can spend a long time in.
    */
   const [failure, setFailure] = useState<string | null>(null);
+  /*
+   * Bumped to ask for the camera again, and the reason this screen has a
+   * button on it at all.
+   *
+   * The effect below opens the camera on mount, which is the design — a plate
+   * is a thing you are looking at now, so the viewfinder should already be
+   * running when you arrive. On iOS that is also the one thing Safari will not
+   * do: a `getUserMedia` call that is not inside a user gesture is refused
+   * outright with `NotAllowedError` **and no prompt is ever shown**. The
+   * permission was never denied; it was never asked for. From this screen it
+   * is indistinguishable from a denial, which is why it sent people to
+   * Settings to toggle a permission that was not there to find.
+   *
+   * So the mount request stays (it is what desktop and Android want, and it
+   * costs nothing when it fails), and the button below re-asks from inside a
+   * real tap. That call is the one iOS will show the prompt for.
+   */
+  const [attempt, setAttempt] = useState(0);
   const [flash, setFlash] = useState(false);
 
   const full = photos.length >= MAX_PHOTOS;
@@ -255,7 +273,7 @@ export function CameraCapture({
       spareStreamRef.current = null;
       setBothLive(false);
     };
-  }, [live, spare, mode]);
+  }, [live, spare, mode, attempt]);
 
   function flashOnce() {
     setFlash(true);
@@ -489,7 +507,7 @@ export function CameraCapture({
           {status !== "starting" && (
             <p className="max-w-xs text-xs leading-relaxed text-white/55">
               {status === "blocked"
-                ? "PlateMaps takes the photo itself, so this screen needs camera permission. Turn it on in your phone's Settings app under PlateMaps → Camera (or your browser's site settings on the web) and come back — or post without one."
+                ? "PlateMaps takes the photo itself, so this screen needs camera permission. Tap Allow camera — if your phone has already been told no, turn it back on in Settings under PlateMaps → Camera (or your browser's site settings on the web)."
                 : "This browser doesn't offer a camera, and PlateMaps only posts photos it takes. You can still post without one."}
             </p>
           )}
@@ -498,6 +516,22 @@ export function CameraCapture({
               rather than for the person trying to post a plate — but on
               screen, because a failure nobody can name is a failure nobody
               can fix. */}
+          {/* The ask, on a tap.
+              This is the whole fix for the common case and it has to be a
+              real button: iOS shows its permission prompt only for a
+              `getUserMedia` call with a user gesture on the stack, and the
+              one this screen makes on mount has none. Primary action, so it
+              wears the orange fill — it is the way out of this screen, and
+              the skip door below is the alternative rather than the default. */}
+          {status === "blocked" && (
+            <button
+              type="button"
+              onClick={allowCamera}
+              className="mt-1 inline-flex min-h-11 items-center rounded-full bg-pm-orange px-5 text-sm font-medium text-[#F7F4EC] transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              Allow camera
+            </button>
+          )}
           {failure && (
             <p className="max-w-xs font-mono text-[10px] leading-relaxed text-white/40">
               {failure}
@@ -732,6 +766,29 @@ export function CameraCapture({
   }
 
   /* ------------------------------------------------------------------ card */
+  /**
+   * Ask for the camera from inside a tap.
+   *
+   * Deliberately a throwaway stream on the simplest possible constraints: the
+   * only job here is to make iOS show its prompt while a user gesture is on
+   * the stack. The tracks are stopped the moment it resolves, and the effect
+   * then reopens the camera properly with the facing mode and width the
+   * screen actually wants. Asking twice costs a frame and keeps the real
+   * open path in exactly one place.
+   */
+  async function allowCamera() {
+    if (typeof navigator === "undefined" || !navigator.mediaDevices?.getUserMedia) return;
+    try {
+      const granted = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      granted.getTracks().forEach((t) => t.stop());
+      setFailure(null);
+      setStatus("starting");
+      setAttempt((n) => n + 1);
+    } catch (err) {
+      setFailure(err instanceof Error ? `${err.name}: ${err.message}` : String(err));
+    }
+  }
+
 
   return (
     // Held to a phone's column even on a wide screen: a 4:5 viewport at the
