@@ -96,8 +96,42 @@ import { useEffect, useRef, useState } from "react";
  * even looking at", which is a question you ask *while* scrolling, not before
  * you start. `pinned` keeps the row on screen the whole way down.
  *
- * It only suppresses the hiding. `stuck` still tracks, so the hairline and the
- * status-bar slab still arrive exactly when content first passes underneath.
+ * ### Pinned is `fixed`, not `sticky`
+ *
+ * A pinned bar is not a sticky bar with the hiding switched off — it is a
+ * different element, and the first build got that wrong. Holding `top: 0` on a
+ * `position: sticky` row looks identical in a desktop browser and is visibly
+ * unstable on the phone: it drifted a few points up and down all the way through
+ * a scroll, and settled back only when the finger came off.
+ *
+ * Sticky is a *scroll-driven* position — the row's offset is recomputed against
+ * the scrollport on every frame — and this scroller is the one place in the app
+ * where that computation cannot stay on the scrolling thread. It carries a
+ * non-passive `touchmove` listener (PhonePullToRefresh has to be able to
+ * `preventDefault` the first pixel of a drag) plus a `scroll` listener of this
+ * component's own, so while a finger is down WebKit drives the scroll from the
+ * main thread and the sticky offset lands a frame late. Every late frame is a
+ * few points of travel, applied and then corrected: the shift.
+ *
+ * `position: fixed` is not scroll-driven. The bar is taken out of the flow, a
+ * spacer of the same height is left in its place so the first card still starts
+ * below it, and the row is then welded to the top of the phone frame — it does
+ * not move because there is no per-frame position to get wrong. The same escape
+ * also makes it immune to a rubber-band at the top, which a sticky row rides
+ * down with the content because sticky may never lift above its flow position.
+ *
+ * The offsets invert with the switch, and this is the one place the safe-area
+ * warning above is reversed: a sticky `top` was measured from the scroller's
+ * content edge, where `.pm-phone-content`'s padding had already spent the
+ * inset. `fixed` pins to the frame, above that padding — so the fixed bar
+ * carries `padding-top: env(safe-area-inset-top)` itself. That padding is also
+ * the slab: the band under the clock is part of the bar's own opaque ground
+ * now, so there is nothing for a card to paint through and no separate strip to
+ * fade in.
+ *
+ * Discover keeps the sticky build. Its bar hides, which needs an offset that
+ * animates against the flow, and it has no pull-to-refresh listener making the
+ * scroll main-thread in the first place.
  */
 export function PhoneStickyBar({
   children,
@@ -122,6 +156,8 @@ export function PhoneStickyBar({
      row sits on the same cream as the screen and a line across it would be a
      border around nothing. */
   const [stuck, setStuck] = useState(false);
+  /* The hide distance for a sticky bar, and the spacer's height for a pinned
+     one — the same number either way: how much room this row takes. */
   const [height, setHeight] = useState(0);
 
   /* Read inside `settle`, which is bound once — see the ref block in
@@ -238,20 +274,68 @@ export function PhoneStickyBar({
     };
   }, []);
 
+  /* Zero-width, height equal to the resolved inset — see the header note on
+     why `env()` needs a laid-out probe rather than a read. Kept out of flow so
+     it cannot affect the row's own layout. Rendered by both builds; the sticky
+     one measures the stick point with it, the pinned one only keeps it so the
+     shared effect has something to observe. */
+  const insetProbe = (
+    <div
+      ref={insetProbeRef}
+      aria-hidden="true"
+      className="h-0 w-0 overflow-hidden"
+      style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+    />
+  );
+
+  if (pinned) {
+    return (
+      <>
+        {/* Still here, and still in the flow: `settle` measures `stuck` off it
+            to decide when the hairline arrives. */}
+        <div ref={anchorRef} aria-hidden="true" className="h-0" />
+        {insetProbe}
+        {/*
+          Out of the flow and welded to the frame — see the header note on why a
+          pinned row cannot be sticky. `fixed` here pins to `.pm-phone-shell`
+          rather than the window whenever the shell is transformed (>=480px,
+          phone.css), which is the same containing block `.post-flash` and the
+          slab rely on, and the viewport on a handset where the shell is the
+          screen anyway.
+
+          z-30 to match the sticky build: above the feed, under PhoneNav's z-40
+          and well under the filter sheet, because this is a row of the page
+          that holds still and not an overlay.
+
+          The padding is the inset, and it is the reason this build needs no
+          separate slab: the strip under the clock is the bar's own ground.
+        */}
+        <div
+          className={`fixed inset-x-0 top-0 z-30 bg-background transition-[box-shadow] duration-200 ease-out motion-reduce:transition-none ${
+            stuck ? "shadow-[0_1px_0_0_rgba(35,32,25,0.08)]" : ""
+          }`}
+          style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+        >
+          <div ref={barRef} className={className}>
+            {children}
+          </div>
+        </div>
+        {/* What the bar used to occupy. Measured rather than guessed: the row's
+            height changes with the sort switch and with a long search value,
+            and a hardcoded number would put the first card under the bar the
+            first time it wrapped. Only the row itself — the scroller's own
+            `padding-top` has already reserved the inset above it. */}
+        <div aria-hidden="true" style={{ height }} />
+      </>
+    );
+  }
+
   return (
     <>
       {/* Stays in the flow so the bar's own travel can be measured against it.
           Zero height, so it costs the layout nothing. */}
       <div ref={anchorRef} aria-hidden="true" className="h-0" />
-      {/* Zero-width, height equal to the resolved inset — see the header note
-          on why `env()` needs a laid-out probe rather than a read. Kept out of
-          flow so it cannot affect this row's own layout. */}
-      <div
-        ref={insetProbeRef}
-        aria-hidden="true"
-        className="h-0 w-0 overflow-hidden"
-        style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
-      />
+      {insetProbe}
       {/* Painted only while stuck — see the header note. `fixed` here pins to
           `.pm-phone-shell`, not the window: the shell picks up
           `transform: translateZ(0)` at >=480px (phone.css) precisely so
@@ -278,7 +362,7 @@ export function PhoneStickyBar({
            Plain `0`, not the safe-area inset: the scroller's padding already
            places the sticky origin under the clock — see the header note on
            why adding the inset here doubled it. */
-        style={{ top: hidden && !pinned ? `-${height}px` : 0 }}
+        style={{ top: hidden ? `-${height}px` : 0 }}
       >
         {children}
       </div>
