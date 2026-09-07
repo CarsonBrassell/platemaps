@@ -22,6 +22,25 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
 
 ## Since 2026-09-05 (newest decisions, read these)
 
+- **Search dimming is a COLOUR change now, not an alpha one (2026-09-07,
+  uncommitted).** Calvin: running a search then zooming out left the unmatched
+  field looking undimmed. It was alpha-only (`0.45` at z9 falling to `0.22` at
+  z16), and three things cancelled it at low zoom: overlapping dots composite
+  to `1-(1-a)^N`, so ~9k restaurants blurred to 3-4px saturate after about five
+  and land back on the full ember colour; the aura is hidden for the whole of a
+  search, darkening the ground and *raising* each ember contrast; and losing
+  glow/inner leaves a hard-edged dot that reads as more present. `DIM_COLOR`
+  (`#6b4a3a`, a cooled ember in the accent hue family, deliberately not a
+  second grey so it stays clear of `closed` and its `#4b525e`) is now the first
+  branch of `restaurant-dots` `circle-color`, tested before `closed` in both
+  colour and opacity; `DOT_OPACITY` is a flat `case` (dim 0.7, closed 0.5, else
+  0.95) with no zoom ramp. A crowd of dim embers now converges on the dim
+  colour instead of on the accent. Verified by screenshot at z10.5 and z9 with
+  `ramen` searched. Any future zoom ramp here must repeat the whole `case` at
+  each stop: `["zoom"]` is only legal as a top-level `interpolate` input, and
+  nesting it inside a `case` branch makes MapLibre reject the property and fall
+  back to 1.0, which shipped once as a map that dimmed nothing.
+
 - **Friends' Table shows everyone's rank, not kitchen stations (2026-09-07,
   uncommitted).** Calvin asked for "Head chef" etc. to go from the phone
   leaderboard and for every row to show its rank instead. `RankChip` in
@@ -66,28 +85,52 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   uncommitted).** Calvin's report: a restaurant with one letter wrong returned
   nothing, and "a bunch of random shit came up". Both halves are now built —
   `probe/SEARCH-PLAN.md` is the full record, read its `## Status` section, not
-  this bullet. The four rules that must survive any later edit: **a name match
-  outranks every cuisine and dish match, misspelled or not** (`TIER` in
-  `lib/textMatch.ts`, floor `SIMILAR_ENOUGH = 0.65`, calibrated against 4,016
-  generated typos — do not raise it by feel); **corrections are all-or-nothing
-  across the four dropdown groups** (`withoutStrayCorrections`); **picking a
+  this bullet. The dropdown is **one row per reading, never a list of names** —
+  Calvin rejected per-name rows twice, then spelled the shape out: "one
+  selection for dishes, one selection for restaurants and one selection for food
+  or whatever", each carrying its count. The rules that must survive any later
+  edit: **a name match outranks every cuisine and dish match, misspelled or
+  not** (`TIER` in `lib/textMatch.ts`, floor `SIMILAR_ENOUGH = 0.65`, calibrated
+  against 4,016 generated typos — do not raise it by feel); **the count on a row
+  is the size of the page that row opens**, which is why `lib/suggest.ts` counts
+  with one pass of the grid's own `relevanceFor` filed by `scopeOf` rather than
+  a pass per reading (a per-reading count offered 140 over a page of 150);
+  **corrections are all-or-nothing across the rows** (a reading with no literal
+  hit drops off the moment any other reading has one — `literal` decides
+  visibility only, never the printed number); **picking a
   cuisine/neighbourhood/dish row drops `?q=`**, because ANDing a misspelling
   against the right filter is what produced the empty grids; and
   **`lib/suggestTypes.ts` imports nothing**, so client components can hold the
   wire types without dragging the Neon driver into the browser bundle.
+  A row that names one thing goes somewhere better than a search —
+  `/restaurant/167` for Cannonball, `?cuisine=Thai` for Thai — everything else
+  goes to the scoped search `?q=…&in=<scope>` (`SCOPE_PARAM`, read straight off
+  the relevance score, so scoping cannot disagree with ranking).
   `promote()` now leaves a term alone when it is exactly a restaurant's name —
   one place in the corpus, `Pizza` in University Heights, which was otherwise
   unreachable by name. Still to do: **B4** (dish precision) and **B5** (SQL
   parity in `searchRestaurants`), both optional and neither blocking.
 
-- **Phone feed bar is pinned; pull-to-refresh opens a gap under it (2026-09-07,
-  committed 91b2add / e25b8ba / abf8c5c / c69963b).** `PhoneStickyBar` takes a
-  `pinned` prop and `PhoneFeedScreen` passes it to **the tab row only** —
-  Feed/Friends feed/Map. New/Trending and the search field were pinned with it
-  for a day and came back out (c69963b): three rows cost 90pt of a ~640pt
-  screen, and only the tabs answer a question you ask *while* scrolling. Those
-  two now sit in the ordinary flow below the refresh gap and travel with the
-  cards. Discover (/m) is unchanged.
+- **Phone feed bar is pinned in two tiers, with the refresh gap between them
+  (2026-09-07, committed 91b2add / e25b8ba / abf8c5c / c69963b / f0837b0).**
+  `PhoneStickyBar` takes a `pinned` prop plus two optional slots —
+  `gap` (opens *between* the tiers, sized by `--pm-pull`) and `lower` (the
+  second tier, measured by the same ResizeObserver as the first). `PhoneFeedScreen`
+  passes the tab row as `children`, `PhonePullToRefresh` as `gap` and the
+  sort-switch/search row as `lower`. Discover (/m) is unchanged.
+
+  The middle state went back and forth. All three rows pinned as one block
+  (abf8c5c) cost 90pt of a ~640pt screen permanently; the split (c69963b) put
+  the sort switch and search in the ordinary flow, which made them reachable
+  only from the very top — you scrolled home to change the sort, which is the
+  round trip the sticky bar exists to remove. Two tiers is the resolution:
+  a quick upward scroll brings the whole header back at once, and at rest the
+  gap opening between them means the tab row stays welded to the top while
+  New/Trending and search travel down with the cards and the dial arrives in
+  front of them. The spacer grows by the pull as well
+  (`calc(${height + lowerHeight}px + var(--pm-pull, 0px))`), so the cards
+  never shear away from the bar mid-drag. The lower tier uses `pt-0.5`, not
+  `mt-0.5`: it is measured with `offsetHeight`, which excludes margins.
 
   Pinned still hides on the way down and returns on the way up, off the same
   `settle` as the sticky build — there is no pinned early return any more. It
@@ -118,6 +161,18 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   behind the tab row. Still a height and never a transform — a transformed
   ancestor would re-anchor every `position: fixed` overlay in the app for the
   length of the drag.
+
+  The pull is **published on the scroller** as `--pm-pull`, not kept in the
+  gap element's own style, because the bar's spacer has to read the same
+  number; lifting `pull` into `PhoneFeedScreen` state instead would re-render
+  the whole card list on every drag frame. `--pm-pull-ease` travels with it:
+  a custom property does not transition, a `calc()` height driven by one does,
+  and the spacer cannot see the `data-phase` attribute that switches the gap's
+  own transition off — so the duration is carried as a second var. 0s while a
+  finger is setting the number (a transition there is lag between the drag and
+  the cards), 0.22s for every move the component makes on its own: the snap
+  back from a cancelled pull, the drop to REST, and the close. Without it the
+  cards jumped home in one frame while the dial was still winding shut.
 
   It also arms **mid-touch**: reading down the feed and dragging back up is one
   continuous downward drag that reaches the top with the finger still moving,
