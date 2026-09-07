@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { PhoneNav, parseNavVariant } from "@/components/mobile/PhoneNav";
 import { PostFlash } from "@/components/mobile/PostFlash";
 import { PhonePointsFly } from "@/components/mobile/PhonePointsFly";
+import { PhoneSwipeBack } from "@/components/mobile/PhoneSwipeBack";
 
 /**
  * The frame every /m screen sits in: the nav, the space reserved for it, and
@@ -20,6 +21,10 @@ import { PhonePointsFly } from "@/components/mobile/PhonePointsFly";
  * three navs are three different heights and the content has to clear whichever
  * one is on screen.
  *
+ * `PhoneSwipeBack` hangs here for the same reason the nav does: it is a
+ * property of the frame, not of any one screen, and a gesture that only some
+ * screens honoured would be worse than none.
+ *
  * `PostFlash` hangs here rather than on a screen because publishing spans two
  * routes — the composer raises it, the feed lowers it — and anything rendered
  * by either one would unmount at the navigation in the middle. It is also why
@@ -35,6 +40,7 @@ export function PhoneShell({ children }: { children: React.ReactNode }) {
     <div className="pm-phone-shell" data-nav={variant}>
       <div className="pm-phone-content">{children}</div>
       <PhoneNav variant={variant} />
+      <PhoneSwipeBack />
       <PostFlash />
       <PhonePointsFly />
     </div>
