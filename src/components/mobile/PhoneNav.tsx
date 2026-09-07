@@ -297,7 +297,7 @@ function ArcNav({ to, isCurrent, dotFor }: VariantProps) {
   return (
     <nav
       aria-label="Main"
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))]"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.125rem,calc(env(safe-area-inset-bottom)-0.375rem))]"
     >
       <div className="pointer-events-auto relative mx-auto max-w-lg rounded-full bg-pm-grey-tint px-2 py-1.5">
         {/* Raised, and centred on the bar's own top edge rather than the

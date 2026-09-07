@@ -64,7 +64,7 @@ html.pm-lock-scroll body {
  * m/layout.tsx renders the shell bare).
  */
 .pm-phone-shell {
-  --phone-nav-space: calc(96px + env(safe-area-inset-bottom));
+  --phone-nav-space: calc(90px + env(safe-area-inset-bottom));
 
   /*
    * The app is a frame, and the *content* scrolls inside it — the document
@@ -132,9 +132,11 @@ html.pm-lock-scroll body {
 }
 
 /* Tan bar plus the create button's overhang, which clears the bar's top edge by
-   half its own height (28px) and would otherwise sit on top of a card. */
+   half its own height (28px) and would otherwise sit on top of a card. The bar
+   sits 6px lower than it first did (2026-09-07, "a bit too high" on device), so
+   the gap below it is 2px, or the home indicator minus 6px. */
 .pm-phone-shell[data-nav="arc"] {
-  --phone-nav-space: calc(96px + env(safe-area-inset-bottom));
+  --phone-nav-space: calc(90px + env(safe-area-inset-bottom));
 }
 
 .pm-phone-content {
