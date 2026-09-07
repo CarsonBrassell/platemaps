@@ -82,6 +82,19 @@ export function CameraCapture({
   const [pendingUrl, setPendingUrl] = useState<string | null>(null);
   const [bothLive, setBothLive] = useState(false);
   const [status, setStatus] = useState<Status>("starting");
+  /*
+   * Why the camera actually refused.
+   *
+   * `getUserMedia` fails for reasons that need different fixes and used to be
+   * indistinguishable here: the catch below discarded the error and every one
+   * of them rendered as "Camera's off, go to Settings". A denied permission
+   * (NotAllowedError) is the only one that advice is true for. NotFoundError
+   * means there is no camera, NotReadableError means another app holds it,
+   * SecurityError means the page is not a secure context, and OverconstrainedError
+   * means the constraints could not be met — Settings fixes none of those, and
+   * telling someone to go there is a dead end they can spend a long time in.
+   */
+  const [failure, setFailure] = useState<string | null>(null);
   const [flash, setFlash] = useState(false);
 
   const full = photos.length >= MAX_PHOTOS;
@@ -209,8 +222,13 @@ export function CameraCapture({
       let stream: MediaStream;
       try {
         stream = await openResilient(live);
-      } catch {
-        if (!cancelled) setStatus("blocked");
+      } catch (err) {
+        if (!cancelled) {
+          setFailure(
+            err instanceof Error ? `${err.name}: ${err.message}` : String(err),
+          );
+          setStatus("blocked");
+        }
         return;
       }
       // The permission prompt outlives a fast back-navigation, so a stream
@@ -473,6 +491,16 @@ export function CameraCapture({
               {status === "blocked"
                 ? "PlateMaps takes the photo itself, so this screen needs camera permission. Turn it on in your phone's Settings app under PlateMaps → Camera (or your browser's site settings on the web) and come back — or post without one."
                 : "This browser doesn't offer a camera, and PlateMaps only posts photos it takes. You can still post without one."}
+            </p>
+          )}
+          {/* The reason, in the browser's own words. Mono because it is a
+              machine value, and quiet because it is for whoever is debugging
+              rather than for the person trying to post a plate — but on
+              screen, because a failure nobody can name is a failure nobody
+              can fix. */}
+          {failure && (
+            <p className="max-w-xs font-mono text-[10px] leading-relaxed text-white/40">
+              {failure}
             </p>
           )}
         </div>
