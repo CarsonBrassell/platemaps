@@ -310,8 +310,8 @@ h3 {
   position: relative;
 }
 
-/* The meta row sets at 10px, so the chip's own glyph is about 19x15 — far too
-   small a target for a phone, which is where this map is used. The hit area is
+/* The meta row sets at 11.5px, so a chip's own glyph is about 13px square —
+   too small a target for a phone, which is where this map is used. The hit area is
    grown with a pseudo-element rather than padding so the row's measured height
    stays exactly what bubbleHeight() in RestaurantMap.tsx computes. The top
    inset stops short of the meta gap so it can't swallow a click meant for
@@ -906,9 +906,27 @@ h3 {
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
-/* Horizontal snap track for the post media carousel. */
+/* Horizontal snap track for the post media carousel.
+   -------------------------------------------------------------------------
+   `overflow-y: hidden` is not tidying — it is the whole reason a thumb landing
+   on a multi-photo post stopped the feed dead and tried to scroll the picture
+   instead.
+
+   CSS computes an `overflow-y` of `visible` to `auto` the moment `overflow-x`
+   is anything else, so `overflow-x-auto` alone made this track a scroll
+   container on BOTH axes. The slides are `h-full` inside an `aspect-[16/9]`
+   box, which at a real phone width resolves to a fractional height (390 / 16 *
+   9 = 219.375px) — and a sub-pixel of content taller than its box is enough
+   for WebKit to call the element vertically scrollable. iOS then picks the
+   innermost scrollable element under the finger, and once it has chosen for a
+   touch it does not hand the gesture back: the feed froze and the photo
+   twitched through its fraction of a pixel.
+
+   Declaring the axis closed removes the scroll box rather than fighting over
+   it. The horizontal gesture — the actual feature — is untouched. */
 .snap-track {
   scroll-snap-type: x mandatory;
+  overflow-y: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }

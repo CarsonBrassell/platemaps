@@ -133,7 +133,13 @@ export function PostMediaCarousel({
 
            It cannot be applied to the multi-photo track, where the horizontal
            gesture is the feature. Those keep the native behaviour, which is
-           also what makes the snap work. */
+           also what makes the snap work.
+
+           The one thing the multi-photo track does NOT leave native is the
+           vertical axis: `overflow-x: auto` quietly makes an element
+           scrollable on both axes, and iOS was handing whole downward drags
+           to a track that had a fraction of a pixel to give. `.snap-track`
+           in globals.css closes it — the note there is the long version. */
         className={`snap-track flex aspect-[16/9] w-full overflow-x-auto ${
           single ? "overflow-x-hidden touch-pan-y" : ""
         }`}

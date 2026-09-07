@@ -34,8 +34,14 @@ export function PhoneFilterBar({ model }: { model: PhoneFilterModel }) {
       <div
         /* Same edge-to-edge scroll trick PhoneCuisineRail used to own — the
            row of active chips can still run past the button, and the last one
-           should run off the screen rather than stop at a gutter. */
-        className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+           should run off the screen rather than stop at a gutter.
+
+           `overflow-y-hidden` for the reason written on `.snap-track` in
+           globals.css: an `overflow-x` of `auto` computes `overflow-y` to
+           `auto` as well, and a horizontal strip a hair taller than its box
+           will swallow a vertical drag on iOS rather than letting the screen
+           scroll. Same defect the feed photo track had. */
+        className="-mx-4 overflow-x-auto overflow-y-hidden px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         <div className="flex w-max gap-2 pb-1">
           {/* Tan: this opens something, it is not a value you can be inside.
