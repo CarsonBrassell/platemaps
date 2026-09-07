@@ -22,6 +22,15 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
 
 ## Since 2026-09-05 (newest decisions, read these)
 
+- **Map bubbles ~15% larger; downvote arrow fixed (2026-09-07, uncommitted).**
+  `arrowGlyph` in RestaurantMap.tsx rotated the downvote with `transform` on
+  the outer `<svg>`, which browsers ignore, so both arrows pointed up; it now
+  rotates an inner `<g>`. Calvin rejected enlarging the vote pair alone (it
+  outgrew the row), so the whole bubble went up a step instead: 12→14px
+  headline, 10→11.5px meta row, 11→13px arrows, padding 7/13, with the
+  measured row heights and estimateMetaWidth/estimateBubbleWidth per-char
+  advances scaled to match. Verified in Chrome on /feed → Map feed.
+
 - **Sunny Side Solana (id 7197) has demo dish percents (2026-09-06).** For Ed to
   see what a restaurant page looks like with THE HITS filled in, eight of its
   105 dishes got hand-set `dishes.yes_votes`/`no_votes` (the read-only

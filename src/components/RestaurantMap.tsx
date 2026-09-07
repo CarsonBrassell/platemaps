@@ -221,15 +221,18 @@ const BUBBLE_TOP_OFFSET = 72;
 // derived from the same numbers the CSS below actually uses instead of a
 // separately hand-measured guess that can drift out of sync with it.
 const BUBBLE_BORDER = 1;
-const BUBBLE_PADDING_Y = 6;
-const BUBBLE_PADDING_X = 11;
+const BUBBLE_PADDING_Y = 7;
+const BUBBLE_PADDING_X = 13;
 /** Measured from a real rendered bubble: the headline row, and the mono meta
  * row beneath it. Rounded up a couple of px as a safety margin for collision
  * spacing, not measured tight. */
-const BUBBLE_TEXT_ROW_HEIGHT = 17;
-const BUBBLE_META_ROW_HEIGHT = 15;
-const BUBBLE_META_GAP = 4;
-const BUBBLE_MIN_WIDTH = 56;
+/* The bubble sets at 14px over an 11.5px mono meta row — the whole card a
+ * step (~15%) larger than the 12px/10px it was drawn at, which read as fine
+ * print beside everything else on the map. Every size below scales with it. */
+const BUBBLE_TEXT_ROW_HEIGHT = 20;
+const BUBBLE_META_ROW_HEIGHT = 18;
+const BUBBLE_META_GAP = 5;
+const BUBBLE_MIN_WIDTH = 64;
 const BUBBLE_GAP = 6;
 /* Vertical room the neon restaurant sign takes above a stack's top edge —
    part of the collision footprint so no other bubble lands on the name. */
@@ -240,7 +243,7 @@ const NEON_SIGN_CLEARANCE = 14;
    and gradients out. */
 const BUBBLE_FILL = "#faf7f2";
 const BUBBLE_INK = "#2b211c";
-/* The meta row sets at 10px, so it owes 4.5:1 against BUBBLE_FILL. DESIGN.md's
+/* The meta row sets at 11.5px, so it owes 4.5:1 against BUBBLE_FILL. DESIGN.md's
    muted step (`zinc-500` #7E7261) is tuned against white and lands at 4.40:1 on
    this warm fill — just under — so the bubble carries the next step down. */
 const BUBBLE_MUTED = "#776B5B";
@@ -354,10 +357,10 @@ function leaderDrop(comment: MapComment, offsetY: number) {
 // the headline now shares its row with the score and would otherwise clip
 // two words in.
 function bubbleMaxWidthForZoom(zoom: number) {
-  if (zoom >= 18) return 240;
-  if (zoom >= 16) return 210;
-  if (zoom >= 14) return 185;
-  return 155;
+  if (zoom >= 18) return 275;
+  if (zoom >= 16) return 240;
+  if (zoom >= 14) return 213;
+  return 178;
 }
 
 /**
@@ -464,19 +467,19 @@ function estimateMetaWidth(comment: MapComment) {
      ~50px past the box and the second arrow and the reply count hung out over
      the map. `@` plus one 6px mono advance per character, uppercase being the
      same width in a monospace face. */
-  if (comment.author) items.push((comment.author.length + 1) * 6);
+  if (comment.author) items.push((comment.author.length + 1) * 7);
   /* Arrow + count + arrow — the full vote pair, generous for the friends
      bubbles that only draw a heart. 34, not 26: each arrow occupies 13px of
-     layout (a 25px padded hit box pulled back by its own -6px margins) and the
-     flex `gap: 4px` sits on both sides of the count. 26 priced the glyphs and
-     forgot the gaps. */
-  if (comment.upvotes !== undefined) items.push(34 + compactCount(comment.upvotes).length * 6);
-  if (comment.commentCount !== undefined) items.push(13 + String(comment.commentCount).length * 6);
-  if (comment.createdAt) items.push(compactTime(comment.createdAt).length * 6);
-  /* 12 per boundary, not 8: the row separates its parts with a mono middot
+     layout (its padded hit box is pulled back by its own negative margins, so
+     the glyph's own size is the layout size) and the flex `gap: 4px` sits on
+     both sides of the count. 26 priced the glyphs and forgot the gaps. */
+  if (comment.upvotes !== undefined) items.push(34 + compactCount(comment.upvotes).length * 7);
+  if (comment.commentCount !== undefined) items.push(15 + String(comment.commentCount).length * 7);
+  if (comment.createdAt) items.push(compactTime(comment.createdAt).length * 7);
+  /* 13 per boundary, not 8: the row separates its parts with a mono middot
      (`@DANNYQ · 2H · 👍 34`, the byline shape DESIGN.md gives the feed card),
-     so a boundary now costs two 4px gaps and a ~6px glyph rather than one gap. */
-  const gaps = Math.max(0, items.length - 1) * 12;
+     so a boundary now costs two 4px gaps and a ~7px glyph rather than one gap. */
+  const gaps = Math.max(0, items.length - 1) * 13;
   return items.reduce((a, b) => a + b, 0) + gaps + (BUBBLE_PADDING_X + BUBBLE_BORDER) * 2 + 8;
 }
 
@@ -492,8 +495,8 @@ function estimateBubbleWidth(comment: MapComment, zoom: number) {
   const score = bubbleScoreFor(comment);
   const line =
     22 +
-    headlineFor(comment).length * 5.5 +
-    (score ? 10 + scoreLabelFor(score).length * 6 : 0);
+    headlineFor(comment).length * 6.3 +
+    (score ? 10 + scoreLabelFor(score).length * 7 : 0);
   const floor =
     comment.upvotes !== undefined ? estimateMetaWidth(comment) : BUBBLE_MIN_WIDTH;
   return Math.min(bubbleWidthCap(comment, zoom), Math.max(floor, line));
@@ -799,7 +802,7 @@ function bubbleElement(
      by hand — focusable, named as a link, and activated on Enter by the
      handler bound below. */
   const scoreHtml = score
-    ? `<span class="map-line-score" style="font-family: ${MONO}; font-size: 10px; font-weight: ${
+    ? `<span class="map-line-score" style="font-family: ${MONO}; font-size: 11.5px; font-weight: ${
         /%$/.test(score) ? 700 : 600
       }; color: ${scoreColorFor(score)};">${escapeHtml(scoreLabelFor(score))}</span>`
     : "";
@@ -852,15 +855,21 @@ function bubbleElement(
      behind it, so its arrows render as plain glyphs at the muted step rather
      than as buttons that would look live and do nothing when clicked. */
   const staticArrowStyle = `display: inline-flex; align-items: center; line-height: 1; color: ${BUBBLE_MUTED};`;
-  /* One path, rotated for the downvote, at the meta row's 11px scale — the
-     same closed outline `VoteArrowUpIcon` draws, hand-inlined because a bubble
-     is an HTML string and cannot host a React component. The `d` here and the
+  /* One path, rotated for the downvote, at 13px — the same closed outline
+     `VoteArrowUpIcon` draws, hand-inlined because a bubble is an HTML string
+     and cannot host a React component. The `d` here and the
      `VOTE_ARROW_PATH` constant in components/icons.tsx are one shape and have
-     to be changed together; there is no import that can enforce it. */
+     to be changed together; there is no import that can enforce it.
+
+     The rotation lives on an inner <g> about the viewBox centre, exactly as
+     VoteArrowDownIcon does it. It used to be a `transform="rotate(180)"`
+     attribute on the <svg> itself, which browsers do not honour on an outer
+     SVG element, so both arrows drew pointing up and the pair read as two
+     upvotes. */
   const arrowGlyph = (down: boolean) =>
-    `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${
-      down ? ' transform="rotate(180)"' : ""
-    }><path d="M12 3.4 21 12.4h-4.6V20.6H7.6V12.4H3z"/></svg>`;
+    `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${
+      down ? '<g transform="rotate(180 12 12)">' : ""
+    }<path d="M12 3.4 21 12.4h-4.6V20.6H7.6V12.4H3z"/>${down ? "</g>" : ""}</svg>`;
   const votePair = (interactive: boolean) =>
     `<span style="display: inline-flex; align-items: center; gap: 4px;">
         ${
@@ -887,7 +896,7 @@ function bubbleElement(
         ? `<button type="button" class="map-heart-chip" aria-pressed="${comment.heartedByMe ? "true" : "false"}" aria-label="Heart this plate" style="
             display: inline-flex; align-items: center; justify-content: center;
             padding: 0; border: 0; background: none;
-            font-size: 11px; line-height: 1.4; cursor: pointer;
+            font-size: 12.5px; line-height: 1.4; cursor: pointer;
             color: ${comment.heartedByMe ? BUBBLE_POP : BUBBLE_MUTED};
           ">♥</button>`
         : "";
@@ -897,12 +906,12 @@ function bubbleElement(
      A real post opens its thread on click; seeded chatter has no thread, so it
      shows the shape at zero and stays inert for the same reason its arrows do. */
   const replyCount = comment.commentCount ?? 0;
-  const replyGlyph = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-8 8H6l-3 3v-8a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8z"/></svg>`;
+  const replyGlyph = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-8 8H6l-3 3v-8a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8z"/></svg>`;
   const repliesHtml = comment.postId
     ? `<button type="button" class="map-reply-chip" aria-label="${replyCount === 1 ? "1 reply" : `${replyCount} replies`}" style="
           display: inline-flex; align-items: center; gap: 3px;
           padding: 0; border: 0; background: none;
-          font-family: ${MONO}; font-size: 10px; line-height: 1.5;
+          font-family: ${MONO}; font-size: 11.5px; line-height: 1.5;
           cursor: pointer;
         ">${replyGlyph}${replyCount}</button>`
     : `<span style="display: inline-flex; align-items: center; gap: 3px;">${replyGlyph}${replyCount}</span>`;
@@ -935,7 +944,7 @@ function bubbleElement(
         gap: 4px;
         margin-top: ${BUBBLE_META_GAP}px;
         font-family: ${MONO};
-        font-size: 10px;
+        font-size: 11.5px;
         line-height: 1.5;
         color: ${BUBBLE_MUTED};
         white-space: nowrap;
@@ -1070,7 +1079,7 @@ function bubbleElement(
         border: ${BUBBLE_BORDER}px solid ${BUBBLE_EDGE};
         border-radius: ${BUBBLE_RADIUS}px;
         padding: ${BUBBLE_PADDING_Y}px ${BUBBLE_PADDING_X}px;
-        font-size: 12px;
+        font-size: 14px;
         line-height: 1.35;
         color: ${BUBBLE_INK};
       ">
