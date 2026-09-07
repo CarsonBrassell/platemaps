@@ -77,23 +77,18 @@ const RESISTANCE = 0.5;
 /** Ignore the first few pixels: a tap with a wobble is not a pull. */
 const SLOP = 8;
 /*
- * How far a finger that arrived at the top *mid-scroll* has to keep going down
- * before any gap opens. Much larger than SLOP, and it is what keeps ordinary
- * scrolling near the top from twitching.
+ * There is deliberately no second, larger threshold for a pull inherited from a
+ * scroll. One was tried — 28pt of extra travel to arm — on the theory that a
+ * decelerating finger would otherwise twitch the gap open and shut, and it made
+ * the gesture stop dead at the top: the list ran out, nothing happened, and the
+ * pull only began once you had dragged another 28pt, which reads as the screen
+ * catching on the way up rather than handing over. Scrolling up into a refresh
+ * has to be one motion, so SLOP is the only distance either kind of touch owes.
  *
- * A touch that starts at rest is unambiguous: there was nothing to scroll, so
- * the only thing it can mean is a pull. A touch that starts twenty cards down
- * is a scroll that *may or may not* turn into one — and it reaches the end of
- * the list at whatever speed it was already travelling, with the finger still
- * wandering a few points either way as it slows. At SLOP that wander is a gap
- * opening and shutting under the bar on every frame: a few points of shift, up
- * and down, for the whole tail of the gesture. Reported as exactly that.
- *
- * 28pt is past anything a hand does by accident and still well short of the
- * 60pt trigger, so the pull it hands over still has most of its travel left to
- * show for itself.
+ * What stops the twitching instead is below: a finger that dips back over its
+ * own baseline before the pull has opened re-baselines rather than ending the
+ * touch, and nothing re-renders while the value has not changed.
  */
-const PICKUP = 28;
 /** Where the dial stops being dragged, however far the finger goes. */
 const MAX_PULL = 96;
 /** Pull past this and letting go refreshes. Below it, the dial just goes home. */
@@ -193,9 +188,6 @@ export function PhonePullToRefresh({
     /* Whether the scroller was already home on the previous frame — the flag
        that separates "still scrolling" from "pulling past the end". */
     let atTop = false;
-    /* How much downward travel this touch owes before it opens anything: SLOP
-       if it began at rest, PICKUP if it arrived at the top off a scroll. */
-    let owed = SLOP;
     let travelled = 0;
 
     const release = () => {
@@ -217,7 +209,6 @@ export function PhonePullToRefresh({
          note in onMove about why that timing matters). One that begins mid-list
          is a scroll for now, and inherits the pull only if it reaches the end. */
       atTop = scroller.scrollTop <= 0;
-      owed = atTop ? SLOP : PICKUP;
     };
 
     const onMove = (e: TouchEvent) => {
@@ -232,9 +223,6 @@ export function PhonePullToRefresh({
         startY = y;
         atTop = false;
         engaged = false;
-        /* This touch has now scrolled, so whatever it started as it is the
-           slow-to-arm kind for the rest of its life. */
-        owed = PICKUP;
         if (travelled > 0) {
           travelled = 0;
           setPull(0);
@@ -299,12 +287,7 @@ export function PhonePullToRefresh({
        * the dial still ignores the first few pixels. What it no longer does is
        * decide who owns the drag.
        */
-      /* Below the pickup distance there is nothing to show and nothing to
-         claim: leave the frame alone rather than re-rendering a zero. A touch
-         that began at rest owes only SLOP, so this is one frame for it and the
-         claim below still lands on the first downward pixel. */
-      const next = Math.max(0, Math.min((dy - owed) * RESISTANCE, MAX_PULL));
-      if (next <= 0 && travelled <= 0 && owed > SLOP) return;
+      const next = Math.max(0, Math.min((dy - SLOP) * RESISTANCE, MAX_PULL));
 
       engaged = true;
 
@@ -314,6 +297,11 @@ export function PhonePullToRefresh({
          where the platform has taken the gesture anyway: preventing an
          uncancelable event only earns a console warning. */
       if (e.cancelable) e.preventDefault();
+
+      /* React bails on an identical value anyway; the guard is here because a
+         slow finger sits on the same rounded pixel for several frames and this
+         is the hottest path in the component. */
+      if (next === travelled && phaseRef.current === "pulling") return;
       travelled = next;
       setPhase("pulling");
       setPull(travelled);

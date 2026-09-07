@@ -89,12 +89,18 @@ import { useEffect, useRef, useState } from "react";
  *
  * ## `pinned`
  *
- * The hide-on-scroll behaviour above is the default and stays the default for
- * discover, where the bar is search plus filters and reading the wall is the
- * point. The feed asks for the opposite: its bar is the tab picker, the sort
- * switch and the search field — three controls that answer "which feed am I
- * even looking at", which is a question you ask *while* scrolling, not before
- * you start. `pinned` keeps the row on screen the whole way down.
+ * `pinned` says *how* the row is positioned, not whether it hides. Both builds
+ * hide going down and come back going up, off the same `settle` below; what
+ * pinned changes is that the row is welded to the frame instead of riding the
+ * scrollport, and that it animates in and out of a fixed offset rather than a
+ * sticky one.
+ *
+ * The feed asks for it because its top row is the tab picker, and "which feed
+ * am I even looking at" is a question asked *while* scrolling — but the row
+ * still has to get out of the way, and it has to come back flush against the
+ * clock with nothing showing above it. A sticky row could not promise the
+ * second half: it drifted a few points through every scroll, and any offset
+ * that missed left a band of feed between the row and the top of the screen.
  *
  * ### Pinned is `fixed`, not `sticky`
  *
@@ -151,6 +157,9 @@ export function PhoneStickyBar({
      plain ref, not state — nothing needs to re-render off it, `settle()` just
      wants the latest number when it runs. */
   const insetProbeRef = useRef<HTMLDivElement>(null);
+  /* The pinned build's outer, `position: fixed` box. Null in the sticky build,
+     where the bar and its box are the same element. */
+  const frameRef = useRef<HTMLDivElement>(null);
   const [hidden, setHidden] = useState(false);
   /* Drawn only once something has actually scrolled under the bar. At rest the
      row sits on the same cream as the screen and a line across it would be a
@@ -159,13 +168,12 @@ export function PhoneStickyBar({
   /* The hide distance for a sticky bar, and the spacer's height for a pinned
      one — the same number either way: how much room this row takes. */
   const [height, setHeight] = useState(0);
-
-  /* Read inside `settle`, which is bound once — see the ref block in
-     PhonePullToRefresh for the same reason. */
-  const pinnedRef = useRef(pinned);
-  useEffect(() => {
-    pinnedRef.current = pinned;
-  });
+  /* The pinned build's hide distance, which is *not* `height`: the fixed box
+     wears the safe-area inset as padding (see the header note), so the row only
+     clears the screen once it has travelled its content plus that inset. Using
+     `height` here parked it an inset short and left the bottom of the tabs
+     showing under the clock. */
+  const [frameHeight, setFrameHeight] = useState(0);
 
   useEffect(() => {
     const bar = barRef.current;
@@ -184,10 +192,15 @@ export function PhoneStickyBar({
        always 0. */
     const frameTop = () => (scroller ? scroller.getBoundingClientRect().top : 0);
 
-    const measure = () => setHeight(bar.offsetHeight);
+    const frameBox = frameRef.current;
+    const measure = () => {
+      setHeight(bar.offsetHeight);
+      if (frameBox) setFrameHeight(frameBox.offsetHeight);
+    };
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(bar);
+    if (frameBox) observer.observe(frameBox);
 
     let insetPx = 0;
     const measureInset = () => {
@@ -214,15 +227,6 @@ export function PhoneStickyBar({
          would sit `insetPx` above the frame, which is `depth > -insetPx`. On
          desktop `insetPx` is 0 and this is exactly the old comparison. */
       setStuck(depth > -insetPx);
-
-      /* A pinned bar has nowhere to go, so everything below is dead weight —
-         and the early return also keeps `hidden` false, which matters if the
-         flag is ever flipped back off mid-screen. */
-      if (pinnedRef.current) {
-        setHidden(false);
-        last = y;
-        return;
-      }
 
       /* Not stuck far enough to hide into. Hiding right at the stick point
          would be legal but puts the whole animation on screen at the moment
@@ -311,10 +315,25 @@ export function PhoneStickyBar({
           separate slab: the strip under the clock is the bar's own ground.
         */}
         <div
-          className={`fixed inset-x-0 top-0 z-30 bg-background transition-[box-shadow] duration-200 ease-out motion-reduce:transition-none ${
+          ref={frameRef}
+          className={`fixed inset-x-0 z-30 bg-background transition-[top,box-shadow] duration-200 ease-out motion-reduce:transition-none ${
             stuck ? "shadow-[0_1px_0_0_rgba(35,32,25,0.08)]" : ""
           }`}
-          style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+          /* `top`, not a transform: a transformed element becomes the
+             containing block for every `position: fixed` descendant, which is
+             the trap the header opens on. Nothing in the feed's tab row is
+             fixed today, and this is the one place where writing it the safe
+             way costs nothing.
+
+             `-frameHeight` and not `-height`: the inset is padding on this box
+             (see the header note), so the row is only clear of the screen once
+             it has travelled both. Zero until the effect measures, which is one
+             paint on a bar that starts visible anyway — `hidden` cannot be
+             true before then. */
+          style={{
+            paddingTop: "env(safe-area-inset-top, 0px)",
+            top: hidden ? `-${frameHeight}px` : 0,
+          }}
         >
           <div ref={barRef} className={className}>
             {children}
