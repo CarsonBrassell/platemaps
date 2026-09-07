@@ -112,13 +112,19 @@ html.pm-lock-scroll body {
 }
 
 /*
- * The frame's scroller. `overscroll-behavior: contain` keeps a fast flick at
- * either end from chaining out into the page behind it.
+ * The frame's scroller. `none` rather than `contain`: both stop a fast flick at
+ * either end from chaining out into the page behind, but `contain` keeps the
+ * platform's own rubber-band, and at the top that bounce is a second answer to
+ * the same gesture PhonePullToRefresh is answering. A drag that arrives at the
+ * top with the finger still down cannot call the bounce off — WebKit commits to
+ * scrolling on the opening moves of a touch and every later `touchmove` is
+ * uncancelable — so the two would run at once and the list would travel twice
+ * as far as the gap it opened. Refusing the affordance leaves one.
  */
 .pm-phone-content {
   height: 100%;
   overflow-y: auto;
-  overscroll-behavior: contain;
+  overscroll-behavior: none;
 }
 
 /* Floating capsule: 44px slot + 12px internal padding, floating 12px up. */

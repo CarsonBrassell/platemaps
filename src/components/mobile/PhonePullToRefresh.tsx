@@ -45,6 +45,22 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * gesture is armed nowhere else — so growing it cannot shove a reading position
  * around.
  *
+ * ## A scroll that runs out of list becomes the pull
+ *
+ * The touch does not have to *begin* at the top. Reading down the feed and then
+ * dragging back up is one continuous downward drag, and it arrives at the top
+ * with the finger still moving — which is the moment every phone in the world
+ * starts showing a spinner. Arming only on `touchstart` missed all of it: the
+ * gesture was refused for the whole touch, so scrolling home from card twenty
+ * got the platform's bare rubber-band and no wheel, while the identical drag
+ * started from rest got the gap. Same motion, two different behaviours.
+ *
+ * So a touch is tracked wherever it starts and the baseline (`startY`) is
+ * rewritten on every frame the scroller is still moving. The pull is therefore
+ * measured from where the finger was when the list ran out, not from where the
+ * touch began ten cards ago — otherwise the gap would snap open by the whole
+ * scroll distance the instant the top arrived.
+ *
  * ## The gesture
  *
  * Armed only when the scroller is already at the top when the finger lands, and
@@ -148,16 +164,23 @@ export function PhonePullToRefresh({
     const scroller = anchorRef.current?.closest<HTMLElement>(".pm-phone-content");
     if (!scroller) return;
 
+    /* The point the pull is measured from. Not where the touch began: while
+       the scroller is still moving this is rewritten every frame, so it ends up
+       being where the finger was at the moment the list ran out. */
     let startY = 0;
-    /* A finger is down and started at the top — a candidate, not yet a pull. */
+    /* A finger is down and the gesture is still available to us. */
     let tracking = false;
-    /* It has since moved down past the slop, so this gesture is ours. */
+    /* It has since pulled down against the top, so this gesture is ours. */
     let engaged = false;
+    /* Whether the scroller was already home on the previous frame — the flag
+       that separates "still scrolling" from "pulling past the end". */
+    let atTop = false;
     let travelled = 0;
 
     const release = () => {
       tracking = false;
       engaged = false;
+      atTop = false;
       travelled = 0;
     };
 
@@ -165,20 +188,61 @@ export function PhonePullToRefresh({
       if (disabledRef.current || phaseRef.current === "refreshing") return;
       /* A second finger means a pinch or a two-finger scroll; neither is this. */
       if (e.touches.length !== 1) return;
-      if (scroller.scrollTop > 0) return;
       startY = e.touches[0].clientY;
       tracking = true;
       engaged = false;
       travelled = 0;
+      /* A touch that begins at the top can claim its very first pixel (see the
+         note in onMove about why that timing matters). One that begins mid-list
+         is a scroll for now, and inherits the pull only if it reaches the end. */
+      atTop = scroller.scrollTop <= 0;
     };
 
     const onMove = (e: TouchEvent) => {
       if (!tracking) return;
-      const dy = e.touches[0].clientY - startY;
+      const y = e.touches[0].clientY;
+
+      /* Still list left to travel: this frame belongs to the scroller. Keep the
+         baseline pinned to the finger so that if the top does arrive the pull
+         starts from zero, and stay out of the way otherwise — no preventDefault
+         while there is scrolling to do. */
+      if (scroller.scrollTop > 0) {
+        startY = y;
+        atTop = false;
+        engaged = false;
+        if (travelled > 0) {
+          travelled = 0;
+          setPull(0);
+          setPhase("idle");
+        }
+        return;
+      }
+
+      /* The frame the list ran out on. Take the baseline here and spend the
+         next frame onwards pulling; claiming this one would count the last
+         scrolling frame's travel as pull. */
+      if (!atTop) {
+        atTop = true;
+        startY = y;
+        return;
+      }
+
+      const dy = y - startY;
 
       /* Anything upward is someone scrolling the feed, and we get out of the
-         way for the rest of this touch rather than fighting them for it. */
-      if (dy <= 0) return release();
+         way for the rest of this touch rather than fighting them for it — but
+         we close the gap on the way out. Handing the gesture back sets
+         `engaged` false, which is exactly what makes `onEnd` do nothing when
+         the finger finally lifts, so a gap left open here is left open for
+         good: pull down forty pixels, change your mind, and the feed keeps a
+         band of empty cream under the bar until the screen is remounted. */
+      if (dy <= 0) {
+        if (travelled > 0) {
+          setPull(0);
+          setPhase("idle");
+        }
+        return release();
+      }
 
       /*
        * Claimed on the FIRST downward pixel, not on the first one past the
@@ -196,14 +260,6 @@ export function PhonePullToRefresh({
        * decide who owns the drag.
        */
       engaged = true;
-
-      /* The scroller can only be at the top for this to be a pull; if content
-         got under it somehow, hand the gesture back. */
-      if (scroller.scrollTop > 0) {
-        setPull(0);
-        setPhase("idle");
-        return release();
-      }
 
       /* Owning the gesture is what stops iOS rubber-banding the list at the
          same time — see above. The listener is registered non-passive precisely
