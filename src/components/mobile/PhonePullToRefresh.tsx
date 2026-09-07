@@ -76,6 +76,24 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const RESISTANCE = 0.5;
 /** Ignore the first few pixels: a tap with a wobble is not a pull. */
 const SLOP = 8;
+/*
+ * How far a finger that arrived at the top *mid-scroll* has to keep going down
+ * before any gap opens. Much larger than SLOP, and it is what keeps ordinary
+ * scrolling near the top from twitching.
+ *
+ * A touch that starts at rest is unambiguous: there was nothing to scroll, so
+ * the only thing it can mean is a pull. A touch that starts twenty cards down
+ * is a scroll that *may or may not* turn into one — and it reaches the end of
+ * the list at whatever speed it was already travelling, with the finger still
+ * wandering a few points either way as it slows. At SLOP that wander is a gap
+ * opening and shutting under the bar on every frame: a few points of shift, up
+ * and down, for the whole tail of the gesture. Reported as exactly that.
+ *
+ * 28pt is past anything a hand does by accident and still well short of the
+ * 60pt trigger, so the pull it hands over still has most of its travel left to
+ * show for itself.
+ */
+const PICKUP = 28;
 /** Where the dial stops being dragged, however far the finger goes. */
 const MAX_PULL = 96;
 /** Pull past this and letting go refreshes. Below it, the dial just goes home. */
@@ -175,6 +193,9 @@ export function PhonePullToRefresh({
     /* Whether the scroller was already home on the previous frame — the flag
        that separates "still scrolling" from "pulling past the end". */
     let atTop = false;
+    /* How much downward travel this touch owes before it opens anything: SLOP
+       if it began at rest, PICKUP if it arrived at the top off a scroll. */
+    let owed = SLOP;
     let travelled = 0;
 
     const release = () => {
@@ -196,6 +217,7 @@ export function PhonePullToRefresh({
          note in onMove about why that timing matters). One that begins mid-list
          is a scroll for now, and inherits the pull only if it reaches the end. */
       atTop = scroller.scrollTop <= 0;
+      owed = atTop ? SLOP : PICKUP;
     };
 
     const onMove = (e: TouchEvent) => {
@@ -210,6 +232,9 @@ export function PhonePullToRefresh({
         startY = y;
         atTop = false;
         engaged = false;
+        /* This touch has now scrolled, so whatever it started as it is the
+           slow-to-arm kind for the rest of its life. */
+        owed = PICKUP;
         if (travelled > 0) {
           travelled = 0;
           setPull(0);
@@ -229,19 +254,34 @@ export function PhonePullToRefresh({
 
       const dy = y - startY;
 
-      /* Anything upward is someone scrolling the feed, and we get out of the
-         way for the rest of this touch rather than fighting them for it — but
-         we close the gap on the way out. Handing the gesture back sets
-         `engaged` false, which is exactly what makes `onEnd` do nothing when
-         the finger finally lifts, so a gap left open here is left open for
-         good: pull down forty pixels, change your mind, and the feed keeps a
-         band of empty cream under the bar until the screen is remounted. */
       if (dy <= 0) {
-        if (travelled > 0) {
-          setPull(0);
-          setPhase("idle");
+        /* Ours already, and being taken back: someone has changed their mind
+           mid-pull. Close the gap on the way out — handing the gesture back
+           sets `engaged` false, which is exactly what makes `onEnd` do nothing
+           when the finger finally lifts, so a gap left open here is left open
+           for good: pull down forty pixels, reverse, and the feed keeps a band
+           of empty cream under the bar until the screen is remounted. */
+        if (engaged || travelled > 0) {
+          if (travelled > 0) {
+            setPull(0);
+            setPhase("idle");
+          }
+          return release();
         }
-        return release();
+
+        /* Not ours yet — this is a finger that has come to the end of a scroll
+           and is settling, not one refusing a pull it never started. Killing
+           the touch here is what made the pickup distance below unreachable in
+           practice: a decelerating drag crosses back over its own baseline
+           once or twice before it stops, and the first crossing ended the
+           gesture for good.
+
+           Re-baseline instead, which parks the origin at the highest point the
+           finger has reached. The pickup is then measured from the turn, so a
+           deliberate drag pays it in one motion and a wobble never accumulates
+           it at all. */
+        startY = y;
+        return;
       }
 
       /*
@@ -259,6 +299,13 @@ export function PhonePullToRefresh({
        * the dial still ignores the first few pixels. What it no longer does is
        * decide who owns the drag.
        */
+      /* Below the pickup distance there is nothing to show and nothing to
+         claim: leave the frame alone rather than re-rendering a zero. A touch
+         that began at rest owes only SLOP, so this is one frame for it and the
+         claim below still lands on the first downward pixel. */
+      const next = Math.max(0, Math.min((dy - owed) * RESISTANCE, MAX_PULL));
+      if (next <= 0 && travelled <= 0 && owed > SLOP) return;
+
       engaged = true;
 
       /* Owning the gesture is what stops iOS rubber-banding the list at the
@@ -267,7 +314,7 @@ export function PhonePullToRefresh({
          where the platform has taken the gesture anyway: preventing an
          uncancelable event only earns a console warning. */
       if (e.cancelable) e.preventDefault();
-      travelled = Math.max(0, Math.min((dy - SLOP) * RESISTANCE, MAX_PULL));
+      travelled = next;
       setPhase("pulling");
       setPull(travelled);
     };
