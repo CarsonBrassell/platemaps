@@ -32,17 +32,28 @@ export const metadata: Metadata = {
    * field — `manifest.ts` still declares it for Android — so without this the
    * icon is a bookmark that opens a browser tab with a URL bar above it.
    *
-   * `statusBarStyle: "default"` keeps dark text on the light status bar, which
-   * is what the cream ground needs. The alternative worth knowing about is
-   * "black-translucent", which extends the page under the status bar — the
-   * layout already spends `env(safe-area-inset-top)` (see the viewport export
-   * below), so it would not break, but it would put the clock over the header
-   * on every screen rather than above it.
+   * `statusBarStyle: "black-translucent"` is what makes the page reach the
+   * physical top edge. The alternative, "default", reserves a native strip
+   * above the web viewport and fills it with the page's own colour — which put
+   * a cream bar across the top of the map screen, where the map is supposed to
+   * run edge to edge. That strip cannot be reached from inside the document:
+   * it is outside the viewport, and `env(safe-area-inset-top)` reads 0 in that
+   * mode, so the page can pick its colour and nothing else. "black-translucent"
+   * removes the strip instead of colouring it — the page now owns those pixels,
+   * the insets become real, and the padding this layout already spends on
+   * `env(safe-area-inset-top)` (see the viewport export below) is what keeps
+   * ordinary screens clear of the clock. It is also how the Capacitor build has
+   * always rendered, so the phone tree is being asked for a layout it is known
+   * to get right.
+   *
+   * The cost is the clock itself: "black-translucent" paints the status bar
+   * glyphs white on every screen, and they sit over cream on everything but the
+   * map. Deliberate — the map reaching the top edge is the thing being bought.
    */
   appleWebApp: {
     capable: true,
     title: "PlateMaps",
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
   },
   /**
    * `appleWebApp.capable` makes Next emit only the modern
