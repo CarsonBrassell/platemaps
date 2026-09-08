@@ -306,15 +306,26 @@ export function PhoneStickyBar({
   }, []);
 
   /* Zero-width, height equal to the resolved inset — see the header note on
-     why `env()` needs a laid-out probe rather than a read. Kept out of flow so
-     it cannot affect the row's own layout. Rendered by both builds; the sticky
-     one measures the stick point with it, the pinned one only keeps it so the
-     shared effect has something to observe. */
+     why `env()` needs a laid-out probe rather than a read. Rendered by both
+     builds; the sticky one measures the stick point with it, the pinned one
+     only keeps it so the shared effect has something to observe.
+
+     **`absolute`, and that is not cosmetic.** It was in the flow with `h-0`,
+     which under the border-box every element here inherits does not mean zero
+     height: a box cannot be shorter than its own padding, so the probe stood
+     exactly one inset tall and pushed everything below it down by it. On a
+     desktop the inset is 0 and the probe is genuinely nothing, which is why
+     every measurement taken in a browser read clean; on a notched handset it
+     put a second inset into a column that had already spent one on the
+     scroller (`.pm-phone-content`, phone.css), and the result was ~47pt of
+     blank cream between the bar and the first card. Reported off TestFlight,
+     invisible everywhere else. Out of the flow it still lays out, so the rect
+     below still resolves the same number. */
   const insetProbe = (
     <div
       ref={insetProbeRef}
       aria-hidden="true"
-      className="h-0 w-0 overflow-hidden"
+      className="pointer-events-none absolute h-0 w-0 overflow-hidden"
       style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
     />
   );
