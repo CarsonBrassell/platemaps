@@ -353,7 +353,7 @@ export function PhoneFeedScreen() {
             Nothing ends up under the clock as a result: the MapLibre controls
             carry the same inset themselves further down this file, and the
             source switch is pinned to the bottom. */}
-        <div className="relative h-dvh mt-[calc(-1*env(safe-area-inset-top))] mb-[calc(-1*var(--phone-nav-space))]">
+        <div className="relative h-dvh">
           {/* The map fills the frame. `inset-0` rather than a flex child now
               that nothing sits above it to take a share of the height. */}
           <div className="absolute inset-0">

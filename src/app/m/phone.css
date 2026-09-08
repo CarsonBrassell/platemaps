@@ -46,6 +46,29 @@ html.pm-lock-scroll body {
   overscroll-behavior: none;
 }
 
+/* The map screen is the whole screen, so the column stops reserving room.
+ *
+ * Every other /m screen wants the two insets the scroller spends below: the
+ * safe-area strip at the top, so the first row clears the clock, and the nav's
+ * height at the bottom. The map wants neither — it is meant to run under both,
+ * with its own floating chrome placed clear of them.
+ *
+ * It used to buy that back with negative margins on the map itself
+ * (`mt-[calc(-1*env(safe-area-inset-top))]`). That worked in Chrome and in
+ * the native WebView and failed on the phone — the one place where the top
+ * inset is non-zero and the layout is the whole product. The padding stayed,
+ * the cancel did not land, and what showed through the gap was a cream band
+ * across the top of the map exactly as tall as the status bar. Cancelling a
+ * value one engine at a time is how that happens; not spending it is not.
+ *
+ * Keyed off the class the map screen already sets on <html> while it is up
+ * (see PhoneFeedScreen), so it is exactly as scoped as the scroll lock and
+ * leaves with it. */
+html.pm-lock-scroll .pm-phone-content {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 /* The map's own gestures are MapLibre's; this stops a pan that reaches the
    edge of the tiles from chaining out into the page behind it. */
 .pm-phone-shell .map-fun-tiles {
