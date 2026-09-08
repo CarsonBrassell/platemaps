@@ -1,4 +1,13 @@
 no DATABASE_URL - brand-twin check falls back to the hand-written allowlist
-clean:      1 entries (1 with menus, 0 confirmed not-found), 10 dishes
-quarantine: 0 entries, 0 dishes withheld
 
+unpriced dishes dropped (kept the rest of each menu):
+  El Cajon taco shop: dropped 6 unpriced
+clean:      7 entries (7 with menus, 0 confirmed not-found), 425 dishes
+quarantine: 6 entries, 144 dishes withheld
+
+  Karami Ramen (41 dishes) - held by id - see QUARANTINE_IDS
+  Glazed Coffee & Creamery (7 dishes) - only 7 dishes - likely a partial capture
+  The Deli Stop (5 dishes) - only 5 dishes - likely a partial capture
+  Mi Amigo Mexican Food & Sea (5 dishes) - only 5 dishes - likely a partial capture
+  Backstreet Brewery (82 dishes) - untrusted aggregator (checkle.menu)
+  El Cajon taco shop (4 dishes) - only 4 dishes - likely a partial capture

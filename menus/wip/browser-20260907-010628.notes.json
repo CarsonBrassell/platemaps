@@ -1,0 +1,512 @@
+[
+  {
+    "restaurantId": "7104",
+    "name": "Buonasera New York Pizzeria",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://buonaserapizza.com/ after 80 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6741",
+    "name": "Luna Grill Millenia",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "store picker on https://locations.lunagrill.com/ that this script could not drive",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6714",
+    "name": "Solana Sumptuous Cookies",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/dir/32.768,-117.0669568/150+Solana+Hills+Dr,+Solana+Beach,+CA+92075/@32.877633,-117.3266979,11z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x80dc0930211592c1:0xaa9c140be46af84a!2m2!1d-117.2575763!2d32.9949561?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D after 195 JSON responses; store picked by street number 150 in the link; opened the branch link carrying street number 150",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4869",
+    "name": "Surfing Crab Escondido",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.surfingcrabca.com/ after 19 JSON responses; store picked by street number 202; clicked a branch matching street number 202",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8903",
+    "name": "bb.q Chicken Chula Vista",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://bbqchicken.com/ after 242 JSON responses; followed the branch link https://bbqchicken.order.online/business/82085; the followed link had no more prices than https://bbqchicken.com/; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7045",
+    "name": "Tacaliente Mexican Grill",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/place/1266+University+Ave,+San+Diego,+CA+92103/@32.7490863,-117.1546124,17z/data=!3m1!4b1!4m6!3m5!1s0x80d954dd3b99c083:0xcd03c8bd269d5775!8m2!3d32.7490863!4d-117.1520375!16s%2Fg%2F11rnfbrcyf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D after 72 JSON responses; store picked by street number 1266 in the link; opened the branch link carrying street number 1266",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14095",
+    "name": "BattleMage Brewing Company",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "5 dishes from https://www.battlemagebrewing.com/; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://www.battlemagebrewing.com/; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 200 but only 0/5 sampled dish names - the catalog is session-bound"
+  },
+  {
+    "restaurantId": "2136",
+    "name": "Santos Coffee",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/sorry/index?continue=https://www.google.rs/search%3Fq%3DSantos%2BCoffee%2BHouse%2B3191%2BThorn%2BStreet%2Breviews%26sca_esv%3D5e5568ccfe61287d%26sxsrf%3DADLYWILkfOLTUEYnJRv42hBqu4T0R4teOw%253A1726475896371%26source%3Dhp%26ei%3DeO7nZpayFImVxc8PrNq2-AY%26iflsig%3DAL9hbdgAAAAAZuf8iBy_SAh0e5oB5HLeOnL3yKSzsQJ7%26ved%3D0ahUKEwiWzo70h8eIAxWJSvEDHSytDW8Q4dUDCBY%26uact%3D5%26oq%3DSantos%2BCoffee%2BHouse%2B3191%2BThorn%2BStreet%2Breviews%26gs_lp%3DEgdnd3Mtd2l6Ii1TYW50b3MgQ29mZmVlIEhvdXNlIDMxOTEgVGhvcm4gU3RyZWV0IHJldmlld3MyBRAhGKABSJlVUABYhVBwAHgAkAEAmAHsAaABpg2qAQUwLjguMrgBA8gBAPgBAvgBAZgCCqACvQ3CAgcQABiABBgTwgIIEAAYExgWGB7CAggQABiABBiiBMICCBAAGIAEGMsBwgIGEAAYFhgewgIEECEYFcICBxAhGKABGAqYAwCSBwUwLjguMqAHtB0%26sclient%3Dgws-wiz%26sei%3Dmg6eapfHB9bA0PEPqY_AkQQ&q=EhAmAIgBmgjSAPX2KuGL3nfVGJqd-NQGIjDW8p_kdR2ms9GtnYfvZ9L4foq7jWZdMPJtuhHQP7p-0TRNBaR-fC8uDv-1JyuRBj8yAVJaAUM#lrd=0x80d95461f48f44cd:0xd80ca2641ad74147,1,,,, after 38 JSON responses; store picked by street number 3191 in the link; opened the branch link carrying street number 3191",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3740",
+    "name": "Rosemonts Cafe",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/egiftcards/rosemonts-cafe-6830-la-jolla-blvd-101 after 73 JSON responses; store picked by street number 6830 in the link; opened the branch link carrying street number 6830",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "11100",
+    "name": "bb.q Chicken National City",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://bbqchicken.com/ after 243 JSON responses; followed the branch link https://bbqchicken.order.online/business/82085; the followed link had no more prices than https://bbqchicken.com/; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7429",
+    "name": "Ocean Buffet",
+    "platform": null,
+    "outcome": "gated",
+    "detail": "only 3 priced items from https://order.mealkeyway.com/merchant/53383233714a56566f7335796344536439564d7131673d3d/info?getPosConfig=true at 6:09:58 PM PT - a closed store looks exactly like a small menu, so re-run in daylight; followed the branch link https://order.mealkeyway.com/customer/release/index?mid=53383233714a56566f7335796344536439564d7131673d3d#/main",
+    "menuResponses": [
+      "https://order.mealkeyway.com/merchant/53383233714a56566f7335796344536439564d7131673d3d/info?getPosConfig=true"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6340",
+    "name": "San Diego Sandwich Co",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on http://www.sandiegosandwich.com/ after 156 JSON responses; followed the branch link https://order.online/business/san-diego-sandwich-co-40821; the followed link had no more prices than http://www.sandiegosandwich.com/; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6820",
+    "name": "Matcha Cafe Maiko - Escondido",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/dir/32.768,-117.0669568/1024+W+Valley+Pkwy,+Escondido,+CA+92025/@32.9379704,-117.273194,11z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x80dbf4923a1eb017:0xef06711750398af1!2m2!1d-117.097887!2d33.1174171?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D after 134 JSON responses; store picked by street number 1024 in the link; opened the branch link carrying street number 1024",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6180",
+    "name": "Flippin' Pizza La Costa",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://flippinpizza.hungerrush.com/Order/Menu/17#groups after 29 JSON responses; store picked by street number 7662; clicked a branch matching street number 7662",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6654",
+    "name": "Marieta's Mexican Food",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://toto4dslotgacor.com/ after 11 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7364",
+    "name": "Johnny Mañanas Ocean Beach",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://johnnymananas.com/ after 31 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8887",
+    "name": "Poki Poki - Oceanside # 1",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.pokipokico.com/ after 30 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9659",
+    "name": "Novo Brazil Brewing - Lane Ave",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on http://www.novobrew.com/ after 191 JSON responses; followed the branch link https://order.online/online-ordering/business/-11567753/?hideModal=true&pickup=true; the followed link had no more prices than http://www.novobrew.com/; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7329",
+    "name": "Galu Café and Delicatessen",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.mozzarellastg.com/ after 11 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6249",
+    "name": "Porky's Lechon Barbecue",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://porkyslechon.com/menu/ after 22 JSON responses; store picked by street number 1430; clicked a branch matching street number 1430",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8606",
+    "name": "Isabelle Briens French Pastry Cafe",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://ibcafe.com/ after 86 JSON responses; followed the branch link https://ibcafe.com/encinitas-ranch-santa-fe-isabelle-briens-french-pastry-cafe-food-menu; the followed link had no more prices than https://ibcafe.com/; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6118",
+    "name": "Crossroads Deli",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/dir/32.768,-117.0669568/9085+Judicial+Dr,+San+Diego,+CA+92122/@32.8151761,-117.2166313,12z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x80dc0734aa3f7c4d:0x2b1ac45bb4e71412!2m2!1d-117.2031787!2d32.8721398?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D after 132 JSON responses; store picked by street number 9085 in the link; opened the branch link carrying street number 9085",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6310",
+    "name": "Elixir Espresso & Wine Bar",
+    "platform": null,
+    "outcome": "gated",
+    "detail": "only 4 priced items from https://www.elixirespressobar.com/shop at 6:13:56 PM PT - a closed store looks exactly like a small menu, so re-run in daylight; followed the branch link https://www.elixirespressobar.com/shop; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8939",
+    "name": "Sizzling Pot King",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on http://www.sizzlingpotking.com/ after 21 JSON responses; store picked by street number 8058; clicked a branch matching street number 8058",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "9669",
+    "name": "Lupe's Cafe Mexican Restaurant",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.lupesmexicanfood.com/ after 56 JSON responses; store picked by street number 12759; clicked a branch matching street number 12759",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7619",
+    "name": "CinKuni (Italian & Japanese Cuisine)",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "80 priced items on https://get.chownow.com/?utm_source=product&utm_medium=orderdirect&utm_campaign=poweredbyfooter, reached by following a link off direct.chownow.com, but nothing on the page names an address or this city - an agent must confirm this is CinKuni (Italian & Japanese Cuisine), 3025 El Cajon Blvd, San Diego, CA 92104. Not filed; followed the branch link https://get.chownow.com/?utm_source=product&utm_medium=orderdirect&utm_campaign=poweredbyfooter",
+    "menuResponses": [
+      "https://api.chownow.com/api/restaurant/62355/menu"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "12142",
+    "name": "Tocaya Modern Mexican",
+    "platform": null,
+    "outcome": "gated",
+    "detail": "only 2 priced items from https://tocayacatering.olo.com/api/bootstrapData/tocayaorganicacatering?includeAnalytics=true at 6:15:19 PM PT - a closed store looks exactly like a small menu, so re-run in daylight; followed the branch link https://tocayaorganicacatering.olo.com/; the followed link had no more prices than https://www.tocaya.com/; went back",
+    "menuResponses": [
+      "https://tocayacatering.olo.com/api/bootstrapData/tocayaorganicacatering?includeAnalytics=true"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7012",
+    "name": "Tasty Pho",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "52 priced items on https://tastypho.shop.securetree.com/, reached by following a link off order.spoton.com, but nothing on the page names an address or this city - an agent must confirm this is Tasty Pho, 1250 S Santa Fe Ave k, Vista, CA 92084. Not filed; followed the branch link https://egiftcards.spoton.com/1591/615f75489adef37aee700784?returnUrl=https%3A%2F%2Forder.spoton.com%2Fso-tasty-pho-vista-1591%2Fvista-ca%2F615f75489adef37aee700784%2Fordering-unavailable&source=olo-web",
+    "menuResponses": [
+      "https://order.spoton.com/api/merchants/615f75489adef37aee700784/menu-groups?orderTypeId=5eaacf177947dd00071294d3&orderDateTime=2026-09-07T01:15:21.276Z&includeMenuItems=true"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8859",
+    "name": "Tyne Coffee Co.",
+    "platform": null,
+    "outcome": "gated",
+    "detail": "only 1 priced items from https://www.tynecoffeeco.com/ at 6:15:51 PM PT - a closed store looks exactly like a small menu, so re-run in daylight; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8802",
+    "name": "The Outpost by Valley Farm",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.theoutpostvfm.com/ after 36 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3070",
+    "name": "Swami's",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.online/store/swami's-cafe-encinitas-63295 after 194 JSON responses; followed the branch link https://order.online/business/-9096; the followed link had no more prices than https://order.online/store/swami's-cafe-encinitas-63295; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "11144",
+    "name": "Bruster's Real Ice Cream",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "store picker on https://brusters.com/locations/LaMesa/453/ that this script could not drive (tried: clicked a branch matching street number 8497); store picked by street number 8497; clicked a branch matching street number 8497",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5631",
+    "name": "Cafe Pascale Grill & Deli",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.cafepascale.com/ after 71 JSON responses; store searched by ZIP; typed ZIP 92130 into the store search",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6225",
+    "name": "Off the Vine Gardens Deli And Catering",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "118 priced items on https://order.chownow.com/order/39331/locations/59779?add_cn_ordering_class=true, reached by following a link off offthevinegardens.com, but nothing on the page names an address or this city - an agent must confirm this is Off the Vine Gardens Deli And Catering, 2382 Camino Vida Roble, Carlsbad, CA 92011. Not filed; followed the branch link https://order.chownow.com/order/39331/locations?add_cn_ordering_class=true",
+    "menuResponses": [
+      "https://api.chownow.com/api/restaurant/59779/menu/202609070745"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8967",
+    "name": "Golden Dragon",
+    "platform": null,
+    "outcome": "gated",
+    "detail": "only 1 priced items from https://sdgoldendragon.square.site/#DUKFX7MB75CYU4LCBXQ3YCCV at 6:17:35 PM PT - a closed store looks exactly like a small menu, so re-run in daylight; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3174",
+    "name": "Bean Box",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "14 priced items on https://the-bean-box.square.site/, reached by following a link off thebeanboxca.com, but the page names San Diego, but it names every other branch's city too - a location list is not an address - an agent must confirm this is Bean Box, 4019 W Point Loma Blvd, San Diego, CA 92110. Not filed; followed the branch link https://the-bean-box.square.site/; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "12316",
+    "name": "Sushi Heights",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "7 dishes from https://sushi-heights.square.site/; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://sushi-heights.square.site/; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 200 but only 0/6 sampled dish names - the catalog is session-bound"
+  },
+  {
+    "restaurantId": "12186",
+    "name": "HapiVegan",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.online/store/2468049?pickup=true&redirected=true after 129 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3261",
+    "name": "Island Market",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://californiaislandmarket.com: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://californiaislandmarket.com/\", waiting unti",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "1152",
+    "name": "Deja Vu",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://deja-vu.band/ after 27 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "1188",
+    "name": "Kellys Pub",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://kellyspub.ca: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://kellyspub.ca/\", waiting until \"domcontentl",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4910",
+    "name": "Joe's Italian Dinner",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on chrome-error://chromewebdata/ after 1 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7624",
+    "name": "Mama G’s Kitchen & Sauces Peruvian Cuisine",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.mamagskitchenandsauces.com: page.goto: net::ERR_CERT_COMMON_NAME_INVALID at https://www.mamagskitchenandsauces.com/\nCall log:\n\u001b[2m  - navigating to ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6881",
+    "name": "Gooseberries kafe",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://gooseberrieskafe.com: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://gooseberrieskafe.com/\", waiting until \"dom",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7505",
+    "name": "Pazzos Italian",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on http://pazzos.net: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://pazzos.net/\", waiting until \"domcontentload",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7050",
+    "name": "Nana's and Pops Sweet Shop",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on http://www.osidesweets.com: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://www.osidesweets.com/\", waiting until \"domco",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7006",
+    "name": "Nory's Donut & Bakery",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://norysbakery.com: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://norysbakery.com/\", waiting until \"domconte",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7109",
+    "name": "Harvey's",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://harveyssd.com: page.goto: net::ERR_CERT_COMMON_NAME_INVALID at https://harveyssd.com/\nCall log:\n\u001b[2m  - navigating to \"https://harveyss",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6167",
+    "name": "Delicia's Taco Shop",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://deliciastacoshopca.com: page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://deliciastacoshopca.com/\nCall log:\n\u001b[2m  - navigating to \"https://delic",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7963",
+    "name": "Phology Noodle House - Pho Vietnamese Chula Vista CA",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://phologynoodle.com: page.goto: net::ERR_CONNECTION_TIMED_OUT at https://phologynoodle.com/\nCall log:\n\u001b[2m  - navigating to \"https://phologyn",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  }
+]

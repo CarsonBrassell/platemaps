@@ -1,0 +1,504 @@
+[
+  {
+    "restaurantId": "14052",
+    "name": "Pizza Trolley",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://pizzatrolley.com/ after 41 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14053",
+    "name": "Sun Coast Pizza",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on http://www.suncoastpizzasd.com/menu after 47 JSON responses; followed the branch link http://www.suncoastpizzasd.com/menu",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14057",
+    "name": "Mission Brewing - Sky Deck",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.missionbrewing.com/; after 38 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10052",
+    "name": "Ocean Journey Cafe",
+    "platform": null,
+    "outcome": "gated",
+    "detail": "only 4 priced items from https://www.legoland.com/california/ at 4:09:51 PM PT - a closed store looks exactly like a small menu, so re-run in daylight; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14055",
+    "name": "Mission Brewing - Miramar",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://missionbrewery.com/ after 59 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14172",
+    "name": "Dyno Bar",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on http://www.dynobarsd.com/; after 0 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14170",
+    "name": "Matcha On Ice Cafe",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.matchaonicecafe.com/; after 2 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14173",
+    "name": "BLAH Brewing",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on http://www.blahbrewing.com/; after 0 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14059",
+    "name": "Alebrije Food Truck Twin Oaks",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.instagram.com/alebrije_food_truck?igshid=YzAwZjE1ZTI0Zg%3D%3D%3B after 43 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10056",
+    "name": "Tres Fuegos Cocina",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.tresfuegoscocina.com/; after 25 JSON responses; store searched by ZIP; typed ZIP 91915 into the store search",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10073",
+    "name": "NandosHotBox",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.nandoshotbox.com/; after 23 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10074",
+    "name": "Don Maguro",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://donmaguro.com/; after 7 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10071",
+    "name": "Carnitas La Bendicion Market St",
+    "platform": null,
+    "outcome": "gate-personal",
+    "detail": "an age gate, login or terms wall blocks the menu on http://ordercarnitaslabendicionmarketst.mobile-webview6.com/ - not answered",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10075",
+    "name": "Lobby Lounge - Park Hyatt Aviara",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://parkhyattaviara.com/stay-connected/?email=92011#maincontent after 28 JSON responses; store searched by ZIP; typed ZIP 92011 into the store search",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14178",
+    "name": "Vie Café",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "22 dishes from https://westgatehotel.menu/viecafemenu?menu=50c74202-9322-4747-83a0-c2312579371a; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://westgatehotel.menu/viecafemenu; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 404"
+  },
+  {
+    "restaurantId": "10078",
+    "name": "The Bean",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.lfjcc.org/about/index.aspx#hours; after 45 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14063",
+    "name": "Double Down Grill",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.sycuan.com/restaurants/double-down-grill/ after 51 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14067",
+    "name": "On the Rocks",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.hoteldel.com/dine/on-the-rocks/ after 53 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14182",
+    "name": "Bulldog Tavern",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://sandiego.usmc-mccs.org/dining-entertainment/dining/the-bulldog-tavern; after 0 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10087",
+    "name": "Julian Wine & Chocolate",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.julianwineandchocolate.com/; after 20 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10086",
+    "name": "Mama’s Bowl",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://mamasbowlrestaurant.com/; after 60 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14184",
+    "name": "The Monastery by The Lost Abbey (Miramar Area)",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.lostabbey.com/; after 72 JSON responses; store searched by ZIP; typed ZIP 92126 into the store search",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14186",
+    "name": "TOCHO MOROCHO",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.tochomorocho.info/; after 10 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14185",
+    "name": "Tacos El Chris",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.instagram.com/tacoselchris?igsh=MzRlODBiNWFlZA%3D%3D%3B after 42 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14187",
+    "name": "Coatl Coffee",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "6 dishes from https://www.coatlcoffee.com/shop; followed the branch link https://www.coatlcoffee.com/shop; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.coatlcoffee.com/shop; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 4/6 sampled dish names"
+  },
+  {
+    "restaurantId": "14189",
+    "name": "Anigma",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://anigmaencinitas.com/; after 1 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14069",
+    "name": "El Ranchero Food Truck",
+    "platform": null,
+    "outcome": "gated",
+    "detail": "only 1 priced items from https://www.facebook.com/sandiegofoodtruck; at 4:15:28 PM PT - a closed store looks exactly like a small menu, so re-run in daylight",
+    "menuResponses": [
+      "https://www.facebook.com/sandiegofoodtruck;"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10091",
+    "name": "Limon Mexican food",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.instagram.com/limon_mexican_food?igsh=bDFyemNudnJyMzNz%3B after 41 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10096",
+    "name": "The Café at Rady Children’s Hospital",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.rchsd.org/patients-visitors/your-childs-hospital-stay/amenities-resources/ after 8 JSON responses; store picked by street number 3020; clicked a branch matching street number 3020",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14068",
+    "name": "El Clamatazo",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.instagram.com/el_clamatazo/profilecard/?igsh=MzRlODBiNWFlZA%3D%3D%3B after 27 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10101",
+    "name": "Kona Kai Club",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.clubkonakai.com/?utm_source=gmb-countryclub&utm_medium=organic&utm_campaign=gmb%3B after 78 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10108",
+    "name": "Xtravaganza and Sinbad Restaurant",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://xtravaganzalounge.com/; after 1 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10107",
+    "name": "Victorious Pizza",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.victoriouspizza.com/;: page.goto: net::ERR_CONNECTION_TIMED_OUT at https://www.victoriouspizza.com/;\nCall log:\n\u001b[2m  - navigating to \"https://w",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10109",
+    "name": "Little Thai Cottage (Mobile Vendor)",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.littlethaicottage.com/; after 22 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14191",
+    "name": "The Westgate Room's Plaza Bar",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.westgatehotel.com/dining/bonne-vie/ after 27 JSON responses; store picked by street number 1055; clicked a branch matching street number 1055",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14192",
+    "name": "Turtle Rock Ridge Wine Bar",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3D1261%2BProspect%2BSt%2B%25232,%2BLa%2BJolla,%2BCA%2B92037%26shndl%3D40%26shem%3Dvidc%26source%3Dsh/x/loc/geo/m1/1%26kgs%3Dd44df7bd33c1cfe4%26sei%3Dn_SdavWONtjhkPIP85qGwQE&q=EhAmAIgBmgjSAPTfdj2g6kX9GKDp99QGIjAr2xuvuQy-7XnDn1TkEEjDzwy7pJ8qr4ow6JQASceMLFzcnwwmugvN2LDcsgc58SwyAVJaAUM after 20 JSON responses; store picked by street number 1261; clicked a branch matching street number 1261",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14193",
+    "name": "J. Brix Wines Tasting Room",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "26 dishes from https://www.jbrix.com/shop; followed the branch link https://www.jbrix.com/shop; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": true,
+    "curlNote": "GET https://www.jbrix.com/shop; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "14195",
+    "name": "Blu Temple | Blu Cabana",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on http://www.blutemple.com/;: page.goto: net::ERR_NAME_NOT_RESOLVED at http://www.blutemple.com/;\nCall log:\n\u001b[2m  - navigating to \"http://www.blutempl",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10115",
+    "name": "Freshly Prepped",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.freshlyprepped.com/; after 10 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10114",
+    "name": "Manny's Bar & Grill",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://mannysbarngrill.com/;: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://mannysbarngrill.com/;\", waiting until \"dom",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14073",
+    "name": "Bholat's",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.bholatskitchen.com/; after 2 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10123",
+    "name": "Colors Gourmet Pizza",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://colorspizza.com/ after 19 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10122",
+    "name": "Hidden City Nutrition",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://msha.ke/hiddencitynutrition/; after 4 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14071",
+    "name": "‘ritas Taco Truck",
+    "platform": null,
+    "outcome": "gate-personal",
+    "detail": "an age gate, login or terms wall blocks the menu on https://harrahssocal.com/dining/the-taco-truck; - not answered; followed the branch link https://harrahssocal.com/resort/shop; the followed link had no more prices than https://harrahssocal.com/dining/the-taco-truck;; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10117",
+    "name": "Emilio's Food Truck",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.instagram.com/emiliospaella/; after 42 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "14076",
+    "name": "Namino (Tahchin)",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.naamino.com/ after 42 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10139",
+    "name": "North County Food Hub",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://northcountyfoodhub.com/; after 83 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10138",
+    "name": "Huerta Taco Stand",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.foxpointfarms.com/artisans/huerta-taco-stand/;/ after 75 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "10131",
+    "name": "JIVe Lounge",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.jamulcasino.com/restaurant/jive-lounge/; after 77 JSON responses; store picked by street number 14145; clicked a branch matching street number 14145",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "791",
+    "name": "Bert's Bistro",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.sandiego.edu/dining/campus/berts-bistro.php;#gsc.q=dining+campus+berts-bistro after 79 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  }
+]
