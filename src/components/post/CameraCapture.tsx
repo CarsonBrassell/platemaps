@@ -37,6 +37,13 @@ const SPLIT_HALF = 675;
  * over it. How it gets them depends on the hardware and it cannot be known in
  * advance; see `openSpare`.
  *
+ * **One photo, then a look at it.** The shutter does not land you back on the
+ * live camera — the shot it just took fills the same frame the viewfinder was
+ * filling, and the two questions a finished photo asks, keep it or take it
+ * again, are the only controls left on screen. A plate post is about one plate;
+ * a strip of thumbnails under a running camera made it a loop nobody was
+ * looking at. `MAX_PHOTOS` in lib/photos carries the rest of that reasoning.
+ *
  * **There is no library picker on this screen, by decision.** A plate photo is
  * a thing you are looking at now, and every route from a camera roll ends in a
  * post about a meal that may be weeks old and somewhere else. So no camera API,
@@ -115,7 +122,8 @@ export function CameraCapture({
   const [attempt, setAttempt] = useState(0);
   const [flash, setFlash] = useState(false);
 
-  const full = photos.length >= MAX_PHOTOS;
+  /** The photo, once one exists. Its presence *is* the review step. */
+  const taken = photos[0] ?? null;
   /** Which half the running camera is filling: the second one once a shot is held. */
   const slot = pendingUrl ? 1 : 0;
   const live: Facing = mode === "single" ? facing : order[slot];
@@ -326,17 +334,14 @@ export function CameraCapture({
    * to find afterwards. `uploadPhotos` in lib/photos is where they go, once,
    * at the end. */
   function add(blob: Blob) {
-    if (photos.length >= MAX_PHOTOS) return;
-    onChange((prev) => [
-      ...prev,
-      { id: nextPhotoId(), previewUrl: URL.createObjectURL(blob), blob },
-    ]);
+    photos.forEach((photo) => URL.revokeObjectURL(photo.previewUrl));
+    onChange([{ id: nextPhotoId(), previewUrl: URL.createObjectURL(blob), blob }]);
   }
 
-  /** Dropping a draft drops the object URL with it. */
-  function remove(photo: PhotoDraft) {
-    URL.revokeObjectURL(photo.previewUrl);
-    onChange((prev) => prev.filter((p) => p.id !== photo.id));
+  /** Back to the live camera. Dropping the draft drops its object URL with it. */
+  function retake() {
+    photos.forEach((photo) => URL.revokeObjectURL(photo.previewUrl));
+    onChange([]);
   }
 
   async function captureSplit() {
@@ -380,7 +385,7 @@ export function CameraCapture({
   }
 
   async function capture() {
-    if (full) return;
+    if (photos.length >= MAX_PHOTOS) return;
     if (mode === "split") {
       void captureSplit();
       return;
@@ -584,17 +589,15 @@ export function CameraCapture({
       <button
         type="button"
         onClick={capture}
-        disabled={status !== "live" || full}
+        disabled={status !== "live"}
         aria-label={
-          full
-            ? `Photo limit reached — ${MAX_PHOTOS} maximum`
-            : mode === "split"
-              ? midSplit
-                ? "Take the second half"
-                : bothLive
-                  ? "Take both cameras at once"
-                  : "Take the first half"
-              : "Take a photo"
+          mode === "split"
+            ? midSplit
+              ? "Take the second half"
+              : bothLive
+                ? "Take both cameras at once"
+                : "Take the first half"
+            : "Take a photo"
         }
         className="flex h-[74px] w-[74px] shrink-0 rounded-full bg-white p-[7px] shadow-md ring-1 ring-inset ring-pm-charcoal/10 transition-transform active:scale-90 disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange"
       >
@@ -644,40 +647,53 @@ export function CameraCapture({
     </button>
   );
 
-  const thumbs = photos.length > 0 && (
-    <ul className="flex gap-2">
-      {photos.map((photo, i) => (
-        <li
-          key={photo.id}
-          className={`relative h-16 w-16 overflow-hidden rounded-xl ring-1 ring-inset ${
-            fullscreen ? "ring-white/25" : "ring-zinc-200"
-          }`}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={photo.previewUrl}
-            alt={`Photo ${i + 1}`}
-            className="h-full w-full object-cover"
-          />
-
-          <button
-            type="button"
-            onClick={() => remove(photo)}
-            aria-label={`Remove photo ${i + 1}`}
-            className="absolute right-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-pm-charcoal/75 text-white transition-transform hover:scale-110"
-          >
-            <CloseIcon className="h-2.5 w-2.5" />
-          </button>
-        </li>
-      ))}
-    </ul>
+  /*
+   * The shot, standing exactly where the camera was standing.
+   *
+   * `object-cover` in the box the live preview filled, so what comes back is
+   * the framing that was on screen when the shutter fired — the JPEG holds the
+   * whole video frame, which is wider than any viewfinder ever showed. The
+   * stream keeps running behind it: retake has to be instant, and reopening a
+   * camera costs a second of black.
+   */
+  const review = taken && (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={taken.previewUrl}
+      alt="The photo you just took"
+      className="absolute inset-0 h-full w-full object-cover"
+    />
   );
 
-  /* A span, not a paragraph: it sits inside the shutter hint's own <p>. */
-  const counter = photos.length > 0 && (
-    <span className="rounded-full bg-pm-charcoal/70 px-3 py-1 font-mono text-[11px] tabular-nums text-white backdrop-blur-sm">
-      {photos.length}/{MAX_PHOTOS}
-    </span>
+  /* Keep it or take it again — the only two questions a finished photo asks.
+     `onDone` exists only on the fullscreen composer, which hid its own chrome
+     for this step; the web card leaves Next to the action bar under it. */
+  const reviewActions = (
+    <div className="flex items-center gap-3">
+      <button
+        type="button"
+        onClick={retake}
+        className={`flex min-h-12 flex-1 items-center justify-center gap-2 rounded-2xl px-4 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${
+          fullscreen
+            ? "bg-white/15 text-white ring-1 ring-inset ring-white/25 backdrop-blur-md hover:bg-white/25 focus-visible:outline-white"
+            : "bg-white text-zinc-700 ring-1 ring-inset ring-zinc-200 hover:text-pm-orange-text focus-visible:outline-pm-orange"
+        }`}
+      >
+        <CameraIcon className="h-4 w-4 shrink-0" />
+        Retake
+      </button>
+
+      {onDone && (
+        <button
+          type="button"
+          onClick={onDone}
+          className="flex min-h-12 flex-1 items-center justify-center gap-1 rounded-2xl bg-pm-orange px-4 text-sm font-semibold text-[#F7F4EC] transition-transform active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          Next
+          <ChevronIcon className="h-4 w-4 shrink-0" />
+        </button>
+      )}
+    </div>
   );
 
   /* ------------------------------------------------------------ fullscreen */
@@ -693,7 +709,7 @@ export function CameraCapture({
        * chrome carried, leaving and moving on, are up here.
        */
       <div className="fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-pm-charcoal">
-        <div className="absolute inset-0">{viewfinder}</div>
+        <div className="absolute inset-0">{taken ? review : viewfinder}</div>
 
         <div
           className="relative flex items-start justify-between gap-3 px-4 pb-3 pt-4"
@@ -708,46 +724,40 @@ export function CameraCapture({
             <CloseIcon className="h-5 w-5" />
           </button>
 
-          {modeSwitch}
+          {/* The mode switch is a question about the next shot, so it belongs to
+              the viewfinder. Under review the picture is already taken and the
+              only controls are the two at the bottom — leaving, top left, is the
+              third and it never goes away. */}
+          {taken ? <span className="h-11 flex-1" aria-hidden="true" /> : modeSwitch}
 
-          {/* The step's own Next, standing where the action bar's would be if the
-              camera had not taken the floor. Nothing to move on with until a
-              photo exists, and the comment door below is the other way out. */}
-          {photos.length > 0 ? (
-            <button
-              type="button"
-              onClick={onDone}
-              className="flex min-h-11 shrink-0 items-center gap-1 rounded-full bg-pm-orange px-4 text-sm font-semibold text-[#F7F4EC] transition-transform active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              Next
-              <ChevronIcon className="h-4 w-4" />
-            </button>
-          ) : (
-            <span className="h-11 w-11 shrink-0" aria-hidden="true" />
-          )}
+          <span className="h-11 w-11 shrink-0" aria-hidden="true" />
         </div>
 
         <div
           className="relative flex flex-col gap-3 px-4 pb-4"
           style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom))" }}
         >
-          {/* What the shutter will do, said once, where the thumb already is. */}
-          <p aria-live="polite" className="flex items-center gap-2 text-xs font-medium text-white/75">
-            {counter}
-            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
-              {mode === "split"
-                ? midSplit
-                  ? `Now the ${order[1] === "user" ? "selfie" : "plate"}`
-                  : bothLive
-                    ? "Both cameras, one picture"
-                    : `${order[0] === "user" ? "Selfie" : "Plate"} first, then the other side`
-                : ""}
-            </span>
-          </p>
+          {taken ? (
+            reviewActions
+          ) : (
+            <>
+              {/* What the shutter will do, said once, where the thumb already is. */}
+              <p aria-live="polite" className="text-xs font-medium text-white/75">
+                <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                  {mode === "split"
+                    ? midSplit
+                      ? `Now the ${order[1] === "user" ? "selfie" : "plate"}`
+                      : bothLive
+                        ? "Both cameras, one picture"
+                        : `${order[0] === "user" ? "Selfie" : "Plate"} first, then the other side`
+                    : ""}
+                </span>
+              </p>
 
-          {thumbs}
-          {photos.length === 0 && skipDoor}
-          {controls}
+              {skipDoor}
+              {controls}
+            </>
+          )}
         </div>
 
         {midSplit && (
@@ -796,33 +806,36 @@ export function CameraCapture({
     // control this screen exists for — under the fold.
     <div className="mx-auto w-full max-w-sm">
       <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl bg-pm-charcoal shadow-lg">
-        {viewfinder}
+        {taken ? (
+          review
+        ) : (
+          <>
+            {viewfinder}
 
-        <div className="absolute inset-x-0 top-3 flex items-center justify-center gap-2 px-3">
-          {counter}
-          {modeSwitch}
-        </div>
+            <div className="absolute inset-x-0 top-3 flex items-center justify-center px-3">
+              {modeSwitch}
+            </div>
 
-        {midSplit && (
-          <button
-            type="button"
-            onClick={dropPending}
-            aria-label="Start the split photo over"
-            className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-[calc(100%+0.5rem)] items-center justify-center rounded-full bg-pm-charcoal/70 text-white backdrop-blur-sm transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            <CloseIcon className="h-3 w-3" />
-          </button>
+            {midSplit && (
+              <button
+                type="button"
+                onClick={dropPending}
+                aria-label="Start the split photo over"
+                className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-[calc(100%+0.5rem)] items-center justify-center rounded-full bg-pm-charcoal/70 text-white backdrop-blur-sm transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                <CloseIcon className="h-3 w-3" />
+              </button>
+            )}
+
+            {/* The other door, sitting in the viewfinder rather than below it: one
+                line of chrome over the picture costs nothing, where a card under it
+                pushed the shutter itself off a laptop screen. */}
+            <div className="absolute inset-x-3 bottom-3">{skipDoor}</div>
+          </>
         )}
-
-        {/* The other door, sitting in the viewfinder rather than below it: one
-            line of chrome over the picture costs nothing, where a card under it
-            pushed the shutter itself off a laptop screen. */}
-        <div className="absolute inset-x-3 bottom-3">{skipDoor}</div>
       </div>
 
-      <div className="mt-4">{controls}</div>
-
-      {photos.length > 0 && <div className="mt-4">{thumbs}</div>}
+      <div className="mt-4">{taken ? reviewActions : controls}</div>
     </div>
   );
 }

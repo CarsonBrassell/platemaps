@@ -1,4 +1,16 @@
-export const MAX_PHOTOS = 4;
+/**
+ * One photo per post, and the reason is the screen that follows the shutter.
+ *
+ * A plate post is about one plate. Four slots turned the shutter into a loop —
+ * press, land back on the live camera, press again — and the picture just taken
+ * was never on screen long enough to look at. With one, the press has somewhere
+ * to go: the shot fills the frame the camera was filling, and the only two
+ * questions left are keep it or take it again. See `CameraCapture`.
+ *
+ * A post still carries a list of URLs and older ones hold several, so nothing
+ * downstream of the composer assumes a count.
+ */
+export const MAX_PHOTOS = 1;
 
 /**
  * Longest edge of a captured photo, in pixels.

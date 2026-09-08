@@ -22,6 +22,23 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
 
 ## Since 2026-09-05 (newest decisions, read these)
 
+- **One photo per post, and the shutter now lands on it (2026-09-07,
+  pushed).** Calvin: the camera let you stack four photos and the press
+  dropped you straight back on the live viewfinder, so the shot you had just
+  taken was never on screen. `MAX_PHOTOS` is 1 (lib/photos.ts) and
+  `CameraCapture` grew a review state: `taken = photos[0]` replaces the
+  viewfinder with the JPEG at `object-cover` in the same box, and the only
+  controls left are Retake and Next (fullscreen) or Retake alone on the web
+  card, whose Next is the page action bar. The thumbnail strip, the x/4
+  counter and the shutter’s “limit reached” state are gone; the mode switch
+  belongs to the viewfinder and hides under review, the top-left close does
+  not. Split mode is untouched — it still composes two halves into one photo,
+  and only the finished picture triggers review. The camera stream keeps
+  running behind the review so Retake is instant. `MAX_MEDIA = 4` in
+  /api/posts is deliberately left alone: older posts carry several photos and
+  that ceiling is a request-shape bound, not a composer rule. Verified by
+  screenshot in both shapes on a throwaway /camcheck page, since deleted.
+
 - **Search dimming is a COLOUR change now, not an alpha one (2026-09-07,
   uncommitted).** Calvin: running a search then zooming out left the unmatched
   field looking undimmed. It was alpha-only (`0.45` at z9 falling to `0.22` at
