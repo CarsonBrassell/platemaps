@@ -11,6 +11,10 @@ import { UtensilsIcon, CompassIcon, WifiOffIcon, PlusIcon } from "@/components/i
 import type { FeedTab, Post } from "@/components/feed/types";
 import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
+/* Just the colour string — mapStyle declares no side effects and MapLibre
+   itself is only a type import there, so this does not drag the map into the
+   eager bundle that PhoneFeedMapPanel's dynamic import exists to avoid. */
+import { MAP_GROUND } from "@/lib/mapStyle";
 import { announceAward, closePostFlash, takeLanding, usePostFlash } from "@/lib/postCelebration";
 import { PhoneFeedHeader } from "./PhoneFeedHeader";
 import { PhoneFeedSearch } from "./PhoneFeedSearch";
@@ -266,7 +270,8 @@ export function PhoneFeedScreen() {
   const showMap = tab === "map";
 
   /*
-   * Lock the document while the map is up.
+   * Lock the document while the map is up, and hand the status bar the map's
+   * colour.
    *
    * The map screen is exactly viewport-height, so there is nothing to scroll —
    * but iOS Safari rubber-bands the document anyway on a downward drag, and the
@@ -278,12 +283,32 @@ export function PhoneFeedScreen() {
    * removed on cleanup so leaving the map — by tab, by nav, or by unmount —
    * always gives the page its scroll back. Every exit runs the cleanup, so
    * there is no path that strands the app unscrollable.
+   *
+   * The theme colour is the second half, and it is about the web app someone
+   * adds to their home screen. layout.tsx asks for
+   * `statusBarStyle: "black-translucent"`, which hands the page the pixels
+   * behind the status bar — but from iOS 15 the system may still paint that
+   * area from `<meta name="theme-color">` instead of letting the page show
+   * through, and this app's theme colour is the cream ground. That is a cream
+   * band across the top of a screen that is meant to be all map. So the map
+   * screen lends the meta the map's own ground while it is up, and hands the
+   * cream back on the way out; if the status bar is genuinely transparent on a
+   * given iOS version, the map is what shows through anyway and this costs
+   * nothing.
    */
   useEffect(() => {
     if (!showMap) return;
     const root = document.documentElement;
     root.classList.add("pm-lock-scroll");
-    return () => root.classList.remove("pm-lock-scroll");
+    const meta = document.querySelector<HTMLMetaElement>(
+      'meta[name="theme-color"]',
+    );
+    const previous = meta?.content ?? null;
+    if (meta) meta.content = MAP_GROUND;
+    return () => {
+      root.classList.remove("pm-lock-scroll");
+      if (meta && previous !== null) meta.content = previous;
+    };
   }, [showMap]);
 
   /*

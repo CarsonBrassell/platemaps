@@ -1,5 +1,10 @@
 ﻿import type { StyleSpecification } from "maplibre-gl";
 
+/* The ground the whole style sits on. Exported because the phone map screen
+   hands the same colour to the iOS status bar while the map is up — see the
+   theme-color swap in PhoneFeedScreen. */
+export const MAP_GROUND = "#191c22";
+
 /**
  * PlateMaps' own neo-noir night style, written from scratch.
  *
@@ -42,7 +47,7 @@ export const NEO_NOIR_STYLE: StyleSpecification = {
     },
   },
   layers: [
-    { id: "background", type: "background", paint: { "background-color": "#191c22" } },
+    { id: "background", type: "background", paint: { "background-color": MAP_GROUND } },
 
     {
       id: "residential",
