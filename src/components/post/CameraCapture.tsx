@@ -650,18 +650,30 @@ export function CameraCapture({
   /*
    * The shot, standing exactly where the camera was standing.
    *
-   * `object-cover` in the box the live preview filled, so what comes back is
-   * the framing that was on screen when the shutter fired — the JPEG holds the
-   * whole video frame, which is wider than any viewfinder ever showed. The
-   * stream keeps running behind it: retake has to be instant, and reopening a
-   * camera costs a second of black.
+   * One mode fills the box and the other fits inside it, because the two
+   * pictures are not the same shape. A single shot is the video frame the
+   * viewfinder was already cropping with `object-cover`, so covering again
+   * lands on the framing that was on screen when the shutter fired. A split is
+   * built at a fixed 4:5 (see `join`) and a phone screen is far taller than
+   * that — covering with it scales the picture up until a third of its width
+   * is outside the screen, which is exactly what "it zoomed in when I took the
+   * photo" looks like. So a split is contained on the charcoal the composer
+   * already stands on, and what you are looking at is the whole picture that
+   * will be posted. The mode cannot change under review — the switch is hidden
+   * while a photo exists — so reading it here is reading the mode it was shot
+   * in.
+   *
+   * The stream keeps running behind it: retake has to be instant, and
+   * reopening a camera costs a second of black.
    */
   const review = taken && (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={taken.previewUrl}
       alt="The photo you just took"
-      className="absolute inset-0 h-full w-full object-cover"
+      className={`pointer-events-none absolute inset-0 h-full w-full ${
+        mode === "split" ? "object-contain" : "object-cover"
+      }`}
     />
   );
 
@@ -669,7 +681,12 @@ export function CameraCapture({
      `onDone` exists only on the fullscreen composer, which hid its own chrome
      for this step; the web card leaves Next to the action bar under it. */
   const reviewActions = (
-    <div className="flex items-center gap-3">
+    /* Lifted clear of the bottom edge on the fullscreen composer. The live
+       screen puts a 72px shutter down there and this row is 48px, so at the
+       same padding it lands lower than anything the camera has ever asked to
+       be tapped — inside the strip a phone browser's toolbar and the home
+       indicator both take a share of. */
+    <div className={`flex items-center gap-3 ${fullscreen ? "pb-6" : ""}`}>
       <button
         type="button"
         onClick={retake}
@@ -707,12 +724,18 @@ export function CameraCapture({
        * frame in a desktop preview — and covers PhoneNav's z-40 with it. The
        * composer hides its own chrome for this step, so the two controls that
        * chrome carried, leaving and moving on, are up here.
+       *
+       * Both rails carry `z-10`. The picture behind them is a positioned
+       * sibling at `z-index: auto`, which leaves paint order to the order the
+       * elements happen to be written in — fine until someone moves one, and
+       * the failure it produces is a button that is visibly there and does
+       * nothing.
        */
       <div className="fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-pm-charcoal">
         <div className="absolute inset-0">{taken ? review : viewfinder}</div>
 
         <div
-          className="relative flex items-start justify-between gap-3 px-4 pb-3 pt-4"
+          className="relative z-10 flex items-start justify-between gap-3 px-4 pb-3 pt-4"
           style={{ paddingTop: "calc(1rem + env(safe-area-inset-top))" }}
         >
           <button
@@ -734,7 +757,7 @@ export function CameraCapture({
         </div>
 
         <div
-          className="relative flex flex-col gap-3 px-4 pb-4"
+          className="relative z-10 flex flex-col gap-3 px-4 pb-4"
           style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom))" }}
         >
           {taken ? (

@@ -38,6 +38,20 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   /api/posts is deliberately left alone: older posts carry several photos and
   that ceiling is a request-shape bound, not a composer rule. Verified by
   screenshot in both shapes on a throwaway /camcheck page, since deleted.
+  **Follow-up the same day (pushed):** the review cropped a split photo and its
+  buttons sat too low. A split is composed at a fixed 4:5 by `join`, so
+  `object-cover` into a phone-shaped screen scaled it up until a third of the
+  width was off-screen — "it zooms in after taking photo". Split now uses
+  `object-contain` on the charcoal ground (single stays `cover`: that JPEG is
+  the video frame the viewfinder was already cropping the same way, so cover is
+  the framing you saw). Retake/Next also gained `pb-6` on the fullscreen
+  composer, off the strip a phone browser's toolbar and the home indicator
+  share, and both rails carry `z-10` so the picture cannot win on DOM order.
+  Reported as "Next just doesn't work" — not reproducible on desktop at any
+  step (verified end to end in Chrome against a canvas `captureStream` standing
+  in for the camera, single and split; Next lands on step 2 both times), so
+  those two are the fix for it if it was a hit-target problem, and it needs a
+  device to go further if it is not.
 
 - **Search dimming is a COLOUR change now, not an alpha one (2026-09-07,
   uncommitted).** Calvin: running a search then zooming out left the unmatched
