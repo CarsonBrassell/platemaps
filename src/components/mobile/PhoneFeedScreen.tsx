@@ -483,7 +483,9 @@ export function PhoneFeedScreen() {
         lower={
           <div className="pt-0.5">
             <PhoneFeedSearch
-              leading={tab === "discover" ? <FeedSortSwitch active={sort} onChange={setSort} /> : null}
+              leading={
+                tab === "discover" ? <FeedSortSwitch fill active={sort} onChange={setSort} /> : null
+              }
               onSearch={setRestaurantFilter}
             />
           </div>
