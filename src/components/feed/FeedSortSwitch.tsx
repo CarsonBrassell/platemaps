@@ -22,19 +22,8 @@ const HEAT_RED = "#9a2c10";
  *
  * Shared by `/feed` and `/m/feed` rather than written twice: the two surfaces
  * duplicate layout on purpose, but an ordering they disagree about is a bug,
- * not a phone shape. By default it is sized to the labels rather than
- * stretched — this is a modifier on the feed, not the feed's own navigation,
- * and on the web there is a whole column beside it for the rest of the row to
- * do something with.
- *
- * `fill` is the phone's exception, and it is a layout answer rather than a
- * change of rank. There the row holds exactly two things — this and the search
- * glyph, which is anchored right so it does not move when you change tabs
- * (PhoneFeedSearch) — and at label width that left ~186pt of a 390pt column
- * empty in a bar that is now permanently on screen. Reported as exactly that.
- * The two segments split the free width instead; the track is still a tan pill
- * with a white selected segment and mono labels, so it still reads as rank 3
- * and not as the tabs above it.
+ * not a phone shape. It is sized to the labels rather than stretched full
+ * width — this is a modifier on the feed, not the feed's own navigation.
  *
  * Only ever rendered on Discover. The Friends feed is chronological by
  * specification, so there is nothing there to switch between.
@@ -42,19 +31,15 @@ const HEAT_RED = "#9a2c10";
 export function FeedSortSwitch({
   active,
   onChange,
-  fill = false,
 }: {
   active: FeedSort;
   onChange: (sort: FeedSort) => void;
-  /** Span the width offered instead of the labels', splitting it evenly
-      between the segments. The phone's feed bar sets it; see the header. */
-  fill?: boolean;
 }) {
   return (
     <div
       role="tablist"
       aria-label="Feed order"
-      className={`rounded-full bg-pm-grey-tint p-1 ${fill ? "flex w-full" : "inline-flex"}`}
+      className="inline-flex rounded-full bg-pm-grey-tint p-1"
     >
       {FEED_SORTS.map((sort) => {
         const on = sort.value === active;
@@ -68,8 +53,6 @@ export function FeedSortSwitch({
             onClick={() => onChange(sort.value)}
             style={trending && on ? { color: HEAT_RED } : undefined}
             className={`flex min-h-8 items-center gap-1 whitespace-nowrap rounded-full px-3.5 font-mono text-[11px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
-              fill ? "flex-1 justify-center" : ""
-            } ${
               trending
                 ? on
                   ? "bg-white"

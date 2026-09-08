@@ -128,16 +128,10 @@ export function PhoneFeedSearch({
   return (
     <>
       <div className="flex items-center justify-between gap-3 px-4">
-        {/* Takes the whole row bar the button, and holds it even on the tabs
-            that have no `leading` — the button sits in the same place on every
-            tab rather than jumping to the left margin when you change feeds.
-
-            `flex-1` and not a bare spacer because what goes in here is asked to
-            fill it (FeedSortSwitch's `fill`): at its natural label width the
-            switch left half the column empty under a bar that no longer scrolls
-            away. `min-w-0` so a wide `leading` cannot push the button off the
-            right edge. */}
-        <div className="min-w-0 flex-1">{leading}</div>
+        {/* Holds the left side even on the tabs that have no sort switch, so
+            the button sits in the same place on every tab rather than jumping
+            when you change feeds. */}
+        {leading ?? <span />}
 
         {/* No fill at all — the quietest thing this row can be.
 
