@@ -49,7 +49,18 @@ export async function POST(req: Request) {
       contentType: "image/jpeg",
     });
     return NextResponse.json({ url });
-  } catch {
+  } catch (error) {
+    /* Logged, not swallowed. This catch used to be bare, and it cost an
+       afternoon: every upload in production was failing and the only evidence
+       anywhere was a 502 and "Couldn't save that photo" on a phone. The actual
+       reason was one sentence long and the store had been saying it the whole
+       time — "Cannot use public access on a private store" — because a second
+       blob store had been connected to the project and taken over
+       BLOB_READ_WRITE_TOKEN, pointing writes at an empty private bucket while
+       every existing photo lived in the public one.
+       A blob failure is infrastructure, not user error, so it belongs in the
+       function logs where it can be read. */
+    console.error("[blob/upload] put failed", error);
     /* The composer still holds the JPEG either way — a draft is the blob in
        memory, not a thing in the store — so a failure here costs the press of
        Post, not the post. */
@@ -87,7 +98,8 @@ export async function DELETE(req: Request) {
   try {
     await del(url);
     return NextResponse.json({ ok: true });
-  } catch {
+  } catch (error) {
+    console.error("[blob/upload] del failed", error);
     return NextResponse.json({ error: "Couldn't remove that photo." }, { status: 502 });
   }
 }
