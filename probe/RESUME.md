@@ -52,6 +52,19 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   in for the camera, single and split; Next lands on step 2 both times), so
   those two are the fix for it if it was a hit-target problem, and it needs a
   device to go further if it is not.
+  **Second follow-up (same day):** the real report was "Next does nothing",
+  then "it's genuinely a five-second delay". Next was innocent — the "where"
+  step behind it mounted all 9,043 restaurants as buttons, 54,397 DOM nodes in
+  one commit, which on a phone is a multi-second main-thread block that reads
+  as a dead button. `RestaurantPicker` (shared by /m/post and the web /post)
+  now draws only what is near you: everything within `NEARBY_MI` = 3, floored
+  at 12 so the list is never empty out in the county or when the browser
+  refused a location (every distance parses to Infinity), ceilinged at 40 so a
+  dense block downtown cannot mount six hundred rows. A search is capped at 40
+  but not distance-bounded — typing a name means you know the place. Measured
+  in Chrome at /m/post: 40 rows / 381 nodes, farthest shown 0.5 mi, against
+  9,043 rows / 54,397 nodes before. The footer says "9,003 farther away", not
+  "nearby", because they are not.
 
 - **Search dimming is a COLOUR change now, not an alpha one (2026-09-07,
   uncommitted).** Calvin: running a search then zooming out left the unmatched

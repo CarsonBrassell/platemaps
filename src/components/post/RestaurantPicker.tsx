@@ -36,6 +36,31 @@ export type PickableRestaurant = {
   lng: number;
 };
 
+/*
+ * What the list draws when nobody has typed: the restaurants that are near
+ * you, and no others.
+ *
+ * It used to draw all of them. There are 9,043 listed restaurants, so picking
+ * where you ate mounted 9,043 buttons and 54,000 DOM nodes in one commit — a
+ * slow blink on a laptop, and in the phone app a five-second freeze between
+ * tapping Next on the photo and the step arriving, which reads exactly like a
+ * dead button.
+ *
+ * A radius rather than a fixed count, because the question this step asks is
+ * "where are you", and a restaurant nine miles away is not an answer to it —
+ * counting to forty would pad the list with places you cannot be standing in.
+ * The floor and the ceiling are both there for the shapes a radius alone
+ * handles badly: NEARBY_FLOOR keeps the list from being empty out in the
+ * county, or when the browser refused a location and every distance parses to
+ * Infinity, and NEARBY_CEILING keeps a dense block downtown from mounting six
+ * hundred rows. Search is not bounded by distance at all — typing a name means
+ * you know the place and are not asking what is around you — only capped, so
+ * one number still covers the worst case.
+ */
+const NEARBY_MI = 3;
+const NEARBY_FLOOR = 12;
+const NEARBY_CEILING = 40;
+
 /** "1.0 mi" → 1.0. Anything unparseable sorts to the end rather than to zero. */
 function miles(r: PickableRestaurant) {
   const n = Number.parseFloat(r.distance);
@@ -80,6 +105,13 @@ export function RestaurantPicker({
     );
   }, [query, byDistance]);
 
+  const shown = useMemo(() => {
+    if (query.trim()) return matches.slice(0, NEARBY_CEILING);
+    const near = matches.filter((r) => miles(r) <= NEARBY_MI).length;
+    return matches.slice(0, Math.min(Math.max(near, NEARBY_FLOOR), NEARBY_CEILING));
+  }, [matches, query]);
+  const hidden = matches.length - shown.length;
+
   return (
     <div>
       <label htmlFor="restaurant-search" className="sr-only">
@@ -97,7 +129,7 @@ export function RestaurantPicker({
 
       <p className="mt-2 text-xs text-zinc-400" role="status">
         {matches.length === restaurants.length
-          ? "Closest first"
+          ? "Near you, closest first"
           : `${matches.length} ${matches.length === 1 ? "place" : "places"}`}
       </p>
 
@@ -110,7 +142,7 @@ export function RestaurantPicker({
         </div>
       ) : (
         <ul className="mt-2 flex flex-col divide-y divide-zinc-100">
-          {matches.map((r) => {
+          {shown.map((r) => {
             const on = r.id === selectedId;
             return (
               <li key={r.id}>
@@ -140,6 +172,18 @@ export function RestaurantPicker({
             );
           })}
         </ul>
+      )}
+
+      {/* The way to the rest of them, said where you run out of them. It does
+          not call the remainder "nearby" — the whole point of the cut above is
+          that they are not. Mono for the count, as DESIGN.md asks of every
+          number. */}
+      {hidden > 0 && (
+        <p className="mt-3 px-3 text-xs text-pm-grey-text">
+          <span className="font-mono tabular-nums">{hidden.toLocaleString()}</span>{" "}
+          {query.trim() ? "more match" : "farther away"} — search by name, cuisine or
+          neighborhood to reach them.
+        </p>
       )}
 
       {onSkip && (
