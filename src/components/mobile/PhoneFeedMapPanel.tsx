@@ -15,7 +15,7 @@ import type { Post } from "@/components/feed/types";
 import {
   buildMapComments,
   fetchMenus,
-  indexPostsByRestaurantName,
+  indexPostsByRestaurant,
   menuRestaurantIdsKey,
 } from "@/lib/mapBubbles";
 
@@ -171,13 +171,22 @@ export function PhoneFeedMapPanel({
   const [menus, setMenus] = useState<Record<string, Dish[]>>({});
 
   /*
-   * The feed grouped by the restaurant name each post claims — the index both
+   * The feed grouped by the restaurant each post was made at — the index both
    * the bubbles and the menu fetch read. See lib/mapBubbles.ts for why this
    * replaced a per-restaurant `posts.filter(...)`: that scan was 5,701
    * restaurants × every post and re-ran on every vote, which is what kept a
-   * bubble's count from repainting after it was cast.
+   * bubble's count from repainting after it was cast. The same module explains
+   * why a post now lands on the one place it was posted at rather than on every
+   * listing sharing its name.
+   *
+   * `restaurants` is an input because that resolution is checked against the
+   * restaurants actually being drawn: the index is empty until they land and
+   * fills in on the render after they do.
    */
-  const postsByRestaurant = useMemo(() => indexPostsByRestaurantName(posts), [posts]);
+  const postsByRestaurant = useMemo(
+    () => indexPostsByRestaurant(posts, restaurants),
+    [posts, restaurants],
+  );
 
   /** Which restaurants need a menu, as a value-comparable effect dependency. */
   const menuIdsKey = useMemo(
@@ -309,9 +318,13 @@ export function PhoneFeedMapPanel({
     })();
   }, [menuIdsKey]);
 
+  /* `source` is a dependency because it decides more than which posts were
+     fetched: the seeded chatter is Discover-only, so switching to Friends has
+     to rebuild the bubbles rather than leave the seeds standing on a map that
+     now claims to show only people you know. */
   const mapComments = useMemo(
-    () => buildMapComments(postsByRestaurant, restaurants, menus),
-    [postsByRestaurant, restaurants, menus],
+    () => buildMapComments(postsByRestaurant, restaurants, menus, source),
+    [postsByRestaurant, restaurants, menus, source],
   );
 
   /**

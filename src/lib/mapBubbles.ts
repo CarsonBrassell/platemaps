@@ -18,11 +18,12 @@
  * look broken: the request fired and the row landed, but the count could not
  * repaint until the scan finished.
  *
- * `indexPostsByRestaurantName` does one pass over the posts instead, and the
- * per-restaurant loop becomes a Map lookup. The output is byte-for-byte what
- * the filter produced — same restaurants, same bubbles, same fields, same
- * order — because the index preserves feed order within each name and
- * `Array.prototype.sort` is stable, so the score sort lands identically.
+ * `indexPostsByRestaurant` does one pass over the posts instead, and the
+ * per-restaurant loop becomes a Map lookup. It also resolves each post to the
+ * one restaurant it was actually posted at rather than to every listing that
+ * happens to share the name — see its own note. Feed order is preserved within
+ * each bucket and `Array.prototype.sort` is stable, so a restaurant's bubbles
+ * still stack in exactly the order they did.
  */
 
 import type { Dish } from "@/data/dishes";
@@ -119,30 +120,71 @@ function bubbleDishPrefix(post: Post): string | null {
   return post.dishName;
 }
 
-/** Posts grouped by the restaurant *name* they claim, in feed order. */
-export type PostsByRestaurantName = ReadonlyMap<string, Post[]>;
+/** Posts grouped by the restaurant they were made at, keyed by id, in feed order. */
+export type PostsByRestaurant = ReadonlyMap<string, Post[]>;
 
 /**
- * One pass over the feed, grouping posts by `post.restaurant`.
+ * One pass over the feed, grouping posts by the restaurant each was posted at.
  *
- * Name, not id, because that is the join the map has always made: a post
- * carries free-text `restaurant` and only sometimes a `restaurantId`, and the
- * old filter compared `p.restaurant === restaurant.name`. Keeping the same key
- * keeps the same bubbles — including the case where two listed restaurants
- * share a name and both legitimately show the post.
+ * ## Why this is keyed by id and not by name
  *
- * Posts with no restaurant name are skipped: `undefined === restaurant.name` was
- * never true, so they never produced a bubble before either.
+ * It used to be by name — `p.restaurant === restaurant.name` — which is what a
+ * post carries in free text and was the only join available before posts had
+ * anything better. But a name is not an address: this corpus holds 200
+ * Starbucks, 135 Subways and three Dirty Birds, so one plate posted at one of
+ * them lit up a bubble over every other one, all claiming the same review.
+ * A bubble is a statement about a place; it belongs over the place the person
+ * was standing in and nowhere else.
+ *
+ * `placeId` is the resolution to use and it is already made: `resolvePostRefs`
+ * in lib/discover.ts picks it server-side against the full corpus, by
+ * `restaurantId` first and then a case-insensitive name match, and every feed
+ * route the map reads runs posts through it. `restaurantId` is the fallback for
+ * a post that reached here without going through that (nothing does today), and
+ * both are checked against the restaurants actually being drawn, so an id that
+ * no longer resolves can't silently swallow the post.
+ *
+ * ## The name fan-out survives as the last resort, and only there
+ *
+ * A post whose id resolves to nothing on this map still goes to every listing
+ * whose name it names — exact match, as before. That path is what the old
+ * behaviour was made of; keeping it means this change can only ever *narrow*
+ * where a bubble appears, never make one vanish. Posts with no restaurant at
+ * all are skipped, the same as when `undefined === restaurant.name` was the
+ * test.
  */
-export function indexPostsByRestaurantName(posts: readonly Post[] | null): PostsByRestaurantName {
-  const byName = new Map<string, Post[]>();
-  for (const post of posts ?? []) {
-    if (!post.restaurant) continue;
-    const bucket = byName.get(post.restaurant);
-    if (bucket) bucket.push(post);
-    else byName.set(post.restaurant, [post]);
+export function indexPostsByRestaurant(
+  posts: readonly Post[] | null,
+  restaurants: readonly BubbleRestaurant[],
+): PostsByRestaurant {
+  const drawnIds = new Set<string>();
+  // Every listing sharing a name, since the fallback below places a post on
+  // all of them exactly as the old name join did.
+  const idsByName = new Map<string, string[]>();
+  for (const restaurant of restaurants) {
+    drawnIds.add(restaurant.id);
+    const sharing = idsByName.get(restaurant.name);
+    if (sharing) sharing.push(restaurant.id);
+    else idsByName.set(restaurant.name, [restaurant.id]);
   }
-  return byName;
+
+  const byId = new Map<string, Post[]>();
+  function place(restaurantId: string, post: Post) {
+    const bucket = byId.get(restaurantId);
+    if (bucket) bucket.push(post);
+    else byId.set(restaurantId, [post]);
+  }
+
+  for (const post of posts ?? []) {
+    const resolved = post.placeId ?? post.restaurantId;
+    if (resolved && drawnIds.has(resolved)) {
+      place(resolved, post);
+      continue;
+    }
+    if (!post.restaurant) continue;
+    for (const id of idsByName.get(post.restaurant) ?? []) place(id, post);
+  }
+  return byId;
 }
 
 /**
@@ -155,12 +197,13 @@ export function indexPostsByRestaurantName(posts: readonly Post[] | null): Posts
  * this database stands, against the 5,701 whose entire dish table (10.5MB, 6s)
  * the map used to pull on mount.
  *
- * ## The set is NOT bounded by the number of posts
+ * ## The set is *usually* one id per post, but not bounded by that
  *
- * It fans out by NAME. The join above is `postsByName.has(restaurant.name)`,
- * so one post about a chain names every listing that shares its name — and
- * this corpus holds 200 Starbucks, 135 Subways, 104 McDonald's, 96 Jack in the
- * Boxes. A single Starbucks post adds 200 ids; four chain posts clear 500.
+ * A post that resolved to a place adds exactly its own restaurant, which is
+ * what `indexPostsByRestaurant` now guarantees. A post that resolved to
+ * nothing still falls back to the name join, and this corpus holds 200
+ * Starbucks, 135 Subways, 104 McDonald's and 96 Jack in the Boxes — so a
+ * handful of unresolved chain posts can still clear 500 ids on their own.
  * That is why `fetchMenus` below asks in batches rather than in one request:
  * the dishes route caps a request at 500 ids and REFUSES past it (a 400, not a
  * truncation), and one oversized ask would take every dish link on the map
@@ -176,14 +219,14 @@ export function indexPostsByRestaurantName(posts: readonly Post[] | null): Posts
  * present the same set as a different key.
  */
 export function menuRestaurantIdsKey(
-  postsByName: PostsByRestaurantName,
+  postsByRestaurant: PostsByRestaurant,
   restaurants: readonly BubbleRestaurant[],
 ): string {
   const ids: string[] = [];
   for (const restaurant of restaurants) {
-    // `postsByName.has` rather than a length check: the index never stores an
-    // empty bucket, so presence *is* "has at least one post".
-    if (postsByName.has(restaurant.name) || mapCommentsByRestaurant[restaurant.id]) {
+    // `.has` rather than a length check: the index never stores an empty
+    // bucket, so presence *is* "has at least one post".
+    if (postsByRestaurant.has(restaurant.id) || mapCommentsByRestaurant[restaurant.id]) {
       ids.push(restaurant.id);
     }
   }
@@ -274,16 +317,27 @@ export async function fetchMenus(ids: readonly string[]): Promise<MenuFetchResul
  * (RestaurantMap reads it as `commentsByRestaurant[id] ?? []`, so the empty
  * entries are not load-bearing, but this is a data-structure change and not a
  * behaviour one.)
+ *
+ * ## Why `source` decides whether the seeded chatter is drawn
+ *
+ * `mapCommentsByRestaurant` is authored flavour text — anonymous, upvote counts
+ * invented by a hash, pinned to the 19 seeded restaurants. On Discover that is
+ * filler among strangers' plates and reads as what it is. On Friends it breaks
+ * the one promise that switch makes: everything on this map was said by someone
+ * you are friends with. A bubble nobody you know wrote is as wrong there as a
+ * stranger's real post would be, so on that source the map draws real friend
+ * posts or nothing at all.
  */
 export function buildMapComments(
-  postsByName: PostsByRestaurantName,
+  postsByRestaurant: PostsByRestaurant,
   restaurants: readonly BubbleRestaurant[],
   menus: Record<string, Dish[]>,
+  source: "discover" | "friends" = "discover",
 ): Record<string, MapComment[]> {
   const out: Record<string, MapComment[]> = {};
   for (const restaurant of restaurants) {
     const menu = menus[restaurant.id] ?? [];
-    const real: MapComment[] = (postsByName.get(restaurant.name) ?? [])
+    const real: MapComment[] = (postsByRestaurant.get(restaurant.id) ?? [])
       .map((p) => {
         const parsedDish = dishNameFromPost(p.text);
         const dish = p.dishName ?? parsedDish ?? undefined;
@@ -310,8 +364,12 @@ export function buildMapComments(
       .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
     // The seeded bubbles name their dish rather than carrying its id, since
     // menus are database rows now — resolved here against the menu this
-    // restaurant actually has. See withDishIds.
-    const seeded = withDishIds(mapCommentsByRestaurant[restaurant.id] ?? [], menu);
+    // restaurant actually has. See withDishIds. Discover only — on Friends
+    // the audience filter is the whole point of the surface (see above).
+    const seeded =
+      source === "discover"
+        ? withDishIds(mapCommentsByRestaurant[restaurant.id] ?? [], menu)
+        : [];
     out[restaurant.id] = [...real, ...seeded];
   }
   return out;
