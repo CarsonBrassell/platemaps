@@ -28,7 +28,8 @@
     "photos:size": "node --env-file=.env.local scripts/backfill-photo-size.mjs",
     "logo:build": "node scripts/build-logo-assets.mjs",
     "cuisines:normalize": "node --env-file=.env.local scripts/normalize-cuisines.mjs",
-    "moderation:check": "tsx scripts/check-moderation.mjs"
+    "moderation:check": "tsx scripts/check-moderation.mjs",
+    "dishes:index": "node --env-file=.env.local scripts/index-dish-names.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.0",

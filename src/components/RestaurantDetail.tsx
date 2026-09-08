@@ -10,7 +10,8 @@ import { FullMenu } from "@/components/FullMenu";
 import { DishSheet } from "@/components/DishSheet";
 import { RestaurantComments } from "@/components/RestaurantComments";
 import { RestaurantAspects } from "@/components/RestaurantAspects";
-import type { RestaurantAspectTally } from "@/lib/db";
+import { OtherLocations } from "@/components/OtherLocations";
+import type { RestaurantAspectTally, SiblingLocation } from "@/lib/db";
 import type { PlateScore, RatedDish } from "@/lib/plateScore";
 import { dishRatingKey } from "@/lib/dishRatingKey";
 import { mapCommentsByRestaurant, withDishIds } from "@/data/mapComments";
@@ -27,6 +28,7 @@ export function RestaurantDetail({
   aspectTally,
   plateScore,
   dishRatings,
+  otherLocations,
 }: {
   restaurant: Restaurant;
   /**
@@ -41,6 +43,8 @@ export function RestaurantDetail({
   plateScore: PlateScore;
   /** Per-plate rating averages, keyed by `dishRatingKey`. Also server-side. */
   dishRatings: Record<string, RatedDish>;
+  /** The chain's other branches, nearest first. Empty for most restaurants. */
+  otherLocations: SiblingLocation[];
 }) {
   const searchParams = useSearchParams();
   const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
@@ -157,6 +161,10 @@ export function RestaurantDetail({
         <div className="flex min-w-0 flex-col gap-4 lg:flex-1">
           <TopPicks dishes={topPicks} ratedBy={ratedBy} onSelect={setSelectedDishId} />
           <RestaurantAspects tally={aspectTally} />
+          {/* Above the menu on purpose. A reader who is on the wrong branch is
+              on the wrong branch *before* they read a price, and a menu runs
+              long enough that anything under it is a scroll nobody makes. */}
+          <OtherLocations locations={otherLocations} />
           <FullMenu sections={sections} onSelect={setSelectedDishId} />
         </div>
         {/* The rail is the comment thread and nothing else now — the booking

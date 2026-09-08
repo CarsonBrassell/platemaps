@@ -39,6 +39,7 @@
  */
 
 import {
+  activeFilterCount,
   applyFilters,
   countFacets,
   aspectOptions,
@@ -46,6 +47,7 @@ import {
   filtersFromSearch,
   neighborhoodOptions,
   priceOptions,
+  scoreMatches,
   strongAspectsFrom,
   type DiscoverFilters,
   type FacetCounts,
@@ -58,12 +60,14 @@ import { formatMiles, milesBetween, type Coords } from "@/lib/geo";
 import type { RestaurantView } from "@/data/restaurantTypes";
 import {
   dishMatchesFor,
+  dishesNamedExactly,
   getAllRestaurantAspectTallies,
   getAllRestaurantPlateScores,
   getDishesByRestaurant,
   getRestaurants,
 } from "@/lib/db";
 import { EMPTY_PLATE_SCORE, type PlateScore } from "@/lib/plateScore";
+import { normalize, rungOf } from "@/lib/textMatch";
 
 /** How many cards a page of results holds. */
 export const PAGE_SIZE = 24;
@@ -141,7 +145,7 @@ export type DiscoverPage = {
  * Per server instance, deliberately: it is a cache, not a source of truth, and
  * a cold instance simply reads.
  */
-type Corpus = {
+export type Corpus = {
   restaurants: RestaurantView[];
   aspects: ReturnType<typeof strongAspectsFrom>;
   plates: Record<string, PlateScore>;
@@ -150,7 +154,9 @@ type Corpus = {
 const CORPUS_TTL_MS = 60_000;
 let cached: { at: number; value: Promise<Corpus> } | null = null;
 
-function loadCorpus(): Promise<Corpus> {
+/** The corpus behind the 60s cache, for callers that need the rows rather than
+ *  a page of them — the search suggest endpoint is the one (lib/suggest.ts). */
+export function loadCorpus(): Promise<Corpus> {
   const now = Date.now();
   if (cached && now - cached.at < CORPUS_TTL_MS) return cached.value;
 
@@ -199,11 +205,36 @@ export async function getDiscoverPage(
   // there is text to fetch it for. Browsing the grid, this is a skipped round
   // trip rather than a cheap one — see dishMatchesFor in lib/db.ts for why the
   // dish names are not simply held on the corpus alongside everything else.
-  const dishes = filters.q ? await dishMatchesFor(filters.q) : null;
+  // Two dish lookups, asking two different questions, so both go out at once
+  // rather than one after the other — a request carrying `?q=thai&dish=pad thai`
+  // pays for one round trip, not two. `dishMatchesFor` is the loose half of the
+  // text search; `dishesNamedExactly` is the filter behind a dish the visitor
+  // picked off the dropdown.
+  const [dishes, namedDish] = await Promise.all([
+    filters.q ? dishMatchesFor(filters.q) : null,
+    // Folded with the same `normalize` the browser folds a typed query with, so
+    // "Chef's Special" in the URL finds the row stored as "Chefs Special".
+    filters.dish ? dishesNamedExactly(normalize(filters.dish)) : null,
+  ]);
 
-  const ctx: FilterContext = { now: new Date(), here, aspects, plates, dishes };
+  // Scored once for the whole corpus, before anything filters. `matchesFilters`
+  // runs six times per row from here — once for the grid, once per facet
+  // dimension — and the relevance of a row to the query is the one thing that
+  // does not change between those passes. It is also what `orderResults` sorts
+  // on, so the grid's order and the rail's counts come off one calculation.
+  const scores = filters.q ? scoreMatches(restaurants, filters.q, dishes) : null;
 
-  const matched = orderResults(applyFilters(restaurants, filters, ctx), filters, here);
+  const ctx: FilterContext = {
+    now: new Date(),
+    here,
+    aspects,
+    plates,
+    dishes,
+    scores,
+    namedDish,
+  };
+
+  const matched = orderResults(applyFilters(restaurants, filters, ctx), filters, here, scores);
   const limit = Math.min(Math.max(shown, PAGE_SIZE), MAX_SHOWN);
 
   return {
@@ -213,7 +244,9 @@ export async function getDiscoverPage(
       const plate = plates[r.id] ?? EMPTY_PLATE_SCORE;
       // Attached to the page slice, not to the corpus rows: the matched dish
       // is a fact about *this query*, and the corpus outlives it by a minute.
-      const dish = dishes?.get(r.id);
+      // The named dish wins when both are present: `?dish=` is why the row is
+      // on the page at all, and `q` only decided where in the order it landed.
+      const dish = namedDish?.get(r.id) ?? dishes?.get(r.id);
       const withDish = dish ? { ...r, matchedDish: dish } : r;
       const base = here ? withDistance(withDish, here) : withDish;
       return score === undefined
@@ -237,24 +270,73 @@ export async function getDiscoverPage(
 }
 
 /**
- * Nearest first, when there is a search term and a position to measure from.
+ * Most relevant first; nearest first among equals.
  *
- * A name typed into the field is a question about a place, and when six taco
- * shops answer to it the one you can walk to is the answer — so a search is
- * ordered by distance from the visitor. A picked neighbourhood overrides that:
- * it is the reader saying where they mean, and re-sorting North Park by how
- * far it is from Oceanside would answer a question nobody asked. Browsing with
- * no term keeps the corpus order too, so the unfiltered grid is not the same
- * handful of blocks every time.
+ * A name typed into the field is a question about a place, and the answer is
+ * the place — so a search is ordered by how well each row answers the text,
+ * on the ladder in lib/textMatch.ts: name, then cuisine, then neighbourhood,
+ * then dish. This used to sort purely by distance, which is why one misspelled
+ * restaurant name returned a wall of nearby menus with the restaurant itself
+ * somewhere in them: every row that survived the filter was equal, so the
+ * closest taco shop outranked the place the visitor had actually typed.
+ *
+ * Distance is still the tiebreak, and it is the *reason* the tiers are 100
+ * apart: when six taco shops answer to a term equally well, the one you can
+ * walk to is the answer. It can only reorder rows inside a band, never lift a
+ * dish match past a name match. A picked neighbourhood turns it off entirely —
+ * that is the reader saying where they mean, and re-sorting North Park by how
+ * far it is from Oceanside answers a question nobody asked.
+ *
+ * ## What "among equals" means, and why it had to be widened twice
+ *
+ * As written first, "equals" meant *identical scores*, and asking for a
+ * question to be answered nearest-first was therefore usually a no-op:
+ *
+ * 1. **Two rungs carry a 0-99 bonus**, so rows on the same rung rarely tie.
+ *    Searching "pizza", `Bronx Pizza` scores 800+50 and `Buona Forchetta Pizza
+ *    Napoletana` 800+25 — one of two name words matched against one of four —
+ *    and the 25-point gap, which measures how long the sign is, was enough to
+ *    put a place across the county above one across the street. `rungOf` in
+ *    lib/textMatch.ts is what this now compares: the rung, with the coverage
+ *    bonus dropped and the fuzzy bonus kept but coarsened to 0.1 of measured
+ *    similarity, because *there* the bonus is a real signal about spelling.
+ *    The raw score is still the last comparison, so nothing that used to be
+ *    ordered is left arbitrary — it is only ordered after distance.
+ *
+ * 2. **A cuisine typed into the field never reaches `q` at all.** `promote` in
+ *    lib/discoverFilters.ts turns "thai" into `?cuisine=Thai`, which is the
+ *    right answer to the term and left the results in corpus order: `f.q` was
+ *    null, so no distance was measured. Any filter at all now earns the
+ *    ordering, not just free text. The bare unfiltered grid keeps corpus order,
+ *    which is the case the rule was always defending — it is what stops the
+ *    front page being the same handful of blocks every time.
+ *
+ * `sort` is stable, so rows that tie on everything stay in corpus order.
  */
 function orderResults(
   matched: RestaurantView[],
   f: DiscoverFilters,
   here: Coords | null,
+  scores: Map<string, number> | null,
 ): RestaurantView[] {
-  if (!here || !f.q || f.neighborhood) return matched;
-  const miles = new Map(matched.map((r) => [r.id, milesBetween(here, r)]));
-  return [...matched].sort((a, b) => (miles.get(a.id) ?? 0) - (miles.get(b.id) ?? 0));
+  const miles =
+    here && activeFilterCount(f) > 0 && !f.neighborhood
+      ? new Map(matched.map((r) => [r.id, milesBetween(here, r)]))
+      : null;
+  if (!scores && !miles) return matched;
+
+  return [...matched].sort((a, b) => {
+    if (scores) {
+      const byRung = rungOf(scores.get(b.id) ?? 0) - rungOf(scores.get(a.id) ?? 0);
+      if (byRung !== 0) return byRung;
+    }
+    if (miles) {
+      const byMiles = (miles.get(a.id) ?? 0) - (miles.get(b.id) ?? 0);
+      if (byMiles !== 0) return byMiles;
+    }
+    if (scores) return (scores.get(b.id) ?? 0) - (scores.get(a.id) ?? 0);
+    return 0;
+  });
 }
 
 /**

@@ -103,7 +103,7 @@ export function PostMediaCarousel({
 
   if (media.length === 0) {
     return (
-      <div className="aspect-[16/9] w-full select-none">
+      <div className="aspect-[4/5] w-full select-none">
         <MediaFallback label={restaurant ?? dishName} />
       </div>
     );
@@ -140,7 +140,11 @@ export function PostMediaCarousel({
            scrollable on both axes, and iOS was handing whole downward drags
            to a track that had a fraction of a pixel to give. `.snap-track`
            in globals.css closes it — the note there is the long version. */
-        className={`snap-track flex aspect-[16/9] w-full overflow-x-auto ${
+        /* 4:5, the shape every photo is captured at — see `SHOT_W`/`SHOT_H`
+           and `join` in CameraCapture. A fixed box of a different shape than
+           the file is a second crop on top of the one the photographer framed,
+           and it is what made a posted photo come back a different picture. */
+        className={`snap-track flex aspect-[4/5] w-full overflow-x-auto ${
           single ? "overflow-x-hidden touch-pan-y" : ""
         }`}
         role={single ? undefined : "group"}

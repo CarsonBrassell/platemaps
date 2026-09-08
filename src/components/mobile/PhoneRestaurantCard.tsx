@@ -4,6 +4,7 @@ import { RestaurantPhoto, PostFirstPlate, photoCredit } from "@/components/Resta
 import { OpenStatePill } from "@/components/OpenStatePill";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import { placeLine } from "@/lib/placeLine";
+import { restaurantHref } from "@/lib/restaurantHref";
 
 /**
  * The phone version's discover card.
@@ -41,7 +42,8 @@ export function PhoneRestaurantCard({
 
   return (
     <Link
-      href={`/m/restaurant/${restaurant.id}`}
+      /* Straight to the dish when this row matched one — see restaurantHref. */
+      href={restaurantHref("/m/restaurant", restaurant)}
       className="block overflow-hidden rounded-2xl bg-white transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
     >
       <div className="relative aspect-[16/10] w-full bg-[var(--pm-tone-1)]">

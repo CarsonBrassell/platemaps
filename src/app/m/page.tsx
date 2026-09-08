@@ -180,6 +180,16 @@ export default async function PhoneDiscover({
       removeHref: quickHref(filters.quick.filter((v) => v !== quick.value)),
     });
   }
+  // Reads back the exact wording that was picked off the dropdown, because
+  // that wording is what the grid is matching on — same chip as the web
+  // version's, in the phone's clothes.
+  if (filters.dish) {
+    chips.push({
+      key: "dish",
+      label: `Serving ${filters.dish}`,
+      removeHref: hrefWith({ dish: null, shown: null }),
+    });
+  }
   if (filters.q) {
     chips.push({
       key: "q",
@@ -196,6 +206,7 @@ export default async function PhoneDiscover({
     aspect: null,
     quick: null,
     q: null,
+    dish: null,
     shown: null,
   });
 
@@ -265,7 +276,10 @@ export default async function PhoneDiscover({
      filters are on chips in the rail rather than crammed in here — a headline
      reading "Mexican in North Park under $$ rated well for Food" is a URL, not
      a sentence. */
-  const subject = filters.cuisine ?? filters.q ?? null;
+  /* The dish goes first when there is one: it is the narrowest thing the
+     visitor picked, and it came off a list rather than out of a text field, so
+     it is the one word here that is guaranteed to be real. */
+  const subject = filters.dish ?? filters.cuisine ?? filters.q ?? null;
   const heading = subject
     ? `${subject} in ${filters.neighborhood ?? "San Diego"}`
     : filters.neighborhood

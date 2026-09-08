@@ -21,6 +21,47 @@ const SPLIT_W = 1080;
 const SPLIT_HALF = 675;
 
 /**
+ * The single picture, in the same 4:5 the split is built at and the feed hero
+ * renders — see `PostMediaCarousel`.
+ *
+ * It used to be whatever frame the camera handed over, 4:3 or 16:9 landscape,
+ * and that is why a photo changed shape between this screen and the feed: the
+ * viewfinder cropped to 4:5 with `object-cover` while the file kept the bands
+ * above and below that crop, and the feed then took its own crop of the file.
+ * Cropping at the shutter instead means the file *is* what was framed.
+ *
+ * `SHOT_H` is the long edge, so a single shot stays inside PHOTO_SIZE.
+ */
+const SHOT_H = PHOTO_SIZE;
+const SHOT_W = Math.round((SHOT_H * 4) / 5);
+
+/**
+ * One camera frame, centre-cropped to fill a box of exactly `w` x `h`.
+ *
+ * `Math.max` is the same cover crop the viewfinder performs with
+ * `object-cover`, and it has to be: what the file holds is what the frame
+ * showed. A camera previewed mirrored — the way a mirror behaves — is written
+ * mirrored too, or the shot comes back flipped from what was on screen.
+ */
+function coverCanvas(video: HTMLVideoElement, w: number, h: number, mirror: boolean) {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  if (!ctx || !video.videoWidth) return null;
+
+  const scale = Math.max(w / video.videoWidth, h / video.videoHeight);
+  const dw = video.videoWidth * scale;
+  const dh = video.videoHeight * scale;
+  if (mirror) {
+    ctx.translate(w, 0);
+    ctx.scale(-1, 1);
+  }
+  ctx.drawImage(video, (w - dw) / 2, (h - dh) / 2, dw, dh);
+  return canvas;
+}
+
+/**
  * The first thing you see after tapping post: the camera, already running.
  *
  * A plate is the thing being reviewed, so the photo is not a field on a form —
@@ -288,28 +329,9 @@ export function CameraCapture({
     setTimeout(() => setFlash(false), 180);
   }
 
-  /**
-   * One camera frame, cover-cropped into half of the split picture.
-   *
-   * The front camera is previewed mirrored, the way a mirror behaves; the
-   * capture has to match what was on screen or the shot looks flipped.
-   */
+  /** One camera frame, cover-cropped into half of the split picture. */
   function halfFrom(video: HTMLVideoElement, mirror: boolean) {
-    const canvas = document.createElement("canvas");
-    canvas.width = SPLIT_W;
-    canvas.height = SPLIT_HALF;
-    const ctx = canvas.getContext("2d");
-    if (!ctx || !video.videoWidth) return null;
-
-    const scale = Math.max(SPLIT_W / video.videoWidth, SPLIT_HALF / video.videoHeight);
-    const w = video.videoWidth * scale;
-    const h = video.videoHeight * scale;
-    if (mirror) {
-      ctx.translate(SPLIT_W, 0);
-      ctx.scale(-1, 1);
-    }
-    ctx.drawImage(video, (SPLIT_W - w) / 2, (SPLIT_HALF - h) / 2, w, h);
-    return canvas;
+    return coverCanvas(video, SPLIT_W, SPLIT_HALF, mirror);
   }
 
   function join(top: HTMLCanvasElement, bottom: HTMLCanvasElement) {
@@ -394,19 +416,9 @@ export function CameraCapture({
     const video = videoRef.current;
     if (!video || !video.videoWidth) return;
 
-    const scale = Math.min(1, PHOTO_SIZE / Math.max(video.videoWidth, video.videoHeight));
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.round(video.videoWidth * scale);
-    canvas.height = Math.round(video.videoHeight * scale);
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    if (facing === "user") {
-      ctx.translate(canvas.width, 0);
-      ctx.scale(-1, 1);
-    }
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    // The 4:5 the viewfinder is already showing, not the camera's own frame.
+    const canvas = coverCanvas(video, SHOT_W, SHOT_H, facing === "user");
+    if (!canvas) return;
 
     const blob = await canvasToJpeg(canvas);
     if (blob) add(blob);
@@ -650,18 +662,13 @@ export function CameraCapture({
   /*
    * The shot, standing exactly where the camera was standing.
    *
-   * One mode fills the box and the other fits inside it, because the two
-   * pictures are not the same shape. A single shot is the video frame the
-   * viewfinder was already cropping with `object-cover`, so covering again
-   * lands on the framing that was on screen when the shutter fired. A split is
-   * built at a fixed 4:5 (see `join`) and a phone screen is far taller than
-   * that — covering with it scales the picture up until a third of its width
-   * is outside the screen, which is exactly what "it zoomed in when I took the
-   * photo" looks like. So a split is contained on the charcoal the composer
-   * already stands on, and what you are looking at is the whole picture that
-   * will be posted. The mode cannot change under review — the switch is hidden
-   * while a photo exists — so reading it here is reading the mode it was shot
-   * in.
+   * Covering, in both modes, and cropping nothing in either: every photo this
+   * screen makes is 4:5 — a single shot at `SHOT_W`/`SHOT_H`, a split at
+   * `SPLIT_W` by twice `SPLIT_HALF` — and the frame it stands in is 4:5 too,
+   * here, in the fullscreen composer and in the feed hero. This used to be a
+   * choice between covering and containing because the two pictures were not
+   * the same shape, and the shape a photo was reviewed at was not the shape it
+   * was posted at.
    *
    * The stream keeps running behind it: retake has to be instant, and
    * reopening a camera costs a second of black.
@@ -671,9 +678,7 @@ export function CameraCapture({
     <img
       src={taken.previewUrl}
       alt="The photo you just took"
-      className={`pointer-events-none absolute inset-0 h-full w-full ${
-        mode === "split" ? "object-contain" : "object-cover"
-      }`}
+      className="pointer-events-none absolute inset-0 h-full w-full object-cover"
     />
   );
 
@@ -732,7 +737,17 @@ export function CameraCapture({
        * nothing.
        */
       <div className="fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-pm-charcoal">
-        <div className="absolute inset-0">{taken ? review : viewfinder}</div>
+        {/* The picture is 4:5 and the screen is not — a handset is roughly
+            1:2. Filling the screen would frame the shot at a shape no photo is
+            ever saved at, and the crop would appear the moment the post landed
+            in the feed. Held to 4:5 at full width and centred instead, so the
+            edges of this box are the edges of the file: charcoal above and
+            below it, under the two rails that already sit there. */}
+        <div className="absolute inset-0 flex items-center">
+          <div className="relative aspect-[4/5] w-full overflow-hidden">
+            {taken ? review : viewfinder}
+          </div>
+        </div>
 
         <div
           className="relative z-10 flex items-start justify-between gap-3 px-4 pb-3 pt-4"

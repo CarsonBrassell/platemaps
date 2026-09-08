@@ -143,12 +143,15 @@ export type Restaurant = {
 /**
  * One dish off a restaurant's menu, as a search result carries it.
  *
- * Deliberately two fields. The card prints a name and a price and nothing
- * else, and this type travels on every row of a dish-shaped search response —
- * a description or a section would be bytes per restaurant that nothing
- * renders.
+ * Three fields and no more. The card prints a name and a price; the id is not
+ * printed at all, it is what the card links to — `?dish=` on the restaurant
+ * page opens this dish's sheet, so a search for a food lands on the food
+ * rather than on the menu it is somewhere inside. A description or a section
+ * would be bytes per restaurant that nothing renders or navigates.
  */
 export type MatchedDish = {
+  /** The `dishes` row, so the card can deep-link to it. */
+  id: string;
   name: string;
   /** Null when the menu listed no price, which is common. */
   price: string | null;

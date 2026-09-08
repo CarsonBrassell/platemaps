@@ -1,6 +1,6 @@
 import { formatPoints } from "@/lib/points";
 import { avatarPalette, initials } from "@/lib/format";
-import { STATIONS } from "@/lib/stations";
+import { rankFor } from "@/lib/ranks";
 import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 
@@ -31,9 +31,11 @@ type Entry = { id: string; name: string; avatarUrl?: string; points: number };
  *   three per screen, and a price on a menu is ink, not a highlight.
  * - **The `№` rank prefix** is the same "machine-issued record number" idiom
  *   PhoneDetailHero uses for "Spot №001", and `№1` is the one thing that
- *   still takes orange. Station titles (`STATIONS`) carry the podium instead
- *   of medals or a crown, per PRODUCT.md's note that points are "a
- *   capability, not the reason the product wins".
+ *   still takes orange. Every row also wears its rank-ladder title
+ *   (`lib/ranks.ts` — Newcomer through Institution) as a chip. It used to be
+ *   kitchen stations for the top three only (`lib/stations.ts`); Calvin asked
+ *   on 2026-09-07 for those to go and for everyone's rank to show instead, so
+ *   the podium is now the `№` and the chip is the title the points earned.
  * - **The dotted rules are typography, not grouping.** DESIGN.md's no-borders
  *   rule is about how cards group — this is one white card, and the leaders
  *   inside it are how a menu sets a price. All of them are `aria-hidden`.
@@ -92,8 +94,8 @@ function Course({ label }: { label: string }) {
 
 /**
  * Rank 1 has nothing above it to close the gap on, and a tie prints its own
- * line rather than "0 to catch" reading like a bug. Top three prepend their
- * station, so the line reads as a menu item's tags do.
+ * line rather than "0 to catch" reading like a bug. The rank chip sits ahead
+ * of it, so the line reads as a menu item's tags do.
  */
 function standingFor(rank: number, gap: number) {
   const standing =
@@ -106,23 +108,18 @@ function standingFor(rank: number, gap: number) {
 }
 
 /**
- * The podium's kitchen title, as a chip. Only the top three have one; everyone
- * below is just a number, per STATIONS. It used to ride the standing line,
- * which is where the longest text on the row already lives — as a chip it
- * reads at a glance and can carry the podium's colour. Tan for №2/№3 rather
- * than the orange tint, because that tint already means "this row is you" and
- * two meanings on one colour is how a legend stops working.
+ * The title this person's lifetime points have earned, as a chip — the same
+ * ladder the profile crest reads (`rankFor`), so a Critic here is a Critic
+ * there. Every row gets one: it says what the person has done, not where they
+ * sit tonight, and the `№` beside it already carries the position. Tan on
+ * every row rather than orange for №1, because the orange tint already means
+ * "this row is you" and two meanings on one colour is how a legend stops
+ * working.
  */
-function StationChip({ rank }: { rank: number }) {
-  const station = STATIONS[rank];
-  if (!station) return null;
+function RankChip({ points }: { points: number }) {
   return (
-    <span
-      className={`shrink-0 rounded-full px-2 py-px font-mono text-[10px] font-medium uppercase tracking-[0.1em] ${
-        rank === 1 ? "bg-pm-orange text-[#F7F4EC]" : "bg-pm-grey-tint text-pm-grey-text"
-      }`}
-    >
-      {station}
+    <span className="shrink-0 rounded-full bg-pm-grey-tint px-2 py-px font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-pm-grey-text">
+      {rankFor(points).title}
     </span>
   );
 }
@@ -180,7 +177,7 @@ function Seat({ entry, rank, gap, isYou }: Seat) {
           </span>
         </span>
         <span className="mt-1 flex items-center gap-1.5">
-          <StationChip rank={rank} />
+          <RankChip points={entry.points} />
           <span className="truncate font-mono text-[11px] leading-tight tabular-nums text-zinc-500">
             {standingFor(rank, gap)}
           </span>

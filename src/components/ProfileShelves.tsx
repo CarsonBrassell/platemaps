@@ -4,7 +4,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { UPVOTE_MILESTONES } from "@/lib/points";
 import { ChatIcon } from "@/components/icons";
 import { postedDate } from "@/lib/format";
-import { PlateDetailSheet, type DetailComment } from "@/components/PlateDetailSheet";
+import {
+  PlateDetailSheet,
+  type CommentVotePatch,
+  type DetailComment,
+} from "@/components/PlateDetailSheet";
 
 /**
  * The profile's plates, shelved by what they mean right now — plus the
@@ -760,6 +764,7 @@ export function ProfileShelves({
   posts,
   arrival,
   onCommentAdded,
+  onCommentVoted,
 }: {
   posts: ShelfPost[];
   arrival: RollCallArrival;
@@ -771,6 +776,8 @@ export function ProfileShelves({
    * comment count up by one at the same time.
    */
   onCommentAdded?: (postId: string, comment: DetailComment) => void;
+  /** The twin of onCommentAdded for votes — see the sheet's prop comment. */
+  onCommentVoted?: (postId: string, commentId: string, patch: CommentVotePatch) => void;
 }) {
   const { badgeTotals, shownBadges, pulsing, chip, delta, clearBadge } = arrival;
 
@@ -947,6 +954,9 @@ export function ProfileShelves({
           post={openPost}
           onClose={() => setOpenId(null)}
           onCommentAdded={(comment) => onCommentAdded?.(openPost.id, comment)}
+          onCommentVoted={(commentId, patch) =>
+            onCommentVoted?.(openPost.id, commentId, patch)
+          }
         />
       )}
     </section>

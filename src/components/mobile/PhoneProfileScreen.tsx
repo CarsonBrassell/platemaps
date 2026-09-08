@@ -62,6 +62,10 @@ type Post = {
     authorAvatarUrl?: string;
     text: string;
     createdAt: string;
+    /** The sheet's vote arrows read and write these — see DetailComment. */
+    upvoteCount: number;
+    downvoteCount: number;
+    myVote: "up" | "down" | null;
   }[];
   /** Mirrors PostMedia in lib/db.ts — that module is server-only. */
   media?: { url: string; type: "image" | "video"; alt?: string }[];
@@ -337,6 +341,20 @@ function ProfileOverview() {
               setMyPosts((prev) =>
                 prev.map((p) =>
                   p.id === postId ? { ...p, comments: [...p.comments, comment] } : p
+                )
+              )
+            }
+            onCommentVoted={(postId, commentId, patch) =>
+              setMyPosts((prev) =>
+                prev.map((p) =>
+                  p.id === postId
+                    ? {
+                        ...p,
+                        comments: p.comments.map((c) =>
+                          c.id === commentId ? { ...c, ...patch } : c
+                        ),
+                      }
+                    : p
                 )
               )
             }

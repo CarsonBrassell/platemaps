@@ -5,7 +5,7 @@ import Link from "next/link";
 import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
 import { useNearby } from "@/lib/nearby";
 import { fromWire } from "@/lib/discoverWire";
-import { matchMarksFor, searchFromFilters } from "@/lib/discoverFilters";
+import { activeFilterCount, matchMarksFor, searchFromFilters } from "@/lib/discoverFilters";
 import type { DiscoverPage } from "@/lib/discover";
 import { packColumns } from "@/lib/photoShape";
 
@@ -45,10 +45,14 @@ export function PhoneDiscoverResults({
   const view = nearby.coords && located ? located : page;
   const { filters } = view;
 
+  // Any filter and not only `q`, for the reason spelled out at the matching
+  // effect in DiscoverBrowser: a typed cuisine is promoted out of `q` before
+  // this ever sees it, so gating on `q` left the commonest search unlocated.
+  const active = activeFilterCount(filters);
   const requestLocation = nearby.request;
   useEffect(() => {
-    if (filters.q && !nearby.coords && nearby.state === "idle") requestLocation();
-  }, [filters.q, nearby.coords, nearby.state, requestLocation]);
+    if (active > 0 && !nearby.coords && nearby.state === "idle") requestLocation();
+  }, [active, nearby.coords, nearby.state, requestLocation]);
 
   // Canonical rather than the URL: exactly what the web sends, so the two
   // versions cannot be answered differently for the same filters.
@@ -81,12 +85,19 @@ export function PhoneDiscoverResults({
   if (view.results.length === 0) {
     return (
       <div className="px-4 py-16 text-center">
-        <p className="font-display text-lg text-zinc-900">Nothing matches that</p>
-        {/* Points at the sheet rather than guessing which filter did it: every
-            row in there prints what it would return, and the ones reading 0
-            are the ones ruling everything out. */}
+        {/* A dish names itself, because with one on there is no guessing which
+            filter emptied the grid — `?dish=` is an equality on menu wording
+            (dishesNamedExactly in lib/db.ts), so nothing else got a vote. */}
+        <p className="font-display text-lg text-zinc-900">
+          {filters.dish ? `No menus list “${filters.dish}”` : "Nothing matches that"}
+        </p>
+        {/* Otherwise points at the sheet rather than guessing: every row in
+            there prints what it would return, and the ones reading 0 are the
+            ones ruling everything out. */}
         <p className="mx-auto mt-1 max-w-[15rem] text-sm leading-snug text-pm-grey-text">
-          Every row under Filters shows how many places it would return.
+          {filters.dish
+            ? "That is matched on menu wording exactly. Searching the words instead reaches places that spell it differently."
+            : "Every row under Filters shows how many places it would return."}
         </p>
         <Link
           href={clearHref}

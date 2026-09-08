@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { Dialog } from "@/components/feed/Dialog";
 import { Composer } from "@/components/feed/Composer";
-import { HeartIcon } from "@/components/icons";
+import { HeartIcon, VoteArrowUpIcon, VoteArrowDownIcon } from "@/components/icons";
 import { initials, avatarPalette, relativeTime, postedDate } from "@/lib/format";
+import type { VoteDirection } from "@/components/feed/PostActions";
 import type { ShelfPost } from "@/components/ProfileShelves";
 
 /**
@@ -50,12 +51,15 @@ import type { ShelfPost } from "@/components/ProfileShelves";
  * replies nest here the way they do in `CommentsScreen`, against the same
  * `POST /api/posts/[id]/comments` route.
  *
- * This is deliberately the *short* thread, not that screen: no sort switch, no
- * collapsing, no votes. A plate's own author reading their own plate is not
- * moderating a discussion, and the surface is a sheet over a profile rather
- * than a destination. If a thread here ever grows past what a sheet can hold,
- * the answer is to link out to the feed's screen, not to grow a second copy of
- * it in this file.
+ * This is deliberately the *short* thread, not that screen: no sort switch and
+ * no collapsing. Votes are the one thing that came back. A vote is not a
+ * moderation control — it is how this app says "this one" on every other
+ * surface, and a comment you could answer but not upvote read as though the
+ * arrows had been taken away from you on your own plate. They write through
+ * `POST /api/comments/[id]/vote`, the same route the feed's thread uses, so
+ * the points rules stay decided in one place. If a thread here ever grows past
+ * what a sheet can hold, the answer is to link out to the feed's screen, not
+ * to grow a second copy of it in this file.
  */
 
 export type DetailComment = {
@@ -67,6 +71,22 @@ export type DetailComment = {
   authorAvatarUrl?: string;
   text: string;
   createdAt: string;
+  /**
+   * The tallies and this viewer's own vote, straight off `hydratePosts` —
+   * `/api/posts?mine=1` has always sent all three, the sheet simply used to
+   * drop them on the floor. A comment written in this session comes back from
+   * `addComment` with them zeroed, so its arrows work without a refetch.
+   */
+  upvoteCount: number;
+  downvoteCount: number;
+  myVote: VoteDirection | null;
+};
+
+/** What a vote changes about one comment — the patch the profile applies. */
+export type CommentVotePatch = {
+  myVote: VoteDirection | null;
+  upvoteCount: number;
+  downvoteCount: number;
 };
 
 /** One comment and everything hanging off it. */
@@ -391,6 +411,7 @@ function CommentRow({
   replyTo,
   onReplyTo,
   onSubmitReply,
+  onVote,
 }: {
   node: CommentNode;
   depth: number;
@@ -399,6 +420,7 @@ function CommentRow({
   replyTo: string | null;
   onReplyTo: (id: string | null) => void;
   onSubmitReply: (text: string, parentId: string) => Promise<string | null>;
+  onVote: (commentId: string, direction: VoteDirection) => void;
 }) {
   const { comment, replies } = node;
   const open = replyTo === comment.id;
@@ -427,14 +449,24 @@ function CommentRow({
           <p className="mt-0.5 whitespace-pre-wrap text-[13px] leading-snug text-zinc-700">
             {comment.text}
           </p>
-          <button
-            type="button"
-            onClick={() => onReplyTo(open ? null : comment.id)}
-            aria-expanded={open}
-            className="-ml-2 mt-0.5 min-h-11 rounded-full px-2 font-mono text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-          >
-            Reply
-          </button>
+          {/* Votes first, then Reply, on one line — the same two controls in
+              the same order the feed's thread puts them in, so the gesture
+              doesn't move when you read the same comment on the other
+              surface. */}
+          <div className="mt-0.5 flex items-center gap-1">
+            <CommentVotes
+              comment={comment}
+              onVote={(direction) => onVote(comment.id, direction)}
+            />
+            <button
+              type="button"
+              onClick={() => onReplyTo(open ? null : comment.id)}
+              aria-expanded={open}
+              className="min-h-11 rounded-full px-2 font-mono text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            >
+              Reply
+            </button>
+          </div>
         </div>
       </div>
 
@@ -465,6 +497,7 @@ function CommentRow({
               replyTo={replyTo}
               onReplyTo={onReplyTo}
               onSubmitReply={onSubmitReply}
+              onVote={onVote}
             />
           ))}
         </ul>
@@ -473,10 +506,71 @@ function CommentRow({
   );
 }
 
+/**
+ * The feed thread's vote pair, at sheet scale.
+ *
+ * Same rules as `CommentVotes` in CommentsScreen and for the same reasons: one
+ * mark per direction that only ever changes colour and fill — never size,
+ * which is what made the old glyph swap grow under the cursor — the net score
+ * between them, and a fixed-width score so a thread doesn't shuffle sideways
+ * as votes land. Sign-in isn't checked: this sheet is only reachable from your
+ * own profile, which is behind the session already.
+ */
+function CommentVotes({
+  comment,
+  onVote,
+}: {
+  comment: DetailComment;
+  onVote: (direction: VoteDirection) => void;
+}) {
+  const net = comment.upvoteCount - comment.downvoteCount;
+
+  const arrow = (direction: VoteDirection) => {
+    const active = comment.myVote === direction;
+    const up = direction === "up";
+    const Arrow = up ? VoteArrowUpIcon : VoteArrowDownIcon;
+    return (
+      <button
+        type="button"
+        onClick={() => onVote(direction)}
+        aria-pressed={active}
+        aria-label={
+          active
+            ? up
+              ? "Remove upvote"
+              : "Remove downvote"
+            : up
+              ? "Upvote this comment"
+              : "Downvote this comment"
+        }
+        className={`flex h-11 w-6 items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+          active ? "text-pm-orange" : "text-zinc-400 hover:text-pm-orange-text"
+        }`}
+      >
+        <Arrow filled={active} className="h-3.5 w-3.5" />
+      </button>
+    );
+  };
+
+  return (
+    <div className="-ml-1 flex items-center">
+      {arrow("up")}
+      <span
+        aria-label={`Net score ${net}`}
+        className="min-w-[3ch] text-center font-mono text-xs font-semibold tabular-nums text-pm-orange-text"
+      >
+        {net}
+      </span>
+      {arrow("down")}
+    </div>
+  );
+}
+
 export function PlateDetailSheet({
   post,
   onClose,
   onCommentAdded,
+  onCommentVoted,
 }: {
   post: ShelfPost;
   onClose: () => void;
@@ -491,10 +585,17 @@ export function PlateDetailSheet({
    * render, so patching that list is what puts the reply on screen.
    */
   onCommentAdded?: (comment: DetailComment) => void;
+  /**
+   * A vote this sheet just cast, handed back for the same reason a reply is:
+   * the profile owns the array both the thread and the tile counts read, and a
+   * vote that lived only in here would be gone the moment the sheet closed.
+   */
+  onCommentVoted?: (commentId: string, patch: CommentVotePatch) => void;
 }) {
   const [hearts, setHearts] = useState<HeartedBy[]>([]);
   const [heartsOpen, setHeartsOpen] = useState(false);
   const [replyTo, setReplyTo] = useState<string | null>(null);
+  const [voteError, setVoteError] = useState<string | null>(null);
 
   /* Author-only, and checked server-side: a 403 here is a correct answer, not
      an error to surface — it just means this is not your plate, and the
@@ -543,6 +644,53 @@ export function PlateDetailSheet({
       return null;
     } catch {
       return "Couldn't reach PlateMaps. Check your connection.";
+    }
+  }
+
+  /**
+   * Cast or clear a vote on one comment.
+   *
+   * Pressing the direction you already hold clears it — the rule
+   * `castCommentVote` applies on the server, mirrored here so the optimistic
+   * number matches the one that comes back instead of flickering past it. The
+   * server's answer overwrites the guess either way, and a failure puts the
+   * comment back exactly as it was rather than leaving a vote on screen that
+   * was never recorded.
+   */
+  async function vote(commentId: string, direction: VoteDirection) {
+    const before = comments.find((c) => c.id === commentId);
+    if (!before) return;
+
+    const held = before.myVote;
+    const next = held === direction ? null : direction;
+
+    setVoteError(null);
+    onCommentVoted?.(commentId, {
+      myVote: next,
+      upvoteCount: before.upvoteCount + (next === "up" ? 1 : 0) - (held === "up" ? 1 : 0),
+      downvoteCount: before.downvoteCount + (next === "down" ? 1 : 0) - (held === "down" ? 1 : 0),
+    });
+
+    try {
+      const res = await fetch(`/api/comments/${commentId}/vote`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ direction }),
+      });
+      if (!res.ok) throw new Error("failed");
+      const data = await res.json();
+      onCommentVoted?.(commentId, {
+        myVote: data.myVote,
+        upvoteCount: data.upvoteCount,
+        downvoteCount: data.downvoteCount,
+      });
+    } catch {
+      onCommentVoted?.(commentId, {
+        myVote: held,
+        upvoteCount: before.upvoteCount,
+        downvoteCount: before.downvoteCount,
+      });
+      setVoteError("Couldn't save your vote.");
     }
   }
 
@@ -655,6 +803,12 @@ export function PlateDetailSheet({
             : "Comments"}
         </p>
 
+        {voteError && (
+          <p role="alert" className="mb-2 text-[13px] text-red-700">
+            {voteError}
+          </p>
+        )}
+
         {comments.length === 0 ? (
           <p className="rounded-xl bg-pm-grey-tint/50 px-4 py-5 text-center text-[13px] text-zinc-600">
             No comments on this plate yet.
@@ -670,6 +824,7 @@ export function PlateDetailSheet({
                 replyTo={replyTo}
                 onReplyTo={setReplyTo}
                 onSubmitReply={submit}
+                onVote={vote}
               />
             ))}
           </ul>

@@ -6,6 +6,7 @@ import {
   getRestaurantAspectTally,
   getRestaurantById,
   getRestaurantPlateScore,
+  getSiblingLocations,
 } from "@/lib/db";
 
 /**
@@ -29,17 +30,19 @@ export default async function PhoneRestaurantPage({
 }) {
   const { id } = await params;
 
-  // All five read the database, which PhoneDetailScreen cannot do itself — it
+  // All six read the database, which PhoneDetailScreen cannot do itself — it
   // is a client component. Issued together rather than in sequence: they don't
   // depend on each other, and awaiting them one at a time would make the page
-  // five round trips deep.
-  const [restaurant, dishes, aspectTally, plateScore, dishRatings] = await Promise.all([
-    getRestaurantById(id),
-    getDishesForRestaurant(id),
-    getRestaurantAspectTally(id),
-    getRestaurantPlateScore(id),
-    getDishRatingsForRestaurant(id),
-  ]);
+  // six round trips deep.
+  const [restaurant, dishes, aspectTally, plateScore, dishRatings, otherLocations] =
+    await Promise.all([
+      getRestaurantById(id),
+      getDishesForRestaurant(id),
+      getRestaurantAspectTally(id),
+      getRestaurantPlateScore(id),
+      getDishRatingsForRestaurant(id),
+      getSiblingLocations(id),
+    ]);
   if (!restaurant) notFound();
 
   return (
@@ -49,6 +52,7 @@ export default async function PhoneRestaurantPage({
       aspectTally={aspectTally}
       plateScore={plateScore}
       dishRatings={dishRatings}
+      otherLocations={otherLocations}
     />
   );
 }

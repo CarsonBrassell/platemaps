@@ -15,6 +15,10 @@ import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
 import { RANKS, rankByKey } from "@/lib/ranks";
 import { dishRatingKey } from "@/lib/dishRatingKey";
 import { isStoredPhotoUrl } from "@/lib/photos";
+import { brandKey, foldAccents } from "@/lib/brandName";
+// From lib/geo.ts for the same reason discoverFilters.ts takes it from there:
+// lib/nearby.ts is a React hook and this module is server-only.
+import { milesBetween } from "@/lib/geo";
 
 /* Which driver this is depends on DATABASE_URL — see lib/sqlClient. */
 import { sql } from "@/lib/sqlClient";
@@ -2761,6 +2765,7 @@ function rowToRestaurantView(row: Record<string, unknown>): RestaurantView {
     ...(row.matched_dish
       ? {
           matchedDish: {
+            id: row.matched_dish_id as string,
             name: row.matched_dish as string,
             price: (row.matched_dish_price as string) || null,
           },
@@ -2969,12 +2974,15 @@ export async function getRestaurantMapRows(): Promise<RestaurantMapRow[]> {
  */
 export async function searchRestaurants(term: string, limit = 60): Promise<RestaurantView[]> {
   const needle = `%${term}%`;
-  // Apostrophe-blind twin of `needle` - see foldSearchText in lib/discoverFilters.ts.
-  const folded = `%${term.replace(/['’`´]/g, "")}%`;
+  /* Apostrophe- and accent-blind twin of `needle` - see foldSearchText in
+     lib/discoverFilters.ts. The query is folded here and the haystack is
+     folded in SQL below; both sides have to lose the same characters or the
+     comparison means nothing. */
+  const folded = `%${foldAccents(term).replace(/['’`´]/g, "")}%`;
   const rows = await sql`
     WITH dish_match AS (
       SELECT DISTINCT ON (d.restaurant_id)
-             d.restaurant_id, d.name, d.price
+             d.restaurant_id, d.id, d.name, d.price
       FROM dishes d
       WHERE d.name ILIKE ${needle}
       ORDER BY d.restaurant_id, length(d.name), d.sort_order
@@ -2982,7 +2990,8 @@ export async function searchRestaurants(term: string, limit = 60): Promise<Resta
     SELECT r.id, r.name, r.cuisine, r.cuisine_tags, r.neighborhood, r.distance,
            r.hours, r.lat, r.lng, r.rating, r.review_count, r.trending,
            r.photo, r.photo_alt, r.photo_w, r.photo_h, r.price_band,
-           dm.name AS matched_dish, dm.price AS matched_dish_price
+           dm.id AS matched_dish_id, dm.name AS matched_dish,
+           dm.price AS matched_dish_price
     FROM restaurants r
     LEFT JOIN dish_match dm ON dm.restaurant_id = r.id
     WHERE r.listed
@@ -2992,11 +3001,11 @@ export async function searchRestaurants(term: string, limit = 60): Promise<Resta
           coalesce(r.name, '') || ' ' || coalesce(r.cuisine, '') || ' ' ||
           coalesce(r.cuisine_tags, '') || ' ' || coalesce(r.neighborhood, '')
         ) ILIKE ${needle}
-        OR translate(
+        OR unaccent(translate(
           coalesce(r.name, '') || ' ' || coalesce(r.cuisine, '') || ' ' ||
           coalesce(r.cuisine_tags, '') || ' ' || coalesce(r.neighborhood, ''),
           '''’\x60´', ''
-        ) ILIKE ${folded}
+        )) ILIKE ${folded}
       )
     ORDER BY r.sort_order, r.id
     LIMIT ${limit}
@@ -3027,7 +3036,7 @@ export async function dishMatchesFor(term: string): Promise<Map<string, MatchedD
 
   const rows = await sql`
     SELECT DISTINCT ON (d.restaurant_id)
-           d.restaurant_id, d.name, d.price
+           d.restaurant_id, d.id, d.name, d.price
     FROM dishes d
     WHERE d.name ILIKE ${`%${trimmed}%`}
     ORDER BY d.restaurant_id, length(d.name), d.sort_order
@@ -3036,9 +3045,97 @@ export async function dishMatchesFor(term: string): Promise<Map<string, MatchedD
   return new Map(
     rows.map((row) => [
       row.restaurant_id as string,
-      { name: row.name as string, price: (row.price as string) || null },
+      {
+        id: row.id as string,
+        name: row.name as string,
+        price: (row.price as string) || null,
+      },
     ]),
   );
+}
+
+/**
+ * Which restaurants serve *this exact dish*, and the dish as they spell it.
+ *
+ * The sibling of `dishMatchesFor` above and deliberately not the same query.
+ * That one answers "does any dish here contain the term the visitor typed",
+ * which is the loose, ranked half of a free-text search. This one answers
+ * "which menus list the dish they picked", which is a filter: `?dish=` comes
+ * from the search dropdown, where the visitor chose one row out of a list of
+ * real dish names, and a `%like%` would quietly widen that back into a search —
+ * picking "Birria Taco" would drag in "Birria Taco Plate" and "Three Birria
+ * Tacos", and the chip on screen would name a dish the grid is not filtering
+ * on.
+ *
+ * Matched on `dishes.name_folded`, the stored generated column — so "Chef's
+ * Special" and "Chefs Special" are one dish, and the comparison is an indexed
+ * equality rather than a fold over 514,000 rows. scripts/migrate.mjs holds the
+ * fold itself, and `normalize()` in lib/textMatch.ts is its twin on the typed
+ * side; the caller folds the URL's text with that before calling this.
+ *
+ * Unfiltered by `listed` for the same reason as `dishMatchesFor`: the caller
+ * intersects with its own already-gated corpus, and a second gate here is a
+ * second place to drift.
+ */
+export async function dishesNamedExactly(folded: string): Promise<Map<string, MatchedDish>> {
+  const key = folded.trim();
+  if (!key) return new Map();
+
+  const rows = await sql`
+    SELECT DISTINCT ON (d.restaurant_id)
+           d.restaurant_id, d.id, d.name, d.price
+    FROM dishes d
+    WHERE d.name_folded = ${key}
+    ORDER BY d.restaurant_id, d.sort_order
+  `;
+
+  return new Map(
+    rows.map((row) => [
+      row.restaurant_id as string,
+      {
+        id: row.id as string,
+        name: row.name as string,
+        price: (row.price as string) || null,
+      },
+    ]),
+  );
+}
+
+/**
+ * The closest real dish name to a term no menu is spelled like — the dropdown's
+ * spell-check for dishes.
+ *
+ * Only asked once `dishMatchesFor` has come back empty, which is what makes the
+ * cost acceptable: a term that reaches any menu at all needs no correction, and
+ * that is nearly every term anyone types.
+ *
+ * Reads `dish_names`, the materialised vocabulary rebuilt by
+ * `scripts/index-dish-names.mjs`, never `dishes` itself. That is the whole
+ * reason the table exists: ranked over 429,350 menu rows, a dish served by 300
+ * places would get 300 chances to beat one served by two, and a correction would
+ * quietly become a popularity contest. Here `place_count` is the last tiebreak
+ * instead of a thumb on the scale.
+ *
+ * `%` is the pg_trgm similarity operator and `idx_dish_names_trgm` serves it.
+ * Nothing contains the query by the time this runs, so similarity leads the
+ * ordering and commonness only breaks its ties — the opposite of how a literal
+ * match would be ranked, because a literal match has evidence beyond overlap.
+ *
+ * The caller holds the query to three characters or more; under that a trigram
+ * index has nothing to match on.
+ */
+export async function nearestDishName(folded: string): Promise<string | null> {
+  const key = folded.trim();
+  if (!key) return null;
+
+  const rows = await sql`
+    SELECT label
+    FROM dish_names
+    WHERE name % ${key}
+    ORDER BY similarity(name, ${key}) DESC, place_count DESC
+    LIMIT 1
+  `;
+  return (rows[0]?.label as string) ?? null;
 }
 
 /**
@@ -3053,6 +3150,91 @@ export async function dishMatchesFor(term: string): Promise<Map<string, MatchedD
 export async function getRestaurantById(id: string): Promise<Restaurant | null> {
   const rows = await sql`SELECT * FROM restaurants WHERE id = ${id} AND listed`;
   return rows[0] ? rowToRestaurant(rows[0]) : null;
+}
+
+/**
+ * One branch of a chain, as the "other locations" strip renders it.
+ *
+ * Deliberately not a `RestaurantView`: this list is a row of links, and the
+ * fields a card needs (photo, rating, hours, price band, cuisine tags) would
+ * be downloaded once per branch to render nothing. Fourteen Luna Grills is
+ * fourteen times that.
+ */
+export type SiblingLocation = {
+  id: string;
+  name: string;
+  neighborhood: string;
+  address: string | null;
+  /** Straight-line miles from the branch being looked at. */
+  miles: number;
+  /** Whether this branch's menu is loaded — the strip says so when it isn't. */
+  hasMenu: boolean;
+};
+
+/**
+ * The other branches of the same restaurant, nearest first.
+ *
+ * The corpus has no notion of a chain: every branch is its own row, joined to
+ * the others by nothing but a name written four different ways (see
+ * `lib/brandName.ts`). So this matches on the folded brand key, computed the
+ * same way on both sides — here in TypeScript for the row being viewed, and in
+ * SQL for the candidates, which is why the SQL repeats the fold rather than
+ * calling the helper.
+ *
+ * Two deliberate limits:
+ *
+ * - **Listed rows only.** A branch held for being permanently closed or out of
+ *   county is not somewhere to send a reader, and the hold is the mechanism
+ *   that decides that everywhere else in the product too.
+ * - **The candidate set is a prefix match, then an exact brand-key match in
+ *   TypeScript.** `LIKE 'lunagrill%'` narrows 9,000 rows to a handful using the
+ *   index; the exact test is what rejects "Luna Grill Express" from being
+ *   called a Luna Grill. Doing the whole thing in SQL would mean writing
+ *   `brandKey`'s branch-suffix rule twice, in two languages, and the two
+ *   drifting is exactly how a chain ends up half-linked.
+ */
+export async function getSiblingLocations(restaurantId: string): Promise<SiblingLocation[]> {
+  const [self] = await sql`
+    SELECT id, name, neighborhood, city, lat, lng FROM restaurants
+    WHERE id = ${restaurantId} AND listed
+  `;
+  if (!self) return [];
+
+  const key = brandKey(self.name as string, [
+    self.neighborhood as string | null,
+    self.city as string | null,
+  ]);
+  // A one-word brand ("Nomad", "Cracked") is a coincidence waiting to happen,
+  // and the strip is worth nothing if it offers a reader a different business.
+  if (key.length < 6) return [];
+
+  const rows = await sql`
+    SELECT r.id, r.name, r.neighborhood, r.city, r.address, r.lat, r.lng,
+           EXISTS (SELECT 1 FROM dishes d WHERE d.restaurant_id = r.id) AS has_menu
+    FROM restaurants r
+    WHERE r.listed
+      AND r.id <> ${restaurantId}
+      AND regexp_replace(lower(unaccent(r.name)), '[^a-z0-9]', '', 'g') LIKE ${`${key}%`}
+  `;
+
+  const here = { lat: self.lat as number, lng: self.lng as number };
+  return rows
+    .filter(
+      (row) =>
+        brandKey(row.name as string, [
+          row.neighborhood as string | null,
+          row.city as string | null,
+        ]) === key,
+    )
+    .map((row) => ({
+      id: row.id as string,
+      name: row.name as string,
+      neighborhood: row.neighborhood as string,
+      address: (row.address as string | null) ?? null,
+      miles: milesBetween(here, { lat: row.lat as number, lng: row.lng as number }),
+      hasMenu: Boolean(row.has_menu),
+    }))
+    .sort((a, b) => a.miles - b.miles);
 }
 
 /** A restaurant's menu, in the order the menu itself listed it. */

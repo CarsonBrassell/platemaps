@@ -22,6 +22,118 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
 
 ## Since 2026-09-05 (newest decisions, read these)
 
+- **A photo is 4:5 from the viewfinder to the feed, and it never was
+  (2026-09-07, uncommitted, web + phone).** Calvin: "when i post the image that
+  appears on the feed the dimensions are different." Three different shapes
+  were in play. The composer framed at `aspect-[4/5]`; a single shot saved the
+  camera's own frame (4:3 or 16:9 landscape, uncropped) while a split saved
+  1080x1350; the feed hero was a fixed `aspect-[16/9]` with `object-cover`.
+  So the file kept bands the viewfinder had cropped away, and the feed then
+  took a second crop of its own — a split lost about half its height. 4:5 is
+  now the one shape:
+  - `coverCanvas` in CameraCapture does the cover crop for both modes;
+    `SHOT_W`/`SHOT_H` put a single shot at 720x900, inside PHOTO_SIZE.
+  - The fullscreen composer no longer fills the phone with the viewfinder — a
+    handset is roughly 1:2 and framing at that shape was the same lie. The
+    picture is a centred `aspect-[4/5] w-full` box, charcoal above and below.
+  - The review `img` covers in both modes; the split/contain branch existed
+    only because the two pictures were different shapes.
+  - `PostMediaCarousel` is `aspect-[4/5]`. Notes in globals.css (`.snap-track`)
+    and lib/photos.ts (PHOTO_SIZE) carried the old 16:9 arithmetic and were
+    updated with it.
+  **Photos already posted are not 4:5** — the live feed holds 675x900, 1080x720
+  and 1080x1620 — so old posts are centre-cropped in the new box. Nothing
+  stores a photo's dimensions; that is what a per-post ratio would need.
+
+- **The "where" step measures from you, not from downtown (2026-09-07,
+  uncommitted, web + phone).** Calvin posted, tapped Next, and got no nearby
+  restaurants. The step’s new radius cut (9389d17) filtered on the seeded
+  `distance` column, which lib/nearby.ts says is measured from a **fixed
+  downtown origin for every visitor alike** — so “within 3 miles” meant “within
+  3 miles of the Gaslamp” wherever you stood, and the list handed everyone the
+  same 40 downtown rows. It was verified standing in the Gaslamp, which is the
+  one place the bug is invisible. `RestaurantPicker` now calls `useNearby()`,
+  recomputes every row with `milesBetween`, relabels with `formatMiles`, and
+  cuts on that. Measured from Rolando: 40 rows at 0.4-0.5 mi in Rolando and the
+  College Area, against Bandar / Vin De Syrah / Tacos El Gordo before.
+  - **With no fix there is no honest cut**, only the cap — `!coords` shows
+    NEARBY_CEILING rows, the status line reads “Location off — search by name”
+    rather than “Near you, closest first”, and the footer says “more” rather
+    than “farther away”. The perf win (54,397 DOM nodes down to ~380) is kept
+    in every branch; only the claim changes.
+  - The prompt is raised on this step’s mount, the one place in the composer
+    that asks. lib/nearby.ts reserves the single prompt for “the tap that
+    explains why”; “Where were you?” on screen is that explanation.
+  - `onSelect` hands back the **untouched** row, so a post’s stored
+    `locationLabel` stays the seeded string. How far the poster happened to be
+    from the place is not a fact about the place.
+
+
+- **Search now actually orders by distance, and it never really did
+  (2026-09-07, uncommitted, web + phone).** Filters and the relevance ladder
+  still decide the tier; distance decides inside it. Two things were stopping
+  that, both in `orderResults` (lib/discover.ts) and its two callers:
+  - **`f.q` was the gate, and a typed cuisine never survives as `q`.**
+    `promote` in discoverFilters turns "thai" into `?cuisine=Thai`, so the
+    commonest search in the app measured no distance at all and rendered in
+    corpus order. Any active filter now earns the ordering; the bare
+    unfiltered grid still keeps corpus order, and a picked neighbourhood still
+    turns distance off entirely. The permission-prompt effects in
+    `DiscoverBrowser` and `PhoneDiscoverResults` were gated on `f.q` for the
+    same reason and were widened the same way — without that the server side
+    has no coordinates to sort by.
+  - **"Among equals" meant identical scores, and two rungs carry a 0-99
+    bonus.** "pizza" scored `Bronx Pizza` 800+50 and `Buona Forchetta Pizza
+    Napoletana` 800+25 — one of two name words versus one of four — so a
+    25-point measure of *sign length* outranked being across the street.
+    `rungOf` in lib/textMatch.ts is the new comparison: coverage bonus dropped,
+    fuzzy bonus kept but coarsened to 0.1 of similarity so a typo still finds
+    the right place. Raw score is the last tiebreak, so nothing became
+    arbitrary. Verified against the dev server from an Oceanside fix:
+    `cuisine=Thai` returns Rim Talay (0.0) → Thai Style Kitchen (0.5) → Sabai
+    Sabai (1.3); `q=kairoa brewng` still puts Kairoa Brewing Company (32.9)
+    above Koakai Brewing (1.4); `q=poke chop` returns all four branches
+    nearest-first ahead of a 3.2-mile poke shop, so no tier leaks.
+
+- **Accents were splitting chains in half, and "other locations" now exists
+  (2026-09-07, uncommitted, web + phone).** Calvin searched Poke Chop and got
+  two branches, neither of them the near ones. Cause: two of the four rows are
+  spelled `Poké Chop` (Google) and two `Poke Chop` (OSM), and nothing in the
+  search folds the accent — `searchRestaurants` matched the literal string, and
+  `textMatch.normalize` was *worse* than nothing because its `[^a-z0-9]+ → " "`
+  turned `é` into a space, so `Poké Chop` normalised to `pok chop`. All four
+  rows were present, listed and carrying 29-30 dishes the whole time. **This
+  was never a coverage bug.** Scope: 379 listed names are non-ASCII, **220** of
+  them fold to a different key, and **19 chain groups (53 rows)** are invisible
+  to each other without the fold. `share-chain-menus.mjs` uses the same broken
+  normaliser, which is why accented branches never inherit a sibling's menu.
+  - `src/lib/brandName.ts` is new and is now the one place brand identity is
+    decided: `foldAccents` (NFD + strip combining marks), `nameKey`, and
+    `brandKey`, which additionally drops a trailing place name **but only the
+    row's own neighborhood/city**. A global place list merged "Pho Oceanside"
+    into "Phở Carlsbad"; `MIN_KEY_LENGTH = 6` is the guard against exactly
+    that. The suffix strip is what merges `Luna Grill Encinitas` into Luna
+    Grill — 112 extra brands over the plain fold.
+  - `textMatch.normalize` and `discoverFilters.foldSearchText` now fold first.
+    `searchRestaurants` gained a second, accent-blind arm over
+    `unaccent(translate(...))`; `CREATE EXTENSION IF NOT EXISTS unaccent` is
+    appended to `migrate.mjs` and **has been run**. `unaccent` is STABLE, not
+    IMMUTABLE, so it cannot be indexed — that arm is a scan.
+  - `getSiblingLocations` in `lib/db.ts` + `components/OtherLocations.tsx`
+    render the branch list on both `/restaurant/[id]` and `/m/restaurant/[id]`,
+    above the full menu. Listed rows only, nearest first, **distance measured
+    from the branch on screen** (a server component has no geolocation), a
+    branch with no menu still appears and is marked. Collapsed to 5 with a
+    "Show N more" — Luna Grill's sixteen branches rendered flat pushed the menu
+    off the page. Verified by screenshot at 500px.
+  - **This links, it does not merge.** Every branch keeps its own page, menu,
+    plates and comments, because prices and kitchens differ per branch. Whether
+    Calvin wants a genuine merge is still open.
+  - Residual split menus (one branch has a menu, a sibling doesn't): **8 groups
+    under the old normaliser, 17 once accents fold.** Small. And the 214 chain
+    groups with some branches held are mostly *correct* holds — 134 out of
+    county, 34 Google-closed, 22 permit-only.
+
 - **One photo per post, and the shutter now lands on it (2026-09-07,
   pushed).** Calvin: the camera let you stack four photos and the press
   dropped you straight back on the live viewfinder, so the shot you had just
@@ -155,6 +267,35 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   unreachable by name. Still to do: **B4** (dish precision) and **B5** (SQL
   parity in `searchRestaurants`), both optional and neither blocking.
 
+  **An `All` row comes first (2026-09-07, uncommitted).** Calvin: "add an all
+  tab that comes first." It is the un-narrowed ranked search — the one answer
+  the menu never named, because Enter already ran it and nothing on screen said
+  so or said how big it was. Its count is the sum of the four *tallies*, taken
+  before any reading is rewritten, and deliberately not the sum of the four
+  printed numbers (a cuisine row prints its facet's size; a corrected dish row
+  counts rows the typed spelling cannot reach). It is suppressed when nothing
+  matched at all.
+  Adding it exposed a real bug and the fix is the part to not undo:
+  **there was no URL that meant "all".** A bare `?q=thai` is promoted into
+  `?cuisine=Thai` by `promote()`, so the row would have offered 723 and landed
+  on 178. `ALL_SCOPE` / `QueryScope` / `QUERY_SCOPES` in `lib/discoverFilters.ts`
+  make `?in=all` a legal value that narrows nothing and exists only to suppress
+  promotion — it is **not** a field, is not in `SEARCH_SCOPES`, and `scopeOf`
+  never returns it. Enter still promotes, because Enter picked nothing.
+  The row's reading word (`ALL`, `DISH`) is orange at Calvin's ask, in
+  `--pm-orange-text` not `--pm-orange`: small text, and the fill orange is 3.1:1
+  on white (DESIGN.md); the count stays `zinc-500` at his follow-up "make the
+  number and results original color". Verified by screenshot on both `/` and `/m`, and every
+  row's count re-checked against its destination page.
+
+  **`/m` was returning a hard 404 (2026-09-07, fixed).** Not a code bug —
+  Turbopack's dev router lost the `/m` entry after sibling pages under
+  `src/app/m/` were created and deleted in earlier sessions, leaving stale
+  compiled dirs (`.next/dev/server/app/camprobetest123`,
+  `.next/dev/server/app/m/zz-draft-friends-table`). Killing the dev server,
+  removing those dirs and restarting fixed it; all 13 routes then 200. Same
+  class as the cached-500 trap in AGENTS.md, just 404 instead of 500.
+
 - **Phone feed bar is pinned in two tiers, with the refresh gap between them
   (2026-09-07, committed 91b2add / e25b8ba / abf8c5c / c69963b / f0837b0).**
   `PhoneStickyBar` takes a `pinned` prop plus two optional slots —
@@ -196,6 +337,25 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   reversed, because fixed pins above the scroller's padding rather than below
   it. That padding replaces the separate slab. Do not put the feed bar back on
   sticky.
+
+  **The inset was being paid twice on device (e793d60).** The bar measures the
+  safe area with a probe div carrying `padding-top: env(safe-area-inset-top)`
+  and reading its own height. That probe was `h-0` and *in flow* — and a
+  border-box element cannot be shorter than its padding, so the "zero-height"
+  probe was a full inset tall in the column, on top of the inset
+  `.pm-phone-content` already spends as its own `padding-top`. Invisible in a
+  desktop browser, where the inset is 0; on a phone it was ~47pt of blank cream
+  between the search row and the first card, which is what "hella space" was.
+  It is `absolute` now — still laid out, so `getBoundingClientRect().height`
+  still answers, but out of the flow. Anything that reads `env(safe-area-*)`
+  by measuring a box has to be out of flow for the same reason.
+
+  **The New/Trending switch was widened to close the gap beside it, and that
+  was reverted (0e458f1, reverted in 5ea696f).** `FeedSortSwitch` took a
+  `fill` prop that stretched it across the row. Calvin: "I didnt mean make the
+  new and treinding thing wider revert it I like everything else you did thou."
+  The switch is sized to its labels on purpose — it is a modifier on the feed,
+  not the feed's navigation. The space beside it is not a bug to close.
 
   `PhonePullToRefresh` stopped being a `position: fixed` dial over the list —
   it is now an in-flow block mounted directly under the bar whose *height* is
@@ -241,6 +401,32 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   rather than ending the touch (so a wobble never accumulates and a deliberate
   drag still pays SLOP in one motion), plus a guard against re-rendering a pull
   value that has not changed.
+
+- **A dish search result opens the dish, not the menu (2026-09-07).**
+  "when you search a food and the result that comes up is a dish result it
+  should bring you directly to the dish in the restaurant page." The
+  `?dish=<id>` deep link already existed — RestaurantDetail and
+  PhoneDetailScreen read it and open `DishSheet`, and the feed's post cards
+  already produced it — but a *search* card could not, because `MatchedDish`
+  was `{name, price}` with no id. It now carries `id`, selected as `d.id` in
+  all three producers (`searchRestaurants`' `dish_match` CTE, `dishMatchesFor`,
+  `dishesNamedExactly`) and projected as `matched_dish_id`.
+
+  The link itself is `restaurantHref(base, restaurant)` in
+  `src/lib/restaurantHref.ts`, one function for both surfaces — `/restaurant`
+  and `/m/restaurant` — used by RestaurantCard, PhoneRestaurantCard and
+  PhoneRestaurantCardGrid, the three cards that print the matched dish. Which
+  dish a card opens is a fact about the search, not about the layout, so it
+  does not get two implementations. A row with no matched dish still links to
+  the plain page, and an unknown id degrades to it (both readers check
+  membership before opening).
+
+  The suggest dropdown's **Dish line is unchanged** and still goes to the
+  scoped grid (`?q=…&in=dish`) — one dish name is usually many restaurants,
+  and each of those cards now carries the deep link.
+
+  `probe/db.pre-fold.ts` is a frozen copy of db.ts and took the same two
+  columns purely to keep `tsc` clean; it is not a second implementation.
 
 - **Map bubbles ~15% larger; downvote arrow fixed (2026-09-07, uncommitted).**
   `arrowGlyph` in RestaurantMap.tsx rotated the downvote with `transform` on

@@ -914,9 +914,9 @@ h3 {
 
    CSS computes an `overflow-y` of `visible` to `auto` the moment `overflow-x`
    is anything else, so `overflow-x-auto` alone made this track a scroll
-   container on BOTH axes. The slides are `h-full` inside an `aspect-[16/9]`
-   box, which at a real phone width resolves to a fractional height (390 / 16 *
-   9 = 219.375px) — and a sub-pixel of content taller than its box is enough
+   container on BOTH axes. The slides are `h-full` inside an `aspect-[4/5]`
+   box, which at a real phone width resolves to a fractional height (390 / 4 *
+   5 = 487.5px) — and a sub-pixel of content taller than its box is enough
    for WebKit to call the element vertically scrollable. iOS then picks the
    innermost scrollable element under the finger, and once it has chosen for a
    touch it does not hand the gesture back: the feed froze and the photo

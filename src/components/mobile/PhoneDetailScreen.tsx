@@ -8,9 +8,10 @@ import { DishSheet } from "@/components/DishSheet";
 import { FullMenu } from "@/components/FullMenu";
 import { RestaurantAspects } from "@/components/RestaurantAspects";
 import { RestaurantComments } from "@/components/RestaurantComments";
+import { OtherLocations } from "@/components/OtherLocations";
 import { PhoneDetailHero } from "@/components/mobile/PhoneDetailHero";
 import { PhoneDetailHits } from "@/components/mobile/PhoneDetailHits";
-import type { RestaurantAspectTally } from "@/lib/db";
+import type { RestaurantAspectTally, SiblingLocation } from "@/lib/db";
 import { PhoneFirstPlate } from "@/components/mobile/PhoneFirstPlate";
 import type { PlateScore } from "@/lib/plateScore";
 import type { RatedDish } from "@/lib/plateScore";
@@ -57,6 +58,7 @@ export function PhoneDetailScreen({
   aspectTally,
   plateScore,
   dishRatings,
+  otherLocations,
 }: {
   restaurant: Restaurant;
   /** The menu, already read from Postgres by the page. */
@@ -67,6 +69,8 @@ export function PhoneDetailScreen({
   plateScore: PlateScore;
   /** Per-plate rating averages, keyed by `dishRatingKey`. Also server-side. */
   dishRatings: Record<string, RatedDish>;
+  /** The chain's other branches, nearest first. Empty for most restaurants. */
+  otherLocations: SiblingLocation[];
 }) {
   const searchParams = useSearchParams();
   const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
@@ -186,6 +190,11 @@ export function PhoneDetailScreen({
             would, because it is the hits' absence being stated. */}
         <PhoneFirstPlate restaurant={restaurant} score={plateScore} href={postHref} />
         <RestaurantAspects tally={aspectTally} />
+        {/* Above the menu, as on the web page — the reader who is on the wrong
+            branch is on the wrong branch before they read a price, and a menu
+            is long enough that anything under it is a scroll nobody makes.
+            Doubly so at 390px. */}
+        <OtherLocations locations={otherLocations} />
         <FullMenu sections={sections} onSelect={setSelectedDishId} />
         {/* The anchor is on the thread itself — "see all comments" from the dish
             sheet must land on the comments. The booking prototype used to sit

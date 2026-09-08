@@ -9,6 +9,7 @@
  */
 
 import { BEST_AT_LABELS } from "@/data/reviewScales";
+import { foldAccents } from "@/lib/brandName";
 import { PRICE_BANDS, type PriceBand } from "@/data/priceBands";
 import type { MatchedDish, RestaurantView } from "@/data/restaurantTypes";
 import { aspectScores } from "@/lib/aspectScores";
@@ -19,6 +20,15 @@ import { SHOW_BLEND_STARS } from "@/lib/ratingDisplay";
 // hook. See the note in geo.ts.
 import { milesBetween, NEARBY_RADIUS_MI, type Coords } from "@/lib/geo";
 import { openStateFor } from "@/lib/openState";
+import {
+  SEARCH_SCOPES,
+  prepare,
+  scopeOf,
+  scoreRestaurant,
+  type Prepared,
+  type SearchFields,
+  type SearchScope,
+} from "@/lib/textMatch";
 
 export type QuickFilter = "open-now" | "top-rated" | "trending";
 
@@ -79,7 +89,57 @@ export type DiscoverFilters = {
    * that happens to return the same places. See `promote` below.
    */
   q: string | null;
+  /**
+   * One dish, named exactly — "show me the places that serve Birria Taco".
+   *
+   * Separate from `q` because it is a different question. `q` is a search and
+   * is *ranked*: a name match beats a cuisine match beats a dish match, so a
+   * misspelled restaurant still outranks a wall of menus. This is a *filter*,
+   * chosen from the search dropdown out of real dish names, and it either holds
+   * or it doesn't. The two compose — `?q=thai&dish=pad thai` is a text search
+   * inside the set of places that serve Pad Thai.
+   *
+   * Carried as the visitor sees it ("Birria Taco", not "birria taco"), so the
+   * chip that appears reads back as the thing they picked. The comparison folds
+   * both sides — see `dishesNamedExactly` in lib/db.ts.
+   */
+  dish: string | null;
+  /**
+   * Which reading of `q` to keep — "cannonball, as a dish" rather than
+   * "cannonball, however it matches".
+   *
+   * Meaningless without `q` and never set without one. The search dropdown is
+   * the only thing that writes it: each of its rows is one reading of the typed
+   * term, and picking a row says which. Enter, picking nothing, leaves this
+   * null and gets the ranked search across all four.
+   *
+   * A narrowing of `q`, not a second dimension beside it — `scopeOf` in
+   * lib/textMatch.ts reads the field a row matched on straight off its score,
+   * so scoping costs the predicate one comparison and cannot disagree with the
+   * ranking. That is also why this exists at all rather than four separate
+   * params: "restaurants named X" and "places serving a dish called X" are the
+   * same query asked of different fields.
+   *
+   * `"all"` is the fifth value and the odd one: it narrows to nothing, and says
+   * so on purpose. What it actually turns off is `promote` — see the note there
+   * and at the call site. A bare `?q=thai` becomes `?cuisine=Thai` and shows
+   * 178 Thai places, which is the right answer to a term someone typed meaning
+   * a category; the dropdown's All line means the opposite thing, every reading
+   * at once, and it counts 723. Without a way to say "un-narrowed" that line
+   * would offer 723 and land on 178.
+   */
+  scope: QueryScope | null;
 };
+
+/** The value of `?in=` that means "do not narrow this at all". Not a field, so
+ *  it is deliberately not in `SEARCH_SCOPES` and `scopeOf` never returns it. */
+export const ALL_SCOPE = "all";
+
+/** Everything `?in=` accepts: the four fields, plus the un-narrowed reading. */
+export type QueryScope = SearchScope | typeof ALL_SCOPE;
+
+/** The `?in=` vocabulary, for parsing. Order is irrelevant; membership is not. */
+const QUERY_SCOPES: readonly QueryScope[] = [...SEARCH_SCOPES, ALL_SCOPE];
 
 export const NO_FILTERS: DiscoverFilters = {
   neighborhood: null,
@@ -89,6 +149,8 @@ export const NO_FILTERS: DiscoverFilters = {
   aspect: null,
   quick: [],
   q: null,
+  dish: null,
+  scope: null,
 };
 
 /** How many separate choices are on â what the mobile bar's badge counts. */
@@ -100,6 +162,7 @@ export function activeFilterCount(f: DiscoverFilters): number {
     (f.price ? 1 : 0) +
     (f.aspect ? 1 : 0) +
     (f.q ? 1 : 0) +
+    (f.dish ? 1 : 0) +
     f.quick.length
   );
 }
@@ -238,6 +301,31 @@ export type FilterContext = {
    * see dishMatchesFor in lib/db.ts for why the dish names are not in it.
    */
   dishes: Map<string, MatchedDish> | null;
+  /**
+   * How well each restaurant answers the current `q`, keyed by id — the output
+   * of `scoreMatches`, computed once per request.
+   *
+   * Null is not "match everything" here, unlike the fields above: it means
+   * nobody precomputed the scores, and `matchesFilters` scores the row on the
+   * spot instead. The map is purely an optimisation — the predicate runs six
+   * times per restaurant per request (once for the grid, once per facet
+   * dimension) and the arithmetic does not change between those passes.
+   */
+  scores: Map<string, number> | null;
+  /**
+   * Which restaurants serve the dish named by `filters.dish`, and how they
+   * spell it — `dishesNamedExactly` in lib/db.ts, fetched once per request that
+   * has one.
+   *
+   * Distinct from `dishes` above, which answers the loose dish half of `q`. A
+   * request can have both, and they must not be conflated: `?q=thai&dish=pad
+   * thai` filters to the menus listing Pad Thai and then *ranks* what is left
+   * by how well it answers "thai".
+   *
+   * Null follows the match-everything rule, like `aspects` and `plates`: a
+   * pending lookup shows a superset rather than flashing an empty grid.
+   */
+  namedDish: Map<string, MatchedDish> | null;
 };
 
 export const NO_CONTEXT: FilterContext = {
@@ -246,46 +334,126 @@ export const NO_CONTEXT: FilterContext = {
   aspects: null,
   plates: null,
   dishes: null,
+  scores: null,
+  namedDish: null,
 };
 
 /**
- * The text a free-text query is matched against, lowercased once per row.
+ * The four fields a free-text query is matched against, prepared once per row.
  *
- * `matchesFilters` runs six times per restaurant per request â once for the
- * grid and once for each facet dimension being counted â so building this
- * inline would lowercase the whole corpus six times over on every keystroke's
- * worth of navigation. Keyed on the row object, which lib/discover.ts holds for
- * the life of its 60s corpus cache; a `WeakMap` means the entries go when that
- * cache is replaced.
+ * This used to be one lowercased string with name, cuisine, tags and
+ * neighbourhood concatenated into it, tested with `String.includes`. Two things
+ * were wrong with that and both were visible to a visitor: one mistyped letter
+ * returned nothing at all, and a single string cannot say *which* field
+ * matched, so "the name first, then cuisine, then dish" was not
+ * expressible. lib/textMatch.ts holds the replacement; this holds the cache.
+ *
+ * `matchesFilters` runs six times per restaurant per request — once for the
+ * grid and once for each facet dimension being counted — so preparing this
+ * inline would build bigrams for the whole corpus six times over on every
+ * keystroke's worth of navigation. Keyed on the row object, which
+ * lib/discover.ts holds for the life of its 60s corpus cache; a `WeakMap` means
+ * the entries go when that cache is replaced.
  */
-const SEARCHABLE_TEXT = new WeakMap<RestaurantView, string>();
+const SEARCH_FIELDS = new WeakMap<RestaurantView, SearchFields>();
 
 /**
- * Search text with apostrophes removed, on both the query and the haystack.
- * 90 listed names carry a curly apostrophe ("Clem’s Station") and 1,100 a
- * straight one; a visitor types neither reliably, and "clems station" found
- * nothing. lib/db.ts searchRestaurants strips the same characters in SQL.
+ * Search text with apostrophes and accents removed, on both the query and the
+ * haystack. 90 listed names carry a curly apostrophe ("Clem's Station") and
+ * 1,100 a straight one; a visitor types neither reliably, and "clems station"
+ * found nothing. 220 carry an accent that changes the letter ("Poké Chop",
+ * "Señor Grubby's", "Phở Trúc Xanh"), which a visitor types even less often —
+ * that one hid two of the four Poké Chop branches from anybody searching
+ * "poke chop". lib/db.ts searchRestaurants folds the same two in SQL.
+ *
+ * Superseded for the grid by `normalize` in lib/textMatch.ts, which folds this
+ * and more. It stays because the map's own search (components/useMapSearch.ts)
+ * is a client-side substring filter over a list already in hand and does not
+ * need the ladder.
  */
 export function foldSearchText(s: string): string {
-  return s.toLowerCase().replace(/['’`´]/g, "");
+  return foldAccents(s)
+    .toLowerCase()
+    .replace(/['’`´]/g, "");
 }
 
-function searchable(r: RestaurantView): string {
-  let text = SEARCHABLE_TEXT.get(r);
-  if (text === undefined) {
-    /* `?? ""` rather than interpolating straight in: 557 restaurants have no
-       cuisine (the OpenStreetMap import does not always carry one), and a
-       template literal renders that null as the four characters "null" â which
-       made `?q=null` match every one of them.
+/** The memoised fields, shared so the suggest endpoint ranks the same prepared
+ *  strings the grid does rather than building its own set per keystroke. */
+export function searchFieldsFor(r: RestaurantView): SearchFields {
+  let fields = SEARCH_FIELDS.get(r);
+  if (fields === undefined) {
+    /* `?? ""` rather than passing the field straight through: 557 restaurants
+       have no cuisine (the OpenStreetMap import does not always carry one), and
+       the string template this replaced rendered that null as the four
+       characters "null" — which made `?q=null` match every one of them.
 
-       `cuisineTags` is guarded for the same reason and is a stronger case: it
-       is declared optional, so unguarded it renders the literal "undefined"
-       and `?q=undefined` matches every restaurant without tags. */
-    text = `${r.name} ${r.cuisine ?? ""} ${r.cuisineTags ?? ""} ${r.neighborhood ?? ""}`;
-    text = foldSearchText(text);
-    SEARCHABLE_TEXT.set(r, text);
+       `cuisineTags` was the stronger case: declared optional, so unguarded it
+       rendered the literal "undefined" and `?q=undefined` matched every
+       restaurant without tags. `prepare` handles null itself now, so this is
+       belt and braces rather than the only guard. */
+    fields = {
+      name: prepare(r.name),
+      cuisine: prepare(r.cuisine ?? ""),
+      tags: prepare(r.cuisineTags ?? ""),
+      neighborhood: prepare(r.neighborhood ?? ""),
+    };
+    SEARCH_FIELDS.set(r, fields);
   }
-  return text;
+  return fields;
+}
+
+/**
+ * How well one restaurant answers one prepared query. 0 means it does not.
+ *
+ * The dish name is passed in rather than looked up here because the corpus
+ * deliberately holds no dishes — see `dishMatchesFor` in lib/db.ts. A dish match
+ * is an OR, not a second test: "carne asada fries" matches no restaurant text
+ * anywhere in the corpus and 129 restaurants serve it. It also sits below every
+ * name tier, which is the ordering this whole change exists for.
+ */
+export function relevanceFor(
+  r: RestaurantView,
+  query: Prepared,
+  dishes: Map<string, MatchedDish> | null,
+): number {
+  return scoreRestaurant(query, searchFieldsFor(r), dishes?.get(r.id)?.name ?? null);
+}
+
+/**
+ * Every restaurant's relevance to one query, for `FilterContext.scores`.
+ *
+ * Built once by the caller and handed to the predicate, so the six passes
+ * `countFacets` makes share one round of arithmetic instead of repeating it.
+ * Rows that score 0 are left out: the map is read with `?? 0`, and a corpus-
+ * sized map of zeroes is the common case for a specific query.
+ */
+/**
+ * `prepare`, remembering only the last query.
+ *
+ * The unmemoised branch of `matchesFilters` would otherwise build the query's
+ * bigrams once per row, and the whole point of a filter pass is that the query
+ * is the one thing that does not change across it. One entry is the whole
+ * working set: a pass asks about one query, thousands of times.
+ */
+let lastQuery: { raw: string; prepared: Prepared } | null = null;
+
+function preparedQuery(raw: string): Prepared {
+  if (lastQuery?.raw !== raw) lastQuery = { raw, prepared: prepare(raw) };
+  return lastQuery.prepared;
+}
+
+export function scoreMatches(
+  restaurants: readonly RestaurantView[],
+  q: string,
+  dishes: Map<string, MatchedDish> | null,
+): Map<string, number> {
+  const query = prepare(q);
+  const scores = new Map<string, number>();
+  for (const r of restaurants) {
+    const score = relevanceFor(r, query, dishes);
+    if (score > 0) scores.set(r.id, score);
+  }
+  return scores;
 }
 
 export function matchesFilters(
@@ -298,23 +466,37 @@ export function matchesFilters(
     if (milesBetween(ctx.here, { lat: r.lat, lng: r.lng }) > NEARBY_RADIUS_MI) return false;
   }
   if (f.cuisine && r.cuisine !== f.cuisine) return false;
-  // Name, cuisine, cuisine tags, neighbourhood â the same fields the header
-  // search ranks on and /api/restaurants?q= narrows on, so a term that found a
-  // place in the dropdown still finds it here. Substring rather than ranked:
-  // this is a filter, and a filter either includes a row or doesn't.
-  //
-  // The tags are what make the blunt filter vocabulary affordable. "Tacos"
-  // is no longer a cuisine â it folds into Mexican â so it arrives here as
-  // free text, and the tag on a shop that was tagged `taco` is what answers
-  // it. See data/cuisines.ts.
-  //
-  // A dish match is the other half of the answer, and it is an OR rather than
-  // a second test: "carne asada fries" matches no restaurant text anywhere in
-  // the corpus, and 129 restaurants serve it. `ctx.dishes` is null when the
-  // lookup has not run, which matches everything the text already matched
-  // rather than hiding rows behind a pending request.
-  if (f.q && !searchable(r).includes(foldSearchText(f.q)) && !ctx.dishes?.has(r.id)) {
-    return false;
+  /* A named dish is a filter, not a search: the visitor picked it off the
+     dropdown, so the only places that pass are the ones whose menu actually
+     lists it. Tested before `q` because it is a map lookup and `q` is
+     arithmetic, and because it is the narrower of the two. */
+  if (f.dish && ctx.namedDish && !ctx.namedDish.has(r.id)) return false;
+  /* Free text is scored, not substring-tested, and the score is what both this
+     predicate and the ordering in lib/discover.ts read — so a row that survives
+     the filter arrives already carrying the reason it did.
+
+     Anything above zero passes. The ladder lives in lib/textMatch.ts: name
+     before cuisine before neighbourhood before dish, with the fuzzy name tier
+     sitting 280 points above the best possible dish match, which is what makes
+     a misspelled restaurant outrank a wall of menus that happen to contain the
+     word. A filter still either includes a row or doesn't; the score only
+     decides what order the included ones come back in.
+
+     `ctx.scores` is the precomputed map when a caller built one. Null means
+     nobody did, and the row is scored here instead — a client calling this with
+     NO_CONTEXT gets the same answer, one row at a time. */
+  if (f.q) {
+    const score = ctx.scores
+      ? (ctx.scores.get(r.id) ?? 0)
+      : relevanceFor(r, preparedQuery(f.q), ctx.dishes);
+    if (score <= 0) return false;
+    /* A scoped search keeps only the rows that matched on the field the visitor
+       picked off the dropdown. The band the score sits in *is* that field
+       (`scopeOf`), so this is a comparison rather than a second pass over the
+       text — and it cannot disagree with the ranking, because both read the one
+       number. `ALL_SCOPE` is exempt because it is not a field: it asked for
+       every reading, which is every row that scored at all. */
+    if (f.scope && f.scope !== ALL_SCOPE && scopeOf(score) !== f.scope) return false;
   }
   // A restaurant with no menu has no band and so matches no price â see the
   // note in data/priceBands.ts about why it isn't given a guessed one.
@@ -595,19 +777,26 @@ export function countFacets(
 
 /* --- URL -------------------------------------------------------------- */
 
-const NEIGHBORHOOD_PARAM = "neighborhood";
+export const NEIGHBORHOOD_PARAM = "neighborhood";
 const NEARBY_PARAM = "nearby";
-const CUISINE_PARAM = "cuisine";
+export const CUISINE_PARAM = "cuisine";
 const PRICE_PARAM = "price";
 const ASPECT_PARAM = "aspect";
 const QUICK_PARAM = "quick";
 export const QUERY_PARAM = "q";
+export const DISH_PARAM = "dish";
+/** Reads as `?q=cannonball&in=dish` — the scope is a preposition on the term,
+ *  which is exactly what it is. */
+export const SCOPE_PARAM = "in";
 
 /**
  * The longest search term worth carrying. Past this it is not a search, it is
  * someone pasting a paragraph into the URL.
+ *
+ * Shared with lib/suggest.ts so the dropdown truncates a pasted paragraph at
+ * exactly the point the URL would.
  */
-const MAX_QUERY = 60;
+export const MAX_QUERY = 60;
 
 /**
  * Turns a search term that names a filter into that filter.
@@ -632,6 +821,27 @@ function promote(
   restaurants: readonly RestaurantView[],
 ): DiscoverFilters {
   const q = raw.toLowerCase();
+
+  /*
+   * A term that *is* a restaurant's whole name stays a search, whatever else it
+   * also names. There is one such collision in the corpus today — a place
+   * called "Pizza", against the cuisine Pizza — and without this it cannot be
+   * reached by typing its name at all: the term promotes to `?cuisine=Pizza`
+   * and the restaurant sits somewhere inside 400 pizza places instead of first.
+   * As a search it is first, because a name match outranks everything (TIER in
+   * lib/textMatch.ts).
+   *
+   * Deliberately *exact*, and not "matches a name" in the looser senses the
+   * ranked search uses. 248 restaurants here begin with a cuisine word
+   * ("Mexican Seafood & Grill", "Pizza Pal", "Italian Cucina") and 2,077
+   * contain one, so a prefix or substring test would stop "mexican" promoting —
+   * which is the case promotion exists for. Someone who typed a category word
+   * and meant the category is served by the rail; someone who typed it and
+   * meant a restaurant of that exact name now has the dropdown's Restaurants
+   * group, which offers the place by name whichever way this resolves.
+   */
+  if (restaurants.some((r) => r.name.trim().toLowerCase() === q)) return { ...base, q: raw };
+
   // Null-safe on cuisine, which a restaurant may not have. A term only
   // promotes if some restaurant actually carries it, so the vocabulary in
   // data/cuisines.ts decides this for free: "tacos" names no cuisine any
@@ -699,11 +909,40 @@ export function filtersFromSearch(
     // same set of toggles always serialises to the same string.
     quick: QUICK_VALUES.filter((v) => requested.has(v)),
     q: null,
+    /*
+     * The one value here that cannot be checked against real data on the way
+     * in, and deliberately not faked: the corpus this function is handed is
+     * restaurants, and 187,183 dish names are not in it (nor should they be —
+     * see dishesNamedExactly in lib/db.ts). So a `?dish=` naming nothing
+     * survives as a filter and produces an empty grid *with the chip on
+     * screen*, which is a result the visitor can see the cause of and remove.
+     * Silently dropping it would produce a full grid that ignores the URL.
+     */
+    dish: (params.get(DISH_PARAM) ?? "").trim().slice(0, MAX_QUERY) || null,
+    // Checked against the ladder's own vocabulary, so `?in=banana` degrades to
+    // an unscoped search rather than to a grid that silently excludes
+    // everything. Dropped without a term, because a scope is a narrowing of one
+    // and there is nothing to narrow.
+    scope: (query && QUERY_SCOPES.find((s) => s === params.get(SCOPE_PARAM))) || null,
   };
 
-  // Last, and against the filters already resolved above, so promotion can see
-  // which dimensions the URL had spoken for.
-  return query ? promote(query, filters, restaurants) : filters;
+  /* Last, and against the filters already resolved above, so promotion can see
+     which dimensions the URL had spoken for.
+
+     A scoped term is never promoted, and that is the point of the scope. The
+     visitor picked "cannonball, as a dish" off the dropdown; turning it into
+     `?cuisine=` — or, for a term like "mexican", into the cuisine filter it
+     names — would answer a question they explicitly did not ask. It keeps the
+     term as free text instead, which is what `promote` would have done with it
+     anyway once every dimension it could fill was ruled out.
+
+     `in=all` is here for exactly that reason and not as an exception to it. It
+     is the dropdown's first line, and picking it says "everything that matched,
+     ranked" — so promoting "thai" to the cuisine filter would drop the 530
+     places whose *menus* say thai, which is the narrowing that line exists to
+     refuse. Enter still promotes: it picked nothing, so nothing was said. */
+  if (!query) return filters;
+  return filters.scope ? { ...filters, q: query } : promote(query, filters, restaurants);
 }
 
 /** Rewrites only our keys, so anything else on the URL survives. */
@@ -726,6 +965,10 @@ export function searchFromFilters(search: string, f: DiscoverFilters): string {
   // it actually resolved to and the URL stops describing a search it no longer
   // is.
   put(QUERY_PARAM, f.q);
+  put(DISH_PARAM, f.dish);
+  // Only ever alongside a term. Clearing the search therefore clears the scope
+  // as well, without the callers having to remember to null both.
+  put(SCOPE_PARAM, f.q ? f.scope : null);
 
   return params.toString();
 }

@@ -1,43 +1,28 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import type { MatchedDish, Restaurant } from "@/data/restaurantTypes";
 import { QUERY_PARAM } from "@/lib/discoverFilters";
-import { rank } from "@/lib/restaurantRank";
-import { StarIcon } from "@/components/icons";
-import type { PlateScore } from "@/lib/plateScore";
-import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
-import { placeLine } from "@/lib/placeLine";
-
-/**
- * A row as /api/restaurants sends it: the full restaurant plus the plate score
- * that route attaches. Mirrored locally rather than imported from lib/db.ts,
- * which is server-only.
- */
-type SearchRow = Restaurant & { plateScore?: PlateScore; matchedDish?: MatchedDish };
+import { SuggestMenu } from "@/components/SuggestMenu";
+import { hrefForScope, useSuggest } from "@/components/useSuggest";
+import type { SuggestScope } from "@/lib/suggestTypes";
 
 /**
  * Header search over the restaurant list.
  *
- * The ordering — name match over cuisine match, rating breaking ties, top six —
- * lives in lib/restaurantRank.ts, since the map's search field offers the same
- * six for the same term.
- *
  * ## Two answers, and Enter picks the broad one
  *
- * The dropdown is a shortcut to *one place*: at most six, ranked, for when you
- * already know what you want. Enter is the other question — "show me everything
- * like this" — and it goes to Discover with the term applied, where the rail,
- * the counts and the grid all narrow to it together. A term naming a filter
- * ("Thai", "North Park", "$$") arrives there as that filter rather than as a
- * text match; lib/discoverFilters.ts does that resolution, because only the
- * server holds the vocabulary to check a term against.
+ * The dropdown is where an ambiguous word gets *disambiguated*: it offers the
+ * term read four ways — as a restaurant, a cuisine, a neighbourhood, a dish —
+ * and picking a row commits to that reading. Enter is the other question —
+ * "show me everything like this" — and it goes to Discover with the term
+ * applied, where the rail, the counts and the grid all narrow to it together,
+ * ranked so that names beat cuisines beat dishes.
  *
- * So arrowing into the list is what commits to a single restaurant. Enter with
- * nothing highlighted — which is every Enter typed straight after a word — is
- * the search.
+ * So arrowing into the list is what commits to one reading. Enter with nothing
+ * highlighted — which is every Enter typed straight after a word — is the
+ * search. lib/suggest.ts holds the readings and why they are ordered that way;
+ * components/useSuggest.ts holds the keys and where a pick goes.
  *
  * ## On /feed the broad answer is the feed
  *
@@ -51,12 +36,11 @@ type SearchRow = Restaurant & { plateScore?: PlateScore; matchedDish?: MatchedDi
  * comments on a plate (lib/feedFilters.ts). Everywhere else it still goes to
  * Discover.
  *
- * The dropdown is unchanged on both: a shortcut to one restaurant is the same
- * shortcut wherever you are standing.
+ * The dropdown is unchanged on both, with one exception it has to make: a
+ * cuisine, neighbourhood or dish row is a *Discover filter*, and those params
+ * mean nothing on /feed, so those rows always land on Discover. A restaurant
+ * row goes to its own page, as it always did.
  */
-
-/** No row highlighted — the state every fresh keystroke returns to. */
-const NONE = -1;
 
 export function RestaurantSearch() {
   const router = useRouter();
@@ -65,47 +49,8 @@ export function RestaurantSearch() {
   const destination = pathname === "/feed" ? "/feed" : "/";
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState(NONE);
-  const [candidates, setCandidates] = useState<SearchRow[]>([]);
   const wrapRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  /*
-   * One request per settled query, not per keystroke.
-   *
-   * 150ms is below the point a typist notices and above the gap between
-   * characters, so a word typed at speed costs one request instead of six. The
-   * cleanup both cancels the pending timer and marks the in-flight response
-   * stale, which is what stops a slow "th" from landing after a fast "thai"
-   * and repopulating the list with the wrong matches.
-   */
-  useEffect(() => {
-    const q = query.trim();
-    // Nothing to clear: `rank` returns [] for an empty query, so whatever the
-    // last search left in state is already unreachable. Emptying it here would
-    // be a setState in an effect body to reach a state the render already has.
-    if (!q) return;
-
-    let stale = false;
-    const timer = setTimeout(async () => {
-      try {
-        const res = await fetch(`/api/restaurants?q=${encodeURIComponent(q)}`);
-        if (!res.ok) return;
-        const data: { restaurants: SearchRow[] } = await res.json();
-        if (!stale) setCandidates(data.restaurants);
-      } catch {
-        // A dropped search request leaves the previous matches on screen,
-        // which is a better answer than emptying the list.
-      }
-    }, 150);
-
-    return () => {
-      stale = true;
-      clearTimeout(timer);
-    };
-  }, [query]);
-
-  const results = useMemo(() => rank(query, candidates), [query, candidates]);
 
   useEffect(() => {
     if (!open) return;
@@ -133,36 +78,36 @@ export function RestaurantSearch() {
     const q = query.trim();
     if (!q) return;
     setOpen(false);
-    setActive(NONE);
     inputRef.current?.blur();
     router.push(`${destination}?${QUERY_PARAM}=${encodeURIComponent(q)}`);
   }
 
-  function onKeyDown(e: React.KeyboardEvent) {
-    if (e.key === "Enter") {
-      // A highlighted row means the visitor arrowed to a specific restaurant
-      // and meant that one. Everything else — the common case — is the search.
-      e.preventDefault();
-      if (showing && results[active]) window.location.href = `/restaurant/${results[active].id}`;
-      else submit();
-      return;
-    }
-    if (!showing) return;
-    if (e.key === "Escape") {
-      setOpen(false);
-      setActive(NONE);
-      return;
-    }
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setActive((i) => Math.min(i + 1, results.length - 1));
-    } else if (e.key === "ArrowUp") {
-      // Back past the first row lands on NONE rather than sticking, so there is
-      // a way out of the list and back to plain Enter without deleting a letter.
-      e.preventDefault();
-      setActive((i) => Math.max(i - 1, NONE));
-    }
+  /**
+   * Commit one reading off the dropdown.
+   *
+   * The field is rewritten to the row's own spelling first, and on a correction
+   * that is the whole point: picking "Vietnamese" under a typed "vietnemese"
+   * has to show what was understood rather than leave the misspelling sitting
+   * in the box looking like it worked by accident. Enter never does this — it
+   * never auto-corrects — which is why the rewrite lives here and not in
+   * `submit`.
+   */
+  function pickScope(scope: SuggestScope) {
+    setQuery(scope.label);
+    setOpen(false);
+    inputRef.current?.blur();
+    // Nothing carried, and always Discover: a search from the header is a fresh
+    // question, and a cuisine or dish param is only a filter over there.
+    router.push(hrefForScope(scope, "/"));
   }
+
+  const suggest = useSuggest({
+    query,
+    open: showing,
+    onPick: pickScope,
+    onSubmit: submit,
+    onClose: () => setOpen(false),
+  });
 
   // The width lives on this wrapper rather than on the input so the field can
   // shrink below its preferred size when the header row is tight, instead of
@@ -203,15 +148,16 @@ export function RestaurantSearch() {
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
-            setActive(NONE);
             setOpen(true);
           }}
           onFocus={() => setOpen(true)}
-          onKeyDown={onKeyDown}
+          onKeyDown={suggest.onKeyDown}
           placeholder="Search restaurants…"
-          aria-label="Search restaurants"
+          aria-label="Search restaurants, cuisines, neighborhoods and dishes"
           aria-expanded={showing}
-          aria-controls="search-results"
+          aria-controls={suggest.listId}
+          aria-activedescendant={suggest.activeId}
+          aria-autocomplete="list"
           role="combobox"
           autoComplete="off"
           className="w-full min-w-0 bg-transparent text-sm text-zinc-900 placeholder:text-zinc-500 focus:outline-none"
@@ -235,109 +181,27 @@ export function RestaurantSearch() {
 
       {/* Anchored right, not left: the field now sits in the header's right
           group next to the avatar, and this menu is wider than the field, so a
-          left anchor would push it off the right edge of the viewport. */}
+          left anchor would push it off the right edge of the viewport.
+
+          `max-h` plus a scroll because the correction notice can sit above the
+          four lines, and a menu that runs off the bottom of a short window
+          hides the row that hands the term to the search. */}
       {showing && (
-        <ul
-          id="search-results"
-          role="listbox"
-          className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-2xl bg-white py-1.5"
-        >
-          {results.length === 0 ? (
-            <li className="px-4 pb-1 pt-3 text-sm text-zinc-500">
-              No restaurant named &ldquo;{query.trim()}&rdquo;
-            </li>
-          ) : (
-            results.map((r, i) => (
-              <li key={r.id} role="option" aria-selected={i === active}>
-                <Link
-                  href={`/restaurant/${r.id}`}
-                  onClick={() => setOpen(false)}
-                  onMouseEnter={() => setActive(i)}
-                  className={`flex items-center gap-3 px-3 py-2 transition-colors ${
-                    i === active ? "bg-pm-orange-tint/60" : "hover:bg-zinc-50"
-                  }`}
-                >
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-medium text-zinc-900">
-                      {r.name}
-                    </span>
-                    {/* The dish leads the second line when a dish is why this
-                        row is here — it is the answer, and "Mexican · North
-                        Park" repeated six times is not.
-
-                        The cuisine drops out of the line in that case, and
-                        that is the point rather than a saving: three things do
-                        not fit in a dropdown row, and the first version
-                        truncated the *neighbourhood* away — "California
-                        Burrito $12.99 · Mexican · Rol…" — losing the one part
-                        a reader needs to tell six taco shops apart. Anyone
-                        reading "California Burrito" already knows the cuisine.
-                        Without a dish match the line is unchanged. */}
-                    <span className="block truncate text-xs text-zinc-500">
-                      {r.matchedDish && (
-                        <span className="font-medium text-pm-orange-text">
-                          {r.matchedDish.name}
-                          {r.matchedDish.price && (
-                            <span className="font-mono font-semibold tabular-nums">
-                              {" "}
-                              {r.matchedDish.price}
-                            </span>
-                          )}
-                          {" · "}
-                        </span>
-                      )}
-                      {r.matchedDish
-                        ? r.neighborhood
-                        : placeLine(r.cuisine, r.neighborhood)}
-                    </span>
-                  </span>
-                  {/* Both numbers where there are both, in the same order as
-                      every other surface: our percent in the accent, the blend's
-                      stars muted with their denominator. A row is a shortcut to
-                      one place, so this stays to two short runs. */}
-                  <span className="flex shrink-0 items-center gap-1.5 font-mono text-xs tabular-nums">
-                    {r.plateScore?.percent != null && (
-                      <span className="font-semibold text-pm-orange-text">
-                        {r.plateScore.percent}%
-                      </span>
-                    )}
-                    {SHOW_BLEND_STARS && r.rating != null && (
-                      <span className="flex items-center gap-0.5 font-medium text-zinc-500">
-                        <StarIcon className="h-3 w-3 text-zinc-400" />
-                        {blendLabel(r.rating)}
-                      </span>
-                    )}
-                  </span>
-                </Link>
-              </li>
-            ))
-          )}
-
-          {/* The way out of the shortcut and into the whole result set. It says
-              what Enter already does, because a dropdown of six is otherwise
-              the only answer anyone knows this field can give.
-           *
-           * Outside the listbox semantics — role="presentation" and no
-           * aria-selected — since it isn't one of the options being chosen
-           * between, and arrowing past the last restaurant shouldn't land on
-           * it. Keyboard reaches it as plain Enter instead. */}
-          <li role="presentation" className={results.length > 0 ? "mt-1 border-t border-zinc-100 pt-1" : ""}>
-            <button
-              type="button"
-              onClick={submit}
-              onMouseEnter={() => setActive(NONE)}
-              className="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-zinc-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-pm-orange"
-            >
-              <span className="min-w-0 flex-1 truncate text-sm text-zinc-700">
-                {destination === "/feed" ? "Search the feed for" : "Search Discover for"}{" "}
-                <span className="font-medium text-zinc-900">
-                  &ldquo;{query.trim()}&rdquo;
-                </span>
-              </span>
-              <span className="mono-label shrink-0 text-zinc-400">Enter</span>
-            </button>
-          </li>
-        </ul>
+        <SuggestMenu
+          variant="web"
+          className="absolute right-0 top-full z-50 mt-2 max-h-[70vh] w-80 overflow-y-auto rounded-2xl bg-white py-1.5"
+          scopes={suggest.scopes}
+          correcting={suggest.correcting}
+          active={suggest.active}
+          setActive={suggest.setActive}
+          listId={suggest.listId}
+          optionId={suggest.optionId}
+          hrefFor={(scope) => hrefForScope(scope, "/")}
+          onPick={suggest.pick}
+          query={query.trim()}
+          submitLabel={destination === "/feed" ? "Search the feed for" : "Search Discover for"}
+          onSubmit={submit}
+        />
       )}
     </div>
   );

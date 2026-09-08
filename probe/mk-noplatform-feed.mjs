@@ -21,15 +21,32 @@
  *
  * Read-only against the DB.
  */
-import { readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { readFileSync, readdirSync, writeFileSync, statSync } from "node:fs";
 import { neon } from "@neondatabase/serverless";
 
 const sql = neon(process.env.DATABASE_URL);
 const LIMIT = Number(process.argv.includes("--limit") ? process.argv[process.argv.indexOf("--limit")+1] : 0);
 
+/*
+ * Two rules make a REBUILD safe, and both were learned the hard way on
+ * 2026-09-06 when a pass hung and the rebuilt feed handed back 422 rows the
+ * browser had already opened:
+ *
+ *   1. Skip our own feed files. They carry the outcome relabelled to
+ *      `needs-browser`, so reading one back either hides every row (if it wins)
+ *      or hides nothing (if it loses). Either way it is not evidence.
+ *   2. Newest note wins. readdirSync order is not chronological, so which file
+ *      won was effectively arbitrary - the stale router note beat the fresh
+ *      browser note and the row looked untouched. Sort by mtime ascending so a
+ *      later pass always overwrites an earlier one.
+ */
+const noteFiles = readdirSync("menus/wip")
+  .filter((f) => /\.notes\.json$/.test(f) && !/^noplatform-/.test(f))
+  .map((f) => ({ f, t: statSync(`menus/wip/${f}`).mtimeMs }))
+  .sort((a, b) => a.t - b.t);
+
 const seen = new Map();
-for (const f of readdirSync("menus/wip")) {
-  if (!/\.notes\.json$/.test(f)) continue;
+for (const { f } of noteFiles) {
   try {
     for (const n of JSON.parse(readFileSync(`menus/wip/${f}`, "utf8")))
       if (n?.restaurantId != null) seen.set(String(n.restaurantId), n);

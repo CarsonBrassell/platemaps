@@ -21,11 +21,12 @@ export const MAX_PHOTOS = 1;
  * the dimension is the cheaper half of the saving and it cannot introduce
  * compression artefacts into food photography, which is the product.
  *
- * What the number has to cover: the feed hero is `aspect-[16/9] w-full` inside
- * a card about 358 CSS px wide, so it asks for 716 device px at 2x and 1074 at
- * 3x. 1080 was sized for the 3x case at full bleed. 900 clears 2x outright and
- * falls a little short of 3x — inside a 16:9 crop, on a feed you scroll.
- * The 96px card thumbnail wants 288 at 3x and is nowhere near the constraint.
+ * What the number has to cover: a photo is 4:5 (`SHOT_W`/`SHOT_H` in
+ * CameraCapture) and the feed hero is `aspect-[4/5] w-full` inside a card
+ * about 358 CSS px wide, so the hero asks for 716 device px across at 2x and
+ * 1074 at 3x. 900 is the long edge, which puts 720 across the short one: 2x is
+ * clear, 3x a little short — on a feed you scroll. The 96px card thumbnail
+ * wants 288 at 3x and is nowhere near the constraint.
  *
  * Raise it back toward 1080 if photos ever get a full-bleed, full-height
  * viewer where the whole frame is examined rather than glanced at.

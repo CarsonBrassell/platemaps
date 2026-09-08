@@ -14,11 +14,33 @@ import {
   matchMarksFor,
   searchFromFilters,
   type DiscoverFilters,
+  type QueryScope,
   type QuickFilter,
 } from "@/lib/discoverFilters";
 import type { DiscoverPage } from "@/lib/discover";
 import { packColumns } from "@/lib/photoShape";
 import type { PriceBand } from "@/data/priceBands";
+
+/**
+ * What a scoped search calls itself.
+ *
+ * `?in=` is only ever written by the search dropdown (`hrefForScope` in
+ * components/useSuggest.ts), where the visitor has just said which reading of
+ * their word they meant. The grid then holds only that reading — so a heading
+ * still saying a plain "Results for" over a third of the matches would read as
+ * the search being broken, which is the failure this whole feature exists to
+ * fix.
+ */
+const SCOPE_HEADING: Record<QueryScope, string> = {
+  // Not "All results for": the grid under it holds every reading of the term,
+  // which is what a plain "Results for" already promises. The line is here so
+  // the heading does not go missing when `?in=` is on.
+  all: "Results for",
+  restaurant: "Restaurant results for",
+  cuisine: "Cuisine results for",
+  neighborhood: "Neighborhood results for",
+  dish: "Dish results for",
+};
 
 /** Kept in step with PAGE_SIZE in lib/discover.ts, which owns the real value. */
 const PAGE_SIZE = 24;
@@ -137,16 +159,23 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
   }, [router, shown]);
 
   /*
-   * A typed search is the act that explains the permission prompt: the results
-   * are about to be ordered by how far away each one is, and the card is about
-   * to print that number. Asked once — a denial is sticky, and a second prompt
-   * is the first one again. With the permission already granted, useNearby has
-   * taken the fix on mount and this never runs.
+   * Narrowing the grid is the act that explains the permission prompt: the
+   * results are about to be ordered by how far away each one is, and the card
+   * is about to print that number. Asked once — a denial is sticky, and a
+   * second prompt is the first one again. With the permission already granted,
+   * useNearby has taken the fix on mount and this never runs.
+   *
+   * Any filter, not only `q`, because a typed cuisine does not survive as one:
+   * `promote` in lib/discoverFilters.ts turns "thai" into `?cuisine=Thai`, so
+   * gating on `q` meant the most ordinary search in the app never asked where
+   * the visitor was and then rendered in corpus order. The bare unfiltered
+   * grid still never prompts, which is the load-time case the doctrine in
+   * lib/nearby.ts is actually about.
    */
   const requestLocation = nearby.request;
   useEffect(() => {
-    if (filters.q && !nearby.coords && nearby.state === "idle") requestLocation();
-  }, [filters.q, nearby.coords, nearby.state, requestLocation]);
+    if (active > 0 && !nearby.coords && nearby.state === "idle") requestLocation();
+  }, [active, nearby.coords, nearby.state, requestLocation]);
 
   /*
    * Fetch the located view whenever there are coordinates to measure from —
@@ -239,17 +268,33 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
   // Drops the text term and keeps every filter — the two are separate choices
   // and a search made inside a cuisine shouldn't take the cuisine with it when
   // it goes.
+  // The scope goes with it: it is a narrowing *of* the term (`?q=thai&in=cuisine`
+  // means "the cuisine reading of thai"), so it has nothing to narrow once the
+  // term is gone. `searchFromFilters` already drops it, but leaving it in state
+  // would make the filters object briefly describe something the URL doesn't.
   function clearQuery() {
-    apply({ ...filters, q: null });
+    apply({ ...filters, q: null, scope: null });
+  }
+
+  // The named dish is its own axis for the same reason: it was picked off the
+  // dropdown, not typed into the field, so dropping it must not take the typed
+  // term with it.
+  function clearDish() {
+    apply({ ...filters, dish: null });
   }
 
   const nearbyProps = { state: nearby.state, count: counts.nearby };
 
-  const emptyHint = !filters.q
-    ? "Every option in the rail shows how many places it would return — the ones reading 0 are the ones ruling everything out."
-    : active > 1
-      ? "Search covers names, cuisines and neighborhoods, and the filters still apply on top of it."
-      : "Search covers names, cuisines and neighborhoods. A shorter term will reach more places.";
+  const emptyHint = filters.dish
+    ? // Honest about what `?dish=` does: it is an equality on the menu wording
+      // (dishesNamedExactly in lib/db.ts), not a search, so a place serving the
+      // same thing under a longer name is genuinely not a match.
+      "A dish picked off the dropdown matches menu wording exactly — searching the words instead will also reach places that spell it differently."
+    : !filters.q
+      ? "Every option in the rail shows how many places it would return — the ones reading 0 are the ones ruling everything out."
+      : active > 1
+        ? "Search covers names, cuisines and neighborhoods, and the filters still apply on top of it."
+        : "Search covers names, cuisines and neighborhoods. A shorter term will reach more places.";
 
   return (
     <div>
@@ -330,7 +375,7 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
                   className="truncate font-display text-lg font-semibold tracking-tight text-zinc-900"
                 >
                   {filters.q
-                    ? `Results for “${filters.q}”`
+                    ? `${filters.scope ? SCOPE_HEADING[filters.scope] : "Results for"} “${filters.q}”`
                     : active > 0
                       ? "Matching restaurants"
                       : "All restaurants"}
@@ -347,6 +392,27 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
                     Clear search
                   </button>
                 )}
+                {/* A chip rather than the underlined link the search gets: the
+                    dish is a *choice off a list*, and it has to read back the
+                    exact wording that was picked, because that wording is
+                    precisely what the grid is matching on. Nothing else on this
+                    row names the filter it removes. */}
+                {filters.dish && (
+                  <button
+                    type="button"
+                    onClick={clearDish}
+                    aria-label={`Remove the ${filters.dish} dish filter`}
+                    className="inline-flex min-w-0 shrink items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs text-zinc-700 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                  >
+                    <span className="truncate">
+                      <span className="text-zinc-500">Serving</span>{" "}
+                      {filters.dish}
+                    </span>
+                    <span aria-hidden="true" className="text-zinc-400">
+                      ×
+                    </span>
+                  </button>
+                )}
               </div>
               {/* Announced rather than silent: on a phone the grid change can
                   be entirely below the fold. */}
@@ -361,9 +427,11 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
             {results.length === 0 ? (
               <div className="rounded-2xl bg-white px-6 py-12 text-center">
                 <p className="text-sm font-medium text-zinc-900">
-                  {filters.q
-                    ? `Nothing matches “${filters.q}”`
-                    : "Nothing matches those filters"}
+                  {filters.dish
+                    ? `No menus list “${filters.dish}”`
+                    : filters.q
+                      ? `Nothing matches “${filters.q}”`
+                      : "Nothing matches those filters"}
                 </p>
                 <p className="mx-auto mt-1 max-w-xs text-[13px] text-zinc-500">
                   {emptyHint}
@@ -372,13 +440,21 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
                     genuinely ambiguous which of the two emptied the grid, and
                     dropping the search first leaves the visitor inside the
                     filter they chose deliberately rather than back at the top
-                    of the city. */}
+                    of the city. The dish goes before the search for the same
+                    reason it goes before it in `matchesFilters`: an exact menu
+                    match is the narrowest thing on the page. */}
                 <button
                   type="button"
-                  onClick={filters.q ? clearQuery : clearAll}
+                  onClick={
+                    filters.dish ? clearDish : filters.q ? clearQuery : clearAll
+                  }
                   className="mt-4 min-h-11 rounded-full bg-pm-orange px-5 text-[13px] font-medium text-[#F7F4EC] transition-transform hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
                 >
-                  {filters.q ? "Clear search" : "Clear filters"}
+                  {filters.dish
+                    ? "Clear dish"
+                    : filters.q
+                      ? "Clear search"
+                      : "Clear filters"}
                 </button>
               </div>
             ) : (

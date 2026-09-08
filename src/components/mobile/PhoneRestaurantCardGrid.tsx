@@ -6,6 +6,7 @@ import { photoRatio } from "@/lib/photoShape";
 import { StarIcon } from "@/components/icons";
 import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
 import type { AspectHighlight } from "@/components/RestaurantCard";
+import { restaurantHref } from "@/lib/restaurantHref";
 
 /**
  * The card in Discover's two-across wall.
@@ -64,7 +65,8 @@ export function PhoneRestaurantCardGrid({
 }) {
   return (
     <Link
-      href={`/m/restaurant/${restaurant.id}`}
+      /* Straight to the dish when this row matched one — see restaurantHref. */
+      href={restaurantHref("/m/restaurant", restaurant)}
       className="block overflow-hidden rounded-xl bg-white transition-transform active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
     >
       {/* The photo's own proportions, from the measured size — a square crop

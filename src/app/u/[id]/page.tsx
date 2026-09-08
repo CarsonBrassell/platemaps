@@ -59,10 +59,9 @@ export default async function PublicProfilePage({
           <VerifiedBadge userId={profile.id} />
         </h1>
 
-        {/* The rank is what someone's lifetime points *mean*, and this is the
-            only screen in either tree that shows it — not the feed, not the
-            leaderboard, not a comment byline. You find out where somebody
-            stands by going and looking at them. The crest carries it and the
+        {/* The rank is what someone's lifetime points *mean*. It shows here,
+            on the phone twin, and as a chip on the phone Friends' Table — not
+            the feed, not a comment byline. The crest carries it and the
             title names it, because a wreath alone is a puzzle; the raw total
             follows underneath for anyone who wants the number.
             Thresholds and the leaderboard's unrelated other "rank": lib/ranks.ts. */}

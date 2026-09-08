@@ -2646,6 +2646,7 @@ function rowToRestaurantView(row: Record<string, unknown>): RestaurantView {
     ...(row.matched_dish
       ? {
           matchedDish: {
+            id: row.matched_dish_id as string,
             name: row.matched_dish as string,
             price: (row.matched_dish_price as string) || null,
           },
@@ -2857,7 +2858,7 @@ export async function searchRestaurants(term: string, limit = 60): Promise<Resta
   const rows = await sql`
     WITH dish_match AS (
       SELECT DISTINCT ON (d.restaurant_id)
-             d.restaurant_id, d.name, d.price
+             d.restaurant_id, d.id, d.name, d.price
       FROM dishes d
       WHERE d.name ILIKE ${needle}
       ORDER BY d.restaurant_id, length(d.name), d.sort_order
@@ -2865,7 +2866,8 @@ export async function searchRestaurants(term: string, limit = 60): Promise<Resta
     SELECT r.id, r.name, r.cuisine, r.cuisine_tags, r.neighborhood, r.distance,
            r.hours, r.lat, r.lng, r.rating, r.review_count, r.trending,
            r.photo, r.photo_alt, r.photo_w, r.photo_h, r.price_band,
-           dm.name AS matched_dish, dm.price AS matched_dish_price
+           dm.id AS matched_dish_id, dm.name AS matched_dish,
+           dm.price AS matched_dish_price
     FROM restaurants r
     LEFT JOIN dish_match dm ON dm.restaurant_id = r.id
     WHERE r.listed
@@ -2905,7 +2907,7 @@ export async function dishMatchesFor(term: string): Promise<Map<string, MatchedD
 
   const rows = await sql`
     SELECT DISTINCT ON (d.restaurant_id)
-           d.restaurant_id, d.name, d.price
+           d.restaurant_id, d.id, d.name, d.price
     FROM dishes d
     WHERE d.name ILIKE ${`%${trimmed}%`}
     ORDER BY d.restaurant_id, length(d.name), d.sort_order
@@ -2914,7 +2916,11 @@ export async function dishMatchesFor(term: string): Promise<Map<string, MatchedD
   return new Map(
     rows.map((row) => [
       row.restaurant_id as string,
-      { name: row.name as string, price: (row.price as string) || null },
+      {
+        id: row.id as string,
+        name: row.name as string,
+        price: (row.price as string) || null,
+      },
     ]),
   );
 }

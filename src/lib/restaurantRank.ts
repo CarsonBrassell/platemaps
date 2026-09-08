@@ -91,10 +91,17 @@ export function rank<T extends Rankable>(query: string, candidates: readonly T[]
       // unrated restaurant contributes nothing to the tiebreak rather than
       // being ranked as if it scored zero stars — the match quality above is
       // what actually put it in the list.
-      return { r, score: score === 0 ? 0 : score + (r.rating ?? 0) };
+      //
+      // It is carried beside the score, not added to it. Added, it crossed the
+      // rungs: they are 2-5 points apart and a rating reaches 5, so a 4.8-star
+      // restaurant matching on a *dish* (48 + 4.8) outranked one matching on
+      // its actual cuisine (50). Sorting on the pair keeps the tiebreak inside
+      // the tier it was meant for. lib/textMatch.ts states the same rule for
+      // Discover's ladder, where the bands are 100 apart for this reason.
+      return { r, score, rating: r.rating ?? 0 };
     })
     .filter((x) => x.score > 0)
-    .sort((a, b) => b.score - a.score)
+    .sort((a, b) => b.score - a.score || b.rating - a.rating)
     .slice(0, 6)
     .map((x) => x.r);
 }

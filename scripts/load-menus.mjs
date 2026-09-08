@@ -284,3 +284,33 @@ console.log(
     (notFound > 0 ? `, ${notFound} recorded as not found` : "") +
     `.\nCoverage: ${withMenus}/${total} restaurants have a menu.`,
 );
+
+/*
+ * Make the new dishes searchable in the same run.
+ *
+ * The search dropdown offers dishes out of `dish_names`, a materialised
+ * vocabulary derived from this table — see scripts/index-dish-names.mjs. It is
+ * refreshed here rather than left to a human because the failure otherwise is
+ * silent and slow: a batch loads, the dishes are on the restaurant pages, and
+ * nobody notices for weeks that none of them can be searched for.
+ *
+ * A separate process rather than an import, so a rebuild that fails leaves the
+ * menus loaded and says so — the load is the expensive half and must not be
+ * undone by an index step.
+ */
+if (!DRY_RUN) {
+  const { spawnSync } = await import("node:child_process");
+  console.log("\nRefreshing the dish search vocabulary…");
+  const run = spawnSync(process.execPath, ["scripts/index-dish-names.mjs"], {
+    stdio: "inherit",
+    /* This process was started with --env-file, so DATABASE_URL is already in
+       the environment and the child inherits it; it does not need the flag. */
+    env: process.env,
+  });
+  if (run.status !== 0) {
+    console.error(
+      "dish_names was not refreshed — the menus loaded fine, but the new " +
+        "dishes will not appear in search until `npm run dishes:index` runs.",
+    );
+  }
+}

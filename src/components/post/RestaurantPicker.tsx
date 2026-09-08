@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { formatMiles, milesBetween } from "@/lib/geo";
+import { useNearby } from "@/lib/nearby";
 import { placeLine } from "@/lib/placeLine";
 import { tapFlash } from "@/lib/tapFlash";
 
@@ -31,6 +33,12 @@ export type PickableRestaurant = {
    */
   cuisine: string | null;
   neighborhood: string;
+  /**
+   * The seeded distance string, measured from a fixed downtown origin — see
+   * lib/nearby.ts. It is *not* a distance from the visitor, and this component
+   * no longer treats it as one; it is the label of last resort, for when the
+   * browser will not say where the phone is.
+   */
   distance: string;
   lat: number;
   lng: number;
@@ -51,21 +59,32 @@ export type PickableRestaurant = {
  * counting to forty would pad the list with places you cannot be standing in.
  * The floor and the ceiling are both there for the shapes a radius alone
  * handles badly: NEARBY_FLOOR keeps the list from being empty out in the
- * county, or when the browser refused a location and every distance parses to
- * Infinity, and NEARBY_CEILING keeps a dense block downtown from mounting six
+ * county, and NEARBY_CEILING keeps a dense block downtown from mounting six
  * hundred rows. Search is not bounded by distance at all — typing a name means
  * you know the place and are not asking what is around you — only capped, so
  * one number still covers the worst case.
+ *
+ * The radius is measured from the visitor, and that is the part that was
+ * missing. The cut originally ran over the seeded `distance` column, which is
+ * measured from a fixed downtown origin for every visitor alike — so "within 3
+ * miles" meant "within 3 miles of downtown" no matter where you were standing,
+ * and the step showed a Gaslamp local the right forty places and everyone else
+ * the same forty. Reported as the step showing no nearby restaurants, which is
+ * exactly what it did anywhere but downtown. It was only ever right where it
+ * was measured.
  */
 const NEARBY_MI = 3;
 const NEARBY_FLOOR = 12;
 const NEARBY_CEILING = 40;
 
 /** "1.0 mi" → 1.0. Anything unparseable sorts to the end rather than to zero. */
-function miles(r: PickableRestaurant) {
+function seededMiles(r: PickableRestaurant) {
   const n = Number.parseFloat(r.distance);
   return Number.isNaN(n) ? Number.POSITIVE_INFINITY : n;
 }
+
+/** A row with the distance the visitor is actually shown and sorted by. */
+type Ranked = { r: PickableRestaurant; mi: number; label: string };
 
 /**
  * Which San Diego restaurant this post is about.
@@ -91,26 +110,54 @@ export function RestaurantPicker({
   onSkip?: () => void;
 }) {
   const [query, setQuery] = useState("");
+  const { state, coords, request } = useNearby();
 
-  const byDistance = useMemo(
-    () => [...restaurants].sort((a, b) => miles(a) - miles(b)),
-    [restaurants],
-  );
+  /*
+   * lib/nearby.ts spends the one permission prompt on "the tap that explains
+   * why it's being asked", and this step is that explanation: it is on screen
+   * asking where you ate, it cannot be answered without knowing where you are,
+   * and it is reached only by someone who has already decided to post. Nothing
+   * else in the composer raises the prompt, so there is no second one to crowd.
+   *
+   * `useNearby` already takes a fix on mount when the permission is granted;
+   * this is the branch where it has not been asked for yet.
+   */
+  useEffect(() => {
+    if (state === "idle") request();
+  }, [state, request]);
+
+  const byDistance = useMemo<Ranked[]>(() => {
+    const rows = restaurants.map((r) => {
+      if (!coords) return { r, mi: seededMiles(r), label: r.distance };
+      const mi = milesBetween(coords, { lat: r.lat, lng: r.lng });
+      return { r, mi, label: formatMiles(mi) };
+    });
+    return rows.sort((a, b) => a.mi - b.mi);
+  }, [restaurants, coords]);
 
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return byDistance;
-    return byDistance.filter((r) =>
+    return byDistance.filter(({ r }) =>
       `${r.name} ${r.cuisine ?? ""} ${r.neighborhood}`.toLowerCase().includes(q),
     );
   }, [query, byDistance]);
 
   const shown = useMemo(() => {
     if (query.trim()) return matches.slice(0, NEARBY_CEILING);
-    const near = matches.filter((r) => miles(r) <= NEARBY_MI).length;
+    /* No fix: every `mi` is the seeded downtown distance, so a radius over it
+       says nothing about where this visitor is. There is no honest cut left to
+       make — only the cap, which is what kept the DOM small in the first
+       place, and a status line that does not call the result "near you". */
+    if (!coords) return matches.slice(0, NEARBY_CEILING);
+    const near = matches.filter((m) => m.mi <= NEARBY_MI).length;
     return matches.slice(0, Math.min(Math.max(near, NEARBY_FLOOR), NEARBY_CEILING));
-  }, [matches, query]);
+  }, [matches, query, coords]);
   const hidden = matches.length - shown.length;
+
+  /* Retryable, unlike a denial — a denial is sticky per origin and no button
+     here can lift it, so offering one would be a button that does nothing. */
+  const canRetryLocation = state === "failed";
 
   return (
     <div>
@@ -127,11 +174,28 @@ export function RestaurantPicker({
         className="min-h-11 w-full rounded-xl bg-pm-grey-tint/60 px-3.5 text-base transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange"
       />
 
+      {/* Says which of the two lists this is, because they are not the same
+          list and a visitor being shown the wrong one should be able to tell.
+          "Closest first" was printed over both. */}
       <p className="mt-2 text-xs text-zinc-400" role="status">
-        {matches.length === restaurants.length
-          ? "Near you, closest first"
-          : `${matches.length} ${matches.length === 1 ? "place" : "places"}`}
+        {query.trim()
+          ? `${matches.length} ${matches.length === 1 ? "place" : "places"}`
+          : coords
+            ? "Near you, closest first"
+            : state === "locating"
+              ? "Finding you…"
+              : "Location off — search by name to find your place"}
       </p>
+
+      {canRetryLocation && (
+        <button
+          type="button"
+          onClick={(e) => tapFlash(e.currentTarget, request)}
+          className="mt-2 min-h-11 w-full rounded-full bg-pm-grey-tint/60 px-4 text-sm text-pm-grey-text transition-colors hover:bg-pm-grey-tint hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+        >
+          Use my location
+        </button>
+      )}
 
       {matches.length === 0 ? (
         <div className="mt-3 rounded-xl bg-pm-grey-tint/50 px-4 py-8 text-center">
@@ -142,7 +206,7 @@ export function RestaurantPicker({
         </div>
       ) : (
         <ul className="mt-2 flex flex-col divide-y divide-zinc-100">
-          {shown.map((r) => {
+          {shown.map(({ r, label }) => {
             const on = r.id === selectedId;
             return (
               <li key={r.id}>
@@ -166,7 +230,12 @@ export function RestaurantPicker({
                       {placeLine(r.cuisine, r.neighborhood)}
                     </span>
                   </span>
-                  <span className="shrink-0 text-xs font-medium text-zinc-400">{r.distance}</span>
+                  {/* The real distance where there is one. `onSelect` still
+                      hands back the untouched row, so the post's stored
+                      `locationLabel` stays the seeded string every other
+                      surface prints — how far the poster happened to be from
+                      the place is not a fact about the place. */}
+                  <span className="shrink-0 text-xs font-medium text-zinc-400">{label}</span>
                 </button>
               </li>
             );
@@ -174,15 +243,16 @@ export function RestaurantPicker({
         </ul>
       )}
 
-      {/* The way to the rest of them, said where you run out of them. It does
-          not call the remainder "nearby" — the whole point of the cut above is
-          that they are not. Mono for the count, as DESIGN.md asks of every
-          number. */}
+      {/* The way to the rest of them, said where you run out of them. It calls
+          the remainder "farther away" only when a distance was actually
+          measured from the visitor; without a fix, the rows below the cap are
+          not farther from anywhere in particular. Mono for the count, as
+          DESIGN.md asks of every number. */}
       {hidden > 0 && (
         <p className="mt-3 px-3 text-xs text-pm-grey-text">
           <span className="font-mono tabular-nums">{hidden.toLocaleString()}</span>{" "}
-          {query.trim() ? "more match" : "farther away"} — search by name, cuisine or
-          neighborhood to reach them.
+          {query.trim() ? "more match" : coords ? "farther away" : "more"} — search by name,
+          cuisine or neighborhood to reach them.
         </p>
       )}
 

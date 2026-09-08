@@ -1001,6 +1001,78 @@ const statements = [
   // this permit?" per row without a sequential scan over the whole table.
   `CREATE INDEX IF NOT EXISTS idx_restaurants_deh_record_id
      ON restaurants (deh_record_id) WHERE deh_record_id IS NOT NULL`,
+
+  // The folded form of a dish name — the one place the fold is written down.
+  //
+  // `normalize()` in src/lib/textMatch.ts folds what a visitor types; this folds
+  // what the corpus stored, and the two must agree exactly or a dish that is
+  // plainly on a menu cannot be searched for. In order: lowercase, `&` to the
+  // word, apostrophes *removed* so "chef's" folds to "chefs" rather than
+  // "chef s", every other non-alphanumeric to a space, trim.
+  //
+  // Generated and stored rather than computed per query, for two reasons that
+  // both matter: an expression this long copied into a query and an index and a
+  // script is three places to drift, and `?dish=` needs an equality lookup that
+  // an index can answer instead of a fold over 514,000 rows.
+  `ALTER TABLE dishes ADD COLUMN IF NOT EXISTS name_folded TEXT
+     GENERATED ALWAYS AS (
+       btrim(regexp_replace(
+         regexp_replace(
+           replace(lower(name), '&', ' and '),
+           '[''’\`´]', '', 'g'),
+         '[^a-z0-9]+', ' ', 'g'))
+     ) STORED`,
+  `CREATE INDEX IF NOT EXISTS idx_dishes_name_folded ON dishes (name_folded)`,
+
+  // The distinct dish vocabulary, so the search dropdown can offer dishes.
+  //
+  // Derived from `dishes`, never written by hand — `npm run dishes:index`
+  // rebuilds it and `menus:load` calls that at the end, so a menu load makes
+  // its new dishes searchable in the same run.
+  //
+  // It exists because the query the dropdown wants is "distinct dish name, and
+  // how many listed restaurants serve it", and answering that live is a GROUP
+  // BY over 429,350 rows collapsing to 194,650 names: measured at 100-150ms a
+  // keystroke by probe/dish-vocab.mjs. Materialised it is a primary-key or
+  // trigram lookup over 194,650 rows instead, and — the reason that matters
+  // more than the milliseconds — a fuzzy correction gets to rank against each
+  // dish name *once* rather than against the 429,350 rows that repeat it.
+  //
+  // `name` is the folded key and the primary key; `label` is the spelling to
+  // print, the most common original casing among the rows that folded into it.
+  `CREATE TABLE IF NOT EXISTS dish_names (
+     name TEXT PRIMARY KEY,
+     label TEXT NOT NULL,
+     place_count INTEGER NOT NULL,
+     refreshed_at TIMESTAMPTZ NOT NULL DEFAULT now()
+   )`,
+
+  // GIN over `gin_trgm_ops`, for the same reason idx_dishes_name_trgm is one:
+  // the dropdown matches mid-word ("asada" has to reach "Carne Asada Fries"),
+  // and a leading wildcard cannot use a btree.
+  `CREATE INDEX IF NOT EXISTS idx_dish_names_trgm
+     ON dish_names USING gin (name gin_trgm_ops)`,
+
+  // Ordering within a prefix match is by how many places serve the dish, so
+  // the popular reading of a term comes first.
+  `CREATE INDEX IF NOT EXISTS idx_dish_names_place_count
+     ON dish_names (place_count DESC)`,
+
+  // `unaccent()`, for the accent-blind half of `searchRestaurants`.
+  //
+  // 220 listed names carry an accent that changes the letter — "Poké Chop",
+  // "Señor Grubby's", "Phở Trúc Xanh", "Birriería La Lotería" — and nobody
+  // types those. Two of the four Poké Chop branches were unreachable by any
+  // spelling of "poke chop", including the two nearest most of the city.
+  //
+  // An extension rather than a `translate()` map because the map is the part
+  // that rots: Latin-1 alone is 60 characters, and this corpus is Spanish and
+  // Vietnamese, so `ở`, `ầ` and `ệ` all have to be in it too. `unaccent`'s
+  // dictionary already covers every Latin block. It is STABLE, not IMMUTABLE,
+  // so it cannot be indexed — the folded branch of the search is a sequential
+  // filter over the ~9,000 listed rows, which is what the untagged branch's
+  // trigram index is there to keep off the hot path.
+  `CREATE EXTENSION IF NOT EXISTS unaccent`,
 ];
 
 for (const statement of statements) {

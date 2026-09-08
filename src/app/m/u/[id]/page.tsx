@@ -85,9 +85,8 @@ export default async function PhonePublicProfilePage({
 
         {/* Same block as `/u/[id]`, drawn smaller — the crest is 64px here
             against 76 on the web, which is the whole difference. The rank is
-            shown on this screen and on its web twin and nowhere else in either
-            tree: not the feed, not the leaderboard, not a comment byline. You
-            find out where somebody stands by going and looking at them.
+            shown on this screen, on its web twin, and as a chip on the phone
+            Friends' Table — not the feed, not a comment byline.
             Thresholds, and the leaderboard's unrelated other "rank": lib/ranks.ts. */}
         <div className="mt-4 flex flex-col items-center">
           <RankInsignia rank={rank.key} size={64} />

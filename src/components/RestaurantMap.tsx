@@ -1912,50 +1912,64 @@ export function RestaurantMap({
         ["+", base, ["*", gain, ["get", "intensity"]]];
       /* What a search does to everywhere it didn't match — see `dim` in
          buildPinData. The three decorative layers switch off entirely and the
-         core dot alone survives at a low alpha, so an unmatched restaurant
-         reads as a bare ember: still there, still hoverable, no longer
-         claiming any of the reader's attention. Doing it by opacity rather
-         than by a new colour is deliberate — over the #191c22 ground a fainter
-         ember cools toward the ground on its own, and inventing a second grey
-         would put it in a conversation with `closed`, which already owns
-         #4b525e and means something entirely different. */
-      /* Measured on screen against the unsearched map rather than picked: at
-         0.34 the county view lost the city entirely — the dots are only 1.8px
-         at that zoom, and with the glow gone there was nothing left to see, so
-         a search read as "the map went dark" instead of "these ones are lit".
-         0.45 keeps a legible ember at every zoom while the matches, which
-         carry the glow, the inner light and the ring on top of a 0.95 dot,
-         stay obviously the brighter thing. */
-      /* ...and that 0.45 is the COUNTY figure. From z13 in the dots are 4-8px
-         and a 0.45 ember beside a lit one still read as "on", so the answer
-         to a search was a city of slightly different lights rather than a
-         few lit ones over a dark field. The alpha steps down as the dots grow,
-         reaching 0.22 at street scale where even that is a clear dot. */
-      /* Zoom on the OUTSIDE. MapLibre only accepts `["zoom"]` as the input of
-         a top-level interpolate, so this cannot be a zoom ramp handed to one
-         branch of a `case` — that shipped once, MapLibre refused the whole
-         `circle-opacity` ("zoom expression may only be used as input to a
-         top-level step or interpolate"), the property fell back to its
-         default of 1, and every unmatched ember stayed at full brightness:
-         a searched map that dimmed nothing. Each stop is a whole case. */
-      const dotOpacityAt = (dimAlpha: number) => [
+         core dot alone survives, cooled: an unmatched restaurant reads as a
+         bare ember — still there, still hoverable, no longer claiming any of
+         the reader's attention.
+
+         **The cooling is a COLOUR change, and only incidentally an alpha one.
+         That is the correction.** This used to dim by opacity alone, on the
+         reasoning that over the #191c22 ground a fainter ember cools toward
+         the ground on its own. That is true of ONE ember and false of a city
+         of them. Alpha composites: N overlapping dots at alpha a reach
+         1-(1-a)^N, so with a corpus this size (~9k restaurants, dots blurred
+         to 3-4px across z11-z13) a dense block saturates after about five and
+         lands back on the full ember colour no matter how low the per-dot
+         alpha is. Measured on screen at ~z12 with a one-word query: the
+         unmatched field was indistinguishable from the unsearched map, every
+         neighbourhood still read as lit, and the matches were findable only
+         by their labels. Lowering the alpha cannot fix that — a stack
+         converges on whatever colour is being stacked, so the colour is the
+         one thing a crowd cannot undo.
+
+         Two things conspired at the same zoom, both of which this also
+         answers. The aura is hidden for the whole of a search, so the ground
+         underneath got DARKER, which RAISED each unmatched ember's local
+         contrast at the exact moment it was supposed to recede. And the glow
+         and inner light go out, leaving a hard-edged dot where a soft one had
+         been — sharper edges read as more present, not less.
+
+         #6b4a3a is a cooled ember, not a second grey. It stays in the accent's
+         own hue family — a light that has gone out, sitting where a lit one
+         would be — precisely so that it does NOT get into a conversation with
+         `closed`, which owns the cool #4b525e and means something entirely
+         different. A fully saturated stack of these reads #6b4a3a against a
+         lit #ffb07a, which is the contrast the reader was missing. */
+      const DIM_COLOR = "#6b4a3a";
+      /* With the colour carrying the dimming, the alpha's job is now the
+         opposite of what it was: keep a LONE unmatched ember legible so the
+         county view doesn't read as "the map went dark" — the failure that
+         drove the old alpha UP to 0.45 at z9 in the first place. At 0.7 a
+         single dot composites to about #523c33, plainly visible at 1.8px,
+         while any crowd of them converges on DIM_COLOR instead of on the
+         accent.
+
+         It no longer varies with zoom, which is why the ramp this property
+         used to carry is gone — but keep the reason that ramp was shaped the
+         way it was, in case one is ever needed here again: MapLibre only
+         accepts `["zoom"]` as the input of a top-level interpolate, so a zoom
+         ramp cannot be handed to one branch of a `case`. That shipped once,
+         MapLibre refused the whole `circle-opacity` ("zoom expression may only
+         be used as input to a top-level step or interpolate"), the property
+         fell back to its default of 1, and every unmatched ember stayed at
+         full brightness: a searched map that dimmed nothing. Any future ramp
+         here has to repeat the entire `case` at each stop. */
+      const DOT_OPACITY = [
         "case",
         ["get", "dim"],
-        dimAlpha,
+        0.7,
         ["get", "closed"],
         0.5,
         0.95,
-      ];
-      const DOT_OPACITY = [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        9,
-        dotOpacityAt(0.45),
-        13,
-        dotOpacityAt(0.32),
-        16,
-        dotOpacityAt(0.22),
       ] as unknown as number;
       /* What a match wears on top of its normal light while a search runs:
          a hotter halo (below); the district aura is hidden for the whole search.
@@ -2006,8 +2020,16 @@ export function RestaurantMap({
         type: "circle",
         source: PIN_SOURCE,
         paint: {
+          /* `dim` is tested BEFORE `closed` here and in `circle-opacity`, and
+             for the same reason in both: while a search is running, whether a
+             place is open is not the question being asked. Letting the closed
+             branch win would give unmatched-but-closed spots the grey that
+             means "closed" during a search that never asked, and leave them
+             brighter (0.5) than unmatched-and-open ones. */
           "circle-color": [
             "case",
+            ["get", "dim"],
+            DIM_COLOR,
             ["get", "closed"],
             "#4b525e",
             [
@@ -2021,10 +2043,6 @@ export function RestaurantMap({
             ],
           ],
           "circle-blur": byZoom(1.35, 0.65, 0.3, 0.18),
-          /* `dim` is tested BEFORE `closed`: while a search is running, whether
-             a place is open is not the question being asked, and letting the
-             closed branch win would leave unmatched-but-closed spots brighter
-             (0.5) than unmatched-and-open ones. */
           "circle-opacity": DOT_OPACITY,
           "circle-radius": byZoom(
             withIntensity(1.8, 1.6),

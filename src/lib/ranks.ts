@@ -35,13 +35,15 @@
  * - **Institution, 4,000** — deliberately out of reach for a normal year. The
  *   top of a ladder that everybody reaches is not a top.
  *
- * A rank displays in exactly two places: on the public profile (see the
- * comment at the render site in `app/u/[id]/page.tsx`) and — since 2026-08,
- * at Calvin's request — on the owner's own points panel, as a title plus a
- * progress track toward the next rung (`PlatePointsPanel`'s `showRank`).
- * The second one is the owner reading their own progression, not a third
- * party sizing them up, which is why it lives with the points rather than
- * beside the avatar.
+ * A rank displays in three places: on the public profile (see the comment at
+ * the render site in `app/u/[id]/page.tsx`); since 2026-08, at Calvin's
+ * request, on the owner's own points panel, as a title plus a progress track
+ * toward the next rung (`PlatePointsPanel`'s `showRank`); and since
+ * 2026-09-07, also at Calvin's request, as a chip on every row of the phone
+ * Friends' Table (`PhoneFriendsLeaderboard`), where it replaced the
+ * top-three-only kitchen stations. The panel one is the owner reading their
+ * own progression, not a third party sizing them up, which is why it lives
+ * with the points rather than beside the avatar.
  *
  * ## The ladder also carries weight, and it is deliberately a small one
  *

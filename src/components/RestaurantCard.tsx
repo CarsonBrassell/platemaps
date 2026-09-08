@@ -7,6 +7,7 @@ import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plate
 import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
 import { photoCreditFor } from "@/lib/photoCredit";
 import { photoRatio } from "@/lib/photoShape";
+import { restaurantHref } from "@/lib/restaurantHref";
 
 /**
  * The category the grid is currently filtered to, and what this place scored in
@@ -93,7 +94,8 @@ export function RestaurantCard({
   const natural = shape === "natural";
   return (
     <Link
-      href={`/restaurant/${restaurant.id}`}
+      /* Straight to the dish when this row matched one — see restaurantHref. */
+      href={restaurantHref("/restaurant", restaurant)}
       className="card-lift group block overflow-hidden rounded-2xl bg-white active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
     >
       {/* Photo inset from the card edge; a warm tone block holds the slot

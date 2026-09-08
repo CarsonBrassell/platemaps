@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { QUERY_PARAM } from "@/lib/discoverFilters";
+import { SuggestMenu } from "@/components/SuggestMenu";
+import { facetParamFor, hrefForScope, useSuggest } from "@/components/useSuggest";
+import type { SuggestScope } from "@/lib/suggestTypes";
 
 /**
  * Search, on the Discover screen.
@@ -24,12 +27,22 @@ import { QUERY_PARAM } from "@/lib/discoverFilters";
  * row on Filters. So this is a real field, open, with a placeholder that says
  * what it takes.
  *
+ * ## The dropdown is the same one the web header has
+ *
+ * Both fields call `useSuggest` and render `SuggestMenu`, so the four readings,
+ * their order, the arrow keys and where a pick lands are identical on the two
+ * versions; only the row heights and the menu's width differ. This is the
+ * surface Calvin was actually using when a misspelled restaurant returned
+ * nothing, and it had no dropdown at all until now.
+ *
  * ## The URL is still the query
  *
  * Submitting merges `q` into the params already there rather than replacing
  * them, so a search inside "Pizza · Open now" keeps both. Clearing the box and
  * submitting removes the key, which is the same gesture the summary chip's
- * Clear performs — two ways to the same state, deliberately.
+ * Clear performs — two ways to the same state, deliberately. Picking a row off
+ * the dropdown merges the same way — see `hrefForScope`, which drops `q` when
+ * the pick becomes a filter and rewrites it when it stays a scoped search.
  *
  * `shown` is dropped on every submit: it is the "Show more" cursor, and
  * carrying it into a new result set would page a list the visitor has not
@@ -40,6 +53,8 @@ export function PhoneDiscoverSearch({ value = "" }: { value?: string }) {
   const router = useRouter();
   const params = useSearchParams();
   const [term, setTerm] = useState(value);
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   /* Reseeded when the term changes from outside — the chip's Clear, or a
@@ -52,9 +67,28 @@ export function PhoneDiscoverSearch({ value = "" }: { value?: string }) {
     setTerm(value);
   }, [value]);
 
-  function submit(event: React.FormEvent) {
-    event.preventDefault();
+  const showing = open && term.trim().length > 0;
+
+  /* A tap anywhere else closes the menu. `touchstart` as well as `mousedown`
+     because a tap on this screen may never produce a mouse event at all, and a
+     dropdown that only closes on submit would sit over the grid. */
+  useEffect(() => {
+    if (!open) return;
+    function onOutside(event: Event) {
+      if (wrapRef.current && !wrapRef.current.contains(event.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onOutside);
+    document.addEventListener("touchstart", onOutside);
+    return () => {
+      document.removeEventListener("mousedown", onOutside);
+      document.removeEventListener("touchstart", onOutside);
+    };
+  }, [open]);
+
+  /** The ranked search — Enter with nothing picked, and the on-screen key. */
+  function runSearch() {
     const q = term.trim();
+    setOpen(false);
     inputRef.current?.blur();
     seen.current = q;
 
@@ -67,52 +101,119 @@ export function PhoneDiscoverSearch({ value = "" }: { value?: string }) {
     router.push(query ? `/m?${query}` : "/m");
   }
 
+  /**
+   * Commit one reading off the dropdown.
+   *
+   * A restaurant leaves for its own page, so the field keeps its name on the
+   * way out. A line that became a *filter* empties it: the chip above the grid
+   * is where a chosen cuisine or neighbourhood now reads back, and leaving a
+   * typed misspelling in a box that is no longer narrowing anything is exactly
+   * how a search looks broken.
+   *
+   * A line that stayed a scoped text search keeps its term, because `?q=` is
+   * still set — and it keeps `scope.term` rather than what was typed, so a
+   * corrected dish shows the spelling the grid was actually searched for. An
+   * empty field over a filtered grid is the same lie in the other direction.
+   */
+  function pickScope(scope: SuggestScope) {
+    setOpen(false);
+    inputRef.current?.blur();
+    const next = scope.kind === "restaurant" ? scope.label : facetParamFor(scope) ? "" : scope.term;
+    seen.current = next;
+    setTerm(next);
+    router.push(hrefForScope(scope, "/m", params));
+  }
+
+  const suggest = useSuggest({
+    query: term,
+    open: showing,
+    onPick: pickScope,
+    onSubmit: runSearch,
+    onClose: () => setOpen(false),
+  });
+
   return (
-    <form
-      role="search"
-      onSubmit={submit}
-      className="flex min-h-11 items-center gap-2.5 rounded-full bg-white px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-pm-orange"
-    >
-      <SearchGlyph />
-      <input
-        ref={inputRef}
-        type="search"
-        value={term}
-        onChange={(event) => setTerm(event.target.value)}
-        enterKeyHint="search"
-        autoComplete="off"
-        placeholder="Search restaurants, cuisines…"
-        aria-label="Search restaurants and cuisines"
-        /* 16px, not the 14 this row would suggest: iOS Safari zooms the whole
-           page in when a focused field sets below 16px, and a screen that jumps
-           scale on a tap reads as a bug. */
-        className="min-w-0 flex-1 bg-transparent text-[16px] text-zinc-900 placeholder:text-pm-grey-text focus:outline-none"
-      />
-      {term && (
-        <button
-          type="button"
-          onClick={() => {
-            setTerm("");
-            inputRef.current?.focus();
+    <div ref={wrapRef} className="relative">
+      <form
+        role="search"
+        onSubmit={(event) => {
+          event.preventDefault();
+          runSearch();
+        }}
+        className="flex min-h-11 items-center gap-2.5 rounded-full bg-white px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-pm-orange"
+      >
+        <SearchGlyph />
+        <input
+          ref={inputRef}
+          type="search"
+          value={term}
+          onChange={(event) => {
+            setTerm(event.target.value);
+            setOpen(true);
           }}
-          aria-label="Clear search"
-          className="-mr-1.5 flex h-11 w-8 shrink-0 items-center justify-center rounded-full text-pm-grey-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-        >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            aria-hidden="true"
+          onFocus={() => setOpen(true)}
+          onKeyDown={suggest.onKeyDown}
+          enterKeyHint="search"
+          autoComplete="off"
+          placeholder="Search restaurants, cuisines…"
+          aria-label="Search restaurants, cuisines, neighborhoods and dishes"
+          role="combobox"
+          aria-expanded={showing}
+          aria-controls={suggest.listId}
+          aria-activedescendant={suggest.activeId}
+          aria-autocomplete="list"
+          /* 16px, not the 14 this row would suggest: iOS Safari zooms the whole
+             page in when a focused field sets below 16px, and a screen that jumps
+             scale on a tap reads as a bug. */
+          className="min-w-0 flex-1 bg-transparent text-[16px] text-zinc-900 placeholder:text-pm-grey-text focus:outline-none"
+        />
+        {term && (
+          <button
+            type="button"
+            onClick={() => {
+              setTerm("");
+              inputRef.current?.focus();
+            }}
+            aria-label="Clear search"
+            className="-mr-1.5 flex h-11 w-8 shrink-0 items-center justify-center rounded-full text-pm-grey-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
           >
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
-        </button>
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              aria-hidden="true"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        )}
+      </form>
+
+      {/* Full width under the field, and capped: the keyboard takes the bottom
+          half of the screen while this is open, so a menu that runs past `60vh`
+          would put its last rows behind it. */}
+      {showing && (
+        <SuggestMenu
+          variant="phone"
+          className="absolute inset-x-0 top-full z-50 mt-2 max-h-[60vh] overflow-y-auto rounded-2xl bg-white py-1.5"
+          scopes={suggest.scopes}
+          correcting={suggest.correcting}
+          active={suggest.active}
+          setActive={suggest.setActive}
+          listId={suggest.listId}
+          optionId={suggest.optionId}
+          hrefFor={(scope) => hrefForScope(scope, "/m", params)}
+          onPick={suggest.pick}
+          query={term.trim()}
+          submitLabel="Search Discover for"
+          onSubmit={runSearch}
+        />
       )}
-    </form>
+    </div>
   );
 }
 
