@@ -69,6 +69,30 @@ html.pm-lock-scroll .pm-phone-content {
   padding-bottom: 0;
 }
 
+/* The colour iOS tints the status bar with, while the map is up.
+ *
+ * On a phone the strip across the top is not part of the page and never was —
+ * it is browser chrome, in Safari and in an added-to-home-screen app alike,
+ * and iOS paints it by sampling the document's own colour. The ground is
+ * cream, so the map got a cream bar above it that no layout change inside the
+ * document could reach. The theme-color meta is the documented way to say what
+ * that colour should be, and PhoneFeedScreen swaps it, but iOS reads it on
+ * load rather than on change; the background it samples, it samples live.
+ *
+ * So the document wears the map's ground while the map is up, off the same
+ * class that locks the scroll, and hands the cream back on the way out. It is
+ * invisible in the page itself either way — the map covers the document edge
+ * to edge — which is exactly why the only thing it can change is the strip.
+ *
+ * Below 480px only: at desktop width this ground is the cream page *around*
+ * the 390px column, and there is no status bar out there to tint. */
+@media (max-width: 479px) {
+  html.pm-lock-scroll,
+  html.pm-lock-scroll body {
+    background: #191c22;
+  }
+}
+
 /* The map's own gestures are MapLibre's; this stops a pan that reaches the
    edge of the tiles from chaining out into the page behind it. */
 .pm-phone-shell .map-fun-tiles {
