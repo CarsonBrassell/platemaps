@@ -394,7 +394,7 @@ export function FoodPostCard(props: FoodPostCardProps) {
             <span className="shrink-0 [filter:drop-shadow(0_1px_5px_rgba(0,0,0,0.85))]">
               <Avatar name={post.authorName} url={post.authorAvatarUrl} bg={palette.avatarBg} />
             </span>
-            <span className="truncate font-mono text-xs font-medium [text-shadow:0_1px_7px_rgba(0,0,0,0.95),0_0_3px_rgba(0,0,0,0.7)]">
+            <span className="truncate font-mono text-[13px] font-semibold [text-shadow:0_1px_7px_rgba(0,0,0,0.95),0_0_3px_rgba(0,0,0,0.7)]">
               {handleFor(post.authorName)}
             </span>
             {/* Outside the truncating span, so a long handle clips its own text
@@ -578,7 +578,7 @@ export function FoodPostCard(props: FoodPostCardProps) {
                   className="flex min-w-0 items-center gap-2 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
                 >
                   <Avatar name={post.authorName} url={post.authorAvatarUrl} bg={palette.avatarBg} />
-                  <span className="truncate font-mono text-xs font-medium text-zinc-900">
+                  <span className="truncate font-mono text-[13px] font-semibold text-zinc-900">
                     {handleFor(post.authorName)}
                   </span>
                   <VerifiedBadge userId={post.userId} />

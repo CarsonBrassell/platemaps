@@ -139,9 +139,19 @@ export function PostActions(props: PostActionsProps) {
       )}
 
       <div className="flex shrink-0 items-center gap-0.5">
-        <button type="button" onClick={onComment} className={action} aria-label="Open comments">
+        {/* Heavier than its neighbours on purpose. Share and Save are things
+            you do to a plate; comments are where the plate gets argued about,
+            and that is the interaction worth drawing the eye to. A darker ink
+            and a semibold count is the whole difference — the icon keeps the
+            same 19px box so the row's rhythm is unchanged. */}
+        <button
+          type="button"
+          onClick={onComment}
+          className={`${action} font-semibold text-zinc-700 hover:text-pm-orange-text`}
+          aria-label="Open comments"
+        >
           <ChatIcon className="h-[19px] w-[19px]" />
-          <span className="font-mono text-xs tabular-nums">{commentCount}</span>
+          <span className="font-mono text-[13px] font-semibold tabular-nums">{commentCount}</span>
         </button>
 
         <button type="button" onClick={handleShare} className={action} aria-label="Share this plate">

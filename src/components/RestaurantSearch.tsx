@@ -160,7 +160,7 @@ export function RestaurantSearch() {
           aria-autocomplete="list"
           role="combobox"
           autoComplete="off"
-          className="w-full min-w-0 bg-transparent text-sm text-zinc-900 placeholder:text-zinc-500 focus:outline-none"
+          className="w-full min-w-0 bg-transparent text-base md:text-sm text-zinc-900 placeholder:text-zinc-500 focus:outline-none"
         />
         {query && (
           <button

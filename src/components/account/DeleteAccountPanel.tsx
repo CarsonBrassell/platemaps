@@ -73,7 +73,7 @@ export function DeleteAccountPanel() {
                is gone, so focus would otherwise be on nothing and a keyboard
                user would have to hunt for the field they just asked for. */
             autoFocus
-            className="mb-3 min-h-11 w-full rounded-full bg-white px-4 text-sm text-zinc-900 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange disabled:opacity-50"
+            className="mb-3 min-h-11 w-full rounded-full bg-white px-4 text-base md:text-sm text-zinc-900 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange disabled:opacity-50"
           />
 
           {error && (

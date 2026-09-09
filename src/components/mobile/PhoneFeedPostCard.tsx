@@ -637,7 +637,10 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
             <Link
               href={authorHref}
               aria-label={authorLabel}
-              className="rounded-sm text-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+              /* Semibold and darker than the rest of the byline: the handle
+                 is who is talking, and it was reading as quietly as the
+                 timestamp beside it. */
+              className="rounded-sm font-semibold text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
             >
               @{handleFor(post.authorName)}
             </Link>
