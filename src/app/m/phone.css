@@ -94,37 +94,53 @@ html.pm-lock-scroll .pm-phone-content {
 }
 
 /*
- * Give a home-screen app back the strip it is laid out 59px short of.
+ * Give a home-screen app back the strip its scroll lock clips off.
  *
- * Measured off a screenshot of the installed app on a 15 Pro (393x852 CSS):
- * the map painted 0-793 and the bottom 59.0px was a flat band of #191c22, the
- * document's own ground. 59 is not the home indicator (34) — it is
- * `env(safe-area-inset-top)`, the status bar. iOS hands a standalone app the
- * whole screen to *draw* in, which is why the map reaches the physical top and
- * the clock floats over tiles, and then lays it out one status bar short. So
- * `100dvh` measures 793 where the app is 852 tall, and everything sized in
- * viewport units stops with a strip of bare document under it.
+ * Read off the installed app on a 15 Pro (393x852 CSS, insets 59/34):
  *
- * Adding the missing inset back at the root is the whole fix: `html` becomes
- * the height the app really is, `body` and the frame follow it, and the map —
- * `h-full` rather than `h-dvh` for exactly this reason — fills to the physical
- * edge. The nav is fixed to the frame, so it lands its usual distance above the
- * real bottom instead of 59px up in the air.
+ *   clientHeight 793   100dvh 793   position:fixed;bottom:0 -> 793
+ *   screen.height 852  100vh  852
  *
- * `display-mode: standalone` is load-bearing, not decoration. In Safari the
- * layout height is already right, and adding the inset there would make the
- * document taller than the viewport and push the nav off the bottom of the
- * screen — the tab most people open the link in. Below 480px for the same
+ * Two viewports, 59px apart. iOS gives a standalone app the whole 852 to draw
+ * in — which is why the map reaches the physical top and the clock floats over
+ * tiles — but lays it out in a *dynamic* viewport one status bar short. `100vh`
+ * is the large viewport and knows the real number; `dvh`, `clientHeight` and
+ * fixed positioning all stop at 793.
+ *
+ * Being laid out short is not by itself what shows. What shows is the scroll
+ * lock: `overflow: hidden` on the root clips the document to the layout
+ * viewport, so the bottom 59px can only ever be the canvas background — a flat
+ * band of ground under the map. That is also why the band is a map bug and not
+ * an everywhere bug: `pm-lock-scroll` goes on for the map and nothing else.
+ *
+ * So: measure in `vh`, and stop clipping. The lock's job — no page scroll
+ * behind the map — is done by `touch-action` instead, which costs nothing
+ * because MapLibre already takes the gesture and calls preventDefault; native
+ * scrolling was never how the map panned.
+ *
+ * The `translateZ(0)` is the same trick the 390px desktop frame uses further
+ * down, for the same reason: it makes the frame the containing block for its
+ * fixed children, so the nav and the overlays resolve `bottom: 0` against the
+ * frame's real 852 instead of the viewport's 793 and sit their usual distance
+ * above the glass rather than 59px up in the air.
+ *
+ * `display-mode: standalone` is load-bearing, not decoration. In a Safari tab
+ * the layout height is already right and `100vh` is the number that is wrong —
+ * it measures past the toolbars — so this would push the nav off the bottom of
+ * the screen in the tab most people open the link in. Below 480px for the same
  * reason the block above is: the desktop frame is a 390px column on a monitor.
  */
 @media (display-mode: standalone) and (max-width: 479px) {
-  html {
-    height: calc(100% + env(safe-area-inset-top));
+  html.pm-lock-scroll,
+  html.pm-lock-scroll body {
+    height: 100vh;
+    overflow: visible;
+    touch-action: none;
   }
 
-  body,
-  .pm-phone-shell {
-    height: 100%;
+  html.pm-lock-scroll .pm-phone-shell {
+    height: 100vh;
+    transform: translateZ(0);
   }
 }
 

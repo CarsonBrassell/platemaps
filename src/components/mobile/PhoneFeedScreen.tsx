@@ -15,7 +15,6 @@ import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
    itself is only a type import there, so this does not drag the map into the
    eager bundle that PhoneFeedMapPanel's dynamic import exists to avoid. */
 import { MAP_GROUND } from "@/lib/mapStyle";
-import { PhoneViewportProbe } from "@/components/mobile/PhoneViewportProbe";
 import { announceAward, closePostFlash, takeLanding, usePostFlash } from "@/lib/postCelebration";
 import { PhoneFeedHeader } from "./PhoneFeedHeader";
 import { PhoneFeedSearch } from "./PhoneFeedSearch";
@@ -355,7 +354,6 @@ export function PhoneFeedScreen() {
             carry the same inset themselves further down this file, and the
             source switch is pinned to the bottom. */}
         <div className="relative h-full">
-          <PhoneViewportProbe />
           {/* The map fills the frame. `inset-0` rather than a flex child now
               that nothing sits above it to take a share of the height. */}
           <div className="absolute inset-0">
