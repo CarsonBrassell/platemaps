@@ -6,7 +6,7 @@ import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
 import { PASSWORD_HINT, checkPassword } from "@/lib/password";
 import { initials } from "@/lib/format";
-import { resizeImageToJpeg } from "@/lib/image";
+import { AvatarCropper } from "@/components/AvatarCropper";
 import { uploadAvatar } from "@/lib/photos";
 import { SettingsIcon } from "@/components/icons";
 import { PlatePointsPanel } from "@/components/PlatePointsPanel";
@@ -336,6 +336,8 @@ function AccountOverview() {
   const [postsReady, setPostsReady] = useState(false);
   const [avatarError, setAvatarError] = useState("");
   const [uploading, setUploading] = useState(false);
+  /** The picked file waiting to be framed — null when the cropper is closed. */
+  const [cropping, setCropping] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   /* The roll-call: what plays when reactions have landed since the last
@@ -361,7 +363,10 @@ function AccountOverview() {
   if (!account) return null;
 
 
-  async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+  /* The same two steps the phone screen takes: picking opens the cropper, and
+     the crop is what uploads. Both surfaces share AvatarCropper so a photo
+     framed on one is framed the same way on the other. */
+  function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file) return;
@@ -370,15 +375,22 @@ function AccountOverview() {
       return;
     }
     setAvatarError("");
+    setCropping(file);
+  }
+
+  async function handleCropped(blob: Blob) {
     setUploading(true);
     try {
       // Up to the blob store first, then the row takes its address — same
       // path a post photo travels, and the same reason.
-      const url = await uploadAvatar(await resizeImageToJpeg(file));
+      const url = await uploadAvatar(blob);
       const error = await updateAvatar(url);
       if (error) setAvatarError(error);
-    } catch {
-      setAvatarError("Couldn't read that image, try another.");
+      else setCropping(null);
+    } catch (err) {
+      setAvatarError(
+        err instanceof Error ? err.message : "Couldn't read that image, try another.",
+      );
     }
     setUploading(false);
   }
@@ -387,6 +399,14 @@ function AccountOverview() {
     /* No card ground of its own — see the note in PhoneProfileScreen. The
        profile sits on the cream page background so its white cards read. */
     <div className="mx-4 sm:mx-6">
+      {cropping && (
+        <AvatarCropper
+          file={cropping}
+          busy={uploading}
+          onCancel={() => setCropping(null)}
+          onSave={handleCropped}
+        />
+      )}
       {/* A flat band of warm tone where a cover photo would go — deliberate,
           not a gradient. */}
       <div className="m-2.5 h-24 rounded-xl bg-[var(--pm-tone-1)]" aria-hidden="true" />

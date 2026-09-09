@@ -8,7 +8,7 @@ import { CameraIcon, SettingsIcon } from "@/components/icons";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
-import { resizeImageToJpeg } from "@/lib/image";
+import { AvatarCropper } from "@/components/AvatarCropper";
 import { uploadAvatar } from "@/lib/photos";
 import { PlatePointsPanel } from "@/components/PlatePointsPanel";
 import { ProfileShelves, useRollCallArrival } from "@/components/ProfileShelves";
@@ -178,6 +178,8 @@ function ProfileOverview() {
   const [postsReady, setPostsReady] = useState(false);
   const [avatarError, setAvatarError] = useState("");
   const [uploading, setUploading] = useState(false);
+  /** The picked file waiting to be framed — null when the cropper is closed. */
+  const [cropping, setCropping] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useMarkProfileSeen(account?.id);
@@ -210,7 +212,10 @@ function ProfileOverview() {
   if (!account) return null;
 
 
-  async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+  /* Picking a file no longer uploads it — it opens the cropper, and the crop
+     is what gets uploaded. A centre crop was only ever right by luck: on a
+     portrait photo the middle square is usually somebody's chest. */
+  function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file) return;
@@ -219,13 +224,18 @@ function ProfileOverview() {
       return;
     }
     setAvatarError("");
+    setCropping(file);
+  }
+
+  async function handleCropped(blob: Blob) {
     setUploading(true);
     try {
       // Up to the blob store first, then the row takes its address — same
       // path a post photo travels, and the same reason.
-      const url = await uploadAvatar(await resizeImageToJpeg(file));
+      const url = await uploadAvatar(blob);
       const error = await updateAvatar(url);
       if (error) setAvatarError(error);
+      else setCropping(null);
     } catch (err) {
       /* The reason, not a guess at it. This used to say "couldn't read that
          image, try another" for every failure — a decode that ran out of
@@ -240,6 +250,15 @@ function ProfileOverview() {
 
   return (
     <div className="min-h-dvh">
+      {/* Over the whole screen while it is open — see AvatarCropper. */}
+      {cropping && (
+        <AvatarCropper
+          file={cropping}
+          busy={uploading}
+          onCancel={() => setCropping(null)}
+          onSave={handleCropped}
+        />
+      )}
       {/* No card ground of its own. The profile sits directly on the app's
           cream page background, the same way /m/friends does, so that every
           white thing on it — the plate frames above all — reads as a card

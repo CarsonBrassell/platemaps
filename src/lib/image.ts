@@ -28,29 +28,37 @@
  * for anything that lacks it; it is still far cheaper than a data URL because
  * the browser reads from the file rather than from a copy in a string.
  */
-export async function resizeImageToJpeg(
-  file: File,
-  size = 128,
+/** Something a canvas can draw that also knows how big it is. */
+export type DecodedImage = CanvasImageSource & { width: number; height: number };
+
+/** The square of the source image a crop keeps, in source pixels. */
+export type CropRect = { sx: number; sy: number; size: number };
+
+/**
+ * One square of `source`, encoded as a JPEG at `out`x`out`.
+ *
+ * The rect comes from the cropper rather than being computed here, because
+ * only the cropper knows where the circle was dragged to. Callers that want
+ * the plain centre crop can ask `centreCrop` for the rect.
+ */
+export async function cropToJpeg(
+  source: DecodedImage,
+  rect: CropRect,
+  out = 256,
   quality = 0.85,
 ): Promise<Blob> {
-  const source = await decode(file);
-
   const canvas = document.createElement("canvas");
-  canvas.width = size;
-  canvas.height = size;
+  canvas.width = out;
+  canvas.height = out;
   const ctx = canvas.getContext("2d");
-  if (!ctx) {
-    close(source);
-    throw new Error("Canvas not supported");
-  }
+  if (!ctx) throw new Error("Canvas not supported");
 
-  const width = source.width;
-  const height = source.height;
-  const minSide = Math.min(width, height);
-  const sx = (width - minSide) / 2;
-  const sy = (height - minSide) / 2;
-  ctx.drawImage(source, sx, sy, minSide, minSide, 0, 0, size, size);
-  close(source);
+  /* The circle is a mask on the way in, not on the way out: the stored file
+     stays a square JPEG and every surface that shows an avatar already clips
+     it with `rounded-full`. Writing a transparent-cornered PNG instead would
+     cost alpha, a bigger file, and a second format in the blob store, and
+     would still be drawn inside the same CSS circle. */
+  ctx.drawImage(source, rect.sx, rect.sy, rect.size, rect.size, 0, 0, out, out);
 
   const blob = await new Promise<Blob | null>((resolve) =>
     canvas.toBlob(resolve, "image/jpeg", quality),
@@ -59,8 +67,14 @@ export async function resizeImageToJpeg(
   return blob;
 }
 
+/** The biggest centred square in an image — where the cropper opens. */
+export function centreCrop(source: DecodedImage): CropRect {
+  const size = Math.min(source.width, source.height);
+  return { sx: (source.width - size) / 2, sy: (source.height - size) / 2, size };
+}
+
 /** Frees an ImageBitmap's memory; a plain <img> has nothing to release. */
-function close(source: CanvasImageSource) {
+export function closeImage(source: CanvasImageSource) {
   if (typeof ImageBitmap !== "undefined" && source instanceof ImageBitmap) source.close();
 }
 
@@ -74,7 +88,7 @@ function close(source: CanvasImageSource) {
  * decoding them perfectly well through an `<img>`, so a rejection here is a
  * reason to try the other way rather than to give up.
  */
-async function decode(file: File): Promise<CanvasImageSource & { width: number; height: number }> {
+export async function decodeImage(file: File): Promise<DecodedImage> {
   if (typeof createImageBitmap === "function") {
     try {
       return await createImageBitmap(file, { imageOrientation: "from-image" });
