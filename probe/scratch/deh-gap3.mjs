@@ -1,0 +1,35 @@
+import { readFileSync, existsSync } from "node:fs";
+import { sql } from "../../scripts/sql-client.mjs";
+const J = (p) => JSON.parse(readFileSync(p, "utf8")); const arr = (j) => Array.isArray(j) ? j : Object.values(j).find(Array.isArray);
+const deh = arr(J("data/deh-facilities.json")); const excl = new Set(arr(J("data/deh-excluded.json")).map(e=>e.recordId));
+const have = new Set([...arr(J("data/deh-resolved.json")), ...arr(J("data/existing-resolved.json"))].map(e => e.recordId ?? e.sourceKey?.replace(/^deh:/,"")).filter(Boolean));
+const rows = await sql`select id, name, address, deh_record_id, source_key, listed, hold_reason from restaurants`;
+for (const r of rows) { if (r.deh_record_id) have.add(r.deh_record_id); if (r.source_key?.startsWith("deh:")) have.add(r.source_key.slice(4)); }
+const key = (addr) => { let a = (addr ?? "").toUpperCase().replace(/\b0+(\d)/g, "$1"); const m = /^(\d+)\s+([A-Z]*\s*)?([A-Z0-9]+)/.exec(a); if (!m) return null; const w = /^(N|S|E|W|NORTH|SOUTH|EAST|WEST)$/.test(m[2]?.trim()||"") ? m[3] : (m[2]?.trim() || m[3]); return m[1] + " " + w.replace(/(ST|ND|RD|TH)$/,""); };
+const dbAddr = new Map(); for (const r of rows) { const k = key(r.address); if (k) (dbAddr.get(k) ?? dbAddr.set(k, []).get(k)).push(r); }
+const norm = (s) => (s ?? "").toLowerCase().replace(/[^a-z0-9 ]/g," ").replace(/\b(the|llc|inc|restaurant|cafe|bar|grill|and|of|no|\d+)\b/g," ").replace(/\s+/g," ").trim();
+const TYPES = new Set(["Restaurant Food Facility","Low Risk Food Facility"]);
+const CHAIN = /starbucks|jamba|wingstop|sbarro|carls jr|subway|panda express|chipotle|domino|pizza hut|papa john|little caesar|jack in the box|taco bell|burger king|wendy|kfc|kentucky|popeye|el pollo loco|del taco|panera|chick.?fil|five guys|in.?n.?out|rubio|dunkin|7.?eleven|coffee bean|peet|cold stone|baskin|yogurtland|dairy queen|sonic|arby|raising cane|shake shack|habit|jersey mike|firehouse|togo|quizno|ihop|denny|applebee|chili|olive garden|red lobster|outback|bj.?s|cheesecake|p ?f ?chang|yard house|buffalo wild|marie callender|wienerschnitzel|filiberto|roberto|pressed juicery|ding tea|kung fu tea|sharetea|85 ?c|paris baguette|crumbl|nothing bundt|mcdonald|rally|church.?s|pollo|wahoo|islands|red robin|cpk|california pizza|corner bakery|einstein|noah|bruegger|blaze|mod pizza|pieology|round table|mountain mike|chuck e|dave.?busters|hooters|texas roadhouse|black angus|claim jumper|mimi|coco|elephant bar|panda|pick up stix|flame broiler|waba|yoshinoya|l&l|ono hawaiian|poke|lemonade|tender greens|sweetgreen|cava|luna grill|daphne|zoes|noodles|smashburger|carl|whataburger|fatburger|farmer boys|tommy|original tommy/i;
+const VENUE = /hotel|resort|marriott|hilton|hyatt|fairmont|sheraton|westin|omni|casino|stadium|arena|petco park|safari park|club|golf|country club|yacht|university|college|school|hospital|medical|church|senior|convention|airport|terminal|navy|base|camp|ymca|museum|zoo|seaworld|legoland|fairground|theater|theatre|cinema|bowling|commissary|catering|market|deli|liquor|gas|chevron|arco|am pm|donut|bakery|coffee|espresso|juice|smoothie|nutrition|\btea\b|vi at|lounge|banquet|events?\b|snack|concession|cafeteria|kitchen llc/i;
+let active=0, matched=0, unmatched=[];
+for (const f of deh) { if (f["Active Permit"] !== "Y" || f["Permit Status"] === "Expired" || !TYPES.has(f["Business Type"])) continue; active++; const id=f["Record ID"]; if (have.has(id)||excl.has(id)) { matched++; continue; }
+  const cands = dbAddr.get(key(f["Address"])) ?? []; const fn = norm(f["Record Name"]).split(" ").filter(w=>w.length>2);
+  if (cands.find(r => { const rn = norm(r.name); return fn.some(w => rn.includes(w)) || cands.length===1; })) { matched++; continue; } unmatched.push(f); }
+let chain=0, venue=0, indep=[]; for (const f of unmatched) { const n=f["Record Name"]; if (CHAIN.test(n)) chain++; else if (VENUE.test(n)) venue++; else indep.push(f); }
+console.log({ active, matched, unmatched: unmatched.length, chainLike: chain, venueOrNonRestaurant: venue, independentLooking: indep.length });
+const yr={}; for (const f of indep){const y=+f["Record ID"].slice(3,7); const b=y>=2024?"2024+":y>=2020?"2020-23":y>=2010?"2010-19":"pre-2010"; yr[b]=(yr[b]??0)+1;} console.log("independent by permit year", yr);
+const city={}; for (const f of indep){city[f["City"]]=(city[f["City"]??0]??0)+1;} console.log("independent by city", Object.entries(city).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([c,n])=>`${c}=${n}`).join(", "));
+console.log("independent sample (2020+):"); for (const f of indep.filter(f=>+f["Record ID"].slice(3,7)>=2020).sort(()=>Math.random()-0.5).slice(0,20)) console.log(" ", f["Record ID"], "|", f["Record Name"], "|", f["Address"], f["City"]);
+// name spot-checks
+for (const n of ["Aladdin","Wet Stone","Sadaf","Blarney","Coronado Brewing","Miguel","Tony's Cafe","Lahaina","Felix","Village Pub","I Love Bagels","San Diego Eagle","Franco","Jilberto","Manana","Brewski","Chicken Plus"]) { const r = await sql`select id, name, address, listed from restaurants where name ilike ${'%'+n+'%'} limit 2`; console.log("  db?", n, "=>", r.map(x=>`${x.name} @ ${(x.address||"").slice(0,30)} L=${x.listed}`).join(" ; ") || "NONE"); }
+// dessert/boba chain audit DEH vs DB
+for (const [label, re] of [["Ding Tea",/ding tea/i],["Kung Fu Tea",/kung fu tea/i],["Sharetea",/sharetea|share tea/i],["Somisomi",/somi ?somi/i],["Yogurtland",/yogurtland/i],["Crumbl",/crumbl/i],["Nothing Bundt",/nothing bundt/i],["Jamba",/jamba/i],["85C",/85 ?(c|degrees)/i],["Paris Baguette",/paris baguette/i],["Cold Stone",/cold stone/i],["Baskin",/baskin/i],["Handel",/handel/i],["Salt & Straw",/salt.{0,3}straw/i],["Boba (any)",/boba/i],["Pressed Juicery",/pressed juicery/i]]) {
+  const d = deh.filter(f => f["Active Permit"]==="Y" && f["Permit Status"]!=="Expired" && re.test(f["Record Name"])).length;
+  const db = rows.filter(r => re.test(r.name)); console.log(`  chain ${label.padEnd(16)} DEH active ${String(d).padStart(3)}  DB rows ${String(db.length).padStart(3)}  listed ${db.filter(r=>r.listed).length}  held ${db.filter(r=>!r.listed).length}${db.find(r=>!r.listed)?.hold_reason ? "  ("+db.find(r=>!r.listed).hold_reason.slice(0,40)+")":""}`);
+}
+// discovery leftovers + cell cut-off
+const disc = J("data/serper-discovered.json"); const cids = new Set(rows.map(r=>r.source_key).filter(k=>k?.startsWith("gmap:")).map(k=>k.slice(5)));
+console.log("serper-discovered", disc.length, "already imported", disc.filter(p=>cids.has(String(p.cid))).length);
+const places = arr(J("data/serper-places.json")); const byCell = new Map(); for (const p of places) byCell.set(p.cell, (byCell.get(p.cell)??0)+1);
+const h={exactly20:0,"21-39":0,"40":0,"41+":0,"<20":0}; for (const n of byCell.values()) h[n===20?"exactly20":n>=41?"41+":n===40?"40":n>20?"21-39":"<20"]++; console.log("cells by result count", h);
+for (const q of ["bakery","bar","cafe"]) { const p=`data/serper-cells-${q}.json`; if (existsSync(p)) { const c=J(p); console.log(`  ${q} query cells:`, Array.isArray(c)?c.length:Object.keys(c).length); } }

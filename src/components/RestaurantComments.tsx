@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
@@ -22,6 +22,17 @@ type Post = {
   authorAvatarUrl?: string;
   text: string;
   restaurant?: string;
+  /**
+   * The listing the post actually resolved to, server-side, and the id the
+   * map's bubbles are keyed by — see `indexPostsByRestaurant` in
+   * lib/mapBubbles.ts. Read here so a bubble's `?post=` deep link can always
+   * find its row: the name join below is the older, looser test, and a post
+   * that resolved to this restaurant without carrying its exact name string
+   * would otherwise be missing from the very list it was linked into.
+   */
+  placeId?: string;
+  /** What the composer wrote. The fallback when `placeId` is absent. */
+  restaurantId?: string;
   dishName?: string;
   rating?: number;
   ratingKind?: "restaurant" | "dish";
@@ -47,6 +58,7 @@ type Post = {
 export function RestaurantComments({
   restaurant,
   postHref,
+  highlightPostId,
 }: {
   restaurant: Restaurant;
   /**
@@ -56,20 +68,60 @@ export function RestaurantComments({
    * one it belongs to rather than this component guessing from the URL.
    */
   postHref: string;
+  /**
+   * One comment to scroll to and ring, from `?post=` on the page URL — what a
+   * map bubble pushes when its body is tapped, so the thing the reader clicked
+   * is the thing they land on rather than a list they have to re-find it in.
+   * Null or absent leaves the thread exactly as it was.
+   */
+  highlightPostId?: string | null;
 }) {
   const { isSignedIn } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
+  /* Which row is currently ringed. Separate from `highlightPostId` because it
+     is temporary — the ring fades after a few seconds while the URL keeps its
+     param, so a refresh still lands on the comment. Same pair, and the same
+     timings, as the `/feed?post=` highlight in app/feed/page.tsx. */
+  const [highlighted, setHighlighted] = useState<string | null>(null);
+  const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
     fetch("/api/posts")
       .then((res) => res.json())
       .then((data) =>
-        setPosts((data.posts as Post[]).filter((p) => p.restaurant === restaurant.name)),
+        setPosts(
+          (data.posts as Post[]).filter(
+            (p) =>
+              p.restaurant === restaurant.name ||
+              p.placeId === restaurant.id ||
+              p.restaurantId === restaurant.id,
+          ),
+        ),
       )
       .catch(() => {
         // Leaves the empty state up. Nothing here is worth an error banner.
       });
-  }, [restaurant.name]);
+  }, [restaurant.name, restaurant.id]);
+
+  /* Deep link from a map bubble. Waits for the posts, because the row cannot
+     be scrolled to before it exists — and on `/restaurant` that wait is real:
+     the thread is fetched client-side after the server-rendered page paints.
+     The 150ms is the settling beat the feed's copy uses for the same reason,
+     and on lg this scroll travels inside the sticky comments rail rather than
+     the page, which `scrollIntoView` handles on its own. */
+  useEffect(() => {
+    if (!highlightPostId || !posts.some((p) => p.id === highlightPostId)) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setHighlighted(highlightPostId);
+    const scroll = setTimeout(() => {
+      rowRefs.current[highlightPostId]?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 150);
+    const clear = setTimeout(() => setHighlighted(null), 3000);
+    return () => {
+      clearTimeout(scroll);
+      clearTimeout(clear);
+    };
+  }, [highlightPostId, posts]);
 
   return (
     <div className="rounded-2xl bg-white px-5 py-5 sm:px-6">
@@ -100,18 +152,46 @@ export function RestaurantComments({
         {posts.length === 0 ? (
           <p className="text-sm text-zinc-500">No comments yet — be the first.</p>
         ) : (
-          posts.map((post) => <PostRow key={post.id} post={post} />)
+          posts.map((post) => (
+            <PostRow
+              key={post.id}
+              post={post}
+              highlighted={post.id === highlighted}
+              rowRef={(el) => {
+                rowRefs.current[post.id] = el;
+              }}
+            />
+          ))
         )}
       </div>
     </div>
   );
 }
 
-function PostRow({ post }: { post: Post }) {
+function PostRow({
+  post,
+  highlighted,
+  rowRef,
+}: {
+  post: Post;
+  /** Deep-linked from the map — ringed for a moment so it can be found. */
+  highlighted?: boolean;
+  rowRef?: (el: HTMLDivElement | null) => void;
+}) {
   const { avatarBg } = avatarPalette(post.authorName);
 
   return (
-    <div className="flex gap-2.5">
+    /* The ring is the feed card's — `ring-2 ring-pm-orange` — so arriving from
+       a bubble marks the same thing the same way on either page. The padding
+       and negative margin are only so the ring has something to sit around: a
+       row is bare text against the card, and a ring drawn tight on it clips the
+       avatar. `scroll-mt-4` keeps the scrolled-to row off the rail's top edge. */
+    <div
+      ref={rowRef}
+      className={`flex scroll-mt-4 gap-2.5 rounded-xl transition-shadow ${
+        highlighted ? "-mx-2 px-2 py-2 ring-2 ring-pm-orange" : ""
+      }`}
+    >
       {post.authorAvatarUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img

@@ -11,6 +11,7 @@ import { CloseIcon, ChevronIcon } from "@/components/icons";
 import { CameraCapture } from "@/components/post/CameraCapture";
 import { RestaurantPicker, type PickableRestaurant } from "@/components/post/RestaurantPicker";
 import { DishPicker, type PickedDish } from "@/components/post/DishPicker";
+import { useStepHistory } from "@/components/post/useStepHistory";
 import { PercentMeter, bandForPercent } from "@/components/post/PercentMeter";
 import { PhotoPrivacyNotice } from "@/components/post/PhotoPrivacyNotice";
 import type { PostMedia } from "@/components/feed/types";
@@ -173,11 +174,14 @@ function PostComposer() {
   const step = STEPS[Math.min(index, STEPS.length - 1)];
   const isLast = index === STEPS.length - 1;
 
-  function go(next: number) {
+  /* Every step forward is a history entry, so back — the button below, the
+     phone's back gesture, the browser's arrow — walks back through the flow
+     instead of dropping out of it. See useStepHistory. */
+  const go = useStepHistory(index, (next: number) => {
     setBack(next < index);
     setError(null);
     setIndex(next);
-  }
+  });
 
   function title() {
     switch (step) {

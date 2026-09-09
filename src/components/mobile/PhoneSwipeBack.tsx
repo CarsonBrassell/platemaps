@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 /**
@@ -77,6 +77,18 @@ export function PhoneSwipeBack() {
   const contentRef = useRef<HTMLElement | null>(null);
   const bailoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  /** Puts a screen held off the edge back where it belongs. */
+  const settle = useCallback(() => {
+    if (bailoutRef.current) {
+      clearTimeout(bailoutRef.current);
+      bailoutRef.current = null;
+    }
+    const content = contentRef.current;
+    if (!content) return;
+    content.style.transition = "";
+    content.style.transform = "";
+  }, []);
+
   useEffect(() => {
     const state = window.history.state as DepthState | null;
     if (typeof state?.__pmDepth === "number") {
@@ -92,16 +104,19 @@ export function PhoneSwipeBack() {
     // edge. Clearing it here rather than next to `router.back()` is the whole
     // reason the exit does not flicker: releasing before the route changes
     // snaps the page you are leaving back into place first.
-    if (bailoutRef.current) {
-      clearTimeout(bailoutRef.current);
-      bailoutRef.current = null;
+    settle();
+
+    /* A back that stays on this path — a composer stepping back through its own
+       history entries — never changes the pathname, so the effect above will not
+       run again to hand the screen back. Nothing new arrives to replace it
+       either: it is the same screen, one step earlier. */
+    function onPop() {
+      if (window.location.pathname !== pathname) return;
+      settle();
     }
-    const content = contentRef.current;
-    if (content) {
-      content.style.transition = "";
-      content.style.transform = "";
-    }
-  }, [pathname]);
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [pathname, settle]);
 
   useEffect(() => {
     const content = document.querySelector<HTMLElement>(".pm-phone-content");
@@ -138,9 +153,15 @@ export function PhoneSwipeBack() {
       }
       const t = e.touches[0];
       if (t.clientX > EDGE) return;
-      // The first screen has nothing behind it; a swipe there would leave the
-      // app rather than the page.
-      if (depth.current <= 1) return;
+      /* The first screen has nothing behind it; a swipe there would leave the
+         app rather than the page. Read live off the entry rather than off the
+         ref: the composer pushes an entry per step without changing the path
+         (see useStepHistory), so a depth taken on arrival is stale the moment
+         someone starts answering, and the flow's own back gesture would be the
+         thing held back. */
+      const here = window.history.state as DepthState | null;
+      const deep = typeof here?.__pmDepth === "number" ? here.__pmDepth : depth.current;
+      if (deep <= 1) return;
       // An open overlay does its own dismissing — see the note above.
       if (document.querySelector('[role="dialog"]')) return;
       // The map owns every drag inside it, edge or not.

@@ -64,6 +64,13 @@ export function RestaurantDetail({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
+  /* The other deep link a map comment bubble makes: `?post=` names the comment
+     whose card was tapped. It is read straight out of the URL rather than
+     lifted into state, because unlike `?dish=` nothing on this page clears it —
+     the thread rings the row for a few seconds and then stops on its own, and
+     the param staying put is what makes the link survive a refresh. */
+  const highlightPostId = searchParams.get("post");
+
   /**
    * Each plate's percent, and how many people it came from.
    *
@@ -183,7 +190,11 @@ export function RestaurantDetail({
               id={COMMENTS_ANCHOR}
               className="scroll-mt-4 lg:min-h-0 lg:flex-1 lg:overflow-y-auto"
             >
-              <RestaurantComments restaurant={restaurant} postHref={postHref} />
+              <RestaurantComments
+                restaurant={restaurant}
+                postHref={postHref}
+                highlightPostId={highlightPostId}
+              />
             </div>
           </div>
         </div>

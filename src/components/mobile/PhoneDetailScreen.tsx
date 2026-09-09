@@ -97,6 +97,13 @@ export function PhoneDetailScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
+  /* The other deep link a map comment bubble makes: `?post=` names the comment
+     whose card was tapped. It is read straight out of the URL rather than
+     lifted into state, because unlike `?dish=` nothing on this page clears it —
+     the thread rings the row for a few seconds and then stops on its own, and
+     the param staying put is what makes the link survive a refresh. */
+  const highlightPostId = searchParams.get("post");
+
   /**
    * Each plate's percent, and how many people it came from — the web page's
    * rule, which this screen was missing.
@@ -200,7 +207,11 @@ export function PhoneDetailScreen({
             sheet must land on the comments. The booking prototype used to sit
             between these two and is deleted; see PRODUCT.md. */}
         <div id={COMMENTS_ANCHOR} className="scroll-mt-4">
-          <RestaurantComments restaurant={restaurant} postHref={postHref} />
+          <RestaurantComments
+            restaurant={restaurant}
+            postHref={postHref}
+            highlightPostId={highlightPostId}
+          />
         </div>
       </div>
 

@@ -544,3 +544,4 @@ Calvin: 60% of weekly Max usage gone in a day. Measured this stretch: 73K-161K s
 - 2026-09-06T02:22:07Z result-w8b-04: Loaded 0 menus (0 dishes) — Coverage: 6769/14199 restaurants have a menu.
 - 2026-09-06T02:22:24Z result-w8b-02: Loaded 0 menus (0 dishes) — Coverage: 6769/14199 restaurants have a menu.
 - 2026-09-06T02:22:37Z result-w8b-03: Loaded 0 menus (0 dishes) — Coverage: 6769/14199 restaurants have a menu.
+- 2026-09-08T03:34:12Z result-delcerro: Loaded 1 menus (50 dishes) — Coverage: 6992/14199 restaurants have a menu.

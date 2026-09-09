@@ -20,7 +20,63 @@ by_source    osm 5,019  sweep 3,804  deh 3,790  gmap 789  yelp 675
 `npm run db:stats -- --json` also writes `probe/stats.json` for scripts and
 agent briefs to read. "Listed" is the only number a visitor experiences.
 
+## Security sweep (2026-09-08)
+
+- Phase 1 (read-only audit) is DONE; report in probe/SECURITY-FINDINGS.md:
+  1 CRITICAL (GET /api/posts/[id] returns private photo URLs anonymously,
+  verified live), 2 HIGH (Neon password leaked twice and never rotated;
+  same media gap in getProfilePosts), 9 MEDIUM (no rate limits beyond
+  login+forgot, no security headers, /_next/image open proxy + sharp CVEs,
+  plaintext session tokens, /drafts live, profile ignores blocks, probe/ and
+  menus/ public), 9 LOW. Secrets are clean: nothing from .env.local is in git
+  history or the client bundle. Phase 2 (fixes) waits for Calvin's go; he must
+  rotate the Neon password and check Vercel env himself first.
+
 ## Since 2026-09-05 (newest decisions, read these)
+
+- **How many more Handel's-type gaps? (2026-09-08)** Estimated 100-300
+  county-wide; see probe/GAP-ESTIMATE-2026-09-08.md. Permit feed: 80 active
+  independent permits with no row (probe/deh-unmatched-independent.json, ~20
+  recent). Google side: 156 of 1,051 discovery cells were cut off at 20, and
+  no ice cream/dessert/boba sweep has ever run. First fix once Serper has
+  credits: `--fetch --query "ice cream"` and `"boba"` over saturated cells.
+
+- **Handel's SDSU / College Area is missing (2026-09-08, open).** A friend of
+  Calvin's reported it; confirmed. 5824 Montezuma Rd Ste 130 (Topaz building,
+  opened May 2024, 619-269-4070, daily 11-11) has no row. Not in the DEH feed
+  under that address, not in OSM, and Maps discovery cell 32.77,-117.07
+  returned 20 "restaurants" with no ice cream shop. 14 other Handel's rows
+  exist, 13 listed. Serper is at 0 credits ("Not enough credits"), so it
+  cannot be pulled via discover-serper until Calvin tops up; then
+  `--fetch --query "ice cream"` on that cell, or a hand-built entry in
+  data/serper-discovered.json + `--import`. Also check row 2640 "Cream" at
+  the same address (OSM 2018): likely closed, possibly the space Handel's took.
+
+- **Back goes back a step, not out of the composer (2026-09-07, uncommitted,
+  web + phone).** Calvin: "when your midway through the post process and you
+  click back or swipe back it shouuld just take you back a step not take you
+  completly out of the posting steps." The five steps lived in a `useState`
+  index and nowhere else, so the browser only ever knew about one screen: the
+  phone's back gesture, PhoneSwipeBack's edge swipe and the desktop back button
+  all popped /post or /m/post and took the photo, the restaurant and the rating
+  with them.
+  - `components/post/useStepHistory.ts` is the whole fix and both composers
+    call it: a forward step pushes an entry at the same URL carrying its own
+    index (`__pmStep`), `popstate` reads that index back, and the in-app Back
+    button goes *through* the history rather than around it, so no later press
+    lands on a step already left. The entry the composer opened on has no
+    `__pmStep`, which is exactly where back should still leave — verified
+    backing out of step one onto /m/feed.
+  - `PhoneSwipeBack` needed two things to keep up: it reads `__pmDepth` live
+    off the entry (the ref taken on arrival goes stale as steps push, and a
+    composer opened as the app's first screen would hold its swipe back on
+    every step of the flow), and it puts a slid-off screen back on a
+    **same-path** popstate — nothing new arrives to clear the transform when a
+    back stays on /m/post, so the screen used to sit off the right-hand edge
+    until the 700ms bailout.
+  Verified in Chrome against the dev server: photo → where → dish, back twice,
+  answers intact; the in-app Back button leaves `history.length` alone; a
+  synthetic edge swipe steps back and clears the transform on the pop.
 
 - **A photo is 4:5 from the viewfinder to the feed, and it never was
   (2026-09-07, uncommitted, web + phone).** Calvin: "when i post the image that
@@ -948,3 +1004,45 @@ The second is the one that decides `SIMILAR_ENOUGH` in `src/lib/textMatch.ts`
 (0.65). **Re-run it rather than nudging that number by feel** — the sweep says
 accuracy is flat below 0.65 and falls above it, and the corpus is 9,043 listed
 names, not the 8,935 this file used to say.
+
+### Two SDSU pitch leads: Del Cerro Pizza loaded, The Other Side held (2026-09-07)
+
+Calvin asked whether seven restaurants on a partnership shortlist were on the
+site with menus. All seven are listed with coordinates and no hold; five
+already had menus. The two gaps were **Del Cerro Pizza (5702)** and **The Other
+Side Bar and Grill (10001)**, neither of which had ever been attempted — no
+`menu_lookups` row at all.
+
+**Del Cerro Pizza: 50 dishes loaded.** The router filed it `needs-browser`
+("Slice storefront with neither `__SLICE_REDUX_STATE__`, a menuRequest blob nor
+JSON-LD"). That verdict is wrong, and the bug is worth fixing before the next
+wave. A plain `curl` of the Slice storefront returns `__SLICE_REDUX_STATE__`
+AND a 17.5KB schema.org block — but the block's top-level node is a
+`Restaurant`, and the whole menu hangs off it as
+`hasMenu.hasMenuSection[].hasMenuItem[].offers.price`. The Slice branch
+(`scripts/route-menus.mjs:1873`) does
+`nodes.find(n => typeOf(n).includes("Menu"))`, and `jsonLdNodes` flattens
+`@graph` and arrays but never descends into `hasMenu` — so a Restaurant node
+wrapping a Menu is invisible to it and the branch falls through to the
+`needs-browser` return two lines later. Following `hasMenu` (here and at the
+other four `jsonLdNodes` call sites) should hand back every Slice row in the
+backlog carrying that exact note, for free. Prices are whole dollars on 36 of
+50 items, so there is no delivery uplift.
+
+**The Other Side is held, not filed.** `probe/held-otherside-10001.json`
+carries 9 priced cocktails photographed from the printed in-house board (the
+best kind of source there is), but it is **drinks only** for a wings-and-tacos
+bar, and filing it would write `status = 'found'` and retire the food menu from
+the queue permanently. Load it only alongside food.
+
+No food menu is published anywhere online: no website (Google offers "Add
+website"), absent from DoorDash / UberEats / Grubhub search, Yelp serves
+nothing to curl, and Google's "Menu & highlights" panel holds a single promo
+item. It shares 6690 Mission Gorge Rd with **Emiliano's Mexican Restaurant and
+Cantina (7386, 172 dishes)** under the same ownership — the bar runs its own
+kitchen, so do not copy Emiliano's menu across. A phone photo of the food board
+is all this one needs.
+
+**Serper is out of credits** (`400 {"message":"Not enough credits"}`). That
+kills the router's no-website fallback and every agent's search tool, so the
+next wave will be materially weaker until Calvin tops it up.

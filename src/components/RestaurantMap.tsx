@@ -2562,6 +2562,18 @@ export function RestaurantMap({
           const dishHref = comment.dishId
             ? `/restaurant/${restaurant.id}?dish=${comment.dishId}`
             : `/restaurant/${restaurant.id}`;
+          /* Where the card body lands: the comment on the *restaurant's own
+             page*, not on the feed. A bubble is something said about this
+             place, and following one used to drop the reader into a ranked
+             feed with the restaurant they were standing on gone from the
+             screen — and, since Discover is capped, sometimes onto a page
+             where the post wasn't found at all. `?post=` is the same deep-link
+             shape `/feed?post=` uses; RestaurantComments highlights the row it
+             names. A seeded bubble has no post behind it, so it lands on the
+             page with nothing to highlight, which is what it did before. */
+          const commentHref = comment.postId
+            ? `/restaurant/${restaurant.id}?post=${comment.postId}`
+            : `/restaurant/${restaurant.id}`;
           el.addEventListener("click", (e) => {
             const target = e.target as HTMLElement;
             const upvoteChip = target.closest(".map-upvote-chip");
@@ -2585,9 +2597,13 @@ export function RestaurantMap({
               return;
             }
             /* Replies are the one chip that leaves the map — a thread cannot be
-               read in a bubble. It lands on the post the same way the card body
-               does; the branch exists so the click can't fall through to the
-               dish-reference test below and open a menu entry instead. */
+               read in a bubble — and the one thing still going to the feed now
+               that the card body goes to the restaurant page. The thread and its
+               composer only exist there; RestaurantComments is a flat read-only
+               list, so pointing a reply tap at it would land someone on the
+               comment they meant to answer with no way to answer it. The branch
+               also keeps the click from falling through to the dish-reference
+               test below and opening a menu entry instead. */
             if (target.closest(".map-reply-chip")) {
               if (comment.postId) router.push(`/feed?post=${comment.postId}`);
               return;
@@ -2595,7 +2611,7 @@ export function RestaurantMap({
             if (target.closest(".map-dish-link")) {
               router.push(dishHref);
             } else {
-              router.push(comment.postId ? `/feed?post=${comment.postId}` : "/feed");
+              router.push(commentHref);
             }
           });
           /* The two chips are real buttons, so the platform already fires their

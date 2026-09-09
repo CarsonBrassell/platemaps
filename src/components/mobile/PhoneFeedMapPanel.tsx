@@ -115,7 +115,9 @@ const RestaurantMap = dynamic(
  * Where a href the map pushes should land in the phone tree.
  *
  * `RestaurantMap` hardcodes web hrefs — `/restaurant/<id>`, `/restaurant/<id>
- * ?dish=<id>` and `/feed?post=<id>` — and pushes them through `useRouter()`
+ * ?dish=<id>`, `/restaurant/<id>?post=<id>` (a tapped comment, which lands on
+ * that comment in the restaurant's own thread) and `/feed?post=<id>` (now only
+ * the reply chip) — and pushes them through `useRouter()`
  * (RestaurantMap.tsx:1435, :1547-1584). Following one drops the reader out of
  * /m and into the web layout with the phone nav gone, so every one of them is
  * re-pointed here. Returns null for anything unrecognised, which passes
@@ -127,9 +129,10 @@ function phoneTarget(
   const [path, query = ""] = href.split("?");
   if (path.startsWith("/restaurant/")) {
     // The query is carried as-is: `?dish=` is what a bubble's dish reference
-    // adds, and /m/restaurant/[id] ignores a param it doesn't read rather than
-    // failing on it. Deep-linking the phone detail screen to a dish is a real
-    // gap, but it is that screen's to close, not this file's.
+    // adds and `?post=` what its card body adds, and PhoneDetailScreen reads
+    // both — the same two the web detail page reads, so a bubble tapped on the
+    // phone lands on the same thing it lands on in the browser. A param that
+    // screen doesn't read is ignored rather than failed on.
     return { kind: "route", href: query ? `/m${path}?${query}` : `/m${path}` };
   }
   if (path === "/feed") {
