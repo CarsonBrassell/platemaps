@@ -93,6 +93,41 @@ html.pm-lock-scroll .pm-phone-content {
   }
 }
 
+/*
+ * Give a home-screen app back the strip it is laid out 59px short of.
+ *
+ * Measured off a screenshot of the installed app on a 15 Pro (393x852 CSS):
+ * the map painted 0-793 and the bottom 59.0px was a flat band of #191c22, the
+ * document's own ground. 59 is not the home indicator (34) — it is
+ * `env(safe-area-inset-top)`, the status bar. iOS hands a standalone app the
+ * whole screen to *draw* in, which is why the map reaches the physical top and
+ * the clock floats over tiles, and then lays it out one status bar short. So
+ * `100dvh` measures 793 where the app is 852 tall, and everything sized in
+ * viewport units stops with a strip of bare document under it.
+ *
+ * Adding the missing inset back at the root is the whole fix: `html` becomes
+ * the height the app really is, `body` and the frame follow it, and the map —
+ * `h-full` rather than `h-dvh` for exactly this reason — fills to the physical
+ * edge. The nav is fixed to the frame, so it lands its usual distance above the
+ * real bottom instead of 59px up in the air.
+ *
+ * `display-mode: standalone` is load-bearing, not decoration. In Safari the
+ * layout height is already right, and adding the inset there would make the
+ * document taller than the viewport and push the nav off the bottom of the
+ * screen — the tab most people open the link in. Below 480px for the same
+ * reason the block above is: the desktop frame is a 390px column on a monitor.
+ */
+@media (display-mode: standalone) and (max-width: 479px) {
+  html {
+    height: calc(100% + env(safe-area-inset-top));
+  }
+
+  body,
+  .pm-phone-shell {
+    height: 100%;
+  }
+}
+
 /* The map's own gestures are MapLibre's; this stops a pan that reaches the
    edge of the tiles from chaining out into the page behind it. */
 .pm-phone-shell .map-fun-tiles {

@@ -323,7 +323,7 @@ export function PhoneFeedScreen() {
    * can now see, and its avatar duplicated the nav's Profile slot, which is
    * still one tap away at the bottom.
    *
-   * `h-dvh` is the whole viewport, NOT the viewport minus the nav: the map runs
+   * `h-full` is the frame's own height, NOT the frame minus the nav: the map runs
    * behind the floating nav and is visible around it. The negative bottom
    * margin cancels `.pm-phone-content`'s `padding-bottom:
    * var(--phone-nav-space)`, which every scrolling screen needs (it is what
@@ -353,7 +353,7 @@ export function PhoneFeedScreen() {
             Nothing ends up under the clock as a result: the MapLibre controls
             carry the same inset themselves further down this file, and the
             source switch is pinned to the bottom. */}
-        <div className="relative h-dvh">
+        <div className="relative h-full">
           {/* The map fills the frame. `inset-0` rather than a flex child now
               that nothing sits above it to take a share of the height. */}
           <div className="absolute inset-0">
@@ -377,40 +377,6 @@ export function PhoneFeedScreen() {
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 top-0 z-10 h-28 bg-gradient-to-b from-black/65 via-black/25 to-transparent"
-          />
-
-          {/* The same trick at the other end, for the strip iOS keeps for the
-              home indicator.
-
-              An added-to-home-screen app does not own that strip: iOS paints it
-              by sampling the document's colour, exactly as it does the status
-              bar at the top, and nothing in the page can draw inside it. The
-              map screen already dresses the document in `MAP_GROUND` for that
-              reason (see phone.css), so the strip is the map's own ground
-              colour — and at the top that is invisible, because the scrim above
-              has already faded the tiles to something near it by the time they
-              reach the edge.
-
-              At the bottom there was no scrim, so live tiles — a lit arterial,
-              a pale block — ran straight into a flat band of that ground and
-              the seam read as a grey bar under the nav. This fades the last
-              80px down to the same colour, so the map meets the strip in its
-              own ground and the join disappears.
-
-              Solid for the last 14px rather than fading all the way to the
-              edge: the strip is about 34px on a notched iPhone, and the join
-              has to land inside a stretch that is already flat rather than on
-              the one pixel where the gradient happens to arrive.
-
-              `z-10` with the top scrim — under the z-20 chrome and the z-40
-              nav, and clear of the source switch and search, which sit about
-              120px up. */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-20"
-            style={{
-              backgroundImage: `linear-gradient(to top, ${MAP_GROUND} 0px, ${MAP_GROUND} 14px, ${MAP_GROUND}00 100%)`,
-            }}
           />
 
           {/* The tabs, floated. `pointer-events-none` on the band and `auto`
