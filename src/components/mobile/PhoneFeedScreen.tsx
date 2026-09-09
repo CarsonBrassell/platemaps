@@ -379,6 +379,40 @@ export function PhoneFeedScreen() {
             className="pointer-events-none absolute inset-x-0 top-0 z-10 h-28 bg-gradient-to-b from-black/65 via-black/25 to-transparent"
           />
 
+          {/* The same trick at the other end, for the strip iOS keeps for the
+              home indicator.
+
+              An added-to-home-screen app does not own that strip: iOS paints it
+              by sampling the document's colour, exactly as it does the status
+              bar at the top, and nothing in the page can draw inside it. The
+              map screen already dresses the document in `MAP_GROUND` for that
+              reason (see phone.css), so the strip is the map's own ground
+              colour — and at the top that is invisible, because the scrim above
+              has already faded the tiles to something near it by the time they
+              reach the edge.
+
+              At the bottom there was no scrim, so live tiles — a lit arterial,
+              a pale block — ran straight into a flat band of that ground and
+              the seam read as a grey bar under the nav. This fades the last
+              80px down to the same colour, so the map meets the strip in its
+              own ground and the join disappears.
+
+              Solid for the last 14px rather than fading all the way to the
+              edge: the strip is about 34px on a notched iPhone, and the join
+              has to land inside a stretch that is already flat rather than on
+              the one pixel where the gradient happens to arrive.
+
+              `z-10` with the top scrim — under the z-20 chrome and the z-40
+              nav, and clear of the source switch and search, which sit about
+              120px up. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-20"
+            style={{
+              backgroundImage: `linear-gradient(to top, ${MAP_GROUND} 0px, ${MAP_GROUND} 14px, ${MAP_GROUND}00 100%)`,
+            }}
+          />
+
           {/* The tabs, floated. `pointer-events-none` on the band and `auto`
               back on the controls: a full-width invisible strip across the top
               of a map is a strip you cannot pan, and panning is the map's
