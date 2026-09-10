@@ -118,10 +118,11 @@ export function PostActions(props: PostActionsProps) {
   }
 
   return (
-    /* The row splits: the verdict on the left, what you do about it on the
-       right. Voting is the one control here that changes the post's standing
-       for everybody else, so it gets the reading-order position and its own
-       side rather than queueing behind three utilities. */
+    /* The row splits: the reaction on the left, what you do about it on the
+       right. The vote pair (Discover) and the heart (Friends) are the one
+       control here that is about the plate rather than about you, so it gets
+       the reading-order position and its own side rather than queueing
+       behind three utilities. */
     <div className="relative flex w-full items-center justify-between gap-2">
       {props.surface === "discover" ? (
         // One number between the controls, and it's the NET score, not the
@@ -133,9 +134,22 @@ export function PostActions(props: PostActionsProps) {
           onVote={handleVote}
         />
       ) : (
-        // Friends has no vote pair at all, so the left side is empty here and
-        // the utilities keep their right-hand position via ml-auto below.
-        <span />
+        /* The heart takes the verdict's seat on Friends — the same left-hand
+           position the vote pair holds on Discover, pulled left by the same
+           optical margin so the icon lines up with the restaurant name above
+           it. Outline icon, no count anywhere in this render — see
+           PostActionsProps. Purely acknowledgment, nothing to compare. */
+        <div className="-ml-1.5 flex items-center">
+          <button
+            type="button"
+            onClick={handleHeart}
+            aria-pressed={props.hearted}
+            aria-label={props.hearted ? "Remove heart" : "Heart this plate"}
+            className={`${action} ${props.hearted ? "text-pm-orange hover:text-pm-orange" : ""}`}
+          >
+            <HeartIcon filled={props.hearted} className="h-[19px] w-[19px]" />
+          </button>
+        </div>
       )}
 
       <div className="flex shrink-0 items-center gap-0.5">
@@ -172,21 +186,6 @@ export function PostActions(props: PostActionsProps) {
             className={`h-[18px] w-[18px] ${saved ? "text-pm-orange" : ""}`}
           />
         </button>
-
-        {/* Heart: outline icon, no count anywhere in this render — see
-            PostActionsProps. Purely acknowledgment, nothing to compare. It
-            closes the right-hand group on Friends, where the left is empty. */}
-        {props.surface === "friends" && (
-          <button
-            type="button"
-            onClick={handleHeart}
-            aria-pressed={props.hearted}
-            aria-label={props.hearted ? "Remove heart" : "Heart this plate"}
-            className={`${action} ${props.hearted ? "text-pm-orange hover:text-pm-orange" : ""}`}
-          >
-            <HeartIcon filled={props.hearted} className="h-[19px] w-[19px]" />
-          </button>
-        )}
       </div>
 
       {/* Both toasts are polite live regions so a screen reader hears them
@@ -229,7 +228,7 @@ export function PostActions(props: PostActionsProps) {
  * from 9 to 10 (or from 1 to -1) doesn't shove the arrows sideways under the
  * cursor that just pressed one.
  */
-function VotePair({
+export function VotePair({
   upvoteCount,
   downvoteCount,
   myVote,

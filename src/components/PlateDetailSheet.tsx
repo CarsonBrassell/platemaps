@@ -5,7 +5,7 @@ import { Dialog } from "@/components/feed/Dialog";
 import { Composer } from "@/components/feed/Composer";
 import { HeartIcon, VoteArrowUpIcon, VoteArrowDownIcon } from "@/components/icons";
 import { initials, avatarPalette, relativeTime, postedDate } from "@/lib/format";
-import type { VoteDirection } from "@/components/feed/PostActions";
+import { VotePair, type VoteDirection } from "@/components/feed/PostActions";
 import type { ShelfPost } from "@/components/ProfileShelves";
 
 /**
@@ -85,6 +85,19 @@ export type DetailComment = {
 /** What a vote changes about one comment — the patch the profile applies. */
 export type CommentVotePatch = {
   myVote: VoteDirection | null;
+  upvoteCount: number;
+  downvoteCount: number;
+};
+
+/**
+ * What a vote changes about the plate itself — mirrors `CommentVotePatch` one
+ * level up. The profile's copy of `post` carries `upvotedByMe`/`downvotedByMe`
+ * rather than a single `myVote`, so the patch is shaped as the two booleans
+ * the post row actually stores instead of the tri-state the arrows use.
+ */
+export type PostVotePatch = {
+  upvotedByMe: boolean;
+  downvotedByMe: boolean;
   upvoteCount: number;
   downvoteCount: number;
 };
@@ -571,6 +584,7 @@ export function PlateDetailSheet({
   onClose,
   onCommentAdded,
   onCommentVoted,
+  onVoted,
 }: {
   post: ShelfPost;
   onClose: () => void;
@@ -591,6 +605,13 @@ export function PlateDetailSheet({
    * vote that lived only in here would be gone the moment the sheet closed.
    */
   onCommentVoted?: (commentId: string, patch: CommentVotePatch) => void;
+  /**
+   * A vote cast on the plate itself, handed back for the same reason as
+   * `onCommentVoted` — this sheet renders `post` looked up by id out of the
+   * profile's own array, so a vote that lived only in local state would
+   * revert the moment the sheet closed and reopened.
+   */
+  onVoted?: (patch: PostVotePatch) => void;
 }) {
   const [hearts, setHearts] = useState<HeartedBy[]>([]);
   const [heartsOpen, setHeartsOpen] = useState(false);
@@ -694,6 +715,58 @@ export function PlateDetailSheet({
     }
   }
 
+  /**
+   * Cast or clear a vote on the plate itself. Same three-state toggle and
+   * optimistic-then-reconcile shape as the comment `vote` above (and as
+   * `usePostFeed.ts`'s `vote()`, which this mirrors) — pressing the arrow you
+   * already hold clears it, `castVote` decides that server-side, and a
+   * failure rolls the two booleans and counts back to what they were.
+   */
+  async function votePost(direction: VoteDirection) {
+    const heldUp = post.upvotedByMe;
+    const heldDown = post.downvotedByMe;
+    const held: VoteDirection | null = heldUp ? "up" : heldDown ? "down" : null;
+    const next = held === direction ? null : direction;
+
+    setVoteError(null);
+    onVoted?.({
+      upvotedByMe: next === "up",
+      downvotedByMe: next === "down",
+      upvoteCount: post.upvoteCount + (next === "up" ? 1 : 0) - (heldUp ? 1 : 0),
+      downvoteCount: post.downvoteCount + (next === "down" ? 1 : 0) - (heldDown ? 1 : 0),
+    });
+
+    try {
+      const res = await fetch(`/api/posts/${post.id}/vote`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ direction }),
+      });
+      if (!res.ok) throw new Error("failed");
+      const data = await res.json();
+      onVoted?.({
+        upvotedByMe: data.myVote === "up",
+        downvotedByMe: data.myVote === "down",
+        upvoteCount: data.upvoteCount,
+        downvoteCount: data.downvoteCount,
+      });
+    } catch {
+      onVoted?.({
+        upvotedByMe: heldUp,
+        downvotedByMe: heldDown,
+        upvoteCount: post.upvoteCount,
+        downvoteCount: post.downvoteCount,
+      });
+      setVoteError("Couldn't save your vote.");
+    }
+  }
+
+  const myVote: VoteDirection | null = post.upvotedByMe
+    ? "up"
+    : post.downvotedByMe
+      ? "down"
+      : null;
+
   return (
     <Dialog
       title={name}
@@ -763,8 +836,13 @@ export function PlateDetailSheet({
         {/* Separated by the same middot the shelf cards use — without it
             "▲ 27 9 likes" runs two unrelated numbers together and reads as
             one. */}
-        <p className="mb-3 flex items-baseline gap-2 font-mono text-[13px] tabular-nums text-zinc-700">
-          <span>▲ {post.upvoteCount}</span>
+        <div className="mb-3 flex items-center gap-2 font-mono text-[13px] tabular-nums text-zinc-700">
+          <VotePair
+            upvoteCount={post.upvoteCount}
+            downvoteCount={post.downvoteCount}
+            myVote={myVote}
+            onVote={votePost}
+          />
           {pct !== null && (
             <>
               <span aria-hidden="true" className="text-zinc-400">
@@ -789,7 +867,7 @@ export function PlateDetailSheet({
             ·
           </span>
           <span className="text-zinc-500">{postedDate(post.createdAt)}</span>
-        </p>
+        </div>
 
         {post.text && (
           <p className="mb-4 whitespace-pre-wrap text-[14px] leading-relaxed text-zinc-800">

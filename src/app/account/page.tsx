@@ -27,6 +27,10 @@ type Post = {
   rating?: number;
   ratingKind?: "restaurant" | "dish";
   upvoteCount: number;
+  /** The detail sheet's vote arrows read and write these three. */
+  downvoteCount: number;
+  upvotedByMe: boolean;
+  downvotedByMe: boolean;
   /** When it was posted — the profile tiles print the day. */
   createdAt: string;
   savedBy: string[];
@@ -335,6 +339,8 @@ function AccountOverview() {
   const [savedPosts, setSavedPosts] = useState<Post[]>([]);
   const [postsReady, setPostsReady] = useState(false);
   const [avatarError, setAvatarError] = useState("");
+  /** A failed delete, printed above the shelves — the grid has no banner. */
+  const [postError, setPostError] = useState("");
   const [uploading, setUploading] = useState(false);
   /** The picked file waiting to be framed — null when the cropper is closed. */
   const [cropping, setCropping] = useState<File | null>(null);
@@ -362,6 +368,28 @@ function AccountOverview() {
 
   if (!account) return null;
 
+
+  /**
+   * Delete one of your plates from the profile grid.
+   *
+   * Optimistic, and the same shape as `remove` in feed/usePostFeed.ts: the
+   * tile goes first so the grid answers the tap immediately, and the whole
+   * array is put back if the request comes back anything but ok. The server
+   * checks ownership itself (DELETE /api/posts/[id]) — the menu only appears
+   * on your own plates, but that is a UI fact and not the gate.
+   */
+  async function handleDeletePost(postId: string) {
+    const snapshot = myPosts;
+    setPostError("");
+    setMyPosts((prev) => prev.filter((p) => p.id !== postId));
+    try {
+      const res = await fetch(`/api/posts/${postId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("failed");
+    } catch {
+      setMyPosts(snapshot);
+      setPostError("Couldn't delete that post. Try again.");
+    }
+  }
 
   /* The same two steps the phone screen takes: picking opens the cropper, and
      the crop is what uploads. Both surfaces share AvatarCropper so a photo
@@ -489,9 +517,15 @@ function AccountOverview() {
           it puts the reply in the open thread and takes the tile's comment
           count up by one in the same render. Same wiring on the phone screen —
           see the twin call in PhoneProfileScreen. */}
+      {postError && (
+        <p role="alert" className="mb-2 text-xs text-red-600">
+          {postError}
+        </p>
+      )}
       <ProfileShelves
         posts={myPosts}
         arrival={arrival}
+        onDelete={handleDeletePost}
         onCommentAdded={(postId, comment) =>
           setMyPosts((prev) =>
             prev.map((p) =>
@@ -511,6 +545,11 @@ function AccountOverview() {
                   }
                 : p
             )
+          )
+        }
+        onPostVoted={(postId, patch) =>
+          setMyPosts((prev) =>
+            prev.map((p) => (p.id === postId ? { ...p, ...patch } : p))
           )
         }
       />

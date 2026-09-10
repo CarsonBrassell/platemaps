@@ -1043,6 +1043,29 @@ export async function createPost(data: {
   `;
 
   /*
+   * The author's own upvote, seeded at publish time so a fresh plate starts
+   * at 1/up rather than waiting for the author to press the arrow themselves.
+   *
+   * `ON CONFLICT (post_id, user_id) DO NOTHING` against the table's own
+   * primary key is what makes this idempotent: a retried write (a dropped
+   * response, a client resend of the same create) inserts the row at most
+   * once instead of erroring or double-counting.
+   *
+   * This deliberately never goes through castVote or awardPoints. A self-vote
+   * must pay zero points, and the vote route's `isSelfVote` guard already
+   * refuses to pay one cast through `/api/posts/[id]/vote` — but the surest
+   * way to keep a seeded vote off the ledger is to never call the points path
+   * for it at all. The `upvote:<postId>:<authorId>` reason key this would use
+   * is simply never written, so there is nothing for a later self-vote toggle
+   * to replay against.
+   */
+  await sql`
+    INSERT INTO post_upvotes (post_id, user_id)
+    VALUES (${data.id}, ${data.userId})
+    ON CONFLICT (post_id, user_id) DO NOTHING
+  `;
+
+  /*
    * A restaurant with no cover adopts the first plate posted there.
    *
    * Most listed restaurants have no photo — the Google ones were removed
@@ -1126,9 +1149,11 @@ export async function createPost(data: {
     media,
     photosPublic: data.photosPublic,
     createdAt: new Date(rows[0].created_at).toISOString(),
-    upvoteCount: 0,
+    // The self-upvote seeded above, reflected here rather than re-queried —
+    // it is the only vote this row can possibly have the instant it's created.
+    upvoteCount: 1,
     downvoteCount: 0,
-    upvotedByMe: false,
+    upvotedByMe: true,
     downvotedByMe: false,
     heartedByMe: false,
     savedBy: [],
