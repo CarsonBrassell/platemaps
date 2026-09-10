@@ -68,6 +68,26 @@ export const regions: Region[] = [
       { name: "Oak Park", lat: 32.7409, lng: -117.0679 },
       { name: "Rolando", lat: 32.7581, lng: -117.0562 },
       { name: "College Area", lat: 32.7757, lng: -117.0714 },
+      // Del Cerro Blvd at College Ave, taken from where its restaurants
+      // actually are — Del Cerro Pizza, KnB Bistro, Einstein Bros and Kikka
+      // Sushi sit within 60m of this point. Without it they measured nearest
+      // to College Area, 1.4km southwest, and wore its name; that is the
+      // failure mode scripts/fix-neighborhoods.mjs was written for. Filed
+      // under Mid-City because College Area and Rolando border it and it is
+      // City of San Diego, not one of East County's own cities.
+      { name: "Del Cerro", lat: 32.7841, lng: -117.0601 },
+      // Navajo Rd at Jackson Dr. Added with Del Cerro rather than after it,
+      // because Del Cerro alone over-reaches: the Navajo Rd strip — Cowles
+      // Mountain Coffee, Cotijas, Honey Haven, Pure Press — sits 1.6-1.9mi
+      // from the Del Cerro point and would have taken its name. That is this
+      // file's other documented failure: one point cannot represent a long
+      // area, so the fix for a missing neighbourhood is often two points.
+      { name: "San Carlos", lat: 32.8043, lng: -117.0385 },
+      // Waring Rd at Zion Ave. Third point of the same fix: 92120 is Del
+      // Cerro *and* Allied Gardens, so without this one point would have
+      // taken the whole ZIP and Allied Gardens would have been renamed
+      // rather than found.
+      { name: "Allied Gardens", lat: 32.7944, lng: -117.0797 },
     ],
   },
   {
@@ -84,6 +104,13 @@ export const regions: Region[] = [
     name: "East County",
     subAreas: [
       { name: "La Mesa", lat: 32.7678, lng: -117.0231 },
+      // Northern La Mesa, around Fletcher Pkwy. A second point under the same
+      // name, not a new neighbourhood: the label is already right, only the
+      // geometry was wrong. La Mesa's other point is downtown, so once San
+      // Carlos existed on Navajo Rd, 14 restaurants in 91942 measured nearer
+      // to it and would have been renamed out of the city they are in. ZIP is
+      // what caught it; this point is their centroid.
+      { name: "La Mesa", lat: 32.7897, lng: -117.0215 },
       { name: "El Cajon", lat: 32.7948, lng: -116.9625 },
       { name: "Santee", lat: 32.8384, lng: -116.9739 },
       { name: "Lemon Grove", lat: 32.7423, lng: -117.0311 },
