@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { UPVOTE_MILESTONES } from "@/lib/points";
-import { ChatIcon, MoreIcon } from "@/components/icons";
+import { ChatIcon } from "@/components/icons";
 import { postedDate } from "@/lib/format";
 import {
   PlateDetailSheet,
@@ -663,184 +663,12 @@ function Badge({ count }: { count: number }) {
   );
 }
 
-/**
- * The plate tile's own options menu — the three dots off the feed card,
- * shrunk onto a thumbnail.
- *
- * The feed card's menu runs four items deep because it is usually looking at
- * somebody else's plate: hide, report, block, and delete only when it is
- * yours. This grid is your plates and nothing else — both callers filter
- * `myPosts` to their own id before handing them over — so the other three
- * items have nothing to act on here and the menu is one row.
- *
- * Delete asks twice. On the feed the item sits in a 44px row on a card you
- * are already reading; here it hangs off a 76px thumbnail in a dense grid,
- * where a mis-tap costs a post permanently and nothing behind it is undoable.
- * The second tap is the whole safeguard, and it stays inside the same menu
- * rather than opening a dialog over the grid you are picking from.
- */
-function TileMenu({ name, onDelete }: { name: string; onDelete: () => void }) {
-  const [open, setOpen] = useState(false);
-  /** Second step of delete. Reset on every close, so a menu never reopens
-      already armed. */
-  const [confirming, setConfirming] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
-  /**
-   * How far the open menu has to slide to stay on screen.
-   *
-   * A 176px menu hanging off an 85px tile overruns the viewport at both ends
-   * of the grid — off the right on the last column, off the left if it were
-   * right-anchored on the first — and the column count is `auto-fill`, so
-   * which tile is an edge tile is not knowable at render time. Measuring once
-   * on open and nudging is the only version of this that is correct at every
-   * width. Reset to 0 on close so the next open measures clean.
-   */
-  const [shift, setShift] = useState(0);
-
-  const close = () => {
-    setOpen(false);
-    setConfirming(false);
-  };
-
-  /* Outside click and Escape — the same pair the feed card's menu listens
-     for, so the gesture that dismisses one dismisses the other. */
-  useEffect(() => {
-    if (!open) return;
-    const onDown = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-        setConfirming(false);
-      }
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOpen(false);
-        setConfirming(false);
-      }
-    };
-    document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
-  /**
-   * Measure on mount rather than in an effect — a ref callback, so this runs
-   * once as the menu attaches and never again while it is open. The two steps
-   * are the same width, so nothing about `confirming` changes the answer, and
-   * a re-measure after the transform landed would read its own output back.
-   */
-  const measure = useCallback((el: HTMLDivElement | null) => {
-    menuRef.current = el;
-    if (!el) {
-      setShift(0);
-      return;
-    }
-    const margin = 8;
-    const rect = el.getBoundingClientRect();
-    /* Clamp to whatever actually clips the menu, not to the window. On the
-       phone route that is the 390px phone shell, which on a desktop browser
-       sits in the middle of a much wider window — measuring against the
-       window there finds no overflow and lets the menu run under the shell's
-       edge. On a real phone the two are the same box, and on the web profile
-       nothing clips, so the window is the fallback. */
-    let left = margin;
-    let right = window.innerWidth - margin;
-    for (let node = el.parentElement; node; node = node.parentElement) {
-      const overflowX = getComputedStyle(node).overflowX;
-      if (overflowX === "visible") continue;
-      const box = node.getBoundingClientRect();
-      left = Math.max(left, box.left + margin);
-      right = Math.min(right, box.right - margin);
-      break;
-    }
-    let dx = 0;
-    if (rect.right > right) dx = right - rect.right;
-    if (rect.left + dx < left) dx = left - rect.left;
-    setShift(dx);
-  }, []);
-
-  return (
-    /* Its own positioned wrapper, a sibling of the tile's button rather than
-       a child of it: the whole tile is already one big button that opens the
-       plate, and a button inside a button is invalid.
-     *
-     * Top LEFT, not top right where the feed card keeps its three dots. The
-     * shelf cards already spend their top-right corner on the reaction badge
-     * — the one mark the "New reactions" shelf exists to show — and a control
-     * that covers it would hide the news to offer a menu nobody opened the
-     * page for. Bottom-left is the milestone tag's, so this corner is the one
-     * that is free on both grids, and the two grids keep it in the same place
-     * as each other. */
-    <div ref={ref} className="absolute left-1.5 top-1.5 z-20">
-      <button
-        type="button"
-        onClick={() => (open ? close() : setOpen(true))}
-        aria-label={`Options for ${name}`}
-        aria-expanded={open}
-        aria-haspopup="menu"
-        /* Scrimmed rather than tinted. This sits on a photo that can be any
-           colour, and the feed card's zinc-400 glyph — which has a white card
-           under it there — disappears on half of them. */
-        className="flex h-7 w-7 items-center justify-center rounded-full bg-black/45 text-white backdrop-blur-[2px] transition-colors hover:bg-black/65 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-      >
-        <MoreIcon className="h-3.5 w-3.5" />
-      </button>
-      {open && (
-        /* An overlay edge, not a grouping border — the one place DESIGN.md
-           allows a ring, and for the same reason the feed card's menu carries
-           one: it floats over whatever is behind it. */
-        <div
-          ref={measure}
-          role="menu"
-          style={shift ? { transform: `translateX(${shift}px)` } : undefined}
-          className="absolute left-0 top-full z-20 mt-1 w-44 overflow-hidden rounded-xl bg-white p-1 text-left ring-1 ring-zinc-200"
-        >
-          {confirming ? (
-            <>
-              <button
-                role="menuitem"
-                onClick={() => {
-                  close();
-                  onDelete();
-                }}
-                className="flex min-h-11 w-full items-center rounded-lg px-3 text-left text-sm font-medium text-red-700 transition-colors hover:bg-red-50"
-              >
-                Delete for good
-              </button>
-              <button
-                role="menuitem"
-                onClick={close}
-                className="flex min-h-11 w-full items-center rounded-lg px-3 text-left text-sm text-zinc-700 transition-colors hover:bg-zinc-100"
-              >
-                Keep it
-              </button>
-            </>
-          ) : (
-            <button
-              role="menuitem"
-              onClick={() => setConfirming(true)}
-              className="flex min-h-11 w-full items-center rounded-lg px-3 text-left text-sm text-red-700 transition-colors hover:bg-red-50"
-            >
-              Delete post
-            </button>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
 function ShelfCard({
   post,
   tone,
   revealed,
   pulsing,
   onOpen,
-  onDelete,
 }: {
   post: ShelfPost;
   tone: number;
@@ -853,8 +681,6 @@ function ShelfCard({
   revealed: boolean;
   pulsing: boolean;
   onOpen: () => void;
-  /** Absent when the surface can't delete — see the prop on ProfileShelves. */
-  onDelete?: () => void;
 }) {
   /**
    * A white card with the plate inset inside it — the frame from the
@@ -926,21 +752,18 @@ function ShelfCard({
      hears only "14 reactions" learns nothing about why this plate is on a
      shelf called New reactions. */
   return (
-    <div className="relative">
-      <button
-        type="button"
-        onClick={onOpen}
-        aria-label={
-          showBadge
-            ? `${nameOf(post)}, ${spokenMeta(post)}, new activity, ${reactions} ${reactions === 1 ? "reaction" : "reactions"} in total — open`
-            : `${nameOf(post)}, ${spokenMeta(post)} — open`
-        }
-        className={`${shell} w-full text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange`}
-      >
-        {body}
-      </button>
-      {onDelete && <TileMenu name={nameOf(post)} onDelete={onDelete} />}
-    </div>
+    <button
+      type="button"
+      onClick={onOpen}
+      aria-label={
+        showBadge
+          ? `${nameOf(post)}, ${spokenMeta(post)}, new activity, ${reactions} ${reactions === 1 ? "reaction" : "reactions"} in total — open`
+          : `${nameOf(post)}, ${spokenMeta(post)} — open`
+      }
+      className={`${shell} w-full text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange`}
+    >
+      {body}
+    </button>
   );
 }
 
@@ -977,8 +800,11 @@ export function ProfileShelves({
    * drops the row and calls DELETE /api/posts/[id], which checks ownership
    * server-side regardless of what was on screen.
    *
-   * Omitted — by the drafts tree, or by any surface showing plates that are
-   * not yours — and the tiles carry no options menu at all.
+   * Reaches only the opened `PlateDetailSheet` — no grid tile carries an
+   * options menu. It hid in the top-left corner of an 85px thumbnail and
+   * nobody found it there; the sheet's photo is the one place a viewer is
+   * already looking. Omitted — by the drafts tree, or by any surface showing
+   * plates that are not yours — and the sheet carries no options menu either.
    */
   onDelete?: (postId: string) => void;
 }) {
@@ -1084,7 +910,6 @@ export function ProfileShelves({
                 revealed={shownBadges[post.id] !== undefined}
                 pulsing={!!pulsing[post.id]}
                 onOpen={() => open(post)}
-                onDelete={onDelete && (() => onDelete(post.id))}
               />
             ))}
           </div>
@@ -1115,11 +940,8 @@ export function ProfileShelves({
               stays dish-only here exactly as it is up there. */}
           <div className="grid grid-cols-[repeat(auto-fill,minmax(76px,1fr))] gap-1.5">
             {all.map((post, i) => (
-              /* Positioned so the options menu can hang in the corner of the
-                 thumbnail — see TileMenu for why it is a sibling of the tile
-                 button rather than something inside it. */
-              <div key={post.id} className="relative">
               <button
+                key={post.id}
                 type="button"
                 onClick={() => open(post)}
                 aria-label={`${nameOf(post)}, ${post.upvoteCount} ${
@@ -1151,10 +973,6 @@ export function ProfileShelves({
                 </span>
                 <CardActivity post={post} />
               </button>
-              {onDelete && (
-                <TileMenu name={nameOf(post)} onDelete={() => onDelete(post.id)} />
-              )}
-              </div>
             ))}
           </div>
         </>
@@ -1169,6 +987,7 @@ export function ProfileShelves({
             onCommentVoted?.(openPost.id, commentId, patch)
           }
           onVoted={(patch) => onPostVoted?.(openPost.id, patch)}
+          onDelete={onDelete && (() => onDelete(openPost.id))}
         />
       )}
     </section>

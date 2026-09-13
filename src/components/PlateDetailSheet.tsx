@@ -6,6 +6,7 @@ import { Composer } from "@/components/feed/Composer";
 import { HeartIcon, VoteArrowUpIcon, VoteArrowDownIcon } from "@/components/icons";
 import { initials, avatarPalette, relativeTime, postedDate } from "@/lib/format";
 import { VotePair, type VoteDirection } from "@/components/feed/PostActions";
+import { PostOptionsMenu } from "@/components/PostOptionsMenu";
 import type { ShelfPost } from "@/components/ProfileShelves";
 
 /**
@@ -585,6 +586,7 @@ export function PlateDetailSheet({
   onCommentAdded,
   onCommentVoted,
   onVoted,
+  onDelete,
 }: {
   post: ShelfPost;
   onClose: () => void;
@@ -612,6 +614,14 @@ export function PlateDetailSheet({
    * revert the moment the sheet closed and reopened.
    */
   onVoted?: (patch: PostVotePatch) => void;
+  /**
+   * Delete this plate, handed up rather than owned here for the same reason
+   * as the callbacks above — `ProfileShelves` owns the array the tile behind
+   * this sheet reads. Absent wherever the surface can't delete (see the prop
+   * of the same name on `ProfileShelves`), in which case the sheet carries no
+   * options control at all — same rule the grid tile follows.
+   */
+  onDelete?: () => void;
 }) {
   const [hearts, setHearts] = useState<HeartedBy[]>([]);
   const [heartsOpen, setHeartsOpen] = useState(false);
@@ -644,6 +654,17 @@ export function PlateDetailSheet({
   const comments = post.comments ?? [];
   const thread = buildComments(comments);
   const name = post.dishName ?? post.restaurant ?? post.text;
+
+  /* The tile behind this sheet is already gone the moment `onDelete` fires —
+     `ProfileShelves`' own `handleDeletePost` drops it from `posts`
+     optimistically — so leaving the sheet open would strand it over a post
+     that no longer exists. Close it in the same gesture. */
+  const handleDelete =
+    onDelete &&
+    (() => {
+      onDelete();
+      onClose();
+    });
 
   /**
    * Post a comment or a reply. The same route the feed's thread writes
@@ -788,19 +809,44 @@ export function PlateDetailSheet({
             upward would land it on the restaurant name, which is worse than a
             cropped avatar. */}
         {photo && (
-          <div className="relative mb-3 overflow-hidden rounded-xl">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={photo.url}
-              alt={photo.alt ?? ""}
-              className="block max-h-[46dvh] w-full rounded-xl object-cover"
-            />
-            <HeartCluster
-              anchored
-              hearts={hearts}
-              expanded={heartsOpen}
-              onToggle={() => setHeartsOpen((v) => !v)}
-            />
+          /* An outer `relative` wrapper around the `overflow-hidden` frame,
+             not on the frame itself: the options menu has to be a sibling of
+             the clipped box, the same reason `PostOptionsMenu` is a sibling
+             of the grid tile's own button rather than a child of it — a menu
+             popping out of an `overflow-hidden` frame gets cut off by it. */
+          <div className="relative mb-3">
+            <div className="overflow-hidden rounded-xl">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={photo.url}
+                alt={photo.alt ?? ""}
+                className="block max-h-[46dvh] w-full rounded-xl object-cover"
+              />
+              <HeartCluster
+                anchored
+                hearts={hearts}
+                expanded={heartsOpen}
+                onToggle={() => setHeartsOpen((v) => !v)}
+              />
+            </div>
+            {/* Bottom-LEFT of the photo. Bottom-right belongs to the hearts
+                cluster — the first cut put the dots there and shoved the likes
+                over to make room, which read as the menu taking the likes'
+                place. The opposite corner is free on every plate. Opens
+                upward: the button sits at the photo's bottom edge, and below
+                it is the restaurant line and score — a menu dropping down
+                would cover them and read as belonging to that text instead of
+                the photo. Left-anchored, so it grows rightward across the
+                photo; the sheet is capped at `sm:max-w-md` (448px) and a 176px
+                menu off a button inset from the left edge never overruns. */}
+            {handleDelete && (
+              <PostOptionsMenu
+                name={name}
+                onDelete={handleDelete}
+                wrapperClassName="absolute bottom-2 left-2 z-20"
+                openUp
+              />
+            )}
           </div>
         )}
 
@@ -811,13 +857,39 @@ export function PlateDetailSheet({
             have to stay next to each other, and an 84px column cannot be
             absolutely positioned inside the 32px strip that used to hold the
             horizontal pill. */}
-        {!photo && (
+        {!photo && !handleDelete && (
           <HeartCluster
             anchored={false}
             hearts={hearts}
             expanded={heartsOpen}
             onToggle={() => setHeartsOpen((v) => !v)}
           />
+        )}
+
+        {/* Same as above, plus the options button in the same row — no photo
+            corner to hang it in, so it goes where the cluster already sits
+            rather than going missing when a post has no photo. Same sides as
+            the photo case — dots left, likes right — so the control is in the
+            same place whether or not there is a picture. A separate branch
+            from the one above (rather than always wrapping in a row) so a
+            viewer who can't delete gets the exact unwrapped cluster markup it
+            always has. Opens downward here: unlike the photo case there is
+            nothing above this row to open over except the sheet's own
+            header. */}
+        {!photo && handleDelete && (
+          <div className="mb-3 flex items-start justify-between gap-2">
+            <PostOptionsMenu
+              name={name}
+              onDelete={handleDelete}
+              wrapperClassName="relative z-20 shrink-0"
+            />
+            <HeartCluster
+              anchored={false}
+              hearts={hearts}
+              expanded={heartsOpen}
+              onToggle={() => setHeartsOpen((v) => !v)}
+            />
+          </div>
         )}
 
         {/* The names land directly under whichever control opened them, which
