@@ -131,14 +131,35 @@ html.pm-lock-scroll .pm-phone-content {
  * reason the block above is: the desktop frame is a 390px column on a monitor.
  */
 @media (display-mode: standalone) and (max-width: 479px) {
+  /* Every screen, not only the map. The clip the map had to escape was the
+     scroll lock's `overflow: hidden`; the other screens never had that, but
+     they had the frame itself — `100dvh` and `overflow: clip` — stopping at
+     793 all the same, with 59px of bare cream under it and the nav floating
+     that far above the glass. Cream under cream hid it until the feed cards
+     ran edge to edge and stopped dead on the seam.
+
+     Same recipe, for the same reasons: root and frame measure `100vh`,
+     nothing clips, and `touch-action: none` on the root keeps the 59px of
+     document that now overhangs the layout viewport from ever scrolling.
+     That does not reach the screens' own scrolling — `.pm-phone-content` is a
+     scroll container, and a scroll container starts its own touch-action
+     chain (Pointer Events, "determining supported touch behavior"; WebKit
+     resets at overflow != visible) — so the feed still scrolls, and a drag on
+     the nav, which sits outside it, does nothing at all.
+
+     Not `position: fixed` on the frame: iOS clips the fixed layer to the 793
+     viewport, so a fixed frame loses the same strip. `html.pm-lock-scroll`
+     stays in the selector because the lock's own rule is more specific than
+     a bare `html` and would otherwise win `overflow: hidden` back. */
+  html,
   html.pm-lock-scroll,
-  html.pm-lock-scroll body {
+  body {
     height: 100vh;
     overflow: visible;
     touch-action: none;
   }
 
-  html.pm-lock-scroll .pm-phone-shell {
+  .pm-phone-shell {
     height: 100vh;
     transform: translateZ(0);
   }
