@@ -16,24 +16,26 @@ type Facing = "environment" | "user";
 type Mode = "single" | "split";
 type Status = "starting" | "live" | "blocked" | "unsupported";
 
-/** The split picture: 4:5 overall, two equal halves. */
+/** The split picture: 3:4 overall, two equal halves. */
 const SPLIT_W = 1080;
-const SPLIT_HALF = 675;
+const SPLIT_HALF = 720;
 
 /**
- * The single picture, in the same 4:5 the split is built at and the feed hero
- * renders — see `PostMediaCarousel`.
+ * The single picture, in the same 3:4 the split is built at and the feed hero
+ * renders — see `PostMediaCarousel`. 3:4 rather than 4:5 since 2026-09-13:
+ * Calvin wanted the picture a touch taller, and the shape has to change in
+ * the file, the viewfinder and the feed together or the crop comes back.
  *
  * It used to be whatever frame the camera handed over, 4:3 or 16:9 landscape,
  * and that is why a photo changed shape between this screen and the feed: the
- * viewfinder cropped to 4:5 with `object-cover` while the file kept the bands
+ * viewfinder cropped to the frame with `object-cover` while the file kept the bands
  * above and below that crop, and the feed then took its own crop of the file.
  * Cropping at the shutter instead means the file *is* what was framed.
  *
  * `SHOT_H` is the long edge, so a single shot stays inside PHOTO_SIZE.
  */
 const SHOT_H = PHOTO_SIZE;
-const SHOT_W = Math.round((SHOT_H * 4) / 5);
+const SHOT_W = Math.round((SHOT_H * 3) / 4);
 
 /**
  * One camera frame, centre-cropped to fill a box of exactly `w` x `h`.
@@ -71,7 +73,7 @@ function coverCanvas(video: HTMLVideoElement, w: number, h: number, mirror: bool
  * Two shapes, one component. `fullscreen` is the phone composer's: the
  * viewfinder *is* the screen, edge to edge, with every control floating on the
  * picture — the BeReal arrangement, and the one a camera actually wants. Left
- * off, it renders as the 4:5 card the web composer puts inside its page column,
+ * off, it renders as the 3:4 card the web composer puts inside its page column,
  * because a viewfinder filling a 27" monitor is not the same idea.
  *
  * Split mode composes one photo out of both cameras — the plate and the face
@@ -446,7 +448,7 @@ export function CameraCapture({
     const video = videoRef.current;
     if (!video || !video.videoWidth) return;
 
-    // The 4:5 the viewfinder is already showing, not the camera's own frame.
+    // The 3:4 the viewfinder is already showing, not the camera's own frame.
     const canvas = coverCanvas(video, SHOT_W, SHOT_H, facing === "user");
     if (!canvas) return;
 
@@ -541,8 +543,19 @@ export function CameraCapture({
       {/* Nothing to offer here but the truth and the other door: the picker
           that used to sit under this copy is gone on purpose (see the note at
           the top), so the skip button below is the whole recovery. */}
+      {/* One step lighter than the screen behind it, with viewfinder corners,
+          so the 3:4 picture reads as a place before there is a picture. In
+          fullscreen the screen is charcoal too, and the same fill here made
+          the frame vanish: on a desktop preview with no camera, nothing said
+          where the shot would be taken. */}
       {status !== "live" && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-pm-charcoal px-8 text-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-pm-charcoal-light px-8 text-center">
+          <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+            <span className="absolute left-4 top-4 h-7 w-7 rounded-tl-lg border-l-2 border-t-2 border-white/40" />
+            <span className="absolute right-4 top-4 h-7 w-7 rounded-tr-lg border-r-2 border-t-2 border-white/40" />
+            <span className="absolute bottom-4 left-4 h-7 w-7 rounded-bl-lg border-b-2 border-l-2 border-white/40" />
+            <span className="absolute bottom-4 right-4 h-7 w-7 rounded-br-lg border-b-2 border-r-2 border-white/40" />
+          </div>
           <CameraIcon className="h-8 w-8 text-white/35" />
           <p className="text-sm font-medium text-white/90">
             {status === "starting" && "Starting the camera…"}
@@ -639,7 +652,7 @@ export function CameraCapture({
                 : "Take the first half"
             : "Take a photo"
         }
-        className="flex h-[74px] w-[74px] shrink-0 rounded-full bg-white p-[7px] shadow-md ring-1 ring-inset ring-pm-charcoal/10 transition-transform active:scale-90 disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange"
+        className="flex h-20 w-20 shrink-0 rounded-full bg-white p-2 shadow-md ring-1 ring-inset ring-pm-charcoal/10 transition-transform active:scale-90 disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange"
       >
         {/* White ring, orange core — the gap between them is what makes it
             read as a shutter rather than a plain round button. A split waiting
@@ -647,7 +660,7 @@ export function CameraCapture({
             it looks different from the press that starts one. */}
         <span
           className={`block h-full w-full rounded-full ${
-            midSplit ? "border-[7px] border-pm-orange" : "bg-pm-orange"
+            midSplit ? "border-8 border-pm-orange" : "bg-pm-orange"
           }`}
         />
       </button>
@@ -680,6 +693,21 @@ export function CameraCapture({
     </div>
   );
 
+  /* What the shutter will do, said once, just above the door and the shutter. */
+  const splitHint = (
+    <p aria-live="polite" className="text-xs font-medium text-white/75">
+      <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+        {mode === "split"
+          ? midSplit
+            ? `Now the ${order[1] === "user" ? "selfie" : "plate"}`
+            : bothLive
+              ? "Both cameras, one picture"
+              : `${order[0] === "user" ? "Selfie" : "Plate"} first, then the other side`
+          : ""}
+      </span>
+    </p>
+  );
+
   const skipDoor = (
     <button
       type="button"
@@ -696,8 +724,8 @@ export function CameraCapture({
    * The shot, standing exactly where the camera was standing.
    *
    * Covering, in both modes, and cropping nothing in either: every photo this
-   * screen makes is 4:5 — a single shot at `SHOT_W`/`SHOT_H`, a split at
-   * `SPLIT_W` by twice `SPLIT_HALF` — and the frame it stands in is 4:5 too,
+   * screen makes is 3:4 — a single shot at `SHOT_W`/`SHOT_H`, a split at
+   * `SPLIT_W` by twice `SPLIT_HALF` — and the frame it stands in is 3:4 too,
    * here, in the fullscreen composer and in the feed hero. This used to be a
    * choice between covering and containing because the two pictures were not
    * the same shape, and the shape a photo was reviewed at was not the shape it
@@ -725,7 +753,7 @@ export function CameraCapture({
      for this step; the web card leaves Next to the action bar under it. */
   const reviewActions = (
     /* Lifted clear of the bottom edge on the fullscreen composer. The live
-       screen puts a 72px shutter down there and this row is 48px, so at the
+       screen puts an 80px shutter down there and this row is 48px, so at the
        same padding it lands lower than anything the camera has ever asked to
        be tapped — inside the strip a phone browser's toolbar and the home
        indicator both take a share of. */
@@ -775,14 +803,25 @@ export function CameraCapture({
        * nothing.
        */
       <div className="fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-pm-charcoal">
-        {/* The picture is 4:5 and the screen is not — a handset is roughly
+        {/* The picture is 3:4 and the screen is not — a handset is roughly
             1:2. Filling the screen would frame the shot at a shape no photo is
             ever saved at, and the crop would appear the moment the post landed
-            in the feed. Held to 4:5 at full width and centred instead, so the
+            in the feed. Held to 3:4 at full width and centred instead, so the
             edges of this box are the edges of the file: charcoal above and
-            below it, under the two rails that already sit there. */}
-        <div className="absolute inset-0 flex items-center">
-          <div className="relative aspect-[4/5] w-full overflow-hidden">
+            below it, under the two rails that already sit there.
+
+            The width cap is for short screens. The frame is placed from the
+            centre and the shutter from the bottom, so on a 667px-tall handset
+            a full-width 3:4 picture runs under the shutter and the door pinned
+            to its bottom edge would sit beneath the button. Capping the height
+            at the screen minus both rails (116px each side plus the bottom
+            safe area, mirrored) narrows the picture instead. On any 800px+
+            screen the cap is slack and the picture is full width. */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div
+            className="relative aspect-[3/4] w-full overflow-hidden"
+            style={{ width: "min(100%, calc((100dvh - 232px - 2 * env(safe-area-inset-bottom)) * 3 / 4))" }}
+          >
             {viewfinder}
             {review}
             {/* The other door rides inside the picture, pinned to its bottom
@@ -794,7 +833,10 @@ export function CameraCapture({
                 `z-20` beats the rails' `z-10`: on a short screen the bottom
                 rail's box reaches up over this spot and would eat the tap. */}
             {!taken && (
-              <div className="absolute inset-x-4 bottom-3 z-20">{skipDoor}</div>
+              <div className="absolute inset-x-4 bottom-3 z-20 flex flex-col gap-2">
+                {splitHint}
+                {skipDoor}
+              </div>
             )}
           </div>
         </div>
@@ -825,28 +867,7 @@ export function CameraCapture({
           className="relative z-10 flex flex-col gap-3 px-4 pb-4"
           style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom))" }}
         >
-          {taken ? (
-            reviewActions
-          ) : (
-            <>
-              {/* What the shutter will do, said once, where the thumb already is.
-                  The skip door used to sit between this and the controls; it
-                  now lives inside the picture frame above. */}
-              <p aria-live="polite" className="text-xs font-medium text-white/75">
-                <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
-                  {mode === "split"
-                    ? midSplit
-                      ? `Now the ${order[1] === "user" ? "selfie" : "plate"}`
-                      : bothLive
-                        ? "Both cameras, one picture"
-                        : `${order[0] === "user" ? "Selfie" : "Plate"} first, then the other side`
-                    : ""}
-                </span>
-              </p>
-
-              {controls}
-            </>
-          )}
+          {taken ? reviewActions : controls}
         </div>
 
         {midSplit && (
@@ -890,11 +911,11 @@ export function CameraCapture({
 
 
   return (
-    // Held to a phone's column even on a wide screen: a 4:5 viewport at the
+    // Held to a phone's column even on a wide screen: a 3:4 viewport at the
     // full content width stands 840px tall and pushes the shutter — the one
     // control this screen exists for — under the fold.
     <div className="mx-auto w-full max-w-sm">
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl bg-pm-charcoal shadow-lg">
+      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl bg-pm-charcoal shadow-lg">
         {viewfinder}
         {taken ? (
           review
