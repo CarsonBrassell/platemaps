@@ -436,7 +436,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
       /* touch-manipulation: the second tap of a double-tap must not become
          a zoom on iOS — see useDoubleTap. relative: anchors the pop when the
          post has no photo to centre it on. */
-      className="relative touch-manipulation overflow-hidden bg-white"
+      className="relative touch-manipulation overflow-hidden rounded-2xl bg-white"
     >
       {!showsHero && <DoubleTapPop kind={popKind} popKey={doubleTap.popKey} />}
       {/*

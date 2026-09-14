@@ -635,7 +635,7 @@ export function PhoneFeedScreen() {
                   /* The wrapper exists so a card arrived at from a map bubble
                      can be scrolled to and marked. `PhoneFeedPostCard` takes no
                      `highlighted` prop (the web card does) — the ring is drawn
-                     on this box instead, which needs
+                     on this box instead, at the card's own radius, which needs
                      nothing from the card and so cannot drift from it. */
                   <div
                     key={post.id}
@@ -644,7 +644,7 @@ export function PhoneFeedScreen() {
                     }}
                     /* What PhonePointsFly aims the token away from. */
                     data-pm-landed={post.id === slammingId ? "" : undefined}
-                    className={`transition-shadow motion-reduce:transition-none ${
+                    className={`rounded-2xl transition-shadow motion-reduce:transition-none ${
                       post.id === highlighted ? "ring-2 ring-pm-orange" : ""
                     } ${post.id === slammingId ? "post-spit" : ""}`}
                   >
