@@ -1,3 +1,4 @@
+import { preload } from "react-dom";
 import { BrandMark } from "@/components/BrandMark";
 
 /**
@@ -34,15 +35,24 @@ import { BrandMark } from "@/components/BrandMark";
  * None of that draws a pixel of the mark. CLAUDE.md forbids tracing,
  * redrawing or repainting the artwork, so the whole effect is built from two
  * copies of the same supplied file and things that only *remove* or *move*
- * pixels: both copies are masked to the pin's outline (an alpha silhouette
- * that logo:build computes from the artwork); the stuck part is the mark
- * under a shrinking `clip-path`; the flap is a second copy of the mark
- * rotated about the fold line in 3D (a rigid motion, so nothing is stretched,
- * and past 90° the browser shows its back face, which is the mirrored print)
- * and clipped to the complement; the paper back, its crease and the contact
- * shadow are translucent gradient sheets that slide with the fold, tints and
- * not drawings. `phone.css` owns the geometry and works through the fold-line
+ * pixels: the stuck part is the mark under a shrinking `clip-path`; the flap
+ * is a second copy of the mark, masked to the pin's outline (an alpha
+ * silhouette that logo:build computes from the artwork), rotated about the
+ * fold line in 3D (a rigid motion, so nothing is stretched, and past 90° the
+ * browser shows its back face, which is the mirrored print) and clipped to
+ * the complement; the paper back, its crease and the contact shadow are
+ * translucent gradient sheets that slide with the fold, tints and not
+ * drawings. `phone.css` owns the geometry and works through the fold-line
  * arithmetic.
+ *
+ * The mask is the one image the peel needs besides the mark, and an element
+ * whose mask has not loaded paints nothing. That is why the stuck copy is
+ * not masked (its rectangle is cream on cream, so it does not need to be) and
+ * why the mask is preloaded below: as a CSS image it would otherwise not be
+ * requested until the stylesheet had been parsed, and on a cold app launch
+ * over a real network that put it behind the whole splash, which then showed
+ * a bare cream screen. The preload is emitted into `<head>` with the first
+ * bytes, alongside the mark's own `<img>`.
  *
  * ## Size, and why this is the `full` raster
  *
@@ -80,6 +90,7 @@ import { BrandMark } from "@/components/BrandMark";
  * A cold app launch is a fresh document, which is exactly "first opened".
  */
 export function PhoneSplash() {
+  preload("/logo-mark-mask.png", { as: "image", fetchPriority: "high" });
   return (
     <div className="phone-splash" aria-hidden="true">
       {/* The fly-off animates this wrapper; the peel animates the two layers

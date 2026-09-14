@@ -707,14 +707,19 @@ html.pm-lock-scroll .pm-phone-content {
    */
   place-content: center;
   place-items: center;
-  /* Cream, not white, and that is forced by the artwork rather than chosen:
-     `logo-mark.png` is fully opaque with its own cream ground baked in (there
-     is no transparent variant, and CLAUDE.md forbids hand-keying one), so on
-     white the mark sits in a visible pale rectangle. Cream also matches the
-     native iOS launch screen, whose splash image is the same mark on the same
-     ground — white here would flash cream → white → cream on every cold open.
-     Switch this to #fff the day a transparent mark comes out of logo:build. */
-  background: var(--background);
+  /* The artwork's own ground, not the app's cream, and that is forced by the
+     artwork rather than chosen: `logo-mark.png` is fully opaque with a cream
+     ground baked in (there is no transparent variant, and CLAUDE.md forbids
+     hand-keying one), so on any other colour the mark sits in a visible pale
+     rectangle. The stuck copy below is shown unmasked on purpose (see the
+     peel notes), so the sheet has to be that ground: #f6f0eb is the mean of
+     the PNG's pixels outside the pin's silhouette, measured with sharp, and
+     the file's ground is textured between #ece7de and #fffdf8 so no flat
+     colour hides the rectangle entirely, but this one hides its edge. It is
+     3 levels of green from --background, and the sheet fades into the app
+     over 0.4s, so the step is not seen. Switch this to var(--background) or
+     #fff the day a transparent mark comes out of logo:build. */
+  background: #f6f0eb;
   /* Never eats the first tap, even during the hold. */
   pointer-events: none;
   animation: phone-splash-out 2.6s ease-in forwards;
@@ -745,14 +750,25 @@ html.pm-lock-scroll .pm-phone-content {
  *   draw mirrored, so the print reads reversed through the paper the way it
  *   does on a real sticker. Nothing is stretched: it is a rigid motion in 3D
  *   and the foreshortening is the camera's.
- * - Both copies are masked to the pin's outline (`logo-mark-mask.png`, an
- *   alpha silhouette that logo:build computes from the source by flood-filling
- *   the ground; see build-logo-assets.mjs). The artwork is a rectangle with
- *   its cream ground baked in, and without the mask the thing that peels is
- *   that rectangle: a square sticker with a pin printed on it. The mask goes
- *   on the same element as each clip, so the shape and the fold are cut in the
- *   same coordinates, and it removes pixels only, it paints none. It also
- *   trims the gradient sheets below, which overhang the box on purpose.
+ * - The flap is masked to the pin's outline (`logo-mark-mask.png`, an alpha
+ *   silhouette that logo:build computes from the source by flood-filling the
+ *   ground; see build-logo-assets.mjs). The artwork is a rectangle with its
+ *   cream ground baked in, and without the mask the thing that peels is that
+ *   rectangle: a square sticker with a pin printed on it. The mask goes on
+ *   the same element as the flap's clip, so the shape and the fold are cut in
+ *   the same coordinates, and it removes pixels only, it paints none. It also
+ *   trims the paper sheet below, which overhangs the box on purpose.
+ * - The stuck copy is deliberately NOT masked. An element whose mask image
+ *   has not arrived yet paints nothing at all, in WebKit and in Chromium, and
+ *   the mask is a CSS image: it is not requested until the stylesheet has
+ *   been parsed, which on a phone's cold launch over a real network put it
+ *   behind the whole hold. The splash then showed a cream screen and nothing
+ *   else. So the copy that is on screen from the first frame depends on no
+ *   image but the mark itself, and its rectangle is cream on cream. Only its
+ *   contact shadow needs the silhouette, so the mask is on that sheet instead
+ *   (sized to a third, positioned to the middle tile, because the sheet is
+ *   three marks wide). PhoneSplash preloads the mask as well, so the flap has
+ *   it by the time the peel starts.
  * - The paper back is a translucent white sheet over the flap, with the
  *   crease drawn into it as a gradient: a thin dark line where the paper
  *   turns down to meet the surface, a bright ridge where the curl catches the
@@ -798,7 +814,6 @@ html.pm-lock-scroll .pm-phone-content {
   animation: phone-splash-away 0.42s linear 2s both;
 }
 
-.phone-splash-stuck,
 .phone-splash-flap-face {
   -webkit-mask: url("/logo-mark-mask.png") 0 0 / 100% 100% no-repeat;
   mask: url("/logo-mark-mask.png") 0 0 / 100% 100% no-repeat;
@@ -815,11 +830,15 @@ html.pm-lock-scroll .pm-phone-content {
    translated, and the stops are where the fold sits at the design position
    k = 0.8 (the keyframes move it from there). It only exists while the flap
    is up, so it fades in over the first moments of the peel rather than
-   sitting on the pin's rim during the hold. */
+   sitting on the pin's rim during the hold. The silhouette mask lives here
+   and not on the stuck copy itself (see above): the sheet is 3W x 3H, so the
+   mark's box is the middle third of it. */
 .phone-splash-stuck::after {
   content: "";
   position: absolute;
   inset: -100%;
+  -webkit-mask: url("/logo-mark-mask.png") 50% 50% / calc(100% / 3) calc(100% / 3) no-repeat;
+  mask: url("/logo-mark-mask.png") 50% 50% / calc(100% / 3) calc(100% / 3) no-repeat;
   background: linear-gradient(
     135deg,
     rgba(0, 0, 0, 0) 44.3%,
