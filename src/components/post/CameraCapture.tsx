@@ -819,7 +819,7 @@ export function CameraCapture({
             screen the cap is slack and the picture is full width. */}
         <div className="absolute inset-0 flex items-center justify-center">
           <div
-            className="relative aspect-[3/4] w-full overflow-hidden"
+            className="relative aspect-[3/4] w-full overflow-hidden rounded-xl"
             style={{ width: "min(100%, calc((100dvh - 232px - 2 * env(safe-area-inset-bottom)) * 3 / 4))" }}
           >
             {viewfinder}
