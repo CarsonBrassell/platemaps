@@ -125,8 +125,13 @@ export function CameraCapture({
 
   const [mode, setMode] = useState<Mode>("single");
   const [facing, setFacing] = useState<Facing>("environment");
-  /** Which camera fills which half of a split — [top, bottom]. */
-  const [order, setOrder] = useState<[Facing, Facing]>(["environment", "user"]);
+  /**
+   * Which camera fills which half of a split — [top, bottom]. Fixed: the plate
+   * on top, the face under it. This used to be state behind the flip button,
+   * which in split mode swapped the halves instead of turning the camera —
+   * the same icon meaning two things, and the second one nobody wanted.
+   */
+  const order: [Facing, Facing] = ["environment", "user"];
   const [pendingUrl, setPendingUrl] = useState<string | null>(null);
   const [bothLive, setBothLive] = useState(false);
   const [status, setStatus] = useState<Status>("starting");
@@ -162,6 +167,16 @@ export function CameraCapture({
    */
   const [attempt, setAttempt] = useState(0);
   const [flash, setFlash] = useState(false);
+  /**
+   * The stream is attached *and* the first frame has arrived.
+   *
+   * `status` goes "live" the moment `srcObject` is assigned, but the element
+   * reports `videoWidth` 0 until it has decoded a frame, and `capture` has
+   * nothing to draw until then. The shutter used to be enabled across that
+   * gap, and a press inside it did nothing — no flash, no photo — so it now
+   * waits for `loadeddata`, the first drawable frame.
+   */
+  const [ready, setReady] = useState(false);
 
   /** The photo, once one exists. Its presence *is* the review step. */
   const taken = photos[0] ?? null;
@@ -206,6 +221,20 @@ export function CameraCapture({
 
     function stop(stream: MediaStream | null) {
       stream?.getTracks().forEach((t) => t.stop());
+    }
+
+    /**
+     * `autoPlay` is a request, not a guarantee: a muted stream assigned from
+     * script has been seen sitting paused on its first frame, and WKWebView
+     * in Low Power Mode refuses autoplay outright. A paused video still
+     * reports a `videoWidth`, so without this the shutter would capture the
+     * same stale frame every press. Asking explicitly is cheap; the rejection
+     * (if any) is not actionable, so it is swallowed.
+     */
+    function show(el: HTMLVideoElement | null, stream: MediaStream) {
+      if (!el) return;
+      el.srcObject = stream;
+      el.play().catch(() => {});
     }
 
     /*
@@ -267,7 +296,7 @@ export function CameraCapture({
             }
             stop(streamRef.current);
             streamRef.current = again;
-            if (videoRef.current) videoRef.current.srcObject = again;
+            show(videoRef.current, again);
           } catch {
             if (!cancelled) setStatus("blocked");
           }
@@ -276,7 +305,7 @@ export function CameraCapture({
       }
 
       spareStreamRef.current = second;
-      if (spareVideoRef.current) spareVideoRef.current.srcObject = second;
+      show(spareVideoRef.current, second);
       bothAtOnceRef.current = true;
       setBothLive(true);
     }
@@ -305,7 +334,7 @@ export function CameraCapture({
         return;
       }
       streamRef.current = stream;
-      if (videoRef.current) videoRef.current.srcObject = stream;
+      show(videoRef.current, stream);
       setStatus("live");
 
       if (mode !== "split" || bothAtOnceRef.current === false) return;
@@ -321,6 +350,7 @@ export function CameraCapture({
       stop(spareStreamRef.current);
       spareStreamRef.current = null;
       setBothLive(false);
+      setReady(false);
     };
   }, [live, spare, mode, attempt]);
 
@@ -436,13 +466,9 @@ export function CameraCapture({
     setMode(next);
   }
 
-  /** The one button that turns the camera round — it means both things. */
+  /** Turns the camera round. Single mode only — a split has no side to pick. */
   function flip() {
-    if (mode === "single") {
-      setFacing((f) => (f === "environment" ? "user" : "environment"));
-      return;
-    }
-    setOrder(([a, b]) => [b, a]);
+    setFacing((f) => (f === "environment" ? "user" : "environment"));
   }
 
   /* ---------------------------------------------------------------- pieces */
@@ -464,6 +490,8 @@ export function CameraCapture({
         autoPlay
         playsInline
         muted
+        onLoadedData={() => setReady(true)}
+        onEmptied={() => setReady(false)}
         aria-label="Camera preview"
         className={`absolute inset-x-0 w-full object-cover transition-opacity duration-300 ${liveBox} ${
           status === "live" ? "opacity-100" : "opacity-0"
@@ -601,7 +629,7 @@ export function CameraCapture({
       <button
         type="button"
         onClick={capture}
-        disabled={status !== "live"}
+        disabled={status !== "live" || !ready}
         aria-label={
           mode === "split"
             ? midSplit
@@ -624,26 +652,31 @@ export function CameraCapture({
         />
       </button>
 
-      <button
-        type="button"
-        onClick={flip}
-        disabled={status !== "live" || midSplit}
-        aria-label={
-          mode === "split"
-            ? "Swap which camera is on top"
-            : facing === "environment"
+      {/* No flip in split: both cameras are already in the picture, and the
+          button used to swap the halves instead — a second meaning for the
+          same icon. The spacer keeps the shutter centred, matching the left. */}
+      {mode === "split" ? (
+        <span className="h-12 w-12 shrink-0" aria-hidden="true" />
+      ) : (
+        <button
+          type="button"
+          onClick={flip}
+          disabled={status !== "live"}
+          aria-label={
+            facing === "environment"
               ? "Switch to the front camera"
               : "Switch to the rear camera"
-        }
-        className={railButton}
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
-          <path d="M3 10a7 7 0 0 1 11.9-5" />
-          <path d="M21 14a7 7 0 0 1-11.9 5" />
-          <path d="M15 5h4V1" />
-          <path d="M9 19H5v4" />
-        </svg>
-      </button>
+          }
+          className={railButton}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
+            <path d="M3 10a7 7 0 0 1 11.9-5" />
+            <path d="M21 14a7 7 0 0 1-11.9 5" />
+            <path d="M15 5h4V1" />
+            <path d="M9 19H5v4" />
+          </svg>
+        </button>
+      )}
     </div>
   );
 
@@ -671,7 +704,12 @@ export function CameraCapture({
    * was posted at.
    *
    * The stream keeps running behind it: retake has to be instant, and
-   * reopening a camera costs a second of black.
+   * reopening a camera costs a second of black. That only holds while the
+   * `<video>` stays in the tree, so both layouts below render this *over* the
+   * viewfinder, never *instead of* it. Swapping the two used to unmount the
+   * video on every shot; retake then remounted a fresh element with no
+   * `srcObject`, and the shutter — still enabled, `status` was still "live" —
+   * drew from a 0x0 frame and silently did nothing.
    */
   const review = taken && (
     // eslint-disable-next-line @next/next/no-img-element
@@ -745,7 +783,8 @@ export function CameraCapture({
             below it, under the two rails that already sit there. */}
         <div className="absolute inset-0 flex items-center">
           <div className="relative aspect-[4/5] w-full overflow-hidden">
-            {taken ? review : viewfinder}
+            {viewfinder}
+            {review}
           </div>
         </div>
 
@@ -844,12 +883,11 @@ export function CameraCapture({
     // control this screen exists for — under the fold.
     <div className="mx-auto w-full max-w-sm">
       <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl bg-pm-charcoal shadow-lg">
+        {viewfinder}
         {taken ? (
           review
         ) : (
           <>
-            {viewfinder}
-
             <div className="absolute inset-x-0 top-3 flex items-center justify-center px-3">
               {modeSwitch}
             </div>
