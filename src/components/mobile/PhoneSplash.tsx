@@ -20,22 +20,29 @@ import { BrandMark } from "@/components/BrandMark";
  *
  * ## The peel, and how it happens without redrawing anything
  *
- * The mark sits on the cream ground for 1.1s. Then its bottom-right corner
- * lifts and a fold line sweeps diagonally up to the top-left corner: the part
- * still stuck down shrinks, the flap that has come away grows, and the flap
- * shows its paper back with a shadow falling onto the part still stuck. Once
- * nothing is left stuck, the peeled sticker drifts off the top-left of the
- * screen and the cream sheet fades to reveal the app underneath.
+ * The mark sits on the cream ground for 1.1s. Then its bottom-right edge is
+ * pinched up and a fold line sweeps diagonally to the top-left: the part
+ * still stuck down shrinks, the flap that has come away grows, standing up
+ * off the surface and tilted toward the viewer, with a crease along the fold,
+ * its paper back showing the print faintly in reverse, and a shadow falling
+ * across the fold onto the part still stuck. The fold moves the way a hand
+ * would move it: slow while the edge is being got up, fast through the
+ * middle, a small give at the end. Once nothing is left stuck the sticker
+ * snaps toward the pull, is carried off the top-left of the screen, and the
+ * cream sheet fades to reveal the app underneath.
  *
  * None of that draws a pixel of the mark. CLAUDE.md forbids tracing,
  * redrawing or repainting the artwork, so the whole effect is built from two
  * copies of the same supplied file and things that only *remove* or *move*
- * pixels: the stuck part is the mark under a shrinking `clip-path`; the flap
- * is a second copy of the mark reflected across the fold line (a rigid
- * `matrix(0,-1,-1,0)` plus a translation, so nothing is stretched) and
- * clipped to the complement; the paper back is a translucent white sheet over
- * the flap, a tint and not a drawing. `phone.css` owns the geometry and works
- * through the fold-line arithmetic.
+ * pixels: both copies are masked to the pin's outline (an alpha silhouette
+ * that logo:build computes from the artwork); the stuck part is the mark
+ * under a shrinking `clip-path`; the flap is a second copy of the mark
+ * rotated about the fold line in 3D (a rigid motion, so nothing is stretched,
+ * and past 90° the browser shows its back face, which is the mirrored print)
+ * and clipped to the complement; the paper back, its crease and the contact
+ * shadow are translucent gradient sheets that slide with the fold, tints and
+ * not drawings. `phone.css` owns the geometry and works through the fold-line
+ * arithmetic.
  *
  * ## Size, and why this is the `full` raster
  *
