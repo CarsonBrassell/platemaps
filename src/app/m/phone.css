@@ -721,8 +721,13 @@ html.pm-lock-scroll .pm-phone-content {
  * Geometry, in the mark's own box with the origin at its top-left, width W
  * and height H (W/H = 660/865 = 0.763, fixed by the artwork, so every number
  * below is a ratio and survives a resize of the mark). The fold is the 45°
- * line x + y = c. It starts at the bottom-right corner (c = W + H) and sweeps
- * to the top-left (c = 0):
+ * line x + y = c. It sweeps from the bottom-right towards the top-left, but
+ * only across the pin, not the box: the box's corners are empty once the
+ * silhouette mask is on, and a fold that starts at the corner spends its first
+ * tenth of a second peeling nothing. Measured off logo-mark-mask.png, the pin's
+ * outline runs from c = 1.380·H (its lower-right flank) to c = 0.228·H (the
+ * upper-left of the ring), so the sweep runs c = 1.39·H → 0.218·H, a hair
+ * outside each so the anti-aliased edge is covered:
  *
  * - Still stuck: the part of the box with x + y <= c, so `.phone-splash-stuck`
  *   is clipped to that region.
@@ -750,13 +755,13 @@ html.pm-lock-scroll .pm-phone-content {
  *   falls down-right across the fold onto the part still stuck.
  *
  * Both clips are five-point polygons whose vertices are each a linear
- * function of c between three breakpoints: where the fold clears the bottom
+ * function of c between two breakpoints: where the fold clears the bottom
  * edge (c = H) and where it clears the right edge (c = W). CSS interpolates
  * polygons linearly, so a keyframe at each breakpoint gives exact geometry the
  * whole way with `linear` timing between them; the first and last legs ease
- * so the corner catches slowly and the sticker comes free gently. The
- * keyframe percentages are the legs' lengths in c: (W+H to H) is 0.763 of
- * 1.763 = 43.3%, (H to W) is 0.237 = 13.4%, (W to 0) is 0.763 = 43.3%.
+ * so the edge catches slowly and the sticker comes free gently. The keyframe
+ * percentages are the legs' lengths in c over the 1.172·H swept: (1.39 to 1)
+ * is 33.3%, (1 to 0.763) is 20.2%, (0.763 to 0.218) is 46.5%.
  *
  * With c = k*H, the x coordinates are k/0.763 as a fraction of W and the y
  * coordinates are k as a fraction of H, which is what the percentages below
@@ -783,24 +788,26 @@ html.pm-lock-scroll .pm-phone-content {
   /* Vertices: (0,0), (min(c,W),0), (min(c,W), clamp(c-W,0,H)),
      (clamp(c-H,0,W), min(c,H)), (0, min(c,H)). */
   0% {
-    /* c = W + H: the whole box. */
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%, 0 100%);
+    /* c = 1.39H: the fold just touches the pin's lower-right flank, running
+       from 51.2% along the bottom edge to 62.7% down the right edge. */
+    clip-path: polygon(0 0, 100% 0, 100% 62.73%, 51.16% 100%, 0 100%);
     animation-timing-function: ease-in;
   }
-  43.3% {
+  33.3% {
     /* c = H: the fold runs from the bottom-left corner to 23.7% down the
        right edge. */
     clip-path: polygon(0 0, 100% 0, 100% 23.7%, 0 100%, 0 100%);
     animation-timing-function: linear;
   }
-  56.7% {
+  53.5% {
     /* c = W: from the top-right corner to 76.3% down the left edge. */
     clip-path: polygon(0 0, 100% 0, 100% 0, 0 76.3%, 0 76.3%);
     animation-timing-function: ease-out;
   }
   100% {
-    /* c = 0: nothing left stuck. */
-    clip-path: polygon(0 0, 0 0, 0 0, 0 0, 0 0);
+    /* c = 0.218H: the fold has cleared the upper-left of the ring; what is
+       left of the box is empty. */
+    clip-path: polygon(0 0, 28.54% 0, 28.54% 0, 0 21.77%, 0 21.77%);
   }
 }
 
@@ -833,19 +840,19 @@ html.pm-lock-scroll .pm-phone-content {
   /* translate(c, c) written as percentages of the flap's own box: x is
      k/0.763 of W, y is k of H. */
   0% {
-    transform: translate(231.06%, 176.3%) matrix(0, -1, -1, 0, 0, 0);
+    transform: translate(182.22%, 139.03%) matrix(0, -1, -1, 0, 0, 0);
     animation-timing-function: ease-in;
   }
-  43.3% {
+  33.3% {
     transform: translate(131.06%, 100%) matrix(0, -1, -1, 0, 0, 0);
     animation-timing-function: linear;
   }
-  56.7% {
+  53.5% {
     transform: translate(100%, 76.3%) matrix(0, -1, -1, 0, 0, 0);
     animation-timing-function: ease-out;
   }
   100% {
-    transform: translate(0, 0) matrix(0, -1, -1, 0, 0, 0);
+    transform: translate(28.54%, 21.77%) matrix(0, -1, -1, 0, 0, 0);
   }
 }
 
@@ -854,26 +861,25 @@ html.pm-lock-scroll .pm-phone-content {
      (clamp(c-H,0,W), H), (clamp(c-H,0,W), min(c,H)), (min(c,W), clamp(c-W,0,H)),
      (W, clamp(c-W,0,H)). */
   0% {
-    clip-path: polygon(100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%);
+    clip-path: polygon(100% 100%, 51.16% 100%, 51.16% 100%, 100% 62.73%, 100% 62.73%);
     animation-timing-function: ease-in;
   }
-  43.3% {
+  33.3% {
     clip-path: polygon(100% 100%, 0 100%, 0 100%, 100% 23.7%, 100% 23.7%);
     animation-timing-function: linear;
   }
-  56.7% {
+  53.5% {
     clip-path: polygon(100% 100%, 0 100%, 0 76.3%, 100% 0, 100% 0);
     animation-timing-function: ease-out;
   }
   100% {
-    clip-path: polygon(100% 100%, 0 100%, 0 0, 0 0, 100% 0);
+    clip-path: polygon(100% 100%, 0 100%, 0 21.77%, 28.54% 0, 100% 0);
   }
 }
 
 /*
- * The fly-off. When the peel finishes the flap is a whole mirrored mark lying
- * just above and to the left of where the sticker was, touching it at the
- * corner. From there it drifts up and off the top-left of the screen, turning
+ * The fly-off. When the peel finishes the flap is the whole pin, mirrored,
+ * lying just above and to the left of where it was stuck. From there it drifts up and off the top-left of the screen, turning
  * a little as it goes, and fades out before the cream sheet does, so the app
  * is revealed under an empty sheet and not under a sticker in mid-air.
  */
