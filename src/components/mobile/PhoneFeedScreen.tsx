@@ -613,7 +613,7 @@ export function PhoneFeedScreen() {
           <>
             {/* The column takes the hit when the spat plate lands — see
                 post-impact in phone.css for why the jolt is delayed. */}
-            <div className={`flex flex-col gap-3 ${slammingId ? "post-impact" : ""}`}>
+            <div className={`-mx-4 flex flex-col gap-3 ${slammingId ? "post-impact" : ""}`}>
               {/* Every card runs its photo full width — the card used to take a
                   `featured` flag and this list set it on index 0 only. See
                   PhoneFeedPostCard's header for why the dense treatment went. */}
@@ -635,7 +635,7 @@ export function PhoneFeedScreen() {
                   /* The wrapper exists so a card arrived at from a map bubble
                      can be scrolled to and marked. `PhoneFeedPostCard` takes no
                      `highlighted` prop (the web card does) — the ring is drawn
-                     on this box instead, at the card's own radius, which needs
+                     on this box instead, which needs
                      nothing from the card and so cannot drift from it. */
                   <div
                     key={post.id}
@@ -644,7 +644,7 @@ export function PhoneFeedScreen() {
                     }}
                     /* What PhonePointsFly aims the token away from. */
                     data-pm-landed={post.id === slammingId ? "" : undefined}
-                    className={`rounded-2xl transition-shadow motion-reduce:transition-none ${
+                    className={`transition-shadow motion-reduce:transition-none ${
                       post.id === highlighted ? "ring-2 ring-pm-orange" : ""
                     } ${post.id === slammingId ? "post-spit" : ""}`}
                   >
