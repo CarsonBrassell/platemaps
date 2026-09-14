@@ -193,13 +193,12 @@ h3 {
 }
 
 /* The comment's own words, an inline span that follows the dish inside the
-   clip column (RestaurantMap.tsx `inlineProse`). At rest the bubble is the
-   mockup's two rows and nothing else; the prose is still in the DOM, just not
-   shown, and the open/hover rules below turn it inline so it reads straight
-   on from the dish name and wraps with it. Never `visibility` or zero height —
-   the box hugs its content and has to actually grow when this appears. */
+   clip column (RestaurantMap.tsx `inlineProse`). Visible at rest, clipped by
+   the row's ellipsis like any long headline; the open/hover rules below let
+   the row wrap so it reads in full. It carries no rule of its own any more —
+   the class is the handle the comments and the open rules refer to. */
 .map-bubble-prose {
-  display: none;
+  display: inline;
 }
 
 .map-bubble-box {
@@ -256,7 +255,6 @@ h3 {
 .map-bubble:hover .map-bubble-prose,
 .map-bubble-box:hover .map-bubble-prose,
 .map-bubble-box:focus-within .map-bubble-prose {
-  display: inline;
   white-space: normal;
   word-break: break-word;
 }
@@ -279,11 +277,13 @@ h3 {
    The face is the same Fraunces-with-WONK the feed card's .plate-headline
    uses, so a dish reads as the same kind of object wherever it appears.
 
-   The colour is the accent's text voice and the weight is bold, so the dish
-   reads as the same object it is on the feed card's subject line
-   (PhoneFeedPostCard: `font-semibold text-pm-orange-text`). It used to be ink
-   so the headline row carried one coloured value (the score); the dish now
-   outranks that, by request, on both surfaces.
+   The colour is the accent's text voice and the weight semibold, the same
+   pair the feed card's subject line wears (PhoneFeedPostCard:
+   `font-semibold text-pm-orange-text`). Semibold rather than the row's bold
+   on purpose: the comment's words follow the dish on the same row and are
+   the main text, so they carry the heavier weight and the dish stands out by
+   colour and face instead. It used to be ink so the headline row carried one
+   coloured value (the score); changed by request, on both surfaces.
 
    Underline only on hover, so a map full of bubbles isn't a map full of
    underlines. */
@@ -291,7 +291,7 @@ h3 {
   font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
   font-variation-settings: "SOFT" 8, "WONK" 1;
   color: var(--pm-orange-text);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 

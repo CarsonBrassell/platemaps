@@ -396,6 +396,15 @@ function headlineFor(comment: MapComment) {
   return comment.dishPrefix ? splitDishPrefix(comment.dishPrefix).name : comment.text;
 }
 
+/* Everything the resting row shows: the dish AND the words after it, since
+   the prose is visible (clipped) at rest now — see inlineProse. Width has to
+   budget for both or a wordy bubble draws wider than the rect it reserved
+   and lands on its neighbour. */
+function restingLineFor(comment: MapComment) {
+  const prose = comment.dishPrefix ? comment.text.trim() : "";
+  return prose ? `${headlineFor(comment)} ${prose}` : headlineFor(comment);
+}
+
 /**
  * The one number that belongs on the headline, next to the thing it measures:
  * a dish review's percent, or a restaurant review's stars. The plate is the
@@ -487,16 +496,14 @@ function estimateMetaWidth(comment: MapComment) {
 // generous on purpose so we under-place rather than risk visual overlap. Only
 // the headline row counts: the subject on the left and the score pinned right,
 // with the flex gap between them. The comment's prose no longer shares that
-// row while resting (it sits hidden inside the clip column as the inline
-// .map-bubble-prose span, shown only when the bubble is open), so a chatty
-// dish comment stops reserving a cap-wide rect for text the resting bubble
-// never shows. The nowrap meta row still sets a floor, but its own, computed
+// row, and the resting row is the dish plus its words (restingLineFor), so
+// a chatty dish comment reserves what it draws, up to the zoom cap. The nowrap meta row still sets a floor, but its own, computed
 // one — not a constant.
 function estimateBubbleWidth(comment: MapComment, zoom: number) {
   const score = bubbleScoreFor(comment);
   const line =
     22 +
-    headlineFor(comment).length * 6.3 +
+    restingLineFor(comment).length * 6.3 +
     (score ? 10 + scoreLabelFor(score).length * 7 : 0);
   const floor =
     comment.upvotes !== undefined ? estimateMetaWidth(comment) : BUBBLE_MIN_WIDTH;
@@ -811,17 +818,16 @@ function bubbleElement(
      headline — and then there is no prose left to reveal, which is why
      inlineProse below is bound to `split` too rather than to comment.text. */
   /* The comment's own words ride INSIDE the clip column, right after the dish,
-     so an open bubble reads "Steak Holy buttery goodness" as one line that
-     wraps — the dish in the orange display face, the words after it in the
-     UI sans, bold, ink. Hidden at rest (display: none) so the resting bubble
-     is still the mockup's two rows; the open/hover rules in globals.css turn
-     it inline. It stays in the DOM either way, so nothing a person wrote is
-     ever dropped. Bold is by request: the words are the point of the bubble
-     once it is open, and a muted regular line under an orange name read as a
-     caption rather than as the comment. */
+     so the bubble reads "Steak Holy buttery goodness" as one line — the dish
+     in the orange display face at semibold, the words after it in the UI sans
+     at bold, ink. The words are the main text and have to stand out, so they
+     are the heaviest thing on the row and they are VISIBLE AT REST: the row
+     clips them with an ellipsis like any long headline, and opening the
+     bubble (tap on a phone, hover or focus elsewhere) lets them wrap in full.
+     Bold is inherited from the row rather than restated. */
   const inlineProse =
     split && comment.text.trim()
-      ? `<span class="map-bubble-prose" style="font-weight: 700; color: ${BUBBLE_INK};"> ${escapeHtml(comment.text)}</span>`
+      ? `<span class="map-bubble-prose" style="color: ${BUBBLE_INK};"> ${escapeHtml(comment.text)}</span>`
       : "";
   const headlineHtml = split
     ? `<span class="map-line-clip"><span class="map-dish-link" role="link" tabindex="0" style="cursor: pointer;">${escapeHtml(split.name)}</span>${inlineProse}</span>${scoreHtml}`
@@ -1099,7 +1105,7 @@ function bubbleElement(
              headline is what slides. The prose is
              now inline inside the headline row itself, so there is no third
              row to order — the headline just wraps taller when open. -->
-        <div class="map-bubble-text" style="max-width: ${textMaxWidth}px; font-weight: 600;">${headlineHtml}</div>
+        <div class="map-bubble-text" style="max-width: ${textMaxWidth}px; font-weight: 700;">${headlineHtml}</div>
         ${metaRow}
       </div>
       ${leader}
