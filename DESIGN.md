@@ -235,7 +235,7 @@ neighbors don't repeat.
     worse than an obviously static one.
 
   The comment's prose is the one thing a human typed, and it is still in the
-  DOM — hidden at rest in `.map-bubble-prose` and revealed on hover **or
+  DOM — hidden at rest in the inline `.map-bubble-prose` span that follows the dish, revealed on hover **or
   keyboard focus** (`:focus-within`, since the dish and the vote chips are
   focusable and a pointer must never be the only way to reach text). Nothing
   a poster wrote is ever dropped from the markup to make the card fit.

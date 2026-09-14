@@ -487,7 +487,8 @@ function estimateMetaWidth(comment: MapComment) {
 // generous on purpose so we under-place rather than risk visual overlap. Only
 // the headline row counts: the subject on the left and the score pinned right,
 // with the flex gap between them. The comment's prose no longer shares that
-// row (it sits in the hover-revealed .map-bubble-prose below), so a chatty
+// row while resting (it sits hidden inside the clip column as the inline
+// .map-bubble-prose span, shown only when the bubble is open), so a chatty
 // dish comment stops reserving a cap-wide rect for text the resting bubble
 // never shows. The nowrap meta row still sets a floor, but its own, computed
 // one — not a constant.
@@ -788,7 +789,7 @@ function bubbleElement(
      of scores can be read straight down. Voices split the way DESIGN.md's
      three-voice rule requires: Fraunces in ink for the plate (a proper name),
      mono for the score (a machine value), and the poster's own sans prose
-     kept off this row entirely — it lives in .map-bubble-prose below.
+     kept off the resting row — it lives in the hidden .map-bubble-prose span after the dish.
 
      Truncation has priorities: the subject clips first (map-line-clip), the
      score never clips or wraps (map-line-score), so a long plate reads
@@ -808,19 +809,23 @@ function bubbleElement(
     : "";
   /* No dish means no subject of its own, so what was said becomes the
      headline — and then there is no prose left to reveal, which is why
-     proseHtml below is bound to `split` too rather than to comment.text. */
-  const headlineHtml = split
-    ? `<span class="map-dish-link map-line-clip" role="link" tabindex="0" style="cursor: pointer;">${escapeHtml(split.name)}</span>${scoreHtml}`
-    : `<span class="map-line-clip">${escapeHtml(comment.text)}</span>${scoreHtml}`;
-  /* The comment itself. Hidden at rest so the bubble reads as the mockup's two
-     rows, revealed on hover or keyboard focus by the .map-bubble-prose rules
-     in globals.css — the text is always in the DOM, never dropped, so nothing
-     a person wrote becomes unreachable. Sans and muted: this is the one part
-     of the bubble a human typed. */
-  const proseHtml =
+     inlineProse below is bound to `split` too rather than to comment.text. */
+  /* The comment's own words ride INSIDE the clip column, right after the dish,
+     so an open bubble reads "Steak Holy buttery goodness" as one line that
+     wraps — the dish in the orange display face, the words after it in the
+     UI sans, bold, ink. Hidden at rest (display: none) so the resting bubble
+     is still the mockup's two rows; the open/hover rules in globals.css turn
+     it inline. It stays in the DOM either way, so nothing a person wrote is
+     ever dropped. Bold is by request: the words are the point of the bubble
+     once it is open, and a muted regular line under an orange name read as a
+     caption rather than as the comment. */
+  const inlineProse =
     split && comment.text.trim()
-      ? `<div class="map-bubble-prose" style="margin-top: ${BUBBLE_META_GAP}px; font-weight: 400; line-height: 1.4; color: ${BUBBLE_MUTED};">${escapeHtml(comment.text)}</div>`
+      ? `<span class="map-bubble-prose" style="font-weight: 700; color: ${BUBBLE_INK};"> ${escapeHtml(comment.text)}</span>`
       : "";
+  const headlineHtml = split
+    ? `<span class="map-line-clip"><span class="map-dish-link" role="link" tabindex="0" style="cursor: pointer;">${escapeHtml(split.name)}</span>${inlineProse}</span>${scoreHtml}`
+    : `<span class="map-line-clip">${escapeHtml(comment.text)}</span>${scoreHtml}`;
   /* Which reaction the chip is depends on which feed the bubble's data came
      from — Discover bubbles upvote (public count, matches the number every
      other viewer already sees), Friends bubbles heart (no count anywhere,
@@ -1091,9 +1096,10 @@ function bubbleElement(
              could not click the arrows with a mouse at all: by the time the
              press landed they had left. Keeping the meta row at the bottom
              welds it to that fixed edge, so the chips hold still and the
-             headline is what slides. -->
+             headline is what slides. The prose is
+             now inline inside the headline row itself, so there is no third
+             row to order — the headline just wraps taller when open. -->
         <div class="map-bubble-text" style="max-width: ${textMaxWidth}px; font-weight: 600;">${headlineHtml}</div>
-        ${proseHtml}
         ${metaRow}
       </div>
       ${leader}

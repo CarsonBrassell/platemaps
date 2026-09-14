@@ -192,10 +192,12 @@ h3 {
   white-space: nowrap;
 }
 
-/* The comment's own words. At rest the bubble is the mockup's two rows and
-   nothing else; the prose is still in the DOM, just not shown, and the hover
-   rules below reveal it. Never `visibility` or zero height — the box hugs its
-   content and has to actually grow when this appears. */
+/* The comment's own words, an inline span that follows the dish inside the
+   clip column (RestaurantMap.tsx `inlineProse`). At rest the bubble is the
+   mockup's two rows and nothing else; the prose is still in the DOM, just not
+   shown, and the open/hover rules below turn it inline so it reads straight
+   on from the dish name and wraps with it. Never `visibility` or zero height —
+   the box hugs its content and has to actually grow when this appears. */
 .map-bubble-prose {
   display: none;
 }
@@ -254,7 +256,7 @@ h3 {
 .map-bubble:hover .map-bubble-prose,
 .map-bubble-box:hover .map-bubble-prose,
 .map-bubble-box:focus-within .map-bubble-prose {
-  display: block;
+  display: inline;
   white-space: normal;
   word-break: break-word;
 }
