@@ -428,6 +428,7 @@ export function CameraCapture({
    * a beat, so the button shows it is busy rather than looking ignored.
    */
   async function chooseFromLibrary(input: HTMLInputElement) {
+    // First file only — see the note on the input for why `multiple` is set.
     const file = input.files?.[0];
     input.value = "";
     if (!file || photos.length >= MAX_PHOTOS) return;
@@ -673,11 +674,15 @@ export function CameraCapture({
           on purpose — that would open the camera again, which is the thing
           this input exists to be the alternative to. `image/*` rather than a
           list: iOS offers HEIC under it and `fileToDraft` re-encodes whatever
-          arrives. */}
+          arrives. `multiple` is not for taking several: iOS lists "Take
+          Photo" on its picker sheet for a single-file input and drops it for a
+          multi-file one, and the shutter next to this button already is the
+          take-photo option. `chooseFromLibrary` keeps the first file only. */}
       <input
         ref={fileRef}
         type="file"
         accept="image/*"
+        multiple
         onChange={(e) => void chooseFromLibrary(e.currentTarget)}
         className="hidden"
         tabIndex={-1}
