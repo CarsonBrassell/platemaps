@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CameraIcon, CloseIcon, ChatIcon, ChevronIcon } from "@/components/icons";
+import { CameraIcon, CloseIcon, ChatIcon, ChevronIcon, PhotoIcon } from "@/components/icons";
 import {
   MAX_PHOTOS,
   PHOTO_QUALITY,
-  PHOTO_SIZE,
+  SHOT_H,
+  SHOT_W,
   canvasToJpeg,
+  fileToDraft,
   nextPhotoId,
   type PhotoDraft,
 } from "@/lib/photos";
@@ -32,10 +34,10 @@ const SPLIT_HALF = 720;
  * above and below that crop, and the feed then took its own crop of the file.
  * Cropping at the shutter instead means the file *is* what was framed.
  *
- * `SHOT_H` is the long edge, so a single shot stays inside PHOTO_SIZE.
+ * `SHOT_W`/`SHOT_H` live in lib/photos now, because `fileToDraft` cuts a
+ * library picture to the same box: `SHOT_H` is the long edge, so a single
+ * shot stays inside PHOTO_SIZE either way.
  */
-const SHOT_H = PHOTO_SIZE;
-const SHOT_W = Math.round((SHOT_H * 3) / 4);
 
 /**
  * One camera frame, centre-cropped to fill a box of exactly `w` x `h`.
@@ -87,13 +89,24 @@ function coverCanvas(video: HTMLVideoElement, w: number, h: number, mirror: bool
  * a strip of thumbnails under a running camera made it a loop nobody was
  * looking at. `MAX_PHOTOS` in lib/photos carries the rest of that reasoning.
  *
- * **There is no library picker on this screen, by decision.** A plate photo is
- * a thing you are looking at now, and every route from a camera roll ends in a
- * post about a meal that may be weeks old and somewhere else. So no camera API,
- * a refused permission and a covered lens all end at the same place a working
- * camera you don't want to use does: the comment door, which never depends on
- * any of this. Photos handed over from the feed still arrive by their own path
- * and skip this step entirely.
+ * **The library is a side door, not the front one.** It was taken off this
+ * screen in 2026-08 (`039271c`) on the argument that a plate photo is a thing
+ * you are looking at now, and every route from a camera roll ends in a post
+ * about a meal that may be weeks old. Calvin put it back on 2026-09-14 because
+ * the cost was the photo, not the freshness: iOS refuses a camera outside a
+ * tap, in-app browsers refuse it altogether, a laptop's camera points at the
+ * wrong thing, and the plate was photographed on the phone's own camera before
+ * the app was ever opened. Every one of those used to end at the comment door
+ * with no picture at all.
+ *
+ * So the camera is still the first thing on screen and the shutter is still
+ * the one control the layout is built around. The library sits in the small
+ * slot beside it, and on a camera that will not run it is offered next to
+ * "Allow camera" rather than instead of it. A chosen picture goes through
+ * `fileToDraft` and comes out as exactly the draft the shutter would have
+ * made — same 3:4, same size, same review screen — so nothing after this step
+ * knows which door it came through. Photos handed over from the feed still
+ * arrive by their own path and skip this step entirely.
  */
 export function CameraCapture({
   photos,
@@ -169,6 +182,12 @@ export function CameraCapture({
    */
   const [attempt, setAttempt] = useState(0);
   const [flash, setFlash] = useState(false);
+  /** The hidden file input the library buttons open. */
+  const fileRef = useRef<HTMLInputElement>(null);
+  /** A chosen file is being decoded and cropped. */
+  const [picking, setPicking] = useState(false);
+  /** Why the last chosen file did not become a photo, in one sentence. */
+  const [pickError, setPickError] = useState<string | null>(null);
   /**
    * The stream is attached *and* the first frame has arrived.
    *
@@ -389,13 +408,42 @@ export function CameraCapture({
    * at the end. */
   function add(blob: Blob) {
     photos.forEach((photo) => URL.revokeObjectURL(photo.previewUrl));
+    setPickError(null);
     onChange([{ id: nextPhotoId(), previewUrl: URL.createObjectURL(blob), blob }]);
   }
 
   /** Back to the live camera. Dropping the draft drops its object URL with it. */
   function retake() {
     photos.forEach((photo) => URL.revokeObjectURL(photo.previewUrl));
+    setPickError(null);
     onChange([]);
+  }
+
+  /**
+   * A picture from the library, arriving where the shutter's would.
+   *
+   * The input is cleared after every pick so choosing the same file twice —
+   * retake, then the same photo again — fires `change` a second time; a file
+   * input only reports a *different* selection. Decoding a phone photo takes
+   * a beat, so the button shows it is busy rather than looking ignored.
+   */
+  async function chooseFromLibrary(input: HTMLInputElement) {
+    const file = input.files?.[0];
+    input.value = "";
+    if (!file || photos.length >= MAX_PHOTOS) return;
+    setPickError(null);
+    setPicking(true);
+    try {
+      const result = await fileToDraft(file);
+      if (result.draft) {
+        photos.forEach((photo) => URL.revokeObjectURL(photo.previewUrl));
+        onChange([result.draft]);
+      } else {
+        setPickError(result.error);
+      }
+    } finally {
+      setPicking(false);
+    }
   }
 
   async function captureSplit() {
@@ -540,9 +588,8 @@ export function CameraCapture({
         <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-black/50" aria-hidden="true" />
       )}
 
-      {/* Nothing to offer here but the truth and the other door: the picker
-          that used to sit under this copy is gone on purpose (see the note at
-          the top), so the skip button below is the whole recovery. */}
+      {/* The truth, then the two doors: ask for the camera again, or bring a
+          picture from the library. The skip button below stays the third. */}
       {/* One step lighter than the screen behind it, with viewfinder corners,
           so the 3:4 picture reads as a place before there is a picture. In
           fullscreen the screen is charcoal too, and the same fill here made
@@ -565,8 +612,8 @@ export function CameraCapture({
           {status !== "starting" && (
             <p className="max-w-xs text-xs leading-relaxed text-white/55">
               {status === "blocked"
-                ? "PlateMaps takes the photo itself, so this screen needs camera permission. Tap Allow camera — if your phone has already been told no, turn it back on in Settings under PlateMaps → Camera (or your browser's site settings on the web)."
-                : "This browser doesn't offer a camera, and PlateMaps only posts photos it takes. You can still post without one."}
+                ? "Tap Allow camera to take the photo here — if your phone has already been told no, turn it back on in Settings under PlateMaps → Camera (or your browser's site settings on the web). Or pick one you've already taken."
+                : "This browser doesn't offer a camera. Pick a photo from your library, or post without one."}
             </p>
           )}
           {/* The reason, in the browser's own words. Mono because it is a
@@ -581,14 +628,33 @@ export function CameraCapture({
               one this screen makes on mount has none. Primary action, so it
               wears the orange fill — it is the way out of this screen, and
               the skip door below is the alternative rather than the default. */}
-          {status === "blocked" && (
-            <button
-              type="button"
-              onClick={allowCamera}
-              className="mt-1 inline-flex min-h-11 items-center rounded-full bg-pm-orange px-5 text-sm font-medium text-[#F7F4EC] transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              Allow camera
-            </button>
+          {/* Allow camera keeps the orange while there is a camera to allow;
+              with none at all, the library is the way out and takes it. */}
+          {status !== "starting" && (
+            <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+              {status === "blocked" && (
+                <button
+                  type="button"
+                  onClick={allowCamera}
+                  className="inline-flex min-h-11 items-center rounded-full bg-pm-orange px-5 text-sm font-medium text-[#F7F4EC] transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  Allow camera
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => fileRef.current?.click()}
+                disabled={picking}
+                className={`inline-flex min-h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-transform active:scale-95 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
+                  status === "unsupported"
+                    ? "bg-pm-orange text-[#F7F4EC]"
+                    : "bg-white/15 text-white ring-1 ring-inset ring-white/25 backdrop-blur-md hover:bg-white/25"
+                }`}
+              >
+                <PhotoIcon className="h-4 w-4 shrink-0" />
+                {picking ? "Opening…" : "Choose a photo"}
+              </button>
+            </div>
           )}
           {failure && (
             <p className="max-w-xs font-mono text-[10px] leading-relaxed text-white/40">
@@ -600,6 +666,23 @@ export function CameraCapture({
 
       {/* The shutter's own feedback — a frame of white over the viewport. */}
       {flash && <div className="shutter-flash absolute inset-0 bg-white" aria-hidden="true" />}
+
+      {/* The library, behind every "Choose a photo" on this screen. One input
+          for the rail button and the no-camera door alike, so there is one
+          `change` handler and one place the pick lands. No `capture` attribute
+          on purpose — that would open the camera again, which is the thing
+          this input exists to be the alternative to. `image/*` rather than a
+          list: iOS offers HEIC under it and `fileToDraft` re-encodes whatever
+          arrives. */}
+      <input
+        ref={fileRef}
+        type="file"
+        accept="image/*"
+        onChange={(e) => void chooseFromLibrary(e.currentTarget)}
+        className="hidden"
+        tabIndex={-1}
+        aria-hidden="true"
+      />
     </>
   );
 
@@ -633,11 +716,21 @@ export function CameraCapture({
 
   const controls = (
     <div className="flex items-center justify-between gap-4">
-      {/* Where the library button used to be. It is a spacer rather than a gap
-          because the shutter is the one control this screen exists for and it
-          belongs in the centre — with only the flip button opposite, `gap-4`
-          alone would slide it off to one side. */}
-      <span className="h-12 w-12 shrink-0" aria-hidden="true" />
+      {/* The library, in the small slot — the same size as the flip button
+          opposite, which is what keeps the shutter in the centre. It stays
+          enabled while the camera is starting or refused: a picture you
+          already have does not need the lens to be working. Not while a
+          split is half taken, though — that picture is being built from two
+          cameras and a file has no second half. */}
+      <button
+        type="button"
+        onClick={() => fileRef.current?.click()}
+        disabled={picking || midSplit}
+        aria-label="Choose a photo from your library"
+        className={railButton}
+      >
+        <PhotoIcon className="h-5 w-5" />
+      </button>
 
       <button
         type="button"
@@ -693,11 +786,16 @@ export function CameraCapture({
     </div>
   );
 
-  /* What the shutter will do, said once, just above the door and the shutter. */
+  /* What the shutter will do, said once, just above the door and the shutter.
+     A library pick that failed borrows the line: it is the one piece of text
+     already sitting over a live viewfinder, and the failure is about the next
+     photo just as the hint is. */
   const splitHint = (
     <p aria-live="polite" className="text-xs font-medium text-white/75">
       <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
-        {mode === "split"
+        {pickError
+          ? pickError
+          : mode === "split"
           ? midSplit
             ? `Now the ${order[1] === "user" ? "selfie" : "plate"}`
             : bothLive
@@ -938,8 +1036,16 @@ export function CameraCapture({
 
             {/* The other door, sitting in the viewfinder rather than below it: one
                 line of chrome over the picture costs nothing, where a card under it
-                pushed the shutter itself off a laptop screen. */}
-            <div className="absolute inset-x-3 bottom-3">{skipDoor}</div>
+                pushed the shutter itself off a laptop screen. The card carries
+                no split hint, so a failed library pick gets its own line here. */}
+            <div className="absolute inset-x-3 bottom-3 flex flex-col gap-2">
+              {pickError && (
+                <p aria-live="polite" className="px-1 text-xs font-medium text-white/75">
+                  <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{pickError}</span>
+                </p>
+              )}
+              {skipDoor}
+            </div>
           </>
         )}
       </div>

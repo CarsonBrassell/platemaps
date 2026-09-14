@@ -41,17 +41,100 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
 
 ## Since 2026-09-05 (newest decisions, read these)
 
+- **Library picker is back on the camera screen, BUILT + DEPLOYED 2026-09-14,
+  verified in Chrome on /m/post and /post.** Calvin reversed `039271c` ("plate photo is a thing you are looking
+  at now"): the cost was the photo, not freshness (iOS/in-app browsers refuse the camera,
+  laptops point the wrong way). Camera stays default; library is the small rail button
+  left of the shutter (both `/post` and `/m/post`, one component) and a "Choose a photo"
+  pill beside "Allow camera" when the camera is blocked/unsupported. `fileToDraft` in
+  src/lib/photos.ts cover-crops a chosen file to 3:4 at `SHOT_W`x`SHOT_H` (moved there
+  from CameraCapture) and re-encodes JPEG, so a picked photo is the same draft the
+  shutter makes. `PhotoIcon` added to icons.tsx. `MAX_PHOTOS` still 1. tsc + eslint
+  clean. Verified in Calvin's Chrome (blocked-camera state on the PC: "Allow camera" +
+  "Choose a photo", rail button bottom-left, file_upload → review screen). Committed and
+  pushed to main; Vercel deploys from there.
+- **Map bubbles tap-to-open + orange dish, COMMITTED 2026-09-14.** On `(hover: none)` devices
+  the first tap on a bubble adds `.map-bubble-open` (RestaurantMap.tsx click handler; globals.css
+  lists the class beside every `.map-bubble:hover` rule) and the second tap navigates; a pan or a
+  tap on empty map closes it. `.map-dish-link` is `--pm-orange-text` (Fraunces, weight 700); the comment text is an inline bold (700) ink span right AFTER the dish inside `.map-line-clip`, VISIBLE at rest (ellipsis-clipped, wraps when open); dish is semibold 600 so the words dominate; estimateBubbleWidth budgets dish+words via restingLineFor (3 commits, 2026-09-14). On both
+  surfaces (was ink by design; changed at Calvin's request). Verified in the pane with mobile
+  emulation (open, then `/m/restaurant/167?post=…`) and by Chrome screenshot.
+
+- **Overnight audit harness, built 2026-09-13, uncommitted.** `probe/audit/`:
+  Sonnet agents (`claude -p`) play personas in a headless Chromium via
+  `browse.mjs` and file JSON findings; `oracle.mts` scores search against
+  corpus-generated queries (first run: name-exact 100%, cuisine-nearby 57%,
+  suggest-prefix 45%, 45 duplicate listed rows); triage merges into
+  `probe/audit/BACKLOG.md`, morning summary in `REPORT.md`. Start with
+  `powershell -File probe/audit/start.ps1`, stop with `stop.ps1`, docs in
+  `probe/audit/README.md`. Blocked until Calvin logs `claude` in (OAuth
+  expired, `claude -p` fails); the agent path is untested end to end.
+
+- **Phone splash: peel instead of bite, 2026-09-13, on main (58f0501, 150373c, 357a519 + the
+  3D-lift commit after it).** The cold-open splash (src/components/mobile/PhoneSplash.tsx +
+  the Opening splash block in src/app/m/phone.css) no longer uncovers the bite; the mark
+  holds 1.1s, peels off from its bottom-right like a sticker, flies off top-left, then the
+  cream sheet fades at 2.2-2.6s. Two copies of the artwork, clip-path + a 3D rotation about
+  the fold with perspective (back face = mirrored print), masked to the pin outline by
+  public/logo-mark-mask.png which logo:build computes, gradient sheets for crease + contact
+  shadow, one linear() easing over the whole sweep. No redraw. Every keyframe number is
+  generated: the generator lives only in the session scratchpad, but the derivation is in
+  the phone.css comments, so rewrite it from those before changing the geometry.
+  Reduced motion: hold and cut. Verified in Chrome by pausing the animations frame by frame.
+  23e3dc5 fixed "not showing on my phone": an element whose CSS mask image has not loaded
+  paints NOTHING (WebKit and Chromium), and the mask was only requested after the stylesheet
+  parsed, so a cold launch on a real network showed a bare cream screen. The stuck copy is
+  now unmasked (mask moved to its shadow sheet), the sheet colour is the artwork's own ground
+  #f6f0eb so the unmasked rectangle has no edge, and PhoneSplash preloads the mask. Playwright
+  WebKit is installed (`npx playwright install webkit` was run); a script that pauses
+  `document.getAnimations()` at fixed times and screenshots is the way to check splash frames
+  in a real WebKit without a phone.
+- **Search: category over name, SHIPPED 2026-09-13, uncommitted.** A cuisine/tag hit now
+  outranks every name rung except exact and prefix (`TIER` in src/lib/textMatch.ts:
+  CUISINE_EXACT 960 / SUBSTRING 950 / NAME_PREFIX 940 / CUISINE_FUZZY 930 + 0-9 closeness
+  band). Dropdown puts Cuisines above Restaurants when the cuisine hit is literal
+  (src/lib/suggest.ts `cuisineBeforeRestaurant`). "Breakfast" tag added to coffee, juice,
+  acai, bagel, donut, bakery, creperie and pancake labels (src/data/cuisines.ts SYNONYMS);
+  scripts/normalize-cuisines.mjs now also unions cuisines across a chain's branches
+  (Rigoberto's = Mexican + Fast Food) and writes in 500-row chunks. Ran for real:
+  9065 listed unchanged, 1776 live rows carry a Breakfast tag (was 987), 468 chain rows
+  gained tags. Snapshot before writes: probe/snapshots/cuisine-2026-09-13.json.
+  Probe: `npx tsx --env-file=.env.local probe/search-check.mts --near=32.7757,-117.0719 "breaksfast"`
+  (SDSU) leads with campus coffee/bagel/Broken Yolk. The PB report above ("breakfast" via
+  `in=dish`) is the dish scope, untouched. Follow-ups: duplicate BCB Coffee rows in
+  College Area; Breakfast & Brunch rows whose cuisine_raw is "Restaurant" carry no tags
+  (still match through the cuisine column). Details: probe/SEARCH-PLAN.md "Shipped".
 - **Full menu-photo pass RUNNING, started 2026-09-13.** Calvin approved the full harvest
-  after the 100-row sample. Command (detached, ~1 min/row, ~3,064 rows ≈ 2 days):
+  after the 100-row sample and said "run the menu extraction" — run harvest→extract→load
+  to the end, no check-ins. Harvest (detached):
   `node --env-file=.env.local probe/menu-photos/fetch.mjs --limit 3100 --pause 8 > probe/menu-photos/run-full.log 2>&1`.
-  Manifest rows 1-149 are the sample (already extracted+loaded); rows from 150 on are the
-  full pass. Resumable — if the process died, just rerun the same command (ids in the
-  manifest are skipped); then `--retry --pause 20` for limited-view rows. Extraction:
-  spawn Sonnet agents (never Opus) per EXTRACT.md in batches of 4 "ok" rows whose
-  `menus/wip/photos/<id>.json` does not exist yet. Load: merge those JSONs (skip ids
-  already in `dishes`) into `menus/wip/result-photos-<date>.json` → `scripts/screen-menus.mjs`
-  → strip zero-dish entries → `scripts/load-menus.mjs --dry` then real. Check progress:
-  `tail -n +150 probe/menu-photos/manifest.jsonl | grep -c '"status":"ok"'`.
+  Manifest rows 1-149 = sample (done); 150+ = full pass. Resumable (ids in the manifest
+  are skipped). fetch.mjs now bails on the FIRST limited-view instead of retrying 3x
+  (retries made the throttle worse); ~50% of rows land as limited-view and are recovered
+  later with `node --env-file=.env.local probe/menu-photos/fetch.mjs --retry --pause 20 >> probe/menu-photos/run-full.log 2>&1`
+  (repeat while it keeps recovering rows). run-full.log's N/2986 counter is not the
+  manifest count; trust `grep -c '"status":"ok"' probe/menu-photos/manifest.jsonl`.
+  Helpers: `node probe/menu-photos/pending.mjs` lists harvested "ok" rows with no
+  `menus/wip/photos/<id>.json` (pipe through `grep -v -E '^- (id|id) '` to hide in-flight
+  batches); spawn one Sonnet agent (never Opus) per 1-6 rows with the prompt in
+  EXTRACT.md's header style, telling it to use the name EXACTLY (agents twice prefixed
+  the id onto the name — 4662, 9304 — and load-menus' name guard refused the file; fix by
+  sed in photos/, result and clean files). Load cycle every few waves:
+  `node --env-file=.env.local probe/menu-photos/merge.mjs menus/wip/result-photos-<tag>.json`
+  (merges every photos/*.json whose restaurant has no dishes rows) →
+  `node scripts/screen-menus.mjs menus/wip/result-photos-<tag>.json` → strip zero-dish
+  entries into `menus/wip/clean-photos-<tag>.json` → `rm menus/wip/clean.json menus/wip/quarantine.json`
+  → `load-menus.mjs <clean> --dry` then real (in background; >300s). screen-menus now
+  exempts `crossCheckedAgainst: "google-maps-menu-photos"` from the markup heuristic
+  (photographed boards are the venue's own prices). Unpriced-only boards drop at screen
+  (Chiroys, JJANG, Shake Smart, ZENSHI… ~20 of them) — expected, not a bug.
+  Loads so far: 0914a 33/939, 0914b 66/2,362, 0914c 47/1,670, 0914d 63/2,090,
+  0914e 7/453, 0914f 31/1,485, 0914g 21/831, 0914h 13/701, 0914i 36/1,362, 0914j 30/1,319, 0914k 22/732, 0914l 17/941, 0914m 21/934, 0914n 18/729, 0914o 16/750, 0914p 13/532, 0914q 13/362, 0914r 12/464, 0914s 11/383, 0914t 8/305, 0914u 9/367, 0914v 8/267, 0914w 9/442, 0914x 8/277, 0914y 9/333, 0914z 7/268, 0915a 9/246, 0915b 8/222, 0915c 8/296, 0915d 6/186, 0915e 7/291, 0915f 6/226, 0915g 7/337, 0915h 6/216, 0915i 9/189, 0915j 5/178, 0915k 7/317, 0915l 7/401, 0915m 8/308, 0915n 8/363, 0915o 6/282, 0915p 9/387, 0915q 4/175, 0915r 4/146, 0915s 6/167, 0915t 6/221, 0915u 4/185, 0915v 4/179, 0915w 5/291, 0915x 4/136, 0915y 5/226, 0915z 4/210, 0916a 6/249, 0916b 7/436, 0916c 3/186, 0916d 5/256, 0916e 5/304, 0916f 5/237, 0916g 6/234, 0916h 5/202, 0916i 4/90, 0916j 5/187, 0916k 6/278, 0916l 5/122, 0916m 5/170, 0916n 5/224, 0916o 5/217, 0916p 4/122, 0916q 7/139, 0916r 4/91, 0916s 5/154, 0916t 5/239, 0916u 5/195, 0916v 5/204, 0916w 2/86, 0916x 4/138, 0916y 5/318, 0916z 4/212, 0917a 5/196, 0917b 5/168, 0917c 5/236, 0917d 4/101, 0917e 5/126 → **861 menus / 33,796 dishes**; coverage 6,563/9,065 (72.4%) at
+  harvest 1,244 ok / 3,736 rows. Full pass finished; RETRY pass running: `fetch.mjs --retry --pause 20` (~590/1,455 revisited, log probe/menu-photos/run-full.log). Next tag: 0917f. Agents keep id-prefixing names; the
+  strip-prefix node one-liner used for 0914f (loop over photos/, result, clean; drop
+  `"<restaurantId> "` from name) is the fix. Flag for Calvin: 11576 Petite Paleo
+  Bakery has no street address, agent called it a home-kitchen bakery (no-home-kitchens
+  rule) — dropped at screen anyway; his call whether to hold it.
 
 - **Menu-photo sample result, 2026-09-13.** 100 random menuless listed rows: 50 had a
   Google "Menu" photo tab (31 first pass + 19 on `--retry --pause 20`; 22 still throttled

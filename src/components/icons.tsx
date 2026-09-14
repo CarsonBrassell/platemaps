@@ -219,6 +219,17 @@ export function CameraIcon({ className = "" }: IconProps) {
   );
 }
 
+/** A framed picture — the library, as opposed to the camera. */
+export function PhotoIcon({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="3" />
+      <circle cx="9" cy="9" r="2" />
+      <path d="m21 15-4.5-4.5L8 19" />
+    </svg>
+  );
+}
+
 export function VideoIcon({ className = "" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">

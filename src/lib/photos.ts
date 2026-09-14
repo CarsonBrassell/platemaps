@@ -1,3 +1,5 @@
+import { closeImage, decodeImage, type DecodedImage } from "@/lib/image";
+
 /**
  * One photo per post, and the reason is the screen that follows the shutter.
  *
@@ -34,6 +36,18 @@ export const MAX_PHOTOS = 1;
 export const PHOTO_SIZE = 900;
 
 export const PHOTO_QUALITY = 0.72;
+
+/**
+ * The shape of every post photo: 3:4, long edge `PHOTO_SIZE`.
+ *
+ * The camera crops to this at the shutter and the feed hero renders it, so a
+ * file that is not this shape gets cropped somewhere it was never reviewed.
+ * `fileToDraft` cuts a chosen picture to the same box for the same reason —
+ * what is on the review screen is what lands in the feed, whichever way the
+ * picture came in.
+ */
+export const SHOT_H = PHOTO_SIZE;
+export const SHOT_W = Math.round((SHOT_H * 3) / 4);
 
 /**
  * The upload route's ceiling. A capture at PHOTO_SIZE and PHOTO_QUALITY lands
@@ -161,15 +175,59 @@ export function isStoredPhotoUrl(url: string): boolean {
   }
 }
 
-/*
- * `resizePhotos` used to live here, turning chosen files into drafts.
+/**
+ * A picture from the library, made into the same draft the shutter makes.
  *
- * It went with the last of the library pickers: every photo on a post is now
- * taken by `CameraCapture`, which draws straight from a video frame to a canvas
- * at these three numbers and never touches a File. The size, quality and
- * per-post ceiling stay here because they are still the answer to "what will
- * the post API accept", and the day another way in exists it should read them
- * rather than pick its own.
+ * Centre-covered to 3:4 at `SHOT_W`x`SHOT_H` and re-encoded as a JPEG at
+ * `PHOTO_QUALITY`, so a chosen photo and a taken one are the same thing from
+ * here on: same shape, same size, same type at the upload door, same crop on
+ * the review screen as in the feed. Drawing through a canvas also drops the
+ * file's EXIF — the GPS tag on a phone photo does not ride onto a public post.
  *
- * `lib/image.ts` still has the File-to-JPEG resize the avatar upload uses.
+ * `decodeImage` handles the HEIC-off-an-iPhone case and applies the EXIF
+ * rotation, so a portrait shot arrives upright. Everything that can go wrong
+ * comes back as one sentence for the screen rather than a throw: a corrupt
+ * file, an unsupported format and a decode the browser gave up on all read
+ * the same to the person holding the phone.
+ *
+ * This is `resizePhotos` back under a new name. It left with the first
+ * library pickers (2026-08, `039271c`) and returned with this one in 2026-09 —
+ * see the note at the top of `CameraCapture` for why the picker came back.
  */
+export async function fileToDraft(
+  file: File,
+): Promise<{ draft: PhotoDraft; error?: never } | { draft?: never; error: string }> {
+  const unreadable = { error: "Couldn't read that photo. Try a different one." } as const;
+  /* Safari reports HEIC with an empty type on some versions, so the name is
+     the fallback check rather than the type being the only one. */
+  if (file.type && !file.type.startsWith("image/") && !/\.(heic|heif)$/i.test(file.name)) {
+    return { error: "That file isn't a photo." };
+  }
+
+  let source: DecodedImage;
+  try {
+    source = await decodeImage(file);
+  } catch {
+    return unreadable;
+  }
+
+  try {
+    const canvas = document.createElement("canvas");
+    canvas.width = SHOT_W;
+    canvas.height = SHOT_H;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return unreadable;
+
+    // The same cover crop the viewfinder shows and the shutter writes.
+    const scale = Math.max(SHOT_W / source.width, SHOT_H / source.height);
+    const dw = source.width * scale;
+    const dh = source.height * scale;
+    ctx.drawImage(source, (SHOT_W - dw) / 2, (SHOT_H - dh) / 2, dw, dh);
+
+    const blob = await canvasToJpeg(canvas);
+    if (!blob) return unreadable;
+    return { draft: { id: nextPhotoId(), previewUrl: URL.createObjectURL(blob), blob } };
+  } finally {
+    closeImage(source);
+  }
+}
