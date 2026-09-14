@@ -1,8 +1,8 @@
 import { BrandMark } from "@/components/BrandMark";
 
 /**
- * The mark, held over the app for a beat when it opens — whole at first, then
- * bitten.
+ * The mark, held over the app for a beat when it opens, then peeled off the
+ * screen like a sticker.
  *
  * ## Why this exists when iOS already has a launch screen
  *
@@ -18,29 +18,24 @@ import { BrandMark } from "@/components/BrandMark";
  * This covers the second half, and being part of the document means it is
  * painted with the first byte rather than after React hydrates.
  *
- * ## The bite, and how it happens without redrawing anything
+ * ## The peel, and how it happens without redrawing anything
  *
- * The pin opens whole — an unbroken teardrop — and 1.5s in the bite is taken
- * out of its top right and the mark flinches. The bite it lands on is the real
- * one: the supplied artwork already has it, so the animation is not *adding* a
- * bite, it is **uncovering** the one that was always there.
+ * The mark sits on the cream ground for 1.1s. Then its bottom-right corner
+ * lifts and a fold line sweeps diagonally up to the top-left corner: the part
+ * still stuck down shrinks, the flap that has come away grows, and the flap
+ * shows its paper back with a shadow falling onto the part still stuck. Once
+ * nothing is left stuck, the peeled sticker drifts off the top-left of the
+ * screen and the cream sheet fades to reveal the app underneath.
  *
- * That inversion is the whole trick, and it is forced by CLAUDE.md: the mark is
- * supplied artwork and must never be traced, redrawn or repainted. Masks can
- * only take pixels away — that is how `PostFlash` eats the mark — and here the
- * pixels needed at the start are ones the artwork does not have, so no mask can
- * produce them. Painting the notch shut would mean drawing a piece of the
- * logo, which is exactly the move this repo has shipped a wrong logo with
- * before.
- *
- * So the whole pin is made **out of the mark itself**. The pin is symmetric
- * about its vertical axis, the bite is a notch on one side of that axis, and
- * the artwork is fully opaque with its own cream ground baked in. A second copy
- * of the same file, mirrored and clipped to the bitten corner, therefore paints
- * the intact left ring over the bitten right one and closes it seamlessly —
- * same pixels, same orange, same anti-aliasing, no new artwork and nothing to
- * regenerate. Removing that copy at 1.5s *is* the bite. `phone.css` owns the
- * clip and documents where its edges are and why.
+ * None of that draws a pixel of the mark. CLAUDE.md forbids tracing,
+ * redrawing or repainting the artwork, so the whole effect is built from two
+ * copies of the same supplied file and things that only *remove* or *move*
+ * pixels: the stuck part is the mark under a shrinking `clip-path`; the flap
+ * is a second copy of the mark reflected across the fold line (a rigid
+ * `matrix(0,-1,-1,0)` plus a translation, so nothing is stretched) and
+ * clipped to the complement; the paper back is a translucent white sheet over
+ * the flap, a tint and not a drawing. `phone.css` owns the geometry and works
+ * through the fold-line arithmetic.
  *
  * ## Size, and why this is the `full` raster
  *
@@ -63,7 +58,7 @@ import { BrandMark } from "@/components/BrandMark";
  * component, and a JS failure would strand it on screen forever. As a pure
  * animation it plays from the first paint, needs no JavaScript at all, and
  * ends at `visibility: hidden` so it leaves the accessibility tree instead of
- * sitting invisibly on top of the app. The bite and the flinch are two more
+ * sitting invisibly on top of the app. The peel and the fly-off are more
  * animations on the same clock, so they inherit all of that.
  *
  * `pointer-events: none` the whole way through, so even while it is visible a
@@ -80,16 +75,21 @@ import { BrandMark } from "@/components/BrandMark";
 export function PhoneSplash() {
   return (
     <div className="phone-splash" aria-hidden="true">
-      {/* The flinch is on a wrapper rather than on the mark, the same split
-          PostFlash uses: the thing that moves is not the thing whose pixels
-          are changing, so the two animations cannot fight over `transform`. */}
-      <span className="phone-splash-shaker">
-        <span className="phone-splash-mark">
+      {/* The fly-off animates this wrapper; the peel animates the two layers
+          inside it. Same split PostFlash uses: the thing that moves is not the
+          thing whose pixels are changing, so nothing fights over `transform`. */}
+      <span className="phone-splash-mark">
+        {/* The part still stuck to the screen. Its clip shrinks as the fold
+            sweeps across. */}
+        <span className="phone-splash-stuck">
           <BrandMark size="full" className="h-48 w-auto" />
-          {/* The mirrored copy that fills the bite in. Sized identically so it
-              lands exactly on the mark underneath; phone.css mirrors it and
-              clips it to the bitten corner. */}
-          <span className="phone-splash-patch">
+        </span>
+        {/* The flap that has come away: the same file, reflected across the
+            fold line and clipped to the peeled region, with a paper-white
+            sheet over it. Sized identically so the fold line lands on the
+            same pixels in both copies. */}
+        <span className="phone-splash-flap">
+          <span className="phone-splash-flap-face">
             <BrandMark size="full" className="h-48 w-auto" />
           </span>
         </span>
