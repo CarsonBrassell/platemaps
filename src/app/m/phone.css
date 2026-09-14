@@ -734,6 +734,13 @@ html.pm-lock-scroll .pm-phone-content {
  *   peeled flap lies. `transform-origin: 0 0` is load-bearing: the arithmetic
  *   assumes the origin is the box's corner, and the default centre origin
  *   would shift the whole flap off the fold.
+ * - Both copies are masked to the pin's outline (`logo-mark-mask.png`, an
+ *   alpha silhouette that logo:build computes from the source by flood-filling
+ *   the ground; see build-logo-assets.mjs). The artwork is a rectangle with
+ *   its cream ground baked in, and without the mask the thing that peels is
+ *   that rectangle: a square sticker with a pin printed on it. The mask goes
+ *   on the same element as each clip, so the shape and the fold are cut in the
+ *   same coordinates, and it removes pixels only, it paints none.
  * - The paper back is `::after`, a translucent white sheet over the flap, so
  *   the print shows through faintly the way it does on a real sticker.
  * - The shadow is a drop-shadow on the flap's *wrapper*, which renders after
@@ -759,6 +766,12 @@ html.pm-lock-scroll .pm-phone-content {
   position: relative;
   display: block;
   animation: phone-splash-away 0.4s ease-in 1.95s both;
+}
+
+.phone-splash-stuck,
+.phone-splash-flap-face {
+  -webkit-mask: url("/logo-mark-mask.png") 0 0 / 100% 100% no-repeat;
+  mask: url("/logo-mark-mask.png") 0 0 / 100% 100% no-repeat;
 }
 
 .phone-splash-stuck {

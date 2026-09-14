@@ -188,6 +188,74 @@ async function splash(size, out) {
   return `${out.length} splash images — ${size}x${size}`;
 }
 
+/**
+ * The pin's silhouette, as a mask — not a picture of the mark.
+ *
+ * The artwork is opaque with its cream ground baked in, and CLAUDE.md is
+ * right that keying that ground out of the *displayed* image leaves a halo.
+ * This is a different thing: an alpha-only PNG that is 255 inside the pin's
+ * outline and 0 outside it, for CSS `mask-image` on surfaces that need to
+ * move or clip the pin as a shape rather than as a rectangle (the opening
+ * splash peels it off the screen). The displayed pixels are still the
+ * supplied file, untouched; the mask only decides which of them are drawn,
+ * and on the cream ground a one-pixel fringe of cream at the edge is
+ * invisible, which is why this works where keying did not.
+ *
+ * It is computed, not drawn: a flood fill from the crop's border through
+ * every background-coloured pixel marks the outside, and everything the fill
+ * cannot reach is the pin — including the cream inside the ring, which is
+ * part of the sticker, and excluding the bite, which the fill reaches from
+ * outside. The fill runs at the source's full resolution and the result is
+ * resized down, so the outline comes out anti-aliased rather than stepped.
+ */
+async function silhouette(width, height, out) {
+  const { data, info } = await sharp(SOURCE)
+    .extract({ left: BOX.left, top: BOX.top, width: BOX.width, height: BOX.height })
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const { width: W, height: H } = info;
+  const bg = BOX.background;
+  const threshold = 14;
+  const isBackground = (x, y) => {
+    const i = (y * W + x) * 4;
+    return (
+      Math.abs(data[i] - bg[0]) <= threshold &&
+      Math.abs(data[i + 1] - bg[1]) <= threshold &&
+      Math.abs(data[i + 2] - bg[2]) <= threshold
+    );
+  };
+  const outside = new Uint8Array(W * H);
+  const stack = [];
+  const seed = (x, y) => {
+    if (!outside[y * W + x] && isBackground(x, y)) {
+      outside[y * W + x] = 1;
+      stack.push(x, y);
+    }
+  };
+  for (let x = 0; x < W; x++) { seed(x, 0); seed(x, H - 1); }
+  for (let y = 0; y < H; y++) { seed(0, y); seed(W - 1, y); }
+  while (stack.length) {
+    const y = stack.pop();
+    const x = stack.pop();
+    if (x > 0) seed(x - 1, y);
+    if (x < W - 1) seed(x + 1, y);
+    if (y > 0) seed(x, y - 1);
+    if (y < H - 1) seed(x, y + 1);
+  }
+  const alpha = Buffer.alloc(W * H * 4);
+  for (let i = 0; i < W * H; i++) {
+    alpha[i * 4] = alpha[i * 4 + 1] = alpha[i * 4 + 2] = 255;
+    alpha[i * 4 + 3] = outside[i] ? 0 : 255;
+  }
+  const png = await sharp(alpha, { raw: { width: W, height: H, channels: 4 } })
+    .resize(width, height, { fit: "fill" })
+    .png({ palette: false })
+    .toBuffer();
+  writeFileSync(out, png);
+  return `${out} — ${width}x${height} silhouette mask`;
+}
+
 const built = [
   await mark(660, "public/logo-mark.webp"),
   await mark(660, "public/logo-mark.png"),
@@ -203,6 +271,9 @@ const built = [
      rather than deleted so an outside link to /logo.png gets the real
      artwork instead of the retired one. */
   await mark(660, "public/logo.png"),
+  /* The pin's outline as an alpha mask, same crop and size as logo-mark.png so
+     the two line up pixel for pixel when one masks the other. */
+  await silhouette(660, 865, "public/logo-mark-mask.png"),
   await square(512, "src/app/icon.png").then(() => "src/app/icon.png — 512x512"),
   /* Home-screen icons, for the phone tree used as an installed web app.
      `square` strips alpha by default, which is what these want too: iOS masks
