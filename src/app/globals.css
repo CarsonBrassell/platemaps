@@ -204,12 +204,19 @@ h3 {
   pointer-events: auto;
 }
 
-/* Hovering ANY part of the bubble — box background, plain text, the
+/* `.map-bubble-open` is the touch half of the same gesture: a phone has no
+   hover, so RestaurantMap.tsx adds the class on the first tap (and clears it
+   when another bubble opens, the map moves, or empty map is tapped). Every
+   rule that :hover reveals has to list it, or a tapped bubble would raise
+   above its neighbours without showing its prose.
+
+   Hovering ANY part of the bubble — box background, plain text, the
    highlighted dish span, or the rating/upvote/time row — expands it, since
    :hover on a descendant also matches all of its ancestors up the tree.
    :focus-within is the keyboard's half of the same gesture: the dish span and
    the vote chips are focusable, so tabbing into a bubble has to open it too,
    or the prose below would be revealed by pointer only. */
+.map-bubble-open,
 .map-bubble:hover,
 .map-bubble-box:hover,
 .map-bubble-box:focus-within {
@@ -222,6 +229,7 @@ h3 {
    behind the name and lose the right edge the whole design hangs on. Only the
    clipping stops, so a long subject wraps in its own column with the score
    still pinned opposite it. */
+.map-bubble-open .map-bubble-text,
 .map-bubble:hover .map-bubble-text,
 .map-bubble-box:hover .map-bubble-text,
 .map-bubble-box:focus-within .map-bubble-text {
@@ -230,6 +238,7 @@ h3 {
   max-width: 276px !important;
 }
 
+.map-bubble-open .map-line-clip,
 .map-bubble:hover .map-line-clip,
 .map-bubble-box:hover .map-line-clip,
 .map-bubble-box:focus-within .map-line-clip {
@@ -241,6 +250,7 @@ h3 {
 
 /* The comment itself, revealed. Nothing a person wrote is lost by the resting
    two-row card — it is one hover or one tab-stop away. */
+.map-bubble-open .map-bubble-prose,
 .map-bubble:hover .map-bubble-prose,
 .map-bubble-box:hover .map-bubble-prose,
 .map-bubble-box:focus-within .map-bubble-prose {
@@ -252,6 +262,7 @@ h3 {
 /* No box-shadow on hover either — the bubble is a flat card by design, and
    growing a shadow only on hover would make the resting state look unfinished
    rather than deliberate. */
+.map-bubble-open .map-bubble-box,
 .map-bubble:hover .map-bubble-box,
 .map-bubble-box:hover,
 .map-bubble-box:focus-within {
@@ -266,22 +277,19 @@ h3 {
    The face is the same Fraunces-with-WONK the feed card's .plate-headline
    uses, so a dish reads as the same kind of object wherever it appears.
 
-   The colour is ink (#2b211c), NOT the accent, and that is deliberate: the
-   approved bubble design gives the headline row exactly one coloured value —
-   the score pinned to its right — and an orange name an em away from an
-   orange percent made the row read as two accents fighting rather than as a
-   plate and its verdict. The face and the hover underline carry the "this is
-   a thing you can go to" signal that the colour used to. (It stays a distinct
-   rule from the box's own `color` so the treatment is still one selector to
-   change, and so DESIGN.md's `.map-dish-link` reference keeps pointing
-   somewhere real.)
+   The colour is the accent's text voice and the weight is bold, so the dish
+   reads as the same object it is on the feed card's subject line
+   (PhoneFeedPostCard: `font-semibold text-pm-orange-text`). It used to be ink
+   so the headline row carried one coloured value (the score); the dish now
+   outranks that, by request, on both surfaces.
 
    Underline only on hover, so a map full of bubbles isn't a map full of
    underlines. */
 .map-dish-link {
   font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
   font-variation-settings: "SOFT" 8, "WONK" 1;
-  color: #2b211c;
+  color: var(--pm-orange-text);
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
 

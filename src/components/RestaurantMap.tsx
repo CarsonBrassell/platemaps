@@ -1101,6 +1101,14 @@ function bubbleElement(
   return el;
 }
 
+/* The class a tapped-open bubble wears on a no-hover device. globals.css lists
+   it beside every `.map-bubble:hover` rule; the two must stay in step. */
+const BUBBLE_OPEN_CLASS = "map-bubble-open";
+
+function closeOpenBubbles(els: Map<string, HTMLElement>) {
+  for (const el of els.values()) el.classList.remove(BUBBLE_OPEN_CLASS);
+}
+
 /* ---------------------------------------------------------------------------
  * Voting changes what a bubble SAYS, never which bubbles exist.
  *
@@ -2271,6 +2279,7 @@ export function RestaurantMap({
          and the next tap opens a restaurant the reader never pointed at. */
       map.on("movestart", () => {
         armedId = null;
+        closeOpenBubbles(bubbleElementsRef.current);
       });
 
       /* A tap on empty map clears the name and the arm together — the way
@@ -2280,6 +2289,7 @@ export function RestaurantMap({
         const onPin = map.queryRenderedFeatures(e.point, { layers: ["restaurant-hit"] });
         if (onPin.length > 0) return;
         armedId = null;
+        closeOpenBubbles(bubbleElementsRef.current);
         tipMarker.remove();
         dimSign();
       });
@@ -2606,6 +2616,25 @@ export function RestaurantMap({
                test below and opening a menu entry instead. */
             if (target.closest(".map-reply-chip")) {
               if (comment.postId) router.push(`/feed?post=${comment.postId}`);
+              return;
+            }
+            /* On a phone the prose is not one hover away — there is no hover —
+               so the first tap OPENS the bubble and the second follows it. Same
+               `(hover: none)` gate the pins use for their name-then-commit tap
+               (applyPinData below) and for the same reason: a tap has to show
+               what it is about to open before it opens it. The chips above act
+               on the first tap regardless; they never leave the map. One bubble
+               is open at a time, and a tap on empty map or a pan closes it —
+               see the map handlers in applyPinData. The propagation stop keeps
+               the map's own click (which treats a miss as "tap outside") from
+               closing what this tap just opened. */
+            if (
+              window.matchMedia("(hover: none)").matches &&
+              !el.classList.contains(BUBBLE_OPEN_CLASS)
+            ) {
+              e.stopPropagation();
+              closeOpenBubbles(bubbleElementsRef.current);
+              el.classList.add(BUBBLE_OPEN_CLASS);
               return;
             }
             if (target.closest(".map-dish-link")) {
