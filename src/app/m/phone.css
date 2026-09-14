@@ -223,12 +223,22 @@ html.pm-lock-scroll .pm-phone-content {
   height: 100%;
   overflow-y: auto;
   overscroll-behavior: none;
-  /* Desktop browsers give this box a classic scrollbar, and Chrome paints its
-     track white. The feed's cards are white and run to this box's edge, so
-     the track read as a strip joining every card down the right side. A
-     transparent track lets the cream ground show through instead; a handset's
-     overlay scrollbar takes no room and is unaffected. */
-  scrollbar-color: rgb(0 0 0 / 0.25) transparent;
+}
+
+/* Desktop browsers give this box a classic scrollbar, and Chrome paints its
+   track white. The feed's cards are white and run to this box's edge, so the
+   track read as a strip joining every card down the right side. A transparent
+   track lets the cream ground show through instead.
+
+   Mouse-and-trackpad devices only. Setting `scrollbar-color` at all is what
+   WebKit takes as opting out of its overlay scrollbar, and on an iPhone that
+   swapped the invisible one for a classic bar that takes its own column of
+   layout — a blank strip down the right of the feed. A handset's overlay bar
+   was never the problem, so it is left alone. */
+@media (hover: hover) and (pointer: fine) {
+  .pm-phone-content {
+    scrollbar-color: rgb(0 0 0 / 0.25) transparent;
+  }
 }
 
 /* Floating capsule: 44px slot + 12px internal padding, floating 12px up. */
