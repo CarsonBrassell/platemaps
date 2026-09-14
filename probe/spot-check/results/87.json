@@ -1,0 +1,15 @@
+{
+  "id": "87",
+  "name": "Carnitas' Snack Shack - Embarcadero",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "source_url (Toast order page) returned 403; verified instead against the official site's daily menu page (carnitassnackshack.com/pig-out/embarcadero/daily-menu). All 10 checked dishes across sections (Triple Threat Sandwich, Smash Burger, Shack Burger, Crispy Chicken Sandwich, Caesar Salad, Carnitas Tacos, Baja Fish Tacos, Breakfast Burrito, Shack Fries, Loaded Quesadilla) exist with matching names/descriptions. The official site publishes no prices, so exact price accuracy is unverified; a delivery-app (Uber Eats) listing showed the Triple Threat Sandwich at $20.34 vs our $16.95, but that gap looks like typical delivery-platform markup rather than a real pricing error.",
+  "data_verdict": "minor",
+  "data_notes": "Address (1004 N Harbor Dr, San Diego, CA 92101) and hours (Mon-Thu 11am-9pm, Fri-Sat 10am-11pm, Sun 10am-9pm) both match verified sources exactly. Cuisine 'American'/'New American' matches Yelp's category. Confirmed open and operating (opened 2016, active current listings, no closure reports). Neighborhood 'Little Italy' is questionable: Yelp and TripAdvisor label this waterfront address 'Marina' district, not Little Italy.",
+  "issues": [
+    "Neighborhood label 'Little Italy' likely should be 'Marina'/'Embarcadero' per third-party listings",
+    "Dish prices could not be confirmed against an official priced source (Toast page blocked by 403); only a delivery-app price was available and it runs higher due to markup"
+  ]
+}

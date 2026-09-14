@@ -8,24 +8,20 @@
  */
 export const POINT_RULES = {
   /**
-   * Publishing pays nothing, and that is the anti-spam design.
+   * Awarded to the author for publishing a plate.
    *
-   * It used to be +10 — the largest single award in the table, and the only one
-   * you could collect by yourself. That is exactly backwards: it made the
-   * cheapest possible act the most reliably profitable one, so the way to farm
-   * points was to post as much as possible and never mind whether any of it was
-   * worth reading.
+   * This has gone 10 → 0 → 5. The 10 was the largest single award in the
+   * table and the only one you could collect by yourself, which made the
+   * cheapest act the most profitable one. Zero fixed the farming but left a
+   * first post paying nothing at all — and the first-run tour now says out
+   * loud what a photo is worth, so it has to be worth something. 5 is kept
+   * deliberately under a handful of upvotes: a post nobody values still earns
+   * less than one that lands, and the encouragement stays the upside.
    *
-   * Every remaining rule requires *somebody else to act* — an upvote, a
-   * comment, a comment upvote, a milestone. None of them can be self-dealt, so
-   * a post nobody values earns nothing no matter how many of them there are,
-   * while a post that lands earns far more than the flat 10 ever did. The
-   * encouragement is the upside, not the participation trophy.
-   *
-   * `awardPoints` returns early on a zero amount, so nothing is written to the
-   * ledger and no `point_events` row is created for publishing.
+   * Every other rule requires *somebody else to act* — an upvote, a comment,
+   * a comment upvote, a milestone — and none of them can be self-dealt.
    */
-  createPost: 0,
+  createPost: 5,
   /**
    * Awarded to the author each time a different user upvotes their post.
    * Discover-only, matching upvotes themselves — hearts earn nothing, since
@@ -56,10 +52,7 @@ export const UPVOTE_MILESTONES: ReadonlyArray<{ upvotes: number; bonus: number }
 
 /** Human-readable rules, rendered by PointsInfoModal. */
 export const POINT_RULE_COPY: ReadonlyArray<{ label: string; value: string }> = [
-  /* No "Post a plate" row. It would read "+0", which is worse than silent —
-     a zero in a table of rewards looks like a bug or a punishment, when the
-     actual message is that points come from what a post earns, not from
-     making one. The rows below say that on their own. */
+  { label: "Post a plate", value: `+${POINT_RULES.createPost}` },
   { label: "Someone upvotes your post", value: `+${POINT_RULES.receiveUpvote}` },
   { label: "Someone comments on your post", value: `+${POINT_RULES.receiveComment}` },
   { label: "Someone upvotes your comment", value: `+${POINT_RULES.receiveCommentUpvote}` },

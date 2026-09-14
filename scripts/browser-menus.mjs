@@ -67,6 +67,7 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { neon } from "@neondatabase/serverless";
 import { chromium } from "playwright";
+import { junkReason } from "./junk-menu.mjs";
 
 const execFileAsync = promisify(execFile);
 
@@ -270,6 +271,8 @@ const UNTRUSTED_HOSTS = [
 
 /** The three tests of `scripts/screen-menus.mjs` that can be run in advance. */
 function screenWouldReject(dishes, host) {
+  const junk = junkReason(dishes, host);
+  if (junk) return junk;
   if (BARRED_HOSTS.some((re) => re.test(host))) return `barred source host (${host})`;
   if (UNTRUSTED_HOSTS.some((re) => re.test(host))) return `untrusted aggregator (${host})`;
 
@@ -1035,6 +1038,10 @@ async function visit(r) {
 
   const groups = new Map();
   for (const cap of pool) {
+    /* A theme palette or a feature-flag service is a big priced-looking JSON
+     * that no storefront serves. It won the size contest 142 times before this
+     * line existed (color_3 $1.00 ... - see scripts/junk-menu.mjs). */
+    if (!cap.rendered && junkReason([], hostOf(cap.url))) continue;
     const cands = [];
     for (const root of parseRoots(cap.body)) cands.push(...candidatesFrom(root));
     if (!cands.length) continue;
@@ -1048,6 +1055,8 @@ async function visit(r) {
   let best = null;
   for (const g of groups.values()) {
     const rows = cleanRows(rowsFromCandidates(g.cands));
+    /* Skip, not fail: the real catalog is usually the next group down. */
+    if (junkReason(rows)) continue;
     if (!best || rows.length > best.rows.length) best = { ...g, rows };
   }
 

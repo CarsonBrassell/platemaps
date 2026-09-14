@@ -3,8 +3,17 @@
 import { useEffect, useState } from "react";
 import { Dialog } from "@/components/feed/Dialog";
 import { Composer } from "@/components/feed/Composer";
-import { HeartIcon, VoteArrowUpIcon, VoteArrowDownIcon } from "@/components/icons";
-import { initials, avatarPalette, relativeTime, postedDate } from "@/lib/format";
+import {
+  HeartIcon,
+  VoteArrowUpIcon,
+  VoteArrowDownIcon,
+} from "@/components/icons";
+import {
+  initials,
+  avatarPalette,
+  relativeTime,
+  postedDate,
+} from "@/lib/format";
 import { VotePair, type VoteDirection } from "@/components/feed/PostActions";
 import { PostOptionsMenu } from "@/components/PostOptionsMenu";
 import type { ShelfPost } from "@/components/ProfileShelves";
@@ -299,7 +308,9 @@ function HeartCluster({
   return (
     <div
       className={
-        (anchored ? "absolute bottom-2 right-2 z-10" : "relative mb-3 ml-auto w-max") +
+        (anchored
+          ? "absolute bottom-2 right-2 z-10"
+          : "relative mb-3 ml-auto w-max") +
         /* The bottom alignment that the whole closed stack is measured
            against, and it has to be on THIS element rather than on the list
            inside it.
@@ -327,7 +338,9 @@ function HeartCluster({
            outside its 22px box, so the column measures taller than the rows
            that make it up — enough to trip `overflow-y-auto` into showing a
            scrollbar on a list that fits perfectly well. */
-        (expanded ? " max-h-[calc(100%-1rem)] overflow-y-auto pb-0.5" : " justify-end")
+        (expanded
+          ? " max-h-[calc(100%-1rem)] overflow-y-auto pb-0.5"
+          : " justify-end")
       }
       style={expanded ? undefined : { height: closedHeight }}
     >
@@ -341,7 +354,9 @@ function HeartCluster({
           <li
             className={rowBase}
             style={{
-              transform: expanded ? undefined : "translateY(" + capOffset + "px)",
+              transform: expanded
+                ? undefined
+                : "translateY(" + capOffset + "px)",
             }}
           >
             {/* Same circle and ring as a face, so the overflow reads as the
@@ -409,7 +424,6 @@ function HeartCluster({
   );
 }
 
-
 /**
  * One comment, its Reply control, and its replies under it.
  *
@@ -426,9 +440,13 @@ function CommentRow({
   onReplyTo,
   onSubmitReply,
   onVote,
+  onTone = false,
 }: {
   node: CommentNode;
   depth: number;
+  /** Sitting on a words plate's tone block rather than on the white sheet —
+   *  the cream well that lifts a row off white vanishes on tone. */
+  onTone?: boolean;
   /** Whose plate this is, so the author's own comments are marked. */
   postAuthorId?: string;
   replyTo: string | null;
@@ -441,8 +459,16 @@ function CommentRow({
 
   return (
     <li>
-      <div className="flex items-start gap-2.5 rounded-xl bg-pm-grey-tint/40 px-3 py-2.5">
-        <Face name={comment.authorName} url={comment.authorAvatarUrl} size={28} />
+      <div
+        className={`flex items-start gap-2.5 rounded-xl px-3 py-2.5 ${
+          onTone ? "bg-white/55" : "bg-pm-grey-tint/40"
+        }`}
+      >
+        <Face
+          name={comment.authorName}
+          url={comment.authorAvatarUrl}
+          size={28}
+        />
         <div className="min-w-0 flex-1">
           <p className="flex flex-wrap items-baseline gap-x-2">
             <span className="text-[13px] font-semibold text-zinc-900">
@@ -512,6 +538,7 @@ function CommentRow({
               onReplyTo={onReplyTo}
               onSubmitReply={onSubmitReply}
               onVote={onVote}
+              onTone={onTone}
             />
           ))}
         </ul>
@@ -647,6 +674,8 @@ export function PlateDetailSheet({
   }, [post.id]);
 
   const photo = post.media?.find((m) => m.type === "image");
+  /** No photo but something said: the sheet leads with the words block. */
+  const words = !photo && post.text.trim().length > 0;
   const pct =
     post.ratingKind === "dish" && post.rating != null
       ? Math.round(post.rating)
@@ -672,7 +701,10 @@ export function PlateDetailSheet({
    * means nothing is paid, which `/api/posts/[id]/comments` decides rather
    * than this component.
    */
-  async function submit(text: string, parentId: string | null): Promise<string | null> {
+  async function submit(
+    text: string,
+    parentId: string | null,
+  ): Promise<string | null> {
     try {
       const res = await fetch(`/api/posts/${post.id}/comments`, {
         method: "POST",
@@ -709,8 +741,12 @@ export function PlateDetailSheet({
     setVoteError(null);
     onCommentVoted?.(commentId, {
       myVote: next,
-      upvoteCount: before.upvoteCount + (next === "up" ? 1 : 0) - (held === "up" ? 1 : 0),
-      downvoteCount: before.downvoteCount + (next === "down" ? 1 : 0) - (held === "down" ? 1 : 0),
+      upvoteCount:
+        before.upvoteCount + (next === "up" ? 1 : 0) - (held === "up" ? 1 : 0),
+      downvoteCount:
+        before.downvoteCount +
+        (next === "down" ? 1 : 0) -
+        (held === "down" ? 1 : 0),
     });
 
     try {
@@ -753,8 +789,10 @@ export function PlateDetailSheet({
     onVoted?.({
       upvotedByMe: next === "up",
       downvotedByMe: next === "down",
-      upvoteCount: post.upvoteCount + (next === "up" ? 1 : 0) - (heldUp ? 1 : 0),
-      downvoteCount: post.downvoteCount + (next === "down" ? 1 : 0) - (heldDown ? 1 : 0),
+      upvoteCount:
+        post.upvoteCount + (next === "up" ? 1 : 0) - (heldUp ? 1 : 0),
+      downvoteCount:
+        post.downvoteCount + (next === "down" ? 1 : 0) - (heldDown ? 1 : 0),
     });
 
     try {
@@ -788,21 +826,71 @@ export function PlateDetailSheet({
       ? "down"
       : null;
 
+  const scoreLine = (
+    /* Separated by the same middot the shelf cards use — without it
+        "▲ 27 9 likes" runs two unrelated numbers together and reads as
+        one. Inside the words block or under the photo — see `words`. */
+    <div
+      className={`flex items-center gap-2 whitespace-nowrap font-mono text-[13px] tabular-nums text-zinc-700 ${
+        words ? "mt-2 pr-10" : "mb-3"
+      }`}
+    >
+      <VotePair
+        upvoteCount={post.upvoteCount}
+        downvoteCount={post.downvoteCount}
+        myVote={myVote}
+        onVote={votePost}
+      />
+      {pct !== null && (
+        <>
+          <span aria-hidden="true" className="text-zinc-400">
+            ·
+          </span>
+          <span className="text-pm-orange-text">{pct}%</span>
+        </>
+      )}
+      {/* Not inside the words block: the faces are pinned right beside this
+          line there, wearing their own "+N", and a 343px block can't hold
+          both without wrapping the date. */}
+      {hearts.length > 0 && !words && (
+        <>
+          <span aria-hidden="true" className="text-zinc-400">
+            ·
+          </span>
+          <span className="text-zinc-500">
+            {hearts.length} {hearts.length === 1 ? "like" : "likes"}
+          </span>
+        </>
+      )}
+      {/* The day, not "324d ago" — this line is about a plate in an
+          archive, and the tile that opened it prints the same date. */}
+      <span aria-hidden="true" className="text-zinc-400">
+        ·
+      </span>
+      <span className="text-zinc-500">{postedDate(post.createdAt)}</span>
+    </div>
+  );
   return (
     <Dialog
       title={name}
       onClose={onClose}
       variant="sheet"
+      background={words ? "var(--pm-tone-2)" : undefined}
       footer={
         <Composer
           key="root"
           placeholder="Add a comment…"
           submitLabel="Post"
+          onTone={words}
           onSubmit={(text) => submit(text, null)}
         />
       }
     >
-      <div className="px-4 pb-5 pt-1">
+      {/* A words plate: the whole sheet is the tone block (`background` on
+          the Dialog) — words, caption, score, hearts, and the comments under
+          them — one object with nothing of it standing on white. So no side
+          padding here; the words region and the comments bring their own. */}
+      <div className={words ? "relative pb-5 pt-1" : "px-4 pb-5 pt-1"}>
         {/* `overflow-hidden` is the guarantee behind FACES_SHOWN: the column is
             sized to fit the shortest photo anyone plausibly posts, and this
             clips it against the image if that estimate is ever wrong. Escaping
@@ -850,14 +938,74 @@ export function PlateDetailSheet({
           </div>
         )}
 
-        {/* Without a photo there is nowhere to hang the cluster, so the same
-            control stands in the photo's place rather than being silently
-            unavailable. It moved up here from below the score line for the
-            same reason the names moved: the control and the list it opens
-            have to stay next to each other, and an 84px column cannot be
-            absolutely positioned inside the 32px strip that used to hold the
-            horizontal pill. */}
-        {!photo && !handleDelete && (
+        {/* A words plate: the tile the profile shows for it, grown to the
+            photo's size and standing in the photo's place. Same tone block,
+            same Fraunces opening mark, the restaurant as its caption — so the
+            thing you tapped and the thing that opened are one object at two
+            sizes, exactly as a photo tile is. The hearts pin into its corner
+            the way they pin into a photo's; `min-h-[176px]` is what makes
+            that safe, since the expanded fan (`FAN_MAX` faces at `ROW_PITCH`)
+            is ~156px tall and a two-line note would otherwise be shorter
+            than the panel it is meant to hold. The caption sits at the bottom
+            on `mt-auto` and clears the cluster's column with its right
+            padding, and the score line sits inside the block under it — the
+            whole plate is one object, nothing of it standing outside. The
+            text is not printed again below. The options menu goes top-right,
+            because on a words block the bottom-left is the caption. */}
+        {words && (
+          <>
+            {/* The hearts anchor to this region, not to the whole block, so
+                they stay beside the score line rather than sinking to the
+                bottom of the comments. `min-h-[176px]` keeps the expanded
+                fan (~156px) inside it. */}
+            <div className="relative flex min-h-[176px] flex-col px-5 pb-4 pt-9">
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute left-3.5 top-1 select-none font-display text-[48px] font-bold leading-none text-zinc-900/20"
+              >
+                “
+              </span>
+              <p className="whitespace-pre-wrap pr-10 text-[16px] leading-[1.45] text-zinc-800">
+                {post.text}
+              </p>
+              {post.restaurant && (
+                <p className="mt-auto pr-10 pt-4 font-display text-[13px] font-semibold text-zinc-900">
+                  {post.restaurant}
+                </p>
+              )}
+              {post.restaurant ? (
+                scoreLine
+              ) : (
+                <div className="mt-auto pt-4">{scoreLine}</div>
+              )}
+              <HeartCluster
+                anchored
+                hearts={hearts}
+                expanded={heartsOpen}
+                onToggle={() => setHeartsOpen((v) => !v)}
+              />
+            </div>
+            {/* Top-right of the block: the bottom corners of the words region
+                are taken (caption and score bottom-left, hearts bottom-right).
+                Opens downward over the block. */}
+            {handleDelete && (
+              <PostOptionsMenu
+                name={name}
+                onDelete={handleDelete}
+                wrapperClassName="absolute right-2 top-2 z-20"
+              />
+            )}
+          </>
+        )}
+
+        {/* Neither a photo nor words (a video-only plate): there is nowhere to
+            hang the cluster, so the same control stands in the photo's place
+            rather than being silently unavailable. It moved up here from
+            below the score line for the same reason the names moved: the
+            control and the list it opens have to stay next to each other,
+            and an 84px column cannot be absolutely positioned inside the 32px
+            strip that used to hold the horizontal pill. */}
+        {!photo && !words && !handleDelete && (
           <HeartCluster
             anchored={false}
             hearts={hearts}
@@ -876,7 +1024,7 @@ export function PlateDetailSheet({
             always has. Opens downward here: unlike the photo case there is
             nothing above this row to open over except the sheet's own
             header. */}
-        {!photo && handleDelete && (
+        {!photo && !words && handleDelete && (
           <div className="mb-3 flex items-start justify-between gap-2">
             <PostOptionsMenu
               name={name}
@@ -901,84 +1049,60 @@ export function PlateDetailSheet({
             had pushed aside rather than content it belongs to. */}
         {/* Named the same way the shelf card names it, so the plate you tapped
             is unmistakably the plate you got. */}
-        {post.dishName && post.restaurant && (
+        {/* The words block already carries the restaurant as its caption. */}
+        {post.dishName && post.restaurant && !words && (
           <p className="mb-1 text-[13px] text-zinc-500">{post.restaurant}</p>
         )}
 
-        {/* Separated by the same middot the shelf cards use — without it
-            "▲ 27 9 likes" runs two unrelated numbers together and reads as
-            one. */}
-        <div className="mb-3 flex items-center gap-2 font-mono text-[13px] tabular-nums text-zinc-700">
-          <VotePair
-            upvoteCount={post.upvoteCount}
-            downvoteCount={post.downvoteCount}
-            myVote={myVote}
-            onVote={votePost}
-          />
-          {pct !== null && (
-            <>
-              <span aria-hidden="true" className="text-zinc-400">
-                ·
-              </span>
-              <span className="text-pm-orange-text">{pct}%</span>
-            </>
-          )}
-          {hearts.length > 0 && (
-            <>
-              <span aria-hidden="true" className="text-zinc-400">
-                ·
-              </span>
-              <span className="text-zinc-500">
-                {hearts.length} {hearts.length === 1 ? "like" : "likes"}
-              </span>
-            </>
-          )}
-          {/* The day, not "324d ago" — this line is about a plate in an
-              archive, and the tile that opened it prints the same date. */}
-          <span aria-hidden="true" className="text-zinc-400">
-            ·
-          </span>
-          <span className="text-zinc-500">{postedDate(post.createdAt)}</span>
-        </div>
+        {!words && scoreLine}
 
-        {post.text && (
+        {post.text && !words && (
           <p className="mb-4 whitespace-pre-wrap text-[14px] leading-relaxed text-zinc-800">
             {post.text}
           </p>
         )}
 
-        <p className="mono-label mb-2 text-zinc-500">
-          {comments.length > 0
-            ? `${comments.length} ${comments.length === 1 ? "comment" : "comments"}`
-            : "Comments"}
-        </p>
-
-        {voteError && (
-          <p role="alert" className="mb-2 text-[13px] text-red-700">
-            {voteError}
+        <div className={words ? "px-5 pb-5" : undefined}>
+          <p
+            className={`mono-label mb-2 ${words ? "text-pm-grey-text" : "text-zinc-500"}`}
+          >
+            {comments.length > 0
+              ? `${comments.length} ${comments.length === 1 ? "comment" : "comments"}`
+              : "Comments"}
           </p>
-        )}
 
-        {comments.length === 0 ? (
-          <p className="rounded-xl bg-pm-grey-tint/50 px-4 py-5 text-center text-[13px] text-zinc-600">
-            No comments on this plate yet.
-          </p>
-        ) : (
-          <ul className="flex flex-col gap-2">
-            {thread.map((node) => (
-              <CommentRow
-                key={node.comment.id}
-                node={node}
-                depth={0}
-                postAuthorId={post.userId}
-                replyTo={replyTo}
-                onReplyTo={setReplyTo}
-                onSubmitReply={submit}
-                onVote={vote}
-              />
-            ))}
-          </ul>
-        )}
+          {voteError && (
+            <p role="alert" className="mb-2 text-[13px] text-red-700">
+              {voteError}
+            </p>
+          )}
+
+          {comments.length === 0 ? (
+            <p
+              className={`rounded-xl px-4 py-5 text-center text-[13px] text-zinc-600 ${
+                words ? "bg-white/55" : "bg-pm-grey-tint/50"
+              }`}
+            >
+              No comments on this plate yet.
+            </p>
+          ) : (
+            <ul className="flex flex-col gap-2">
+              {thread.map((node) => (
+                <CommentRow
+                  key={node.comment.id}
+                  node={node}
+                  depth={0}
+                  postAuthorId={post.userId}
+                  replyTo={replyTo}
+                  onReplyTo={setReplyTo}
+                  onSubmitReply={submit}
+                  onVote={vote}
+                  onTone={words}
+                />
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </Dialog>
   );

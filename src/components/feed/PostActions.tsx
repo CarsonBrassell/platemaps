@@ -145,7 +145,7 @@ export function PostActions(props: PostActionsProps) {
             onClick={handleHeart}
             aria-pressed={props.hearted}
             aria-label={props.hearted ? "Remove heart" : "Heart this plate"}
-            className={`${action} ${props.hearted ? "text-pm-orange hover:text-pm-orange" : ""}`}
+            className={`${action} ${props.hearted ? "text-pm-red hover:text-pm-red" : ""}`}
           >
             <HeartIcon filled={props.hearted} className="h-[19px] w-[19px]" />
           </button>

@@ -1,0 +1,16 @@
+{
+  "id": "522",
+  "name": "Wrench & Rodent Seabasstropub",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 10,
+  "menu_matched": 2,
+  "menu_notes": "Live Toast ordering page (source_url) and seabasstropub.com/menu both blocked fetches; fell back to Yelp's cached menu page. 9-10 of 10 checked dishes exist there by name (Baked Scallops, Cucumber Salad, Power Bowl, Anchovy Nigiri, Chronic, Avocado Roll, Cucumber Roll, Hedgehog all present, Roasted Cauliflower ~ Yelp's 'Crispy Cauliflower'), but Yelp's prices run 30-100% lower across the board (e.g. Chronic $13 vs our $22, Hedgehog $14 vs our $23, Cucumber Roll $3 vs our $6), consistent with Yelp showing a stale/older snapshot rather than the live Toast menu our data was sourced from. Only Anchovy Nigiri ($6.00) matched exactly. Could not independently confirm current prices.",
+  "data_verdict": "minor",
+  "data_notes": "Address (1815 S Coast Hwy, Oceanside, CA 92054) and lat/lng (33.1746, -117.3619) check out; neighborhood 'South Oceanside' is reasonable. Restaurant confirmed open, not closed. Hours: our data has Wed-Sun 4-9pm (closed Mon/Tue); web sources show Wed-Thu closing at 8:30pm rather than 9pm, a 30-min discrepancy on 2 of 5 open days, otherwise matching. Cuisine 'American'/'New American' is a generic label for what is really a sushi/omakase-focused restaurant.",
+  "issues": [
+    "Menu prices could not be verified against the live Toast source (blocked); only a possibly-stale Yelp snapshot was reachable, so price accuracy is uncertain rather than confirmed wrong",
+    "Wed/Thu closing time may be 8:30pm rather than 9:00pm per current web listings",
+    "Cuisine label 'American' is generic for a sushi/omakase restaurant"
+  ]
+}

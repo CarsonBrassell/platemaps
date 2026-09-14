@@ -1,0 +1,1228 @@
+[
+  {
+    "restaurantId": "979",
+    "name": "The Pad Thai Stand",
+    "sourceUrl": "https://order.online/en/store/the-pad-thai-stand-san-marcos-36129345",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://www.ubereats.com/store/the-pad-thai-stand-san-marcos-997-west-san-marcos-boulevard/4eKSUvPzVNSOotU_tLhOBg",
+    "notes": "Address in payload (997 W San Marcos Blvd Ste 107, San Marcos, CA 92078) matches the batch record exactly - this is a different, correct order.online store page than the one the router flagged as wrong-branch (3520 Ashford St). Read from the escaped Next.js RSC flight payload (displayPrice fields); each item appeared 3x (duplicate embedding) and was deduped by name+price. All 6 curry variations plus bottled water is the entire reachable catalog - no other category/section names appeared besides the 'Most Ordered'/'Featured' carousels, consistent with this being a single-item specialty stand (regional pad thai variations only). Uber Eats and Postmates listings for the same address/items agree to the cent on Central (Bangkok) $16.00 and Red Curry $19.00.",
+    "dishes": [
+      {
+        "name": "Old Style (Boran)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Northern (Chiang-Mai)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Central (Bangkok)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Southern (Chai-Ya)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Red Curry Pad Thai (Hybrid Pad Thai)",
+        "description": "",
+        "price": "$19.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Green Curry (Hybrid Pad Thai)",
+        "description": "",
+        "price": "$19.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3897",
+    "name": "The Pad Thai Stand",
+    "sourceUrl": "https://page-service.doordash.com/store/thepadthaistand-garnet-ave-30047467/ (schema.org Menu JSON-LD)",
+    "confidence": "medium",
+    "notes": "Restaurant's own domain (padthaistand.com) belongs to a DIFFERENT branch (3520 Ashford Street) and was not used. Correct Garnet Ave branch sourced via DoorDash, address string \"Garnet Ave\" verified present in payload. \"Most Ordered\" carousel (6 items) fully duplicate of the Pad Thai section, dropped. Small menu is genuine: 6 pad thai size/protein variants plus bottled water.",
+    "dishes": [
+      {
+        "name": "Southern (Chai-Ya)",
+        "description": "Dairy free, vegan, vegetarian. Roasted coconut cream, crispy shallots, and peanuts.",
+        "price": "$16.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Northern (Chiang-Mai)",
+        "description": "Dairy free, vegan, vegetarian. House peanut sauce, peanuts, massaman curry (non-spicy), coconut cream. (House peanut sauce contains coconut.).",
+        "price": "$16.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Red Curry (Hybrid Pad Thai)",
+        "description": "Rice noodles stir-fried with chicken, egg, green onions, peanuts, and bean sprouts, infused with red curry. Served with a lime wedge.",
+        "price": "$19.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Central (Bangkok)",
+        "description": "Dairy free, nut free, vegan, vegetarian. Most basic and common pad Thai. No extra ingredients - no peanuts, shallots, etc.",
+        "price": "$16.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Green Curry (Hybrid Pad Thai)",
+        "description": "Vegan, vegetarian. Hybridized pad Thai from Bangkok. Coconut cream + Thai green curry.",
+        "price": "$19.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Old Style (Boran)",
+        "description": "Dairy-free, nut-free, vegan/vegetarian. Black (sweet) soy sauce, yellow bean paste. Contains gluten.",
+        "price": "$16.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "Pure and refreshing bottled water.",
+        "price": "$2.00",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4333",
+    "name": "The AubreyRose Tea Room",
+    "sourceUrl": "https://www.theaubreyrosetearoom.com/menu",
+    "confidence": "high",
+    "notes": "Own Wix site, plain HTML /menu page titled 'Menu Options' -- this is a prix-fixe tea room with no a la carte per-dish pricing; the whole menu is a small set of priced package tiers (Afternoon Tea, Cream Tea, a bring-your-own-champagne glass pour), which is genuinely the entire menu, not a partial capture. Footer address '8362 La Mesa Blvd, La Mesa, California 91942' matches the batch address. Dropped 'Corkage Fee $20 per bottle' as a service fee rather than a food/drink item, same treatment as other restaurants' cake-cutting/split-plate charges in this batch.",
+    "dishes": [
+      {
+        "name": "Afternoon Tea (Adult)",
+        "description": "Prix fixe: seasonal soup course with accompanying savory, 3 tiered tea tray (assorted finger sandwiches and savories, seasonal fruit and dessert scones, petite treats and sweets), unlimited premium loose leaf tea. Price per person, reservations not guaranteed for split menus.",
+        "price": "$45.95",
+        "section": "Afternoon Tea Menu"
+      },
+      {
+        "name": "Afternoon Tea (Adult, Holiday 11/27-1/3)",
+        "description": "Holiday-season version of the Afternoon Tea, adult.",
+        "price": "$59.95",
+        "section": "Afternoon Tea Menu"
+      },
+      {
+        "name": "Afternoon Tea (Child)",
+        "description": "Children's menu version; does not include the soup course.",
+        "price": "$41.95",
+        "section": "Afternoon Tea Menu"
+      },
+      {
+        "name": "Afternoon Tea (Child, Holiday 11/27-1/3)",
+        "description": "Holiday-season version of the Afternoon Tea, child.",
+        "price": "$55.95",
+        "section": "Afternoon Tea Menu"
+      },
+      {
+        "name": "Cream Tea",
+        "description": "Prix fixe: sweet scone, seasonal fresh fruit, pastry, tea, sandwich, a pot of tea. Walk-in basis only, no reservations, space not guaranteed. Price per person regardless of party size.",
+        "price": "$24.95",
+        "section": "Cream Tea Menu"
+      },
+      {
+        "name": "Cream Tea (Holiday 11/27-1/3)",
+        "description": "Holiday-season version of the Cream Tea.",
+        "price": "$29.95",
+        "section": "Cream Tea Menu"
+      },
+      {
+        "name": "House Champagne, Mimosa & Sparkling Cider",
+        "description": "Per glass. Bring-your-own champagne option available (corkage fee applies separately).",
+        "price": "$11.00",
+        "section": "Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5805",
+    "name": "Ching's Famous Hopia",
+    "sourceUrl": "http://places.singleplatform.com/chings-famous-hopia/menu",
+    "confidence": "medium",
+    "notes": "SinglePlatform listing (address confirmed 1722 E 8th St, National City); this one was not price-stripped; batch-listed website chingsfamoushopia.site now redirects to expireddomains.com",
+    "dishes": [
+      {
+        "name": "6 Pc",
+        "description": "Hopia. Flavor Choice: Baboy, Buko Pandan, Jackfruit, Mongo, Pineapple, Ube",
+        "price": "$4.80",
+        "section": "Hopia"
+      },
+      {
+        "name": "Travel Pack 27 Pc",
+        "description": "Hopia. Flavor Choice: Baboy, Buko Pandan, Jackfruit, Mongo, Pineapple, Ube",
+        "price": "$20.00",
+        "section": "Hopia"
+      },
+      {
+        "name": "3 Pc",
+        "description": "Hopia. Flavor Choice: Baboy, Buko Pandan, Jackfruit, Mongo, Pineapple, Ube",
+        "price": "$2.40",
+        "section": "Hopia"
+      },
+      {
+        "name": "8 Pc Box",
+        "description": "Hopia. Flavor Choice: Baboy, Buko Pandan, Jackfruit, Mongo, Pineapple, Ube",
+        "price": "$5.75",
+        "section": "Hopia"
+      },
+      {
+        "name": "12 Pc",
+        "description": "Hopia. Flavor Choice: Baboy, Buko Pandan, Jackfruit, Mongo, Pineapple, Ube",
+        "price": "$8.65",
+        "section": "Hopia"
+      },
+      {
+        "name": "Empanada",
+        "description": "Protein Choice: Beef, Chicken, Pork",
+        "price": "$1.50",
+        "section": "Empanada"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6630",
+    "name": "Camp Coffee Company",
+    "sourceUrl": "https://www.campcoffeecompany.com/",
+    "confidence": "high",
+    "notes": "read by scripts/browser-menus.mjs in a local Chromium from the Square Online (own domain) storefront, off the rendered DOM; no address on the page, but it names Oceanside",
+    "dishes": [
+      {
+        "name": "Camp Mocha",
+        "description": "S'mores Inspired. Mocha, Toasted Marshmallow",
+        "price": "$7.00",
+        "section": "CAMP FAVORITES"
+      },
+      {
+        "name": "Tribute Latte",
+        "description": "Orange Oil, House-made Vanilla Bean Syrup",
+        "price": "$7.00",
+        "section": "CAMP FAVORITES"
+      },
+      {
+        "name": "Ceremony Latte",
+        "description": "Cardamom, Raw Sugar Simple Syrup",
+        "price": "$7.00",
+        "section": "CAMP FAVORITES"
+      },
+      {
+        "name": "Molasses Vanilla Latte",
+        "description": "Molasses, House-made Vanilla Bean Syrup,",
+        "price": "$7.00",
+        "section": "CAMP FAVORITES"
+      },
+      {
+        "name": "Campsite Iced Cappuccino",
+        "description": "Cardamom, Honey Syrup, Oatmilk Cold Foam",
+        "price": "$7.00",
+        "section": "CAMP FAVORITES"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6841",
+    "name": "Glazed Coffee & Creamery",
+    "sourceUrl": "https://glazedpb.com/",
+    "confidence": "high",
+    "notes": "read by scripts/browser-menus.mjs in a local Chromium from the unknown storefront, off the rendered DOM; no address on the page, but it names San Diego",
+    "dishes": [
+      {
+        "name": "12oz. Bag",
+        "description": "",
+        "price": "$12.50",
+        "section": "Premium Coffee & Ice Cream"
+      },
+      {
+        "name": "Soft Serve",
+        "description": "",
+        "price": "$5.00",
+        "section": "Classic Glazed Cones"
+      },
+      {
+        "name": "Soft Serve + Glaze",
+        "description": "",
+        "price": "$6.00",
+        "section": "Classic Glazed Cones"
+      },
+      {
+        "name": "Cafe Latte 16oz",
+        "description": "",
+        "price": "$5.50",
+        "section": "Amazing Coffee Concoctions"
+      },
+      {
+        "name": "Carmel Macchiato 16oz",
+        "description": "",
+        "price": "$6.00",
+        "section": "Amazing Coffee Concoctions"
+      },
+      {
+        "name": "Mocha 16oz",
+        "description": "",
+        "price": "$6.00",
+        "section": "Amazing Coffee Concoctions"
+      },
+      {
+        "name": "Affogato 20oz",
+        "description": "",
+        "price": "$7.00",
+        "section": "Amazing Coffee Concoctions"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6956",
+    "name": "Pacific Beach Ice Cream Co.",
+    "sourceUrl": "https://www.doordash.com/store/pacific-beach-ice-cream-co.-san-diego-2702388/",
+    "confidence": "medium",
+    "notes": "Own site (pacificbeachicecreamco.com) lists an extensive flavor menu (mint chip, seasonal specials, etc.) with NO prices anywhere — priced by scoop size, not by flavor, matching the /menu page's own size list (Single/Split/Double/Junior/Pint/Milkshake) which itself carries no dollar figures either. No ordering platform on the own site (router agreed: no-platform). Found the DoorDash storefront via web search; fetched directly with navigation headers, 200, address confirmed '1010 Grand Avenue' matches this record exactly. Read from the schema.org JSON-LD Menu block. The 'Most Ordered' carousel (6 items) was a complete duplicate of 6 of the 7 'Full Menu' items and was dropped; 'Toppings' was the one item unique to Full Menu. 7 priced items total — genuinely small (an ice-cream counter, not a restaurant with many entrees), cent distribution: 7 on .50, 4 on .75, 2 on .00, all conventional, no markup pattern.",
+    "dishes": [
+      {
+        "name": "Single Scoop",
+        "description": "4 oz.",
+        "price": "$7.00",
+        "section": "Full Menu"
+      },
+      {
+        "name": "Kid's Scoop",
+        "description": "Three oz.",
+        "price": "$5.75",
+        "section": "Full Menu"
+      },
+      {
+        "name": "Split",
+        "description": "Two kid's scoops.",
+        "price": "$9.50",
+        "section": "Full Menu"
+      },
+      {
+        "name": "Double",
+        "description": "Two single scoops.",
+        "price": "$10.75",
+        "section": "Full Menu"
+      },
+      {
+        "name": "Pint",
+        "description": "16 oz.",
+        "price": "$13.50",
+        "section": "Full Menu"
+      },
+      {
+        "name": "Sundae",
+        "description": "Single scoop with homemade whipped cream, two sauces, peanuts, and a cherry on top.",
+        "price": "$8.50",
+        "section": "Full Menu"
+      },
+      {
+        "name": "Toppings",
+        "description": "Choose from M&M, Oreo crumble, sour gummy worms, gummy bears, mini marshmallows, chocolate syrup, salted caramel, or chocolate fudge sauce.",
+        "price": "$1.50",
+        "section": "Full Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7897",
+    "name": "Sabroso taco savor a mi tierra",
+    "sourceUrl": "https://themenustar6.com/webspace/functions/restaurant.php?function=get_items&id=45553&restaurant_id=120250&code=ordersabrosotacosavoramitierra.com",
+    "confidence": "high",
+    "notes": "Own MenuStar ordering platform (restaurant_id 120250, single category 'MENU' id 45553). All 6 items on the site's single menu category, matching the site's own 'About Us' description (un sope, mulita, quesadilla, huarache, gordita, tacos) — a complete small menu, not a sample.",
+    "dishes": [
+      {
+        "name": "Un Sope",
+        "description": "",
+        "price": "$5.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Mulita",
+        "description": "",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Quesadilla",
+        "description": "",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Huarache",
+        "description": "",
+        "price": "$7.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Gordita",
+        "description": "",
+        "price": "$5.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Tacos",
+        "description": "",
+        "price": "$5.00",
+        "section": "Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7979",
+    "name": "Sourpuss Donuts",
+    "sourceUrl": "https://www.sourpussdonuts.com/menu",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the wix payload. read from Wix item.name / item.price data-hooks in document order; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Vanilla Bean Glazed",
+        "description": "Sourdough Brioche Donut with Vanilla Bean",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Cinnamon Sugar Twisty",
+        "description": "Sourdough Brioche Twist with Organic Cane",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Organic Apple Pie",
+        "description": "Sourdough Brioche Donut with Local Apple",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Cookies & Cream",
+        "description": "Sourdough Donut with Sweet Cream Glaze,",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "California Sunshine",
+        "description": "Sourdough Brioche Donut Mandarin & Valencia",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Dark Chocolate Glazed",
+        "description": "Sourdough Brioche Donut Glazed with 70% Dark",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Donut of the Day",
+        "description": "Rotating selection of Chefs Choice, always",
+        "price": "$6.50",
+        "section": "Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8671",
+    "name": "Mama Made Thai",
+    "sourceUrl": "https://mamamadebao.square.site/",
+    "confidence": "high",
+    "notes": "read by scripts/browser-menus.mjs in a local Chromium from the Square Online storefront storefront, off the rendered DOM; no address on the page, but it names San Diego",
+    "dishes": [
+      {
+        "name": "Pot Sticker",
+        "description": "Chicken & vegetable dumpling with ginger",
+        "price": "$9.00",
+        "section": "Order Ahead"
+      },
+      {
+        "name": "Chicken Rice Bowl",
+        "description": "Chicken skewers served with rice & salad",
+        "price": "$11.00",
+        "section": "Order Ahead"
+      },
+      {
+        "name": "Pork Rice Bowl",
+        "description": "Roasted pork served with a side salad,",
+        "price": "$11.00",
+        "section": "Order Ahead"
+      },
+      {
+        "name": "Mango Rice",
+        "description": "",
+        "price": "$7.00",
+        "section": "Order Ahead"
+      },
+      {
+        "name": "Thai Iced Tea",
+        "description": "",
+        "price": "$5.00",
+        "section": "Order Ahead"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8690",
+    "name": "Great Khan's Mongolian Grill Carlsbad",
+    "sourceUrl": "https://www.ubereats.com/store/great-khans-mongolian-grill/pmtxJ-HPRHGh2KiC4LjrWw",
+    "confidence": "medium",
+    "notes": "Own site (greatkhans.com) has no priced menu (concept/marketing page only; /menu redirects to a locations page). Confirmed the Uber Eats listing matches the batch address exactly (2525 El Camino Real, Carlsbad, CA 92008; lat 33.17917/lng -117.32699) and is currently open. Single-section build-your-own stir fry noodle menu; all five protein options are priced identically at $11.99 (confirmed directly in the page data for Beef, Chicken, Pork, Shrimp, and Vegetables).",
+    "dishes": [
+      {
+        "name": "Mongolian Stir Fry Noodles with Beef",
+        "description": "Our famously delicious mongolian stir fry noodles with beef. Comes with broccoli, onions, carrots and cabbage stir fried together with thinly sliced beef.",
+        "price": "$11.99",
+        "section": "Mongolian Stir Fry Noodles"
+      },
+      {
+        "name": "Mongolian Stir Fry Noodles with Chicken",
+        "description": "Our famously delicious mongolian stir fry noodles with chicken. Comes with broccoli, onions, carrots and cabbage stir fried together with thinly sliced chicken.",
+        "price": "$11.99",
+        "section": "Mongolian Stir Fry Noodles"
+      },
+      {
+        "name": "Mongolian Stir Fry Noodles with Pork",
+        "description": "Our famously delicious mongolian stir fry noodles with pork. Comes with broccoli, onions, carrots and cabbage stir fried together with thinly sliced pork.",
+        "price": "$11.99",
+        "section": "Mongolian Stir Fry Noodles"
+      },
+      {
+        "name": "Mongolian Stir Fry Noodles with Shrimp",
+        "description": "",
+        "price": "$11.99",
+        "section": "Mongolian Stir Fry Noodles"
+      },
+      {
+        "name": "Mongolian Stir Fry Noodles with Vegetables",
+        "description": "Our famously delicious mongolian stir fry noodles with vegetables. Comes with generous portions of broccoli, onions, carrots, and cabbage stir-fried together.",
+        "price": "$11.99",
+        "section": "Mongolian Stir Fry Noodles"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8755",
+    "name": "The Pad Thai Stand",
+    "sourceUrl": "https://page-service.doordash.com/store/the-pad-thai-stand-san-diego-1732303/",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the order.online payload. read from the DoorDash schema.org Menu block",
+    "dishes": [
+      {
+        "name": "Central (Bangkok)",
+        "description": "Most common and basic type of pad thai..",
+        "price": "$16.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Green Curry (Hybrid Pad Thai)",
+        "description": "Hybridized pad thai from Bangkok. Coconut",
+        "price": "$19.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Red Curry (Hybrid Pad Thai)",
+        "description": "Hybridized pad thai from Bangkok. Coconut",
+        "price": "$19.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Southern (Chai-Ya)",
+        "description": "Roasted coconut cream, crispy shallots, and",
+        "price": "$16.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Old Style (Boran)",
+        "description": "Black (sweet) soy sauce, yellow bean paste",
+        "price": "$16.00",
+        "section": "Pad Thai"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "Slow-brewed, aromatic jasmine tea. Lightly",
+        "price": "$5.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "Pure and refreshing bottled water.",
+        "price": "$2.00",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8874",
+    "name": "Cosmos Burger Carlsbad",
+    "sourceUrl": "https://www.burgerscosmos.com/",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the own-jsonld payload. read from schema.org Menu JSON-LD on the restaurant's own page; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Cosmos Burger",
+        "description": "Our signature burger with cosmic sauce",
+        "price": "$12.00",
+        "section": "Cosmos Burger Menu / Signature Burgers"
+      },
+      {
+        "name": "Truffle Burger",
+        "description": "Premium burger with truffle aioli",
+        "price": "$14.00",
+        "section": "Cosmos Burger Menu / Signature Burgers"
+      },
+      {
+        "name": "BBQ Bacon Burger",
+        "description": "BBQ sauce, bacon, cheddar cheese",
+        "price": "$13.00",
+        "section": "Cosmos Burger Menu / Signature Burgers"
+      },
+      {
+        "name": "Hot Chicks",
+        "description": "Spicy crispy chicken sandwich",
+        "price": "$11.00",
+        "section": "Cosmos Burger Menu / Chicken Sandwiches"
+      },
+      {
+        "name": "BBQ Chicken Sandwich",
+        "description": "BBQ chicken with crispy slaw",
+        "price": "$11.00",
+        "section": "Cosmos Burger Menu / Chicken Sandwiches"
+      },
+      {
+        "name": "Truffle Fries",
+        "description": "Crispy fries with truffle oil and parmesan",
+        "price": "$8.00",
+        "section": "Cosmos Burger Menu / Sides"
+      },
+      {
+        "name": "Regular Fries",
+        "description": "Classic crispy french fries",
+        "price": "$5.00",
+        "section": "Cosmos Burger Menu / Sides"
+      }
+    ]
+  },
+  {
+    "restaurantId": "8910",
+    "name": "Rodizio Grill Brazilian Steakhouse San Diego",
+    "sourceUrl": "https://www.rodiziogrill.com/san-diego/",
+    "confidence": "high",
+    "notes": "Rodizio-style Brazilian steakhouse: unlimited rotisserie meats and gourmet salad bar served per-person, not itemized by dish. This location's own official page publishes fixed per-person tier pricing (Full Rodizio, Salad-bar-only, Children), split by lunch/dinner daypart, which is treated as the priced menu. The national rodiziogrill.com/menu.aspx page explicitly defers to per-location pages for pricing (\"For pricing, click here and choose your favorite location\"), confirming the location page is the authoritative first-party price source. Children 0-2 yrs are free with a paying adult (no price to record).",
+    "dishes": [
+      {
+        "name": "Full Rodizio - Lunch",
+        "description": "Unlimited Brazilian sides, gourmet salads, and rotisserie grilled meats.",
+        "price": "$39.99",
+        "section": "Pricing"
+      },
+      {
+        "name": "Full Rodizio - Dinner",
+        "description": "Unlimited Brazilian sides, gourmet salads, and rotisserie grilled meats.",
+        "price": "$54.99",
+        "section": "Pricing"
+      },
+      {
+        "name": "Unlimited Gourmet Salads - Lunch",
+        "description": "Unlimited Brazilian sides and gourmet salads (no rotisserie meats).",
+        "price": "$24.99",
+        "section": "Pricing"
+      },
+      {
+        "name": "Unlimited Gourmet Salads - Dinner",
+        "description": "Unlimited Brazilian sides and gourmet salads (no rotisserie meats).",
+        "price": "$29.99",
+        "section": "Pricing"
+      },
+      {
+        "name": "Children (3-11 yrs) - Lunch",
+        "price": "$10.99",
+        "section": "Pricing"
+      },
+      {
+        "name": "Children (3-11 yrs) - Dinner",
+        "price": "$15.99",
+        "section": "Pricing"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9298",
+    "name": "Ellie's Wood Fired Pizza",
+    "sourceUrl": "http://www.ellieswoodfiredpizza.com/",
+    "confidence": "high",
+    "notes": "First-party one-page site (address matches exactly: 4852 Voltaire St, San Diego CA 92107). The shop's own FAQ/announcement confirms the menu is deliberately limited to exactly 5 pizzas (one 12in size only) plus one side sauce — a small menu that is the whole menu, not a partial capture.",
+    "dishes": [
+      {
+        "name": "Chester's Cheese",
+        "description": "San Marzano tomato sauce, shredded mozzarella, fresh parmesan (Vegetarian)",
+        "price": "$16.00",
+        "section": "Our Pizzas"
+      },
+      {
+        "name": "Mishka's Margherita",
+        "description": "San Marzano tomato sauce, fresh mozzarella chunks, fresh basil, topped with olive oil (Vegetarian)",
+        "price": "$18.00",
+        "section": "Our Pizzas"
+      },
+      {
+        "name": "Hilde's Pepperoni",
+        "description": "San Marzano tomato sauce, shredded mozzarella, pepperoni, fresh parmesan",
+        "price": "$18.00",
+        "section": "Our Pizzas"
+      },
+      {
+        "name": "Django's Pepperoni Sausage",
+        "description": "San Marzano tomato, shredded mozzarella, italian sausage, pepperoni, chopped red onion, fresh parmesan",
+        "price": "$20.00",
+        "section": "Our Pizzas"
+      },
+      {
+        "name": "House Special",
+        "description": "Mishka's Margherita with pepperoni and red onions added",
+        "price": "$20.00",
+        "section": "Our Pizzas"
+      },
+      {
+        "name": "Housemade Ranch",
+        "description": "",
+        "price": "$1.00",
+        "section": "Sides"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9319",
+    "name": "Killer Whale Creamery",
+    "sourceUrl": "https://www.killerwhalecreamery.com/menu",
+    "confidence": "high",
+    "notes": "First-party Squarespace site lists ice cream/sorbet flavors without individual prices, but the same menu page separately publishes real base prices for the products themselves (1 Scoop $5, 2 Scoops $7.50, Cacao Drinks $6.50) plus add-ons (House Made Waffle Cone $1.50, Black Vegan Cone (GF) $2, Milkshake $11); filed the priced items rather than the unpriced flavor list.",
+    "dishes": [
+      {
+        "name": "1 Scoop",
+        "description": "choice of flavor",
+        "price": "$5.00",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "2 Scoops",
+        "description": "choice of flavors",
+        "price": "$7.50",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "Cacao Drinks",
+        "description": "choice of flavor",
+        "price": "$6.50",
+        "section": "Cacao Drinks"
+      },
+      {
+        "name": "House Made Waffle Cone",
+        "description": "add-on",
+        "price": "$1.50",
+        "section": "Add-Ons"
+      },
+      {
+        "name": "Black Vegan Cone (GF)",
+        "description": "add-on",
+        "price": "$2.00",
+        "section": "Add-Ons"
+      },
+      {
+        "name": "Milkshake",
+        "description": "",
+        "price": "$11.00",
+        "section": "Milkshakes"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9424",
+    "name": "NuYo Frozen Yogurt Eastlake",
+    "sourceUrl": "https://www.ubereats.com/store/nuyo-frozen-yogurt-eastlake/71Q1LRBAXBiPNNcVJm7qaw",
+    "confidence": "medium",
+    "notes": "Own site (nuyofrozenyogurt.com) is bot-walled (sgcaptcha redirect on all pages, same as Delah Coffee). Self-serve frozen yogurt is priced by cup size, not per flavor/topping (flavors and toppings are self-served/included) - filed the 4 published size tiers as the menu; this matches the 'a category not priced per item is not a missing price' guidance rather than blocking for lack of per-flavor pricing.",
+    "dishes": [
+      {
+        "name": "Small Frozen Yogurt",
+        "description": "In our regular cup. Approximately 8 ounces. Weight is for frozen yogurt only, before toppings.",
+        "price": "$7.99",
+        "section": "Frozen Yogurt"
+      },
+      {
+        "name": "Medium Frozen Yogurt",
+        "description": "In our regular cup. Approximately 12 ounces. Weight is for frozen yogurt only, before toppings.",
+        "price": "$10.99",
+        "section": "Frozen Yogurt"
+      },
+      {
+        "name": "Large Frozen Yogurt",
+        "description": "In our midsize cup. Approximately 16 ounces. Weight is for frozen yogurt only, before toppings.",
+        "price": "$13.99",
+        "section": "Frozen Yogurt"
+      },
+      {
+        "name": "Jumbo Frozen Yogurt",
+        "description": "In our large cup. Approximately 24 ounces. Weight is for frozen yogurt only, before toppings.",
+        "price": "$16.99",
+        "section": "Frozen Yogurt"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9447",
+    "name": "Yogurt Express",
+    "sourceUrl": "https://order.online/store/yogurt-express-2377531",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://www.ubereats.com/store/yogurt-express-lake-murray-blvd/xKvOKWNYWqOe4ix7_fb8yA (Large $11.75, Quart $13.95 match)",
+    "notes": "Self-serve frozen yogurt shop with no own website; found via order.online (DoorDash white-label) storefront at the exact 6195 Lake Murray Blvd Ste C address. Real full menu is genuinely only 4 cup sizes + a toppings-on-the-side charge (5 items total) - self-serve froyo/toppings bar has no per-flavor pricing, matching the business model. Prices cross-checked against Uber Eats/Postmates listing, a different owner from DoorDash/order.online, and agree exactly.",
+    "dishes": [
+      {
+        "name": "Small Frozen Yogurt (8oz)",
+        "description": "Choose up to 4 flavors in one cup",
+        "price": "$7.75",
+        "section": "Frozen Yogurt"
+      },
+      {
+        "name": "Medium Frozen Yogurt (12oz)",
+        "description": "Choose up to 4 flavors in one cup",
+        "price": "$9.75",
+        "section": "Frozen Yogurt"
+      },
+      {
+        "name": "Large Frozen Yogurt (16oz)",
+        "description": "Choose up to 4 flavors in one cup",
+        "price": "$11.75",
+        "section": "Frozen Yogurt"
+      },
+      {
+        "name": "Quart Special Frozen Yogurt (32oz)",
+        "description": "Choose up to 4 flavors in one cup",
+        "price": "$13.95",
+        "section": "Frozen Yogurt"
+      },
+      {
+        "name": "Toppings On The Side",
+        "description": "All toppings in separate containers on the side only, no mixing in the yogurt",
+        "price": "$1.50",
+        "section": "Toppings"
+      }
+    ]
+  },
+  {
+    "restaurantId": "9448",
+    "name": "Crumbl Cookies",
+    "sourceUrl": "https://www.ubereats.com/store/crumbl-point-loma-ca/hFupRdkpUsqPs32N6D8h0g",
+    "confidence": "medium",
+    "notes": "Point Loma location confirmed by address (2990 Midway Dr Suite B). Crumbl sells cookies only by pack size (flavors rotate weekly and are not individually priced/named); the 4 pack-size items are the complete catalog structure, not a truncated carousel. Prices are Uber Eats delivery prices (marketplace), not verified in-store prices.",
+    "dishes": [
+      {
+        "name": "Single",
+        "description": "One large gourmet cookie.",
+        "price": "$6.29",
+        "section": "Large Desserts"
+      },
+      {
+        "name": "4-Pack",
+        "description": "",
+        "price": "$23.79",
+        "section": "Large Desserts"
+      },
+      {
+        "name": "6-Pack",
+        "description": "",
+        "price": "$31.29",
+        "section": "Large Desserts"
+      },
+      {
+        "name": "12-Pack",
+        "description": "",
+        "price": "$52.49",
+        "section": "Large Desserts"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10080",
+    "name": "Scorched Earth- Fire Sandwiches",
+    "sourceUrl": "https://www.scorchandserve.com/menu",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the wix payload. read from Wix item.name / item.price data-hooks in document order; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Calabrian",
+        "description": "Calabrian Chilies. Capers. Melted Brie.",
+        "price": "$14.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Carolina Bird",
+        "description": "East Carolina BBQ sauce. Coleslaw. Mayo.",
+        "price": "$14.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Baja Med BOWL",
+        "description": "Fried Chicken Thigh. Chile Morita Mayo",
+        "price": "$14.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Fries",
+        "description": "",
+        "price": "$3.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Onion Rings (3-4ea)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Coconut Water (C20) w/o pulp",
+        "description": "",
+        "price": "$3.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Sunkist",
+        "description": "",
+        "price": "$2.00",
+        "section": "Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10102",
+    "name": "Rock N’ Roost Rotisserie",
+    "sourceUrl": "https://www.rocknroost.com/",
+    "confidence": "high",
+    "notes": "read by scripts/browser-menus.mjs in a local Chromium from the unknown storefront, out of the / response; no address on the page, but it names La Jolla",
+    "dishes": [
+      {
+        "name": "Flyin' Solo",
+        "description": "One Half Rotisserie Chicken, (1) House-made",
+        "price": "$25.00",
+        "section": "Meals"
+      },
+      {
+        "name": "Feed the Flock",
+        "description": "One Whole Rotisserie Chicken, (2) House made",
+        "price": "$45.00",
+        "section": "Meals"
+      },
+      {
+        "name": "Feed the Whole coop!",
+        "description": "Two Whole Rotisserie Chickens, (4)",
+        "price": "$90.00",
+        "section": "Meals"
+      },
+      {
+        "name": "Half rotisserie Chicken",
+        "description": "",
+        "price": "$15.00",
+        "section": "Just The Bird"
+      },
+      {
+        "name": "Whole rotisserie Chicken",
+        "description": "",
+        "price": "$25.00",
+        "section": "Just The Bird"
+      },
+      {
+        "name": "Flavor Flav",
+        "description": "A creamy garlic sauce made from raw and",
+        "price": "$3.00",
+        "section": "Sauces"
+      },
+      {
+        "name": "jumpin' jack",
+        "description": "Made from our fermented hot sauce and",
+        "price": "$3.00",
+        "section": "Sauces"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10392",
+    "name": "Crafted Coastal Bakery",
+    "sourceUrl": "https://craftedcoastal.com/wp-json/wc/store/v1/products",
+    "confidence": "high",
+    "notes": "read from the restaurant's own WooCommerce Store API (first-party); small online bakery selling bread and jam for pickup — 6 items is the whole catalog, no other menu/order page exists on the site",
+    "dishes": [
+      {
+        "name": "Seasonal Jam (Apple Butter)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Jam"
+      },
+      {
+        "name": "Seasonal Jam (Strawberry)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Jam"
+      },
+      {
+        "name": "Take 'n Bake Cinnamon Rolls",
+        "description": "",
+        "price": "$20.00",
+        "section": "Bread"
+      },
+      {
+        "name": "Sourdough Sandwich Loaf",
+        "description": "",
+        "price": "$10.00",
+        "section": "Bread"
+      },
+      {
+        "name": "Classic Sourdough",
+        "description": "",
+        "price": "$12.00",
+        "section": "Bread"
+      },
+      {
+        "name": "Artisan Sourdough",
+        "description": "",
+        "price": "$12.00",
+        "section": "Bread"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10529",
+    "name": "Veggyjess",
+    "sourceUrl": "https://www.veggyjess.com/",
+    "confidence": "high",
+    "notes": "read by scripts/browser-menus.mjs in a local Chromium from the Square Online (own domain) storefront, off the rendered DOM; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Mulitas",
+        "description": "",
+        "price": "$16.00",
+        "section": "our menu"
+      },
+      {
+        "name": "Corn quesadilla",
+        "description": "Corn tortilla packed with our cheese. Have",
+        "price": "$6.00",
+        "section": "our menu"
+      },
+      {
+        "name": "Extra salsa",
+        "description": "Want more salsa! No problem add more for .50",
+        "price": "$0.50",
+        "section": "our menu"
+      },
+      {
+        "name": "Mexican bowl",
+        "description": "Mexican rice, Black Beans, choice of",
+        "price": "$20.00",
+        "section": "our menu"
+      },
+      {
+        "name": "OG Burrito",
+        "description": "Mexican rice, black beans, choice of",
+        "price": "$16.00",
+        "section": "our menu"
+      },
+      {
+        "name": "Torta",
+        "description": "Torta filled with a light layer of pinto",
+        "price": "$18.00",
+        "section": "our menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "10630",
+    "name": "Mr. Coconut CA",
+    "sourceUrl": "https://mrcoconutca.com/collections/all",
+    "confidence": "high",
+    "notes": "Restaurant's own Shopify storefront (mrcoconutca.com) doubles as its ordering menu - a small coconut-water vending stand, not a full-service kitchen. Homepage banner image is explicitly captioned 'a coconut water vending stand in Oceanside, California,' confirming identity/location match to the batch address (S The Strand, Oceanside). Only 4 products exist in /collections/all, each fetched individually and read from the embedded Shopify variants JSON (single Default Title variant per product, clean whole/half-dollar prices, no markup pattern): Pre Cut Coconut $12.00, 12oz Cup + Pulp $14.00, 16oz Cup + Pulp $16.00, 20oz Cup + Pulp $20.00. This is the complete product catalog - not a truncated sample.",
+    "dishes": [
+      {
+        "name": "Pre Cut Coconut",
+        "description": "Iced green coconut, pre cut",
+        "price": "$12.00",
+        "section": "Coconuts"
+      },
+      {
+        "name": "12oz Cup + Pulp",
+        "description": "Coconut water with pulp",
+        "price": "$14.00",
+        "section": "Coconuts"
+      },
+      {
+        "name": "16oz Cup + Pulp",
+        "description": "Coconut water with pulp",
+        "price": "$16.00",
+        "section": "Coconuts"
+      },
+      {
+        "name": "20oz Cup + Pulp",
+        "description": "Coconut water with pulp",
+        "price": "$20.00",
+        "section": "Coconuts"
+      }
+    ]
+  },
+  {
+    "restaurantId": "11191",
+    "name": "little Estrella bakes",
+    "sourceUrl": "https://api.simplybread.com/graphql",
+    "confidence": "high",
+    "notes": "read by scripts/browser-menus.mjs in a local Chromium from the unknown storefront, out of the /graphql response; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Original Cinnamon Rolls (2 pack)",
+        "description": "Soft, fluffy spirals of our freshly baked",
+        "price": "$4.50",
+        "section": ""
+      },
+      {
+        "name": "Strawberry Sweet Rolls (2 pack)",
+        "description": "Soft, fluffy sweet rolls filled with a",
+        "price": "$4.50",
+        "section": ""
+      },
+      {
+        "name": "Maple Bourbon Bacon Sweet Rolls (2 pack)",
+        "description": "Soft, fluffy rolls swirled with a sweet",
+        "price": "$4.50",
+        "section": ""
+      },
+      {
+        "name": "Custom Cake Pops (1 dozen min.)",
+        "description": "12 Hand crafted cake pops great for any",
+        "price": "$54.00",
+        "section": ""
+      },
+      {
+        "name": "Sourdough Loaf",
+        "description": "Beautifully crafted pillowy sourdough made",
+        "price": "$12.00",
+        "section": ""
+      },
+      {
+        "name": "Classic Mini Cakes",
+        "description": "All the joy of a cake in the perfect",
+        "price": "$8.00",
+        "section": ""
+      },
+      {
+        "name": "Custom Mini Cakes",
+        "description": "Same wonderful taste as our classic mini's",
+        "price": "$10.00",
+        "section": ""
+      }
+    ]
+  },
+  {
+    "restaurantId": "11273",
+    "name": "Boo Boo's sweet Potato Pies",
+    "dishes": [
+      {
+        "name": "6 inch Medium Pie",
+        "price": "$20.00",
+        "section": "Sweet Potato Pies"
+      },
+      {
+        "name": "Gluten free vegan whole pie",
+        "price": "$30.00",
+        "section": "Sweet Potato Pies"
+      },
+      {
+        "name": "Vegan 9 inch Sweet Potato Pie",
+        "price": "$30.00",
+        "section": "Sweet Potato Pies"
+      },
+      {
+        "name": "6 inch  Vegan medium pie",
+        "price": "$22.00",
+        "section": "Sweet Potato Pies"
+      },
+      {
+        "name": "Vegan 3 inch mini pie",
+        "price": "$8.00",
+        "section": "Sweet Potato Pies"
+      },
+      {
+        "name": "Gluten free vegan slice",
+        "price": "$8.00",
+        "section": "Sweet Potato Pies"
+      },
+      {
+        "name": "Boo Boo's Mini Pies",
+        "price": "$8.00",
+        "section": "Sweet Potato Pies"
+      }
+    ],
+    "sourceUrl": "https://www.doordash.com/store/boo-boos-sweet-potato-pies-oceanside-43221055/",
+    "confidence": "medium",
+    "notes": "First-party site booboospies.com unreachable (connect timeout, confirmed twice). Filed from DoorDash schema.org Menu block, 'Sweet Potato Pies' section only (7 unique items). A separate 'Menu' section on the same page had uniformly lower prices matching an independently-dated 2025-07-15 Wayback snapshot of booboospies.com/menu.html and was dropped as stale, not merged or averaged. A 'Most Ordered' section duplicated 3 of these 7 items and was not double-counted."
+  },
+  {
+    "restaurantId": "12316",
+    "name": "Sushi Heights",
+    "sourceUrl": "https://sushi-heights.square.site/",
+    "confidence": "high",
+    "notes": "read by scripts/browser-menus.mjs in a local Chromium from the Square Online storefront storefront, off the rendered DOM; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Vegan Chicken Pesto",
+        "description": "",
+        "price": "$12.00",
+        "section": "sushi heights"
+      },
+      {
+        "name": "chicken salad sandwich",
+        "description": "",
+        "price": "$11.00",
+        "section": "sushi heights"
+      },
+      {
+        "name": "The Mack",
+        "description": "",
+        "price": "$12.00",
+        "section": "sushi heights"
+      },
+      {
+        "name": "Pastrami",
+        "description": "",
+        "price": "$13.00",
+        "section": "sushi heights"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$5.00",
+        "section": "sushi heights"
+      },
+      {
+        "name": "sparkling soda",
+        "description": "",
+        "price": "$2.00",
+        "section": "sushi heights"
+      },
+      {
+        "name": "rasberry green tea unsweetened",
+        "description": "",
+        "price": "$4.00",
+        "section": "sushi heights"
+      }
+    ]
+  }
+]

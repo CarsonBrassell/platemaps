@@ -1073,6 +1073,164 @@ const statements = [
   // filter over the ~9,000 listed rows, which is what the untagged branch's
   // trigram index is there to keep off the hot path.
   `CREATE EXTENSION IF NOT EXISTS unaccent`,
+
+  // --- Dishes people typed themselves ---------------------------------------
+  //
+  // The composer has always let someone type a dish the menu doesn't list
+  // (DishPicker's "Not on the menu? Type it instead", and the whole panel when
+  // a restaurant has no extracted menu at all). Those names landed in
+  // `posts.dish_name` as free text and stopped there: they rated a plate and
+  // grouped that plate's own ratings, but never became a row anybody else could
+  // find or pick. The three statements below are what lets a reviewed one
+  // become a menu row — see scripts/dish-review.mjs for the queue that proposes
+  // them and scripts/apply-dish-review.mjs for the write.
+  //
+  // The fold, first, and it is the SAME EXPRESSION as `dishes.name_folded`
+  // above, character for character. It has to be: the whole review pass is a
+  // comparison between what someone typed and what a menu says, and a fold that
+  // differed on apostrophes or ampersands would report dishes as new that are
+  // plainly already listed. `src/lib/dishNameMatch.ts` carries the third copy,
+  // for the browser, and says why there are three.
+  //
+  // `dish_name` is nullable here where `dishes.name` is not, so this column is
+  // null for every post that never named a plate. That is what the index wants
+  // anyway — those rows are not candidates for anything.
+  `ALTER TABLE posts ADD COLUMN IF NOT EXISTS dish_name_folded TEXT
+     GENERATED ALWAYS AS (
+       btrim(regexp_replace(
+         regexp_replace(
+           replace(lower(dish_name), '&', ' and '),
+           '[''’\`´]', '', 'g'),
+         '[^a-z0-9]+', ' ', 'g'))
+     ) STORED`,
+  `CREATE INDEX IF NOT EXISTS idx_posts_dish_folded
+     ON posts (restaurant_id, dish_name_folded)`,
+
+  // Where a dish row came from, and it exists to stop a menu load from
+  // destroying a reviewed one.
+  //
+  // `dishes` is replaced wholesale per restaurant, not merged — load-menus.mjs,
+  // import-restaurants.mjs and `replaceDishesForRestaurant` in lib/db.ts each
+  // DELETE the restaurant's rows first, because a dish that has come off the
+  // menu has to actually leave and the ids are positional within a restaurant.
+  // That is right for an extracted menu and fatal for a promoted one: the next
+  // extraction of that restaurant would silently drop every dish diners had
+  // added. So those three deletes are now scoped to `source = 'menu'`, and this
+  // column is what they scope on.
+  //
+  // A scraped menu is a fact about the restaurant; a promoted dish is an
+  // inference from what people posted. Keeping them distinguishable is also
+  // what makes the inferences reversible on their own later.
+  //
+  // DEFAULT 'menu' because every row that exists when this runs came from an
+  // extraction. Promoted rows also take a different id shape (`<rid>-c-<slug>`
+  // rather than `<rid>-<n>`), so they cannot collide with the positional ids a
+  // re-extraction writes — belt and braces, same as the upsert in load-menus.
+  `ALTER TABLE dishes ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT 'menu'`,
+  `CREATE INDEX IF NOT EXISTS idx_dishes_source ON dishes (restaurant_id, source)`,
+
+  // What the review already decided, so it stops being asked.
+  //
+  // Without this the nightly queue re-proposes every cluster it has ever
+  // proposed, including the ones a reviewer looked at and rejected — and a queue
+  // that reprints yesterday's rejections is one nobody reads to the bottom.
+  //
+  // Keyed on the FOLD, not on a cluster id, and apply-dish-review.mjs writes one
+  // row per spelling in the cluster rather than one per cluster. Cluster
+  // membership changes as new posts arrive, so any id derived from the cluster
+  // would be unstable; per-spelling rows mean a decision still recognises the
+  // subset it was made about.
+  //
+  // No foreign key on `restaurant_id`, for the reason `posts.restaurant_id`
+  // hasn't got one: fetch-restaurants.mjs rewrites the id space wholesale, and
+  // an FK would turn a data refresh into a cascade. A decision whose restaurant
+  // has gone is inert, not corrupt.
+  `CREATE TABLE IF NOT EXISTS dish_review_decisions (
+     restaurant_id TEXT NOT NULL,
+     name_folded TEXT NOT NULL,
+     decision TEXT NOT NULL,
+     canonical_name TEXT,
+     dish_id TEXT,
+     decided_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+     PRIMARY KEY (restaurant_id, name_folded)
+   )`,
+  // --- The dish fold, accent-blind ------------------------------------------
+  //
+  // The two generated columns above fold "Crème Brûlée" to "cr me br l e":
+  // `è` is not in `a-z`, so the alphanumeric pass turned every accented letter
+  // into a space. Meanwhile `normalize()` in src/lib/textMatch.ts, the fold on
+  // the typed side of `?dish=`, already took the accents off — so the two
+  // halves of an "indexed equality" disagreed on exactly the names that carry
+  // an accent, and the review pass clustered "Creme Brulee" apart from the
+  // menu's own spelling. Calvin's call (2026-09-13): nobody types the accents,
+  // treat the two spellings as one.
+  //
+  // `unaccent()` is STABLE (its dictionary can be edited), and a generated
+  // column needs IMMUTABLE. The wrapper pins the dictionary and promises
+  // immutability on our behalf — the standard workaround, and honest here:
+  // nothing edits the dictionary, and if it ever were edited the columns would
+  // want rebuilding anyway.
+  //
+  // A generated column's expression cannot be altered in place, so the columns
+  // are dropped and re-added, once: each DO block reads the stored expression
+  // and only drops a column that predates the wrapper. On a fresh database the
+  // statements above create the old column and these replace it; on a migrated
+  // one they are no-ops. Dropping a column drops its index, so each is
+  // re-created here. `dish_names` is derived from the dishes column and needs
+  // `npm run dishes:index` after this lands.
+  //
+  // This is the expression src/lib/dishNameMatch.ts has to match; the earlier
+  // two are superseded by it, not siblings of it.
+  `CREATE OR REPLACE FUNCTION fold_accents(text) RETURNS text
+     LANGUAGE sql IMMUTABLE PARALLEL SAFE STRICT
+     AS $$ SELECT public.unaccent('public.unaccent'::regdictionary, $1) $$`,
+
+  `DO $$
+   BEGIN
+     IF EXISTS (
+       SELECT 1
+         FROM pg_attribute a
+         JOIN pg_attrdef d ON d.adrelid = a.attrelid AND d.adnum = a.attnum
+        WHERE a.attrelid = 'dishes'::regclass
+          AND a.attname = 'name_folded'
+          AND pg_get_expr(d.adbin, d.adrelid) NOT LIKE '%fold_accents%'
+     ) THEN
+       ALTER TABLE dishes DROP COLUMN name_folded;
+     END IF;
+   END $$`,
+  `ALTER TABLE dishes ADD COLUMN IF NOT EXISTS name_folded TEXT
+     GENERATED ALWAYS AS (
+       btrim(regexp_replace(
+         regexp_replace(
+           replace(lower(fold_accents(name)), '&', ' and '),
+           '[''’\`´]', '', 'g'),
+         '[^a-z0-9]+', ' ', 'g'))
+     ) STORED`,
+  `CREATE INDEX IF NOT EXISTS idx_dishes_name_folded ON dishes (name_folded)`,
+
+  `DO $$
+   BEGIN
+     IF EXISTS (
+       SELECT 1
+         FROM pg_attribute a
+         JOIN pg_attrdef d ON d.adrelid = a.attrelid AND d.adnum = a.attnum
+        WHERE a.attrelid = 'posts'::regclass
+          AND a.attname = 'dish_name_folded'
+          AND pg_get_expr(d.adbin, d.adrelid) NOT LIKE '%fold_accents%'
+     ) THEN
+       ALTER TABLE posts DROP COLUMN dish_name_folded;
+     END IF;
+   END $$`,
+  `ALTER TABLE posts ADD COLUMN IF NOT EXISTS dish_name_folded TEXT
+     GENERATED ALWAYS AS (
+       btrim(regexp_replace(
+         regexp_replace(
+           replace(lower(fold_accents(dish_name)), '&', ' and '),
+           '[''’\`´]', '', 'g'),
+         '[^a-z0-9]+', ' ', 'g'))
+     ) STORED`,
+  `CREATE INDEX IF NOT EXISTS idx_posts_dish_folded
+     ON posts (restaurant_id, dish_name_folded)`,
 ];
 
 for (const statement of statements) {

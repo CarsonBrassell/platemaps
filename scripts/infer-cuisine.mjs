@@ -6,6 +6,7 @@
  *   node --env-file=.env.local scripts/infer-cuisine.mjs --listed        # only rows a visitor can see
  *   node --env-file=.env.local scripts/infer-cuisine.mjs --limit 50      # first N (listed first)
  *   node --env-file=.env.local scripts/infer-cuisine.mjs --no-llm        # keyword stage only, free
+ *   node --env-file=.env.local scripts/infer-cuisine.mjs --bars          # re-judge "Bars" rows that carry a real food menu
  *   node --env-file=.env.local scripts/infer-cuisine.mjs --apply         # write the decisions
  *
  * Two stages, cheapest first.
@@ -51,6 +52,12 @@ const opt = (n, d) => {
 const APPLY = flag("--apply");
 const LISTED_ONLY = flag("--listed");
 const NO_LLM = flag("--no-llm");
+// --bars: instead of rows with no cuisine, take rows labelled "Bars" that have a
+// food menu of 15+ dishes. Kettner Exchange and Tahona were "Bars" from their
+// Yelp category while their menus are full dinner service; the site's Discover
+// filter hid them from anyone looking for a restaurant. Only a clear non-Bars
+// winner is written; a bar that scores as a bar keeps its label.
+const BARS = flag("--bars");
 const LIMIT = Number(opt("--limit", 0)) || 0;
 const CONCURRENCY = Number(opt("--concurrency", 6)) || 6;
 const MODEL = opt("--model", "claude-sonnet-5");
@@ -368,17 +375,25 @@ const rows = await sql`
           ) x) AS dishes,
          (SELECT count(*)::int FROM dishes d WHERE d.restaurant_id = r.id) AS dish_count
     FROM restaurants r
-   WHERE (r.cuisine IS NULL OR r.cuisine = '')
+   WHERE ${BARS
+       ? sql`r.cuisine = 'Bars' AND (SELECT count(*) FROM dishes d WHERE d.restaurant_id = r.id) >= 15`
+       : sql`(r.cuisine IS NULL OR r.cuisine = '')`}
      ${LISTED_ONLY ? sql`AND r.hold_reason IS NULL AND r.lat IS NOT NULL AND r.lng IS NOT NULL` : sql``}
    ORDER BY (r.hold_reason IS NULL AND r.lat IS NOT NULL AND r.lng IS NOT NULL) DESC, r.id
    ${LIMIT ? sql`LIMIT ${LIMIT}` : sql``}`;
 
-console.log(`${rows.length} rows with no cuisine${LISTED_ONLY ? " (listed only)" : ""}. Stage 1: keywords...`);
+console.log(`${rows.length} rows ${BARS ? 'labelled Bars with a menu' : 'with no cuisine'}${LISTED_ONLY ? " (listed only)" : ""}. Stage 1: keywords...`);
 
 const decisions = [];
 const undecided = [];
 for (const row of rows) {
   const kw = scoreRow(row);
+  if (BARS) {
+    // Stays a bar: scored as one, a weak food signal (< 12), or a brewery/taproom
+    // whose kitchen happens to serve tacos.
+    if (kw.decided === "Bars" || kw.decided === "Unknown") continue;
+    if ((kw.ranked[0]?.[1] ?? 0) < 12 || /brew|tap ?room|taphouse/i.test(row.name)) continue;
+  }
   if (kw.decided) {
     decisions.push({ id: row.id, name: row.name, listed: row.listed, cuisine: kw.decided, method: "keywords", confidence: "high", evidence: kw.ranked, dish_count: row.dish_count });
   } else {
@@ -432,7 +447,7 @@ if (!APPLY) {
 mkdirSync(SNAP_DIR, { recursive: true });
 const ids = applicable.map((d) => d.id);
 const snap = await sql`SELECT id::text, cuisine, cuisine_raw, cuisine_tags FROM restaurants WHERE id::text = ANY(${ids})`;
-const snapPath = `${SNAP_DIR}/cuisine-null-${STAMP}.json`;
+const snapPath = `${SNAP_DIR}/cuisine-${BARS ? "bars" : "null"}-${STAMP}.json`;
 writeFileSync(snapPath, JSON.stringify(snap, null, 1));
 console.log(`snapshot: ${snapPath} (${snap.length} rows)`);
 
@@ -440,7 +455,7 @@ let written = 0, n = 0;
 for (const d of applicable) {
   const r = await sql`
     UPDATE restaurants SET cuisine = ${d.cuisine}
-     WHERE id::text = ${d.id} AND (cuisine IS NULL OR cuisine = '')`;
+     WHERE id::text = ${d.id} AND ${BARS ? sql`cuisine = 'Bars'` : sql`(cuisine IS NULL OR cuisine = '')`}`;
   n += 1; written += Array.isArray(r) ? 0 : (r?.count ?? 0);
   if (n % 200 === 0) process.stdout.write(`\r  writing ${n}/${applicable.length}`);
 }

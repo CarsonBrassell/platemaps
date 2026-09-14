@@ -1,0 +1,16 @@
+{
+  "id": "408",
+  "name": "Ironside Fish & Oyster",
+  "on_site": true,
+  "menu_verdict": "stale",
+  "menu_checked": 8,
+  "menu_matched": 1,
+  "menu_notes": "Official site returned HTTP 429 on repeated tries; verified against allmenus.com and several 2026 web-search results instead. Ironside closed Feb 16-Mar 10 2026 for an 'Ironside 2.0' kitchen/menu overhaul and reopened with a different menu. Our data (source_url gayot.com, confidence medium) still reflects the pre-relaunch menu: section names (Ironside Classics, Local Catch, From The Earth) don't match the current sections (Small Plates, Big Plates, Whole Fish a la Carte, The Catch, Veggies), and prices are consistently much higher than current — Lobster Roll $33 vs $22 now, Oysters Rockefeller $24 vs $10, Fish N' Chips $22 vs $16, Rockfish Ceviche $16 vs ~$14. Only Peel 'N' Eat Shrimp ($3.55 vs $3.25+) matched within $1.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (1654 India St, San Diego, 92101), neighborhood (Little Italy), cuisine (Seafood), and lat/lng (32.7227, -117.1686) are all correct. Hours match the current post-renovation hours exactly: Mon-Thu 11:30am-10pm, Fri 11:30am-11pm, Sat 11am-11pm, Sun 11am-10pm. Restaurant is open (reopened March 2026 after a temporary renovation closure, not permanently closed).",
+  "issues": [
+    "Menu is the pre-'Ironside 2.0' version — the restaurant relaunched with a new menu and new section structure in March 2026, but this menu was captured/attempted afterward (attempted_at 2026-08-10) from a stale source",
+    "Several dish prices run $2-14 too high versus the current menu (Lobster Roll, Oysters Rockefeller, Fish N' Chips, Rockfish Ceviche)",
+    "Re-pull the menu from ironsidefishandoyster.com directly (or a fresher aggregator) instead of gayot.com"
+  ]
+}

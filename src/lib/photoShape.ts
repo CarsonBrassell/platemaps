@@ -96,6 +96,21 @@ export function packColumns<T extends { photo?: string; photoW?: number; photoH?
   items: readonly T[],
   count: number,
 ): T[][] {
+  return packBy(items, count, (item) => 1 / photoRatio(item) + BODY_HEIGHT_RATIO);
+}
+
+/**
+ * The same left fold with the height guess handed in, for lists that are not
+ * restaurant cards — the profile's archive packs photo plates and words plates
+ * into the same two columns, and a words plate's height comes from how much
+ * was said rather than from a photo's proportions. Units don't matter as long
+ * as `estimate` is consistent across the list.
+ */
+export function packBy<T>(
+  items: readonly T[],
+  count: number,
+  estimate: (item: T) => number,
+): T[][] {
   if (count <= 1) return [items.slice()];
 
   const columns: T[][] = Array.from({ length: count }, () => []);
@@ -105,7 +120,7 @@ export function packColumns<T extends { photo?: string; photoW?: number; photoH?
     let shortest = 0;
     for (let i = 1; i < count; i++) if (heights[i] < heights[shortest]) shortest = i;
     columns[shortest].push(item);
-    heights[shortest] += 1 / photoRatio(item) + BODY_HEIGHT_RATIO;
+    heights[shortest] += estimate(item);
   }
 
   return columns;

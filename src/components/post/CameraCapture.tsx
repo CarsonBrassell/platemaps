@@ -785,6 +785,17 @@ export function CameraCapture({
           <div className="relative aspect-[4/5] w-full overflow-hidden">
             {viewfinder}
             {review}
+            {/* The other door rides inside the picture, pinned to its bottom
+                edge, rather than in the rail below. The rail is placed from
+                the screen's bottom and the picture from its centre, so where
+                the two met depended on the handset — and on a 390x844 the
+                bubble straddled the picture's bottom edge exactly. Anchored
+                here it is always the same distance clear of that line.
+                `z-20` beats the rails' `z-10`: on a short screen the bottom
+                rail's box reaches up over this spot and would eat the tap. */}
+            {!taken && (
+              <div className="absolute inset-x-4 bottom-3 z-20">{skipDoor}</div>
+            )}
           </div>
         </div>
 
@@ -818,7 +829,9 @@ export function CameraCapture({
             reviewActions
           ) : (
             <>
-              {/* What the shutter will do, said once, where the thumb already is. */}
+              {/* What the shutter will do, said once, where the thumb already is.
+                  The skip door used to sit between this and the controls; it
+                  now lives inside the picture frame above. */}
               <p aria-live="polite" className="text-xs font-medium text-white/75">
                 <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                   {mode === "split"
@@ -831,7 +844,6 @@ export function CameraCapture({
                 </span>
               </p>
 
-              {skipDoor}
               {controls}
             </>
           )}

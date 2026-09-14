@@ -26,6 +26,7 @@
  */
 
 import { appendFile, readFile, writeFile } from "node:fs/promises";
+import { junkReason } from "./junk-menu.mjs";
 
 const files = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 if (files.length === 0) {
@@ -379,6 +380,36 @@ const COMPLETE_BUT_SHORT = new Set([
   "313", // Little Sakana - 5 tiers, AYCE sushi
   "2038", // Cinnabon - rolls, CinnaPacks and drinks IS the whole catalogue
   "2108", // Golden Spoon - frozen yoghurt, dessert-only, complete at 7
+  // 2026-09-13 hand review of every 4-7 dish capture for a listed restaurant
+  // with no menu (probe/thin-review.md, 77 rows). 28 read as whole menus;
+  // the other 49 were carousels, merch, bags of beans, hotel rates, spam or
+  // config keys, which is why THIN stays at 8 instead of dropping to 4.
+  "12316", // Sushi Heights - Square store, 7 items
+  "6841", // Glazed Coffee & Creamery - cones, coffee, bag of beans
+  "10102", // Rock N Roost Rotisserie - meals, birds, sauces
+  "11191", // little Estrella bakes - rolls, cake pops, loaves
+  "921", // Banh Cuon Phuong Nga - one-dish specialist, 7 variants
+  "4333", // AubreyRose Tea Room - tea services are the menu
+  "6956", // Pacific Beach Ice Cream Co - scoops, pints, sundae
+  "3897", "979", "8755", // The Pad Thai Stand x3 - six pad thais and drinks
+  "11273", // Boo Boos Sweet Potato Pies - pies only
+  "7979", // Sourpuss Donuts - seven donuts on its own /menu
+  "8874", // Cosmos Burger Carlsbad - burgers, chicken, sides
+  "10080", // Scorched Earth Fire Sandwiches - /menu, 7 items
+  "10529", // Veggyjess - vegan taco stand, "our menu" section
+  "8910", // Rodizio Grill - AYCE price tiers, same shape as Shabumi
+  "9298", // Ellies Wood Fired Pizza - five pizzas and ranch
+  "5805", // Chings Famous Hopia - hopia by the pack, empanada
+  "7897", // Sabroso taco - six antojitos
+  "9319", // Killer Whale Creamery - scoops, drinks, cones
+  "10392", // Crafted Coastal Bakery - loaves and jam
+  "6630", // Camp Coffee Company - five drinks IS the menu (Calvin, 09-13)
+  "8671", // Mama Made Thai - five items, Square store
+  "9447", // Yogurt Express - sizes and toppings
+  "8690", // Great Khans Mongolian Grill - one bowl, five proteins
+  "9448", // Crumbl Cookies - pack sizes are the whole price list
+  "10630", // Mr Coconut - four coconut sizes
+  "9424", // NuYo Frozen Yogurt Eastlake - four sizes
 ]);
 
 /*
@@ -2336,7 +2367,12 @@ for (const file of files) {
       domainIsNamedForTheRestaurant;
 
     let reason = null;
-    if (looksMarkedUp)
+    /* First, before any price-shape test: a config payload has no menu prices
+     * to reason about. 142 Wix palettes and DoorDash flag tables passed every
+     * check below on 2026-09-05/06 (scripts/junk-menu.mjs). */
+    const junk = junkReason(e.dishes, host);
+    if (junk) reason = junk;
+    else if (looksMarkedUp)
       reason =
         `markup or platform fee: ${markupRatio.hits}/${markupRatio.of} prices divide by ` +
         `${markupRatio.m} onto round dollars (${host})`;

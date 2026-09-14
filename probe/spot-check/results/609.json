@@ -1,0 +1,14 @@
+{
+  "id": "609",
+  "name": "Addison",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 2,
+  "menu_matched": 2,
+  "menu_notes": "Verified against addisondelmar.com and corroborating web search (multiple current sources including the official site and Wine Spectator). Ten-Course Tasting Menu is confirmed at $395 per person. Champagne Lounge Tartelette Menu ($198) and optional pairing (+$175) are consistent with the site's description of the Champagne Lounge experience.",
+  "data_verdict": "wrong",
+  "data_notes": "This id is a DUPLICATE of restaurant id 3171 ('Addison at Fairmont Grand Del Mar'), which is the same restaurant at the same location. Id 609's address and city fields are both null, while id 3171 has the correct, verified address: 5200 Grand Del Mar Way, San Diego, CA 92130 (confirmed via addisondelmar.com and fairmont.com). Id 3171 also carries the more accurate cuisine label 'French' vs. 609's 'American'/'New American' tag -- Addison's cuisine is best described as French-influenced California fine dining. Coordinates on 609 (32.9416, -117.1991) are close to but not identical to 3171's (32.938623, -117.1974149); 3171's should be treated as authoritative since it has a verified address to back it.",
+  "issues": [
+    "DUPLICATE RESTAURANT: id 609 ('Addison') and id 3171 ('Addison at Fairmont Grand Del Mar') are the same restaurant. Row 3171 is the more complete/correct one (has address, city, more precise lat/lng, and cuisine 'French'); row 609 is missing address and city entirely and uses a less precise cuisine tag. Recommend either copying 3171's address/city/cuisine into 609 and deleting 3171, or removing 609 and keeping 3171 -- but do not keep both as separate listings, since it would show the same restaurant twice on the map."
+  ]
+}

@@ -6,6 +6,8 @@ import { heatFor, heatRamp, HEAT_RAMP_FLOOR, isPerfect } from "@/components/post
 import Link from "next/link";
 import { PostMediaCarousel } from "@/components/feed/PostMediaCarousel";
 import { PostActions, type VoteDirection } from "@/components/feed/PostActions";
+import { DoubleTapPop } from "@/components/feed/DoubleTapPop";
+import { useDoubleTap } from "@/components/feed/useDoubleTap";
 import { StarRating } from "@/components/StarRating";
 import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon, CloseIcon } from "@/components/icons";
 import { relativeTime } from "@/lib/format";
@@ -239,6 +241,26 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
      survive into the event handlers below. */
   const onVote = props.surface === "discover" ? props.onVote : null;
   const onReact = props.surface === "friends" ? props.onReact : null;
+
+  /* Two taps on the card body add the reaction — the heart on Friends, an
+     upvote on Discover — and never take one back: a double-tap on a plate
+     already liked just replays the pop, the way every feed people already use
+     behaves. Signed out, it asks for sign-in the same as the row does. The
+     hook itself ignores taps on buttons, links and menus, so a fast double
+     press on Share or a carousel arrow can't like by accident. */
+  const popKind = props.surface === "friends" ? "heart" : "upvote";
+  const doubleTap = useDoubleTap(() => {
+    if (!currentUserId) {
+      onRequireSignIn();
+      return false;
+    }
+    if (onReact) {
+      if (!post.heartedByMe) onReact(post.id);
+    } else if (onVote) {
+      if (!post.upvotedByMe) onVote(post.id, "up");
+    }
+    return true;
+  });
   const reactPoints = props.surface === "discover" ? props.reactPoints : null;
   const trending = props.surface === "discover" && props.trending;
 
@@ -410,8 +432,13 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
          the reverse of the pair this used to name, since what the person said
          now leads the card. */
       aria-labelledby={lineDish || lineRestaurant ? `${titleId} ${subId}` : titleId}
-      className="overflow-hidden rounded-2xl bg-white"
+      onClick={doubleTap.onClick}
+      /* touch-manipulation: the second tap of a double-tap must not become
+         a zoom on iOS — see useDoubleTap. relative: anchors the pop when the
+         post has no photo to centre it on. */
+      className="relative touch-manipulation overflow-hidden rounded-2xl bg-white"
     >
+      {!showsHero && <DoubleTapPop kind={popKind} popKey={doubleTap.popKey} />}
       {/*
         The hero runs flush to the card edge rather than inset the 10px
         DESIGN.md asks for, matching `PhoneRestaurantCard` and for the reason
@@ -427,6 +454,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
             dishName={post.dishName}
             restaurant={post.restaurant}
           />
+          <DoubleTapPop kind={popKind} popKey={doubleTap.popKey} />
           {post.price && (
             <div className="pointer-events-none absolute bottom-3 left-3">
               <span className="rounded-full bg-white/95 px-2.5 py-1 font-mono text-xs font-medium tabular-nums text-zinc-700">

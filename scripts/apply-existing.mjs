@@ -197,6 +197,12 @@ for (const entry of entries) {
       skip(entry.status, "duplicated row is neither listed nor place-identified");
       continue;
     }
+    if (other.hold_reason?.startsWith("duplicate of")) {
+      // The other row is itself a duplicate. Pointing at it would build a
+      // cycle (A -> B -> A) that hides both rows; see fix-circular-duplicates.mjs.
+      skip(entry.status, `duplicated row is itself held as "${other.hold_reason}"`);
+      continue;
+    }
 
     const reason = `duplicate of ${entry.existingRestaurantId}`;
     b.wouldApply += 1;

@@ -1,0 +1,16 @@
+{
+  "id": "1561",
+  "name": "Extraordinary Desserts",
+  "on_site": true,
+  "menu_verdict": "stale",
+  "menu_checked": 10,
+  "menu_matched": 0,
+  "menu_notes": "Official site's /menu link exists but its content wasn't retrievable via fetch (/menu1/ 404s, Uber Eats page blocked with 403); used postmates.com's current online-ordering menu (same catalog Uber Eats/Postmates share) as the real-menu source. Checked 10 dishes across Morning Toasts, Granola Bowl, Dips & Spreads, Boards, Panini, Grilled Cheese and Pastries - every single one still exists on the current menu with the correct name/spelling, but every price is $2-$8.50 lower than current (e.g. Charcuterie Plate $34.00 in DB vs $42.50 now; Turkey Breast Panini $16.95 vs $21.00; Hummus Trio $22.00 vs $27.50; Blueberry Cheesecake Coffee Cake $8.95 vs $11.00). The consistent ~15-25% underpricing across the board indicates a clearly outdated menu snapshot, not random drift. Likely explanation: source_url in the raw data is a cash.app payment/QR-ordering link rather than an actual menu page, so it was probably scraped from an old cached ordering session.",
+  "data_verdict": "minor",
+  "data_notes": "Address 1430 Union St, San Diego, CA 92101 and neighborhood 'Little Italy' are correct and match the official Little Italy location (there is a second, different location on 5th Ave/Bankers Hill, but our address is unambiguously the Little Italy one). Cuisine 'Bakery & Desserts' is reasonable. lat/lng (32.720246, -117.16581) fall within San Diego County in Little Italy. Hours are uncertain: our DB shows an 11am (10am Sat/Sun) opening with 9-11pm closes; a search of third-party listings suggested an 8:30am opening on weekdays, which conflicts, but that search result was not from an authoritative source, so this is flagged rather than called wrong.",
+  "issues": [
+    "Menu prices are stale across virtually every checked dish - a fresh scrape (avoid the cash.app source_url) would fix this",
+    "source_url field points to a cash.app payment link rather than a real menu page - bad source for future re-scrapes",
+    "Weekday opening hour could not be confidently confirmed against our 11am entries; worth a manual recheck"
+  ]
+}

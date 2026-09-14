@@ -19,12 +19,16 @@ export function Composer({
   onSubmit,
   onCancel,
   autoFocus = false,
+  onTone = false,
 }: {
   placeholder: string;
   submitLabel: string;
   onSubmit: (text: string) => Promise<string | null>;
   onCancel?: () => void;
   autoFocus?: boolean;
+  /** On a tone-painted sheet (a words plate) the cream field disappears
+   *  into the ground; a white one is the same field, visible. */
+  onTone?: boolean;
 }) {
   const [text, setText] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -78,7 +82,11 @@ export function Composer({
              scrolled sideways. 16px on touch, the original 14px from `md` up
              where no browser does this. Every input in the app follows the
              same rule. */
-          className="min-h-11 w-0 min-w-0 flex-1 rounded-full bg-pm-grey-tint/60 px-4 text-base md:text-sm transition-colors placeholder:text-pm-grey-text focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange"
+          className={`min-h-11 w-0 min-w-0 flex-1 rounded-full px-4 text-base md:text-sm transition-colors placeholder:text-pm-grey-text focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange ${
+            onTone
+              ? "bg-white/70 focus:bg-white"
+              : "bg-pm-grey-tint/60 focus:bg-pm-grey-tint/40"
+          }`}
         />
         {onCancel && (
           <button

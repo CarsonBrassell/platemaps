@@ -5,6 +5,7 @@ import { PlateStarIcon, InfoIcon } from "@/components/icons";
 import { PointsInfoModal } from "@/components/feed/PointsInfoModal";
 import { POINT_RULES, formatPoints } from "@/lib/points";
 import { RankRing } from "@/components/RankRing";
+import { RankLadderModal } from "@/components/RankLadderModal";
 
 /**
  * Your Plate Points, on your own profile — and the one place in the app where
@@ -67,12 +68,12 @@ export function PlatePointsPanel({
   className?: string;
 }) {
   const [infoOpen, setInfoOpen] = useState(false);
+  const [ladderOpen, setLadderOpen] = useState(false);
 
-  /* No "post" row — publishing pays 0 now, and a "+0 post" chip in a row of
-     rewards reads as a penalty rather than as "points come from what a post
-     earns". The two that remain are both other-people-acted rules, which is
-     the whole shape of the economy. See lib/points.ts. */
+  /* Three rows, and the order is the order somebody meets them: post first,
+     then what other people do to it. See lib/points.ts for the amounts. */
   const rules = [
+    { label: "post", value: POINT_RULES.createPost },
     { label: "upvote", value: POINT_RULES.receiveUpvote },
     { label: "comment", value: POINT_RULES.receiveComment },
   ];
@@ -94,9 +95,10 @@ export function PlatePointsPanel({
           >
             <InfoIcon className="h-3.5 w-3.5" />
           </button>
-          <RankRing points={points} size={116} />
+          <RankRing points={points} size={116} onOpenLadder={() => setLadderOpen(true)} />
         </div>
         {infoOpen && <PointsInfoModal onClose={() => setInfoOpen(false)} />}
+        {ladderOpen && <RankLadderModal points={points} onClose={() => setLadderOpen(false)} />}
       </>
     );
   }

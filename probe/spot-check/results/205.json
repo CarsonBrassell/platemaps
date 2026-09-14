@@ -1,0 +1,14 @@
+{
+  "id": "205",
+  "name": "Las Cuatro Milpas",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Restaurant has no website, so verified against its Yelp menu page (yelp.com/menu/las-cuatro-milpas-san-diego-2). Every checked item matched exactly, including multi-size pricing: Rice & Beans $3.25/$4.00, Beans $2.75/$3.50/$6.50, Rice $1.75/$3.00/$5.00, Chorizo Con Huevo $3.75/$5.00/$9.00, Burritos $5.00, Roll Tacos (5) $5.00, Dozen Tamales $21.00, Dozen Tortillas Flour $3.25 / Corn $1.50, Menudo (Sat only) $3.5/$5/$9.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (1985 National Ave Ste 1131, Barrio Logan, San Diego, CA 92113) and hours (Mon-Fri 8am-3pm, Sat 7am-3pm, closed Sunday) both confirmed via Yelp/Tripadvisor. Cuisine 'Mexican' is correct; lat/lng fall in Barrio Logan, San Diego County.",
+  "issues": [
+    "source_url is 'chain-shared:restaurant/4544' and confidence is labeled 'chain-shared', implying this menu was copied from another restaurant's record -- but Las Cuatro Milpas is a single-location, non-chain restaurant. The copied menu happens to be correct here, but the 'chain-shared' labeling looks mismatched for this restaurant and could be masking a real chain/duplicate-detection bug worth reviewing."
+  ]
+}

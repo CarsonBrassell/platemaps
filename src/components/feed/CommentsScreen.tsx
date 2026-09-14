@@ -202,13 +202,13 @@ export function CommentsScreen({
             </span>
           </div>
           {post.text && <p className="mt-2 text-sm leading-relaxed text-zinc-800">{post.text}</p>}
-          {(post.restaurant || post.dishName) && (
+          {/* A text-only post has no dish, so the header title already carries
+              the restaurant name — don't print it a second time here. */}
+          {post.dishName && (
             <p className="mt-2 truncate text-[13px] leading-snug">
               {post.restaurant && <span className="text-zinc-600">{post.restaurant}</span>}
-              {post.restaurant && post.dishName && <span className="text-zinc-400"> · </span>}
-              {post.dishName && (
-                <span className="font-mono font-medium text-zinc-900">{post.dishName}</span>
-              )}
+              {post.restaurant && <span className="text-zinc-400"> · </span>}
+              <span className="font-mono font-medium text-zinc-900">{post.dishName}</span>
             </p>
           )}
         </article>

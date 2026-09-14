@@ -1,0 +1,16 @@
+{
+  "id": "78",
+  "name": "Kettner Exchange",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Fetched the actual PDF named in source_url (kettnerexchange.com dinner-menu PDF dated 8.7). Every one of our 24 stored dishes matches the PDF's name, description and price exactly (Kale Salad $19, Roasted Two Forks Farm Carrots $17, Szechuan Frog Legs $16, Grilled Bass $38, 40oz Bone-In Ribeye $125, Budino $12, etc. all confirmed). Third-party aggregators (Yelp, RestaurantGuru) show older/different menu snapshots with mismatched prices and dish names, but those are clearly stale caches, not the current menu; the official PDF is authoritative and our data mirrors it. Our DB is missing 7 real menu items present on the PDF (Charred Cabbage, Two Forks Farm Tomato Salad, Cucumber Salad, Braised Shanghai Bok Choy, Grilled Romano Beans, Crispy Weiser Farms Potatoes, Honey Butter Toast) - a completeness gap, not an accuracy problem.",
+  "data_verdict": "minor",
+  "data_notes": "Address 2001 Kettner Blvd, San Diego, CA 92101 confirmed exactly via the menu PDF footer. Little Italy neighborhood correct. Restaurant is open (not closed) per web search and its own live PDF menu dated within the last month. Sunday hours (1100-0000) confirmed via official site. Cuisine is labeled 'Bars' / 'Cocktail Bars' but the restaurant runs a full dinner menu (Progressive American food menu, not just a bar) - undersells it as a restaurant.",
+  "issues": [
+    "Cuisine label 'Bars'/'Cocktail Bars' misrepresents a full-service dinner restaurant; a search result independently described it as 'Progressive American cuisine'",
+    "DB is missing 7 items that are on the current official menu (Charred Cabbage, Two Forks Farm Tomato Salad, Cucumber Salad, Braised Shanghai Bok Choy, Grilled Romano Beans, Crispy Weiser Farms Potatoes, Honey Butter Toast)",
+    "Possible minor hours drift: one web listing suggested Thursday closes at 1am with Fri/Sat rather than midnight with Mon-Wed as DB has it, but this was not confirmed from the official site"
+  ]
+}

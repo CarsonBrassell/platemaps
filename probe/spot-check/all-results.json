@@ -1,0 +1,732 @@
+[
+ {
+  "id": "205",
+  "name": "Las Cuatro Milpas",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Restaurant has no website, so verified against its Yelp menu page (yelp.com/menu/las-cuatro-milpas-san-diego-2). Every checked item matched exactly, including multi-size pricing: Rice & Beans $3.25/$4.00, Beans $2.75/$3.50/$6.50, Rice $1.75/$3.00/$5.00, Chorizo Con Huevo $3.75/$5.00/$9.00, Burritos $5.00, Roll Tacos (5) $5.00, Dozen Tamales $21.00, Dozen Tortillas Flour $3.25 / Corn $1.50, Menudo (Sat only) $3.5/$5/$9.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (1985 National Ave Ste 1131, Barrio Logan, San Diego, CA 92113) and hours (Mon-Fri 8am-3pm, Sat 7am-3pm, closed Sunday) both confirmed via Yelp/Tripadvisor. Cuisine 'Mexican' is correct; lat/lng fall in Barrio Logan, San Diego County.",
+  "issues": [
+   "source_url is 'chain-shared:restaurant/4544' and confidence is labeled 'chain-shared', implying this menu was copied from another restaurant's record -- but Las Cuatro Milpas is a single-location, non-chain restaurant. The copied menu happens to be correct here, but the 'chain-shared' labeling looks mismatched for this restaurant and could be masking a real chain/duplicate-detection bug worth reviewing."
+  ]
+ },
+ {
+  "id": "2434",
+  "name": "Hodad's Ocean Beach",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 9,
+  "menu_notes": "Verified against the official source_url (hodadsoceanbeach.com food menu page). All burger and extras prices matched exactly (Guido Burger $18, Blue Jay Burger $18, Double Bacon Cheeseburger $28, Small/Large Fry $11.25/$18, Onion Rings $22, Frings $30, etc.). One inconsistency: 'Single Bacon Cheeseburger' is listed twice in our data at two different prices.",
+  "data_verdict": "minor",
+  "data_notes": "Address/city/neighborhood (5010 Newport Ave, Ocean Beach) are correct. Hours in our data show 11am-10pm every day; one independent aggregator (Yelp-adjacent search result) suggested an 11am-9pm close, which conflicts and should be double-checked directly against the restaurant rather than a snippet.",
+  "issues": [
+   "Duplicate item: 'Single Bacon Cheeseburger' appears once in the 'Favorites' section at $17.00 and again in the 'Burgers' section at $17.50 -- the real menu only has it once, at $17.50. The $17.00 Favorites entry is stale/wrong.",
+   "Closing time (10pm vs a reported 9pm close) could not be conclusively confirmed and should be re-checked."
+  ]
+ },
+ {
+  "id": "164",
+  "name": "Phil's BBQ",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Verified against the official source_url (philsbbq.com Point Loma food menu). All checked prices matched exactly: Full/Half/Quarter Rib Dinners $32.99/$26.99/$19.99, Beef Rib Dinner $34.99, BBQ Broham $13.49, The Philibuster $15.99, Colossal Onion Rings $9.99, Homemade Cornbread $6.99, BBQ Wings $11.95 (10 wings -- matches, though the menu also has an untracked 5-wing/$6.95 size).",
+  "data_verdict": "minor",
+  "data_notes": "Address (3750 Sports Arena Blvd, San Diego, CA 92110) and hours (11am-10pm every day) both confirmed exactly via search. Cuisine 'BBQ' correct, restaurant is open (not closed).",
+  "issues": [
+   "Neighborhood is labeled 'Liberty Station' but 3750 Sports Arena Blvd is commonly considered Midway District / Sports Arena, roughly 1.5 miles from Liberty Station proper -- worth relabeling.",
+   "Menu is missing the smaller 5-wing BBQ Wings option ($6.95); only the 10-wing price is captured."
+  ]
+ },
+ {
+  "id": "88",
+  "name": "Lucha Libre",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Verified against the official source_url (luchalibretacoshop.com/menu/). All checked Cali burritos, tacos, and specialties matched exactly: Classic Cali Chicken/Pork $16, Classic Cali Steak $18, Poblano Cali $17, Surfin' California Burrito $19, Birria Cali $17.50, Queso Tacos $5.50-$7.50, Surf & Turf Taco $7.50, Birria Nachos $18.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (1810 W Washington St, San Diego, CA 92103) matches the Mission Hills/Washington St corridor; neighborhood label is reasonable. Cuisine 'Mexican' is correct.",
+  "issues": []
+ },
+ {
+  "id": "147",
+  "name": "Oscars Mexican Seafood",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Verified against the official source_url (oscarsmexicanseafood.com/menu/). All checked items matched exactly across sections: tacos $3.75-$8.75 (Carna Asada Taco $3.75, Grilled Octopus Taco $8.75), Tortas $18.50 (Grilled Octopus Torta $20.50), Plates $17.25-$18.75, Ceviches $9.50-$20.50 (Scallop $20.50).",
+  "data_verdict": "accurate",
+  "data_notes": "Address (746 Emerald St, San Diego, CA 92109) is correct for Pacific Beach. Cuisine 'Mexican' correct.",
+  "issues": [
+   "'Battered Fish or Shrimp Taco' has price '—' (missing) in our data -- minor gap, not a correctness error."
+  ]
+ },
+ {
+  "id": "16",
+  "name": "Tacos El Gordo",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Source was a third-party site (allmenus.com, 'medium' confidence), so cross-checked via web search of reviews/aggregators. All checked prices matched exactly: Taco De Cabeza/Tripa/Buche $2.40, Taco De Sesos/Lengua $2.60, Carne Asada Fries $13.00.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (556 Broadway, Chula Vista, CA 91910) and city match confirmed. Restaurant is open and popular; late-night hours (to 2am/4am) are consistent with its reputation.",
+  "issues": [
+   "Drink item 'Coce' in the Drinks section looks like a typo/scrape error for 'Coke' -- cosmetic, not price-affecting."
+  ]
+ },
+ {
+  "id": "138",
+  "name": "Juniper and Ivy",
+  "on_site": true,
+  "menu_verdict": "buggy",
+  "menu_checked": 10,
+  "menu_matched": 4,
+  "menu_notes": "Source is a third-party aggregator (menutoeat.com, 'medium' confidence); cross-checked live juniperandivy.com/menu/ plus web search. Confirmed exact matches: Miso Black Cod $45, Duroc Pork Chop $50, and one of two 'Jidori Chicken Roulade' entries ($75 in Plates). But 'Rigatoni' ($32, pork bolognese/burrata/basil) doesn't match the current 'Rigatoni Al Forno' ($26, black garlic/pork belly); 'Bluefin Crudo', 'Spanish Octopus', 'Cabo Kanpachi', and several other Small Plates items aren't on the live menu at all. Live menu section names (JUST A BITE, PANTRY, SMALL PLATES, PLATES, DESSERT) also don't line up with ours (Plates, Small Plates, Pantry only).",
+  "data_verdict": "accurate",
+  "data_notes": "Address (2228 Kettner Blvd, Little Italy) and cuisine ('New American') are correct.",
+  "issues": [
+   "Duplicate item: 'Jidori Chicken Roulade' appears twice -- once in 'Plates' at $75 (matches the real menu) and again in 'Small Plates' at $38 with a different description (winter black truffle) -- the $38 entry is stale/wrong.",
+   "Garbled item name 'Take Cheese Ravioli' ($38, Small Plates) does not read as a real dish name -- looks like a scraping/OCR error.",
+   "Three separate near-duplicate NY Strip entries (22oz NY Strip $145, 22oz Tajima NY Strip $140, 20oz Prime NY Strip $115) look like conflated entries from different menu snapshots rather than three distinct current dishes.",
+   "Overall this reads as a stale menu snapshot mixed with some current items rather than one consistent, current menu -- recommend re-scraping from the live site."
+  ]
+ },
+ {
+  "id": "140",
+  "name": "Born & Raised",
+  "on_site": true,
+  "menu_verdict": "unverifiable",
+  "menu_checked": 0,
+  "menu_matched": 0,
+  "menu_notes": "Could not reach a real menu to compare: the official site (bornandraisedsteak.com and its /menu/ page) returned HTTP 429, and third-party mirrors (menutoeat.com, zmenu.com) returned 403. Web search turned up no specific current prices to cross-check. The data itself looks internally plausible and non-absurd (Ribeye 18oz $72, NY 14oz $59, Filet 8oz $63, T-Bone 22oz $89, Cheeseburger $29 -- a sane progression for a Little Italy steakhouse) but this is not independently confirmed.",
+  "data_verdict": "minor",
+  "data_notes": "Address (1909 India St, Little Italy) and cuisine ('Steakhouse') confirmed correct via search. Hours: our data shows the restaurant opening at 3:00pm daily, but public listings describe dinner service starting around 4:30pm on weekdays -- worth double-checking whether 3pm is a bar-only opening being conflated with dinner hours.",
+  "issues": [
+   "Menu prices could not be independently verified -- source and mirror pages all blocked automated fetches; recommend a manual spot-check.",
+   "source_url is a PDF named 'BAR_Jul2026.pdf' hosted on the restaurant group's own site (sites.ch-projects.com) -- the filename suggests a bar menu, but the extracted dishes read like a full dinner menu (steaks, sides, tableside items). Worth confirming this PDF is actually the current full menu and not just bar bites."
+  ]
+ },
+ {
+  "id": "609",
+  "name": "Addison",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 2,
+  "menu_matched": 2,
+  "menu_notes": "Verified against addisondelmar.com and corroborating web search (multiple current sources including the official site and Wine Spectator). Ten-Course Tasting Menu is confirmed at $395 per person. Champagne Lounge Tartelette Menu ($198) and optional pairing (+$175) are consistent with the site's description of the Champagne Lounge experience.",
+  "data_verdict": "wrong",
+  "data_notes": "This id is a DUPLICATE of restaurant id 3171 ('Addison at Fairmont Grand Del Mar'), which is the same restaurant at the same location. Id 609's address and city fields are both null, while id 3171 has the correct, verified address: 5200 Grand Del Mar Way, San Diego, CA 92130 (confirmed via addisondelmar.com and fairmont.com). Id 3171 also carries the more accurate cuisine label 'French' vs. 609's 'American'/'New American' tag -- Addison's cuisine is best described as French-influenced California fine dining. Coordinates on 609 (32.9416, -117.1991) are close to but not identical to 3171's (32.938623, -117.1974149); 3171's should be treated as authoritative since it has a verified address to back it.",
+  "issues": [
+   "DUPLICATE RESTAURANT: id 609 ('Addison') and id 3171 ('Addison at Fairmont Grand Del Mar') are the same restaurant. Row 3171 is the more complete/correct one (has address, city, more precise lat/lng, and cuisine 'French'); row 609 is missing address and city entirely and uses a less precise cuisine tag. Recommend either copying 3171's address/city/cuisine into 609 and deleting 3171, or removing 609 and keeping 3171 -- but do not keep both as separate listings, since it would show the same restaurant twice on the map."
+  ]
+ },
+ {
+  "id": "85",
+  "name": "Callie",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 8,
+  "menu_notes": "Verified against the official source_url (calliesd.com/menu). 8 of 10 checked dishes matched exactly, including price: Hummus $15, Babaghanoush $15, Avocado Labneh $18, Taramasalata $15, Corn & Shishito Ravioli $32, Lemon Saffron Linguine $36, Chargrilled Hanger Steak $39, Harissa Grilled Lamb Chops $49. Two items appear to be last season's dishes still sitting in the same menu slot at the same price: 'Watermelon, Feta & Mint' $24 (Salads & Veggies) where the live site now shows 'Beets & Roses' $24, and 'Eureka Lemon Pavlova' $14 (Something Sweet) where the live site now shows 'Passion Fruit Pavlova' $14.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (1195 Island Ave, Gaslamp/East Village) and cuisine ('Mediterranean') are correct. Hours (Tue-Sun 5pm-10pm, closed Monday) are plausible for a fine-dining restaurant.",
+  "issues": [
+   "Two seasonal dishes look stale -- 'Watermelon, Feta & Mint' and 'Eureka Lemon Pavlova' have been replaced on the live menu by 'Beets & Roses' and 'Passion Fruit Pavlova' in the same slot/price, suggesting the last seasonal refresh wasn't re-scraped."
+  ]
+ },
+ {
+  "id": "1706",
+  "name": "Cesarina",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Verified against the official site's own plain-text menu (cesarinarestaurant.com, matching source_url). All 10 checked dishes across Antipasti, Insalate, Pastificio, I Secondi, Dessert and Cocktails matched name, description and price exactly (e.g. Speck Radicchio e Taleggio Fuso $21, Super Tagliata $59, Tiramisu $18).",
+  "data_verdict": "accurate",
+  "data_notes": "Address 4161 Voltaire Street, San Diego confirmed via official site and Yelp. Hours confirmed via official site: Mon-Thu 12-3/4-9:30 (matches DB's split 1200-1500/1600-2130), Fri continuous 12-9:30 (matches 1200-2130), Sat-Sun continuous 11-9:30 (matches 1100-2130). Cuisine 'Italian' correct. Lat/lng fall in Ocean Beach, San Diego. Restaurant's own site describes the area as 'Point Loma' rather than 'Ocean Beach' but this is a common overlapping-boundary naming, not an error.",
+  "issues": []
+ },
+ {
+  "id": "5",
+  "name": "Buona Forchetta",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 9,
+  "menu_matched": 9,
+  "menu_notes": "Official site (buonaforchettasd.com) and its Toast ordering page (source_url) render menus client-side and could not be fetched directly (Toast returned 403). Cross-checked via aggregated web search results instead: Margherita $18, Juna $22, Bolognese (pasta) $23, Burrata Caprese $18, Montanara $14, Artichokes $20, Calamari Fritti $19, Eggplant Tortino $15 and Polpettine $16 all matched name, description and price. No mismatches found in what could be verified.",
+  "data_verdict": "minor",
+  "data_notes": "Address 3001 Beech St, San Diego, CA 92102 and South Park neighborhood confirmed correct via multiple sources. Hours mostly match (Mon-Thu dinner 5-9:30pm and Sun 12-9:30pm continuous both confirmed) but DB shows Friday as one continuous 1200-2200 block while independent listings describe Friday as split lunch 12-3 / dinner 5-10pm (a lunch-dinner gap), so the Friday hours may be slightly wrong. Cuisine 'Pizza' is a reasonable simplification of what is really a full Italian menu.",
+  "issues": [
+   "Friday hours in DB (continuous 1200-2200) may be missing a 3-5pm gap that other sources show",
+   "source_url's Toast slug references a '252 N El Camino Real Ste 5' address that does not match the restaurant's real address (3001 Beech St); menu content still checked out fine but the slug itself looks mismatched/leftover from another location"
+  ]
+ },
+ {
+  "id": "78",
+  "name": "Kettner Exchange",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Fetched the actual PDF named in source_url (kettnerexchange.com dinner-menu PDF dated 8.7). Every one of our 24 stored dishes matches the PDF's name, description and price exactly (Kale Salad $19, Roasted Two Forks Farm Carrots $17, Szechuan Frog Legs $16, Grilled Bass $38, 40oz Bone-In Ribeye $125, Budino $12, etc. all confirmed). Third-party aggregators (Yelp, RestaurantGuru) show older/different menu snapshots with mismatched prices and dish names, but those are clearly stale caches, not the current menu; the official PDF is authoritative and our data mirrors it. Our DB is missing 7 real menu items present on the PDF (Charred Cabbage, Two Forks Farm Tomato Salad, Cucumber Salad, Braised Shanghai Bok Choy, Grilled Romano Beans, Crispy Weiser Farms Potatoes, Honey Butter Toast) - a completeness gap, not an accuracy problem.",
+  "data_verdict": "minor",
+  "data_notes": "Address 2001 Kettner Blvd, San Diego, CA 92101 confirmed exactly via the menu PDF footer. Little Italy neighborhood correct. Restaurant is open (not closed) per web search and its own live PDF menu dated within the last month. Sunday hours (1100-0000) confirmed via official site. Cuisine is labeled 'Bars' / 'Cocktail Bars' but the restaurant runs a full dinner menu (Progressive American food menu, not just a bar) - undersells it as a restaurant.",
+  "issues": [
+   "Cuisine label 'Bars'/'Cocktail Bars' misrepresents a full-service dinner restaurant; a search result independently described it as 'Progressive American cuisine'",
+   "DB is missing 7 items that are on the current official menu (Charred Cabbage, Two Forks Farm Tomato Salad, Cucumber Salad, Braised Shanghai Bok Choy, Grilled Romano Beans, Crispy Weiser Farms Potatoes, Honey Butter Toast)",
+   "Possible minor hours drift: one web listing suggested Thursday closes at 1am with Fri/Sat rather than midnight with Mon-Wed as DB has it, but this was not confirmed from the official site"
+  ]
+ },
+ {
+  "id": "408",
+  "name": "Ironside Fish & Oyster",
+  "on_site": true,
+  "menu_verdict": "stale",
+  "menu_checked": 8,
+  "menu_matched": 1,
+  "menu_notes": "Official site returned HTTP 429 on repeated tries; verified against allmenus.com and several 2026 web-search results instead. Ironside closed Feb 16-Mar 10 2026 for an 'Ironside 2.0' kitchen/menu overhaul and reopened with a different menu. Our data (source_url gayot.com, confidence medium) still reflects the pre-relaunch menu: section names (Ironside Classics, Local Catch, From The Earth) don't match the current sections (Small Plates, Big Plates, Whole Fish a la Carte, The Catch, Veggies), and prices are consistently much higher than current — Lobster Roll $33 vs $22 now, Oysters Rockefeller $24 vs $10, Fish N' Chips $22 vs $16, Rockfish Ceviche $16 vs ~$14. Only Peel 'N' Eat Shrimp ($3.55 vs $3.25+) matched within $1.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (1654 India St, San Diego, 92101), neighborhood (Little Italy), cuisine (Seafood), and lat/lng (32.7227, -117.1686) are all correct. Hours match the current post-renovation hours exactly: Mon-Thu 11:30am-10pm, Fri 11:30am-11pm, Sat 11am-11pm, Sun 11am-10pm. Restaurant is open (reopened March 2026 after a temporary renovation closure, not permanently closed).",
+  "issues": [
+   "Menu is the pre-'Ironside 2.0' version — the restaurant relaunched with a new menu and new section structure in March 2026, but this menu was captured/attempted afterward (attempted_at 2026-08-10) from a stale source",
+   "Several dish prices run $2-14 too high versus the current menu (Lobster Roll, Oysters Rockefeller, Fish N' Chips, Rockfish Ceviche)",
+   "Re-pull the menu from ironsidefishandoyster.com directly (or a fresher aggregator) instead of gayot.com"
+  ]
+ },
+ {
+  "id": "136",
+  "name": "The Crack Shack",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 6,
+  "menu_matched": 1,
+  "menu_notes": "crackshack.com/menu confirms all of our section names (Sandwiches, Main Chicks, Combos, Healthy Cluck, Sides & Shares, Lil' Cluckers, Sweets) but doesn't publish prices (site says prices vary by location); the Toast ordering page (source_url) returned 403. Cross-checked 6 dish prices via web search of delivery-platform listings: every dish name matched exactly, but every price is $2-7 low versus current 2026 pricing (Firebird $14.50 vs $16.50, Coop Deville $14.50 vs $16.50, Uncle Phil-ly Cheesesteak $17 vs $19, Half Bird $20 vs $23, Whole Bird $38 vs $45). Family Flock ($60) matched the current 'Small Flock' price exactly despite the name change. Reads as the real, current menu that just hasn't had a recent price refresh.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (2266 Kettner Blvd, San Diego, 92101), neighborhood (Little Italy), cuisine (American/New American), and lat/lng (32.7279, -117.1712) are all correct. Restaurant is open.",
+  "issues": [
+   "Prices are stale by roughly $2-7 per item across sandwiches, bone-in chicken mains, and flock meals — needs a fresh price pull",
+   "'Family Flock' appears to have been renamed 'Small Flock' on the current menu (same $60 price, same contents)"
+  ]
+ },
+ {
+  "id": "7",
+  "name": "Sushi Ota",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 3,
+  "menu_matched": 3,
+  "menu_notes": "Official site's menu is PDF-only and the PDF fetch returned unreadable binary content; menutoeat.com (source_url) returned 403. Verified via web search instead: Chirashi $31, Deluxe Chirashi $39, and Tekka Don $39 all matched our data exactly, with no discrepancies. Small confirmed sample (3 of the 45 dishes) but a clean, exact match on price and name for all three.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (4529 Mission Bay Dr, San Diego, 92109) and neighborhood (Pacific Beach) are correct, cuisine (Japanese/Sushi Bars) is correct, lat/lng (32.8037, -117.2171) is in San Diego. Hours match exactly, including the closed-Monday pattern (no day-0 entry), Tuesday dinner-only, Wed-Fri lunch (11:30-2) plus dinner (5-10), and Sat-Sun dinner-only (5-10).",
+  "issues": []
+ },
+ {
+  "id": "522",
+  "name": "Wrench & Rodent Seabasstropub",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 10,
+  "menu_matched": 2,
+  "menu_notes": "Live Toast ordering page (source_url) and seabasstropub.com/menu both blocked fetches; fell back to Yelp's cached menu page. 9-10 of 10 checked dishes exist there by name (Baked Scallops, Cucumber Salad, Power Bowl, Anchovy Nigiri, Chronic, Avocado Roll, Cucumber Roll, Hedgehog all present, Roasted Cauliflower ~ Yelp's 'Crispy Cauliflower'), but Yelp's prices run 30-100% lower across the board (e.g. Chronic $13 vs our $22, Hedgehog $14 vs our $23, Cucumber Roll $3 vs our $6), consistent with Yelp showing a stale/older snapshot rather than the live Toast menu our data was sourced from. Only Anchovy Nigiri ($6.00) matched exactly. Could not independently confirm current prices.",
+  "data_verdict": "minor",
+  "data_notes": "Address (1815 S Coast Hwy, Oceanside, CA 92054) and lat/lng (33.1746, -117.3619) check out; neighborhood 'South Oceanside' is reasonable. Restaurant confirmed open, not closed. Hours: our data has Wed-Sun 4-9pm (closed Mon/Tue); web sources show Wed-Thu closing at 8:30pm rather than 9pm, a 30-min discrepancy on 2 of 5 open days, otherwise matching. Cuisine 'American'/'New American' is a generic label for what is really a sushi/omakase-focused restaurant.",
+  "issues": [
+   "Menu prices could not be verified against the live Toast source (blocked); only a possibly-stale Yelp snapshot was reachable, so price accuracy is uncertain rather than confirmed wrong",
+   "Wed/Thu closing time may be 8:30pm rather than 9:00pm per current web listings",
+   "Cuisine label 'American' is generic for a sushi/omakase restaurant"
+  ]
+ },
+ {
+  "id": "65",
+  "name": "Tahona",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Source used: tahonabar.com's live menu PDF (linked from the homepage, same document family as our source_url). All 10 checked dishes across Tostadas, Appetizers, Tacos, Sopas/Fuertes, and Desserts matched exactly on name and price: Ahi Tostada $18, Double Machaca Wagyu Tostada $19, Chips & Salsa $4, Signature Guacamole $14, Mole & Sourdough Flight $14, Empanadas de Picadillo (3) $18, Esquite Salad $18, Corn Croquetas (6) $12, Ceviche Loco $21, Asada Norteño Taco $7 all confirmed, plus Kurobuta Pork Shank Pozole, Short Rib Birria Ramen, Mexican Churros and Mousse de Chocolate also matched.",
+  "data_verdict": "minor",
+  "data_notes": "Address (2414 San Diego Ave, San Diego, CA 92110) and lat/lng (32.7518, -117.1933) are correct for Old Town. Neighborhood label 'Old Town' is correct. Hours match the live listing exactly for all 7 days (Mon 5-9pm, Tue-Thu 5-10pm, Fri 5-11pm, Sat 4-11pm, Sun 4-10pm). Restaurant confirmed open. Cuisine is labeled 'Bars'/'Cocktail Bars', but Tahona is really a full modern-Mexican restaurant (extensive food menu) with a notable mezcal bar attached, so the cuisine label undersells/mischaracterizes the food offering.",
+  "issues": [
+   "Cuisine label 'Bars'/'Cocktail Bars' undersells that this is a full-service Mexican restaurant with a large food menu, not just a bar",
+   "All 30 dishes have an empty 'section' field even though the real menu has clear sections (Tostadas, Appetizers, Tacos, Sopas, Fuertes, Desserts, Happy Hour) that could be captured"
+  ]
+ },
+ {
+  "id": "41",
+  "name": "El Indio Mexican Restaurant",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Source used: source_url (elindiosandiego.com food-menu page), fetched directly and successfully. All 10 checked dishes across Combination Plates, Tacos, Burritos, and Enchiladas matched exactly on name and price: #1 Two Cheese Enchiladas $13.36, #2 Two Beef or Carnitas Enchiladas $15.58, #11 Two Tamale Plate $14.20, #19 Carnitas $16.99, #24 Carne Asada or Pollo Asado $16.96, Soft Carne Asada $7.79, Bean & Cheese Burrito $6.80, Carnitas Burrito $13.95, Verde Enchilada $6.80, Mulita Quesadilla $10.25 all confirmed present at identical prices.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (3695 India St, San Diego, CA 92103) matches exactly. Neighborhood 'Mission Hills' is consistent with how the area (Mission Hills/Middletown) is described elsewhere. lat/lng (32.7423, -117.1801) correct for that address. Hours (9am-8pm all 7 days) match the live listing exactly. Cuisine 'Mexican' is correct. Restaurant confirmed open, not closed.",
+  "issues": []
+ },
+ {
+  "id": "126",
+  "name": "The Mission- North Park",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Verified against themissionsd.com official menu page (source_url). All 10 checked dishes across From The Griddle, Breakfast Plates, Favorites, and Sides and Sweets matched name and price exactly (e.g. Granola Banana Pancakes $17, Mission Omelets $20, Steak & Eggs $24, Root Beer Float $8).",
+  "data_verdict": "accurate",
+  "data_notes": "Address 2801 University Ave, San Diego, CA 92104 confirmed via Yelp/web search. Hours 7:00am-2:00pm daily confirmed exactly matching all 7 days. Neighborhood North Park is correct for this address. Cuisine 'Breakfast & Brunch' matches the all-breakfast menu. Lat/lng (32.7482, -117.1334) fall within San Diego. No indication the restaurant is closed.",
+  "issues": []
+ },
+ {
+  "id": "22",
+  "name": "Snooze, an A.M. Eatery",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 9,
+  "menu_matched": 7,
+  "menu_notes": "Source: order.snoozeeatery.com menu (site blocks direct fetch, verified via search snippets/other-location menus). Snooze Classic, Biscuits & Gravy, Corned Beef Hash, Shrimp & Grits, Bravocado Toast, pancake flights all real current Snooze dishes with matching descriptions; prices are within $1-2 of other-location 2026 prices (e.g. our Shrimp & Grits $19.50 vs $17.25 seen elsewhere, Corned Beef Hash $16.75 vs $17.95 elsewhere) which is normal store-to-store variance for a chain, but exact Hillcrest prices could not be confirmed since snoozeeatery.com and delivery apps 403'd every fetch.",
+  "data_verdict": "minor",
+  "data_notes": "Address (3940 Fifth Ave, San Diego, CA 92103) and neighborhood (Hillcrest) are correct for this real, open location. Weekday hours (6:30am-2:30pm) confirmed. Weekend close time in our data is 4:00pm; most current sources say Sat/Sun close around 3:30pm, off by ~30 min. Cuisine label correct.",
+  "issues": [
+   "Weekend closing time may be off by ~30 minutes (4:00pm in data vs ~3:30pm reported elsewhere)"
+  ]
+ },
+ {
+  "id": "23",
+  "name": "Hash House A Go Go",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 4,
+  "menu_matched": 4,
+  "menu_notes": "Source used: allmenus.com listing (our stored source is DoorDash). All 4 checked dishes exist under matching/near-matching names (The Basic, Famous Biscuits & Sausage Gravy, Andy's Famous Fried Chicken Benedict, HH Original Benedict) but our stored prices run $6-7 higher across the board ($23.95 vs $16.95, $26.50 vs $19.95, $22.95 vs $16.95, $15.95 vs $13.95) -- consistent with the DoorDash delivery-platform markup baked into the source_url rather than real dine-in prices.",
+  "data_verdict": "minor",
+  "data_notes": "Address (3628 5th Ave, Hillcrest) confirmed correct and restaurant is open. Weekday closing time (2pm) matches for breakfast service, but our hours data is missing the entire dinner service block (roughly 5:30pm-9pm/9:30pm Tue-Sat) that real sources list -- we only show one breakfast/brunch block per day.",
+  "issues": [
+   "All checked prices appear inflated ~30-40% vs dine-in menu, likely DoorDash markup carried through from source_url",
+   "Hours are missing the Tue-Sat dinner service block entirely"
+  ]
+ },
+ {
+  "id": "409",
+  "name": "Morning Glory",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 4,
+  "menu_matched": 4,
+  "menu_notes": "Source: menutoeat.com plus web search cross-checks. Classic Flapjacks ($13.00), Japanese Waffle ($16.00) and Souffle Pancakes ($17.00) all matched our stored prices exactly. The $99/$125 advance-notice items (steak & eggs experience, fried chicken extravaganza, lobster omelet) are real -- Morning Glory's Toast ordering page has a dedicated 'omlet-lobster' item confirming the lobster omelet exists -- though the exact $99/$125 figures could not be independently confirmed.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (550 W Date St, Little Italy) and cuisine (Breakfast & Brunch) are correct; restaurant is open and well-reviewed (Michelin Guide listed). Only 14 dishes stored is thin for a restaurant with this large a menu, but nothing checked was wrong.",
+  "issues": [
+   "Only 14 dishes captured; likely missing whole sections of the actual menu (source_url is a stale-looking third-party aggregator, menutoeat.com)"
+  ]
+ },
+ {
+  "id": "130",
+  "name": "Underbelly",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 6,
+  "menu_matched": 6,
+  "menu_notes": "Source: web search cross-checks against Yelp's item pages and reviews (Toast ordering page at order.toasttab.com/online/ubnp 403'd on fetch). Underbelly, Belly of the Beast, Tonkotsu, Chicken Confit (description 'corn, spicy miso, garlic butter' matches verbatim) and Thai Curry ('lobster red curry broth' matches verbatim) all confirmed as real current dishes. Yelp's own crowdsourced menu page lists noticeably lower prices ($8-12) for some of these, but that page also omits Farmer's Market/Thai Curry/Chicken Confit entirely, suggesting the Yelp menu itself is the stale one -- our Toast-sourced $13-15 range is more consistent with 2026 San Diego ramen pricing.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (3000 Upas St, North Park) and hours (11:30am-11:30pm daily) both confirmed exactly. Cuisine label (Japanese/Ramen) correct.",
+  "issues": []
+ },
+ {
+  "id": "383",
+  "name": "Tajima Ramen Convoy",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 4,
+  "menu_matched": 4,
+  "menu_notes": "Source: tajimaramen.com/tajima-convoy/ (official site, matches our source_url). Traditional Tonkotsu Ramen ($16.00), Tajima Red/Black/White ($18.00), Karaage ($8.50) and Takoyaki ($10.00) all matched exactly on name, description, and price.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (4681 Convoy St Ste H, Kearny Mesa) is correct and the site confirms the location is open.",
+  "issues": []
+ },
+ {
+  "id": "392",
+  "name": "Menya Ultra",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 3,
+  "menu_matched": 3,
+  "menu_notes": "Source: web search (official site menya-ultra.com/MenyaUltraMenu.html and www-prefixed variant both 404'd on fetch). Tonkotsu Ajitama Ramen, Tantanmen, and Nagoya Fried Chicken all confirmed as real, currently-offered dishes ('most-ordered' per reviews). Search results show Tonkotsu Ajitama priced between $17.95-$20.95 across sources/locations vs our stored $19.95, so within normal variance but not pinned down exactly for this specific Clairemont Mesa Blvd location.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (8199 Clairemont Mesa Blvd Ste M, Kearny Mesa) confirmed exactly via search results. Two-block daily hours (lunch ~11-2, dinner ~5-9) are consistent with what's reported, though exact minutes could not be independently pinned down.",
+  "issues": []
+ },
+ {
+  "id": "381",
+  "name": "Steamy Piggy",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 4,
+  "menu_matched": 4,
+  "menu_notes": "Source: steamypiggy.com/mobile-menu (official site, matches our source_url). Piggy Bao ($6.00), Soup Dumplings ($16.50), Steamy Piggy Ramen ($17.00), and Bulgogi Bowl ($17.00) all matched exactly on name, description, and price.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (4681 Convoy St # A, Kearny Mesa) correct; restaurant is trending/open with strong review counts consistent with a real, currently popular spot.",
+  "issues": []
+ },
+ {
+  "id": "6761",
+  "name": "Pho Ca Dao Vietnamese Kitchen",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 8,
+  "menu_matched": 7,
+  "menu_notes": "Source: web search cross-checks against order.online (our source_url) and third-party aggregators (Uber Eats, Seamless, Sirved) for the Fenton Pkwy location. Egg Rolls-Cha Gio ($7.00), PCD Special Pho-Pho Xe Lua ($16.00), and Kids Brisket Pho ($11.00) all matched our stored prices exactly; other checked dishes (Vietnamese Chicken Wings, Banh Mi Thit Nuong, Com Ga Nuong, Bun Bo Hue) are all real current menu categories/names for this chain. Only the newer 'PCD Pho & Grill' section (grilled-meat pho variants) could not be independently price-confirmed.",
+  "data_verdict": "wrong",
+  "data_notes": "Address (2401 Fenton Pkwy #D104) is correct and the restaurant is open, but neighborhood is mislabeled 'Normal Heights' -- Fenton Pkwy is in Mission Valley (near the SDCCU Stadium/river-park area), several miles from actual Normal Heights. The hours field is entirely null/missing in our data even though real hours are easy to find (11:00am-9:30pm daily per multiple sources).",
+  "issues": [
+   "Neighborhood labeled 'Normal Heights' but the Fenton Pkwy address is actually in Mission Valley",
+   "Hours field is completely missing (null) despite real hours being readily available (11am-9:30pm daily)",
+   "This restaurant (6761) is held with hold_reason 'duplicate of 257', while id 257 is separately held as 'duplicate of 4819' -- a circular hold_reason bug: neither 257 nor 4819 (the original El Cajon Blvd location, checked separately) is actually live on the site as a result, even though this record (6761, the Fenton Pkwy/Mission Valley location) is listed fine on its own.",
+   "4819 (Pho Ca Dao Restaurant, 5223 El Cajon Blvd, the chain's original/Talmadge-area location) has a good-quality, well-structured 116-dish menu with proper Vietnamese naming and descriptions; spot-checking Egg Rolls ($12.00 real vs $11.00 stored), Shrimp in Bean Curd Skin ($11.00 real vs $10.00 stored), and Spring Rolls ($8.00 real vs $7.00 stored) shows every price running almost exactly $1.00 low but otherwise correct and internally consistent -- this is a real, currently-operating restaurant with a decent captured menu that is simply not reachable on the site due to the circular duplicate-hold bug rather than any menu-quality problem."
+  ]
+ },
+ {
+  "id": "552",
+  "name": "Punjabi Tandoor",
+  "on_site": true,
+  "menu_verdict": "stale",
+  "menu_checked": 8,
+  "menu_matched": 0,
+  "menu_notes": "Source: web search of DoorDash/Uber Eats/MenuPages current listings for the Mira Mesa (Activity Rd) location. Every checked dish still exists by name, but every price is drastically outdated: Combo#2 $7.99 stored vs ~$19.99-$24.99 current combo pricing, Chicken Tandoori $9.95 stored vs $15.99 current, Malai Kofta $4.95 stored vs $13.99 current, Matar Paneer $4.95 stored vs $14.99 current, Lamb Vindalu $5.95 stored vs $14.49 current -- this reads like a menu captured many years ago (roughly 2010s-era pricing) rather than a current one.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (9235 Activity Rd #111, Mira Mesa) matches the Mira Mesa/Miramar location exactly (distinct from Punjabi Tandoor's other San Diego-area locations on Morehouse Dr, Sorrento Valley, etc.). Restaurant is open and well-reviewed. Cuisine label correct.",
+  "issues": [
+   "Menu prices are roughly a decade stale -- most curries listed at $4.95-$5.95 and Nan at $1.95 when current prices for the same dishes run $13.99-$16.99, more than double to triple the stored values across nearly every dish"
+  ]
+ },
+ {
+  "id": "3103",
+  "name": "The Original Sab-E-Lee",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 8,
+  "menu_matched": 6,
+  "menu_notes": "Source: web search of restaurantguru's cited 'current menu' for the Black Mountain Rd location. Fried Tofu ($10.30), Egg Rolls ($10.30), Fresh Spring Rolls ($10.30), and Thai-Isaan Sausage ($11.34) matched our stored prices exactly, confirming the unusual non-round decimal pricing ($10.30, $11.34, $14.44, etc.) is the restaurant's genuine current pricing, not a data-export artifact. A couple of other items (Curry Puff, Golden Shrimp, Garlic Chicken Wings) showed lower prices on older third-party aggregators (allmenus/SinglePlatform), but those look like stale copies rather than our data being wrong, since the directly-labeled 'current menu' source matched ours exactly everywhere it overlapped.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (13223 Black Mountain Rd #2) matches exactly. Hours match precisely: Tue-Fri lunch 11:30am-3:30pm and dinner 5-9pm, Sat/Sun all-day 11:30am-9pm, with Monday closed (correctly absent from our hours array rather than a missing-data gap). Cuisine label (Thai) correct.",
+  "issues": []
+ },
+ {
+  "id": "179",
+  "name": "Supannee House Of Thai By Suree",
+  "on_site": false,
+  "menu_verdict": "mostly",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Checked Supannee Platter, Chicken Satay, Nam Kao Tod, Larb Salad, Khao Soi Duck, Tom Yum Soup, Pad Thai Noodle, Red Curry, Screaming Tiger, Massaman Beef against sdthai.com's photo gallery captions and the SinglePlatform/Grubhub menu-section aggregators (source_url togo.dylish.com is JS-rendered and returned no content on fetch). All 10 exist by name/section on the real menu, but no public source publishes current prices, so exact prices could not be independently verified. Menu is also missing several real sections entirely: Local Fish Specials, House & Seafood Specialties (Pompano, Chef Wan's Salmon, Roasted Duck Curry), and Desserts, plus Panang/Mango/Yellow Curry which the sibling record 4408 does have.",
+  "data_verdict": "accurate",
+  "data_notes": "Address 2907 Shelter Island Dr Unit 110, San Diego, CA 92106 matches the restaurant's real address. Neighborhood 'Point Loma' is correct — Shelter Island is part of the Point Loma peninsula. Hours match real published hours closely (Mon-Fri 11:30am-3pm & 4:30pm-9pm, Sat/Sun 11:30am-9pm). Cuisine 'Thai' correct. Restaurant confirmed still open (no closure signals found, active Yelp/Grubhub/OpenTable listings as of Sept 2026). lat/lng (32.722, -117.2305) fall in San Diego County / Point Loma as expected.",
+  "issues": [
+   "Circular duplicate: 179 is held as 'duplicate of 4408' while 4408 is held as 'duplicate of 179' — each record points at the other as the canonical one, so this hold_reason chain can never resolve to a single listed row without manual intervention.",
+   "4408 has a more complete menu (68 vs 45 dishes) and includes real sections/dishes (Panang Curry, Mango Curry, Yellow Curry, a Sides section) that are verifiably on the restaurant's real menu but missing from 179 — 4408 should likely be the canonical row, or the two should be merged.",
+   "Missing entire real menu sections: Local Fish Specials, House & Seafood Specialties, and Desserts are on the actual menu (per SinglePlatform/Grubhub) but absent from both 179 and 4408.",
+   "Could not verify exact dish prices against any independently published price list; source_url (togo.dylish.com) is JS-rendered and blocked automated fetch, and third-party aggregators list dishes without prices."
+  ]
+ },
+ {
+  "id": "8162",
+  "name": "Mamas Bakery & Deli",
+  "on_site": false,
+  "menu_verdict": "none",
+  "menu_checked": 0,
+  "menu_matched": 0,
+  "menu_notes": "0 dishes recorded in our data, so nothing to compare. A real menu exists and is reachable: official site mamas-bakery.com lists a full Lebanese/Mediterranean menu, and it's also listed on ezCater, Grubhub, Uber Eats/Postmates, and Ritual.",
+  "data_verdict": "wrong",
+  "data_notes": "hold_reason is WRONG. This is a real, long-operating, heavily-reviewed restaurant (Yelp shows 1260+ reviews as of Sept 2026, established 1988), not a permit-only record with no public presence. It has an active website (mamas-bakery.com), Facebook, Tripadvisor, and multiple delivery-app listings (ezCater, Grubhub, Uber Eats, Postmates, Ritual). It should be un-held and listed. Two data caveats: (1) the restaurant relocated in mid-2025 from 4237 Alabama St to 2141 El Cajon Blvd (still North Park, 'One Mississippi' building) - our stored address is the old, pre-relocation location and lat/lng likely need updating to the new site; the DEH permit id (DEH2004-FFPP-411701) corresponds to the old Alabama St address. (2) Neighborhood label 'University Heights' is wrong even for the old address - 4237 Alabama St and the new 2141 El Cajon Blvd address are both North Park, per local press (San Diego Magazine, WhatNow). Cuisine should be Mediterranean/Lebanese (currently null).",
+  "issues": [
+   "hold_reason 'permit-only: no public listing found' is incorrect - restaurant has extensive public presence (own website, Yelp 1260+ reviews, Facebook, Tripadvisor, ezCater, Grubhub, Uber Eats, Postmates, Ritual)",
+   "restaurant relocated ~mid-2025 from 4237 Alabama St to 2141 El Cajon Blvd; stored address/lat-lng reflect the old location",
+   "neighborhood should be North Park, not University Heights (true for both old and new address)",
+   "cuisine is null; should be Mediterranean/Lebanese",
+   "0 dishes recorded despite a real, extensive menu being available online"
+  ]
+ },
+ {
+  "id": "9522",
+  "name": "Blue Water Seafood Ocean Beach",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Compared against bluewaterseafoodsandiego.com's live 'Ocean Beach' food menu page (sdbluewater.com 301-redirects there) plus WebSearch corroboration (Yelp/Tripadvisor). All 10 checked items matched at exact price: Seared Ahi Plate $34, Scallops Plate $36, Swordfish/Mahi/Halibut Plates $32, Salmon Plate $28.95, Track Taco $9.50, Beer Battered Cod Taco $7.50, Mini Beer Shrimp Tacos (3) $12.50, Fried Calamari $15, and Happy Hour Fish Taco $6. Of the 353 dishes, programmatic analysis found ~24 rows (12 name pairs, e.g. Margarita/Mai Tai/Mezcal Penicillin/Ceviche/Poke Nachos) that are legitimate regular-price vs Happy-Hour-price duplicates of the same drink/dish, not data errors, confirmed by the real site's separate Happy Hour pricing. ~15 rows in the 'Sauces' section (9 loose condiments at $0.25, 6 '8oz' bottled sauces) are modifier/add-on style items rather than standalone dishes, but they are real a-la-carte menu rows on the Toast ordering system, not junk. No non-food/admin rows (fees, gift cards, theme flags) and no absurd prices were found ($0.25-$38 range, all plausible). The real driver of the high count is a legitimate 'choose your fish' menu matrix: ~28 fish/protein names (Ahi, Yellowtail, Halibut, Swordfish, Wahoo, Seabass variants, etc.) are each offered across up to 5 preparation formats (Plate/Salad/Sandwich/Taco/Sashimi), accounting for ~100 rows, plus an unusually large full bar menu (Mixed Drinks 64, Draft Beer 29, N/A Drinks 23, Wine 19, Bottle Beer 12) accounting for ~150 rows. This matches the real restaurant, which is a seafood market/grill + bar with daily-changing fish selection and a large drink list.",
+  "data_verdict": "minor",
+  "data_notes": "Address 5083 Santa Monica Ave, San Diego, CA 92107 and neighborhood 'Ocean Beach' are correct (confirmed via Yelp/Tripadvisor listings for 'Blue Water Seafood Market & Grill - Ocean Beach'); our suite is 'Ste 2B' vs Yelp/Tripadvisor's 'Ste 1B'/'5083 Santa Monica Ave' with no suite - a trivial discrepancy, likely just a different rendering of the same small strip-mall unit. Cuisine 'Seafood' is correct. lat/lng (32.7483664, -117.2520418) place it correctly in Ocean Beach, San Diego County. Restaurant is open and active (current 2026 reviews/photos on Yelp and Tripadvisor, no closure signals). hours field is null in our record - a real gap, though not contradicted by anything found (real site shows Happy Hour Mon-Fri 3-5pm but not full operating hours).",
+  "issues": [
+   "~24 dish rows (12 pairs) are duplicate regular-price/happy-hour-price versions of the same item (e.g. Margarita, Mai Tai, Mezcal Penicillin, Ceviche, Poke Nachos) - legitimate but inflates dish_count",
+   "~15 rows in 'Sauces' section are condiment/add-on style items ($0.25 loose sauces, $5.75 '8oz' bottles) rather than standalone dishes - real menu items but modifier-like",
+   "hours field is null - restaurant hours were never captured",
+   "minor suite-number mismatch (Ste 2B here vs Ste 1B/no-suite in third-party listings) - cosmetic, does not affect location accuracy",
+   "large dish count (353) is legitimate: driven by a real 'choose your fish' matrix (~28 fish names x up to 5 prep formats) plus an unusually extensive bar/drinks menu, not by scraping errors"
+  ]
+ },
+ {
+  "id": "8",
+  "name": "Pacific Beach Fish Shop",
+  "on_site": true,
+  "menu_verdict": "buggy",
+  "menu_checked": 10,
+  "menu_matched": 6,
+  "menu_notes": "Checked against official site thefishshops.com/pacific-beach/ (source_url menutoeat.com is stale). Fish N' Chips, Ahi Poke, Crab Cake, Salmon, Seaweed Salad, Macaroni Salad matched within $1. Fish Shop Shrimp ($21.75 vs real $14.75), Coconut Shrimp ($21.75 vs $12.50) and all four tacos ($17.75 vs real $7.75-$8.00) are inflated by roughly $10-14. 'Price by Style' section stores one price per fish (e.g. Yellowtail $30.00) even though the real menu has 4 different prices per format (taco/sandwich/salad/plate, e.g. Yellowtail taco $7.25 to plate $22.00) - a structural extraction mismatch, not just drift.",
+  "data_verdict": "minor",
+  "data_notes": "Address (1775 Garnet Ave), neighborhood (Pacific Beach), and cuisine (Seafood) all correct; lat/lng (32.8004,-117.2373) sit in Pacific Beach. Hours are off by 30 min on 4 of 7 days: real is Sun-Wed 11am-9:30pm / Thu-Sat 11am-10pm, but our data has all 7 days closing at 10pm. Restaurant is open and operating.",
+  "issues": [
+   "'Sliver Lobster' should be 'Slipper Lobster' (corrupted name)",
+   "'Deep Scallops' should be 'Diver Scallops' (corrupted name)",
+   "'River Halibut' is not a real menu item/fish option (garbled name)",
+   "'Halibut' (Local Catch section) is not among the current fish options at all",
+   "Taco prices in 'Fish Shop Favorites' are ~$10 too high vs current menu",
+   "'Price by Style' dishes carry a single flat price instead of the real taco/sandwich/salad/plate tiers, and several don't match any real tier",
+   "Hours wrong for Sun/Mon/Tue/Wed (should close 9:30pm, data says 10pm)"
+  ]
+ },
+ {
+  "id": "121",
+  "name": "Cucina Urbana",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Checked against the official dinner menu at source_url/website (urbankitchengroup.com/cucina-urbana-bankers-hill/menu/dinner/). Roasted Garlic Focaccia, Burrata + Pluot, Butter Lettuce Salad, Giant Meatball, Margherita, Bucatini Amatriciana, Rigatoni Bolognese, Wagyu Burger, Royal Ranch Ribeye Steak matched exactly; Pork Milanese was $31 real vs $32.00 ours (within $1). Two of our antipasti/large-plate items (Hamachi Crudo, Whole Infinity Blue Barramundi) weren't visible in this fetch but the site's own list showed different items in those slots (Prosciutto and Melon, Steelhead Trout) suggesting normal seasonal menu rotation rather than an error.",
+  "data_verdict": "accurate",
+  "data_notes": "Address 505 Laurel St, San Diego confirmed via official site and corroborating web search (an initial fetch mis-summarized the address as '421 Grape Street'; re-fetched and cross-checked, 505 Laurel St is correct). Neighborhood Bankers Hill and cuisine Italian ('contemporary Italian cuisine') both correct. Hours match exactly: Mon-Thu 4-8:30pm, Fri-Sat 4-9:30pm, Sun 4-8:30pm all line up with our data's day-by-day hours. Lat/lng (32.7312,-117.1601) fall in Bankers Hill/downtown San Diego. Restaurant is open and operating.",
+  "issues": []
+ },
+ {
+  "id": "124",
+  "name": "Mister A's",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 10,
+  "menu_matched": 6,
+  "menu_notes": "Compared against current asrestaurant.com dinner-menu and weekend-brunch-menu pages. Our menu blends dinner and brunch dishes under sections (To Start/Hot/To Follow/Eggs/Sweets) that don't match either real menu's structure. Matched dishes (Red Top Pork Belly, House Ground Prime Burger, Duroc Pork Chop, The American, Wild Alaskan Halibut, Jumbo Shrimp Cocktail) are correct within $1-2. Several dishes are gone from both current menus entirely: Golden Beet Carpaccio, Local Fig Flatbread, Maine Lobster Sliders, Wild Oregon Coast Sole Almondine, Jidori Chicken Marsala, Bluefin Tuna Crudo Niçoise, Prime Steak Frites, Butterscotch Budino. Prices generally run $2-$15 below current (e.g. Georges Bank Scallops $39.5 vs real $54.50), consistent with the third-party source_url (menutoeat.com) being an old snapshot.",
+  "data_verdict": "minor",
+  "data_notes": "Address confirmed exact (2550 Fifth Ave, 12th Floor, San Diego, CA 92103, Manchester Financial Building) and Bankers Hill neighborhood is correct. Restaurant is open/operating (OpenTable reservations live). Cuisine 'American' is a reasonable simplification of the site's own 'New American'. Hours issue: our stored dinner-window end times (10-11pm) actually match the site's listed BAR hours, not the kitchen's real dinner service which closes at 8:30-8:45pm; lunch/brunch windows (Wed-Fri 11-1, Sat 10-1, Sun 10-1:30) match correctly.",
+  "issues": [
+   "Menu mixes stale dinner+brunch items under section labels that don't correspond to either real menu",
+   "8-9 dishes (~30% of 29) no longer appear on either current menu at all",
+   "Most surviving dishes are priced $2-$15 below current menu prices",
+   "Stored closing times reflect bar hours, not the earlier kitchen/dinner-service close time"
+  ]
+ },
+ {
+  "id": "2318",
+  "name": "Herb & Wood",
+  "on_site": true,
+  "menu_verdict": "stale",
+  "menu_checked": 10,
+  "menu_matched": 5,
+  "menu_notes": "Compared against herbandwood.com/dinner (source_url = current website page). Appetizers, Vegetables and Pizzas sections match almost to the penny (Gem Lettuce $15.31, Duck Toast $32.17, Fig & Prosciutto Pizza $33.41, etc.). Entrees and Pasta sections show a clear menu refresh since our data was captured: Half Chicken $34.73 -> now $38.73, Pappardelle -> renamed/replaced by Rigatoni at $35.45, Australian Wagyu NY Strip $83.24 -> now a USDA Prime NY Strip 14oz at $114.24, 32oz Bone-In Ribeye $180.53 -> now $200.53, and Golden Dutch Potatoes was renamed to Tuck Shop Potatoes (same $15.71 price). Several dishes are gone from the live menu: Pea Salad, Colossal Shrimp, Japanese Sweet Potatoes, Bone In Pork Chop, Grilled Swordfish, Pansotti, Summer Squash Pizza, replaced by newer items like Oak Fired Venison Strip Loin.",
+  "data_verdict": "accurate",
+  "data_notes": "Address 2210 Kettner Blvd, San Diego (Little Italy) confirmed via Yelp/Apple Maps; lat/lng (32.7272711, -117.1709958) matches Apple Maps almost exactly. Hours confirmed exact: Sun-Thu 5-9pm, Fri-Sat 5-9:30pm map correctly onto stored day rows. Restaurant is open and operating normally. Cuisine 'American' (raw 'Regional') is a loose but defensible label for what the site calls 'California Rustic Mediterranean'/New American.",
+  "issues": [
+   "Entrees and Pasta sections are stale: several items renamed and priced $4-$20 below current menu",
+   "7 dishes (about 20% of 34) no longer appear on the live dinner menu at all",
+   "cuisine_raw 'Regional' is vague/unhelpful compared to the restaurant's own 'New American' / Mediterranean framing"
+  ]
+ },
+ {
+  "id": "6580",
+  "name": "Animae",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Source: animaesd.com/menu (official site, fetched directly). All 10 checked dishes across Cold, Hot, Sides, Plates, Steaks, Dessert, and Cocktails sections matched name and price exactly, including the $264 Miyazaki Strip Loin (8oz) and $85 Lobster Palabok.",
+  "data_verdict": "accurate",
+  "data_notes": "Address 969 Pacific Hwy, San Diego confirmed via Apple Maps/Yelp (lat/lng match within ~0.0002deg). Neighborhood 'Marina' confirmed by press coverage ('Animae debuts in Marina', Hoodline). Hours match exactly: Sun-Thu 5-9pm and Fri-Sat 5-9:30pm per official site vs our day-coded hours. Cuisine 'Asian' matches real label 'Asian Fusion'. Restaurant appears open (active 2026 reviews, no closure found).",
+  "issues": []
+ },
+ {
+  "id": "27",
+  "name": "Puesto La Jolla",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 10,
+  "menu_matched": 8,
+  "menu_notes": "eatpuesto.com's own La Jolla menu page 404'd and the Toast ordering page (source_url) blocked fetches (403), as the brief anticipated. Fell back to WebSearch snippets of individual Toast item pages, a Yelp catering menu, and chain-wide item pages. Filet Mignon Taco ($13) confirmed exact. Short Rib Birria Bowl ($28 ours vs $30.80 on a delivery listing) and California Burrito ($24 ours vs $26.40 on a delivery listing) are both consistent once typical delivery-platform markup is backed out. Carnitas/Chicken Al Pastor/Short Rib Quesabirria tacos, Guacamole variants, Chopped Salad, and Esquite all confirmed to exist by name. Could not pin an exact current a-la-carte price list specific to the Wall St location, so treating as 'mostly' rather than 'accurate'.",
+  "data_verdict": "accurate",
+  "data_notes": "Address 1026 Wall St, La Jolla, CA 92037 confirmed via eatpuesto.com's own location page. Hours match exactly: Sun-Thu 11am-9pm, Fri-Sat 11am-10pm per official site vs our day-coded hours. Neighborhood 'La Jolla' and cuisine 'Mexican' both correct. lat/lng (32.847, -117.2738) fall in La Jolla, San Diego County. No indication the location is closed; multiple 2026-dated reviews found.",
+  "issues": [
+   "source_url (Toast ordering page) and eatpuesto.com's La Jolla menu page both blocked/404'd during this check, consistent with confidence:medium already on the record; a future menu refresh for this restaurant may need a non-Toast source."
+  ]
+ },
+ {
+  "id": "412",
+  "name": "Georges at the Cove",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 10,
+  "menu_matched": 7,
+  "menu_notes": "Compared against the live https://www.georgesatthecove.com/menu-lunch (matches source_url). Core signature dishes match exactly (Lobster Roll $45, Clam Spaghetti $30, Rockfish Tacos $21, Smoked Salmon Rillettes $21, George's Famous Soup $15, Sticky Toffee Cake/Pudding $15, Coconut Thai Tea Sundae $15), but several items appear to be from a since-refreshed lunch menu: our 'Rigatoni' $29 is now 'Paccheri' $29, our tuna/seafood crudo starters (Campechana, Local Bluefin Tuna Crudo) have been replaced by Hokkaido Scallop Crudo and Ahi Tuna Carpaccio, and two dessert flavors (Corn Creme Brulee, Black Sesame Bread Pudding) are gone in favor of Vanilla Bean Creme Brulee and Lemon Meringue Cheesecake. Our data also only captures the lunch menu; the restaurant separately runs a dinner menu and an Ocean Terrace menu with different dishes (e.g. persimmon salad, stinging nettle spaghetti) that are entirely uncaptured here.",
+  "data_verdict": "minor",
+  "data_notes": "Address (1250 Prospect St, La Jolla, CA 92037) and neighborhood (La Jolla) are correct; lat/lng (32.8493,-117.2718) land right on La Jolla Cove, well within San Diego County. Cuisine 'American'/'New American' is reasonable. Restaurant is open and operating (current 2026 reviews, live reservations page). Hours are mostly right (11am-10pm Mon-Thu matches) but our single hours block applies 10pm close to every day including Friday, when the real site lists an 11pm close.",
+  "issues": [
+   "Lunch menu has drifted since capture: Rigatoni -> Paccheri, tuna/seafood starters and two desserts swapped for newer items",
+   "Local Burrata priced $23 in our data vs $25 on the live site (over $1 drift)",
+   "Coverage gap: only the lunch menu is captured; dinner menu and Ocean Terrace menu (separate, different dishes) are missing entirely",
+   "Hours block shows 10pm close every day; real site lists 11pm close on Friday (and likely weekend days)"
+  ]
+ },
+ {
+  "id": "419",
+  "name": "El Pescador Fish Market & Restaurant",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Fetched restaurant.website/menu (same as source_url) directly. All 10 checked dishes (Clam Chowder 16oz, Cioppino 16oz, Green Salad Large, West/East Coast Oysters half-dozen, Sea Scallop Carpaccio, Faroe Island Salmon Plate, Local Halibut Plate, Two Fish Tacos, Grilled Mexican Octopus a la carte) match name and price exactly.",
+  "data_verdict": "accurate",
+  "data_notes": "Address 634 Pearl St, La Jolla, CA 92037 confirmed via Yelp/Apple Maps. Hours (11am-9pm every day) confirmed by web search, matches our 7-day hours exactly. Neighborhood La Jolla is correct, cuisine Seafood is correct. lat/lng (32.8398, -117.2764) fall in La Jolla, San Diego County. No signs the restaurant is closed.",
+  "issues": [
+   "Sashimi Plate and Wild Bay Scallop Ceviche have price \"—\" (missing) in our data instead of the real menu's two-size prices ($17.95/$24.95 and $10.95/$20.95 respectively)"
+  ]
+ },
+ {
+  "id": "420",
+  "name": "Barbarella Restaurant & Bar",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Fetched source_url (barbarellarestaurant.com food-menu page directly). All 10 checked dishes (Bread & Butter, Woodfire Roasted Carrot, Burrata & Beets, Fritto Misto, Classic Caesar, Lump Crab Arrabbiata Gnocchi, New York Steak, Margherita pizza, Lobster Roll, Puppy Delight) match name and price exactly across Starters/Salads/Entrees/Pizza/Lunch/Dog Menu sections.",
+  "data_verdict": "minor",
+  "data_notes": "Address 2171 Avenida De La Playa, La Jolla, CA 92037 confirmed. Hours (Mon-Fri 11am-9pm, Sat-Sun 10am-9pm) match our per-day hours exactly, including the weekend 10am start. Neighborhood La Jolla / La Jolla Shores is correct. lat/lng (32.8536, -117.2561) fall in La Jolla, San Diego County. No signs the restaurant is closed. Cuisine label \"Breakfast & Brunch\" is narrow/misleading given the real menu is a full Italian-leaning dinner menu (steak, pasta, pizza, seafood entrees) with brunch only one section of several.",
+  "issues": [
+   "cuisine field \"Breakfast & Brunch\" understates the restaurant's actual scope (full dinner menu with entrees, pizza, pasta, steak) - likely inherited verbatim from Yelp's primary category"
+  ]
+ },
+ {
+  "id": "87",
+  "name": "Carnitas' Snack Shack - Embarcadero",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "source_url (Toast order page) returned 403; verified instead against the official site's daily menu page (carnitassnackshack.com/pig-out/embarcadero/daily-menu). All 10 checked dishes across sections (Triple Threat Sandwich, Smash Burger, Shack Burger, Crispy Chicken Sandwich, Caesar Salad, Carnitas Tacos, Baja Fish Tacos, Breakfast Burrito, Shack Fries, Loaded Quesadilla) exist with matching names/descriptions. The official site publishes no prices, so exact price accuracy is unverified; a delivery-app (Uber Eats) listing showed the Triple Threat Sandwich at $20.34 vs our $16.95, but that gap looks like typical delivery-platform markup rather than a real pricing error.",
+  "data_verdict": "minor",
+  "data_notes": "Address (1004 N Harbor Dr, San Diego, CA 92101) and hours (Mon-Thu 11am-9pm, Fri-Sat 10am-11pm, Sun 10am-9pm) both match verified sources exactly. Cuisine 'American'/'New American' matches Yelp's category. Confirmed open and operating (opened 2016, active current listings, no closure reports). Neighborhood 'Little Italy' is questionable: Yelp and TripAdvisor label this waterfront address 'Marina' district, not Little Italy.",
+  "issues": [
+   "Neighborhood label 'Little Italy' likely should be 'Marina'/'Embarcadero' per third-party listings",
+   "Dish prices could not be confirmed against an official priced source (Toast page blocked by 403); only a delivery-app price was available and it runs higher due to markup"
+  ]
+ },
+ {
+  "id": "145",
+  "name": "Rocky's Crown Pub",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Verified against official site rockyburgers.com (homepage carousel plus the food-menu and drink-menu subpages from source_url). All 10 checked dishes across Menu, Beer On Tap, Domestic, and Pitchers sections matched name and price exactly; spot-checked the rest of the 23 dishes too and they all matched.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (3786 Ingraham St, San Diego, CA 92109) and cuisine (Burgers) match the official site exactly; Pacific Beach neighborhood is correct for that address. Site lists kitchen hours as Mon-Wed 11am-10pm / Thu-Sun 11am-11pm; our DB hours (ends 2245 Mon-Wed, 2345 Thu-Sun) are ~45 min later than the site's stated kitchen close but follow the same weekly pattern. Lat/lng (32.7886, -117.2376) fall in San Diego County. No signs of closure.",
+  "issues": [
+   "Closing times in DB run about 45 minutes later than the site's stated kitchen hours (10:45pm/11:45pm vs 10pm/11pm) — may be using bar hours instead of kitchen hours"
+  ]
+ },
+ {
+  "id": "144",
+  "name": "Kono's Cafe",
+  "on_site": true,
+  "menu_verdict": "stale",
+  "menu_checked": 10,
+  "menu_matched": 1,
+  "menu_notes": "Official site (konoscafe.com/menu and konoscafepb.com, which redirects to it) 404s on every page tried. Used Yelp's current menu (yelp.com/biz/konos-cafe-san-diego-6) as the live reference, cross-checked against an older SinglePlatform snapshot. Every checked dish name exists on the real menu, but prices are stale by $1-3 across the board (e.g. Breakfast Sandwich $4.95 vs current $6.00, Egg Scramble $7.50 vs $10.25, Big Breakfast #1 $8.50 vs $11.50, Kono Burger $6.50 vs $8.00, Cobb Salad $9.95 vs $13.00) — only Kono Potatoes ($3.25 vs $4.00) was within $1.",
+  "data_verdict": "minor",
+  "data_notes": "Address (704 Garnet Ave, San Diego, CA 92109) and cuisine (Breakfast & Brunch) are correct, and lat/lng (32.7966, -117.2565) fall in San Diego County. Neighborhood is listed as 'Mission Beach' but 704 Garnet Ave is Pacific Beach per Yelp, Tripadvisor, and local press. Hours (7am-3pm daily) match the restaurant's well-known daily hours. Recent 2026 reviews (through at least May 2026) confirm it is open, despite one third-party aggregator (Corner.inc) mislabeling it closed — likely confusion with a similarly named 'Konito's Cafe' at a different address.",
+  "issues": [
+   "Neighborhood mislabeled as Mission Beach; should be Pacific Beach",
+   "Menu prices are stale, running $1-3 below current prices on nearly every dish (source: Yelp menu)"
+  ]
+ },
+ {
+  "id": "2932",
+  "name": "The Taco Stand",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 10,
+  "menu_matched": 7,
+  "menu_notes": "Dish names/descriptions confirmed against letstaco.com's own menu page (Carne Asada, Al Pastor, Baja, Camaron, Pescado/Mahi Mahi, Mushroom, Sonora, California all present, correctly spelled). Prices checked against allmenus.com (third-party aggregator): 7/10 within $1, but California Burrito ($10.49 vs $9.02), Al Pastor Burrito ($9.99 vs $8.07) and Carne Asada Fries ($10.89 vs $9.33) drift over $1. A separate web search suggested even higher delivery-app pricing ($12.59 burrito). source_url is 'chain-shared:restaurant/488', i.e. this menu was copied from a different Taco Stand location rather than scraped specifically for La Jolla, which likely explains the drift.",
+  "data_verdict": "accurate",
+  "data_notes": "Address '621 Pearl Street, La Jolla' matches exactly (Yelp/Toast/Tripadvisor all cite 621 Pearl St). Neighborhood and cuisine (Mexican) correct. Hours match a live web search exactly for all 7 days: Mon-Thu & Sun 9am-9pm, Fri-Sat 9am-10pm. lat/lng (32.8394, -117.2768) correctly lands in La Jolla, San Diego County. No signs the restaurant is closed; Yelp shows current Sept 2026 activity.",
+  "issues": [
+   "Menu is 'chain-shared' from a different Taco Stand location (restaurant/488) rather than La Jolla-specific; 3 of 10 checked prices drift more than $1 from third-party pricing, consistent with cross-location reuse",
+   "Real menu also lists Pollo Asado and Nopal tacos, and Bean & Cheese/Mushroom burritos not present in our list — may just be an intentional subset, not necessarily missing"
+  ]
+ },
+ {
+  "id": "410",
+  "name": "Filippi's Pizza Grotto Little Italy",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 9,
+  "menu_notes": "Direct WebFetch of website (image-only menu), source_url, DoorDash and Uber Eats all failed (blocked or 403), so the live source_url (order.online/store/FilippisPizzaGrottoLittleItaly-42970) was read via a text-extraction proxy (r.jina.ai). 9/10 checked items matched EXACTLY, with no inflation found: Spaghetti $14.95, Lasagna $18.75, Fettuccini Alfredo $23.00, Pepperoni Pizza $30.00, Works Pizza $31.00, Special Pizza $34.00, Three Toppings Pizza $34.00, Two Topping Pizza $30.00, Veal Scaloppini Dinner $33.00, and Chicken Parmigiana A la carte $26.00 all match the current live menu dollar-for-dollar. Only mismatch: our 'Veal Parmigiana A la carte $27.00' is not on the real menu under that name -- the real $27.00 a la carte item is called 'Veal Scaloppini A la carte' (price correct, name wrong). A web search also independently surfaced DoorDash pricing (Pepperoni $30, Black Olive $29, Three Toppings $34) corroborating our numbers. One older food-blog review cited a much lower walk-up price ($13.50 for a 13-inch cheese pizza), but that figure is inconsistent with two independent current sources and reads as stale/outdated, not a real comparison point. VERDICT ON THE 'suspect-markup' FLAG: not confirmed -- our stored prices track the real current direct-ordering menu almost exactly; I found no evidence of markup versus the current menu at this source.",
+  "data_verdict": "accurate",
+  "data_notes": "Address '1747 India St, San Diego, CA 92101' confirmed via Yelp/Tripadvisor/search results. Neighborhood 'Little Italy' and cuisine 'Italian' are correct. lat/lng (32.7237, -117.1683) correctly lands in Little Italy, San Diego County. Hours match a live web search exactly: Mon-Thu/Sun 11am-9pm, Fri-Sat 11am-10pm. Restaurant is open and active (Yelp shows a Sept 2026 update with ~4000+ reviews, no closure signals).",
+  "issues": [
+   "Dish name 'Veal Parmigiana A la carte' ($27.00) does not exist on the real menu under that name; the real $27.00 a la carte item is 'Veal Scaloppini' -- likely a name mix-up during extraction, price itself is correct",
+   "The internal 'suspect-markup' confidence flag does not hold up under this check: 9/10 sampled prices matched the live order.online source (the same source_url on file) exactly. Recommend downgrading/clearing this flag unless a genuinely different dine-in menu with lower prices can be located"
+  ]
+ },
+ {
+  "id": "24",
+  "name": "Bronx Pizza",
+  "on_site": true,
+  "menu_verdict": "none",
+  "menu_checked": 0,
+  "menu_matched": 0,
+  "menu_notes": "0 dishes in our DB, but a real menu IS reachable: official site (bronxpizza.com) links to /menu1/ which returns no content, so used third-party aggregator allmenus.com (allmenus.com/ca/san-diego/7608-bronx-pizza/menu). 5 real items with prices found: Cheese Pizza slice $2.00+, Pepperoni slice $2.50+, 18\" Cheese whole pie $14.00, Whitestone specialty pie $15.75, Calzone $7.00 (mozzarella/ricotta/parmesan). Note: a WebSearch summary of recent reviews suggests current prices may be higher (slices ~$3.50-4, pies ~$22-31), so allmenus.com pricing may itself be a bit dated, but the menu items/structure are confirmed real and current in kind.",
+  "data_verdict": "accurate",
+  "data_notes": "Address 111 Washington St, San Diego, CA 92103 matches the official site exactly. Neighborhood 'Hillcrest' is correct for that address. Cuisine 'Pizza' is correct. lat/lng (32.7498, -117.1634) fall within San Diego County near Hillcrest. Hours match the official site closely: site lists Mon/Tue closed, Wed/Thu 11am-9pm, Fri/Sat 11am-10pm, Sun 11am-9pm; our DB has entries for Wed(2) 1100-2100, Thu(3) 1100-2100, Fri(4) 1100-2200, Sat(5) 1100-2200, Sun(6) 1100-2100, with no Mon/Tue entries (closed) - all consistent. Restaurant appears open and active (Yelp shows Sept 2026 reviews).",
+  "issues": [
+   "0 dishes in DB despite a real, fetchable menu existing (allmenus.com) - dish backfill would be straightforward",
+   "Official site's own /menu1/ page returns no usable content, so any future scrape of bronxpizza.com directly will keep failing; a third-party aggregator or PDF should be the source"
+  ]
+ },
+ {
+  "id": "1561",
+  "name": "Extraordinary Desserts",
+  "on_site": true,
+  "menu_verdict": "stale",
+  "menu_checked": 10,
+  "menu_matched": 0,
+  "menu_notes": "Official site's /menu link exists but its content wasn't retrievable via fetch (/menu1/ 404s, Uber Eats page blocked with 403); used postmates.com's current online-ordering menu (same catalog Uber Eats/Postmates share) as the real-menu source. Checked 10 dishes across Morning Toasts, Granola Bowl, Dips & Spreads, Boards, Panini, Grilled Cheese and Pastries - every single one still exists on the current menu with the correct name/spelling, but every price is $2-$8.50 lower than current (e.g. Charcuterie Plate $34.00 in DB vs $42.50 now; Turkey Breast Panini $16.95 vs $21.00; Hummus Trio $22.00 vs $27.50; Blueberry Cheesecake Coffee Cake $8.95 vs $11.00). The consistent ~15-25% underpricing across the board indicates a clearly outdated menu snapshot, not random drift. Likely explanation: source_url in the raw data is a cash.app payment/QR-ordering link rather than an actual menu page, so it was probably scraped from an old cached ordering session.",
+  "data_verdict": "minor",
+  "data_notes": "Address 1430 Union St, San Diego, CA 92101 and neighborhood 'Little Italy' are correct and match the official Little Italy location (there is a second, different location on 5th Ave/Bankers Hill, but our address is unambiguously the Little Italy one). Cuisine 'Bakery & Desserts' is reasonable. lat/lng (32.720246, -117.16581) fall within San Diego County in Little Italy. Hours are uncertain: our DB shows an 11am (10am Sat/Sun) opening with 9-11pm closes; a search of third-party listings suggested an 8:30am opening on weekdays, which conflicts, but that search result was not from an authoritative source, so this is flagged rather than called wrong.",
+  "issues": [
+   "Menu prices are stale across virtually every checked dish - a fresh scrape (avoid the cash.app source_url) would fix this",
+   "source_url field points to a cash.app payment link rather than a real menu page - bad source for future re-scrapes",
+   "Weekday opening hour could not be confidently confirmed against our 11am entries; worth a manual recheck"
+  ]
+ },
+ {
+  "id": "2611",
+  "name": "Carnitas' Snack Shack - North Park",
+  "on_site": true,
+  "menu_verdict": "none",
+  "menu_checked": 0,
+  "menu_matched": 0,
+  "menu_notes": "dishes array is empty (dish_count 0, ml_status 'not_found'); nothing to compare. website and source_url both point to the generic carnitassnackshack.com homepage, not a location-specific menu -- moot anyway since this location is closed.",
+  "data_verdict": "wrong",
+  "data_notes": "This North Park location (2632 University Ave) has been permanently closed for years: Yelp's own listing page is titled 'CARNITAS' SNACK SHACK - NORTH PARK - CLOSED' (updated July 2026), and SanDiegoVille reported the space was rebranded into a different concept, 'The Porchetta Shack,' by the same founder back in 2019. Address and neighborhood (North Park) are correct and lat/lng (32.7486, -117.1355) fall within San Diego County, but city is null (should be 'San Diego') and hours is entirely null. listed=true with hold_reason=null presents it as an open, active restaurant, which it is not.",
+  "issues": [
+   "This location permanently closed (rebranded to 'The Porchetta Shack' circa 2019, still closed per July 2026 Yelp update) -- should be unlisted or given a hold_reason, not shown as open",
+   "city field is null, should be 'San Diego'",
+   "hours field is entirely null",
+   "No menu data at all (0 dishes) for a restaurant record presented as active"
+  ]
+ }
+]

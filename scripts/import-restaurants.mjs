@@ -231,8 +231,14 @@ async function replaceDishes(byRestaurant) {
   if (ids.length === 0) return 0;
 
   // Scoped to the restaurants this file actually carries a menu for — see the
-  // header on why the others are left alone.
-  await sql.query(`DELETE FROM dishes WHERE restaurant_id = ANY($1)`, [ids]);
+  // header on why the others are left alone — and to extracted rows only.
+  // A dish promoted out of what diners typed (scripts/apply-dish-review.mjs)
+  // carries `source = 'community'` and is not part of any seed file, so it has
+  // to survive an import that replaces the menu around it.
+  await sql.query(
+    `DELETE FROM dishes WHERE restaurant_id = ANY($1) AND source = 'menu'`,
+    [ids],
+  );
 
   const rows = [];
   for (const [restaurantId, dishes] of Object.entries(byRestaurant)) {

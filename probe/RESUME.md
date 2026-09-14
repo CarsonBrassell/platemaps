@@ -29,10 +29,185 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   login+forgot, no security headers, /_next/image open proxy + sharp CVEs,
   plaintext session tokens, /drafts live, profile ignores blocks, probe/ and
   menus/ public), 9 LOW. Secrets are clean: nothing from .env.local is in git
-  history or the client bundle. Phase 2 (fixes) waits for Calvin's go; he must
-  rotate the Neon password and check Vercel env himself first.
+  history or the client bundle. Neon password ROTATED 2026-09-09 (finding #2
+  closed on the dashboard side; the leaks were into agent transcripts, never
+  git). Phase 2 (fixes) is PAUSED 2026-09-09: Calvin has app fixes to land
+  first. Nothing from Phase 2 is edited or committed. Resume plan: lead does
+  #1+#3 (one media+block gate in hydratePosts), Sonnet agents take #4+#13-16
+  (routes), #5+#6 (next.config), #9+#10+#18+#19 (pages/strays); then #8
+  (session hashing, needs migration), then #7 (next upgrade) last. Still on
+  Calvin: delete the 7 stale POSTGRES_*/PG* lines in .env.local (old
+  password), check Vercel env, decide repo visibility (#11/#12).
 
 ## Since 2026-09-05 (newest decisions, read these)
+
+- **Full menu-photo pass RUNNING, started 2026-09-13.** Calvin approved the full harvest
+  after the 100-row sample. Command (detached, ~1 min/row, ~3,064 rows ≈ 2 days):
+  `node --env-file=.env.local probe/menu-photos/fetch.mjs --limit 3100 --pause 8 > probe/menu-photos/run-full.log 2>&1`.
+  Manifest rows 1-149 are the sample (already extracted+loaded); rows from 150 on are the
+  full pass. Resumable — if the process died, just rerun the same command (ids in the
+  manifest are skipped); then `--retry --pause 20` for limited-view rows. Extraction:
+  spawn Sonnet agents (never Opus) per EXTRACT.md in batches of 4 "ok" rows whose
+  `menus/wip/photos/<id>.json` does not exist yet. Load: merge those JSONs (skip ids
+  already in `dishes`) into `menus/wip/result-photos-<date>.json` → `scripts/screen-menus.mjs`
+  → strip zero-dish entries → `scripts/load-menus.mjs --dry` then real. Check progress:
+  `tail -n +150 probe/menu-photos/manifest.jsonl | grep -c '"status":"ok"'`.
+
+- **Menu-photo sample result, 2026-09-13.** 100 random menuless listed rows: 50 had a
+  Google "Menu" photo tab (31 first pass + 19 on `--retry --pause 20`; 22 still throttled
+  as "limited view", 28 have no menu category). Sonnet agents transcribed all 50
+  (menus/wip/photos/<id>.json): 4 were drink-only (dishes: []), the screener dropped
+  unpriced-only captures and thin ones, and 34 menus / 1,214 dishes loaded
+  (result-photos-0913.json -> clean-photos-0913.json, 22 menus; result-photos-0913b.json ->
+  clean-photos-0913b.json, 12 menus). Net: **34% of sampled menuless restaurants got a
+  menu.** Listed coverage 5,668 -> 5,702 of 9,065 (62.9%). The remaining gap with a
+  place_id is 3,064 rows, so a full run projects roughly +1,000 menus (~74% coverage) at
+  about 1 min/row harvest plus ~4 Sonnet agent-minutes per hit. Decision on the full run
+  is Calvin's. 4381 and 5795 came back with real photo menus but stay in
+  QUARANTINE_IDS (held on stale prices earlier; photo age unknown). Zero-dish entries
+  must be removed from clean.json before loading or load-menus records `not_found`.
+- **Menu coverage, 2026-09-13 (listed = hold_reason IS NULL AND lat IS NOT NULL).**
+  5,668 of 9,067 listed have a menu (63%), up from 5,641 after the thin review below.
+  Serper is at 0 credits and buying more is not worth it: 2,274 of the 3,424 menuless
+  listed rows already have a website and the browser yield on them is ~1.8%.
+  Held rows (~5,100: outside county, chains, closed, dupes) are never deleted on purpose -
+  hold_reason is the blocklist that stops discovery re-adding them.
+- **Small-menu floor, 2026-09-13.** `THIN` in scripts/screen-menus.mjs stays at 8. Every 4-7
+  dish capture for a listed menuless restaurant (77 rows, probe/thin-review.md) was hand
+  read: 28 were whole menus, 49 were carousels/merch/hotel rates/spam. The 28 ids went
+  into `COMPLETE_BUT_SHORT` (uncommitted); menus/wip/result-thin-0913.json screened to
+  clean-thin-0913.json (921 quarantined, sagemenu aggregator) and loaded: 27 menus, 165
+  dishes. Lowering THIN globally would have shipped the 49.
+- **Menu-photo harvest, 2026-09-13 (experiment, Calvin said "go ahead and try").**
+  `probe/menu-photos/fetch.mjs --limit N | --ids a,b` opens each menuless listed
+  restaurant's Google Maps place page headless (URL
+  `https://www.google.com/maps/place/?q=place_id:<google_place_id>&hl=en`), clicks
+  `button[aria-label^="Photo of"]`, retries up to 3x when Google serves the "limited view"
+  shell (no category tiles), clicks the `<button>` whose text is exactly "Menu"
+  (`[aria-label="Menu"]` is the hamburger, not the tile), collects the
+  `lh3.googleusercontent.com/gps-cs-s` background-image URLs (dedupe on the suffix-stripped
+  URL - each photo appears twice), downloads `=w1600` to probe/menu-photos/img/<id>/.
+  Manifest: probe/menu-photos/manifest.jsonl (resumable, statuses ok | no-photos |
+  limited-view | no-gallery | no-menu-category | menu-category-empty | error). Log in
+  probe/menu-photos/run.log. Extraction = Sonnet agents reading the JPGs with the Read
+  tool per probe/menu-photos/EXTRACT.md (no ANTHROPIC_API_KEY, so no vision script),
+  writing menus/wip/photos/<id>.json -> merged into menus/wip/result-photos-0913.json ->
+  screen once -> load. A 100-row random sample was running when this was written; the hit
+  rate from that decides whether to run it over all ~3,300 rows. Note tap lists (bars)
+  come back as "Menu" photos and must produce dishes: [].
+- **RESUME.md is 77KB, far over its own 2K-token rule.** Older dated sections below
+  "## 2026-09-05 - distance on search" could be moved to probe/RESUME-archive.md.
+- **Words-only plates on the profile — implemented, uncommitted (2026-09-13).** Calvin picked
+  tile A (Clipping) + open 2 (the tile, grown up). Shipped in the shared components, so phone
+  and web together: `ProfileShelves` "All posts" is now a 2-column shortest-first collage
+  (`packBy` in lib/photoShape); a words plate is its tone block edge to edge with the score
+  inside; `PlateDetailSheet` leads a photoless post with the same block full-width (hearts
+  pinned in its corner, options menu at the score line's right end). tsc + eslint clean.
+  The draft routes `/drafts/profile-text-posts`, `/m/drafts/profile-text-posts` and
+  `src/components/drafts/ProfileTextPostsDraft.tsx` are superseded — delete once Calvin OKs.
+- **Spot-check fixes applied 2026-09-13 (free tier; Serper still at 0).** Details in
+  probe/spot-check/REPORT.md "Fixed". Circular duplicates: `scripts/fix-circular-duplicates.mjs`
+  broke all 24 pairs (keeper = more dishes > has hours > lower id; hours/website/
+  price_band/place_id copied from the loser); 24 restaurants listed again (9,067 listed).
+  apply-existing.mjs and retry-permit-only.mjs now refuse to point a row at one already
+  held `duplicate of`. `scripts/dedupe-dishes.mjs` deleted 2,387 same-name-same-section
+  rows in 195 restaurants (kept the priced/cheapest; different descriptions left alone).
+  fix-neighborhoods --apply moved 121 rows. `infer-cuisine.mjs --bars --no-llm` relabelled
+  32 "Bars" rows with real food menus (Tahona -> Mexican); Kettner Exchange and ~107 others
+  need the LLM stage - **ANTHROPIC_API_KEY is not in .env.local**, add it and run
+  `--bars --apply`. `scripts/fix-chain-shared.mjs`: 12 rows adopted their own source URL,
+  22 loop rows (Everbowl x16, Las Cuatro Milpas 205/4544, Breakfast Republic x3, Golden
+  Chopsticks x2) set to confidence 'low', source_url '' - menus kept, provenance unknown.
+  Held: 2611 Carnitas Snack Shack North Park (closed 2019), 609 Addison (dup of 3171).
+  Snapshots: probe/snapshots/{circular-duplicates,dedupe-dishes,cuisine-bars,
+  chain-shared-self}-2026-09-13*.json, neighborhood-20260913-pre-fix.json,
+  targeted-rows-20260913.json.
+  Not fixed (need Serper/API): Mama's Bakery 8162 (geocode 2141 El Cajon Blvd, clear
+  permit-only hold), Bronx Pizza 24 (menu on allmenus.com), 304 permit-only holds,
+  3,119 never-Google-checked, 360 listed rows without address. Kono's/Phil's/Carnitas
+  Embarcadero neighborhoods are wrong because regions.ts is a point set (nearest point
+  wins) - needs polygons, not a data fix.
+  Background probes started 19:31: `scripts/menu-price-drift.mjs` (read-only; fraction of
+  our prices still on the source page -> probe/spot-check/price-drift.json, log
+  price-drift.log) and check-menu-freshness.mjs baseline over every http source (log
+  probe/spot-check/freshness.log; resumable - it orders by checked_at NULLS FIRST). If
+  either log ends early, re-run the same command.
+  Price-drift result (19:36): 2,959 checkable, 1,204 judged - current 1,108 / drifting 60
+  / stale 36 (list: verdict "stale" in price-drift.json, e.g. Fogo de Chao 195, Vigilucci's
+  x3, Woodstock's 4419); 256 thin pages (source URL is a landing page/photo), 1,499
+  unreadable (595 x 403, 620 JS-rendered, 155 PDF). Re-extracting the 96 stale/drifting
+  is a browser-menus job; the 620 JS-rendered ones need the same.
+  Freshness baseline finished 19:45: 4,724 http sources - 1,565 now carry a fingerprint
+  (1,554 baselined, 9 flagged changed vs an old fingerprint), 3,161 unreadable to a bare
+  fetch (browser-only rotation). From here check-menu-freshness.mjs can detect change.
+
+- **50-restaurant spot check (2026-09-13, read-only).** probe/spot-check/REPORT.md.
+  49/50 have rows, 46 on the site; menus accurate 29 / mostly 10 / stale 5 / buggy 2 /
+  none 3 / unverifiable 1. Found **24 circular "duplicate of" pairs** (both rows held,
+  restaurant invisible - Supannee, original Pho Ca Dao) in
+  probe/spot-check/dangling-duplicates.json, Mama's Bakery wrongly held permit-only,
+  360 listed rows with no address. Nothing fixed yet; Calvin decides.
+
+- **152 junk menus retired 2026-09-13.** Em Coffee House showed `color_3 $1.00
+  ... color_11 $52329.00`: the browser tier captured a Wix theme palette
+  (siteassets.parastorage.com) as the largest priced payload; 16 more carried
+  DoorDash's feature-flag service the same way, plus cents-as-dollars wine and
+  coffee lists and two non-food shops. All exported to
+  `menus/retired/2026-09-13T19-02-20-976Z-junk.json`, dishes AND ledger rows
+  deleted so they are back in the queue (6,840 with menu, queue 3,033).
+  `scripts/junk-menu.mjs` (`junkReason`: infrastructure host, identifier
+  names, prices >= $1,000, letterless names - Unicode-aware) now runs in
+  browser-menus (skips those captures), screen-menus (first reason) and
+  load-menus (hard gate). `scripts/retire-junk-menus.mjs --dry` re-finds them.
+  Also fixed: load-menus.mjs had a stray `*/` from the 09-09 source-scoping
+  edit and would not parse. Details: probe/JUNK-MENUS-2026-09-13.md.
+
+- **Typed dish names are reviewed by hand, never promoted by a threshold
+  (2026-09-09).** A diner can always type a dish that is not on the menu — the
+  post is never gated. What is gated is the `dishes` row. `npm run dishes:review`
+  writes `probe/dish-review-<date>.md` (reads only; four buckets — menu-typo,
+  new-dish, new-dish-photo, held), a person edits the `decision:` lines, and
+  `npm run dishes:apply` (dry run by default, `--apply` to write) is the only
+  thing that turns a spelling into a menu row. Upvote/duplicate-count thresholds
+  were rejected: a count that fires for a busy taqueria never fires for the quiet
+  place that actually has no menu. Only menu-typo and new-dish arrive pre-filled
+  — a queue whose defaults are all `promote` is a threshold with a rubber stamp.
+  Promoted dishes carry `dishes.source = 'community'` and the section
+  "Added by diners"; **all four places that replace a restaurant's dish list are
+  now scoped `AND source = 'menu'`** (load-menus.mjs, db.ts
+  replaceDishesForRestaurant, import-restaurants.mjs, retire-untrusted-menus.mjs)
+  — unscoped, the next extraction would silently delete every promoted dish.
+  Matching is word-by-word typos only (`src/lib/dishNameMatch.ts`), shared with
+  the composer's "Already on the menu?" typeahead, so "Carne Asada Fries" never
+  merges into "Carne Asada Burrito" and "pho tai" never into "pho gai".
+  **Accent-blind since 2026-09-13.** Calvin's call: "Crème Brûlée" and
+  "Creme Brulee" are one dish. `foldDishName` runs `foldAccents` first (è→e,
+  đ→d, ß→ss), and the SQL side has an IMMUTABLE `fold_accents()` wrapper over
+  `unaccent` so `dishes.name_folded` / `posts.dish_name_folded` were dropped and
+  rebuilt with the same fold (migrate.mjs, idempotent). `dish_names` was
+  re-indexed: 186,772 names, 3,904 accented duplicates merged. Side effect:
+  `?dish=` for accented names works now — `normalize()` already folded accents,
+  the column did not, so they never met. `dishNameMatch.ts` imports
+  `./brandName.ts` (relative, extensioned; `allowImportingTsExtensions` is on)
+  because the review scripts load it under plain Node, which cannot resolve `@/`.
+
+- **Yelp free tier is dead (2026-09-09, open).** The nightly
+  platemaps-yelp-daily run spent all 300 calls and every one came back
+  `400 TRIAL_EXPIRED`. 0 matched, 0 photos, 0 closures. Nothing was
+  corrupted - a failed lookup leaves `yelp_checked_at` NULL, so the 7,086-row
+  queue is intact and `listed` did not move (9,043 before and after).
+  fetch-yelp.mjs is now a PAID script and falls under the same rule as Google
+  Places: do not run it unattended. Calvin's call pending: pay for Yelp, pause
+  the routine, or try Serper for photos. He wants to keep some scraped photos
+  so the feed is not bare; they are seeds, replaced later by the most-upvoted
+  photo on a restaurant's posts.
+
+- **The scheduled task's premise was stale.** It claimed a restaurant is
+  listed only with photo + rating + coordinates. `publish-check.mjs` READY is
+  `hold_reason IS NULL AND lat/lng IS NOT NULL` - no photo, no rating, matching
+  the 2026-09-05 decision. All 5,156 unlisted rows are held by hand; the
+  photo/rating/hours numbers in its report are informational, not gates. Yelp
+  photo work has never moved the `listed` count.
 
 - **How many more Handel's-type gaps? (2026-09-08)** Estimated 100-300
   county-wide; see probe/GAP-ESTIMATE-2026-09-08.md. Permit feed: 80 active

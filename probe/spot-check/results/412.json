@@ -1,0 +1,17 @@
+{
+  "id": "412",
+  "name": "Georges at the Cove",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 10,
+  "menu_matched": 7,
+  "menu_notes": "Compared against the live https://www.georgesatthecove.com/menu-lunch (matches source_url). Core signature dishes match exactly (Lobster Roll $45, Clam Spaghetti $30, Rockfish Tacos $21, Smoked Salmon Rillettes $21, George's Famous Soup $15, Sticky Toffee Cake/Pudding $15, Coconut Thai Tea Sundae $15), but several items appear to be from a since-refreshed lunch menu: our 'Rigatoni' $29 is now 'Paccheri' $29, our tuna/seafood crudo starters (Campechana, Local Bluefin Tuna Crudo) have been replaced by Hokkaido Scallop Crudo and Ahi Tuna Carpaccio, and two dessert flavors (Corn Creme Brulee, Black Sesame Bread Pudding) are gone in favor of Vanilla Bean Creme Brulee and Lemon Meringue Cheesecake. Our data also only captures the lunch menu; the restaurant separately runs a dinner menu and an Ocean Terrace menu with different dishes (e.g. persimmon salad, stinging nettle spaghetti) that are entirely uncaptured here.",
+  "data_verdict": "minor",
+  "data_notes": "Address (1250 Prospect St, La Jolla, CA 92037) and neighborhood (La Jolla) are correct; lat/lng (32.8493,-117.2718) land right on La Jolla Cove, well within San Diego County. Cuisine 'American'/'New American' is reasonable. Restaurant is open and operating (current 2026 reviews, live reservations page). Hours are mostly right (11am-10pm Mon-Thu matches) but our single hours block applies 10pm close to every day including Friday, when the real site lists an 11pm close.",
+  "issues": [
+    "Lunch menu has drifted since capture: Rigatoni -> Paccheri, tuna/seafood starters and two desserts swapped for newer items",
+    "Local Burrata priced $23 in our data vs $25 on the live site (over $1 drift)",
+    "Coverage gap: only the lunch menu is captured; dinner menu and Ocean Terrace menu (separate, different dishes) are missing entirely",
+    "Hours block shows 10pm close every day; real site lists 11pm close on Friday (and likely weekend days)"
+  ]
+}

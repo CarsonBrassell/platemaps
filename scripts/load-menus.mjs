@@ -30,6 +30,7 @@
 
 import { readFile } from "node:fs/promises";
 import { neon } from "@neondatabase/serverless";
+import { hostOf, junkReason } from "./junk-menu.mjs";
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes("--dry");
@@ -137,6 +138,10 @@ for (const entry of entries) {
   for (const dish of entry.dishes ?? []) {
     if (!dish.name) problems.push(`${entry.restaurantId}: a dish has no name`);
   }
+  /* Last gate before a row exists. The screen is supposed to have run, but the
+   * 142 Wix-palette menus of 2026-09-06 prove a file can reach here unscreened. */
+  const junk = junkReason(entry.dishes, hostOf(entry.sourceUrl ?? ""));
+  if (junk) problems.push(`${entry.restaurantId} (${dbName}): ${junk}`);
   /*
    * A photo URL reaches next/image, which fetches and optimises it server-side
    * (next.config.ts now allows any https host, because restaurant photos come
@@ -193,8 +198,21 @@ for (const entry of entries) {
      * commits and then loses its connection looks identical to one that never
      * ran, and retrying it is only safe if re-running is harmless. Making the
      * write idempotent is what earns the retry the right to exist.
+     *
+     * Scoped to `source = 'menu'`, which is the one thing this DELETE must not
+     * be allowed to reach past. A dish promoted out of what diners typed
+     * (scripts/apply-dish-review.mjs) is not part of this page's snapshot and
+     * was never on it — unscoped, the next extraction of a restaurant would
+     * silently delete every dish the review had added to it, with nothing in the
+     * output saying so. Promoted rows also take non-positional ids, so the
+     * INSERT below cannot collide with one either.
      */
-    await withRetry(() => sql`DELETE FROM dishes WHERE restaurant_id = ${entry.restaurantId}`);
+    await withRetry(
+      () => sql`
+        DELETE FROM dishes
+         WHERE restaurant_id = ${entry.restaurantId} AND source = 'menu'
+      `,
+    );
     for (const [i, dish] of dishes.entries()) {
       await withRetry(
         () => sql`

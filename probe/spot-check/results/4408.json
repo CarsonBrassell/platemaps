@@ -1,0 +1,18 @@
+{
+  "id": "4408",
+  "name": "Supannee Thai",
+  "on_site": false,
+  "menu_verdict": "mostly",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Checked Somtum, BBQ Chicken, Green Salad, Yum Veggie Salad, Lemongrass Chicken, Mixed Vegetables Soup, Spicy Noodle, Panang Curry, Mango Curry, Yellow Curry against sdthai.com's gallery and the SinglePlatform/Grubhub menu aggregators (togo.dylish.com source page is JS-rendered and did not return usable content). Panang Curry, Mango Curry, Yellow Curry and Green Salad are explicitly confirmed on the real menu via SinglePlatform; the rest are plausible/consistent with the restaurant's style but could not be price-checked since no public source lists current prices. This record captures more of the real curry lineup and adds a Sides section (rice/noodle add-ons) that is realistic for a Thai restaurant but unverified independently.",
+  "data_verdict": "minor",
+  "data_notes": "Address '2907 Shelter Island Dr, Ste 110, San Diego, CA 92106' matches the real address. Neighborhood 'Point Loma' correct. lat/lng (32.7216967, -117.2305932) fall in San Diego County, essentially the same point as 179. Cuisine 'Thai' correct. Restaurant confirmed still open. However hours is null and price_band is null, google_place_id/google_rating are also null — real hours exist (confirmed via web search) but were not carried onto this record, unlike 179 which has them.",
+  "issues": [
+    "Circular duplicate: 4408 is held as 'duplicate of 179' while 179 is held as 'duplicate of 4408' — each record points at the other as the canonical one, so this hold_reason chain can never resolve to a single listed row without manual intervention.",
+    "4408 has a more complete menu (68 vs 45 dishes) and includes real sections/dishes (Panang Curry, Mango Curry, Yellow Curry, a Sides section) that are verifiably on the restaurant's real menu but missing from 179 — 4408 should likely be the canonical row (or the two merged), though 4408 is missing hours/price_band that 179 has.",
+    "hours is null and price_band is null despite the restaurant having known, findable hours — if 4408 is chosen as canonical it needs 179's hours backfilled.",
+    "Missing entire real menu sections: Local Fish Specials, House & Seafood Specialties, and Desserts are on the actual menu (per SinglePlatform/Grubhub) but absent from both 179 and 4408.",
+    "Could not verify exact dish prices against any independently published price list; source_url (togo.dylish.com) is JS-rendered and blocked automated fetch, and third-party aggregators list dishes without prices."
+  ]
+}

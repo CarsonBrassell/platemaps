@@ -1,0 +1,20 @@
+{
+  "id": "8",
+  "name": "Pacific Beach Fish Shop",
+  "on_site": true,
+  "menu_verdict": "buggy",
+  "menu_checked": 10,
+  "menu_matched": 6,
+  "menu_notes": "Checked against official site thefishshops.com/pacific-beach/ (source_url menutoeat.com is stale). Fish N' Chips, Ahi Poke, Crab Cake, Salmon, Seaweed Salad, Macaroni Salad matched within $1. Fish Shop Shrimp ($21.75 vs real $14.75), Coconut Shrimp ($21.75 vs $12.50) and all four tacos ($17.75 vs real $7.75-$8.00) are inflated by roughly $10-14. 'Price by Style' section stores one price per fish (e.g. Yellowtail $30.00) even though the real menu has 4 different prices per format (taco/sandwich/salad/plate, e.g. Yellowtail taco $7.25 to plate $22.00) - a structural extraction mismatch, not just drift.",
+  "data_verdict": "minor",
+  "data_notes": "Address (1775 Garnet Ave), neighborhood (Pacific Beach), and cuisine (Seafood) all correct; lat/lng (32.8004,-117.2373) sit in Pacific Beach. Hours are off by 30 min on 4 of 7 days: real is Sun-Wed 11am-9:30pm / Thu-Sat 11am-10pm, but our data has all 7 days closing at 10pm. Restaurant is open and operating.",
+  "issues": [
+    "'Sliver Lobster' should be 'Slipper Lobster' (corrupted name)",
+    "'Deep Scallops' should be 'Diver Scallops' (corrupted name)",
+    "'River Halibut' is not a real menu item/fish option (garbled name)",
+    "'Halibut' (Local Catch section) is not among the current fish options at all",
+    "Taco prices in 'Fish Shop Favorites' are ~$10 too high vs current menu",
+    "'Price by Style' dishes carry a single flat price instead of the real taco/sandwich/salad/plate tiers, and several don't match any real tier",
+    "Hours wrong for Sun/Mon/Tue/Wed (should close 9:30pm, data says 10pm)"
+  ]
+}

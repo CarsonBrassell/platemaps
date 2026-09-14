@@ -1,0 +1,18 @@
+{
+  "id": "9522",
+  "name": "Blue Water Seafood Ocean Beach",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Compared against bluewaterseafoodsandiego.com's live 'Ocean Beach' food menu page (sdbluewater.com 301-redirects there) plus WebSearch corroboration (Yelp/Tripadvisor). All 10 checked items matched at exact price: Seared Ahi Plate $34, Scallops Plate $36, Swordfish/Mahi/Halibut Plates $32, Salmon Plate $28.95, Track Taco $9.50, Beer Battered Cod Taco $7.50, Mini Beer Shrimp Tacos (3) $12.50, Fried Calamari $15, and Happy Hour Fish Taco $6. Of the 353 dishes, programmatic analysis found ~24 rows (12 name pairs, e.g. Margarita/Mai Tai/Mezcal Penicillin/Ceviche/Poke Nachos) that are legitimate regular-price vs Happy-Hour-price duplicates of the same drink/dish, not data errors, confirmed by the real site's separate Happy Hour pricing. ~15 rows in the 'Sauces' section (9 loose condiments at $0.25, 6 '8oz' bottled sauces) are modifier/add-on style items rather than standalone dishes, but they are real a-la-carte menu rows on the Toast ordering system, not junk. No non-food/admin rows (fees, gift cards, theme flags) and no absurd prices were found ($0.25-$38 range, all plausible). The real driver of the high count is a legitimate 'choose your fish' menu matrix: ~28 fish/protein names (Ahi, Yellowtail, Halibut, Swordfish, Wahoo, Seabass variants, etc.) are each offered across up to 5 preparation formats (Plate/Salad/Sandwich/Taco/Sashimi), accounting for ~100 rows, plus an unusually large full bar menu (Mixed Drinks 64, Draft Beer 29, N/A Drinks 23, Wine 19, Bottle Beer 12) accounting for ~150 rows. This matches the real restaurant, which is a seafood market/grill + bar with daily-changing fish selection and a large drink list.",
+  "data_verdict": "minor",
+  "data_notes": "Address 5083 Santa Monica Ave, San Diego, CA 92107 and neighborhood 'Ocean Beach' are correct (confirmed via Yelp/Tripadvisor listings for 'Blue Water Seafood Market & Grill - Ocean Beach'); our suite is 'Ste 2B' vs Yelp/Tripadvisor's 'Ste 1B'/'5083 Santa Monica Ave' with no suite - a trivial discrepancy, likely just a different rendering of the same small strip-mall unit. Cuisine 'Seafood' is correct. lat/lng (32.7483664, -117.2520418) place it correctly in Ocean Beach, San Diego County. Restaurant is open and active (current 2026 reviews/photos on Yelp and Tripadvisor, no closure signals). hours field is null in our record - a real gap, though not contradicted by anything found (real site shows Happy Hour Mon-Fri 3-5pm but not full operating hours).",
+  "issues": [
+    "~24 dish rows (12 pairs) are duplicate regular-price/happy-hour-price versions of the same item (e.g. Margarita, Mai Tai, Mezcal Penicillin, Ceviche, Poke Nachos) - legitimate but inflates dish_count",
+    "~15 rows in 'Sauces' section are condiment/add-on style items ($0.25 loose sauces, $5.75 '8oz' bottles) rather than standalone dishes - real menu items but modifier-like",
+    "hours field is null - restaurant hours were never captured",
+    "minor suite-number mismatch (Ste 2B here vs Ste 1B/no-suite in third-party listings) - cosmetic, does not affect location accuracy",
+    "large dish count (353) is legitimate: driven by a real 'choose your fish' matrix (~28 fish names x up to 5 prep formats) plus an unusually extensive bar/drinks menu, not by scraping errors"
+  ]
+}

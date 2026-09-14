@@ -1,0 +1,15 @@
+{
+  "id": "2932",
+  "name": "The Taco Stand",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 10,
+  "menu_matched": 7,
+  "menu_notes": "Dish names/descriptions confirmed against letstaco.com's own menu page (Carne Asada, Al Pastor, Baja, Camaron, Pescado/Mahi Mahi, Mushroom, Sonora, California all present, correctly spelled). Prices checked against allmenus.com (third-party aggregator): 7/10 within $1, but California Burrito ($10.49 vs $9.02), Al Pastor Burrito ($9.99 vs $8.07) and Carne Asada Fries ($10.89 vs $9.33) drift over $1. A separate web search suggested even higher delivery-app pricing ($12.59 burrito). source_url is 'chain-shared:restaurant/488', i.e. this menu was copied from a different Taco Stand location rather than scraped specifically for La Jolla, which likely explains the drift.",
+  "data_verdict": "accurate",
+  "data_notes": "Address '621 Pearl Street, La Jolla' matches exactly (Yelp/Toast/Tripadvisor all cite 621 Pearl St). Neighborhood and cuisine (Mexican) correct. Hours match a live web search exactly for all 7 days: Mon-Thu & Sun 9am-9pm, Fri-Sat 9am-10pm. lat/lng (32.8394, -117.2768) correctly lands in La Jolla, San Diego County. No signs the restaurant is closed; Yelp shows current Sept 2026 activity.",
+  "issues": [
+    "Menu is 'chain-shared' from a different Taco Stand location (restaurant/488) rather than La Jolla-specific; 3 of 10 checked prices drift more than $1 from third-party pricing, consistent with cross-location reuse",
+    "Real menu also lists Pollo Asado and Nopal tacos, and Bean & Cheese/Mushroom burritos not present in our list — may just be an intentional subset, not necessarily missing"
+  ]
+}

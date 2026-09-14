@@ -1,0 +1,17 @@
+{
+  "id": "2611",
+  "name": "Carnitas' Snack Shack - North Park",
+  "on_site": true,
+  "menu_verdict": "none",
+  "menu_checked": 0,
+  "menu_matched": 0,
+  "menu_notes": "dishes array is empty (dish_count 0, ml_status 'not_found'); nothing to compare. website and source_url both point to the generic carnitassnackshack.com homepage, not a location-specific menu -- moot anyway since this location is closed.",
+  "data_verdict": "wrong",
+  "data_notes": "This North Park location (2632 University Ave) has been permanently closed for years: Yelp's own listing page is titled 'CARNITAS' SNACK SHACK - NORTH PARK - CLOSED' (updated July 2026), and SanDiegoVille reported the space was rebranded into a different concept, 'The Porchetta Shack,' by the same founder back in 2019. Address and neighborhood (North Park) are correct and lat/lng (32.7486, -117.1355) fall within San Diego County, but city is null (should be 'San Diego') and hours is entirely null. listed=true with hold_reason=null presents it as an open, active restaurant, which it is not.",
+  "issues": [
+    "This location permanently closed (rebranded to 'The Porchetta Shack' circa 2019, still closed per July 2026 Yelp update) -- should be unlisted or given a hold_reason, not shown as open",
+    "city field is null, should be 'San Diego'",
+    "hours field is entirely null",
+    "No menu data at all (0 dishes) for a restaurant record presented as active"
+  ]
+}

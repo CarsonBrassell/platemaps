@@ -1,0 +1,15 @@
+{
+  "id": "24",
+  "name": "Bronx Pizza",
+  "on_site": true,
+  "menu_verdict": "none",
+  "menu_checked": 0,
+  "menu_matched": 0,
+  "menu_notes": "0 dishes in our DB, but a real menu IS reachable: official site (bronxpizza.com) links to /menu1/ which returns no content, so used third-party aggregator allmenus.com (allmenus.com/ca/san-diego/7608-bronx-pizza/menu). 5 real items with prices found: Cheese Pizza slice $2.00+, Pepperoni slice $2.50+, 18\" Cheese whole pie $14.00, Whitestone specialty pie $15.75, Calzone $7.00 (mozzarella/ricotta/parmesan). Note: a WebSearch summary of recent reviews suggests current prices may be higher (slices ~$3.50-4, pies ~$22-31), so allmenus.com pricing may itself be a bit dated, but the menu items/structure are confirmed real and current in kind.",
+  "data_verdict": "accurate",
+  "data_notes": "Address 111 Washington St, San Diego, CA 92103 matches the official site exactly. Neighborhood 'Hillcrest' is correct for that address. Cuisine 'Pizza' is correct. lat/lng (32.7498, -117.1634) fall within San Diego County near Hillcrest. Hours match the official site closely: site lists Mon/Tue closed, Wed/Thu 11am-9pm, Fri/Sat 11am-10pm, Sun 11am-9pm; our DB has entries for Wed(2) 1100-2100, Thu(3) 1100-2100, Fri(4) 1100-2200, Sat(5) 1100-2200, Sun(6) 1100-2100, with no Mon/Tue entries (closed) - all consistent. Restaurant appears open and active (Yelp shows Sept 2026 reviews).",
+  "issues": [
+    "0 dishes in DB despite a real, fetchable menu existing (allmenus.com) - dish backfill would be straightforward",
+    "Official site's own /menu1/ page returns no usable content, so any future scrape of bronxpizza.com directly will keep failing; a third-party aggregator or PDF should be the source"
+  ]
+}

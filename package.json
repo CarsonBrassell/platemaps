@@ -29,7 +29,9 @@
     "logo:build": "node scripts/build-logo-assets.mjs",
     "cuisines:normalize": "node --env-file=.env.local scripts/normalize-cuisines.mjs",
     "moderation:check": "tsx scripts/check-moderation.mjs",
-    "dishes:index": "node --env-file=.env.local scripts/index-dish-names.mjs"
+    "dishes:index": "node --env-file=.env.local scripts/index-dish-names.mjs",
+    "dishes:review": "node --env-file=.env.local scripts/dish-review.mjs",
+    "dishes:apply": "node --env-file=.env.local scripts/apply-dish-review.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.0",

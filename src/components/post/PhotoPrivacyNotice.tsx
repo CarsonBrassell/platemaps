@@ -95,20 +95,25 @@ export function PhotoPrivacyNotice({
         {/* The answers are the control. No switch above them stating the same
             thing twice, and no confirming button below them: pressing one of
             these writes the setting and closes the dialog. */}
+        {/* "Everyone" leads and wears the Recommended pill: the feed is better
+            with photos on it, and this is the one moment the app gets to say
+            so. The default stays off — a recommendation, not a decision made
+            on anyone's behalf. */}
         <div className="mt-4 space-y-2" role="group" aria-label="Who sees your photos">
+          <Answer
+            title="Everyone"
+            sub="Your photos ride along on the public feed, where most people will see them."
+            recommended
+            current={account.sharePhotosPublicly}
+            disabled={saving}
+            onPick={() => void answer(true)}
+          />
           <Answer
             title="Just my friends"
             sub="Everyone else sees the post without the photo."
             current={!account.sharePhotosPublicly}
             disabled={saving}
             onPick={() => void answer(false)}
-          />
-          <Answer
-            title="Everyone"
-            sub="Your photos ride along on the public feed."
-            current={account.sharePhotosPublicly}
-            disabled={saving}
-            onPick={() => void answer(true)}
           />
         </div>
 
@@ -134,16 +139,22 @@ export function PhotoPrivacyNotice({
  * at row scale. On a first plate that is always "Just my friends", but somebody
  * who found the setting before they found the composer sees their own answer
  * marked rather than the default.
+ *
+ * `recommended` is the small orange pill, and only "Everyone" wears it. It sits
+ * on the title line so the two tiles keep the same shape — a suggestion, not a
+ * primary button over a secondary one.
  */
 function Answer({
   title,
   sub,
+  recommended = false,
   current,
   disabled,
   onPick,
 }: {
   title: string;
   sub: string;
+  recommended?: boolean;
   current: boolean;
   disabled: boolean;
   onPick: () => void;
@@ -157,6 +168,11 @@ function Answer({
     >
       <span className="flex items-center gap-2 text-[15px] font-semibold text-zinc-900">
         {title}
+        {recommended && (
+          <span className="mono-label rounded-full bg-pm-orange/10 px-2 py-0.5 text-pm-orange-text">
+            Recommended
+          </span>
+        )}
         {current && (
           <>
             <span

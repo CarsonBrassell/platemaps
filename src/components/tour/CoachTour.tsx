@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth";
+import { POINT_RULES } from "@/lib/points";
 
 /**
  * The first-run tour: a walk through the app's own controls, driven by using
@@ -14,11 +15,12 @@ import { useAuth } from "@/lib/auth";
  * way it always does. By the end somebody has not been shown the feed, the map,
  * Discover, Friends, their profile and the composer; they have been to all six.
  *
- * What it says is what PRODUCT.md says the product is. What it deliberately
- * does not mention is Plate Points: PRODUCT.md is explicit that the points
- * economy is a supply-side mechanism and must never be presented as the
- * differentiator, and the screen where somebody is working out what this app is
- * for is the worst possible place to break that.
+ * What it says is what PRODUCT.md says the product is. Plate Points come up
+ * exactly once, on the last step, and only as what posting pays: PRODUCT.md is
+ * explicit that the points economy is a supply-side mechanism and must never
+ * be presented as the differentiator, so the walk sells the plates first and
+ * names the reward only at the moment it is asking for one. The numbers are
+ * read from POINT_RULES, never restated here.
  *
  * ## Nothing here runs on a clock
  *
@@ -185,7 +187,7 @@ const STEPS: Step[] = [
   {
     key: "post",
     title: "Now add one",
-    body: "A photo, the dish off the restaurant's real menu, and how good it was. Yours is what somebody else orders tomorrow.",
+    body: `A photo, the dish off the restaurant's real menu, and how good it was. Every photo you post earns ${POINT_RULES.createPost} Plate Points, and every upvote it gets earns you ${POINT_RULES.receiveUpvote} more.`,
     hint: "Tap to finish",
   },
 ];
@@ -846,6 +848,7 @@ function StepMark({
  */
 export function useCoachTour() {
   const { account, loading } = useAuth();
+  const pathname = usePathname();
   const [closed, setClosed] = useState(false);
   /* `?tour=1` replays it on demand — the only way back once either latch is
      set, and how this gets looked at without clearing site data. Read off
@@ -880,5 +883,20 @@ export function useCoachTour() {
 
   const seen = account ? account.tourSeen : readLocalSeen();
 
-  return { open: !closed && (forced || !seen), fresh: forced, close: () => setClosed(true) };
+  /* Never *starts* on the composer. Somebody whose first screen is `/post` —
+     a sign-up that lands straight on "post your first plate" — is already
+     being asked one thing there (`PhotoPrivacyNotice`), and the tour's own
+     first move is "Tap Feed", which would drag them off the plate they came
+     to post. It waits for the next screen instead; nothing is latched, so
+     the walk is only deferred. Safe mid-walk too: the step index lives in
+     sessionStorage and the last step finishes *before* its press navigates
+     here, so there is no in-progress walk on this route to interrupt. A
+     `?tour=1` replay ignores this, like it ignores the latches. */
+  const onComposer = pathname === "/post" || pathname === "/m/post";
+
+  return {
+    open: !closed && (forced || (!seen && !onComposer)),
+    fresh: forced,
+    close: () => setClosed(true),
+  };
 }

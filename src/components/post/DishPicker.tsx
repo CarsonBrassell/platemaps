@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { dishStats, type Dish } from "@/data/dishes";
+import { foldDishName, foldedDishesMatch } from "@/lib/dishNameMatch";
 import { tapFlash } from "@/lib/tapFlash";
 
 /** What the meter step needs — a menu row, or a dish someone typed themselves. */
@@ -96,6 +97,48 @@ export function DishPicker({
   }, [dishes, query]);
 
   const customName = custom.trim();
+
+  /**
+   * The menu, folded once. `foldedDishesMatch` takes folds rather than names,
+   * and folding the whole menu inside the suggestion memo below would redo it on
+   * every keystroke.
+   */
+  const foldedMenu = useMemo(
+    () => dishes.map((dish) => ({ dish, folded: foldDishName(dish.name) })),
+    [dishes],
+  );
+
+  /**
+   * Dishes on this restaurant's own menu that what's being typed is probably a
+   * spelling of — offered as "already on the menu?" while someone types.
+   *
+   * This is the cheap half of keeping one plate's ratings under one name. The
+   * other half is `scripts/dish-review.mjs`, which finds the duplicates after
+   * the fact and queues them for a person to merge; every one caught here is one
+   * that never needs reviewing, and the post lands on the menu row — with its
+   * verdicts and its price — instead of beside it.
+   *
+   * Two tests, because they catch different mistakes. `foldedDishesMatch` is the
+   * word-by-word typo rule (see src/lib/dishNameMatch.ts): it catches "biria
+   * ramen" for "Birria Ramen" and deliberately refuses "carne asada fries" for
+   * "Carne Asada Burrito". Substring catches the half-typed case — "birria" is
+   * not a misspelling of anything, it is someone three words in.
+   *
+   * Three characters before anything is offered, and the list is capped at four:
+   * a suggestion rail longer than that is a second menu to read, and the menu is
+   * already above.
+   */
+  const nearMenu = useMemo(() => {
+    const folded = foldDishName(customName);
+    if (folded.length < 3) return [];
+    return foldedMenu
+      .filter(
+        ({ folded: menuFold }) =>
+          menuFold.includes(folded) || foldedDishesMatch(folded, menuFold).match,
+      )
+      .slice(0, 4)
+      .map(({ dish }) => dish);
+  }, [foldedMenu, customName]);
 
   /* Held rather than guessed at. Falling through to the normal render would
      show "we haven't got their menu yet" for as long as the request takes,
@@ -215,6 +258,32 @@ export function DishPicker({
                 Use this
               </button>
             </div>
+
+            {nearMenu.length > 0 && (
+              <div className="mt-3">
+                <p className="mono-label mb-2 text-zinc-500">Already on the menu?</p>
+                <ul className="flex flex-wrap gap-2">
+                  {nearMenu.map((dish) => (
+                    <li key={dish.id}>
+                      <button
+                        type="button"
+                        onClick={(e) =>
+                          tapFlash(e.currentTarget, () =>
+                            onSelect({ id: dish.id, name: dish.name, price: dish.price }),
+                          )
+                        }
+                        className="flex min-h-11 items-center gap-2 rounded-full bg-pm-grey-tint/60 px-4 text-sm font-medium text-zinc-700 transition-colors hover:bg-pm-grey-tint active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                      >
+                        {dish.name}
+                        {dish.price && (
+                          <span className="font-mono text-xs text-zinc-500">{dish.price}</span>
+                        )}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         ) : (
           <button

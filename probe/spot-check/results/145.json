@@ -1,0 +1,14 @@
+{
+  "id": "145",
+  "name": "Rocky's Crown Pub",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Verified against official site rockyburgers.com (homepage carousel plus the food-menu and drink-menu subpages from source_url). All 10 checked dishes across Menu, Beer On Tap, Domestic, and Pitchers sections matched name and price exactly; spot-checked the rest of the 23 dishes too and they all matched.",
+  "data_verdict": "accurate",
+  "data_notes": "Address (3786 Ingraham St, San Diego, CA 92109) and cuisine (Burgers) match the official site exactly; Pacific Beach neighborhood is correct for that address. Site lists kitchen hours as Mon-Wed 11am-10pm / Thu-Sun 11am-11pm; our DB hours (ends 2245 Mon-Wed, 2345 Thu-Sun) are ~45 min later than the site's stated kitchen close but follow the same weekly pattern. Lat/lng (32.7886, -117.2376) fall in San Diego County. No signs of closure.",
+  "issues": [
+    "Closing times in DB run about 45 minutes later than the site's stated kitchen hours (10:45pm/11:45pm vs 10pm/11pm) — may be using bar hours instead of kitchen hours"
+  ]
+}

@@ -58,7 +58,7 @@ const yelpEra = await sql`
   FROM dishes d
   JOIN restaurants r ON r.id = d.restaurant_id
   JOIN menu_lookups m ON m.restaurant_id = d.restaurant_id
-  WHERE m.status = 'not_found'
+  WHERE m.status = 'not_found' AND d.source = 'menu'
   ORDER BY d.restaurant_id, d.sort_order
 `;
 
@@ -67,7 +67,7 @@ const unpriced = await sql`
          d.price, d.section, d.sort_order
   FROM dishes d
   JOIN restaurants r ON r.id = d.restaurant_id
-  WHERE d.restaurant_id = ANY(${UNPRICED_MENUS})
+  WHERE d.restaurant_id = ANY(${UNPRICED_MENUS}) AND d.source = 'menu'
   ORDER BY d.restaurant_id, d.sort_order
 `;
 
@@ -96,7 +96,13 @@ await mkdir("menus/retired", { recursive: true });
 await writeFile(path, JSON.stringify(all, null, 2), "utf8");
 console.log(`\nExported ${all.length} dishes to ${path}`);
 
-await sql`DELETE FROM dishes WHERE restaurant_id = ANY(${ids})`;
+/* `source = 'menu'` here matches the two SELECTs above, and the three have to
+ * agree: the export is the restore path, so a row this deleted but never
+ * exported would be unrecoverable, and a row exported but spared would come back
+ * twice. What is being retired is an untrusted *extraction* — a dish promoted
+ * out of what diners typed (scripts/apply-dish-review.mjs) is separate evidence
+ * and is not what this script doubts. */
+await sql`DELETE FROM dishes WHERE restaurant_id = ANY(${ids}) AND source = 'menu'`;
 
 /* The two unpriced chains need a ledger row of their own - the Yelp-era
  * restaurants already have one, which is how they were found. Without this they

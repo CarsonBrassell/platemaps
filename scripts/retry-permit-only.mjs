@@ -429,7 +429,11 @@ console.log(
     `${ordered.length} in this run's working set.\n`,
 );
 
-const known = await sql`SELECT id::text AS id, google_place_id FROM restaurants WHERE google_place_id IS NOT NULL`;
+// Rows already held as duplicates are excluded: pointing a row at one of them
+// builds a cycle (A -> B -> A) that hides both rows. See fix-circular-duplicates.mjs.
+const known = await sql`
+  SELECT id::text AS id, google_place_id FROM restaurants
+  WHERE google_place_id IS NOT NULL AND (hold_reason IS NULL OR hold_reason NOT LIKE 'duplicate of %')`;
 const knownPlaceIds = new Map(known.map((r) => [r.google_place_id, r.id]));
 
 let snapshotWritten = false;

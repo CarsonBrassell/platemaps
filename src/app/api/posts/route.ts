@@ -193,9 +193,10 @@ export async function POST(req: NextRequest) {
     userId: user.id,
     authorName: user.name,
     authorAvatarUrl: user.avatarUrl,
-    // Publishing pays nothing (POINT_RULES.createPost is 0), so the author's
-    // total is unchanged by the act of posting — see the note in lib/points.ts.
-    authorPoints: user.points,
+    // The row's snapshot of the author's total, as it stands once the publish
+    // award below has landed — otherwise a fresh plate would show its author
+    // a few points behind their own chip. Amount lives in lib/points.ts.
+    authorPoints: user.points + POINT_RULES.createPost,
     text: String(text).trim(),
     restaurant: restaurant ? String(restaurant).trim() : undefined,
     restaurantId: restaurantId ? String(restaurantId).trim() : undefined,
@@ -215,13 +216,8 @@ export async function POST(req: NextRequest) {
     worstAspect,
   });
 
-  /* The call stays, and it is not dead code. `POINT_RULES.createPost` is 0
-     today, and `awardPoints` returns early on a zero amount — no ledger row, no
-     total moved — so publishing pays nothing on purpose (lib/points.ts). Left
-     wired rather than deleted because "post:<id>" is unique by construction and
-     this is the only place that could ever pay it: putting the number back to a
-     non-zero value is then a one-line change in points.ts, which is what that
-     file promises. */
+  /* The publish award. "post:<id>" is unique by construction, so a retried
+     create cannot pay it twice; the amount itself lives in lib/points.ts. */
   const { user: freshUser } = await awardPoints(
     user.id,
     POINT_RULES.createPost,

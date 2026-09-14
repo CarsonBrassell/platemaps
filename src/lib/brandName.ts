@@ -41,9 +41,28 @@ const MIN_KEY_LENGTH = 6;
  * Spanish (`ñ`, `í`) alike rather than a hand-written table of the ones we
  * happened to notice. `ñ` -> `n` is the intended behaviour: a reader typing
  * "senor grubbys" is looking for Señor Grubby's.
+ *
+ * The table underneath is the handful of letters NFD leaves whole because they
+ * are not a base letter plus a mark: `đ` (Vietnamese, and on a menu as often
+ * as `ở`), `ø`, `ł`, `ß` and the ligatures. Postgres's `unaccent` maps
+ * every one of these, and `dishes.name_folded` is built on `unaccent`, so a
+ * typed name has to fold the same way or the review pass compares "banh mi dac
+ * biet" against "banh mi đac biet" and calls them different dishes.
  */
+const UNSPLITTABLE: Record<string, string> = {
+  đ: "d", Đ: "D",
+  ø: "o", Ø: "O",
+  ł: "l", Ł: "L",
+  ß: "ss",
+  æ: "ae", Æ: "AE",
+  œ: "oe", Œ: "OE",
+};
+
 export function foldAccents(s: string): string {
-  return s.normalize("NFD").replace(/[̀-ͯ]/g, "");
+  return s
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[đĐøØłŁßæÆœŒ]/g, (c) => UNSPLITTABLE[c]);
 }
 
 /** Folded, punctuation-free, comparable. `Roberto’s Taco Shop` -> `robertostacoshop`. */

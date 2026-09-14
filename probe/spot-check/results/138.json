@@ -1,0 +1,17 @@
+{
+  "id": "138",
+  "name": "Juniper and Ivy",
+  "on_site": true,
+  "menu_verdict": "buggy",
+  "menu_checked": 10,
+  "menu_matched": 4,
+  "menu_notes": "Source is a third-party aggregator (menutoeat.com, 'medium' confidence); cross-checked live juniperandivy.com/menu/ plus web search. Confirmed exact matches: Miso Black Cod $45, Duroc Pork Chop $50, and one of two 'Jidori Chicken Roulade' entries ($75 in Plates). But 'Rigatoni' ($32, pork bolognese/burrata/basil) doesn't match the current 'Rigatoni Al Forno' ($26, black garlic/pork belly); 'Bluefin Crudo', 'Spanish Octopus', 'Cabo Kanpachi', and several other Small Plates items aren't on the live menu at all. Live menu section names (JUST A BITE, PANTRY, SMALL PLATES, PLATES, DESSERT) also don't line up with ours (Plates, Small Plates, Pantry only).",
+  "data_verdict": "accurate",
+  "data_notes": "Address (2228 Kettner Blvd, Little Italy) and cuisine ('New American') are correct.",
+  "issues": [
+    "Duplicate item: 'Jidori Chicken Roulade' appears twice -- once in 'Plates' at $75 (matches the real menu) and again in 'Small Plates' at $38 with a different description (winter black truffle) -- the $38 entry is stale/wrong.",
+    "Garbled item name 'Take Cheese Ravioli' ($38, Small Plates) does not read as a real dish name -- looks like a scraping/OCR error.",
+    "Three separate near-duplicate NY Strip entries (22oz NY Strip $145, 22oz Tajima NY Strip $140, 20oz Prime NY Strip $115) look like conflated entries from different menu snapshots rather than three distinct current dishes.",
+    "Overall this reads as a stale menu snapshot mixed with some current items rather than one consistent, current menu -- recommend re-scraping from the live site."
+  ]
+}

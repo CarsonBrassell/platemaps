@@ -1,0 +1,12 @@
+{
+  "id": "23",
+  "name": "Hash House A Go Go",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 4,
+  "menu_matched": 4,
+  "menu_notes": "Source used: allmenus.com listing (our stored source is DoorDash). All 4 checked dishes exist under matching/near-matching names (The Basic, Famous Biscuits & Sausage Gravy, Andy's Famous Fried Chicken Benedict, HH Original Benedict) but our stored prices run $6-7 higher across the board ($23.95 vs $16.95, $26.50 vs $19.95, $22.95 vs $16.95, $15.95 vs $13.95) -- consistent with the DoorDash delivery-platform markup baked into the source_url rather than real dine-in prices.",
+  "data_verdict": "minor",
+  "data_notes": "Address (3628 5th Ave, Hillcrest) confirmed correct and restaurant is open. Weekday closing time (2pm) matches for breakfast service, but our hours data is missing the entire dinner service block (roughly 5:30pm-9pm/9:30pm Tue-Sat) that real sources list -- we only show one breakfast/brunch block per day.",
+  "issues": ["All checked prices appear inflated ~30-40% vs dine-in menu, likely DoorDash markup carried through from source_url", "Hours are missing the Tue-Sat dinner service block entirely"]
+}

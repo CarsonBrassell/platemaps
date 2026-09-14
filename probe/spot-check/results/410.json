@@ -1,0 +1,15 @@
+{
+  "id": "410",
+  "name": "Filippi's Pizza Grotto Little Italy",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 9,
+  "menu_notes": "Direct WebFetch of website (image-only menu), source_url, DoorDash and Uber Eats all failed (blocked or 403), so the live source_url (order.online/store/FilippisPizzaGrottoLittleItaly-42970) was read via a text-extraction proxy (r.jina.ai). 9/10 checked items matched EXACTLY, with no inflation found: Spaghetti $14.95, Lasagna $18.75, Fettuccini Alfredo $23.00, Pepperoni Pizza $30.00, Works Pizza $31.00, Special Pizza $34.00, Three Toppings Pizza $34.00, Two Topping Pizza $30.00, Veal Scaloppini Dinner $33.00, and Chicken Parmigiana A la carte $26.00 all match the current live menu dollar-for-dollar. Only mismatch: our 'Veal Parmigiana A la carte $27.00' is not on the real menu under that name -- the real $27.00 a la carte item is called 'Veal Scaloppini A la carte' (price correct, name wrong). A web search also independently surfaced DoorDash pricing (Pepperoni $30, Black Olive $29, Three Toppings $34) corroborating our numbers. One older food-blog review cited a much lower walk-up price ($13.50 for a 13-inch cheese pizza), but that figure is inconsistent with two independent current sources and reads as stale/outdated, not a real comparison point. VERDICT ON THE 'suspect-markup' FLAG: not confirmed -- our stored prices track the real current direct-ordering menu almost exactly; I found no evidence of markup versus the current menu at this source.",
+  "data_verdict": "accurate",
+  "data_notes": "Address '1747 India St, San Diego, CA 92101' confirmed via Yelp/Tripadvisor/search results. Neighborhood 'Little Italy' and cuisine 'Italian' are correct. lat/lng (32.7237, -117.1683) correctly lands in Little Italy, San Diego County. Hours match a live web search exactly: Mon-Thu/Sun 11am-9pm, Fri-Sat 11am-10pm. Restaurant is open and active (Yelp shows a Sept 2026 update with ~4000+ reviews, no closure signals).",
+  "issues": [
+    "Dish name 'Veal Parmigiana A la carte' ($27.00) does not exist on the real menu under that name; the real $27.00 a la carte item is 'Veal Scaloppini' -- likely a name mix-up during extraction, price itself is correct",
+    "The internal 'suspect-markup' confidence flag does not hold up under this check: 9/10 sampled prices matched the live order.online source (the same source_url on file) exactly. Recommend downgrading/clearing this flag unless a genuinely different dine-in menu with lower prices can be located"
+  ]
+}

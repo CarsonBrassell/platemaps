@@ -1,0 +1,15 @@
+{
+  "id": "5",
+  "name": "Buona Forchetta",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 9,
+  "menu_matched": 9,
+  "menu_notes": "Official site (buonaforchettasd.com) and its Toast ordering page (source_url) render menus client-side and could not be fetched directly (Toast returned 403). Cross-checked via aggregated web search results instead: Margherita $18, Juna $22, Bolognese (pasta) $23, Burrata Caprese $18, Montanara $14, Artichokes $20, Calamari Fritti $19, Eggplant Tortino $15 and Polpettine $16 all matched name, description and price. No mismatches found in what could be verified.",
+  "data_verdict": "minor",
+  "data_notes": "Address 3001 Beech St, San Diego, CA 92102 and South Park neighborhood confirmed correct via multiple sources. Hours mostly match (Mon-Thu dinner 5-9:30pm and Sun 12-9:30pm continuous both confirmed) but DB shows Friday as one continuous 1200-2200 block while independent listings describe Friday as split lunch 12-3 / dinner 5-10pm (a lunch-dinner gap), so the Friday hours may be slightly wrong. Cuisine 'Pizza' is a reasonable simplification of what is really a full Italian menu.",
+  "issues": [
+    "Friday hours in DB (continuous 1200-2200) may be missing a 3-5pm gap that other sources show",
+    "source_url's Toast slug references a '252 N El Camino Real Ste 5' address that does not match the restaurant's real address (3001 Beech St); menu content still checked out fine but the slug itself looks mismatched/leftover from another location"
+  ]
+}

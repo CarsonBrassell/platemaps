@@ -1,0 +1,18 @@
+{
+  "id": "8162",
+  "name": "Mamas Bakery & Deli",
+  "on_site": false,
+  "menu_verdict": "none",
+  "menu_checked": 0,
+  "menu_matched": 0,
+  "menu_notes": "0 dishes recorded in our data, so nothing to compare. A real menu exists and is reachable: official site mamas-bakery.com lists a full Lebanese/Mediterranean menu, and it's also listed on ezCater, Grubhub, Uber Eats/Postmates, and Ritual.",
+  "data_verdict": "wrong",
+  "data_notes": "hold_reason is WRONG. This is a real, long-operating, heavily-reviewed restaurant (Yelp shows 1260+ reviews as of Sept 2026, established 1988), not a permit-only record with no public presence. It has an active website (mamas-bakery.com), Facebook, Tripadvisor, and multiple delivery-app listings (ezCater, Grubhub, Uber Eats, Postmates, Ritual). It should be un-held and listed. Two data caveats: (1) the restaurant relocated in mid-2025 from 4237 Alabama St to 2141 El Cajon Blvd (still North Park, 'One Mississippi' building) - our stored address is the old, pre-relocation location and lat/lng likely need updating to the new site; the DEH permit id (DEH2004-FFPP-411701) corresponds to the old Alabama St address. (2) Neighborhood label 'University Heights' is wrong even for the old address - 4237 Alabama St and the new 2141 El Cajon Blvd address are both North Park, per local press (San Diego Magazine, WhatNow). Cuisine should be Mediterranean/Lebanese (currently null).",
+  "issues": [
+    "hold_reason 'permit-only: no public listing found' is incorrect - restaurant has extensive public presence (own website, Yelp 1260+ reviews, Facebook, Tripadvisor, ezCater, Grubhub, Uber Eats, Postmates, Ritual)",
+    "restaurant relocated ~mid-2025 from 4237 Alabama St to 2141 El Cajon Blvd; stored address/lat-lng reflect the old location",
+    "neighborhood should be North Park, not University Heights (true for both old and new address)",
+    "cuisine is null; should be Mediterranean/Lebanese",
+    "0 dishes recorded despite a real, extensive menu being available online"
+  ]
+}

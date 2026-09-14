@@ -3379,12 +3379,17 @@ export async function recordMenuLookup(entry: {
  * script gives: a dish that has come off the menu has to actually leave, and
  * ids are positional within a restaurant so an upsert would leave a longer old
  * menu's tail behind.
+ *
+ * The delete is scoped to `source = 'menu'`, and has to be: a dish promoted out
+ * of what diners typed into the composer (scripts/apply-dish-review.mjs) is not
+ * part of the menu page this is swapping in, and unscoped this would drop every
+ * one of them the first time a visitor asked for the restaurant's menu.
  */
 export async function replaceDishesForRestaurant(
   restaurantId: string,
   dishes: readonly Dish[],
 ): Promise<void> {
-  await sql`DELETE FROM dishes WHERE restaurant_id = ${restaurantId}`;
+  await sql`DELETE FROM dishes WHERE restaurant_id = ${restaurantId} AND source = 'menu'`;
   for (const [order, dish] of dishes.entries()) {
     await sql`
       INSERT INTO dishes

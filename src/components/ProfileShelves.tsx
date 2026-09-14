@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { UPVOTE_MILESTONES } from "@/lib/points";
 import { ChatIcon } from "@/components/icons";
 import { postedDate } from "@/lib/format";
+import { packBy } from "@/lib/photoShape";
 import {
   PlateDetailSheet,
   type CommentVotePatch,
@@ -519,6 +520,60 @@ function CardPhoto({
   );
 }
 
+/**
+ * A plate that is only words: no image to show, but something was said. A
+ * video-only plate is not one — it has nothing to quote, so it keeps the
+ * tone block a missing photo gets.
+ */
+function isWords(post: ShelfPost) {
+  return !post.media?.some((m) => m.type === "image") && post.text.trim().length > 0;
+}
+
+/**
+ * A guess at each archive tile's height, in px at a ~170px column, only ever
+ * used to decide which column it goes in (see `packBy`). A photo tile is a
+ * square plus its two lines; a words tile is its clamped lines plus caption.
+ * ~26 characters per line at 12px in a 150px column is close enough that the
+ * columns come out roughly level, which is all the packing needs.
+ */
+function tileEstimate(post: ShelfPost) {
+  const lines = 34;
+  if (!isWords(post)) return 170 + lines;
+  const said = Math.min(3, Math.ceil(post.text.trim().length / 26));
+  return 16 + said * 16 + 8 + 14 + 8 + lines;
+}
+
+/**
+ * The words plate's tile: what was said, clamped to three lines, on the same
+ * tone block a missing photo gets — because for this plate the words *are*
+ * the photo. The one display-face mark is the opening quotation glyph:
+ * Fraunces draws the punctuation, the person's prose stays in sans
+ * (DESIGN.md's three-voice rule), and the restaurant is the caption in the
+ * proper-name face. Shorter than any photo beside it on purpose: in the
+ * collage a words plate is less than a picture and should read that way.
+ */
+function WordsClipping({ post }: { post: ShelfPost }) {
+  /* No wrapper of its own: the tile button is the tone block (it carries the
+     background and padding), so the score line the button prints after this
+     sits inside the same block. The quote mark is absolute against it. */
+  return (
+    <>
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1.5 top-0 select-none font-display text-[30px] font-bold leading-none text-zinc-900/20"
+      >
+        “
+      </span>
+      <p className="line-clamp-3 text-[12px] leading-[1.35] text-zinc-800">{post.text}</p>
+      {post.restaurant && (
+        <p className="mt-1.5 truncate font-display text-[11px] font-semibold leading-tight text-zinc-900">
+          {post.restaurant}
+        </p>
+      )}
+    </>
+  );
+}
+
 /** `▲ 12 · 96%` — the percent only for dish rows; a starred restaurant row's
     4/5 must never print where a percent goes (rating invariant, CLAUDE.md). */
 /**
@@ -938,41 +993,72 @@ export function ProfileShelves({
               hiding it made these read as decoration rather than as posts.
               `cardMeta` is the single source for that string, so the percent
               stays dish-only here exactly as it is up there. */}
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(76px,1fr))] gap-1.5">
-            {all.map((post, i) => (
-              <button
-                key={post.id}
-                type="button"
-                onClick={() => open(post)}
-                aria-label={`${nameOf(post)}, ${post.upvoteCount} ${
-                  post.upvoteCount === 1 ? "upvote" : "upvotes"
-                }, ${spokenMeta(post)} — open`}
-                className="rounded-xl bg-white p-1.5 pb-1.5 text-left transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-              >
-                <CardPhoto
-                  post={post}
-                  tone={((i + 2) % 3) + 1}
-                  className="block aspect-square w-full rounded-lg"
-                />
-                {/* Orange, not zinc-500. Both halves of this line are things
-                    the accent is explicitly for — AGENTS.md scopes it to
-                    "percentages/vote counts, selected states, and the primary
-                    action", and this line is the first two. It also lands the
-                    tile on the same colour as the percent in PlateDetailSheet,
-                    which is the sheet the tile opens into.
+          {/* Two columns, packed shortest-first like Discover (lib/photoShape),
+              so a plate's height is its own: a photo plate is a square, a
+              words plate is as tall as what was said — and shorter than any
+              photo beside it. Six-across squares used to make a words plate a
+              blank tone block with a score under it; nothing said which beige
+              square said what. Reading order runs down each column. */}
+          <div className="grid grid-cols-2 items-start gap-1.5">
+            {packBy(
+              all.map((post, i) => ({ post, i })),
+              2,
+              ({ post }) => tileEstimate(post),
+            ).map((column, ci) => (
+              <div key={ci} className="grid auto-rows-min content-start gap-1.5">
+                {column.map(({ post, i }) => (
+                  /* A photo plate is a white card with the picture in it and
+                     the score under it. A words plate is the tone block
+                     itself, edge to edge, with its score inside — no white
+                     frame. The frame read as an outline around the block,
+                     and it left the count and percent standing outside the
+                     thing they belong to. */
+                  <button
+                    key={post.id}
+                    type="button"
+                    onClick={() => open(post)}
+                    aria-label={`${nameOf(post)}, ${post.upvoteCount} ${
+                      post.upvoteCount === 1 ? "upvote" : "upvotes"
+                    }, ${spokenMeta(post)} — open`}
+                    className={`w-full rounded-xl text-left transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+                      isWords(post) ? "relative px-2.5 pb-2 pt-4" : "bg-white p-1.5 pb-1.5"
+                    }`}
+                    style={
+                      isWords(post)
+                        ? { background: `var(--pm-tone-${((i + 2) % 3) + 1})` }
+                        : undefined
+                    }
+                  >
+                    {isWords(post) ? (
+                      <WordsClipping post={post} />
+                    ) : (
+                      <CardPhoto
+                        post={post}
+                        tone={((i + 2) % 3) + 1}
+                        className="block aspect-square w-full rounded-lg"
+                      />
+                    )}
+                    {/* Orange, not zinc-500. Both halves of this line are things
+                        the accent is explicitly for — AGENTS.md scopes it to
+                        "percentages/vote counts, selected states, and the primary
+                        action", and this line is the first two. It also lands the
+                        tile on the same colour as the percent in PlateDetailSheet,
+                        which is the sheet the tile opens into.
 
-                    `--pm-orange-text` rather than `--pm-orange`: this is 9.5px
-                    type, and the palette splits the accent by size for exactly
-                    that reason — the fill orange is for large numerals only.
+                        `--pm-orange-text` rather than `--pm-orange`: this is 9.5px
+                        type, and the palette splits the accent by size for exactly
+                        that reason — the fill orange is for large numerals only.
 
-                    The `▲` here is a *report*, not a control, so orange does
-                    not claim you pressed it — the filled vote arrow is what
-                    means that, and it lives on the feed cards. */}
-                <span className="mt-1 block font-mono text-[9.5px] tabular-nums text-pm-orange-text">
-                  {cardMeta(post)}
-                </span>
-                <CardActivity post={post} />
-              </button>
+                        The `▲` here is a *report*, not a control, so orange does
+                        not claim you pressed it — the filled vote arrow is what
+                        means that, and it lives on the feed cards. */}
+                    <span className="mt-1 block font-mono text-[9.5px] tabular-nums text-pm-orange-text">
+                      {cardMeta(post)}
+                    </span>
+                    <CardActivity post={post} />
+                  </button>
+                ))}
+              </div>
             ))}
           </div>
         </>

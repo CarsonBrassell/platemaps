@@ -1,0 +1,14 @@
+{
+  "id": "27",
+  "name": "Puesto La Jolla",
+  "on_site": true,
+  "menu_verdict": "mostly",
+  "menu_checked": 10,
+  "menu_matched": 8,
+  "menu_notes": "eatpuesto.com's own La Jolla menu page 404'd and the Toast ordering page (source_url) blocked fetches (403), as the brief anticipated. Fell back to WebSearch snippets of individual Toast item pages, a Yelp catering menu, and chain-wide item pages. Filet Mignon Taco ($13) confirmed exact. Short Rib Birria Bowl ($28 ours vs $30.80 on a delivery listing) and California Burrito ($24 ours vs $26.40 on a delivery listing) are both consistent once typical delivery-platform markup is backed out. Carnitas/Chicken Al Pastor/Short Rib Quesabirria tacos, Guacamole variants, Chopped Salad, and Esquite all confirmed to exist by name. Could not pin an exact current a-la-carte price list specific to the Wall St location, so treating as 'mostly' rather than 'accurate'.",
+  "data_verdict": "accurate",
+  "data_notes": "Address 1026 Wall St, La Jolla, CA 92037 confirmed via eatpuesto.com's own location page. Hours match exactly: Sun-Thu 11am-9pm, Fri-Sat 11am-10pm per official site vs our day-coded hours. Neighborhood 'La Jolla' and cuisine 'Mexican' both correct. lat/lng (32.847, -117.2738) fall in La Jolla, San Diego County. No indication the location is closed; multiple 2026-dated reviews found.",
+  "issues": [
+    "source_url (Toast ordering page) and eatpuesto.com's La Jolla menu page both blocked/404'd during this check, consistent with confidence:medium already on the record; a future menu refresh for this restaurant may need a non-Toast source."
+  ]
+}

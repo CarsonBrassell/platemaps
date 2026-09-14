@@ -1,0 +1,17 @@
+{
+  "id": "6761",
+  "name": "Pho Ca Dao Vietnamese Kitchen",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 8,
+  "menu_matched": 7,
+  "menu_notes": "Source: web search cross-checks against order.online (our source_url) and third-party aggregators (Uber Eats, Seamless, Sirved) for the Fenton Pkwy location. Egg Rolls-Cha Gio ($7.00), PCD Special Pho-Pho Xe Lua ($16.00), and Kids Brisket Pho ($11.00) all matched our stored prices exactly; other checked dishes (Vietnamese Chicken Wings, Banh Mi Thit Nuong, Com Ga Nuong, Bun Bo Hue) are all real current menu categories/names for this chain. Only the newer 'PCD Pho & Grill' section (grilled-meat pho variants) could not be independently price-confirmed.",
+  "data_verdict": "wrong",
+  "data_notes": "Address (2401 Fenton Pkwy #D104) is correct and the restaurant is open, but neighborhood is mislabeled 'Normal Heights' -- Fenton Pkwy is in Mission Valley (near the SDCCU Stadium/river-park area), several miles from actual Normal Heights. The hours field is entirely null/missing in our data even though real hours are easy to find (11:00am-9:30pm daily per multiple sources).",
+  "issues": [
+    "Neighborhood labeled 'Normal Heights' but the Fenton Pkwy address is actually in Mission Valley",
+    "Hours field is completely missing (null) despite real hours being readily available (11am-9:30pm daily)",
+    "This restaurant (6761) is held with hold_reason 'duplicate of 257', while id 257 is separately held as 'duplicate of 4819' -- a circular hold_reason bug: neither 257 nor 4819 (the original El Cajon Blvd location, checked separately) is actually live on the site as a result, even though this record (6761, the Fenton Pkwy/Mission Valley location) is listed fine on its own.",
+    "4819 (Pho Ca Dao Restaurant, 5223 El Cajon Blvd, the chain's original/Talmadge-area location) has a good-quality, well-structured 116-dish menu with proper Vietnamese naming and descriptions; spot-checking Egg Rolls ($12.00 real vs $11.00 stored), Shrimp in Bean Curd Skin ($11.00 real vs $10.00 stored), and Spring Rolls ($8.00 real vs $7.00 stored) shows every price running almost exactly $1.00 low but otherwise correct and internally consistent -- this is a real, currently-operating restaurant with a decent captured menu that is simply not reachable on the site due to the circular duplicate-hold bug rather than any menu-quality problem."
+  ]
+}

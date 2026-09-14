@@ -1,0 +1,14 @@
+{
+  "id": "420",
+  "name": "Barbarella Restaurant & Bar",
+  "on_site": true,
+  "menu_verdict": "accurate",
+  "menu_checked": 10,
+  "menu_matched": 10,
+  "menu_notes": "Fetched source_url (barbarellarestaurant.com food-menu page directly). All 10 checked dishes (Bread & Butter, Woodfire Roasted Carrot, Burrata & Beets, Fritto Misto, Classic Caesar, Lump Crab Arrabbiata Gnocchi, New York Steak, Margherita pizza, Lobster Roll, Puppy Delight) match name and price exactly across Starters/Salads/Entrees/Pizza/Lunch/Dog Menu sections.",
+  "data_verdict": "minor",
+  "data_notes": "Address 2171 Avenida De La Playa, La Jolla, CA 92037 confirmed. Hours (Mon-Fri 11am-9pm, Sat-Sun 10am-9pm) match our per-day hours exactly, including the weekend 10am start. Neighborhood La Jolla / La Jolla Shores is correct. lat/lng (32.8536, -117.2561) fall in La Jolla, San Diego County. No signs the restaurant is closed. Cuisine label \"Breakfast & Brunch\" is narrow/misleading given the real menu is a full Italian-leaning dinner menu (steak, pasta, pizza, seafood entrees) with brunch only one section of several.",
+  "issues": [
+    "cuisine field \"Breakfast & Brunch\" understates the restaurant's actual scope (full dinner menu with entrees, pizza, pasta, steak) - likely inherited verbatim from Yelp's primary category"
+  ]
+}

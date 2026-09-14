@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { RankInsignia } from "@/components/RankInsignia";
 import { formatPoints } from "@/lib/points";
 import { RANKS, rankFor, type RankKey } from "@/lib/ranks";
@@ -69,15 +69,23 @@ export function RankRing({
   points,
   size = 116,
   className = "",
+  onOpenLadder,
 }: {
   points: number;
   /** Outer diameter in px. The crest inside is drawn at 60% of it. */
   size?: number;
   className?: string;
+  /**
+   * When given, the ring is a button that opens the full ladder
+   * (`RankLadderModal`). The "N to <next>" line under the total went away
+   * with it (Calvin, 2026-09) — the ladder shows the distance to every rung
+   * instead of the caption quoting one.
+   */
+  onOpenLadder?: () => void;
 }) {
   const now = model(points);
 
-  const hostRef = useRef<HTMLDivElement>(null);
+  const hostRef = useRef<HTMLElement>(null);
   const arcRef = useRef<SVGCircleElement>(null);
   const tipRef = useRef<SVGCircleElement>(null);
   const tipFlashRef = useRef<SVGCircleElement>(null);
@@ -262,9 +270,23 @@ export function RankRing({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [points]);
 
+  /* The ring is a button only when there is somewhere for it to go; a bare
+     ring stays a div so the public-profile-style callers don't grow a
+     focusable nothing. */
+  const Host: "button" | "div" = onOpenLadder ? "button" : "div";
+  const hostProps = onOpenLadder
+    ? {
+        type: "button" as const,
+        onClick: onOpenLadder,
+        "aria-label": `${now.rank.title} rank — see the ladder`,
+        className:
+          "rank-ring block cursor-pointer rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange",
+      }
+    : { className: "rank-ring" };
+
   return (
     <div className={`flex flex-col items-center text-center ${className}`}>
-      <div ref={hostRef} className="rank-ring" style={{ width: size, height: size }}>
+      <Host ref={hostRef as RefObject<HTMLButtonElement & HTMLDivElement>} {...hostProps} style={{ width: size, height: size }}>
         <svg viewBox="0 0 100 100" className="rank-ring-svg" aria-hidden="true">
           <circle className="rank-ring-track" cx="50" cy="50" r={R} />
           <circle
@@ -301,7 +323,7 @@ export function RankRing({
             pop={crest.pop > 0}
           />
         </div>
-      </div>
+      </Host>
 
       <p className="rank-ring-title mt-3.5 font-display text-[22px] font-semibold leading-tight text-pm-charcoal">
         {title.prev !== null && (
@@ -315,10 +337,7 @@ export function RankRing({
       </p>
       <p className="mt-1.5 font-mono text-[12px] tabular-nums text-pm-grey-text">
         <span className="text-[14px] font-semibold text-pm-orange-text">{formatPoints(points)}</span>{" "}
-        points ·{" "}
-        {now.next
-          ? `${formatPoints(Math.max(0, now.next.minPoints - points))} to ${now.next.title}`
-          : "top of the ladder"}
+        points
       </p>
     </div>
   );

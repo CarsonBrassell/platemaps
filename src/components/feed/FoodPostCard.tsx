@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PostMediaCarousel } from "./PostMediaCarousel";
 import { PostActions, type VoteDirection } from "./PostActions";
+import { DoubleTapPop } from "./DoubleTapPop";
+import { useDoubleTap } from "./useDoubleTap";
 import { chillRamp, heatFor, heatRamp, isPerfect } from "@/components/post/PercentMeter";
 import { PointsBadge } from "./PointsBadge";
 import { StarRating } from "@/components/StarRating";
@@ -132,6 +134,26 @@ export function FoodPostCard(props: FoodPostCardProps) {
      surface simply doesn't have. Called with `?.` for the same reason. */
   const onVote = props.surface === "discover" ? props.onVote : null;
   const onReact = props.surface === "friends" ? props.onReact : null;
+
+  /* Two taps on the card body add the reaction — the heart on Friends, an
+     upvote on Discover — and never take one back: a double-tap on a plate
+     already liked just replays the pop, the way every feed people already use
+     behaves. Signed out, it asks for sign-in the same as the row does. The
+     hook itself ignores taps on buttons, links and menus, so a fast double
+     press on Share or a carousel arrow can't like by accident. */
+  const popKind = props.surface === "friends" ? "heart" : "upvote";
+  const doubleTap = useDoubleTap(() => {
+    if (!currentUserId) {
+      onRequireSignIn();
+      return false;
+    }
+    if (onReact) {
+      if (!post.heartedByMe) onReact(post.id);
+    } else if (onVote) {
+      if (!post.upvotedByMe) onVote(post.id, "up");
+    }
+    return true;
+  });
   const reactPoints = props.surface === "discover" ? props.reactPoints : null;
   const trending = props.surface === "discover" && props.trending;
 
@@ -357,10 +379,15 @@ export function FoodPostCard(props: FoodPostCardProps) {
          from nowhere. The reverse of the pair this used to name, because what
          the person said now leads the card. */
       aria-labelledby={lineDish || lineRestaurant ? `${titleId} ${kickerId}` : titleId}
-      className={`overflow-hidden rounded-2xl bg-white ${
+      onClick={doubleTap.onClick}
+      /* touch-manipulation: the second tap of a double-tap must not become
+         a zoom on iOS — see useDoubleTap. relative: anchors the pop when the
+         post has no photo to centre it on. */
+      className={`relative touch-manipulation overflow-hidden rounded-2xl bg-white ${
         highlighted ? "ring-2 ring-pm-orange" : ""
       }`}
     >
+      {!hasPhoto && <DoubleTapPop kind={popKind} popKey={doubleTap.popKey} />}
       {/* The plate itself, first, when the post has one — inset from the card
           edge with both radii visible, the same move as the restaurant page's
           hero. Only two things sit on it: the author's handle in the top-left
@@ -375,6 +402,7 @@ export function FoodPostCard(props: FoodPostCardProps) {
             dishName={post.dishName}
             restaurant={post.restaurant}
           />
+          <DoubleTapPop kind={popKind} popKey={doubleTap.popKey} />
 
           {/* Top-left, clear of everything the carousel puts on the photo: the
               slide counter is top-right, the arrows are centred, the dots and

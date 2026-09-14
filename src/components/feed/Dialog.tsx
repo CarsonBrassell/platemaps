@@ -107,6 +107,7 @@ export function Dialog({
   labelledBy,
   headerAside,
   headerBelow,
+  background,
 }: {
   title: string;
   onClose: () => void;
@@ -118,6 +119,13 @@ export function Dialog({
   headerAside?: ReactNode;
   /** A second header row under the title, inside the same sticky band. */
   headerBelow?: ReactNode;
+  /**
+   * Paints the whole panel — header, body and footer — one colour instead of
+   * white, with the band dividers faded to match. A words plate in
+   * PlateDetailSheet is its tone block, and a tone block inside a white sheet
+   * read as a block outlined in white; the sheet has to *be* the block.
+   */
+  background?: string;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreRef = useRef<HTMLElement | null>(null);
@@ -316,6 +324,7 @@ export function Dialog({
         aria-labelledby={headingId}
         className={PANEL_CLASS[variant]}
         style={{
+          background,
           /* A screen claims sideways panning; the browser keeps the vertical
              so the thread still scrolls under the gesture. */
           touchAction: axis === "x" ? "pan-y" : undefined,
@@ -342,7 +351,9 @@ export function Dialog({
                    anything without a notch — every browser, and the desktop
                    phone frame. */
                 "border-zinc-200/70 bg-[#F7F4EC]/95 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur-sm"
-              : "border-zinc-100 pt-3"
+              : background
+                ? "border-zinc-900/10 pt-3"
+                : "border-zinc-100 pt-3"
           }`}
         >
           <div className="mx-auto flex w-full max-w-2xl items-center gap-3">
@@ -388,7 +399,9 @@ export function Dialog({
             className={`shrink-0 border-t px-5 py-3 ${
               variant === "screen"
                 ? "border-zinc-200/70 bg-[#F7F4EC] pb-[max(0.75rem,env(safe-area-inset-bottom))]"
-                : "border-zinc-100 bg-white"
+                : background
+                  ? "border-zinc-900/10"
+                  : "border-zinc-100 bg-white"
             }`}
           >
             <div className="mx-auto w-full max-w-2xl">{footer}</div>

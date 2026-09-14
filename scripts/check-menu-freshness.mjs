@@ -116,7 +116,7 @@ const targets = await sql`
   SELECT m.restaurant_id, r.name, m.source_url, m.source_fingerprint, m.confidence
   FROM menu_lookups m
   JOIN restaurants r ON r.id = m.restaurant_id
-  WHERE m.status = 'found' AND m.source_url IS NOT NULL AND m.source_url <> ''
+  WHERE m.status = 'found' AND m.source_url LIKE 'http%' -- chain-shared:restaurant/<id> pseudo-URLs have nothing to fetch
   ORDER BY m.checked_at NULLS FIRST, m.attempted_at
   LIMIT ${Number.isFinite(LIMIT) ? LIMIT : 10000}
 `;
