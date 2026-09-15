@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { UPVOTE_MILESTONES } from "@/lib/points";
 import { ChatIcon } from "@/components/icons";
 import { postedDate } from "@/lib/format";
@@ -718,107 +718,154 @@ function Badge({ count }: { count: number }) {
   );
 }
 
-function ShelfCard({
+/**
+ * One plate tile, the same shape on both surfaces.
+ *
+ * The shelf used to have its own card — a 112px white frame with the plate
+ * inset, name under it, six across — while the archive below was the
+ * two-column collage. Two grammars for the same plates on one screen: the
+ * shelf's version of a plate said less (no words, no count) and was a third
+ * the size of the archive's, so the plates that had just drawn attention were
+ * the ones you could see least of. Now there is one tile. A photo plate is a
+ * white card with the picture in it; a words plate is the tone block itself,
+ * edge to edge, with the words inside. The shelf adds only what makes it a
+ * shelf: the ring pulse, the orange disc, the milestone tag.
+ *
+ * `news` is present only on the New reactions shelf. Its `revealed` flag is
+ * the roll-call reaching this plate (see the reveal note in `ProfileShelves`);
+ * the badge is a lifetime total, so what is staggered is the acknowledgement,
+ * not the arithmetic.
+ */
+function PlateTile({
   post,
   tone,
-  revealed,
-  pulsing,
   onOpen,
+  news,
 }: {
   post: ShelfPost;
   tone: number;
-  /**
-   * Whether the roll-call has reached this plate yet. The badge is a total
-   * now, so it is not the arithmetic that is being staggered — it is the
-   * acknowledgement, one plate at a time, which is what the sequence was
-   * always for. See the reveal note in `ProfileShelves`.
-   */
-  revealed: boolean;
-  pulsing: boolean;
   onOpen: () => void;
+  news?: { revealed: boolean; pulsing: boolean };
 }) {
-  /**
-   * A white card with the plate inset inside it — the frame from the
-   * approved prototype, and the reason the shelves sit in a cream well:
-   * these cards read because the ground behind them is cream, exactly the
-   * white-on-cream grouping DESIGN.md prescribes. Dropped onto the
-   * profile's own white card they were invisible, which is the bug this
-   * shape had for one round. Do not restore a white ground under them.
-   *
-   * Geometry matches the prototype: 112px card, 6px inset, 76px plate,
-   * badge and milestone tag inside the frame rather than hanging off it.
-   */
-  const milestone = highestMilestone(post.upvoteCount);
-  /* No zero disc. A plate reaches this shelf by having unacknowledged
+  const words = isWords(post);
+  /* No zero disc. A plate reaches the shelf by having unacknowledged
      activity, so the total is normally at least 1 — but if the sum ever comes
      back 0 (a heart un-hearted between the two requests, a payload without
      heartCount on a plate whose only reaction was a heart), an orange "0" is a
      worse answer than no badge: it claims attention and then denies it in the
      same mark. Silence is the honest state for nothing-to-report. */
   const reactions = reactionTotal(post);
-  const showBadge = revealed && reactions > 0;
-  const body = (
-    <>
-      {/* The ring pulse, hugging the whole card — every edge, one beat. */}
-      <span
-        aria-hidden="true"
-        className={`pointer-events-none absolute inset-0 rounded-xl ${pulsing ? "ring-pulse" : ""}`}
-      />
-      <span className="relative block">
-        <CardPhoto post={post} tone={tone} className="block h-[76px] w-full rounded-lg" />
-        {milestone && (
-          <MilestoneTag upvotes={milestone.upvotes} className="absolute bottom-1.5 left-1.5" />
-        )}
-      </span>
-      {showBadge && <Badge count={reactions} />}
-      <span className="mt-1.5 line-clamp-2 block min-h-[27px] font-display text-[11.5px] font-semibold leading-tight text-zinc-900">
-        {nameOf(post)}
-      </span>
-      {/* Dropped entirely rather than rendered empty: a restaurant-rated
-          plate has no percent, and an empty line still costs its leading,
-          which would leave those cards standing a few pixels taller than
-          their neighbours in the same grid row for nothing. */}
-      {cardPercent(post) && (
-        <span className="mt-0.5 block font-mono text-[9.5px] tabular-nums text-pm-orange-text">
-          {cardPercent(post)}
-        </span>
-      )}
-      <CardActivity post={post} />
-    </>
-  );
+  const showBadge = !!news?.revealed && reactions > 0;
+  const milestone = news ? highestMilestone(post.upvoteCount) : null;
+  /* A badged tile drops the count from its meta line: the disc is the louder
+     mark and a "▲ 27" under a 46 was two true numbers with nothing saying
+     which was which (see `cardPercent`). The archive keeps the count — it has
+     no disc, so there the count is the only thing a plate says about itself. */
+  const meta = news ? cardPercent(post) : cardMeta(post);
 
-  /* Width comes from the grid cell now, not from the card. These shelves
-     used to scroll sideways, which hid plates off the right edge behind a
-     gesture nobody performs on a profile — and on a phone it put the thing
-     you came to look at one swipe away from being seen at all. They wrap
-     instead: three across at phone width, more as the viewport allows, all
-     of them on screen and reachable by scrolling the page you are already
-     scrolling. */
-  const shell = "relative rounded-xl bg-white p-1.5 pb-2";
-
-  /* Every card opens; a badged one also spends its badge on the way in.
+  /* Every tile opens; a badged one also spends its badge on the way in.
      Opening the plate IS reading the news about it, so there is no separate
      dismiss gesture to learn and no way to end up with a badge you have
      already looked behind.
 
-     The label has to carry both halves of what the card is saying, because
-     the disc alone no longer distinguishes them: the plate is here because
+     The label carries both halves of what a badged tile is saying, because the
+     disc alone no longer distinguishes them: the plate is here because
      something is new, and the number on it is the running total. A reader who
      hears only "14 reactions" learns nothing about why this plate is on a
      shelf called New reactions. */
+  const label = showBadge
+    ? `${nameOf(post)}, ${spokenMeta(post)}, new activity, ${reactions} ${reactions === 1 ? "reaction" : "reactions"} in total — open`
+    : `${nameOf(post)}, ${post.upvoteCount} ${post.upvoteCount === 1 ? "upvote" : "upvotes"}, ${spokenMeta(post)} — open`;
+
   return (
+    /* A photo plate is a white card with the picture in it and the score
+       under it. A words plate is the tone block itself, edge to edge, with
+       its score inside — no white frame. The frame read as an outline around
+       the block, and it left the count and percent standing outside the
+       thing they belong to. */
     <button
       type="button"
       onClick={onOpen}
-      aria-label={
-        showBadge
-          ? `${nameOf(post)}, ${spokenMeta(post)}, new activity, ${reactions} ${reactions === 1 ? "reaction" : "reactions"} in total — open`
-          : `${nameOf(post)}, ${spokenMeta(post)} — open`
-      }
-      className={`${shell} w-full text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange`}
+      aria-label={label}
+      className={`relative w-full rounded-xl text-left transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+        words ? "px-2.5 pb-2 pt-4" : "bg-white p-1.5 pb-1.5"
+      }`}
+      style={words ? { background: `var(--pm-tone-${tone})` } : undefined}
     >
-      {body}
+      {/* The ring pulse, hugging the whole tile — every edge, one beat. */}
+      {news && (
+        <span
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-0 rounded-xl ${news.pulsing ? "ring-pulse" : ""}`}
+        />
+      )}
+      {words ? (
+        <WordsClipping post={post} />
+      ) : (
+        <span className="relative block">
+          <CardPhoto post={post} tone={tone} className="block aspect-square w-full rounded-lg" />
+          {milestone && (
+            <MilestoneTag upvotes={milestone.upvotes} className="absolute bottom-1.5 left-1.5" />
+          )}
+        </span>
+      )}
+      {showBadge && <Badge count={reactions} />}
+      {/* Orange, not zinc-500. Both halves of this line are things the accent
+          is explicitly for — AGENTS.md scopes it to "percentages/vote counts,
+          selected states, and the primary action", and this line is the first
+          two. It also lands the tile on the same colour as the percent in
+          PlateDetailSheet, which is the sheet the tile opens into.
+
+          `--pm-orange-text` rather than `--pm-orange`: this is 9.5px type, and
+          the palette splits the accent by size for exactly that reason — the
+          fill orange is for large numerals only.
+
+          The `▲` here is a *report*, not a control, so orange does not claim
+          you pressed it — the filled vote arrow is what means that, and it
+          lives on the feed cards.
+
+          Dropped entirely rather than rendered empty when there is nothing to
+          say: an empty line still costs its leading. */}
+      {meta && (
+        <span className="mt-1 block font-mono text-[9.5px] tabular-nums text-pm-orange-text">
+          {meta}
+        </span>
+      )}
+      <CardActivity post={post} />
     </button>
+  );
+}
+
+/**
+ * Two columns, packed shortest-first like Discover (lib/photoShape), so a
+ * plate's height is its own: a photo plate is a square, a words plate is as
+ * tall as what was said — and shorter than any photo beside it. Six-across
+ * squares used to make a words plate a blank tone block with a score under
+ * it; nothing said which beige square said what. Reading order runs down
+ * each column. Both the shelf and the archive are this collage; `tile`
+ * decides what each cell carries.
+ */
+function Collage({
+  posts,
+  className,
+  tile,
+}: {
+  posts: ShelfPost[];
+  className?: string;
+  tile: (post: ShelfPost, tone: number) => ReactNode;
+}) {
+  return (
+    <div className={`grid grid-cols-2 items-start gap-1.5 ${className ?? ""}`}>
+      {packBy(
+        posts.map((post, i) => ({ post, i })),
+        2,
+        ({ post }) => tileEstimate(post),
+      ).map((column, ci) => (
+        <div key={ci} className="grid auto-rows-min content-start gap-1.5">
+          {column.map(({ post, i }) => tile(post, ((i + 2) % 3) + 1))}
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -956,18 +1003,22 @@ export function ProfileShelves({
               plates got attention, one at a time, and that is still news even
               when the numeral on each is a standing total. Its membership is
               still the delta; only the digits inside changed. */}
-          <div className="mb-7 grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-1.5">
-            {fresh.map((post, i) => (
-              <ShelfCard
+          <Collage
+            posts={fresh}
+            className="mb-7"
+            tile={(post, tone) => (
+              <PlateTile
                 key={post.id}
                 post={post}
-                tone={(i % 3) + 1}
-                revealed={shownBadges[post.id] !== undefined}
-                pulsing={!!pulsing[post.id]}
+                tone={tone}
+                news={{
+                  revealed: shownBadges[post.id] !== undefined,
+                  pulsing: !!pulsing[post.id],
+                }}
                 onOpen={() => open(post)}
               />
-            ))}
-          </div>
+            )}
+          />
         </>
       )}
 
@@ -987,80 +1038,16 @@ export function ProfileShelves({
           <p className="mono-label mb-2.5 text-zinc-900">
             {`All posts · ${all.length}`}
           </p>
-          {/* The archive. Quieter than a shelf card — no name, no badge, no
-              milestone tag — but it carries the same count and percent the
-              cards do, because a plate with no news still has a score and
-              hiding it made these read as decoration rather than as posts.
-              `cardMeta` is the single source for that string, so the percent
-              stays dish-only here exactly as it is up there. */}
-          {/* Two columns, packed shortest-first like Discover (lib/photoShape),
-              so a plate's height is its own: a photo plate is a square, a
-              words plate is as tall as what was said — and shorter than any
-              photo beside it. Six-across squares used to make a words plate a
-              blank tone block with a score under it; nothing said which beige
-              square said what. Reading order runs down each column. */}
-          <div className="grid grid-cols-2 items-start gap-1.5">
-            {packBy(
-              all.map((post, i) => ({ post, i })),
-              2,
-              ({ post }) => tileEstimate(post),
-            ).map((column, ci) => (
-              <div key={ci} className="grid auto-rows-min content-start gap-1.5">
-                {column.map(({ post, i }) => (
-                  /* A photo plate is a white card with the picture in it and
-                     the score under it. A words plate is the tone block
-                     itself, edge to edge, with its score inside — no white
-                     frame. The frame read as an outline around the block,
-                     and it left the count and percent standing outside the
-                     thing they belong to. */
-                  <button
-                    key={post.id}
-                    type="button"
-                    onClick={() => open(post)}
-                    aria-label={`${nameOf(post)}, ${post.upvoteCount} ${
-                      post.upvoteCount === 1 ? "upvote" : "upvotes"
-                    }, ${spokenMeta(post)} — open`}
-                    className={`w-full rounded-xl text-left transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
-                      isWords(post) ? "relative px-2.5 pb-2 pt-4" : "bg-white p-1.5 pb-1.5"
-                    }`}
-                    style={
-                      isWords(post)
-                        ? { background: `var(--pm-tone-${((i + 2) % 3) + 1})` }
-                        : undefined
-                    }
-                  >
-                    {isWords(post) ? (
-                      <WordsClipping post={post} />
-                    ) : (
-                      <CardPhoto
-                        post={post}
-                        tone={((i + 2) % 3) + 1}
-                        className="block aspect-square w-full rounded-lg"
-                      />
-                    )}
-                    {/* Orange, not zinc-500. Both halves of this line are things
-                        the accent is explicitly for — AGENTS.md scopes it to
-                        "percentages/vote counts, selected states, and the primary
-                        action", and this line is the first two. It also lands the
-                        tile on the same colour as the percent in PlateDetailSheet,
-                        which is the sheet the tile opens into.
-
-                        `--pm-orange-text` rather than `--pm-orange`: this is 9.5px
-                        type, and the palette splits the accent by size for exactly
-                        that reason — the fill orange is for large numerals only.
-
-                        The `▲` here is a *report*, not a control, so orange does
-                        not claim you pressed it — the filled vote arrow is what
-                        means that, and it lives on the feed cards. */}
-                    <span className="mt-1 block font-mono text-[9.5px] tabular-nums text-pm-orange-text">
-                      {cardMeta(post)}
-                    </span>
-                    <CardActivity post={post} />
-                  </button>
-                ))}
-              </div>
-            ))}
-          </div>
+          {/* The archive: the same tiles as the shelf, minus the news marks,
+              and carrying the count and percent the shelf tiles trade for a
+              disc. `cardMeta` is the single source for that string, so the
+              percent stays dish-only here exactly as it is up there. */}
+          <Collage
+            posts={all}
+            tile={(post, tone) => (
+              <PlateTile key={post.id} post={post} tone={tone} onOpen={() => open(post)} />
+            )}
+          />
         </>
       )}
 
