@@ -819,7 +819,7 @@ function bubbleElement(
      inlineProse below is bound to `split` too rather than to comment.text. */
   /* The comment's own words ride INSIDE the clip column, right after the dish,
      so the bubble reads "Steak Holy buttery goodness" as one line — the dish
-     in the orange display face at semibold, the words after it in the UI sans
+     in the orange display face, italic and bold, the words after it in the UI sans
      at bold, ink. The words are the main text and have to stand out, so they
      are the heaviest thing on the row and they are VISIBLE AT REST: the row
      clips them with an ellipsis like any long headline, and opening the

@@ -21,6 +21,10 @@ const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
   axes: ["SOFT", "WONK"],
+  /* The italic exists for one place: the dish name inside a map bubble, where
+     upright Fraunces at 14px next to bold sans prose read as the same line.
+     See .map-dish-link in globals.css. */
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {

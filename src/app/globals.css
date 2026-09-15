@@ -274,16 +274,20 @@ h3 {
    feed styles an @handle or a #tag: the accent colour and a face of its own,
    marking "this is a thing in here you can go to," not just emphasis.
 
-   The face is the same Fraunces-with-WONK the feed card's .plate-headline
-   uses, so a dish reads as the same kind of object wherever it appears.
+   The face is Fraunces-with-WONK like the feed card's .plate-headline, so a
+   dish reads as the same kind of object wherever it appears — but here it is
+   the ITALIC, and a point larger. Upright Fraunces semibold at the row's size
+   sat next to bold sans prose and the two read as one run of text; the
+   italic (its own file, loaded in layout.tsx for this one use) is what makes
+   the name look like a different thing from the words that follow it.
+   Changed by request 2026-09-14.
 
-   The colour is the accent's text voice and the weight semibold, the same
-   pair the feed card's subject line wears (PhoneFeedPostCard:
-   `font-semibold text-pm-orange-text`). Semibold rather than the row's bold
-   on purpose: the comment's words follow the dish on the same row and are
-   the main text, so they carry the heavier weight and the dish stands out by
-   colour and face instead. It used to be ink so the headline row carried one
-   coloured value (the score); changed by request, on both surfaces.
+   The colour is the accent's text voice, the same pair the feed card's
+   subject line wears (PhoneFeedPostCard: `font-semibold text-pm-orange-text`).
+   The comment's words follow the dish on the same row and are the main
+   text; they keep the row's bold, and the dish stands out by colour and face
+   instead. It used to be ink so the headline row carried one coloured value
+   (the score); changed by request, on both surfaces.
 
    Underline only on hover, so a map full of bubbles isn't a map full of
    underlines. */
@@ -291,7 +295,9 @@ h3 {
   font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
   font-variation-settings: "SOFT" 8, "WONK" 1;
   color: var(--pm-orange-text);
-  font-weight: 600;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 15px;
   letter-spacing: -0.01em;
 }
 

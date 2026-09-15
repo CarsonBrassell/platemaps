@@ -212,11 +212,12 @@ neighbors don't repeat.
   - **Row 1, the verdict:** the subject hard left, its score hard right
     (`justify-content: space-between`). The subject is the dish when there is
     one and the comment's own words when there isn't. A real dish keeps its
-    Fraunces reference treatment (`.map-dish-link`) but is set in **ink
-    `#2b211c`, not orange** — the row gets exactly one coloured value and it
-    is the score, since two accents an em apart read as two things competing
-    rather than as a plate and its verdict; the face and the hover underline
-    carry the "you can go here" signal the colour used to. The score is mono
+    Fraunces reference treatment (`.map-dish-link`) — **italic, 700, one point
+    larger than the row, in `--pm-orange-text`** — with the comment's words
+    running on after it in bold sans ink, so the two read as a name and then
+    a remark rather than one run of text (the italic is the only place the
+    Fraunces italic file is used; it was ink and upright until 2026-09-14,
+    both changed by request). The score is mono
     and never truncates or wraps while the subject ellipses away in front of
     it: the number is the whole reason the bubble is on the map, and pinning
     it to the same edge in every bubble lets a screenful be read straight
