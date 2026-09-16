@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Extraction scratch scripts and skill tooling, not app code: they use
+    // require() and leave helpers unused, and `next build` never sees them.
+    "menus/**",
+    ".claude/**",
   ]),
 ]);
 

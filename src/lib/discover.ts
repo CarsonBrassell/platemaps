@@ -39,7 +39,6 @@
  */
 
 import {
-  activeFilterCount,
   applyFilters,
   countFacets,
   aspectOptions,
@@ -66,6 +65,7 @@ import {
   getDishesByRestaurant,
   getRestaurants,
 } from "@/lib/db";
+import { after } from "next/server";
 import { EMPTY_PLATE_SCORE, type PlateScore } from "@/lib/plateScore";
 import { normalize, rungOf } from "@/lib/textMatch";
 
@@ -152,15 +152,17 @@ export type Corpus = {
 };
 
 const CORPUS_TTL_MS = 60_000;
+/**
+ * How old a copy may be and still be handed out while a fresh one is read
+ * behind it. Past this the request waits for the read: an instance that sat
+ * idle for a quarter of an hour should not answer with what it had before.
+ */
+const CORPUS_STALE_MAX_MS = 10 * 60_000;
 let cached: { at: number; value: Promise<Corpus> } | null = null;
+let refreshing: Promise<Corpus> | null = null;
 
-/** The corpus behind the 60s cache, for callers that need the rows rather than
- *  a page of them — the search suggest endpoint is the one (lib/suggest.ts). */
-export function loadCorpus(): Promise<Corpus> {
-  const now = Date.now();
-  if (cached && now - cached.at < CORPUS_TTL_MS) return cached.value;
-
-  const value = (async (): Promise<Corpus> => {
+function readCorpus(): Promise<Corpus> {
+  return (async (): Promise<Corpus> => {
     const [restaurants, plates, tallies] = await Promise.all([
       getRestaurants(),
       getAllRestaurantPlateScores(),
@@ -168,6 +170,59 @@ export function loadCorpus(): Promise<Corpus> {
     ]);
     return { restaurants, aspects: strongAspectsFrom(tallies), plates };
   })();
+}
+
+/**
+ * Keeps the function instance alive until the background read settles.
+ * `after` only works inside a request; the probe scripts call loadCorpus
+ * from plain Node, where it throws, and there the promise just runs.
+ */
+function keepAlive(task: Promise<unknown>): void {
+  try {
+    after(() => task);
+  } catch {
+    /* not in a request scope */
+  }
+}
+
+/**
+ * The corpus behind the 60s cache, for callers that need the rows rather than
+ * a page of them — the search suggest endpoint is the one (lib/suggest.ts).
+ *
+ * Stale-while-revalidate (probe/PERF-PLAN.md #1). The read is the single
+ * most expensive thing the app does — every listed row plus two aggregates
+ * over posts, 3.5 MB — and it used to be paid *by a visitor*: the first
+ * request after the minute rolled over waited on it, on every instance. Now
+ * a copy inside CORPUS_TTL_MS is returned as before; a copy older than that
+ * is still returned immediately and one refresh is started behind it, so
+ * after an instance's very first request no visitor waits on this read.
+ * Only a copy older than CORPUS_STALE_MAX_MS is refused.
+ */
+export function loadCorpus(): Promise<Corpus> {
+  const now = Date.now();
+  if (cached && now - cached.at < CORPUS_TTL_MS) return cached.value;
+
+  if (cached && now - cached.at < CORPUS_STALE_MAX_MS) {
+    if (!refreshing) {
+      const next = readCorpus();
+      refreshing = next;
+      const settled = next.then(
+        () => {
+          cached = { at: Date.now(), value: next };
+        },
+        () => {
+          /* keep serving the stale copy; the next stale hit retries */
+        },
+      );
+      settled.finally(() => {
+        if (refreshing === next) refreshing = null;
+      });
+      keepAlive(settled);
+    }
+    return cached.value;
+  }
+
+  const value = readCorpus();
 
   // Stored before it resolves so concurrent requests share one read; dropped on
   // failure so an outage isn't cached for a minute.
@@ -272,10 +327,12 @@ export async function getDiscoverPage(
 /**
  * Most relevant first; nearest first among equals.
  *
- * A name typed into the field is a question about a place, and the answer is
- * the place — so a search is ordered by how well each row answers the text,
- * on the ladder in lib/textMatch.ts: name, then cuisine, then neighbourhood,
- * then dish. This used to sort purely by distance, which is why one misspelled
+ * A name typed into the field is a question, and the answer is ordered by how
+ * *literally* each row answers it, on the ladder in lib/textMatch.ts — a
+ * literal cuisine match outranks a soft name match (Calvin, 2026-09-13,
+ * reversing 2026-09-07: see the TIER comment there for why "breakfast" must
+ * not put a distant Breakfast Republic above the Breakfast & Brunch place next
+ * door). This used to sort purely by distance, which is why one misspelled
  * restaurant name returned a wall of nearby menus with the restaurant itself
  * somewhere in them: every row that survived the filter was equal, so the
  * closest taco shop outranked the place the visitor had actually typed.
@@ -307,9 +364,18 @@ export async function getDiscoverPage(
  *    lib/discoverFilters.ts turns "thai" into `?cuisine=Thai`, which is the
  *    right answer to the term and left the results in corpus order: `f.q` was
  *    null, so no distance was measured. Any filter at all now earns the
- *    ordering, not just free text. The bare unfiltered grid keeps corpus order,
- *    which is the case the rule was always defending — it is what stops the
- *    front page being the same handful of blocks every time.
+ *    ordering, not just free text.
+ *
+ *    The bare unfiltered grid used to keep corpus order outright — "no
+ *    filter" meant "no question to answer nearest-first". Calvin
+ *    (2026-09-15) changed that: the grid orders by distance with nothing
+ *    picked at all, the moment there is a position to measure from, so the
+ *    front page reads as "near you" instead of a fixed `sort_order`. This
+ *    adds no permission prompt of its own — `here` only shows up once
+ *    lib/nearby.ts already has a fix, either from a permission granted
+ *    earlier or from a filter's own prompt — it only changes what the corpus
+ *    falls back to once a position is already in hand. `sort_order` is what
+ *    is still shown before that: no position yet, denied, or unsupported.
  *
  * `sort` is stable, so rows that tie on everything stay in corpus order.
  */
@@ -319,8 +385,12 @@ function orderResults(
   here: Coords | null,
   scores: Map<string, number> | null,
 ): RestaurantView[] {
+  // A picked neighbourhood still turns this off outright — see above. Every
+  // other case, including the bare grid, measures distance the moment there
+  // is a position; `scores`, when present, is compared first below and this
+  // is only its tiebreak (or, with no scores at all, the whole order).
   const miles =
-    here && activeFilterCount(f) > 0 && !f.neighborhood
+    here && !f.neighborhood
       ? new Map(matched.map((r) => [r.id, milesBetween(here, r)]))
       : null;
   if (!scores && !miles) return matched;

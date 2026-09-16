@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Spline_Sans_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AuthProvider } from "@/lib/auth";
 import { CoachTourMount } from "@/components/tour/CoachTourMount";
 import "./globals.css";
@@ -143,6 +145,13 @@ export default function RootLayout({
               every step of it ends in a navigation — see CoachTourMount. */}
           <CoachTourMount />
         </AuthProvider>
+        {/* Field measurement (probe/PERF-PLAN.md #7): Core Web Vitals per route
+            and page views. Both are free on Hobby, both are no-ops on localhost
+            and inside the Capacitor shell, and neither sets a cookie. Outside
+            AuthProvider because they do not depend on it and should not be
+            remounted by it. */}
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

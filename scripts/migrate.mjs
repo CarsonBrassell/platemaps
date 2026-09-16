@@ -1231,6 +1231,21 @@ const statements = [
      ) STORED`,
   `CREATE INDEX IF NOT EXISTS idx_posts_dish_folded
      ON posts (restaurant_id, dish_name_folded)`,
+
+  // Perf plan (probe/PERF-PLAN.md #2). Until now `posts` had only its primary
+  // key and the (restaurant_id, dish_name_folded) index above, so every feed
+  // read (`created_at > now() - window ... ORDER BY created_at DESC`), every
+  // profile (`user_id = $1 OR id IN (saves by user)`) and the friends feed
+  // (`user_id IN (...)`) was a sequential scan of the whole table. Invisible
+  // at a few dozen posts; a scan per page view at a hundred thousand.
+  // restaurant_id is already the leading column of idx_posts_dish_folded, so
+  // it gets no index of its own. sessions(user_id) is for the ON DELETE
+  // CASCADE from users and for signing every device out at once, both of
+  // which otherwise scan the sessions table.
+  `CREATE INDEX IF NOT EXISTS idx_posts_created ON posts (created_at DESC)`,
+  `CREATE INDEX IF NOT EXISTS idx_posts_user ON posts (user_id)`,
+  `CREATE INDEX IF NOT EXISTS idx_post_saves_user ON post_saves (user_id)`,
+  `CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions (user_id)`,
 ];
 
 for (const statement of statements) {

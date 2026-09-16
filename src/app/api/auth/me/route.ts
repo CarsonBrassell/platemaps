@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { accountJson } from "@/lib/account";
 import { cookies } from "next/headers";
-import { getSessionUserId, getUserById } from "@/lib/db";
+import { getSessionUser } from "@/lib/db";
 import { SESSION_COOKIE, setSessionCookie } from "@/lib/session";
 
 /**
@@ -25,10 +25,7 @@ export async function GET() {
   const token = cookieStore.get(SESSION_COOKIE)?.value;
   if (!token) return NextResponse.json({ user: null });
 
-  const userId = await getSessionUserId(token);
-  if (!userId) return NextResponse.json({ user: null });
-
-  const user = await getUserById(userId);
+  const user = await getSessionUser(token);
   if (!user) return NextResponse.json({ user: null });
 
   await setSessionCookie(token);

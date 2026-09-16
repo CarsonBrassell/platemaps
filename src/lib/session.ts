@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { getSessionUserId, getUserById, type User } from "@/lib/db";
+import { getSessionUser, type User } from "@/lib/db";
 
 export const SESSION_COOKIE = "platemap_session";
 
@@ -49,8 +49,6 @@ export async function getCurrentUser(): Promise<User | null> {
   const token = cookieStore.get(SESSION_COOKIE)?.value;
   if (!token) return null;
 
-  const userId = await getSessionUserId(token);
-  if (!userId) return null;
-
-  return getUserById(userId);
+  // One join, not sessions-then-users: see getSessionUser.
+  return getSessionUser(token);
 }

@@ -392,6 +392,23 @@ export async function getSessionUserId(token: string): Promise<string | null> {
   return (rows[0]?.user_id as string | undefined) ?? null;
 }
 
+/**
+ * The session's user in one round trip.
+ *
+ * `getCurrentUser` used to be `getSessionUserId` and then `getUserById`: two
+ * HTTP calls to Neon, in series, before any authenticated route did its own
+ * work. Every API route pays this on every request, so it was the floor under
+ * the whole app's latency (probe/PERF-PLAN.md #4). Same rows, one join.
+ */
+export async function getSessionUser(token: string): Promise<User | null> {
+  const rows = await sql`
+    SELECT u.* FROM sessions s
+    JOIN users u ON u.id = s.user_id
+    WHERE s.token = ${token}
+  `;
+  return rows[0] ? rowToUser(rows[0]) : null;
+}
+
 export async function createSession(token: string, userId: string): Promise<void> {
   await sql`INSERT INTO sessions (token, user_id) VALUES (${token}, ${userId})`;
 }
@@ -571,17 +588,17 @@ async function hydratePosts(
   if (postRows.length === 0) return [];
   const ids = postRows.map((r) => r.id as string);
 
+  // Seven round trips, not eleven (probe/PERF-PLAN.md #5): the up and down
+  // directions of each vote read are one UNION ALL query each, tagged by
+  // direction, instead of two queries that differ only in table name. Every
+  // one is an HTTP call to Neon, and they multiply by concurrent readers.
   const [
     saveRows,
     commentRows,
-    commentUpvoteRows,
-    commentDownvoteRows,
-    myCommentUpvoteRows,
-    myCommentDownvoteRows,
-    upvoteCountRows,
-    downvoteCountRows,
-    myUpvoteRows,
-    myDownvoteRows,
+    commentVoteRows,
+    myCommentVoteRows,
+    postVoteRows,
+    myPostVoteRows,
     myHeartRows,
   ] = await Promise.all([
     sql`SELECT post_id, user_id FROM post_saves WHERE post_id = ANY(${ids})`,
@@ -598,55 +615,51 @@ async function hydratePosts(
       ORDER BY c.created_at ASC
     `,
     sql`
-      SELECT cv.comment_id, count(*)::int AS count
-      FROM comment_upvotes cv
-      JOIN comments c ON c.id = cv.comment_id
-      WHERE c.post_id = ANY(${ids})
-      GROUP BY cv.comment_id
-    `,
-    sql`
-      SELECT cv.comment_id, count(*)::int AS count
-      FROM comment_downvotes cv
-      JOIN comments c ON c.id = cv.comment_id
-      WHERE c.post_id = ANY(${ids})
-      GROUP BY cv.comment_id
+      SELECT comment_id, sum(up)::int AS up, sum(down)::int AS down
+      FROM (
+        SELECT cv.comment_id, 1 AS up, 0 AS down
+        FROM comment_upvotes cv JOIN comments c ON c.id = cv.comment_id
+        WHERE c.post_id = ANY(${ids})
+        UNION ALL
+        SELECT cv.comment_id, 0, 1
+        FROM comment_downvotes cv JOIN comments c ON c.id = cv.comment_id
+        WHERE c.post_id = ANY(${ids})
+      ) v
+      GROUP BY comment_id
     `,
     // Scoped to this viewer's own rows, like the post-vote reads below — the
     // full list of who voted on a comment is never assembled anywhere.
     viewerId
       ? sql`
-          SELECT cv.comment_id
-          FROM comment_upvotes cv
-          JOIN comments c ON c.id = cv.comment_id
+          SELECT cv.comment_id, 'up' AS dir
+          FROM comment_upvotes cv JOIN comments c ON c.id = cv.comment_id
           WHERE c.post_id = ANY(${ids}) AND cv.user_id = ${viewerId}
-        `
-      : Promise.resolve([]),
-    viewerId
-      ? sql`
-          SELECT cv.comment_id
-          FROM comment_downvotes cv
-          JOIN comments c ON c.id = cv.comment_id
+          UNION ALL
+          SELECT cv.comment_id, 'down' AS dir
+          FROM comment_downvotes cv JOIN comments c ON c.id = cv.comment_id
           WHERE c.post_id = ANY(${ids}) AND cv.user_id = ${viewerId}
         `
       : Promise.resolve([]),
     sql`
-      SELECT post_id, count(*)::int AS count
-      FROM post_upvotes WHERE post_id = ANY(${ids})
-      GROUP BY post_id
-    `,
-    sql`
-      SELECT post_id, count(*)::int AS count
-      FROM post_downvotes WHERE post_id = ANY(${ids})
+      SELECT post_id, sum(up)::int AS up, sum(down)::int AS down
+      FROM (
+        SELECT post_id, 1 AS up, 0 AS down FROM post_upvotes WHERE post_id = ANY(${ids})
+        UNION ALL
+        SELECT post_id, 0, 1 FROM post_downvotes WHERE post_id = ANY(${ids})
+      ) v
       GROUP BY post_id
     `,
     // Scoped to the viewer's own row only — never the full upvoter list's
     // counterpart for hearts, and upvotes are public anyway so this is just
     // a convenience, not a privacy boundary.
     viewerId
-      ? sql`SELECT post_id FROM post_upvotes WHERE post_id = ANY(${ids}) AND user_id = ${viewerId}`
-      : Promise.resolve([]),
-    viewerId
-      ? sql`SELECT post_id FROM post_downvotes WHERE post_id = ANY(${ids}) AND user_id = ${viewerId}`
+      ? sql`
+          SELECT post_id, 'up' AS dir FROM post_upvotes
+          WHERE post_id = ANY(${ids}) AND user_id = ${viewerId}
+          UNION ALL
+          SELECT post_id, 'down' AS dir FROM post_downvotes
+          WHERE post_id = ANY(${ids}) AND user_id = ${viewerId}
+        `
       : Promise.resolve([]),
     // The privacy boundary: this is the ONLY heart data hydratePosts ever
     // reads, and it is scoped to "did this one viewer heart it" — never the
@@ -658,22 +671,25 @@ async function hydratePosts(
       : Promise.resolve([]),
   ]);
 
-  const upvoteCounts = new Map(upvoteCountRows.map((r) => [r.post_id as string, r.count as number]));
-  const downvoteCounts = new Map(
-    downvoteCountRows.map((r) => [r.post_id as string, r.count as number]),
+  const upvoteCounts = new Map(postVoteRows.map((r) => [r.post_id as string, r.up as number]));
+  const downvoteCounts = new Map(postVoteRows.map((r) => [r.post_id as string, r.down as number]));
+  const myUpvotes = new Set(
+    myPostVoteRows.filter((r) => r.dir === "up").map((r) => r.post_id as string),
   );
-  const myUpvotes = new Set(myUpvoteRows.map((r) => r.post_id as string));
-  const myDownvotes = new Set(myDownvoteRows.map((r) => r.post_id as string));
+  const myDownvotes = new Set(
+    myPostVoteRows.filter((r) => r.dir === "down").map((r) => r.post_id as string),
+  );
   const myHearts = new Set(myHeartRows.map((r) => r.post_id as string));
 
   const commentUpvotes = new Map(
-    commentUpvoteRows.map((r) => [r.comment_id as string, r.count as number]),
+    commentVoteRows.map((r) => [r.comment_id as string, r.up as number]),
   );
   const commentDownvotes = new Map(
-    commentDownvoteRows.map((r) => [r.comment_id as string, r.count as number]),
+    commentVoteRows.map((r) => [r.comment_id as string, r.down as number]),
   );
-  const myCommentUpvotes = new Set(myCommentUpvoteRows.map((r) => r.comment_id as string));
-  const myCommentDownvotes = new Set(myCommentDownvoteRows.map((r) => r.comment_id as string));
+  const myCommentVotes = new Map<string, "up" | "down">(
+    myCommentVoteRows.map((r) => [r.comment_id as string, r.dir as "up" | "down"]),
+  );
 
   return postRows.map((row) => {
     const postId = row.id as string;
@@ -722,11 +738,7 @@ async function hydratePosts(
           createdAt: new Date(c.created_at as string).toISOString(),
           upvoteCount: commentUpvotes.get(c.id as string) ?? 0,
           downvoteCount: commentDownvotes.get(c.id as string) ?? 0,
-          myVote: myCommentUpvotes.has(c.id as string)
-            ? ("up" as const)
-            : myCommentDownvotes.has(c.id as string)
-              ? ("down" as const)
-              : null,
+          myVote: myCommentVotes.get(c.id as string) ?? null,
         })),
     };
   });
@@ -805,6 +817,47 @@ export async function getPostById(id: string, viewerId: string | null = null): P
   const rows = await sql.query(`${POST_SELECT} WHERE p.id = $1`, [id]);
   const hydrated = await hydratePosts(rows, viewerId);
   return hydrated[0] ?? null;
+}
+
+/**
+ * The plates a public profile (`/u/[id]`, `/m/u/[id]`) is allowed to show for
+ * someone who isn't you: what they posted, newest first, and nothing else.
+ *
+ * Deliberately not `getProfilePosts` — that function also returns the
+ * subject's *saved* posts and its own doc comment says exactly why a
+ * caller-supplied id must never reach it: "a caller-supplied id here would
+ * hand anyone another person's saved-post list, which is not public." This
+ * query only ever runs `WHERE p.user_id = $1`, no `OR post_saves`.
+ *
+ * Media is gated the same way `getDiscoverFeed` gates it — stripped in SQL
+ * when `photos_public` is false, not filtered after the fact — because unlike
+ * `getProfilePosts` (account-owner only) or `getPostById` (single post, own
+ * access-control at the call site), this is the one query built to answer a
+ * stranger's request for another person's whole history, so the private-photo
+ * invariant has to hold here even if every other call site got it right.
+ *
+ * `includeHearts` is false: a heart count is author-only (see
+ * `getProfilePosts`), and the viewer here is never guaranteed to be the
+ * author.
+ */
+export async function getUserPublicPosts(
+  userId: string,
+  viewerId: string | null = null
+): Promise<Post[]> {
+  const rows = await sql`
+    SELECT p.id, p.user_id, p.text, p.restaurant, p.created_at,
+           p.restaurant_id, p.restaurant_lat, p.restaurant_lng,
+           p.dish_name, p.price, p.rating, p.rating_kind, p.location_label,
+           CASE WHEN p.photos_public THEN p.media ELSE '[]'::jsonb END AS media,
+           p.vibe, p.photos_public,
+           u.name AS author_name, u.avatar_url AS author_avatar_url,
+           u.points AS author_points
+    FROM posts p
+    JOIN users u ON u.id = p.user_id
+    WHERE p.user_id = ${userId}
+    ORDER BY p.created_at DESC
+  `;
+  return hydratePosts(rows, viewerId, /* includeHearts */ false);
 }
 
 /**
@@ -2688,7 +2741,6 @@ function rowToRestaurant(row: any): Restaurant {
     cuisineRaw: row.cuisine_raw ?? undefined,
     neighborhood: row.neighborhood,
     distance: row.distance,
-    walkTime: row.walk_time,
     closingTime: row.closing_time,
     hours: row.hours ?? null,
     lat: row.lat,

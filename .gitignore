@@ -55,3 +55,8 @@ next-env.d.ts
 
 # scraped menu photos: 400MB of jpgs, the manifest and scripts beside them stay tracked
 /probe/menu-photos/**/*.jpg
+
+# local DB row dumps and scratch: never commit
+/probe/tmp/
+/probe/snapshots/
+/scripts/_tmp_*
