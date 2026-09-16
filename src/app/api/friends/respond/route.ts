@@ -14,7 +14,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
   }
 
-  const { requestId, action } = await req.json();
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  const { requestId, action } = body as { requestId?: unknown; action?: unknown };
   if (typeof requestId !== "string" || (action !== "accept" && action !== "decline")) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getBlockedUsers, blockUser, unblockUser } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * Everyone the current user has blocked — used both by the account settings
@@ -22,7 +23,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
   }
 
-  const { userId } = await req.json();
+  const limited = await limitOrReject({
+    scope: "blocks:user",
+    key: user.id,
+    max: 30,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
+
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  const { userId } = body as { userId?: unknown };
   if (!userId || typeof userId !== "string") {
     return NextResponse.json({ error: "No user provided." }, { status: 400 });
   }
@@ -40,7 +58,16 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
   }
 
-  const { userId } = await req.json();
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  const { userId } = body as { userId?: unknown };
   if (!userId || typeof userId !== "string") {
     return NextResponse.json({ error: "No user provided." }, { status: 400 });
   }

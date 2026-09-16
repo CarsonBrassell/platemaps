@@ -3,6 +3,7 @@ import { put, del } from "@vercel/blob";
 import { randomUUID } from "node:crypto";
 import { getCurrentUser } from "@/lib/session";
 import { MAX_UPLOAD_BYTES, isStoredPhotoUrl } from "@/lib/photos";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * The one door photos go through on their way to the blob store.
@@ -26,6 +27,14 @@ export async function POST(req: Request) {
   if (!user) {
     return NextResponse.json({ error: "Sign in to add a photo." }, { status: 401 });
   }
+
+  const limited = await limitOrReject({
+    scope: "blob-upload:user",
+    key: user.id,
+    max: 30,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
 
   const form = await req.formData().catch(() => null);
   const file = form?.get("file");

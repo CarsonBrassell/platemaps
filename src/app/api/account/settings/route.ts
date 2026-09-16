@@ -26,7 +26,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
   }
 
-  const body = await req.json();
+  let parsed: unknown;
+  try {
+    parsed = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  if (!parsed || typeof parsed !== "object") {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  const body = parsed as Record<string, unknown>;
 
   if (body.sharePhotosPublicly !== undefined) {
     if (typeof body.sharePhotosPublicly !== "boolean") {

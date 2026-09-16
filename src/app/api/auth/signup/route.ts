@@ -8,6 +8,8 @@ import { checkPassword } from "@/lib/password";
 import { checkEmail, normalizeEmail } from "@/lib/emailAddress";
 import { BLOCKED_MESSAGE, moderateUsername } from "@/lib/moderation";
 import { userConflictMessage } from "@/lib/uniqueViolation";
+import { clientIp } from "@/lib/loginThrottle";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /** Same charset a handle already renders in — no space could survive
     FoodPostCard's handleFor() anyway, so a signup that let one through would
@@ -15,7 +17,24 @@ import { userConflictMessage } from "@/lib/uniqueViolation";
 const USERNAME_PATTERN = /^[a-zA-Z0-9_]{3,24}$/;
 
 export async function POST(req: NextRequest) {
-  const { name, email, password, agreedToTerms } = await req.json();
+  const limited = await limitOrReject({
+    scope: "signup:ip",
+    key: clientIp(req),
+    max: 5,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
+
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  const { name, email, password, agreedToTerms } = body as Record<string, unknown>;
 
   if (!name || !email || !password) {
     return NextResponse.json({ error: "Fill in every field." }, { status: 400 });
@@ -77,7 +96,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const passwordHash = await bcrypt.hash(password, 10);
+  const passwordHash = await bcrypt.hash(String(password), 10);
 
   /* The checks above answer the common case; this answers the race. Two people
      can pass the same `getUserByName` before either writes, and the unique
@@ -88,7 +107,7 @@ export async function POST(req: NextRequest) {
   try {
     user = await createUser({
       id: randomUUID(),
-      name,
+      name: String(name),
       email: address,
       passwordHash,
     });

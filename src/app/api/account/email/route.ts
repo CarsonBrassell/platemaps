@@ -9,6 +9,7 @@ import {
 } from "@/lib/db";
 import { describeSend, issueEmailVerification } from "@/lib/emailVerification";
 import { getCurrentUser } from "@/lib/session";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * Deliberately permissive. This is not the check that matters — the mail is.
@@ -37,6 +38,14 @@ export async function POST(req: Request) {
   if (!user) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
   }
+
+  const limited = await limitOrReject({
+    scope: "account-email:user",
+    key: user.id,
+    max: 10,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
 
   let email: unknown;
   let password: unknown;

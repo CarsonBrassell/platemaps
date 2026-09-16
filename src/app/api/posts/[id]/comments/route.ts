@@ -4,6 +4,7 @@ import { getPostById, addComment, awardPoints, getCommentContext, getBlockStatus
 import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES } from "@/lib/points";
 import { BLOCKED_MESSAGE, moderateText } from "@/lib/moderation";
+import { limitOrReject } from "@/lib/rateLimit";
 
 export async function POST(
   req: Request,
@@ -14,7 +15,24 @@ export async function POST(
     return NextResponse.json({ error: "Sign in to comment." }, { status: 401 });
   }
 
-  const { text, parentId } = await req.json();
+  const limited = await limitOrReject({
+    scope: "comments:user",
+    key: user.id,
+    max: 30,
+    windowMinutes: 15,
+  });
+  if (limited) return limited;
+
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  const { text, parentId } = body as { text?: unknown; parentId?: unknown };
   if (!text || !String(text).trim()) {
     return NextResponse.json({ error: "Write a comment first." }, { status: 400 });
   }

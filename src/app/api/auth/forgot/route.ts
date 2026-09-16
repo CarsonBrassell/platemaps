@@ -7,6 +7,8 @@ import {
 import { describeSend } from "@/lib/emailVerification";
 import { sendPasswordResetEmail } from "@/lib/mail";
 import { hashToken, newToken } from "@/lib/tokens";
+import { clientIp } from "@/lib/loginThrottle";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /** An hour. Shorter than a verification link, because this one rewrites a
     credential rather than confirming a fact, and a reset mail sitting unread
@@ -32,6 +34,21 @@ const RESEND_INTERVAL_MS = 60 * 1000;
  * is nothing to tell the caller, so nothing is told.
  */
 export async function POST(req: Request) {
+  /* Per-IP, on top of the per-account cooldown below. The per-account check
+     alone does nothing against one caller working through a list of known
+     addresses — each only needs one request to trip its own 60s window, so a
+     script can fan reset mail out across the whole user table. This can 429
+     without breaking the uniform-response rule above: it fires before any
+     address is looked up, so it carries no information about which accounts
+     exist. */
+  const limited = await limitOrReject({
+    scope: "forgot:ip",
+    key: clientIp(req),
+    max: 10,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
+
   let email: unknown;
   try {
     ({ email } = await req.json());

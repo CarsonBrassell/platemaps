@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { sendFriendRequest } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * Sends a friend request — or, if the target already requested this user,
@@ -14,7 +15,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Sign in to add friends." }, { status: 401 });
   }
 
-  const { userId } = await req.json();
+  const limited = await limitOrReject({
+    scope: "friends-request:user",
+    key: user.id,
+    max: 20,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
+
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  const { userId } = body as { userId?: unknown };
   if (!userId || typeof userId !== "string") {
     return NextResponse.json({ error: "No user provided." }, { status: 400 });
   }

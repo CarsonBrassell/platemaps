@@ -807,6 +807,20 @@ const statements = [
   `CREATE INDEX IF NOT EXISTS idx_login_attempts_ip
      ON login_attempts (ip, attempted_at DESC)`,
 
+  // The generic rate limiter in lib/rateLimit.ts, covering every write route
+  // that isn't the login throttle above. Same reasoning as login_attempts:
+  // Postgres, not a Map, because a serverless instance's memory does not
+  // survive between invocations. `scope` prefixes the key (e.g. "signup:ip",
+  // "posts:user") so one table serves every route instead of one per limit.
+  `CREATE TABLE IF NOT EXISTS rate_limit_hits (
+    id BIGSERIAL PRIMARY KEY,
+    scope TEXT NOT NULL,
+    key TEXT NOT NULL,
+    at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_rate_limit_hits_scope_key
+     ON rate_limit_hits (scope, key, at DESC)`,
+
   // Whether this account has been told what happens to its photos.
   //
   // The photo rule is the one thing about posting nobody can infer from the
@@ -1246,6 +1260,21 @@ const statements = [
   `CREATE INDEX IF NOT EXISTS idx_posts_user ON posts (user_id)`,
   `CREATE INDEX IF NOT EXISTS idx_post_saves_user ON post_saves (user_id)`,
   `CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions (user_id)`,
+
+  // Finding #8 (probe/SECURITY-FINDINGS.md): sessions were plaintext tokens
+  // with no server-side expiry — a DB dump handed over directly-usable
+  // cookies, valid until the user signed out. `createSession`/`getSessionUser`
+  // in lib/db.ts now store and look up `hashToken(token)`, with `expires_at`
+  // as the row's own clock alongside the cookie's `SESSION_MAX_AGE`.
+  `ALTER TABLE sessions ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ NOT NULL DEFAULT now()`,
+  `ALTER TABLE sessions ADD COLUMN IF NOT EXISTS expires_at TIMESTAMPTZ NOT NULL DEFAULT (now() + interval '400 days')`,
+  `CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions (expires_at)`,
+  // One-time upgrade of rows written before this migration: a raw token is
+  // `randomUUID()`, always 36 characters; a SHA-256 hex digest is always 64.
+  // The length test is what makes this idempotent — a row already hashed by
+  // a previous run of this statement is 64 chars and fails the WHERE, so
+  // re-running `db:migrate` never double-hashes a row.
+  `UPDATE sessions SET token = encode(sha256(convert_to(token, 'UTF8')), 'hex') WHERE length(token) = 36`,
 ];
 
 for (const statement of statements) {

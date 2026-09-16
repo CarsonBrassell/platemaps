@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getPostById, toggleHeart, getHeartsForAuthor } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * Friends' reaction. The response is deliberately shaped differently from
@@ -15,6 +16,14 @@ export async function POST(
   if (!user) {
     return NextResponse.json({ error: "Sign in to react to posts." }, { status: 401 });
   }
+
+  const limited = await limitOrReject({
+    scope: "heart:user",
+    key: user.id,
+    max: 120,
+    windowMinutes: 15,
+  });
+  if (limited) return limited;
 
   const { id } = await params;
   const post = await getPostById(id);

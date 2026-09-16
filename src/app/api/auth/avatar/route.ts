@@ -15,7 +15,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Sign in to update your photo." }, { status: 401 });
   }
 
-  const { avatarUrl } = await req.json();
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  const { avatarUrl } = body as { avatarUrl?: unknown };
   if (!avatarUrl || typeof avatarUrl !== "string") {
     return NextResponse.json({ error: "No image provided." }, { status: 400 });
   }

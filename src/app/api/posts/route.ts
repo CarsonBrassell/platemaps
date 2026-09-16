@@ -15,6 +15,7 @@ import { MAX_POST_TEXT } from "@/lib/postLimits";
 import { isStoredPhotoUrl } from "@/lib/photos";
 import { resolvePostRefs } from "@/lib/discover";
 import { BLOCKED_MESSAGE, moderateText } from "@/lib/moderation";
+import { limitOrReject } from "@/lib/rateLimit";
 
 const MAX_MEDIA = 4;
 /* A blob URL and nothing like a payload. Media used to arrive as base64 data
@@ -77,7 +78,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Sign in to post to the feed." }, { status: 401 });
   }
 
-  const body = await req.json();
+  const limited = await limitOrReject({
+    scope: "posts:user",
+    key: user.id,
+    max: 20,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
+
+  let parsedBody: unknown;
+  try {
+    parsedBody = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  if (!parsedBody || typeof parsedBody !== "object") {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  const body = parsedBody as Record<string, unknown>;
   const { text, restaurant, restaurantId, dishName, price, rating, locationLabel } = body;
 
   let restaurantLat: number | undefined;
@@ -199,8 +217,8 @@ export async function POST(req: NextRequest) {
     // a few points behind their own chip. Amount lives in lib/points.ts.
     authorPoints: user.points + POINT_RULES.createPost,
     text: String(text).trim(),
-    restaurant: restaurant ? String(restaurant).trim() : undefined,
-    restaurantId: restaurantId ? String(restaurantId).trim() : undefined,
+    restaurant: restaurant ? String(restaurant).trim().slice(0, 200) : undefined,
+    restaurantId: restaurantId ? String(restaurantId).trim().slice(0, 200) : undefined,
     restaurantLat,
     restaurantLng,
     dishName: dishName ? String(dishName).trim().slice(0, 120) : undefined,

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getPostById, castVote, awardPoints } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES, milestoneFor } from "@/lib/points";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * Discover's reaction. Public in every direction: the counts this returns are
@@ -19,6 +20,14 @@ export async function POST(
   if (!user) {
     return NextResponse.json({ error: "Sign in to vote on posts." }, { status: 401 });
   }
+
+  const limited = await limitOrReject({
+    scope: "post-vote:user",
+    key: user.id,
+    max: 120,
+    windowMinutes: 15,
+  });
+  if (limited) return limited;
 
   const body = await req.json().catch(() => ({}));
   const direction = (body as { direction?: string }).direction;
