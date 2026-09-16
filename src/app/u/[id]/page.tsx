@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
-import { getPublicProfile, getRestaurantById, getUserPublicPosts } from "@/lib/db";
+import { getBlockStatus, getPublicProfile, getRestaurantById, getUserPublicPosts } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { initials } from "@/lib/format";
 import { PlateStarIcon } from "@/components/icons";
@@ -28,6 +28,14 @@ export default async function PublicProfilePage({
   const { id } = await params;
   const [profile, viewer] = await Promise.all([getPublicProfile(id), getCurrentUser()]);
   if (!profile) notFound();
+
+  /* A block in either direction hides the profile card the same way an
+     unknown id does — blocking is expected to make someone disappear, not
+     just hide the friend/follow affordance. See SECURITY-FINDINGS.md #10. */
+  if (viewer && viewer.id !== id) {
+    const blockStatus = await getBlockStatus(viewer.id, id);
+    if (blockStatus !== "none") notFound();
+  }
 
   const [favoriteRestaurant, posts] = await Promise.all([
     profile.favoriteRestaurantId ? getRestaurantById(profile.favoriteRestaurantId) : null,

@@ -4,7 +4,7 @@ import { PlateStarIcon } from "@/components/icons";
 import { RankInsignia } from "@/components/RankInsignia";
 import { PhoneProfileFriendButton } from "@/components/mobile/PhoneProfileFriendButton";
 import { ProfileBlockButton } from "@/components/ProfileBlockButton";
-import { getPublicProfile, getRestaurantById, getUserPublicPosts } from "@/lib/db";
+import { getBlockStatus, getPublicProfile, getRestaurantById, getUserPublicPosts } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { initials } from "@/lib/format";
 import { rankFor } from "@/lib/ranks";
@@ -41,6 +41,14 @@ export default async function PhonePublicProfilePage({
   const { id } = await params;
   const [profile, viewer] = await Promise.all([getPublicProfile(id), getCurrentUser()]);
   if (!profile) notFound();
+
+  /* A block in either direction hides the profile card the same way an
+     unknown id does — blocking is expected to make someone disappear, not
+     just hide the friend/follow affordance. See SECURITY-FINDINGS.md #10. */
+  if (viewer && viewer.id !== id) {
+    const blockStatus = await getBlockStatus(viewer.id, id);
+    if (blockStatus !== "none") notFound();
+  }
 
   /* The nav-variant switcher rides in `?nav=` and every link has to carry it or
      the first tap drops you back to the default. Goes away with the switcher. */
