@@ -589,6 +589,29 @@ async function hydratePosts(
   if (postRows.length === 0) return [];
   const ids = postRows.map((r) => r.id as string);
 
+  // The photo privacy gate, in the one place every post passes through
+  // (probe/SECURITY-FINDINGS.md #1, #3). A plate whose author has not opted
+  // into public photos shows its media to three viewers only: the author, a
+  // mutual friend, and nobody else. Discover already strips this in SQL and
+  // the friends feed only selects friends' posts, so for those callers this
+  // is a no-op; it exists for getPostById, getProfilePosts (saved posts you
+  // may no longer be friends with) and getPosts, which used to hand the raw
+  // column to anyone holding a post id. Deciding here rather than in each
+  // SELECT means a future caller cannot forget it.
+  const gatedAuthorIds = Array.from(
+    new Set(
+      postRows
+        .filter(
+          (r) =>
+            !r.photos_public &&
+            r.user_id !== viewerId &&
+            Array.isArray(r.media) &&
+            r.media.length > 0,
+        )
+        .map((r) => r.user_id as string),
+    ),
+  );
+
   // Seven round trips, not eleven (probe/PERF-PLAN.md #5): the up and down
   // directions of each vote read are one UNION ALL query each, tagged by
   // direction, instead of two queries that differ only in table name. Every
@@ -601,6 +624,7 @@ async function hydratePosts(
     postVoteRows,
     myPostVoteRows,
     myHeartRows,
+    friendRows,
   ] = await Promise.all([
     sql`SELECT post_id, user_id FROM post_saves WHERE post_id = ANY(${ids})`,
     // Flat, in the order they were written. The reply tree is assembled from
@@ -670,7 +694,22 @@ async function hydratePosts(
     viewerId && includeHearts
       ? sql`SELECT post_id FROM post_hearts WHERE post_id = ANY(${ids}) AND user_id = ${viewerId}`
       : Promise.resolve([]),
+    // Which of the gated authors above are the viewer's mutual friends. Only
+    // asked when there is something to gate, so most feed pages skip it.
+    viewerId && gatedAuthorIds.length > 0
+      ? sql`
+          SELECT user_a, user_b FROM friendships
+          WHERE (user_a = ${viewerId} AND user_b = ANY(${gatedAuthorIds}))
+             OR (user_b = ${viewerId} AND user_a = ANY(${gatedAuthorIds}))
+        `
+      : Promise.resolve([]),
   ]);
+
+  const friendIds = new Set(
+    friendRows.map((r) => (r.user_a === viewerId ? r.user_b : r.user_a) as string),
+  );
+  const maySeeMedia = (row: { photos_public?: boolean; user_id: string }) =>
+    Boolean(row.photos_public) || row.user_id === viewerId || friendIds.has(row.user_id);
 
   const upvoteCounts = new Map(postVoteRows.map((r) => [r.post_id as string, r.up as number]));
   const downvoteCounts = new Map(postVoteRows.map((r) => [r.post_id as string, r.down as number]));
@@ -712,7 +751,9 @@ async function hydratePosts(
       ratingKind: row.rating_kind ?? undefined,
       locationLabel: row.location_label ?? undefined,
       vibe: row.vibe ?? undefined,
-      media: (row.media as PostMedia[] | null) ?? [],
+      // Stripped, not filtered client-side: a URL that leaves the server is
+      // public forever, because the blob store itself has no access check.
+      media: maySeeMedia(row) ? ((row.media as PostMedia[] | null) ?? []) : [],
       photosPublic: row.photos_public ?? false,
       createdAt: new Date(row.created_at).toISOString(),
       upvoteCount: upvoteCounts.get(postId) ?? 0,
@@ -814,8 +855,22 @@ export async function getProfilePosts(
   return hydratePosts(rows, viewerId);
 }
 
+/**
+ * One post by id, as the viewer is allowed to see it. Media is gated by
+ * hydratePosts; a post whose author has blocked the viewer, or whom the viewer
+ * has blocked, reads as not found rather than as forbidden, so the id itself
+ * confirms nothing. Callers that pass no viewer (vote, save, heart, report,
+ * delete) get the row for ownership and existence checks only and never send
+ * it to a client.
+ */
 export async function getPostById(id: string, viewerId: string | null = null): Promise<Post | null> {
   const rows = await sql.query(`${POST_SELECT} WHERE p.id = $1`, [id]);
+  const row = rows[0];
+  if (!row) return null;
+  if (viewerId && row.user_id !== viewerId) {
+    const block = await getBlockStatus(viewerId, row.user_id as string);
+    if (block !== "none") return null;
+  }
   const hydrated = await hydratePosts(rows, viewerId);
   return hydrated[0] ?? null;
 }
