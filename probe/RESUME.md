@@ -1477,6 +1477,25 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   the Analytics tab shows data, `claude mcp remove vercel`. Code side next: Phase B (S3
   static home shell, S4 restaurant page cache, S5 cursor pagination, S7 ETag), then
   security Stage 3 (hash session tokens, headers, rate limits).
+  **Stage 2 / Phase A code DONE 2026-09-15 (no spend):** four indexes created on Neon main
+  and recorded in scripts/migrate.mjs (idx_posts_created, idx_posts_user,
+  idx_post_saves_user, idx_sessions_user). Session lookup is one query (`getSessionUser`
+  = sessions JOIN users) behind getCurrentUser and /api/auth/me. hydratePosts went from 11
+  queries to 7 (UNION ALL vote sums); checked against direct SQL on the live discover
+  feed: 0 mismatches over 23 posts / 11 comments. loadCorpus is stale-while-revalidate:
+  <60 s fresh, <10 min stale is served at once while one background refresh runs under
+  `after()`; `unstable_cache` was rejected (Vercel Data Cache caps entries at 2 MB, the
+  corpus is 3.5 MB). Column trim skipped: `hours` is 1.78 MB of the 2.5 MB selected and
+  the open-now filter needs it. @vercel/speed-insights + @vercel/analytics mounted in
+  src/app/layout.tsx. eslint now ignores menus/ and .claude/. Neon branch "sweep"
+  (br-falling-resonance-au0htvot, no compute) is the pre-migration snapshot; delete it
+  once the indexes have lived a few days. Baseline TTFBs (before this shipped) are in
+  probe/perf/baseline-2026-09-15.md; Lighthouse skipped (PSI quota), Speed Insights field
+  data replaces it. Pre-existing lint error src/components/RankRing.tsx:103 untouched.
+  Calvin side still: Vercel function region -> iad1 (V1, biggest remaining win), confirm
+  the Analytics tab shows data, `claude mcp remove vercel`. Code side next: Phase B (S3
+  static home shell, S4 restaurant page cache, S5 cursor pagination, S7 ETag), then
+  security Stage 3 (hash session tokens, headers, rate limits).
 
   **Stage 2 / Phase A code DONE 2026-09-15 (no spend):** four indexes created on Neon main
   and recorded in scripts/migrate.mjs (idx_posts_created, idx_posts_user,
