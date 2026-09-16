@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { accountJson } from "@/lib/account";
 import { updateUserAvatar } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { limitOrReject } from "@/lib/rateLimit";
 import { isStoredPhotoUrl } from "@/lib/photos";
 
 /* An address, not a picture. Avatars used to arrive as base64 data URLs
@@ -14,6 +15,14 @@ export async function POST(req: Request) {
   if (!user) {
     return NextResponse.json({ error: "Sign in to update your photo." }, { status: 401 });
   }
+
+  const limited = await limitOrReject({
+    scope: "avatar:user",
+    key: user.id,
+    max: 30,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
 
   let body: unknown;
   try {
