@@ -343,6 +343,7 @@ export function PhoneFeedMapPanel({
    */
   const mapRouter = useMemo<AppRouterInstance>(
     () => ({
+      bfcacheId: router.bfcacheId,
       back: () => router.back(),
       forward: () => router.forward(),
       refresh: () => router.refresh(),
