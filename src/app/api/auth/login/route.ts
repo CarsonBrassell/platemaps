@@ -11,6 +11,36 @@ import {
   pruneLoginAttempts,
   recordLoginFailure,
 } from "@/lib/loginThrottle";
+import { MAX_PASSWORD_BYTES } from "@/lib/password";
+
+/**
+ * A hash of a password nobody typed, generated once at module load rather
+ * than per request — `bcryptjs` is deterministic enough on cost factor 10
+ * that a constant hash still costs the same ~50-100ms to compare against, and
+ * paying that hashing cost on every cold start would be its own small DoS
+ * surface. Its only job is to give the "user doesn't exist" branch below the
+ * same `bcrypt.compare` shape as the "user exists" branch — see the timing
+ * note there.
+ */
+const DUMMY_HASH = bcrypt.hashSync("dummy-password-for-timing-parity", 10);
+
+/**
+ * Cuts a string down to its first `maxBytes` UTF-8 bytes, matching how
+ * `bcrypt` itself only ever reads the first `MAX_PASSWORD_BYTES` of a
+ * password (see the note on that constant in `lib/password.ts`). Uncapped,
+ * a caller could hand `bcrypt.compare` a multi-megabyte string and spend
+ * real CPU on it before the algorithm's own truncation ever kicks in — the
+ * same duration-billing concern `loginThrottle.ts` exists for, just on the
+ * input side instead of the attempt count.
+ *
+ * Trims off a trailing partial character rather than leaving a corrupt
+ * replacement character in the compared string.
+ */
+function capToBytes(value: string, maxBytes: number): string {
+  const encoded = new TextEncoder().encode(value);
+  if (encoded.length <= maxBytes) return value;
+  return new TextDecoder().decode(encoded.slice(0, maxBytes)).replace(/�+$/, "");
+}
 
 /**
  * Sign in.
@@ -25,11 +55,27 @@ import {
  * **The 429 says nothing about whether the account exists.** It is returned on
  * the address alone, before any lookup, so it cannot be used to enumerate
  * users — the same care `/api/auth/forgot` takes with its silent throttle.
+ *
+ * **`bcrypt.compare` always runs, known account or not.** A missing user used
+ * to skip straight to the 401, which made this endpoint answer "does this
+ * email exist" through nothing but response latency — free of the throttle,
+ * free of the uniform-response care `/api/auth/forgot` takes. Comparing
+ * against `DUMMY_HASH` when there's no user keeps both branches paying the
+ * same ~50-100ms, with the same 401 body either way.
  */
 export async function POST(req: NextRequest) {
-  const { email, password } = await req.json();
+  let parsed: unknown;
+  try {
+    parsed = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  if (!parsed || typeof parsed !== "object") {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  const { email, password } = parsed as Record<string, unknown>;
 
-  if (!email || !password) {
+  if (!email || !password || typeof password !== "string") {
     return NextResponse.json({ error: "Fill in every field." }, { status: 400 });
   }
 
@@ -44,8 +90,10 @@ export async function POST(req: NextRequest) {
   }
 
   const user = await getUserByEmail(String(email));
+  const cappedPassword = capToBytes(password, MAX_PASSWORD_BYTES);
+  const passwordOk = await bcrypt.compare(cappedPassword, user ? user.passwordHash : DUMMY_HASH);
 
-  if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
+  if (!user || !passwordOk) {
     /* A throttle that cannot write must not lock anybody out of their account,
        so a failure to record a failure is swallowed. The edge rule in the
        Vercel firewall is the backstop for the case where this is silently
