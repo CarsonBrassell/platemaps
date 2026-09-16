@@ -26,3 +26,12 @@ export function hashToken(token: string): string {
 export function newToken(): string {
   return randomBytes(32).toString("hex");
 }
+
+/**
+ * Server-side lifetime for a `sessions` row, shared with the cookie's
+ * max-age (`SESSION_MAX_AGE` in `lib/session.ts`) so the two clocks can't
+ * drift apart. It lives here rather than in `session.ts` because
+ * `session.ts` imports `lib/db.ts`, and `lib/db.ts` needs this constant too
+ * — this is the leaf both of them can import without a cycle.
+ */
+export const SESSION_TTL_SECONDS = 60 * 60 * 24 * 400;

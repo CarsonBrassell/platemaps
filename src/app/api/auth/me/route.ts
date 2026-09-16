@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { accountJson } from "@/lib/account";
 import { cookies } from "next/headers";
-import { getSessionUser } from "@/lib/db";
+import { getSessionUser, touchSession } from "@/lib/db";
 import { SESSION_COOKIE, setSessionCookie } from "@/lib/session";
 
 /**
@@ -19,6 +19,10 @@ import { SESSION_COOKIE, setSessionCookie } from "@/lib/session";
  * `{ user: null }` and no `Set-Cookie`, so a dead session is allowed to die.
  * The token itself is not rotated — the `sessions` row is the identity and
  * rotating it here would sign you out of every other device on each app open.
+ *
+ * `touchSession` slides the row's own `expires_at` forward alongside the
+ * cookie, so the server-side clock renews in lockstep with the one in the
+ * browser instead of quietly expiring on the sign-in date.
  */
 export async function GET() {
   const cookieStore = await cookies();
@@ -29,6 +33,7 @@ export async function GET() {
   if (!user) return NextResponse.json({ user: null });
 
   await setSessionCookie(token);
+  await touchSession(token);
 
   return NextResponse.json({ user: accountJson(user) });
 }

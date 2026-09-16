@@ -16,6 +16,7 @@ import { RANKS, rankByKey } from "@/lib/ranks";
 import { dishRatingKey } from "@/lib/dishRatingKey";
 import { isStoredPhotoUrl } from "@/lib/photos";
 import { brandKey, foldAccents } from "@/lib/brandName";
+import { hashToken, SESSION_TTL_SECONDS } from "@/lib/tokens";
 // From lib/geo.ts for the same reason discoverFilters.ts takes it from there:
 // lib/nearby.ts is a React hook and this module is server-only.
 import { milesBetween } from "@/lib/geo";
@@ -388,9 +389,25 @@ export async function getUserRank(
 // table itself is left in place, same as post_likes/post_votes, rather than
 // dropped.
 
+/**
+ * Legacy rows from before the hashing migration store the raw `randomUUID()`
+ * token (36 chars); every row written since stores `hashToken(token)` (64
+ * hex chars). The length test is how a lookup tells which kind it might be
+ * looking at without a second column — see `getSessionUser` below for the
+ * upgrade-in-place that retires a legacy row the first time it's used.
+ */
 export async function getSessionUserId(token: string): Promise<string | null> {
-  const rows = await sql`SELECT user_id FROM sessions WHERE token = ${token}`;
-  return (rows[0]?.user_id as string | undefined) ?? null;
+  const hash = hashToken(token);
+  const rows = await sql`
+    SELECT user_id FROM sessions WHERE token = ${hash} AND expires_at > now()
+  `;
+  if (rows[0]) return rows[0].user_id as string;
+
+  if (token.length !== 36) return null;
+  const legacy = await sql`SELECT user_id FROM sessions WHERE token = ${token}`;
+  if (!legacy[0]) return null;
+  await sql`UPDATE sessions SET token = ${hash} WHERE token = ${token}`;
+  return legacy[0].user_id as string;
 }
 
 /**
@@ -400,22 +417,72 @@ export async function getSessionUserId(token: string): Promise<string | null> {
  * HTTP calls to Neon, in series, before any authenticated route did its own
  * work. Every API route pays this on every request, so it was the floor under
  * the whole app's latency (probe/PERF-PLAN.md #4). Same rows, one join.
+ *
+ * Looks up by hash first. A miss on a 36-char token (a legacy raw
+ * `randomUUID()` written before this table stored hashes) falls back to a
+ * plaintext match and upgrades the row to its hash in place, so a session
+ * that predates the migration keeps working instead of silently signing
+ * that device out.
  */
 export async function getSessionUser(token: string): Promise<User | null> {
+  const hash = hashToken(token);
   const rows = await sql`
+    SELECT u.* FROM sessions s
+    JOIN users u ON u.id = s.user_id
+    WHERE s.token = ${hash} AND s.expires_at > now()
+  `;
+  if (rows[0]) return rowToUser(rows[0]);
+
+  if (token.length !== 36) return null;
+  const legacyRows = await sql`
     SELECT u.* FROM sessions s
     JOIN users u ON u.id = s.user_id
     WHERE s.token = ${token}
   `;
-  return rows[0] ? rowToUser(rows[0]) : null;
+  if (!legacyRows[0]) return null;
+  await sql`UPDATE sessions SET token = ${hash} WHERE token = ${token}`;
+  return rowToUser(legacyRows[0]);
 }
 
+/**
+ * Stores the hash, never the raw token (finding #8) — a DB dump hands over
+ * nothing usable. `expires_at` gives the row its own clock alongside the
+ * cookie's; `SESSION_TTL_SECONDS` (`lib/tokens.ts`) is the one constant both
+ * read, so they can't drift apart.
+ *
+ * Also opportunistically prunes expired rows, the same pattern
+ * `loginThrottle.ts` uses for `login_attempts`. Fire-and-forget: a prune
+ * failure must never block sign-in.
+ */
 export async function createSession(token: string, userId: string): Promise<void> {
-  await sql`INSERT INTO sessions (token, user_id) VALUES (${token}, ${userId})`;
+  await sql`
+    INSERT INTO sessions (token, user_id, expires_at)
+    VALUES (${hashToken(token)}, ${userId}, now() + make_interval(secs => ${SESSION_TTL_SECONDS}))
+  `;
+  sql`DELETE FROM sessions WHERE expires_at < now()`.catch(() => {});
 }
 
+/**
+ * Slides `expires_at` forward on cookie renewal (`/api/auth/me`) so the
+ * server-side clock tracks the cookie clock instead of counting down from
+ * sign-in. Hashed token only: by the time a route can call this,
+ * `getSessionUser` has already upgraded any legacy plaintext row.
+ */
+export async function touchSession(token: string): Promise<void> {
+  await sql`
+    UPDATE sessions
+    SET expires_at = now() + make_interval(secs => ${SESSION_TTL_SECONDS})
+    WHERE token = ${hashToken(token)}
+  `;
+}
+
+/**
+ * Deletes both the hashed and legacy-raw forms of the token in one
+ * statement — a session that hasn't been read since the migration (so never
+ * got upgraded in place) still has to be possible to sign out of.
+ */
 export async function deleteSession(token: string): Promise<void> {
-  await sql`DELETE FROM sessions WHERE token = ${token}`;
+  await sql`DELETE FROM sessions WHERE token IN (${hashToken(token)}, ${token})`;
 }
 
 /**
@@ -2322,11 +2389,17 @@ export async function confirmEmail(userId: string, email: string): Promise<boole
  *
  * Returns how many were ended, because "0 other devices" and "3 other devices"
  * deserve different sentences, and the caller can't count them afterwards.
+ *
+ * Compares against the hash of `keepToken`, since that's what's stored now;
+ * the raw value is kept in the exclusion too so a caller mid-upgrade (a
+ * legacy row that `getSessionUser` hasn't rewritten yet) never ends its own
+ * session by matching neither form.
  */
 export async function deleteOtherSessions(userId: string, keepToken: string): Promise<number> {
+  const keepHash = hashToken(keepToken);
   const rows = await sql`
     DELETE FROM sessions
-    WHERE user_id = ${userId} AND token != ${keepToken}
+    WHERE user_id = ${userId} AND token NOT IN (${keepHash}, ${keepToken})
     RETURNING token
   `;
   return rows.length;

@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { getSessionUser, type User } from "@/lib/db";
+import { SESSION_TTL_SECONDS } from "@/lib/tokens";
 
 export const SESSION_COOKIE = "platemap_session";
 
@@ -10,11 +11,14 @@ export const SESSION_COOKIE = "platemap_session";
  *
  * It was 30 days, counted from the moment you signed in and never touched
  * again, so a daily user was signed out a month after signup no matter how
- * much they used the app. `sessions` rows have no expiry column at all — the
- * cookie is the entire clock — which is why lengthening it here is the whole
- * fix rather than half of one.
+ * much they used the app. `sessions` rows now carry their own `expires_at`
+ * (`scripts/migrate.mjs`), set from and renewed against `SESSION_TTL_SECONDS`
+ * in `lib/tokens.ts` — the constant here is that same value, so the cookie
+ * clock and the server-side row clock never disagree. `/api/auth/me` calls
+ * `touchSession` alongside `setSessionCookie` so the two are always renewed
+ * together.
  */
-export const SESSION_MAX_AGE = 60 * 60 * 24 * 400;
+export const SESSION_MAX_AGE = SESSION_TTL_SECONDS;
 
 /**
  * Writes the session cookie. Every route that hands out or renews a session
