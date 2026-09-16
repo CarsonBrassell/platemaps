@@ -60,3 +60,7 @@ next-env.d.ts
 /probe/tmp/
 /probe/snapshots/
 /scripts/_tmp_*
+
+# menu-extraction agent logs: the extraction loop still appends to these on
+# disk, but ~545 of them tracked in git was repo-strays finding #18
+menus/wip/**/*.log
