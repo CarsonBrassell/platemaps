@@ -85,7 +85,7 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   (br-falling-resonance-au0htvot, no compute) is the pre-migration snapshot; delete it
   once the indexes have lived a few days. Baseline TTFBs (before this shipped) are in
   probe/perf/baseline-2026-09-15.md; Lighthouse skipped (PSI quota), Speed Insights field
-  data replaces it. Pre-existing lint error src/components/RankRing.tsx:103 untouched.
+  data replaces it. After deploy (iad1 live): /restaurant 0.22-0.31 s (was 0.33-1.10), map MISS 0.49 s (was 2.02), / and /m still ~1 s (Phase B S3). Pre-existing lint error src/components/RankRing.tsx:103 untouched.
   Calvin side still: Vercel function region -> iad1 (V1, biggest remaining win), confirm
   the Analytics tab shows data, `claude mcp remove vercel`. Code side next: Phase B (S3
   static home shell, S4 restaurant page cache, S5 cursor pagination, S7 ETag), then
