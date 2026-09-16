@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prebuild": "node scripts/check-security.mjs",
     "start": "next start",
     "lint": "eslint",
     "postinstall": "node scripts/copy-maplibre-worker.mjs",
@@ -31,7 +32,9 @@
     "moderation:check": "tsx scripts/check-moderation.mjs",
     "dishes:index": "node --env-file=.env.local scripts/index-dish-names.mjs",
     "dishes:review": "node --env-file=.env.local scripts/dish-review.mjs",
-    "dishes:apply": "node --env-file=.env.local scripts/apply-dish-review.mjs"
+    "dishes:apply": "node --env-file=.env.local scripts/apply-dish-review.mjs",
+    "security:check": "node scripts/check-security.mjs",
+    "security:verify": "bash probe/verify-stage3.sh"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.0",

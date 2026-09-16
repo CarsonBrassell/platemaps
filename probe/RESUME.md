@@ -65,6 +65,12 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   no x-powered-by, /drafts 404, /_next/image wikimedia 400, bad JSON 400,
   POST /api/posts 401, private post media [], robots disallows. Re-run
   probe/verify-stage3.sh against a local `next start` after future changes.
+  **Regression guard (2026-09-15):** scripts/check-security.mjs runs as `prebuild`
+  (rate limit on every mutating route unless allowlisted, try/catch on every
+  req.json(), no wildcard remotePatterns, headers present, core invariants,
+  `npm audit --omit=dev` high/critical). A regression fails the Vercel build;
+  `SKIP_AUDIT=1` skips only the audit step. `npm run security:check` /
+  `npm run security:verify`. Avatar POST got the missing 30/h limit.
   #7 done: next 16.2.12 → 16.3.5 (+eslint-config-next), bundled sharp 0.35.4;
   `npm audit fix` also took maplibre-gl 6.2.0 → 6.10.0 (XSS critical) and the
   static worker files were regenerated. `npm audit --omit=dev` = 0 vulns (one

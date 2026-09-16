@@ -110,6 +110,16 @@ psql $DATABASE_URL -c "DELETE FROM users WHERE email LIKE '%@demo.platemaps.app'
 
 The remaining scripts regenerate `src/data/` from external APIs and are **not** part of a normal build — they cost money or quota. `fetch-menus.mjs` bills the Anthropic API per token (not covered by a Claude subscription); run it with `--limit` first. Most support `--dry`.
 
+## Security invariants (Stage 3, 2026-09-15)
+
+- `npm run security:check` (`scripts/check-security.mjs`) runs automatically as `prebuild`, so a regression fails the Vercel deploy — it is not optional CI decoration.
+- A new mutating API route (`POST`/`PUT`/`PATCH`/`DELETE` in `src/app/api/**/route.ts`) must call `limitOrReject` — copy an existing route, e.g. `src/app/api/reports/route.ts`.
+- Every `req.json()` must be wrapped in `try`/`catch` or chained with `.catch(` — an unguarded parse 500s on bad input.
+- Never add a wildcard hostname (`"**"`/`"*"`) to `images.remotePatterns` in `next.config.ts` — that reopened the `/_next/image` SSRF that was finding #6.
+- Security response headers (HSTS, CSP, `X-Frame-Options`, etc.) live in `next.config.ts`'s `headers()`; don't duplicate them elsewhere.
+- `npm run security:verify` (`probe/verify-stage3.sh`) runs curl checks against a local `next start -p 3000` — set `PRIVATE_POST_ID` first.
+- Findings and history: `probe/SECURITY-FINDINGS.md` and `probe/RESUME.md`.
+
 ## Architecture
 
 ### Postgres is the source of truth; `src/data/` is seed input
