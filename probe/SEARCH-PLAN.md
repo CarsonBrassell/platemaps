@@ -676,3 +676,156 @@ mildly redundant with All on Discover. It is not one of the readings (no
 `role="option"`, arrows don't reach it), and on the `/feed` search field its
 `submit()` navigates to `/feed` while every dropdown row navigates to `/`.
 Removing it deletes feed search.
+
+---
+
+# 2026-09-13: category over name
+
+Calvin's report: searching "breaksfast" on the phone landed on Breakfast
+Republic ten miles away. A person typing a category word wants the nearest
+places of that kind, not the restaurant whose sign happens to carry the word.
+This reverses the 2026-09-07 ordering ("anything resembling the name, first").
+
+## What actually happens today (probe/search-check.mts, 2026-09-13)
+
+- `"breakfast"` -> 1,645 rows, stays free text. Top 6 are five Breakfast
+  Republic branches plus Breakfast and Bubbles, by rung then distance.
+- `"breaksfast"` -> 399 rows, stays free text. Top 6 are all name-fuzzy hits.
+
+Two causes, in order of weight:
+
+1. **`promote` never fires for "breakfast".** `discoverFilters.ts` `promote`
+   compares the term to `r.cuisine` *exactly*, and the canonical cuisine is
+   `Breakfast & Brunch`. `data/cuisines.ts` already maps breakfast, brunch,
+   pancake(s) to it via `ALIASES` / `canonicalCuisine`, but promote does not
+   consult that map. So the term falls through to the ranked ladder.
+2. **The ladder puts every name rung above every cuisine rung** (`TIER` in
+   `textMatch.ts`). "breakfast" is a NAME_PREFIX (900) of "Breakfast Republic"
+   and only a CUISINE_SUBSTRING (300) of "Breakfast & Brunch"; "breaksfast" is
+   NAME_FUZZY (500+) against the same names and CUISINE_FUZZY (280) against
+   the tag. `orderResults` sorts by rung before distance, so the name band
+   wins wherever it lives.
+
+## Plan
+
+### Step 1: promote through the alias map (small, fixes the spelled case)
+
+In `promote`, resolve the term with `canonicalCuisine(q)` and promote to
+that cuisine when some listed restaurant carries it. Keep the exact-name
+guard above it (the place called "Pizza"). Result: "breakfast", "brunch",
+"pancakes", "tacos"... become `?cuisine=` pages sorted by distance, the
+same page a rail click gives, with the rail showing the filter.
+
+Check `tagsFor` first: if "tacos" folds to Mexican but is meant to stay a
+tag search (the comment in promote says so), the alias promotion must skip
+aliases that are tags rather than cuisines. Decide per the ALIASES table.
+
+### Step 2: flip the ladder so a literal category beats a name (the ask)
+
+New TIER order, top down:
+
+- NAME_EXACT (the visitor typed the whole sign; keep it first)
+- CUISINE_EXACT, CUISINE_SUBSTRING, CUISINE_FUZZY
+- NAME_PREFIX, NAME_TOKENS (+0-99), NAME_SUBSTRING, NAME_FUZZY (+0-100)
+- NEIGHBORHOOD_*, DISH_*
+
+Code consequences:
+- `scoreRestaurant` currently returns the first field that hits (name
+  first). It must score name and cuisine both and return the higher.
+- `scopeOf` and `isLiteralScore` read contiguous bands off the numbers;
+  with cuisine interleaved they must map rung -> scope from a table
+  (RUNGS already lists every rung) instead of `>=` thresholds.
+- `rungOf`, `NAME_FLOOR`, `SIMILAR_ENOUGH_SCORE` keep working if the name
+  rungs keep their 100-point gaps for the bonuses.
+- Doc comments in textMatch.ts, discover.ts (`orderResults` header) and
+  discoverFilters.ts say "name over cuisine" in several places; update them.
+
+Open call for Calvin: does CUISINE_FUZZY belong above NAME_FUZZY? It is
+what fixes "breaksfast" when promotion cannot (typo), but it also means a
+typo of a restaurant name that is close to a cuisine tag ranks the
+category first. Recommendation: yes, above; the exact-name guard and the
+dropdown's Restaurants group still reach the place by name.
+
+### Step 3: the dropdown and the phone path
+
+Confirm which surface produced the report: Enter on the field goes through
+`filtersFromSearch` -> `promote`; tapping a dropdown row commits to that
+row's reading. If the dropdown lists the Restaurants group above Cuisines,
+the first row for "breakfast" is Breakfast Republic and a tap takes you
+there regardless of the ladder. Put the Cuisines group first when a term
+is a literal cuisine or alias. Check `RestaurantSearch.tsx` and the phone
+equivalent; ship the same behaviour on both (phone + web, one codebase).
+
+### Step 4: verify
+
+- `npx tsx --env-file=.env.local probe/search-check.mts "breakfast"
+  "breaksfast" "brunch" "pizza" "Pizza" "bronx pizza" "kairoa brewng"
+  "thai" "sushi" "tacos" "mexican" "north park" "birria"`. Expected:
+  category words give the cuisine page or a cuisine-first ranking by
+  distance; "Pizza" still lands on the restaurant; "bronx pizza" and
+  "kairoa brewng" still land on the restaurant.
+- `probe/typo-calibrate.mts` unchanged (it scores names alone; the floor
+  does not move).
+- Phone screenshot through Chrome of "breaksfast" with location on.
+
+### Revision, same day, after Calvin's second report
+
+"broyo, everbowl, literally every breakfast place on campus never showed up."
+Broyo = Broken Yolk (5120 College Ave). Findings:
+
+- Broken Yolk College Area was labelled **American**, Chula Vista American,
+  Encinitas Coffee & Tea; the other 12 branches are Breakfast & Brunch. Fixed
+  in the DB 2026-09-13 (3 rows, cuisine + cuisine_raw + cuisine_tags), after
+  snapshotting cuisine columns to probe/snapshots/cuisine-2026-09-13.json.
+- Everbowl is **Juice & Smoothies**, tags "Açaí Acai"/"juice". No breakfast
+  word anywhere, so no breakfast search can reach it. Same for every coffee
+  shop, bagel and donut place: "breakfast" is a meal, not a cuisine.
+- Only 137 listed rows carry a "breakfast" tag, all of them already in the
+  Breakfast & Brunch cuisine.
+
+Changes to the plan:
+
+- **Step 1 (alias promotion) is dropped.** Promoting "breakfast" to
+  `?cuisine=Breakfast & Brunch` would exclude the coffee/juice/bagel places
+  by construction. "breakfast" stays free text and the flipped ladder plus
+  tags do the work: literal tag hits rank in one band, sorted by distance.
+- **New step: breakfast tags.** SYNONYMS in data/cuisines.ts gains
+  "Breakfast" for cafe, coffee shop/stand, juice/acai/smoothie, bagel,
+  donut, bakery raw labels, and Breakfast + Brunch for the brunch labels.
+  Regenerated with scripts/normalize-cuisines.mjs (re-runnable, reads
+  cuisine_raw). Not ice cream, boba, tea house, dessert, candy.
+- **Ladder detail:** CUISINE_FUZZY sits *under* NAME_PREFIX (a correctly
+  typed first word of a sign beats a misspelled cuisine) and above
+  NAME_TOKENS. CUISINE_EXACT and CUISINE_SUBSTRING collapse to one rung in
+  `rungOf`, because tag "Breakfast" (exact) vs cuisine "Breakfast & Brunch"
+  (substring) measures label wording, not fit; distance decides.
+- **Follow-up (data):** other chains with branches on different cuisines,
+  the way Broken Yolk was. Query in this session; see the report.
+
+## Shipped, 2026-09-13 (evening)
+
+- Ladder flipped: `TIER` now NAME_EXACT 1000 > CUISINE_EXACT 960 > CUISINE_SUBSTRING 950 >
+  NAME_PREFIX 940 > CUISINE_FUZZY 930 (+0-9 closeness band) > NAME_TOKENS 800 > NAME_SUBSTRING
+  700 > NAME_FUZZY 500. `scoreRestaurant` takes max(name, cuisine). Exact/substring cuisine
+  collapse to one rung in `rungOf` so distance decides between "Breakfast" and "Breakfast &
+  Brunch"; the fuzzy cuisine rung is banded by similarity so a typo like "breaksfast" ranks
+  Breakfast (0.82) above Fast Food (0.50, which the shared 0.5 threshold also lets through).
+  Threshold itself left at 0.5: "mexcian"/"itlaian" sit exactly on it.
+- Dropdown: Cuisines group above Restaurants when the cuisine hit is literal, or when both
+  are fuzzy; Restaurants stay first on an exact whole-name hit (`cuisineBeforeRestaurant`).
+- Tags: Breakfast added for coffee shop / coffee stand / coffee & tea / juice / smoothie /
+  acai / bagel / donut / bakery; Breakfast+Brunch for breakfast, brunch, pancake, breakfast
+  restaurant, brunch restaurant, pancake restaurant, creperie/crepe. Not bubble tea, ice
+  cream, dessert, cake, frozen yogurt, cookie, chocolate, candy.
+- Data: Broken Yolk x3 and the Cardiff/La Jolla/Vista pancake houses set to Breakfast &
+  Brunch by hand. normalize-cuisines.mjs gained a brand-union pass (136 brands, 468 rows)
+  and chunked writes (row-by-row over Neon HTTP took ~1 h and dropped twice). Live rows with
+  a Breakfast tag: 987 -> 1776. Listed count 9065 before and after.
+- Probe: search-check.mts takes `--near=lat,lng`. From SDSU, "breakfast" and "breaksfast"
+  both lead with BCB Coffee, Aztec Shops Terrace, Big City Bagels, Broken Yolk; "mexcian"
+  leads with campus Mexican; "Pizza"/"bronx pizza"/"kairoa brewng"/"thai" unchanged.
+
+Follow-ups (not done): duplicate BCB Coffee rows in College Area; 106 live rows whose
+cuisine is Breakfast & Brunch but cuisine_raw is "Restaurant" carry no tags (they still
+match through the cuisine column); `brandKey` does not merge "Rigoberto's" (Poway) with
+"Rigoberto's Taco Shop"; without a visitor location the order inside a rung is corpus order.
