@@ -86,8 +86,12 @@ import { TRENDING_COMMENT_WEIGHT, TRENDING_GRAVITY } from "../src/lib/feedSort.t
 const DRY_RUN = process.argv.includes("--dry");
 const CLEAN_ONLY = process.argv.includes("--clean");
 
-/** The repo owner. Requirement: his profile Activity tab has to have content. */
-const OWNER_EMAIL = "cjlensink.den@gmail.com";
+/** The repo owner. Requirement: his profile Activity tab has to have content.
+    Placeholder by default — same shape as the `@demo.platemaps.app` addresses
+    in seed-demo.mjs, not a real account, so nothing is written for it on an
+    unconfigured run. Set SIM_OWNER_EMAIL to the real address to target the
+    owner's actual account. */
+const OWNER_EMAIL = process.env.SIM_OWNER_EMAIL || "owner@platemaps.example";
 /** Matches every actor this script creates, and nothing seed-demo.mjs owns. */
 const SIM_EMAIL_LIKE = "sim-%@demo.platemaps.app";
 /** Every post id this script writes starts with this. Real ids are bare UUIDs. */
