@@ -1,15 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FilterControls, FilterRail, QuickFilterChips } from "@/components/DiscoverFilters";
 import { RestaurantCard } from "@/components/RestaurantCard";
 import { OurPicks } from "@/components/OurPicks";
 import { Dialog } from "@/components/feed/Dialog";
-import { useNearby } from "@/lib/nearby";
-import { fromWire } from "@/lib/discoverWire";
 import {
   NO_FILTERS,
+  PAGE_SIZE,
   activeFilterCount,
   matchMarksFor,
   searchFromFilters,
@@ -17,6 +15,7 @@ import {
   type QueryScope,
   type QuickFilter,
 } from "@/lib/discoverFilters";
+import { useDiscoverQuery } from "@/lib/useDiscoverQuery";
 import type { DiscoverPage } from "@/lib/discover";
 import { packColumns } from "@/lib/photoShape";
 import type { PriceBand } from "@/data/priceBands";
@@ -41,9 +40,6 @@ const SCOPE_HEADING: Record<QueryScope, string> = {
   neighborhood: "Neighborhood results for",
   dish: "Dish results for",
 };
-
-/** Kept in step with PAGE_SIZE in lib/discover.ts, which owns the real value. */
-const PAGE_SIZE = 24;
 
 /**
  * How many columns the grid is packed into, following the `sm:grid-cols-2` on
@@ -86,60 +82,24 @@ function useColumnCount() {
  * page a constant size no matter how many restaurants exist.
  *
  * What it still owns is the *interaction*: the URL is the query, so changing a
- * filter means navigating, and navigating is what this manages.
+ * filter means writing it, and the page being a static shell (src/app/page.tsx)
+ * means the answer to that URL is fetched from here rather than rendered by
+ * the route. lib/useDiscoverQuery.ts is where that happens.
  */
-export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
-  const router = useRouter();
+export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
   const [sheetOpen, setSheetOpen] = useState(false);
   const columns = useColumnCount();
 
   /*
-   * The cost of moving filtering to the server is a round trip per click, and
-   * a transition is what stops that reading as jank.
-   *
-   * Inside one, React keeps the current grid mounted while the next render is
-   * in flight instead of blanking it, and `isPending` drives the dimming below.
-   * So a filter click looks like the previous answer fading rather than an
-   * empty page — which, on a fast connection, is most of what the old instant
-   * client-side filtering actually felt like.
+   * `initial` is the static shell's unfiltered first page. Every control below
+   * still writes the URL, and the hook answers it: the filtered page comes from
+   * GET /api/restaurants/discover, and is asked again with coordinates once
+   * "Nearby" has a position — those never go in the URL (see the route). While
+   * an answer is in flight `pending` dims the grid and the previous answer
+   * stays on screen, which is what the old `useTransition` bought and what
+   * stops a filter click reading as jank.
    */
-  const [isPending, startTransition] = useTransition();
-
-  // The permission prompt goes up on the Nearby tap, not here — see lib/nearby.ts.
-  const nearby = useNearby();
-
-  /**
-   * Results for the Nearby case, which cannot come from the URL.
-   *
-   * Coordinates are personal data and have no business in a query string that
-   * gets shared, logged and kept in history, so the URL carries only the intent
-   * (`nearby=1`) and the coordinates go to /api/restaurants/discover in a POST
-   * body. What comes back replaces the server-rendered page until Nearby is
-   * switched off. Everything else on screen is driven by the URL exactly as it
-   * looks like it is.
-   */
-  const [located, setLocated] = useState<{ key: string; page: DiscoverPage } | null>(null);
-
-  /*
-   * Whether the located answer is the one to show, derived rather than cleared.
-   *
-   * Switching Nearby off has to drop these results immediately — a grid still
-   * filtered to five miles under a rail that says otherwise is a lie. Deriving
-   * it means that happens in the same render as the toggle, with no effect
-   * racing the navigation, and nothing to reset. While a new position-aware
-   * answer is in flight the previous one stays on screen, which is the same
-   * thing the transition dimming does everywhere else here.
-   *
-   * Keyed against the server-authoritative `page` prop rather than trusted on
-   * its own: a `located` answer only ever matches the filters/shown it was
-   * fetched for, so the instant a navigation changes `page` the key stops
-   * matching and this falls straight back to the fresh prop — no stale
-   * snapshot can survive a filter change, even though it may still be a
-   * moment before a new located answer replaces it.
-   */
-  const pageSearch = searchFromFilters("", page.filters);
-  const locatedKey = `${pageSearch}::${page.shown}`;
-  const view = nearby.coords && located && located.key === locatedKey ? located.page : page;
+  const { view, pending, viewKey, nearby, navigate } = useDiscoverQuery(initial, "/");
   const { filters, results, counts, options, picks, total, shown } = view;
   const active = activeFilterCount(filters);
 
@@ -151,35 +111,20 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
    * it would silently make the next query heavier than a first page.
    */
   const apply = useCallback(
-    (next: DiscoverFilters) => {
-      const search = searchFromFilters(window.location.search, next);
-      const params = new URLSearchParams(search);
-      params.delete("shown");
-      const query = params.toString();
-      startTransition(() => router.replace(query ? `/?${query}` : "/", { scroll: false }));
-    },
-    [router],
+    (next: DiscoverFilters) => navigate(searchFromFilters(window.location.search, next), null),
+    [navigate],
   );
 
-  const showMore = useCallback(() => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("shown", String(shown + PAGE_SIZE));
-    startTransition(() => router.replace(`/?${params.toString()}`, { scroll: false }));
-  }, [router, shown]);
+  const showMore = useCallback(
+    () => navigate(window.location.search, shown + PAGE_SIZE),
+    [navigate, shown],
+  );
 
   /*
    * Narrowing the grid is the act that explains the permission prompt: the
-   * results are about to be ordered by how far away each one is, and the card
-   * is about to print that number. Asked once — a denial is sticky, and a
-   * second prompt is the first one again. With the permission already granted,
-   * useNearby has taken the fix on mount and this never runs.
-   *
-   * Any filter, not only `q`, because a typed cuisine does not survive as one:
-   * `promote` in lib/discoverFilters.ts turns "thai" into `?cuisine=Thai`, so
-   * gating on `q` meant the most ordinary search in the app never asked where
-   * the visitor was and then rendered in corpus order. The bare unfiltered
-   * grid still never prompts, which is the load-time case the doctrine in
-   * lib/nearby.ts is actually about.
+   * results are about to carry how far away each one is. Not on a bare
+   * landing — a prompt before the visitor has done anything is the wrong first
+   * impression. The prompt itself goes up in lib/nearby.ts.
    */
   const requestLocation = nearby.request;
   useEffect(() => {
@@ -187,62 +132,14 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
   }, [active, nearby.coords, nearby.state, requestLocation]);
 
   /*
-   * Fetch the located view whenever there are coordinates to measure from —
-   * not only with Nearby on. Every card prints a distance, and once the
-   * position is known that number should be from *here* rather than from the
-   * seeded downtown origin; a search is also ordered by it (lib/discover.ts).
-   * The located answer is dropped the moment the coordinates go, so nothing
-   * position-dependent can outlive the position.
-   *
-   * Keyed on the URL as well as the coordinates: every filter change has to be
-   * re-answered against the visitor's position, and the server-rendered page
-   * arriving from that navigation is the unlocated answer.
-   *
-   * Reads `pageSearch`/`page.shown` — the server-authoritative prop — rather
-   * than `filters`/`shown` off `view`. Keying this effect on the derived view
-   * instead of the prop is exactly what let a stale `located` answer suppress
-   * every future navigation forever: `view` only changes once a fresh
-   * `located` lands, so an effect keyed on it stops re-firing the moment it is
-   * fed a stale snapshot. Reading the prop keeps this effect re-firing on
-   * every real navigation regardless of what is currently on screen.
-   */
-  useEffect(() => {
-    if (!nearby.coords) return;
-
-    let cancelled = false;
-    void (async () => {
-      try {
-        const res = await fetch("/api/restaurants/discover", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ search: pageSearch, shown: page.shown, coords: nearby.coords }),
-        });
-        if (!res.ok) return;
-        const next = fromWire(await res.json());
-        if (!cancelled) setLocated({ key: locatedKey, page: next });
-      } catch {
-        // Leaves the server's unlocated answer on screen — a wider result set
-        // than asked for, which is the same thing the filter model does with a
-        // null position anywhere else.
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [nearby.coords, pageSearch, page.shown, locatedKey]);
-
-  /*
    * Move focus to the results heading once a navigation actually lands.
    *
-   * `router.replace` inside a transition keeps this component mounted, so
-   * nothing about the DOM forces focus to move on its own — a keyboard user
-   * who picked a cuisine pill, Nearby, a quick filter or Show more was left
-   * exactly where they clicked, at `<body>`, with the grid that answers their
-   * action rendered somewhere off-screen below. Keyed on `pageSearch`/
-   * `page.shown` — the server-authoritative signature of what navigation is
-   * currently showing — rather than on `isPending`, so this fires once per
-   * completed navigation and not on every render while one is in flight.
+   * Nothing about the DOM forces focus to move on its own — a keyboard user
+   * who picked a cuisine pill, Nearby, a quick filter or Show more would be
+   * left exactly where they clicked, with the grid that answers their action
+   * rendered somewhere off-screen below. Keyed on `viewKey` — the signature
+   * of the answer on screen — rather than on `pending`, so this fires once
+   * per completed query and not on every render while one is in flight.
    * Skipped on mount: the very first render is not a navigation, and a page
    * load has no business stealing focus from wherever the visitor arrived.
    */
@@ -254,7 +151,7 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
       return;
     }
     resultsHeadingRef.current?.focus();
-  }, [pageSearch, page.shown]);
+  }, [viewKey]);
 
   /*
    * Every handler builds on `filters` — what is currently in effect, as
@@ -506,9 +403,9 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
                     feels immediate now that it costs a request. */}
                 <div
                   className={`grid auto-rows-min grid-cols-1 gap-4 transition-opacity duration-200 sm:grid-cols-2 ${
-                    isPending ? "opacity-60" : "opacity-100"
+                    pending ? "opacity-60" : "opacity-100"
                   }`}
-                  aria-busy={isPending}
+                  aria-busy={pending}
                 >
                   {packColumns(results, columns).map((column, i) => (
                     // Index keys, and correctly: a column is a position in the
@@ -546,10 +443,10 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
                     <button
                       type="button"
                       onClick={showMore}
-                      disabled={isPending}
+                      disabled={pending}
                       className="min-h-11 rounded-full bg-white px-6 text-[13px] font-medium text-zinc-700 transition-colors hover:text-zinc-900 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
                     >
-                      {isPending ? "Loading…" : `Show more (${total - shown} left)`}
+                      {pending ? "Loading…" : `Show more (${total - shown} left)`}
                     </button>
                   </div>
                 )}

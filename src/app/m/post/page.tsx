@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useQueryParams } from "@/lib/queryString";
 import { useAuth } from "@/lib/auth";
 import { openPostFlash, closePostFlash, stashLanding } from "@/lib/postCelebration";
 import { discardPhoto, uploadPhotos, type PhotoDraft } from "@/lib/photos";
@@ -59,7 +60,7 @@ const chip =
 
 export default function PhonePost() {
   const router = useRouter();
-  const params = useSearchParams();
+  const params = useQueryParams();
   const { account, isSignedIn, loading, refresh } = useAuth();
 
   /* The nav variant travels in the URL and has to survive the composer, or

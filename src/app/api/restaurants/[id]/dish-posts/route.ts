@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cachedJson } from "@/lib/httpCache";
 import { getDishPosts } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
@@ -32,5 +33,6 @@ export async function GET(
 
   const user = await getCurrentUser();
   const posts = await getDishPosts(id, dish, user?.id ?? null);
-  return NextResponse.json({ posts });
+  // Carries the viewer's own votes, so private.
+  return cachedJson(req, { posts }, { scope: "private" });
 }

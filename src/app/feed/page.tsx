@@ -27,6 +27,7 @@ import {
   OfflineBanner,
   EndOfFeed,
 } from "@/components/feed/EmptyFeedState";
+import { FeedLoadMore } from "@/components/feed/FeedLoadMore";
 import type { FeedTab, NavKey, Post } from "@/components/feed/types";
 import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
@@ -140,6 +141,9 @@ function FeedPageInner() {
     voteComment: handleVoteComment,
     remove: handleDelete,
     share: handleShare,
+    hasMore,
+    loadingMore,
+    loadMore,
   } = usePostFeed({
     endpoint,
     reloadKey,
@@ -762,7 +766,8 @@ function FeedPageInner() {
                   );
                 })}
               </div>
-              <EndOfFeed />
+              <FeedLoadMore hasMore={hasMore} loading={loadingMore} onMore={loadMore} />
+              {!hasMore && <EndOfFeed />}
             </>
           )}
         </>

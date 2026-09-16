@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useQueryParams } from "@/lib/queryString";
 import type { Restaurant } from "@/data/restaurantTypes";
 import { dishStats, type Dish } from "@/data/dishes";
 import { DishSheet } from "@/components/DishSheet";
@@ -72,7 +72,7 @@ export function PhoneDetailScreen({
   /** The chain's other branches, nearest first. Empty for most restaurants. */
   otherLocations: SiblingLocation[];
 }) {
-  const searchParams = useSearchParams();
+  const searchParams = useQueryParams();
   const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
 
   /* Back always lands inside `/m`, and carries `?nav=` with it — the nav

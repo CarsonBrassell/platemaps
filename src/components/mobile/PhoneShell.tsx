@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useQueryParams } from "@/lib/queryString";
 import { PhoneNav, parseNavVariant } from "@/components/mobile/PhoneNav";
 import { PostFlash } from "@/components/mobile/PostFlash";
 import { PhonePointsFly } from "@/components/mobile/PhonePointsFly";
@@ -34,7 +34,7 @@ import { PhoneSwipeBack } from "@/components/mobile/PhoneSwipeBack";
  * breakpoint of its own (see phone.css).
  */
 export function PhoneShell({ children }: { children: React.ReactNode }) {
-  const variant = parseNavVariant(useSearchParams().get("nav") ?? undefined);
+  const variant = parseNavVariant(useQueryParams().get("nav") ?? undefined);
 
   return (
     <div className="pm-phone-shell" data-nav={variant}>

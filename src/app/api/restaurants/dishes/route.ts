@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { cachedJson } from "@/lib/httpCache";
 import { getDishesByRestaurant } from "@/lib/db";
 
 /**
@@ -49,5 +50,5 @@ export async function GET(req: Request) {
     );
   }
   const dishes = await getDishesByRestaurant(requested);
-  return NextResponse.json({ dishes });
+  return cachedJson(req, { dishes });
 }

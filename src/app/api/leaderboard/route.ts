@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { cachedJson } from "@/lib/httpCache";
 import { getLeaderboard, getUserRank, type LeaderboardWindow } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
@@ -16,5 +17,7 @@ export async function GET(req: NextRequest) {
     user ? getUserRank(user.id, window) : Promise.resolve(null),
   ]);
 
-  return NextResponse.json({ window, leaderboard, you });
+  // `you` is the viewer's own rank, so private; the ETag still spares the
+  // body when the board has not moved.
+  return cachedJson(req, { window, leaderboard, you }, { scope: "private" });
 }

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
-import { deleteUser } from "@/lib/db";
+import { deleteUser, restaurantIdsPostedBy } from "@/lib/db";
+import { invalidateRestaurantPage } from "@/lib/restaurantPage";
 import { getCurrentUser, SESSION_COOKIE } from "@/lib/session";
 
 /**
@@ -56,7 +57,13 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: "That password isn't right." }, { status: 401 });
   }
 
+  // Which restaurant pages this account's plates were on, read before the
+  // rows go — after the delete there is nothing left to ask — and invalidated
+  // after, so a regenerating page cannot race the delete and cache the old
+  // count (lib/restaurantPage.ts).
+  const postedAt = await restaurantIdsPostedBy(user.id);
   await deleteUser(user.id);
+  for (const id of postedAt) invalidateRestaurantPage(id);
 
   // The sessions row is already gone with the user (ON DELETE CASCADE), so the
   // cookie is dead server-side the moment the delete lands. Clearing it here

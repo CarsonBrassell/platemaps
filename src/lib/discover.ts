@@ -53,7 +53,12 @@ import {
   type FacetOption,
   type FilterContext,
   type StrongAspect,
+  PAGE_SIZE,
+  MAX_SHOWN,
 } from "@/lib/discoverFilters";
+// Both used to live here; callers that still import them from this module
+// keep working. New code should take them from discoverFilters directly.
+export { PAGE_SIZE, parseShown } from "@/lib/discoverFilters";
 import type { FeedPlace } from "@/lib/feedFilters";
 import { formatMiles, milesBetween, type Coords } from "@/lib/geo";
 import type { RestaurantView } from "@/data/restaurantTypes";
@@ -68,15 +73,6 @@ import {
 import { after } from "next/server";
 import { EMPTY_PLATE_SCORE, type PlateScore } from "@/lib/plateScore";
 import { normalize, rungOf } from "@/lib/textMatch";
-
-/** How many cards a page of results holds. */
-export const PAGE_SIZE = 24;
-
-/**
- * The ceiling on `shown`, so a hand-edited or crawled URL can't ask for the
- * whole corpus and undo the reason this file exists.
- */
-const MAX_SHOWN = 240;
 
 /**
  * A restaurant on the grid, plus its score in the filtered category.
@@ -528,11 +524,4 @@ export async function resolvePostRefs<
   });
 
   return { posts: resolved, places };
-}
-
-/** Clamps `?shown=` off a URL to something this module will honour. */
-export function parseShown(raw: string | string[] | undefined): number {
-  const value = Number(Array.isArray(raw) ? raw[0] : raw);
-  if (!Number.isFinite(value)) return PAGE_SIZE;
-  return Math.min(Math.max(Math.trunc(value), PAGE_SIZE), MAX_SHOWN);
 }

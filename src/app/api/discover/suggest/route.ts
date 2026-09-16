@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { cachedJson } from "@/lib/httpCache";
 import { suggest } from "@/lib/suggest";
 
 /**
@@ -24,9 +24,5 @@ export async function GET(req: Request) {
   const q = new URL(req.url).searchParams.get("q") ?? "";
   const answer = await suggest(q);
 
-  return NextResponse.json(answer, {
-    headers: {
-      "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
-    },
-  });
+  return cachedJson(req, answer);
 }

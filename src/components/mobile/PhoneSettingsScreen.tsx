@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useQueryParams } from "@/lib/queryString";
 import { AccountLedger } from "@/components/account/AccountLedger";
 import { SettingsLedger } from "@/components/account/SettingsLedger";
 import { PhoneDeleteAccountPanel } from "@/components/mobile/PhoneDeleteAccountPanel";
@@ -33,7 +33,7 @@ export function PhoneSettingsScreen() {
   /* The nav variant travels in `?nav=` and every in-app link has to carry it
      or the first tap throws you back to the default. Same rule PhoneNav and
      PhoneProfileScreen follow; it goes when the variant switcher goes. */
-  const nav = useSearchParams().get("nav");
+  const nav = useQueryParams().get("nav");
   const to = (href: string) => (nav ? `${href}?nav=${nav}` : href);
 
   /* Nothing renders while the session resolves — the same call the profile

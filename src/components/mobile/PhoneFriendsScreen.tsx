@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useQueryParams } from "@/lib/queryString";
 import { BrandMark } from "@/components/BrandMark";
 import { PointsBadge } from "@/components/feed/PointsBadge";
 import { PhoneFindFriends } from "@/components/mobile/PhoneFindFriends";
@@ -134,7 +134,7 @@ export function PhoneFriendsScreen() {
   /* The nav-variant switcher travels in `?nav=` and every link on the screen has
      to carry it or the first tap drops you back to the default. Same trick
      `/m/page.tsx` uses; both halves disappear when the variants are cut to one. */
-  const nav = useSearchParams().get("nav");
+  const nav = useQueryParams().get("nav");
   const to = (href: string) => (nav ? `${href}?nav=${nav}` : href);
 
   /* Every link to a public profile from here tags `from=friends` so that

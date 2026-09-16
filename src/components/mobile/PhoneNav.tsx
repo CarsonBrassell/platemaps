@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useQueryParams } from "@/lib/queryString";
 import { NavDot } from "@/components/NavDot";
 import { COACH_KEYS } from "@/components/MobileNav";
 import { useNavAlerts } from "@/lib/navAlerts";
@@ -83,7 +84,7 @@ const FOCUS =
 
 export function PhoneNav({ variant = DEFAULT_VARIANT }: { variant?: NavVariant }) {
   const pathname = usePathname();
-  const params = useSearchParams();
+  const params = useQueryParams();
   const alerts = useNavAlerts();
   const { isSignedIn } = useAuth();
 

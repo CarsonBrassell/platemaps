@@ -7,6 +7,7 @@ import { usePostFeed } from "@/components/feed/usePostFeed";
 import { CommentsScreen } from "@/components/feed/CommentsScreen";
 import { FeedSkeleton } from "@/components/feed/FeedSkeleton";
 import { OfflineBanner, EndOfFeed } from "@/components/feed/EmptyFeedState";
+import { FeedLoadMore } from "@/components/feed/FeedLoadMore";
 import { UtensilsIcon, CompassIcon, WifiOffIcon, PlusIcon } from "@/components/icons";
 import type { FeedTab, Post } from "@/components/feed/types";
 import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
@@ -137,6 +138,9 @@ export function PhoneFeedScreen() {
     remove: handleDelete,
     share: handleShare,
     refresh: reloadFeed,
+    hasMore,
+    loadingMore,
+    loadMore,
   } = usePostFeed({ endpoint, reloadKey });
 
   /* The flame is a Discover-only signal. Friends is explicitly not an
@@ -671,7 +675,8 @@ export function PhoneFeedScreen() {
                 );
               })}
             </div>
-            <EndOfFeed />
+            <FeedLoadMore hasMore={hasMore} loading={loadingMore} onMore={loadMore} />
+            {!hasMore && <EndOfFeed />}
           </>
         )}
       </div>

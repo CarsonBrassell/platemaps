@@ -1,15 +1,34 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { QuerySync } from "@/components/QuerySync";
 import { Header } from "@/components/Header";
 import { RestaurantDetail } from "@/components/RestaurantDetail";
 import { BackLink } from "./BackLink";
-import {
-  getDishesForRestaurant,
-  getRestaurantAspectTally,
-  getRestaurantById,
-  getRestaurantPlateScore,
-  getDishRatingsForRestaurant,
-  getSiblingLocations,
-} from "@/lib/db";
+import { getRestaurantPageData } from "@/lib/restaurantPage";
+
+/*
+ * Static per restaurant (probe/PERF-PLAN.md S4). The page reads only
+ * `params`, so Next renders it once and serves the copy for an hour, or until
+ * a post lands at or leaves this restaurant — `getRestaurantPageData` tags
+ * its data `restaurant:<id>` and the post routes revalidate that tag, which
+ * takes the page with it. Nothing here is viewer-dependent: what the visitor
+ * has voted comes from a client fetch inside RestaurantDetail, and the deep
+ * links it honours (`?dish=`, `?post=`) reach it through QuerySync rather
+ * than `useSearchParams`, which would have made the page unprerenderable
+ * (lib/queryString.ts).
+ */
+export const revalidate = 3600;
+
+/*
+ * Empty on purpose. Without this a dynamic segment is rendered on every
+ * request and never cached, whatever `revalidate` says; with it, every id is
+ * rendered on first visit and kept (`dynamicParams` defaults to true). Nothing
+ * is built ahead because ~5,000 restaurant pages would make every deploy pay
+ * for pages nobody may open.
+ */
+export async function generateStaticParams(): Promise<{ id: string }[]> {
+  return [];
+}
 
 export default async function RestaurantPage({
   params,
@@ -17,26 +36,16 @@ export default async function RestaurantPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-
-  // All six read the database, which RestaurantDetail cannot do itself — it
-  // is a client component. Issued together rather than in sequence: they don't
-  // depend on each other, and awaiting them one at a time would make the page
-  // six round trips deep.
-  const [restaurant, dishes, aspectTally, plateScore, dishRatings, otherLocations] =
-    await Promise.all([
-      getRestaurantById(id),
-      getDishesForRestaurant(id),
-      getRestaurantAspectTally(id),
-      getRestaurantPlateScore(id),
-      getDishRatingsForRestaurant(id),
-      getSiblingLocations(id),
-    ]);
+  const { restaurant, dishes, aspectTally, plateScore, dishRatings, otherLocations } =
+    await getRestaurantPageData(id);
   if (!restaurant) notFound();
 
   return (
-    /* No shell card: the page is the cream ground, and each section below is
-       its own white card sitting on it. */
+    /* Cream ground; RestaurantDetail draws its own white card sitting on it. */
     <div className="mx-auto w-full max-w-5xl pb-12">
+      <Suspense fallback={null}>
+        <QuerySync />
+      </Suspense>
       <Header />
       <div className="px-4 sm:px-6">
         <div className="py-2">

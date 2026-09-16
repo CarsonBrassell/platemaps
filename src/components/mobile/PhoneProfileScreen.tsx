@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useQueryParams } from "@/lib/queryString";
 import { PointsBadge } from "@/components/feed/PointsBadge";
 import { CameraIcon, SettingsIcon } from "@/components/icons";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
@@ -174,7 +174,7 @@ function PostTile({
 
 function ProfileOverview() {
   const { account, signOut, updateAvatar } = useAuth();
-  const nav = useSearchParams().get("nav");
+  const nav = useQueryParams().get("nav");
   const to = (href: string) => (nav ? `${href}?nav=${nav}` : href);
 
   /* Tags the one link out to the public profile with `from=account` so its

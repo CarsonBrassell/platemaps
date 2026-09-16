@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useQueryParams } from "@/lib/queryString";
 import { QUERY_PARAM } from "@/lib/discoverFilters";
 import { SuggestMenu } from "@/components/SuggestMenu";
 import { facetParamFor, hrefForScope, useSuggest } from "@/components/useSuggest";
@@ -51,7 +52,7 @@ import type { SuggestScope } from "@/lib/suggestTypes";
 
 export function PhoneDiscoverSearch({ value = "" }: { value?: string }) {
   const router = useRouter();
-  const params = useSearchParams();
+  const params = useQueryParams();
   const [term, setTerm] = useState(value);
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { cachedJson } from "@/lib/httpCache";
 import { getAllRestaurantAspectTallies } from "@/lib/db";
 
 /**
@@ -16,7 +16,7 @@ import { getAllRestaurantAspectTallies } from "@/lib/db";
  * Public and viewer-independent: these are aggregate counts over reviews that
  * are already public, with no per-user state and nothing to strip.
  */
-export async function GET() {
+export async function GET(req: Request) {
   const tallies = await getAllRestaurantAspectTallies();
-  return NextResponse.json({ tallies });
+  return cachedJson(req, { tallies });
 }

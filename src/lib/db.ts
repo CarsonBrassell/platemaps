@@ -22,6 +22,7 @@ import { milesBetween } from "@/lib/geo";
 
 /* Which driver this is depends on DATABASE_URL — see lib/sqlClient. */
 import { sql } from "@/lib/sqlClient";
+import type { FeedCursor } from "@/lib/feedCursor";
 
 export type User = {
   id: string;
@@ -945,104 +946,152 @@ export async function getUserPublicPosts(
  * never changes and a plate posted this evening can never reach — which is
  * "Top", not "Trending", and there is already a "New" for chronology.
  */
-const DISCOVER_ORDER: Record<FeedSort, string> = {
-  trending: `(GREATEST(COALESCE(uv.count, 0) - COALESCE(dv.count, 0), 0)${
+/**
+ * The trending score as a SQL expression over the feed query's aliases.
+ * $1 is the clock the scroll is ranked against (lib/feedCursor.ts) — a fixed
+ * timestamp rather than now(), so a row scores the same on every page of one
+ * scroll and a cursor of (score, id) names an exact position.
+ */
+const TRENDING_SCORE = `((GREATEST(COALESCE(uv.count, 0) - COALESCE(dv.count, 0), 0)${
     TRENDING_COMMENT_WEIGHT > 0 ? ` + ${TRENDING_COMMENT_WEIGHT} * COALESCE(cm.count, 0)` : ""
   } + 1)
-        / POWER(EXTRACT(EPOCH FROM (now() - p.created_at)) / 3600 + 2, ${TRENDING_GRAVITY}) DESC`,
-  new: `p.created_at DESC`,
+        / POWER(EXTRACT(EPOCH FROM ($1::timestamptz - p.created_at)) / 3600 + 2, ${TRENDING_GRAVITY}))::float8`;
+
+export const FEED_PAGE_SIZE = 30;
+
+/** One page of a feed and where the next one starts (null: this was the last). */
+export type FeedPage = { posts: Post[]; nextCursor: FeedCursor | null };
+
+type FeedRow = Record<string, unknown> & {
+  id: string;
+  created_at_text: string;
+  rank_score?: number | string | null;
 };
+
+/*
+ * Feeds page by keyset, not OFFSET (probe/PERF-PLAN.md S5). Each query asks
+ * for one row more than the page so it knows whether there is a next page
+ * without a count, and the cursor it hands back is the last row it showed.
+ * `created_at` travels as text: a JS Date keeps milliseconds, Postgres keeps
+ * microseconds, and a cursor rounded to the millisecond would skip or repeat
+ * posts written in the same millisecond.
+ */
+async function feedPage(
+  rows: FeedRow[],
+  limit: number,
+  at: string,
+  trending: boolean,
+  viewerId: string | null,
+  includeHearts: boolean,
+): Promise<FeedPage> {
+  const more = rows.length > limit;
+  const page = more ? rows.slice(0, limit) : rows;
+  const posts = await hydratePosts(page, viewerId, includeHearts);
+  const last = more ? page[page.length - 1] : null;
+  const nextCursor: FeedCursor | null = last
+    ? {
+        at,
+        createdAt: last.created_at_text,
+        id: last.id,
+        score: trending ? Number(last.rank_score) : null,
+      }
+    : null;
+  return { posts, nextCursor };
+}
 
 export async function getDiscoverFeed(
   viewerId: string | null,
-  limit = 30,
+  limit = FEED_PAGE_SIZE,
   sort: FeedSort = FEED_SORT_DEFAULT,
-): Promise<Post[]> {
-  // `!= ALL(empty array)` is vacuously true in Postgres, so a signed-out
-  // viewer (empty blockedIds) filters nothing — same shape as the `ANY(ids)`
-  // pattern hydratePosts already uses for viewer-scoped lookups.
+  cursor: FeedCursor | null = null,
+): Promise<FeedPage> {
   const blockedIds = viewerId ? await getBlockedEitherWayIds(viewerId) : [];
-  // The net score is computed in a subquery rather than inline in ORDER BY:
-  // Postgres only resolves a select alias in ORDER BY when it stands alone, and
-  // every use here is inside an expression, so naming it any other way would
-  // mean writing the same COALESCE pair out three more times.
-  const rows = await sql`
-    SELECT p.id, p.user_id, p.text, p.restaurant, p.created_at,
-           p.restaurant_id, p.restaurant_lat, p.restaurant_lng,
-           p.dish_name, p.price, p.rating, p.rating_kind, p.location_label,
-           /*
-            * Private media is dropped **in the database**, not after it arrives.
-            *
-            * This used to select p.media whole and then throw it away in JS
-            * (media: photosPublic ? media : []). While photos are base64
-            * in this column that means every private photo was read out of
-            * Postgres in full — ~150KB each, up to four a post — carried across
-            * the network, and dropped on the floor. On a metered database that
-            * is a bill for bytes nobody was ever going to see, and it is what
-            * exhausted Neon's transfer quota.
-            *
-            * It is also the stronger form of the privacy rule. The invariant was
-            * "a private photo's URL never reaches the response"; enforcing it
-            * here means the bytes never leave the database at all, so no later
-            * caller can forget to re-apply the filter.
-            */
-           CASE WHEN p.photos_public THEN p.media ELSE '[]'::jsonb END AS media,
-           p.vibe, p.photos_public,
-           u.name AS author_name, u.avatar_url AS author_avatar_url,
-           u.points AS author_points
-    FROM posts p
-    JOIN users u ON u.id = p.user_id
-    LEFT JOIN (
-      SELECT post_id, count(*) AS count FROM post_upvotes GROUP BY post_id
-    ) uv ON uv.post_id = p.id
-    LEFT JOIN (
-      SELECT post_id, count(*) AS count FROM post_downvotes GROUP BY post_id
-    ) dv ON dv.post_id = p.id
-    LEFT JOIN (
-      SELECT post_id, count(*) AS count FROM comments GROUP BY post_id
-    ) cm ON cm.post_id = p.id
-    WHERE p.user_id != ALL(${blockedIds})
-      AND p.created_at > now() - make_interval(days => ${FEED_WINDOW_DAYS})
-    ORDER BY ${sql.unsafe(DISCOVER_ORDER[sort])}
-    LIMIT ${limit}
-  `;
-  const posts = await hydratePosts(rows, viewerId, /* includeHearts */ false);
-  // `net` is selected so ORDER BY can name it once instead of repeating the
-  // expression three times; hydratePosts recounts both directions itself and
-  // ignores the column.
-  /* No media filter here any more — the SELECT above already returned '[]' for
-     any post whose photos are private, so there is nothing left to strip. */
-  return posts;
+  const at = cursor?.at ?? new Date().toISOString();
+  const trending = sort === "trending";
+  const params: unknown[] = [at, blockedIds, limit + 1];
+  let after = "";
+  if (cursor) {
+    params.push(trending ? (cursor.score ?? 0) : cursor.createdAt, cursor.id);
+    after = trending
+      ? "WHERE (s.rank_score, s.id) < ($4::float8, $5)"
+      : "WHERE (s.created_at, s.id) < ($4::timestamptz, $5)";
+  }
+  // The window is measured from `at` too, so a post ageing out of it between
+  // two pages of one scroll does not shift everything below it up a slot.
+  const rows = await sql.query(
+    `SELECT * FROM (
+       SELECT p.id, p.user_id, p.text, p.restaurant, p.created_at,
+              p.created_at::text AS created_at_text,
+              p.restaurant_id, p.restaurant_lat, p.restaurant_lng,
+              p.dish_name, p.price, p.rating, p.rating_kind, p.location_label,
+              CASE WHEN p.photos_public THEN p.media ELSE '[]'::jsonb END AS media,
+              p.vibe, p.photos_public,
+              u.name AS author_name, u.avatar_url AS author_avatar_url,
+              u.points AS author_points,
+              ${TRENDING_SCORE} AS rank_score
+       FROM posts p
+       JOIN users u ON u.id = p.user_id
+       LEFT JOIN (
+         SELECT post_id, count(*) AS count FROM post_upvotes GROUP BY post_id
+       ) uv ON uv.post_id = p.id
+       LEFT JOIN (
+         SELECT post_id, count(*) AS count FROM post_downvotes GROUP BY post_id
+       ) dv ON dv.post_id = p.id
+       LEFT JOIN (
+         SELECT post_id, count(*) AS count FROM comments GROUP BY post_id
+       ) cm ON cm.post_id = p.id
+       WHERE p.user_id != ALL($2)
+         AND p.created_at > $1::timestamptz - make_interval(days => ${FEED_WINDOW_DAYS})
+     ) s
+     ${after}
+     ORDER BY ${trending ? "s.rank_score DESC, s.id DESC" : "s.created_at DESC, s.id DESC"}
+     LIMIT $3`,
+    params,
+  );
+  /* No heart join: the media CASE above already empties the media of any post
+     whose photos are private, so there is nothing left to strip. */
+  return feedPage(rows as FeedRow[], limit, at, trending, viewerId, /* includeHearts */ false);
 }
 
-/**
- * Friends tab: strictly chronological, only mutual friends, every post
- * appears. No ranking math, no engagement join — the spec is explicit that
- * this feed does not sort by engagement at all. Photos always show for a
- * friend's post regardless of photosPublic; that flag only gates Discover.
- *
- * Same `FEED_WINDOW_DAYS` cutoff as Discover, for the same reason and with the
- * same guarantee: a friend's older post is out of the feed, not gone.
- */
-export async function getFriendsFeed(viewerId: string, limit = 60): Promise<Post[]> {
-  // Belt-and-suspenders: blockUser() already unfriends both sides, so a
-  // blocked user's rows are normally gone from the friendship subquery
-  // below on their own. This catches it anyway rather than trusting that
-  // invariant to hold forever.
+export async function getFriendsFeed(
+  viewerId: string,
+  limit = FEED_PAGE_SIZE,
+  cursor: FeedCursor | null = null,
+): Promise<FeedPage> {
   const blockedIds = await getBlockedEitherWayIds(viewerId);
+  const at = cursor?.at ?? new Date().toISOString();
+  const params: unknown[] = [viewerId, blockedIds, limit + 1, at];
+  let after = "";
+  if (cursor) {
+    params.push(cursor.createdAt, cursor.id);
+    after = "AND (p.created_at, p.id) < ($5::timestamptz, $6)";
+  }
+  const rows = await sql.query(
+    `SELECT s.*, s.created_at::text AS created_at_text FROM (
+       ${POST_SELECT}
+       WHERE p.user_id IN (
+         SELECT CASE WHEN f.user_a = $1 THEN f.user_b ELSE f.user_a END
+         FROM friendships f
+         WHERE f.user_a = $1 OR f.user_b = $1
+       )
+       AND p.user_id != ALL($2)
+       AND p.created_at > $4::timestamptz - make_interval(days => ${FEED_WINDOW_DAYS})
+       ${after}
+     ) s
+     ORDER BY s.created_at DESC, s.id DESC
+     LIMIT $3`,
+    params,
+  );
+  return feedPage(rows as FeedRow[], limit, at, false, viewerId, true);
+}
+
+/** Every restaurant a user has posted at, for invalidating their cached pages. */
+export async function restaurantIdsPostedBy(userId: string): Promise<string[]> {
   const rows = await sql`
-    ${sql.unsafe(POST_SELECT)}
-    WHERE p.user_id IN (
-      SELECT CASE WHEN f.user_a = ${viewerId} THEN f.user_b ELSE f.user_a END
-      FROM friendships f
-      WHERE f.user_a = ${viewerId} OR f.user_b = ${viewerId}
-    )
-    AND p.user_id != ALL(${blockedIds})
-    AND p.created_at > now() - make_interval(days => ${FEED_WINDOW_DAYS})
-    ORDER BY p.created_at DESC
-    LIMIT ${limit}
+    SELECT DISTINCT restaurant_id FROM posts
+    WHERE user_id = ${userId} AND restaurant_id IS NOT NULL
   `;
-  return hydratePosts(rows, viewerId);
+  return rows.map((r) => String(r.restaurant_id));
 }
 
 export async function createPost(data: {

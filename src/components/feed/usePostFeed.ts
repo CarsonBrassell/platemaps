@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import type { VoteDirection } from "./PostActions";
 import type { Comment, Post } from "./types";
@@ -49,6 +49,10 @@ export function usePostFeed({
   const [loadError, setLoadError] = useState(false);
   const [offline, setOffline] = useState(false);
   const [banner, setBanner] = useState<string | null>(null);
+  /* Where the next page starts — an opaque token from the server, null once
+     the feed has run out (probe/PERF-PLAN.md S5). */
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [loadingMore, setLoadingMore] = useState(false);
   /** Points just earned by upvoting, keyed by post, floated above its actions. */
   const [reactPoints, setReactPoints] = useState<Record<string, number>>({});
   /** The same, keyed by comment — floated beside that comment's score. */
@@ -76,6 +80,7 @@ export function usePostFeed({
           if (isStale()) return;
           setPosts(data.posts as Post[]);
           setPlaces((data.places as FeedPlaces | undefined) ?? {});
+          setNextCursor((data.nextCursor as string | null | undefined) ?? null);
           setLoadError(false);
         })
         .catch(() => {
@@ -100,7 +105,42 @@ export function usePostFeed({
   if (shownEndpoint !== endpoint) {
     setShownEndpoint(endpoint);
     setPosts(null);
+    setNextCursor(null);
   }
+
+  const endpointRef = useRef(endpoint);
+  useEffect(() => {
+    endpointRef.current = endpoint;
+  }, [endpoint]);
+
+  /* The next page. Appended and de-duplicated by id — a post that slid across
+     the page boundary (a vote landing on Trending between two scrolls) must
+     not show twice. An answer that arrives after the tab has changed belongs
+     to the old tab and is dropped. */
+  const loadMore = useCallback(async () => {
+    if (!nextCursor || loadingMore) return;
+    const askedFor = endpoint;
+    setLoadingMore(true);
+    try {
+      const res = await fetch(
+        `${askedFor}${askedFor.includes("?") ? "&" : "?"}cursor=${encodeURIComponent(nextCursor)}`,
+      );
+      if (!res.ok) throw new Error("failed");
+      const data = await res.json();
+      if (endpointRef.current !== askedFor) return;
+      setPosts((prev) => {
+        const seen = new Set((prev ?? []).map((p) => p.id));
+        return [...(prev ?? []), ...(data.posts as Post[]).filter((p) => !seen.has(p.id))];
+      });
+      setPlaces((prev) => ({ ...prev, ...((data.places as FeedPlaces | undefined) ?? {}) }));
+      setNextCursor((data.nextCursor as string | null | undefined) ?? null);
+    } catch {
+      if (endpointRef.current === askedFor) setBanner("Couldn't load more plates");
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [endpoint, nextCursor, loadingMore]);
+
 
   useEffect(() => {
     let cancelled = false;
@@ -454,6 +494,9 @@ export function usePostFeed({
        phone's pull-to-refresh is the only caller today; the "Try again" button
        still goes through `reloadKey` because it has nothing to wait for. */
     refresh: () => load(),
+    hasMore: nextCursor !== null,
+    loadingMore,
+    loadMore,
     patchPost,
     loadError,
     offline,

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getPostById, deletePost } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { cachedJson } from "@/lib/httpCache";
+import { invalidateRestaurantPage } from "@/lib/restaurantPage";
 
 /**
  * A single post by id, for the case a deep link (a share, or a bubble on the
@@ -9,7 +11,7 @@ import { getCurrentUser } from "@/lib/session";
  * it only resolves one already-known id.
  */
 export async function GET(
-  _req: Request,
+  req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const user = await getCurrentUser();
@@ -18,7 +20,9 @@ export async function GET(
   if (!post) {
     return NextResponse.json({ error: "Post not found." }, { status: 404 });
   }
-  return NextResponse.json({ post });
+  // Whether the viewer voted rides on the row, so never shared; the ETag
+  // still saves the body when nothing changed.
+  return cachedJson(req, { post }, { scope: "private" });
 }
 
 export async function DELETE(
@@ -43,5 +47,7 @@ export async function DELETE(
   }
 
   await deletePost(id);
+  // The restaurant page it counted toward is cached (lib/restaurantPage.ts).
+  invalidateRestaurantPage(post.restaurantId);
   return NextResponse.json({ ok: true });
 }

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { cachedJson } from "@/lib/httpCache";
 import {
   getAllRestaurantPlateScores,
   getRestaurantIndex,
@@ -47,16 +47,6 @@ import { EMPTY_PLATE_SCORE } from "@/lib/plateScore";
  */
 
 /**
- * 60s to match `CORPUS_TTL_MS` in `discover.ts` — the plate scores embedded
- * in every row come from live votes, so this can't be cached indefinitely,
- * but it can be cached as long as Discover already tolerates the same numbers
- * being a minute stale. `stale-while-revalidate` means a cache miss after
- * expiry still serves the old response immediately and refreshes in the
- * background, rather than making that one request pay for a cold fetch.
- */
-const CACHE_CONTROL = "public, s-maxage=60, stale-while-revalidate=300";
-
-/**
  * How many rows `?q=&fields=map` may return. The map's search is a filter,
  * not a typeahead: every restaurant the term matches is lit and every other
  * one is dimmed, so a cap that cuts the answer short dims real matches as if
@@ -81,9 +71,9 @@ export async function GET(req: Request) {
    * neither variant is viewer-dependent.
    */
   if (params.get("fields") === "index") {
-    return NextResponse.json(
+    return cachedJson(
+      req,
       { restaurants: await getRestaurantIndex() },
-      { headers: { "Cache-Control": CACHE_CONTROL } },
     );
   }
 
@@ -102,7 +92,8 @@ export async function GET(req: Request) {
      */
     if (q) {
       const hits = await searchRestaurants(q, MAP_SEARCH_LIMIT);
-      return NextResponse.json(
+      return cachedJson(
+        req,
         {
           restaurants: hits.map((r) => ({
             id: r.id,
@@ -115,7 +106,6 @@ export async function GET(req: Request) {
             ...(r.matchedDish ? { matchedDish: r.matchedDish } : {}),
           })),
         },
-        { headers: { "Cache-Control": CACHE_CONTROL } },
       );
     }
     const [rows, plates] = await Promise.all([
@@ -138,14 +128,14 @@ export async function GET(req: Request) {
      * This shrinks as the corpus gets rated, which is the right direction: the
      * payload grows only with restaurants that actually have a score to send.
      */
-    return NextResponse.json(
+    return cachedJson(
+      req,
       {
         restaurants: rows.map((r) => {
           const plateScore = plates[r.id];
           return plateScore ? { ...r, plateScore } : r;
         }),
       },
-      { headers: { "Cache-Control": CACHE_CONTROL } },
     );
   }
 
@@ -159,13 +149,13 @@ export async function GET(req: Request) {
      answer for both the search and the whole-corpus call. The branch that
      used to matter on this line was a JS `.filter` over every row, which is
      the thing the trigram index replaced. */
-  return NextResponse.json(
+  return cachedJson(
+    req,
     {
       restaurants: rows.map((r) => ({
         ...r,
         plateScore: plates[r.id] ?? EMPTY_PLATE_SCORE,
       })),
     },
-    { headers: { "Cache-Control": CACHE_CONTROL } },
   );
 }

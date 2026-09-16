@@ -90,6 +90,35 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   the Analytics tab shows data, `claude mcp remove vercel`. Code side next: Phase B (S3
   static home shell, S4 restaurant page cache, S5 cursor pagination, S7 ETag), then
   security Stage 3 (hash session tokens, headers, rate limits).
+  **Phase B DONE 2026-09-15 (S3, S4, S5, S7; no spend; built + verified on `next start`,
+  not yet deployed — push to main deploys it).** S3: `/` and `/m` are static (`revalidate
+  = 60`, x-nextjs-cache HIT); the unfiltered page is in the HTML and every filter/nearby/
+  "show more" change is a client fetch of GET /api/restaurants/discover (`?shown=` pages,
+  PAGE_SIZE 24, MAX_SHOWN 240; POST still carries coords) through lib/useDiscoverQuery.ts.
+  S4: `/restaurant/[id]` and `/m/restaurant/[id]` are ISR (`revalidate = 3600`) over
+  `getRestaurantPageData` in lib/restaurantPage.ts (unstable_cache tagged
+  `restaurant:<id>`; post create/delete and account delete call
+  `invalidateRestaurantPage`). Verified MISS 35 ms -> HIT 3 ms with s-maxage=3600.
+  **Lesson:** a dynamic segment is only cached if `generateStaticParams` exists — both
+  pages export an empty one on purpose. S5: feed cursor pagination — GET
+  /api/posts/discover and /friends take `?cursor=` (base64url keyset {at, createdAt, id,
+  score}) and `?limit=` (1..30, default 30) and return `nextCursor`; usePostFeed exposes
+  loadMore/loadingMore and both feed screens render a "More" control until nextCursor is
+  null. Verified 3 pages x 5 with limit=5 (15 unique, monotone), trending paged order ==
+  unpaged. S7: lib/httpCache.ts `cachedJson(req, body, policy)` — public GETs
+  (restaurants index/discover/suggest/aspects/dishes) send `public, max-age=0,
+  s-maxage=60, stale-while-revalidate=300` + weak ETag and answer If-None-Match with 304;
+  private ones (feeds, leaderboard, dish-posts, posts/[id]) send `private, no-cache` +
+  Vary: Cookie + ETag. **Lesson that cost the most time:** any `useSearchParams` under a
+  static page opts the tree up to the nearest Suspense boundary out of the HTML — the
+  restaurant page 500'd and `/m` shipped as an empty `pm-phone-shell`. Fix: it is now
+  called once, in components/QuerySync.tsx under `<Suspense fallback={null}>` (rendered
+  by `/`, m/layout.tsx and `/restaurant/[id]`), publishing to lib/queryString.ts; every
+  client component reads `useQueryParams()` from there. Don't add `useSearchParams` back
+  to anything under `/m` or a static page. tsc clean; eslint = RankRing only. Chrome
+  extension was disconnected at the end, so the final visual check was the in-app pane
+  (Thai filter applied on `/`, `?nav=feed` honoured on /m/restaurant/1). Next: security
+  Stage 3, then S8/S9 (typeahead pickers, bbox map endpoint).
 
 - **Library picker is back on the camera screen, BUILT + DEPLOYED 2026-09-14,
   verified in Chrome on /m/post and /post.** Calvin reversed `039271c` ("plate photo is a thing you are looking

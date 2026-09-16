@@ -1,26 +1,37 @@
 import { NextResponse } from "next/server";
-import { getDiscoverPage, parseShown } from "@/lib/discover";
+import { getDiscoverPage } from "@/lib/discover";
+import { parseShown } from "@/lib/discoverFilters";
 import { toWire } from "@/lib/discoverWire";
+import { cachedJson } from "@/lib/httpCache";
 
 /**
- * Discover's query for the one case the URL cannot carry: "Nearby".
+ * Discover's query, answered as JSON.
  *
- * Everything else about a Discover view lives in the query string, which is
- * what makes a filtered view shareable and server-rendered. Coordinates do not
- * belong there — a query string is shared, logged by every hop, and kept in
- * browser history, and where somebody is standing is not the kind of thing to
- * put in one. So the URL carries the intent (`nearby=1`) and the position comes
- * here in a POST body instead.
+ * `/` and `/m` are static shells (probe/PERF-PLAN.md S3): the server renders
+ * the unfiltered first page and anything in the query string is answered
+ * here, by the same `getDiscoverPage` that used to render the route. GET
+ * carries the filters exactly as the page URL does — `?cuisine=Thai&shown=48`
+ * — and is public and cacheable at the edge, keyed by that string, so the
+ * hundredth visitor asking for Thai gets the CDN's copy.
  *
- * POST rather than GET for the same reason: a GET would put the coordinates
- * back in a URL, just a different one.
+ * The one case the URL cannot carry is "Nearby". Coordinates do not belong in
+ * a query string — one is shared, logged by every hop, and kept in browser
+ * history, and where somebody is standing is not the kind of thing to put in
+ * one. So the URL carries the intent (`nearby=1`) and the position comes to
+ * POST in a body, which is never cached.
  *
  * The position is used to answer this request and is neither stored nor logged.
- *
- * Public and viewer-independent otherwise: restaurants are public data, and
- * this returns exactly what the page would have returned had the URL been able
- * to express the question.
  */
+export async function GET(req: Request) {
+  const url = new URL(req.url);
+  const shown = parseShown(url.searchParams.get("shown"));
+  // `shown` is not a filter; `getDiscoverPage` takes it as an option and the
+  // parser would otherwise see it as an unknown key.
+  url.searchParams.delete("shown");
+  const page = await getDiscoverPage(url.searchParams.toString(), { shown, here: null });
+  return cachedJson(req, toWire(page));
+}
+
 export async function POST(req: Request) {
   let body: unknown;
   try {

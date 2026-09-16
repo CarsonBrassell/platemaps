@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { QuerySync } from "@/components/QuerySync";
 import type { Metadata } from "next";
 import { PhoneShell } from "@/components/mobile/PhoneShell";
 import { PhoneSplash } from "@/components/mobile/PhoneSplash";
@@ -30,9 +31,16 @@ export const metadata: Metadata = {
 
 export default function PhoneLayout({ children }: { children: React.ReactNode }) {
   return (
-    /* PhoneShell reads `?nav=`, and `useSearchParams` needs a Suspense boundary
-       above it or it opts the whole tree into client-side rendering. */
+    /* `useSearchParams` needs a Suspense boundary above it or it opts the whole
+       tree out of the prerender — and every screen under /m is static, so that
+       used to mean the HTML was this shell's fallback and nothing else. It is
+       now called once, in QuerySync, under its own boundary; PhoneShell and the
+       screens read `?nav=` and the rest through lib/queryString.ts, so the
+       HTML carries the page. */
     <>
+      <Suspense fallback={null}>
+        <QuerySync />
+      </Suspense>
       {/* Outside the Suspense boundary on purpose: it must paint with the
           first byte, not wait on whatever the shell is suspended for. It
           mounts once per document, which in the app is once per cold open. */}

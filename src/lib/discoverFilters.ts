@@ -1030,3 +1030,25 @@ export function searchFromFilters(search: string, f: DiscoverFilters): string {
 
   return params.toString();
 }
+
+/**
+ * How many cards a page of results holds.
+ *
+ * Here rather than in lib/discover.ts because the client reads it too — the
+ * static shell's hook (lib/useDiscoverQuery.ts) and the phone screen build
+ * `?shown=` from it — and discover.ts is server-only.
+ */
+export const PAGE_SIZE = 24;
+
+/**
+ * The ceiling on `shown`, so a hand-edited or crawled URL can't ask for the
+ * whole corpus and undo the reason lib/discover.ts exists.
+ */
+export const MAX_SHOWN = 240;
+
+/** Clamps `?shown=` off a URL to something `getDiscoverPage` will honour. */
+export function parseShown(raw: string | string[] | null | undefined): number {
+  const value = Number(Array.isArray(raw) ? raw[0] : raw);
+  if (!Number.isFinite(value)) return PAGE_SIZE;
+  return Math.min(Math.max(Math.trunc(value), PAGE_SIZE), MAX_SHOWN);
+}

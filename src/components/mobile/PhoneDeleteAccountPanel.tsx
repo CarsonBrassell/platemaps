@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useQueryParams } from "@/lib/queryString";
 import { useDeleteAccount } from "@/components/account/useDeleteAccount";
 
 const FOCUS =
@@ -27,7 +27,7 @@ const FOCUS =
  * dialog they never open reads as a missing flow.
  */
 export function PhoneDeleteAccountPanel() {
-  const nav = useSearchParams().get("nav");
+  const nav = useQueryParams().get("nav");
   const { armed, arm, disarm, password, setPassword, error, busy, confirm } =
     useDeleteAccount(nav ? `/m?nav=${nav}` : "/m");
 

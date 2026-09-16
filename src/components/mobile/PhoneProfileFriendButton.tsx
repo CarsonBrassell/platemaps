@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useQueryParams } from "@/lib/queryString";
 import type { FriendStatus } from "@/components/feed/FoodPostCard";
 import { useAuth } from "@/lib/auth";
 
@@ -25,7 +25,7 @@ const BUTTON =
 
 export function PhoneProfileFriendButton({ userId }: { userId: string }) {
   const { account, isSignedIn } = useAuth();
-  const nav = useSearchParams().get("nav");
+  const nav = useQueryParams().get("nav");
   const to = (href: string) => (nav ? `${href}?nav=${nav}` : href);
 
   const [status, setStatus] = useState<FriendStatus | null>(null);

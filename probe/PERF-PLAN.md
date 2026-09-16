@@ -133,13 +133,19 @@ are code. [x] marks what already exists.
 - [~] S1 (2026-09-15: shared stale-while-revalidate cache DONE; column trim skipped, hours is needed by open-now) loadCorpus: trim columns (hours + photo fields are the bulk of 3.5 MB), then a shared
       cache (`unstable_cache` / `'use cache'`, revalidate 60) so instances share one read.
 - [ ] S2 later: cron writes a compact corpus JSON to Blob; instances read that, not Postgres.
-- [ ] S3 home page: static shell for the unfiltered view, filters fetched client-side, or
-      per-query-string cache with revalidate.
-- [ ] S4 restaurant page: cache per id, tag-invalidated when a post lands there.
-- [~] S5 (2026-09-15: hydratePosts collapsed 11 -> 7 queries DONE; pagination still open) feed: cursor pagination (there is none: 30 rows then nothing), collapse hydratePosts
-      from 11 queries to 4.
+- [x] S3 DONE 2026-09-15: `/` and `/m` static (revalidate 60), unfiltered page in the HTML,
+      filters/nearby/"show more" fetch GET /api/restaurants/discover (`?shown=`) client-side via
+      lib/useDiscoverQuery.ts. The URL reaches client code through components/QuerySync.tsx ->
+      lib/queryString.ts, the ONE `useSearchParams` call: anywhere else it opts the tree out of
+      the prerender (empty shell on /m, 500 on the restaurant page).
+- [x] S4 DONE 2026-09-15: both restaurant pages ISR (revalidate 3600) over lib/restaurantPage.ts
+      (unstable_cache tag `restaurant:<id>`, invalidated on post create/delete + account delete).
+      Needs the empty `generateStaticParams` export or the segment is never cached. MISS 35 ms -> HIT 3 ms.
+- [x] S5 DONE 2026-09-15: keyset cursor (`?cursor=`, `?limit=` 1..30) on /api/posts/discover and
+      /friends, `nextCursor` in the body, "More" control on both feed screens; hydratePosts 11 -> 7 queries.
 - [ ] S6 suggest endpoint and resolvePostRefs use loadCorpus too; they inherit S1.
-- [ ] S7 Cache-Control on every public GET; add ETag so repeat loads are 304.
+- [x] S7 DONE 2026-09-15: lib/httpCache.ts `cachedJson` — public GETs s-maxage=60 + SWR 300 + weak
+      ETag (If-None-Match -> 304); private GETs `private, no-cache` + Vary: Cookie + ETag.
 - [ ] S8 pickers move from `?fields=index` (all 9,065 rows) to `?q=` typeahead.
 - [ ] S9 map: viewport-bounded `?bbox=` endpoint (needs D5); bubble count capped per zoom.
 - [ ] S10 rate limits in code (src/proxy.ts) if not on Vercel Pro; security #4.
