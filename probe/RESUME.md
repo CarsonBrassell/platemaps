@@ -59,12 +59,12 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   blocks. #13 200-char cap. #14 every `req.json()` → 400. #15 dummy-hash
   compare + 72-byte cap on login. #16 comment votes honour blocks. #18 strays
   and 545 menus/wip logs untracked (.gitignore). #19 SIM_OWNER_EMAIL.
-  **DDL already applied to Neon main** (rate_limit_hits, sessions.created_at /
-  expires_at, idx_sessions_expires). **Deploy order matters:** push main, wait
-  for the deploy, THEN `npm run db:migrate` — its UPDATE hashes the 55 legacy
-  plaintext session tokens; run before the deploy it signs everyone out. Then
-  check `curl -sI https://platemaps.com` for the headers; probe/verify-stage3.sh
-  runs the same curl checks against a local `next start`.
+  **Deployed 2026-09-15** (commits 189d42f..747ad61 pushed to main, live in
+  ~75s). `npm run db:migrate` ran AFTER the deploy: sessions now 55 hashed /
+  0 legacy (nobody signed out). Production curl checks all pass: 7 headers,
+  no x-powered-by, /drafts 404, /_next/image wikimedia 400, bad JSON 400,
+  POST /api/posts 401, private post media [], robots disallows. Re-run
+  probe/verify-stage3.sh against a local `next start` after future changes.
   #7 done: next 16.2.12 → 16.3.5 (+eslint-config-next), bundled sharp 0.35.4;
   `npm audit fix` also took maplibre-gl 6.2.0 → 6.10.0 (XSS critical) and the
   static worker files were regenerated. `npm audit --omit=dev` = 0 vulns (one
