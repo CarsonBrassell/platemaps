@@ -171,7 +171,7 @@ export function RestaurantDetail({
           {/* Above the menu on purpose. A reader who is on the wrong branch is
               on the wrong branch *before* they read a price, and a menu runs
               long enough that anything under it is a scroll nobody makes. */}
-          <OtherLocations locations={otherLocations} />
+          <OtherLocations locations={otherLocations} base="/restaurant" />
           <FullMenu sections={sections} onSelect={setSelectedDishId} />
         </div>
         {/* The rail is the comment thread and nothing else now — the booking

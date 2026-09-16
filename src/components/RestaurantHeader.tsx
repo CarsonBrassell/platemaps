@@ -11,6 +11,8 @@ import {
   blendLabel,
 } from "@/lib/ratingDisplay";
 import { placeLine } from "@/lib/placeLine";
+import { useNearby } from "@/lib/nearby";
+import { milesBetween, formatMiles } from "@/lib/geo";
 
 /**
  * The detail page's hero, and the one surface with room to show both numbers in
@@ -28,6 +30,18 @@ export function RestaurantHeader({
   restaurant: Restaurant;
   score?: PlateScore;
 }) {
+  /* Live distance, computed from wherever the visitor actually is — never the
+     seed `distance` column, which is measured from a fixed downtown origin
+     and disagreed with the Discover card's live figure for the same
+     restaurant. Same rule PhoneDetailHero follows; `useNearby` only takes a
+     silent fix here, so this raises no permission prompt of its own, and no
+     distance shows rather than a stale or wrong one when there is no fix. */
+  const { coords } = useNearby();
+  const distance =
+    coords && restaurant.lat != null && restaurant.lng != null
+      ? formatMiles(milesBetween(coords, { lat: restaurant.lat, lng: restaurant.lng }))
+      : undefined;
+
   return (
     <section className="rounded-2xl bg-white">
       {/* Photo inset from the card edge so both radii stay visible. When no
@@ -50,15 +64,11 @@ export function RestaurantHeader({
       </div>
 
       <div className="px-5 pb-5 pt-1 sm:px-6">
-        {/* Machine-issued record number above the human name. */}
-        <p className="mono-label text-zinc-500">
-          Spot №{restaurant.id.padStart(3, "0")}
-        </p>
         <h1 className="mt-1.5 font-display text-3xl font-semibold text-zinc-900 sm:text-4xl">
           {restaurant.name}
         </h1>
         <p className="mt-1 text-sm text-zinc-500">
-          {placeLine(restaurant.cuisine, restaurant.neighborhood)}
+          {placeLine(restaurant.cuisine, restaurant.neighborhood, distance)}
         </p>
         {/* The street address sits under the neighbourhood rather than beside
             it: the two answer the same question at different resolutions, and
@@ -130,13 +140,13 @@ export function RestaurantHeader({
           )}
         </div>
 
-        {/* Metadata pills: open state, walk time. All machine values, all
-            monospace, all tan — the accent stays out of this row. */}
+        {/* Metadata pills: open state only. Walk time used to sit here too,
+            but it was measured from a fixed seed origin with no relationship
+            to whoever is reading the page — a visitor across town got the
+            same "12 min walk" as one next door. The address above already
+            answers the question a visitor actually has ("where is it"). */}
         <div className="mt-3.5 flex flex-wrap items-center gap-2">
           <OpenStatePill hours={restaurant.hours ?? null} />
-          <span className="inline-flex items-center rounded-full bg-pm-grey-tint px-3 py-1.5 font-mono text-xs font-medium text-pm-grey-text">
-            {restaurant.walkTime}
-          </span>
         </div>
 
         {/* That the stars aren't ours, said once and plainly. Copy lives in

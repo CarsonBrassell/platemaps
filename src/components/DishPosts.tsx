@@ -91,6 +91,7 @@ export function DishPosts({
   const [result, setResult] = useState<
     { key: string; posts: DishPost[] } | { key: string; failed: true } | null
   >(null);
+  const { isSignedIn } = useAuth();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -163,9 +164,23 @@ export function DishPosts({
       ) : failed ? (
         <p className="text-sm text-zinc-500">Couldn&apos;t load posts about this plate.</p>
       ) : count === 0 && seedComments.length === 0 ? (
-        <p className="text-sm text-zinc-500">
-          Nobody has posted about this plate yet — be the first.
-        </p>
+        <div className="flex flex-col items-start gap-1.5">
+          <p className="text-sm text-zinc-500">
+            Nobody has posted about this plate yet — be the first.
+          </p>
+          {/* The rate/vote controls elsewhere on this page (the reply link
+              below, the feed's vote arrows) all give a logged-out reader the
+              same door back in — this empty state was the one place on the
+              dish sheet that didn't. */}
+          {!isSignedIn && (
+            <Link
+              href="/account"
+              className="font-medium text-zinc-700 underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            >
+              Sign in to rate it
+            </Link>
+          )}
+        </div>
       ) : (
         <ul className="flex flex-col gap-5">
           {posts?.map((post) => (

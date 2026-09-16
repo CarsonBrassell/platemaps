@@ -80,7 +80,7 @@ function ResetPassword() {
       <NoticeCard
         label="Password"
         title="That link didn't work"
-        body="It's missing its token. Ask for a new reset link and open the most recent email."
+        body="This link looks incomplete. Ask for a new reset link and open the most recent email."
         action={{ href: "/forgot-password", label: "Send a new link" }}
       />
     );

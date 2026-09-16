@@ -40,7 +40,19 @@ export type Restaurant = {
   cuisineRaw?: string;
   neighborhood: string;
   distance: string;
-  walkTime: string;
+  /**
+   * Minutes on foot from a fixed seed origin, as prose ("12 min walk").
+   *
+   * Nothing renders this any more — it sat in the header pill next to the
+   * open state, measured from a downtown point with no relationship to
+   * whoever was reading the page, so a visitor across town saw the same
+   * "12 min walk" as one standing outside. The street address replaced it.
+   * Optional rather than deleted: the seed rows in `data/restaurants.ts`
+   * still carry it and the Yelp fetcher still writes the DB column
+   * (`walk_time`) it comes from, and neither of those is this fix's job to
+   * touch — only the type stopped requiring a value nothing reads.
+   */
+  walkTime?: string;
   /**
    * Today's closing time as prose, e.g. "Closes 10pm".
    *

@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { Restaurant } from "@/data/restaurantTypes";
 import { OpenStatePill } from "@/components/OpenStatePill";
 import { RestaurantPhoto, PostFirstPlate, photoCredit } from "@/components/RestaurantPhoto";
@@ -11,6 +14,8 @@ import {
   blendLabel,
 } from "@/lib/ratingDisplay";
 import { placeLine } from "@/lib/placeLine";
+import { useNearby } from "@/lib/nearby";
+import { milesBetween, formatMiles } from "@/lib/geo";
 
 /**
  * The phone detail screen's hero — `RestaurantHeader` re-proportioned, not
@@ -48,13 +53,28 @@ export function PhoneDetailHero({
 }: {
   restaurant: Restaurant;
   score?: PlateScore;
-  /** Always inside `/m`, and carrying `?nav=` while the nav variants are live. */
+  /** Fallback when this tab has no history to go back to — always inside
+   *  `/m`, and carrying `?nav=` while the nav variants are live. */
   backHref: string;
 }) {
+  const router = useRouter();
+
   /* Who to credit, if anyone — derived from the photo's host so the label
      can never disagree with the file it sits on. Null for a diner's own
      plate, which needs no third-party credit. */
   const credit = photoCredit(restaurant.photo);
+
+  /* Live distance, computed from wherever the visitor actually is — never the
+     seed `distance` column, which is measured from a fixed downtown origin
+     and disagrees with the Discover card's live figure for the same
+     restaurant. `useNearby` only takes a silent fix here (no `.request()`
+     call), so this never raises its own permission prompt; if the browser
+     has no fix yet, no distance shows rather than a stale or wrong one. */
+  const { coords } = useNearby();
+  const distance =
+    coords && restaurant.lat != null && restaurant.lng != null
+      ? formatMiles(milesBetween(coords, { lat: restaurant.lat, lng: restaurant.lng }))
+      : undefined;
 
   return (
     <section>
@@ -75,6 +95,18 @@ export function PhoneDetailHero({
             the phones this version is being built for. */}
         <Link
           href={backHref}
+          /* Same history-aware logic as the web back link: when this tab has
+             a previous page, `router.back()` returns to it — filters and
+             scroll position included, since that state lives in the browser
+             rather than anything rebuilt here. Only a tab with nowhere to go
+             back to (a restaurant link opened directly, or in a new tab)
+             falls through to `backHref`, the plain `/m` root. */
+          onClick={(e) => {
+            if (typeof window !== "undefined" && window.history.length > 1) {
+              e.preventDefault();
+              router.back();
+            }
+          }}
           className="absolute left-3 top-[max(0.75rem,env(safe-area-inset-top))] inline-flex min-h-11 items-center gap-1.5 rounded-full bg-white/95 px-4 text-sm font-medium text-zinc-900 transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
         >
           <svg
@@ -105,17 +137,18 @@ export function PhoneDetailHero({
       </div>
 
       <div className="px-4 pt-4">
-        {/* Machine-issued record number above the human name — same as the web
-            header, and the reason the two screens read as one product. */}
-        <p className="mono-label text-pm-grey-text">
-          Spot №{restaurant.id.padStart(3, "0")}
-        </p>
         <h1 className="font-display mt-1.5 text-[26px] font-semibold leading-tight tracking-tight text-zinc-900">
           {restaurant.name}
         </h1>
         <p className="mt-1 text-[13px] text-pm-grey-text">
-          {placeLine(restaurant.cuisine, restaurant.neighborhood, restaurant.distance)}
+          {placeLine(restaurant.cuisine, restaurant.neighborhood, distance)}
         </p>
+        {/* The street address — what a visitor standing somewhere else
+            actually needs, not a walk time measured from a fixed seed origin
+            that had nothing to do with them. Same rule as the web header. */}
+        {restaurant.address && (
+          <p className="mt-0.5 text-[13px] text-pm-grey-text">{restaurant.address}</p>
+        )}
 
         <div className="mt-3">
           <OpenStatePill hours={restaurant.hours ?? null} />

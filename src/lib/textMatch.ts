@@ -38,6 +38,17 @@
  * module exists to stop. The gap between the *worst* name match (500) and the
  * *best* dish match (220) is 280 points, and nothing may close it.
  *
+ * ## Name versus cuisine (Calvin, 2026-09-13, reversing 2026-09-07)
+ *
+ * The ladder used to put every name rung above every cuisine rung, on the
+ * theory that a name match answers "the place I typed" better than a category
+ * ever could. That put "Breakfast Republic" — a name-prefix hit ten miles
+ * away — above the Breakfast & Brunch places next door for a search of
+ * "breakfast", which is backwards: a category word means "the nearest places
+ * of this kind," not "the nearest place whose sign starts with this word." A
+ * literal cuisine match now outranks everything except a literal or
+ * whole-name match — see the TIER table below for exactly where.
+ *
  * Pure on purpose: imported by server code and by client components alike. Its
  * one import, `foldAccents`, is the same kind of thing — a string function with
  * no dependencies of its own — and it is shared rather than copied so the
@@ -73,12 +84,27 @@ import { foldAccents } from "@/lib/brandName";
  * apart first so the `e` survives into the fold.
  */
 export function normalize(value: string): string {
-  return foldAccents(value)
-    .toLowerCase()
-    .replace(/&/g, " and ")
-    .replace(/['’`´]/g, "")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
+  return (
+    foldAccents(value)
+      .toLowerCase()
+      .replace(/&/g, " and ")
+      .replace(/['’`´]/g, "")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim()
+      /* A possessive apostrophe dropped as a space ("pauly s", "roberto s
+         tacos") rather than deleted outright ("paulys") is the other way
+         people spell a name they can't be bothered to reach for the ' key —
+         and the line above only handles the second way, because by the time
+         it runs the apostrophe is already gone and there is nothing left
+         to turn into a space. Re-fusing a stray single-letter "s" onto the
+         word before it makes both spellings normalize the same, which is
+         what lets "pauly s" reach a name stored (after the same fold) as
+         "paulys pizza joint" at all — every exact/prefix/substring rung
+         above the fuzzy one is a `.text` comparison, and none of them see
+         past a real, typed space. A bare "s" is not an English word on its
+         own, so there is nothing legitimate this costs. */
+      .replace(/([a-z0-9]) s(?= |$)/g, "$1s")
+  );
 }
 
 /** The words of a normalised string. Empty for a string with none. */
@@ -230,24 +256,53 @@ export const VOCABULARY_ENOUGH = 0.5;
 /* --- The ladder ----------------------------------------------------------- */
 
 /**
- * The tiers, 100 apart so no caller's tiebreak can reach the next band.
+ * The tiers, ordered by what the visitor meant, not by which field happened
+ * to hold the word.
  *
- * The ordering is Calvin's: **anything resembling the name, first; then
- * cuisine; then dish.** A bare-threshold fuzzy name match at 500 sits 280
- * points above a perfect dish-name match at 220, so a misspelled restaurant
- * always outranks an exactly-matched menu item. That is the whole point.
+ * The ordering is Calvin's (2026-09-13, reversing 2026-09-07): **a category
+ * word means the nearest places of that kind, so a literal cuisine match
+ * outranks everything except a literal or whole-name match.** A whole sign
+ * typed exactly is still unambiguously that one place (NAME_EXACT), and a
+ * correctly spelled first word of a sign (NAME_PREFIX) is a stronger signal
+ * than a misspelled cuisine — which is why CUISINE_FUZZY sits *under*
+ * NAME_PREFIX and above every other name rung. Below that, cuisine beats
+ * name: CUISINE_SUBSTRING (a category word appearing inside a longer cuisine
+ * label) outranks NAME_TOKENS, NAME_SUBSTRING and NAME_FUZZY, because none of
+ * those name rungs are a literal cuisine match either — they are all softer
+ * readings of the name field, and a literal reading of a different field
+ * beats a soft reading of this one.
+ *
+ * Two rungs carry a bonus and keep the 100-point gap to the rung above them
+ * so the bonus can never reach it: NAME_TOKENS (+0-99, so 800-899, which is
+ * why every cuisine rung and NAME_PREFIX sit at 930 or above) and NAME_FUZZY
+ * (+0-100).
  */
 export const TIER = {
   NAME_EXACT: 1000,
-  NAME_PREFIX: 900,
+  CUISINE_EXACT: 960,
+  CUISINE_SUBSTRING: 950,
+  NAME_PREFIX: 940,
+  CUISINE_FUZZY: 930,
+  /* A tag ("Tacos", "Sushi") is not the canonical cuisine — it is the looser
+     net that stands in for one (see data/cuisines.ts SYNONYMS) — and since
+     2026-09-13 that net also carries broad meal-time words like "Breakfast"
+     against hundreds of coffee shops, juice bars and bakeries at once. Sharing
+     a tier with the real cuisine match is how "breakfast" buried the actual
+     Breakfast & Brunch places under a wall of tag-only coffee shops (Calvin
+     saw this near SDSU): a hundred rows tied for first, distance broke the
+     tie, and volume alone put the closest coffee shop over the farther real
+     match. Its own band, 30 points under CUISINE_FUZZY, keeps a tag match a
+     real, literal signal — still well above a name's coverage bonus for a
+     narrow tag like "tacos" — while guaranteeing every restaurant whose
+     *cuisine itself* is what was typed sorts first. */
+  CUISINE_TAG_EXACT: 920,
+  CUISINE_TAG_SUBSTRING: 910,
+  CUISINE_TAG_FUZZY: 900,
   /** Every query word is in the name, in any order. Carries a 0-99 bonus. */
   NAME_TOKENS: 800,
   NAME_SUBSTRING: 700,
   /** Carries a 0-100 bonus from the similarity, so 500-600. */
   NAME_FUZZY: 500,
-  CUISINE_EXACT: 400,
-  CUISINE_SUBSTRING: 300,
-  CUISINE_FUZZY: 280,
   NEIGHBORHOOD_EXACT: 260,
   NEIGHBORHOOD_SUBSTRING: 250,
   NEIGHBORHOOD_FUZZY: 240,
@@ -347,10 +402,40 @@ export function explainName(query: Prepared, name: Prepared): NameMatch {
 
   if (name.text.includes(query.text)) return { score: TIER.NAME_SUBSTRING, fuzzy: false };
 
+  /* Below four letters, dice-bigram similarity is mostly noise — see the same
+     guard and "cod"/"Co." example on `scoreVocabulary`. A short query still
+     gets exact/prefix/tokens/substring above; it just cannot fuzzy-match. */
+  if (query.text.length <= 4) return none;
+
   /* The only tier a floor applies to, and so the only one the calibration
      sweep can move. Scored here without it; `scoreName` decides admission. */
   const close = similarity(query, name);
   return { score: TIER.NAME_FUZZY + Math.min(100, Math.round(100 * close)), fuzzy: true };
+}
+
+/**
+ * Whether `needle` occurs in `haystack` on a word boundary — not merely as a
+ * run of characters. Both strings are already `normalize()`d, so the only
+ * separator either one has is a single space, which is what this checks
+ * either side of a hit for.
+ *
+ * A plain `.includes()` here is how "fast" used to substring-match "Breakfast
+ * & Brunch" (the tag is one word, "breakfast", and "fast" is the back half of
+ * it) and "food" matched "Seafood" the same way — real cuisine words, real
+ * corpus values, and no relation to the query at all. The vocabulary is short
+ * and closed, so the fix does not need `scoreName`'s token machinery: find
+ * every occurrence and require a space or an edge on both sides.
+ */
+function includesWholeWord(haystack: string, needle: string): boolean {
+  let from = 0;
+  for (;;) {
+    const i = haystack.indexOf(needle, from);
+    if (i === -1) return false;
+    const before = i === 0 || haystack[i - 1] === " ";
+    const after = i + needle.length === haystack.length || haystack[i + needle.length] === " ";
+    if (before && after) return true;
+    from = i + 1;
+  }
 }
 
 /** Exact, then substring, then fuzzy against one short controlled-vocabulary
@@ -362,8 +447,71 @@ function scoreVocabulary(
 ): number {
   if (!query.text || !field.text) return 0;
   if (field.text === query.text) return tiers.exact;
-  if (field.text.includes(query.text)) return tiers.substring;
-  return similarity(query, field) >= VOCABULARY_ENOUGH ? tiers.fuzzy : 0;
+  if (includesWholeWord(field.text, query.text)) return tiers.substring;
+
+  /* Below four letters, dice-bigram similarity is mostly noise: "cod" and
+     "Co." share the bigram "co" and that alone clears 0.65, which is how a
+     search for the fish put coffee shops on the page and not one cod dish.
+     A short query still gets every exact/prefix/whole-word rung above this —
+     it only loses the license to be "close enough" to something it never
+     spelled. */
+  if (query.text.length <= 4) return 0;
+
+  /* `similarity`'s per-token reading was built for a short *query* against a
+     long *name* — every query token gets to find its own best partner and
+     the credit is *averaged*, which is right when the query is the thing
+     that's incomplete: a well-matched word should not be dragged down by a
+     word the visitor never typed. Run that average the other way — a
+     multi-word *query* against a short, closed vocabulary field — and one
+     word that happens to spell a tag exactly (the "sushi" in "sushi umi",
+     the "cafe" in "cafe mesa") carries the average over the floor on its
+     own, however unrelated the query's *other* word is. That is how a
+     restaurant named "Umi Sushi" lost to every Sushi Bar in town for the
+     query "sushi umi", and "Mesa Cafe" lost to a page of Coffee & Tea shops
+     for "cafe mesa": the second word never had to relate to the vocabulary
+     at all, it just rode along.
+     So for a multi-word query, every one of its words has to individually
+     clear a floor against *some* word of the field before the average is
+     trusted — a partial floor (0.3), not `VOCABULARY_ENOUGH`, because a
+     genuinely typo'd second word ("breakfst brunch") still needs room. A
+     single-word query (a typo of the cuisine itself, e.g. "mexcian") skips
+     this: it is exactly what this rung is for, and there is no second word
+     to smuggle anything past it. */
+  if (query.tokens.length > 1) {
+    let worst = 1;
+    for (const qGrams of query.tokenGrams) {
+      let best = 0;
+      for (const tGrams of field.tokenGrams) best = Math.max(best, dice(qGrams, tGrams));
+      worst = Math.min(worst, best);
+    }
+    if (worst < 0.3) return 0;
+  }
+
+  /* A single word compared whole-string against a much longer one can clear
+     VOCABULARY_ENOUGH by coincidence, not typo: "panera" (5 bigrams) is
+     0.50 similar to "mediterranean" (11 bigrams) the same way it is 0.50
+     similar to "japanese" — four of its five bigrams happen to occur
+     somewhere in the longer word, which is what a 29-word vocabulary and a
+     short query make likely, not evidence of a misspelling. Every real typo
+     this floor exists for keeps the word's own length — "itlaian"/"italian",
+     "gaslmap"/"gaslamp", "vietnemese"/"vietnamese" are all typo and target at
+     the same length — so a query more than about twice (or less than half)
+     the field's length is never that, and is refused before the coincidence
+     can fire. Multi-word queries already passed their own per-token floor
+     above and are not touched here. */
+  if (query.tokens.length <= 1) {
+    const longer = Math.max(query.text.length, field.text.length);
+    const shorter = Math.min(query.text.length, field.text.length);
+    if (longer > shorter * 1.8) return 0;
+  }
+
+  const close = similarity(query, field);
+  if (close < VOCABULARY_ENOUGH) return 0;
+  // A 0-9 closeness bonus, the same signal the fuzzy name rung carries but
+  // in the ten points of headroom a fuzzy vocabulary rung has. Without it
+  // "breaksfast" put Fast Food shops (0.50 to "fast food") level with the
+  // Breakfast ones (0.82) and distance decided between them. See `rungOf`.
+  return tiers.fuzzy + Math.min(9, Math.floor(10 * close));
 }
 
 /**
@@ -387,6 +535,15 @@ export function explainTerm(query: Prepared, term: Prepared): TermMatch {
   if (term.text === query.text) return { rank: 4, fuzzy: false };
   if (term.text.startsWith(query.text)) return { rank: 3, fuzzy: false };
   if (term.text.includes(query.text)) return { rank: 2, fuzzy: false };
+  // Same coincidence guard as `scoreVocabulary`: a short word can clear
+  // VOCABULARY_ENOUGH against an unrelated long one by accident of overlap
+  // rather than by being a typo of it (see the "panera"/"mediterranean" note
+  // there). Real typos keep the term's own length.
+  if (query.tokens.length <= 1) {
+    const longer = Math.max(query.text.length, term.text.length);
+    const shorter = Math.min(query.text.length, term.text.length);
+    if (longer > shorter * 1.8) return null;
+  }
   const close = similarity(query, term);
   return close >= VOCABULARY_ENOUGH ? { rank: close, fuzzy: true } : null;
 }
@@ -401,14 +558,21 @@ export function explainTerm(query: Prepared, term: Prepared): TermMatch {
  * cares about is name-or-not.
  */
 export function scoreCuisine(query: Prepared, fields: SearchFields): number {
-  const tiers = {
-    exact: TIER.CUISINE_EXACT,
-    substring: TIER.CUISINE_SUBSTRING,
-    fuzzy: TIER.CUISINE_FUZZY,
-  };
   return Math.max(
-    scoreVocabulary(query, fields.cuisine, tiers),
-    scoreVocabulary(query, fields.tags, tiers),
+    scoreVocabulary(query, fields.cuisine, {
+      exact: TIER.CUISINE_EXACT,
+      substring: TIER.CUISINE_SUBSTRING,
+      fuzzy: TIER.CUISINE_FUZZY,
+    }),
+    // The tag field's own, lower band — see the TIER.CUISINE_TAG_* comment.
+    // A tag is the looser net data/cuisines.ts stands in for a cuisine with,
+    // and since it can now name a hundred restaurants for one meal-time word
+    // ("breakfast"), it must never tie the field it is standing in for.
+    scoreVocabulary(query, fields.tags, {
+      exact: TIER.CUISINE_TAG_EXACT,
+      substring: TIER.CUISINE_TAG_SUBSTRING,
+      fuzzy: TIER.CUISINE_TAG_FUZZY,
+    }),
   );
 }
 
@@ -423,11 +587,34 @@ export function scoreNeighborhood(query: Prepared, fields: SearchFields): number
 /**
  * A restaurant's total relevance to a query, or 0 for no match at all.
  *
+ * Name and cuisine are no longer a strict cascade — the ladder now interleaves
+ * them (CUISINE_SUBSTRING outranks NAME_TOKENS, for instance), so both have to
+ * be scored and the higher one kept; returning on the first hit, as this used
+ * to, would silently reintroduce "name first" for every row that happens to
+ * match its name before its cuisine is even checked. Neighbourhood and dish
+ * stay a cascade below that: they sit under every name and cuisine rung, so
+ * the first of them to hit is also the best available.
+ *
  * `dish` is the name of the menu item that matched, when one did — the lookup
  * that produced it is the caller's, because the corpus deliberately holds no
  * dishes (see `dishMatchesFor` in lib/db.ts). Its *presence* is the match; this
  * only decides exact-versus-partial, and either way it sits below every name
  * and cuisine tier.
+ *
+ * A restaurant whose *entire name* is a plain category word — one literally
+ * called "Tacos" or "Pizza" — can still win NAME_EXACT here even though the
+ * theory behind that tier (a whole sign typed exactly can only mean the one
+ * place with that sign) does not hold when the sign itself is the category
+ * word. This function only sees one row at a time and cannot tell "In-N-Out"
+ * apart from "Tacos" that way — a corpus-wide check for whether the query
+ * names a real category *anywhere* is needed first, so that demotion lives
+ * one level up, in `discoverFilters.ts`'s `scoreMatches` and `suggest.ts`'s
+ * `scan` (see the comment there — BACKLOG.md "literal-name trap"). Do not
+ * "fix" it here with a per-row guard on this restaurant's own cuisine/tags:
+ * that was tried and silently failed on the reported case, because the
+ * restaurant literally named "Tacos" carried the generic imported tag
+ * "Mexican Restaurant", not "Tacos" — this row's own fields do not know the
+ * query is a category word at all.
  */
 export function scoreRestaurant(
   query: Prepared,
@@ -435,10 +622,9 @@ export function scoreRestaurant(
   dish?: string | null,
 ): number {
   const name = scoreName(query, fields.name);
-  if (name > 0) return name;
-
   const cuisine = scoreCuisine(query, fields);
-  if (cuisine > 0) return cuisine;
+  const best = Math.max(name, cuisine);
+  if (best > 0) return best;
 
   const neighborhood = scoreNeighborhood(query, fields);
   if (neighborhood > 0) return neighborhood;
@@ -472,39 +658,71 @@ export const SEARCH_SCOPES: readonly SearchScope[] = [
 /**
  * Which field a score landed in — the ladder read backwards.
  *
- * `scoreRestaurant` tries the fields best-first and returns the first hit, so
- * the tiers are contiguous bands and a score already carries the answer to "why
- * did this row match". This turns that back into the field's name, which is
- * what lets a search be *scoped*: `?q=cannonball&in=dish` keeps the rows that
- * matched on a dish and drops the ones that matched on a name.
- *
- * Bounds are read off `TIER` rather than written out again, so a retuned tier
- * cannot leave this behind. A lower bound per field is enough because the
- * bonuses only ever move a score up *within* its own band — 0-99 on the token
- * rung, 0-100 on the fuzzy ones.
+ * `scoreRestaurant` now interleaves name and cuisine rungs (CUISINE_SUBSTRING
+ * outranks NAME_TOKENS, for instance), so "everything from here up is field X"
+ * is no longer true of a single contiguous band — the old bound-per-field
+ * comparison broke the moment cuisine moved off the bottom of the ladder. This
+ * is a lookup instead: every `TIER` key names its scope by its prefix, the
+ * keys are sorted into rungs biggest-first, and a score is filed under the
+ * highest rung it clears. Built off `TIER` rather than written out again, so a
+ * retuned tier cannot leave this behind. What lets a search be *scoped* is
+ * still this table: `?q=cannonball&in=dish` keeps the rows that matched on a
+ * dish and drops the ones that matched on a name.
  *
  * Null for a score of zero: that is not a field, it is a miss.
  */
+const TIER_SCOPE: Readonly<Record<keyof typeof TIER, SearchScope>> = {
+  NAME_EXACT: "restaurant",
+  CUISINE_EXACT: "cuisine",
+  CUISINE_SUBSTRING: "cuisine",
+  NAME_PREFIX: "restaurant",
+  CUISINE_FUZZY: "cuisine",
+  CUISINE_TAG_EXACT: "cuisine",
+  CUISINE_TAG_SUBSTRING: "cuisine",
+  CUISINE_TAG_FUZZY: "cuisine",
+  NAME_TOKENS: "restaurant",
+  NAME_SUBSTRING: "restaurant",
+  NAME_FUZZY: "restaurant",
+  NEIGHBORHOOD_EXACT: "neighborhood",
+  NEIGHBORHOOD_SUBSTRING: "neighborhood",
+  NEIGHBORHOOD_FUZZY: "neighborhood",
+  DISH_EXACT: "dish",
+  DISH_SUBSTRING: "dish",
+};
+
+/** `TIER`'s rungs, biggest first, each carrying the scope its key names. Two
+ *  rungs carry a bonus (NAME_TOKENS, NAME_FUZZY) so "largest rung the score
+ *  clears" — not exact equality — is what files it. */
+const RUNG_SCOPE: readonly { rung: number; scope: SearchScope }[] = (
+  Object.entries(TIER) as [keyof typeof TIER, number][]
+)
+  .map(([key, rung]) => ({ rung, scope: TIER_SCOPE[key] }))
+  .sort((a, b) => b.rung - a.rung);
+
 export function scopeOf(score: number): SearchScope | null {
   if (score <= 0) return null;
-  if (score >= TIER.NAME_FUZZY) return "restaurant";
-  if (score >= TIER.CUISINE_FUZZY) return "cuisine";
-  if (score >= TIER.NEIGHBORHOOD_FUZZY) return "neighborhood";
-  return "dish";
+  for (const { rung, scope } of RUNG_SCOPE) if (score >= rung) return scope;
+  return null;
 }
 
 /**
  * Whether a score is a literal hit rather than a correction, in its own band.
  *
- * Each field's fuzzy rung sits at the bottom of its band, so "did the visitor's
- * spelling actually appear" is one comparison against the rung above it. Dishes
- * have no fuzzy rung here at all — that pass is trigram matching in Postgres,
- * and a dish score reaching this function is always literal.
+ * Each field's fuzzy rung sits at the bottom of that field's rungs, so "did
+ * the visitor's spelling actually appear" is one comparison against the
+ * lowest literal rung `scopeOf` could have filed the score under for that
+ * scope. Dishes have no fuzzy rung here at all — that pass is trigram
+ * matching in Postgres, and a dish score reaching this function is always
+ * literal.
  */
 export function isLiteralScore(score: number): boolean {
   const scope = scopeOf(score);
   if (scope === "restaurant") return score >= TIER.NAME_SUBSTRING;
-  if (scope === "cuisine") return score >= TIER.CUISINE_SUBSTRING;
+  // The lowest literal cuisine rung is now the tag's substring rung, not the
+  // canonical cuisine's — a tag match is still the visitor's own spelling,
+  // just a weaker field than the cuisine itself. Only CUISINE_TAG_FUZZY below
+  // it is a correction.
+  if (scope === "cuisine") return score >= TIER.CUISINE_TAG_SUBSTRING;
   if (scope === "neighborhood") return score >= TIER.NEIGHBORHOOD_SUBSTRING;
   return scope !== null;
 }
@@ -543,6 +761,22 @@ const SIMILARITY_STEP = 10;
  *
  * Monotonic and never crosses a band, so `scopeOf` and `isLiteralScore` still
  * answer the same thing about a rung as about the score it came from.
+ *
+ * One more collapse on top of the fuzzy-name one: CUISINE_EXACT and
+ * CUISINE_SUBSTRING fold onto a single rung (CUISINE_SUBSTRING) here, so a row
+ * tagged exactly "Breakfast" and one whose cuisine is worded "Breakfast &
+ * Brunch" tie instead of the exact one always winning. That gap measures how
+ * the label was written, not how well the row answers the query — the same
+ * complaint the coverage-bonus drop above makes about name length — so
+ * distance decides between them instead of spelling of the cuisine field.
+ * CUISINE_FUZZY is not collapsed but banded, like the fuzzy name rung: the
+ * 0-9 closeness bonus `scoreVocabulary` adds is already a 0.1 band of
+ * measured similarity, so it is kept as the rung. On "breaksfast" the rows
+ * tagged Breakfast (0.82, rung 938) then sit above the Fast Food rows (0.50,
+ * rung 935) that the same fuzzy threshold lets through, and distance orders
+ * within each band instead of across them. The neighborhood fuzzy rung gets
+ * the same bonus from `scoreVocabulary` but is not banded here — it falls
+ * through to its tier, as before, because nothing competes with it there.
  */
 export function rungOf(score: number): number {
   if (score <= 0) return 0;
@@ -550,6 +784,10 @@ export function rungOf(score: number): number {
     const bonus = Math.floor((score - TIER.NAME_FUZZY) / SIMILARITY_STEP) * SIMILARITY_STEP;
     return TIER.NAME_FUZZY + bonus;
   }
+  if (score === TIER.CUISINE_EXACT || score === TIER.CUISINE_SUBSTRING) {
+    return TIER.CUISINE_SUBSTRING;
+  }
+  if (score >= TIER.CUISINE_FUZZY && score < TIER.NAME_PREFIX) return score;
   for (const rung of RUNGS) if (score >= rung) return rung;
   return 0;
 }

@@ -72,7 +72,7 @@ export function PhoneProfileFriendButton({ userId }: { userId: string }) {
 
   if (!isSignedIn) {
     return (
-      <Link href={to("/m/account")} className={`${BUTTON} bg-pm-charcoal text-[#F7F4EC]`}>
+      <Link href={to("/m/account")} className={`${BUTTON} bg-pm-orange font-semibold text-[#F7F4EC]`}>
         Sign in to add friends
       </Link>
     );

@@ -36,8 +36,18 @@ type Post = {
   dishName?: string;
   rating?: number;
   ratingKind?: "restaurant" | "dish";
+  /**
+   * The plate. Already gated server-side: `getPosts` in lib/db.ts hands back
+   * `[]` for a post whose author hasn't opted into public photos, so whatever
+   * arrives here is showable and this list just renders it — the same contract
+   * the feed card and the dish sheet rely on.
+   */
+  media?: { url: string; type: "image" | "video"; alt?: string }[];
   createdAt: string;
 };
+
+/** Photos shown per comment; the same cap the dish sheet uses. */
+const VISIBLE_PHOTOS = 3;
 
 /**
  * Everything posted about a restaurant, under the restaurant.
@@ -179,6 +189,7 @@ function PostRow({
   rowRef?: (el: HTMLDivElement | null) => void;
 }) {
   const { avatarBg } = avatarPalette(post.authorName);
+  const photos = (post.media ?? []).filter((m) => m.type === "image").slice(0, VISIBLE_PHOTOS);
 
   return (
     /* The ring is the feed card's — `ring-2 ring-pm-orange` — so arriving from
@@ -239,7 +250,30 @@ function PostRow({
         )}
 
         <p className="mt-0.5 text-sm leading-snug text-zinc-700">{post.text}</p>
-        <p className="mt-0.5 font-mono text-xs text-zinc-500">{relativeTime(post.createdAt)}</p>
+
+        {/* The photo the comment was posted with. This thread used to drop it
+            on the floor — a plate someone shot arrived here as prose only,
+            while the feed and the dish sheet showed the picture. Same
+            treatment as DishPosts: a lone photo takes the column at 4:3, two
+            or three share the row as squares, inset and rounded per DESIGN.md. */}
+        {photos.length > 0 && (
+          <div className="mt-2 flex gap-1.5">
+            {photos.map((photo) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={photo.url}
+                src={photo.url}
+                alt={photo.alt ?? ""}
+                loading="lazy"
+                className={`min-w-0 flex-1 rounded-xl bg-[var(--pm-tone-1)] object-cover ${
+                  photos.length === 1 ? "aspect-[4/3]" : "aspect-square"
+                }`}
+              />
+            ))}
+          </div>
+        )}
+
+        <p className="mt-1 font-mono text-xs text-zinc-500">{relativeTime(post.createdAt)}</p>
       </div>
     </div>
   );

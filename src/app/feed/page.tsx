@@ -511,10 +511,19 @@ function FeedPageInner() {
 
       {offline && <OfflineBanner />}
 
+      {/* Fixed to the viewport, not the document: this fires from a vote/save
+          click anywhere in a long, scrolled feed, and an inline block here
+          rendered off-screen above the fold (BACKLOG: "Sign-in prompt ...
+          renders off-screen from where the user clicked") while also pushing
+          every card below it down a line, which read as the whole feed
+          reshuffling on a blocked vote (BACKLOG: "Feed order reshuffles
+          after a blocked interaction"). Pinning it to the viewport fixes
+          both: it's always in view, and it no longer occupies document flow
+          that the grid has to make room for. */}
       {banner && (
         <p
           role="status"
-          className="mb-4 rounded-xl bg-pm-orange-tint px-4 py-2.5 text-sm font-medium text-pm-orange-text"
+          className="fixed inset-x-0 top-4 z-50 mx-auto w-fit max-w-[calc(100%-2rem)] rounded-full bg-pm-orange-tint px-4 py-2.5 text-center text-sm font-medium text-pm-orange-text"
         >
           {banner}
         </p>

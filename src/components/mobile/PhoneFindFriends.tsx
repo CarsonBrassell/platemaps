@@ -172,7 +172,7 @@ export function PhoneFindFriends({
                     </span>
                   )}
                   <Link
-                    href={`/m/u/${person.id}`}
+                    href={`/m/u/${person.id}?from=friends`}
                     className={`font-display flex min-w-0 flex-1 items-center gap-1 rounded-lg text-[15px] font-semibold text-zinc-900 ${FOCUS}`}
                   >
                     <span className="truncate">{person.name}</span>

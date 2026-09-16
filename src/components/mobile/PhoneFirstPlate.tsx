@@ -59,8 +59,8 @@ export function PhoneFirstPlate({
           ) : (
             <>
               <span className="font-mono tabular-nums text-zinc-800">{score.dishCount}</span>{" "}
-              {score.dishCount === 1 ? "dish" : "dishes"} rated so far. {needed(score)} and{" "}
-              {restaurant.name} gets a PlateMaps score.
+              {score.dishCount === 1 ? "dish" : "dishes"} rated so far — {needed(score)} away from
+              a score.
             </>
           )}
         </p>

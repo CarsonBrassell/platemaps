@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import type { SiblingLocation } from "@/lib/db";
 import { formatMiles } from "@/lib/geo";
+import { formatSiblingAddress } from "@/lib/format";
+import { restaurantHref } from "@/lib/restaurantHref";
 
 /**
  * How many branches show before the list collapses.
@@ -50,7 +52,20 @@ const COLLAPSED_COUNT = 5;
  * whose menu hasn't been extracted would answer a different question and would
  * make the count wrong. They are marked instead.
  */
-export function OtherLocations({ locations }: { locations: SiblingLocation[] }) {
+export function OtherLocations({
+  locations,
+  base,
+}: {
+  locations: SiblingLocation[];
+  /**
+   * The surface this strip is rendered on: `/restaurant` on the web,
+   * `/m/restaurant` on the phone. Without it every row linked to the web
+   * path even when the strip was rendered inside `/m`, which bounced a phone
+   * reader onto the desktop layout — both headers on screen at once — instead
+   * of the sibling's own `/m/restaurant/...` page.
+   */
+  base: "/restaurant" | "/m/restaurant";
+}) {
   const [expanded, setExpanded] = useState(false);
   if (locations.length === 0) return null;
 
@@ -65,15 +80,22 @@ export function OtherLocations({ locations }: { locations: SiblingLocation[] }) 
           4.28:1 and fails, so labels sitting on the page take
           `--pm-grey-text` (AGENTS.md). The card interiors below are white and
           keep zinc-500. */}
-      <h2 id="other-locations" className="mono-label px-1 text-pm-grey-text">
-        {locations.length === 1 ? "One other location" : `${locations.length} other locations`}
-      </h2>
+      <div className="flex items-center justify-between gap-3 px-1">
+        <h2 id="other-locations" className="mono-label text-pm-grey-text">
+          {locations.length === 1 ? "One other location" : `${locations.length} other locations`}
+        </h2>
+        {/* What the column of figures below means, stated before the reader
+            reaches it rather than after — it used to sit under the list,
+            which read as a caption for the "show more" button instead of for
+            the distances. */}
+        <p className="mono-label text-pm-grey-text">Distance from this branch</p>
+      </div>
 
       <div className="mt-3 flex flex-col gap-2.5">
         {shown.map((location) => (
           <Link
             key={location.id}
-            href={`/restaurant/${location.id}`}
+            href={restaurantHref(base, { id: location.id })}
             className="card-lift group flex w-full items-center justify-between gap-4 rounded-2xl bg-white px-4 py-3.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
           >
             <span className="min-w-0 flex-1">
@@ -87,7 +109,7 @@ export function OtherLocations({ locations }: { locations: SiblingLocation[] }) 
               </span>
               {location.address && (
                 <span className="mt-0.5 block truncate text-xs leading-snug text-zinc-500">
-                  {location.address}
+                  {formatSiblingAddress(location.address)}
                 </span>
               )}
               {!location.hasMenu && (
@@ -102,13 +124,8 @@ export function OtherLocations({ locations }: { locations: SiblingLocation[] }) 
         ))}
       </div>
 
-      {/* The row below the list carries both the disclosure and the caveat, so
-          the section ends on one line rather than two stacked ones. The button
-          is a local control, so it takes the segmented-track family's tan fill
-          rather than the orange primary — it isn't the action on this page. */}
-      <div className="mt-3.5 flex items-center justify-between gap-3 px-1">
-        <p className="mono-label text-pm-grey-text">Distance from this branch</p>
-        {hidden > 0 && (
+      {hidden > 0 && (
+        <div className="mt-3.5 flex items-center justify-end px-1">
           <button
             type="button"
             onClick={() => setExpanded(true)}
@@ -116,8 +133,8 @@ export function OtherLocations({ locations }: { locations: SiblingLocation[] }) 
           >
             Show {hidden} more
           </button>
-        )}
-      </div>
+        </div>
+      )}
     </section>
   );
 }

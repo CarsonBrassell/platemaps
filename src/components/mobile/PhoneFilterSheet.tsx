@@ -456,7 +456,15 @@ export function PhoneFilterSheet({
          containing block drags this sheet up off the bottom edge with it: focus
          the neighbourhood search and the sheet visibly detaches. Clipping the
          scrim leaves the shell unscrollable, which is what it is meant to be. */
-      className="animate-fade-in fixed inset-0 z-50 flex items-end justify-center overflow-hidden bg-pm-charcoal/45 backdrop-blur-[2px]"
+      /* z-[60], not the z-50 this used to read: PhoneNav (not owned here) is
+         z-40, so 50 already outranked it in the sheet's own stacking context
+         — but the footer sat flush with the viewport bottom, the same real
+         estate the nav bar occupies, so whichever of the two a given nav
+         variant's own stacking quirks favored could win the pixels. The
+         `pb-[var(--phone-nav-space)]` change on the footer below is the real
+         fix — it moves the buttons out of that shared strip entirely — this
+         is just cheap insurance against relitigating the stacking order. */
+      className="animate-fade-in fixed inset-0 z-[60] flex items-end justify-center overflow-hidden bg-pm-charcoal/45 backdrop-blur-[2px]"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -532,6 +540,14 @@ export function PhoneFilterSheet({
                     scroll={false}
                     prefetch={false}
                     aria-current={f.on ? "true" : undefined}
+                    /* A quick filter is a single decision, not the start of a
+                       browsing session inside the sheet — unlike the rows
+                       above, which stay open so several facets can be
+                       combined. Left open, the sheet's own scrim and sticky
+                       header kept intercepting the very tap on the grid the
+                       pick was made for (BACKLOG: "stays open ... blocking
+                       taps on the grid underneath"). */
+                    onClick={onClose}
                     className={`${shape} transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
                       f.on
                         ? "bg-pm-orange font-medium text-[#F7F4EC]"
@@ -554,8 +570,16 @@ export function PhoneFilterSheet({
         </div>
 
         {/* The count on the button is page.total — the result set that already
-            exists behind the sheet, not a prediction. */}
-        <div className="flex shrink-0 items-center gap-3 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-2">
+            exists behind the sheet, not a prediction.
+
+            `--phone-nav-space` rather than a flat safe-area pad: the fixed
+            bottom nav (PhoneNav) sits in that same reserved strip, at a
+            height that varies by which of its three variants `?nav=` picked
+            (phone.css). A flat 1rem clears the safe area but not the nav
+            itself, so on every variant this row rendered under the bar —
+            same clearance every other fixed phone control already asks
+            for (PhoneMapSearch, the post composer's action bar). */}
+        <div className="flex shrink-0 items-center gap-3 px-4 pb-[var(--phone-nav-space)] pt-2">
           {model.active > 0 && (
             <Link
               href={model.clearHref}

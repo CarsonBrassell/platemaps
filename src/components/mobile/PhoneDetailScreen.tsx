@@ -201,7 +201,7 @@ export function PhoneDetailScreen({
             branch is on the wrong branch before they read a price, and a menu
             is long enough that anything under it is a scroll nobody makes.
             Doubly so at 390px. */}
-        <OtherLocations locations={otherLocations} />
+        <OtherLocations locations={otherLocations} base="/m/restaurant" />
         <FullMenu sections={sections} onSelect={setSelectedDishId} />
         {/* The anchor is on the thread itself — "see all comments" from the dish
             sheet must land on the comments. The booking prototype used to sit

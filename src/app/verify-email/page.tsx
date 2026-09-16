@@ -44,7 +44,9 @@ function VerifyEmail() {
      to wait for — so it is the initial state rather than something an effect
      discovers and then sets. */
   const [state, setState] = useState<State>(() =>
-    token ? { kind: "working" } : { kind: "failed", message: "That link is missing its token." }
+    token
+      ? { kind: "working" }
+      : { kind: "failed", message: "That link looks incomplete. Ask for a new one." }
   );
 
   /* The token works once, and React runs effects twice in development. Without

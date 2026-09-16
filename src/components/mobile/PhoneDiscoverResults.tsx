@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
 import { useNearby } from "@/lib/nearby";
@@ -38,11 +38,24 @@ export function PhoneDiscoverResults({
   // The prompt goes up on a search, not on load — see lib/nearby.ts and the
   // matching effect in DiscoverBrowser.
   const nearby = useNearby();
-  const [located, setLocated] = useState<DiscoverPage | null>(null);
+  const [located, setLocated] = useState<{ key: string; page: DiscoverPage } | null>(null);
+
+  // Canonical rather than the URL: exactly what the web sends, so the two
+  // versions cannot be answered differently for the same filters. Computed
+  // from `page` — the server-authoritative prop — before it is used below.
+  const pageSearch = searchFromFilters("", page.filters);
+  const locatedKey = `${pageSearch}::${page.shown}`;
 
   // Derived, not cleared: the located answer is only ever shown while the
-  // coordinates it was answered against are still in hand.
-  const view = nearby.coords && located ? located : page;
+  // coordinates it was answered against are still in hand *and* it was
+  // answered for the page currently on screen. Without the key check, tapping
+  // Show more left this pinned to the previous, smaller `located` snapshot —
+  // built for the old `shown` — until its own refetch caught up, so the tap
+  // looked like it did nothing (the fresh, bigger `page` was masked) and a
+  // second tap then jumped two pages at once. Keying it means a navigation
+  // falls back to the fresh `page` immediately, the same fix applied to
+  // DiscoverBrowser on web.
+  const view = nearby.coords && located && located.key === locatedKey ? located.page : page;
   const { filters } = view;
 
   // Any filter and not only `q`, for the reason spelled out at the matching
@@ -54,9 +67,6 @@ export function PhoneDiscoverResults({
     if (active > 0 && !nearby.coords && nearby.state === "idle") requestLocation();
   }, [active, nearby.coords, nearby.state, requestLocation]);
 
-  // Canonical rather than the URL: exactly what the web sends, so the two
-  // versions cannot be answered differently for the same filters.
-  const search = searchFromFilters("", page.filters);
   useEffect(() => {
     if (!nearby.coords) return;
 
@@ -66,11 +76,11 @@ export function PhoneDiscoverResults({
         const res = await fetch("/api/restaurants/discover", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ search, shown: page.shown, coords: nearby.coords }),
+          body: JSON.stringify({ search: pageSearch, shown: page.shown, coords: nearby.coords }),
         });
         if (!res.ok) return;
         const next = fromWire(await res.json());
-        if (!cancelled) setLocated(next);
+        if (!cancelled) setLocated({ key: locatedKey, page: next });
       } catch {
         // The server's unlocated answer stays on screen — the same grid, in
         // corpus order, with no distance on it.
@@ -80,11 +90,36 @@ export function PhoneDiscoverResults({
     return () => {
       cancelled = true;
     };
-  }, [nearby.coords, search, page.shown]);
+  }, [nearby.coords, pageSearch, page.shown, locatedKey]);
+
+  /*
+   * Move focus to the results region once a navigation actually lands — the
+   * same fix as DiscoverBrowser on web, for the same reason. A tap on a
+   * cuisine link, a quick filter, or Show more is a `<Link>` navigation here
+   * rather than `router.replace`, but this component stays mounted across it
+   * just the same, so nothing moves focus off wherever the tap happened on
+   * its own. Keyed on `pageSearch`/`page.shown` so this fires once per
+   * completed navigation, not on the background `located` fetch resolving.
+   * Skipped on mount for the same reason as web: a page load is not a
+   * navigation.
+   */
+  const resultsRef = useRef<HTMLDivElement | null>(null);
+  const skipNextFocus = useRef(true);
+  useEffect(() => {
+    if (skipNextFocus.current) {
+      skipNextFocus.current = false;
+      return;
+    }
+    resultsRef.current?.focus();
+  }, [pageSearch, page.shown]);
 
   if (view.results.length === 0) {
     return (
-      <div className="px-4 py-16 text-center">
+      <div
+        ref={resultsRef}
+        tabIndex={-1}
+        className="px-4 py-16 text-center outline-none focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange"
+      >
         {/* A dish names itself, because with one on there is no guessing which
             filter emptied the grid — `?dish=` is an equality on menu wording
             (dishesNamedExactly in lib/db.ts), so nothing else got a vote. */}
@@ -120,7 +155,11 @@ export function PhoneDiscoverResults({
           food is legible and the ragged column edges give the eye somewhere to
           land. The column count is fixed rather than a media query, so the
           packing needs nothing from the viewport. */}
-      <div className="grid grid-cols-2 items-start gap-2 px-4">
+      <div
+        ref={resultsRef}
+        tabIndex={-1}
+        className="grid grid-cols-2 items-start gap-2 px-4 outline-none focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange"
+      >
         {packColumns(view.results, 2).map((column, i) => (
           // A column is a position, not a thing — see the same note in
           // DiscoverBrowser. Index is its identity.

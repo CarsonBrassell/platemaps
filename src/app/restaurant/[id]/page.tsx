@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { RestaurantDetail } from "@/components/RestaurantDetail";
+import { BackLink } from "./BackLink";
 import {
   getDishesForRestaurant,
   getRestaurantAspectTally,
@@ -40,15 +40,7 @@ export default async function RestaurantPage({
       <Header />
       <div className="px-4 sm:px-6">
         <div className="py-2">
-          <Link
-            href="/"
-            className="inline-flex min-h-9 items-center gap-1.5 rounded-full text-sm text-zinc-500 transition-all hover:-translate-x-0.5 hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-            Back to discover
-          </Link>
+          <BackLink />
         </div>
         {/* Phone-width column on small screens, but released on lg so the menu
             and the comment thread can sit side by side rather than leaving

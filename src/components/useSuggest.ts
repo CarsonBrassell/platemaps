@@ -120,10 +120,14 @@ export function useSuggest({ query, open, onPick, onSubmit, onClose }: Options) 
     };
   }, [q, asking]);
 
-  /* Already ordered by the server — restaurants, cuisines, neighbourhoods,
-     dishes, which is the ranked search's own order, so the dropdown never
-     implies a priority that Enter would then contradict. Readings with nothing
-     behind them never arrive at all. */
+  /* Already ordered by the server (lib/suggest.ts) — restaurant, cuisine,
+     neighbourhood, dish by default, except Cuisines moves above Restaurants
+     when the term names a category literally, or when both readings are
+     guesses (`cuisineBeforeRestaurant`, lib/suggest.ts). That is a deliberate
+     divergence from Enter's ranked order, not a bug: a misspelled category
+     word should offer the category first even on a term whose ranked search
+     would still favour some restaurant's name. Readings with nothing behind
+     them never arrive at all. */
   const scopes = useMemo(() => (asking && answer ? answer.scopes : []), [asking, answer]);
 
   /**

@@ -316,13 +316,13 @@ export function FoodPostCard(props: FoodPostCardProps) {
    *
      The dish and the restaurant used to lead this line and no longer do: they
      are up on the subject line under the words, where they can be tapped.
-     Printing them twice on one card was the cost of the old arrangement, not a
-     feature of it. Price rides here only when there's no photo to wear its
-     chip. */
-  const bylineParts = [
-    relativeTime(post.createdAt),
-    post.media.length === 0 ? post.price : null,
-  ].filter(Boolean);
+     Price used to ride here only when there was no photo to wear its own
+     chip, and rode as a badge over the photo otherwise — two different homes
+     for the same machine value depending on the post (BACKLOG: "Post price
+     renders in three different card positions depending on the post").
+     Every post has a byline, not every post has a photo, so the byline is
+     the one home that answers "where's the price" the same way every time. */
+  const bylineParts = [relativeTime(post.createdAt), post.price].filter(Boolean);
 
   // Reads either vocabulary the `vibe` column has held — "Lively", or "Food"
   // written back out as "Best at food".
@@ -436,13 +436,9 @@ export function FoodPostCard(props: FoodPostCardProps) {
             <PointsBadge points={post.authorPoints} tone="photo" className="shrink-0" />
           </Link>
 
-          {post.price && (
-            <div className="pointer-events-none absolute bottom-2.5 left-2.5">
-              <span className="rounded-full bg-white/95 px-2.5 py-1 font-mono text-xs font-medium tabular-nums text-zinc-700">
-                {post.price}
-              </span>
-            </div>
-          )}
+          {/* Price no longer overlays the photo — it rides in the byline at
+             the foot of the card, the one position every post has whether or
+             not it carries a photo. See the bylineParts comment above. */}
         </div>
       )}
 

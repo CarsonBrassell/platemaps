@@ -55,16 +55,27 @@ async function deliver(to: string, subject: string, text: string): Promise<SendR
     return { ok: false, reason: "unconfigured" };
   }
 
+  // Resend is a third-party network call on the critical path of "the user is
+  // staring at a button that says Sending…" — an unbounded fetch here means a
+  // slow or unreachable provider hangs the caller indefinitely. Bounded to a
+  // handful of seconds and turned into an ordinary failed-send result rather
+  // than left to hang or to throw an uncaught abort error.
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
       body: JSON.stringify({ from, to, subject, text }),
+      signal: controller.signal,
     });
     if (!res.ok) return { ok: false, reason: "failed", detail: `${res.status}` };
     return { ok: true };
   } catch (error) {
-    return { ok: false, reason: "failed", detail: String(error) };
+    const detail = controller.signal.aborted ? "timed out" : String(error);
+    return { ok: false, reason: "failed", detail };
+  } finally {
+    clearTimeout(timeout);
   }
 }
 

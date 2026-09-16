@@ -169,7 +169,7 @@ export default function TermsPage() {
                 Post, solicit, purchase, exchange for compensation, or otherwise incentivize
                 fake, misleading, or undisclosed-affiliation reviews or ratings, or
                 otherwise attempt to manipulate the Service&rsquo;s ratings, rankings, or
-                &ldquo;Hits&rdquo; percentages;
+                plate scores;
               </li>
               <li>
                 Impersonate any person or entity, or misrepresent your affiliation with a
@@ -234,7 +234,7 @@ export default function TermsPage() {
 
           <Section id="ratings" title="6. Ratings, Reviews, and Content Disclaimer">
             <p>
-              Ratings, percentages, &ldquo;Hits,&rdquo; reviews, comments, and similar
+              Ratings, percentages, plate scores, reviews, comments, and similar
               content on the Service reflect the individual opinions of the users who
               posted them. They are not verified, edited, or endorsed by PlateMaps unless
               we say otherwise, and they do not necessarily reflect our views. Menus,
@@ -272,7 +272,7 @@ export default function TermsPage() {
             <p>
               Paid placement affects only where and how prominently a restaurant appears.
               It does not affect, and cannot be purchased to change, a restaurant&rsquo;s
-              underlying star rating, &ldquo;Hits&rdquo; percentages, or user reviews, which
+              underlying star rating, plate score, or user reviews, which
               are generated solely by users. Consistent with 16 C.F.R. Part 465, we do
               not: write, purchase, or generate reviews purporting to reflect the
               experience of a real customer where none exists; suppress or selectively

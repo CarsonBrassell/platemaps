@@ -6,6 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { NavDot } from "@/components/NavDot";
 import { COACH_KEYS } from "@/components/MobileNav";
 import { useNavAlerts } from "@/lib/navAlerts";
+import { useAuth } from "@/lib/auth";
 import { HomeIcon, CompassIcon, UsersIcon, UserIcon, PlusIcon } from "@/components/icons";
 
 /**
@@ -70,7 +71,11 @@ const SLOTS: readonly Slot[] = [
 ];
 
 /** Where the create button goes. Held out of SLOTS because every variant puts
-    it somewhere different — inside the row, above it, or centred in it. */
+    it somewhere different — inside the row, above it, or centred in it.
+    Hidden entirely when signed out: `/m/post` already has its own "sign in to
+    post" landing for anyone who reaches it another way, but the button itself
+    should not dangle over a screen where posting is not actually possible —
+    the signed-out `/m/account` form is the case that flagged this. */
 const CREATE = { href: "/m/post", label: "Post a plate" };
 
 const FOCUS =
@@ -80,6 +85,7 @@ export function PhoneNav({ variant = DEFAULT_VARIANT }: { variant?: NavVariant }
   const pathname = usePathname();
   const params = useSearchParams();
   const alerts = useNavAlerts();
+  const { isSignedIn } = useAuth();
 
   /* The variant travels in the URL, so every in-nav link has to carry it or the
      first tap throws you back to the default and the comparison is over. Drop
@@ -99,17 +105,23 @@ export function PhoneNav({ variant = DEFAULT_VARIANT }: { variant?: NavVariant }
       <NavDot label={slot.dot.label} className="absolute -right-1 -top-0.5" />
     ) : null;
 
-  const shared = { to, isCurrent, dotFor };
+  const shared = { to, isCurrent, dotFor, showCreate: isSignedIn };
 
   if (variant === "strip") return <StripNav {...shared} />;
   if (variant === "pill") return <PillNav {...shared} />;
   return <ArcNav {...shared} />;
 }
 
-type VariantProps = {
+type SlotLinkProps = {
   to: (href: string) => string;
   isCurrent: (href: string) => boolean;
   dotFor: (slot: Slot) => React.ReactNode;
+};
+
+type VariantProps = SlotLinkProps & {
+  /** False while signed out — posting isn't possible yet, so the FAB is not
+      shown rather than landing on a page that just bounces back to sign-in. */
+  showCreate: boolean;
 };
 
 /* ---------------------------------------------------------------------------
@@ -126,7 +138,7 @@ type VariantProps = {
  * row answers "where am I" before it answers "where could I go", which is the
  * question you actually have when you glance at a nav.
  * ------------------------------------------------------------------------ */
-function PillNav({ to, isCurrent, dotFor }: VariantProps) {
+function PillNav({ to, isCurrent, dotFor, showCreate }: VariantProps) {
   return (
     <nav
       aria-label="Main"
@@ -137,13 +149,15 @@ function PillNav({ to, isCurrent, dotFor }: VariantProps) {
           <PillSlot key={slot.href} slot={slot} to={to} isCurrent={isCurrent} dotFor={dotFor} />
         ))}
 
-        <Link
-          href={to(CREATE.href)}
-          aria-label={CREATE.label}
-          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pm-orange text-[#F7F4EC] transition-transform active:scale-90 ${FOCUS}`}
-        >
-          <PlusIcon className="h-5 w-5" />
-        </Link>
+        {showCreate && (
+          <Link
+            href={to(CREATE.href)}
+            aria-label={CREATE.label}
+            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pm-orange text-[#F7F4EC] transition-transform active:scale-90 ${FOCUS}`}
+          >
+            <PlusIcon className="h-5 w-5" />
+          </Link>
+        )}
 
         {SLOTS.slice(2).map((slot) => (
           <PillSlot key={slot.href} slot={slot} to={to} isCurrent={isCurrent} dotFor={dotFor} />
@@ -158,7 +172,7 @@ function PillSlot({
   to,
   isCurrent,
   dotFor,
-}: VariantProps & { slot: Slot }) {
+}: SlotLinkProps & { slot: Slot }) {
   const current = isCurrent(slot.href);
   return (
     <Link
@@ -194,7 +208,7 @@ function PillSlot({
  * orange-bullet mark (AGENTS.md) instead of only turning orange, so the two
  * navs agree on what "current" looks like.
  * ------------------------------------------------------------------------ */
-function StripNav({ to, isCurrent, dotFor }: VariantProps) {
+function StripNav({ to, isCurrent, dotFor, showCreate }: VariantProps) {
   const slot = (item: Slot) => {
     const current = isCurrent(item.href);
     return (
@@ -230,15 +244,17 @@ function StripNav({ to, isCurrent, dotFor }: VariantProps) {
     >
       <div className="mx-auto flex max-w-lg items-stretch gap-1 px-2 py-2">
         {SLOTS.slice(0, 2).map(slot)}
-        <Link
-          href={to(CREATE.href)}
-          aria-label={CREATE.label}
-          className={`flex min-h-14 flex-1 items-center justify-center ${FOCUS}`}
-        >
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-pm-orange text-[#F7F4EC] transition-transform active:scale-95">
-            <PlusIcon className="h-6 w-6" />
-          </span>
-        </Link>
+        {showCreate && (
+          <Link
+            href={to(CREATE.href)}
+            aria-label={CREATE.label}
+            className={`flex min-h-14 flex-1 items-center justify-center ${FOCUS}`}
+          >
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-pm-orange text-[#F7F4EC] transition-transform active:scale-95">
+              <PlusIcon className="h-6 w-6" />
+            </span>
+          </Link>
+        )}
         {SLOTS.slice(2).map(slot)}
       </div>
     </nav>
@@ -258,7 +274,7 @@ function StripNav({ to, isCurrent, dotFor }: VariantProps) {
  * page has to reserve more bottom space than the bar's own height. That is what
  * `--phone-nav-space` in phone.css pays for.
  * ------------------------------------------------------------------------ */
-function ArcNav({ to, isCurrent, dotFor }: VariantProps) {
+function ArcNav({ to, isCurrent, dotFor, showCreate }: VariantProps) {
   /* Same tap kick MobileNav's slots wear, and deliberately the same one: a
      person moving between the two versions of the site should not have to
      relearn what a tap feels like any more than they have to relearn where
@@ -302,16 +318,18 @@ function ArcNav({ to, isCurrent, dotFor }: VariantProps) {
       <div className="pointer-events-auto relative mx-auto max-w-lg rounded-full bg-pm-grey-tint px-2 py-1.5">
         {/* Raised, and centred on the bar's own top edge rather than the
             viewport — the bar is inset, so those are not the same line. */}
-        <Link
-          href={to(CREATE.href)}
-          aria-label={CREATE.label}
-          data-coach="post"
-          className={`absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full ${FOCUS}`}
-        >
-          <span className="flex h-14 w-14 items-center justify-center rounded-full border-4 border-[#F7F4EC] bg-pm-orange text-[#F7F4EC] transition-transform active:scale-95">
-            <PlusIcon className="h-6 w-6" />
-          </span>
-        </Link>
+        {showCreate && (
+          <Link
+            href={to(CREATE.href)}
+            aria-label={CREATE.label}
+            data-coach="post"
+            className={`absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full ${FOCUS}`}
+          >
+            <span className="flex h-14 w-14 items-center justify-center rounded-full border-4 border-[#F7F4EC] bg-pm-orange text-[#F7F4EC] transition-transform active:scale-95">
+              <PlusIcon className="h-6 w-6" />
+            </span>
+          </Link>
+        )}
 
         <div className="flex items-stretch">
           {SLOTS.slice(0, 2).map(slot)}

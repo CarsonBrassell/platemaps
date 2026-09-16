@@ -42,7 +42,7 @@ export function ProfileFriendButton({ userId }: { userId: string }) {
 
   if (!isSignedIn) {
     return (
-      <Link href="/account" className={`${button} bg-pm-charcoal text-white hover:brightness-110`}>
+      <Link href="/account" className={`${button} bg-pm-orange text-white hover:brightness-105`}>
         Sign in to add friends
       </Link>
     );

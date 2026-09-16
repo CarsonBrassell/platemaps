@@ -1,3 +1,5 @@
+import { formatPrice } from "@/lib/format";
+
 type MenuDish = {
   id: string;
   name: string;
@@ -54,7 +56,7 @@ export function FullMenu({
                       </span>
                     )}
                   </span>
-                  <span className="shrink-0 font-mono text-xs text-zinc-500">{dish.price}</span>
+                  <span className="shrink-0 font-mono text-xs text-zinc-500">{formatPrice(dish.price)}</span>
                 </button>
               ))}
             </div>

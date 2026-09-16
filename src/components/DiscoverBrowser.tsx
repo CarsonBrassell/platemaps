@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { FilterControls, FilterRail, QuickFilterChips } from "@/components/DiscoverFilters";
 import { RestaurantCard } from "@/components/RestaurantCard";
@@ -118,7 +118,7 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
    * switched off. Everything else on screen is driven by the URL exactly as it
    * looks like it is.
    */
-  const [located, setLocated] = useState<DiscoverPage | null>(null);
+  const [located, setLocated] = useState<{ key: string; page: DiscoverPage } | null>(null);
 
   /*
    * Whether the located answer is the one to show, derived rather than cleared.
@@ -129,8 +129,17 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
    * racing the navigation, and nothing to reset. While a new position-aware
    * answer is in flight the previous one stays on screen, which is the same
    * thing the transition dimming does everywhere else here.
+   *
+   * Keyed against the server-authoritative `page` prop rather than trusted on
+   * its own: a `located` answer only ever matches the filters/shown it was
+   * fetched for, so the instant a navigation changes `page` the key stops
+   * matching and this falls straight back to the fresh prop — no stale
+   * snapshot can survive a filter change, even though it may still be a
+   * moment before a new located answer replaces it.
    */
-  const view = nearby.coords && located ? located : page;
+  const pageSearch = searchFromFilters("", page.filters);
+  const locatedKey = `${pageSearch}::${page.shown}`;
+  const view = nearby.coords && located && located.key === locatedKey ? located.page : page;
   const { filters, results, counts, options, picks, total, shown } = view;
   const active = activeFilterCount(filters);
 
@@ -188,8 +197,15 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
    * Keyed on the URL as well as the coordinates: every filter change has to be
    * re-answered against the visitor's position, and the server-rendered page
    * arriving from that navigation is the unlocated answer.
+   *
+   * Reads `pageSearch`/`page.shown` — the server-authoritative prop — rather
+   * than `filters`/`shown` off `view`. Keying this effect on the derived view
+   * instead of the prop is exactly what let a stale `located` answer suppress
+   * every future navigation forever: `view` only changes once a fresh
+   * `located` lands, so an effect keyed on it stops re-firing the moment it is
+   * fed a stale snapshot. Reading the prop keeps this effect re-firing on
+   * every real navigation regardless of what is currently on screen.
    */
-  const search = searchFromFilters("", filters);
   useEffect(() => {
     if (!nearby.coords) return;
 
@@ -199,11 +215,11 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
         const res = await fetch("/api/restaurants/discover", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ search, shown, coords: nearby.coords }),
+          body: JSON.stringify({ search: pageSearch, shown: page.shown, coords: nearby.coords }),
         });
         if (!res.ok) return;
         const next = fromWire(await res.json());
-        if (!cancelled) setLocated(next);
+        if (!cancelled) setLocated({ key: locatedKey, page: next });
       } catch {
         // Leaves the server's unlocated answer on screen — a wider result set
         // than asked for, which is the same thing the filter model does with a
@@ -214,7 +230,31 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
     return () => {
       cancelled = true;
     };
-  }, [nearby.coords, search, shown]);
+  }, [nearby.coords, pageSearch, page.shown, locatedKey]);
+
+  /*
+   * Move focus to the results heading once a navigation actually lands.
+   *
+   * `router.replace` inside a transition keeps this component mounted, so
+   * nothing about the DOM forces focus to move on its own — a keyboard user
+   * who picked a cuisine pill, Nearby, a quick filter or Show more was left
+   * exactly where they clicked, at `<body>`, with the grid that answers their
+   * action rendered somewhere off-screen below. Keyed on `pageSearch`/
+   * `page.shown` — the server-authoritative signature of what navigation is
+   * currently showing — rather than on `isPending`, so this fires once per
+   * completed navigation and not on every render while one is in flight.
+   * Skipped on mount: the very first render is not a navigation, and a page
+   * load has no business stealing focus from wherever the visitor arrived.
+   */
+  const resultsHeadingRef = useRef<HTMLHeadingElement | null>(null);
+  const skipNextFocus = useRef(true);
+  useEffect(() => {
+    if (skipNextFocus.current) {
+      skipNextFocus.current = false;
+      return;
+    }
+    resultsHeadingRef.current?.focus();
+  }, [pageSearch, page.shown]);
 
   /*
    * Every handler builds on `filters` — what is currently in effect, as
@@ -371,8 +411,10 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
                   that is genuinely a search: a restaurant's name, a word. */}
               <div className="flex min-w-0 items-baseline gap-2">
                 <h2
+                  ref={resultsHeadingRef}
                   id="all-restaurants"
-                  className="truncate font-display text-lg font-semibold tracking-tight text-zinc-900"
+                  tabIndex={-1}
+                  className="truncate font-display text-lg font-semibold tracking-tight text-zinc-900 outline-none focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange"
                 >
                   {filters.q
                     ? `${filters.scope ? SCOPE_HEADING[filters.scope] : "Results for"} “${filters.q}”`

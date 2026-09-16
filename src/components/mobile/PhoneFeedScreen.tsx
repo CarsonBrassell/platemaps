@@ -522,10 +522,18 @@ export function PhoneFeedScreen() {
       <div className="px-4 pt-2">
         {offline && <OfflineBanner />}
 
+        {/* Fixed to the viewport, not this scroll container: an inline block
+            here rendered off-screen above the fold when the sign-in prompt
+            fired from a card scrolled down the list (BACKLOG: "Sign-in
+            prompt ... renders off-screen from where the user clicked"), and
+            pushing every card below it down read as the whole feed
+            reshuffling on a blocked vote (BACKLOG: "Feed order reshuffles
+            after a blocked interaction"). See the web twin in
+            src/app/feed/page.tsx for the same fix. */}
         {banner && (
           <p
             role="status"
-            className="mb-3 rounded-xl bg-pm-orange-tint px-4 py-2.5 text-sm font-medium text-pm-orange-text"
+            className="fixed inset-x-0 top-[max(0.5rem,env(safe-area-inset-top))] z-50 mx-auto w-fit max-w-[calc(100%-2rem)] rounded-full bg-pm-orange-tint px-4 py-2.5 text-center text-sm font-medium text-pm-orange-text"
           >
             {banner}
           </p>

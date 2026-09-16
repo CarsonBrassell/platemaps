@@ -1,3 +1,5 @@
+import { formatPrice } from "@/lib/format";
+
 type PickDish = {
   id: string;
   name: string;
@@ -65,7 +67,7 @@ export function TopPicks({
                 {dish.pct}%
               </span>
               <span className="mt-1 block font-mono text-xs tabular-nums text-zinc-500">
-                {dish.price}
+                {formatPrice(dish.price)}
               </span>
             </span>
           </button>

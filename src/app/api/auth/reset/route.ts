@@ -41,7 +41,10 @@ export async function POST(req: Request) {
   }
 
   if (typeof token !== "string" || token.length === 0) {
-    return NextResponse.json({ error: "That link is missing its token." }, { status: 400 });
+    return NextResponse.json(
+      { error: "That link looks incomplete. Ask for a new one." },
+      { status: 400 }
+    );
   }
 
   // One message for missing, spent and expired — the three are the same fact

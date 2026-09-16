@@ -1,0 +1,152 @@
+{
+  "anchors": [
+    { "name": "SDSU / College Area", "lat": 32.7757, "lng": -117.0719 },
+    { "name": "Downtown San Diego", "lat": 32.7157, "lng": -117.1611 },
+    { "name": "Pacific Beach", "lat": 32.7978, "lng": -117.2395 },
+    { "name": "North Park", "lat": 32.7449, "lng": -117.1296 },
+    { "name": "Encinitas", "lat": 33.037, "lng": -117.292 },
+    { "name": "Chula Vista", "lat": 32.6401, "lng": -117.0842 }
+  ],
+  "personas": {
+    "hungry-now": "You are a college student, phone in hand, hungry right now. You type short lowercase words, never punctuation, and you give up on anything that takes more than two taps to understand. You care about: is it open, is it close, is it cheap.",
+    "regular": "You ate somewhere last week and want to find it again to see the menu and post about it. You remember the name roughly - sometimes a nickname, sometimes a misspelling, sometimes just the first word.",
+    "explorer": "You are new to the city and browsing for ideas. You have no target. You poke at neighbourhoods, cuisines, the map, and whatever looks good. You judge the app on whether it makes you want to go somewhere.",
+    "dish-hunter": "You want one specific dish (a birria taco, a pho, a breakfast burrito, a cinnamon roll). You search the dish, not the restaurant, and you expect the results to be about that dish.",
+    "lurker": "You never post. You read the feed, tap into profiles, look at leaderboards and restaurant pages. You notice empty states, broken images, repeated content, and anything that looks unfinished.",
+    "first-timer": "You just opened this for the first time. You do not know what it is. You read the landing screens, try the obvious buttons, and judge whether the app explains itself. You are impatient with jargon.",
+    "picky-designer": "You are a product designer reviewing someone else's app. You notice inconsistent spacing, controls that look alike but behave differently, text that fails contrast, truncation, misaligned numbers, and copy that talks like a robot.",
+    "keyboard-only": "You navigate with Tab, Shift+Tab, Enter and Escape only. You need a visible focus ring on every stop, a sensible tab order, and no keyboard traps.",
+    "poster": "You just finished a meal and want to post the plate. You want it done in under a minute: pick the restaurant, pick or type the dish, photo, verdict, post.",
+    "social": "You use the app with friends. You look people up, send requests, vote on friends' plates, comment, and expect to see their activity in your feed."
+  },
+  "scenarios": [
+    {
+      "id": "search-cuisine-word",
+      "persona": "hungry-now",
+      "surface": "both",
+      "seeds": "cuisines",
+      "goal": "Search plain meal words like 'breakfast', 'tacos', 'sushi', 'pizza', 'coffee', 'ramen', 'brunch', 'burgers' (use these too: {seeds}) and judge whether the top of the results is what a hungry person near {anchor} would expect. Check at least three words. For each: are the first results really that kind of food, are they close, is anything obviously missing that a local would expect (a well-known breakfast place nearby not showing for 'breakfast'), are there duplicate restaurants, does the open-now filter behave."
+    },
+    {
+      "id": "local-knowledge",
+      "persona": "regular",
+      "surface": "phone",
+      "seeds": "none",
+      "goal": "You have lived near {anchor} for years. Before touching the app, list eight real, well-known restaurants within about two miles of {anchor} that you are confident exist today: a mix of chains (the Broken Yolk, In-N-Out, Chipotle kind) and independents, with the street you believe each is on. Then search each one. For every one the app does not have, or has only at a different location, report it as a finding with the name and street. Also note when a search for a place you know returns a different restaurant with a similar name as if it were the answer."
+    },
+    {
+      "id": "search-known-place",
+      "persona": "regular",
+      "surface": "both",
+      "seeds": "restaurants",
+      "goal": "Find these specific restaurants by search: {seeds}. Try each three ways: the full name, a natural misspelling or lowercase shorthand, and just the most memorable word. Note when the right place is not first, not on the first page, or absent, and what outranked it. Also try the suggestion dropdown while typing: does it offer the place after a few letters?"
+    },
+    {
+      "id": "search-nickname",
+      "persona": "regular",
+      "surface": "phone",
+      "seeds": "restaurants",
+      "goal": "Locals abbreviate names ('broyo' for Broken Yolk, 'in n out', 'chipotle'). For these restaurants: {seeds}, invent the nickname or shorthand a regular would actually type and search it. Record which fail and what came back instead."
+    },
+    {
+      "id": "search-dish",
+      "persona": "dish-hunter",
+      "surface": "both",
+      "seeds": "dishes",
+      "goal": "Search these dishes: {seeds}, plus two of your own (one common, one obscure). Judge relevance: do the matched dishes shown correspond to the query, do substring accidents ('suburban' for 'urban') pollute, is the restaurant that serves the dish findable, and does its restaurant page then show the dish."
+    },
+    {
+      "id": "search-neighborhood",
+      "persona": "explorer",
+      "surface": "web",
+      "seeds": "neighborhoods",
+      "goal": "Search or filter by neighbourhood: {seeds}. Are the results all in that neighbourhood, does the filter rail agree with what is applied, can you combine neighbourhood + cuisine + price, and does clearing filters work? Try a misspelled neighbourhood too."
+    },
+    {
+      "id": "discover-browse",
+      "persona": "explorer",
+      "surface": "both",
+      "seeds": "none",
+      "goal": "Start at the discover screen with no query (/ on web, /m on phone). Browse the way a bored person would: quick filters, the curated strip, open a card, go back. Note load times (goto and click report ms), anything that jumps, empty states, cards with missing info, and whether Back returns you where you were with filters intact."
+    },
+    {
+      "id": "map-use",
+      "persona": "explorer",
+      "surface": "phone",
+      "seeds": "none",
+      "goal": "Use the map at /m. Can you tell where you are, find restaurants around {anchor}, tap a pin, read its bubble, and get to the restaurant page? Is the Discover/Friends switch understandable? Note anything a person used to map apps would expect that is not here."
+    },
+    {
+      "id": "restaurant-page",
+      "persona": "lurker",
+      "surface": "both",
+      "seeds": "restaurants",
+      "goal": "Open the restaurant pages for: {seeds} (search each by name, then open it). Judge each as a diner would: name, hours and open state, neighbourhood, menu completeness (prices present, sections sensible, junk items), what the plate score means, photos, and the posts about it. Note anything that looks wrong for a real restaurant of that kind."
+    },
+    {
+      "id": "feed-read",
+      "persona": "lurker",
+      "surface": "both",
+      "seeds": "none",
+      "goal": "Read the feed (/feed on web, /m/feed on phone) the way a scroller does. Scroll several screens. Note repeated posts, missing photos, timestamps that look wrong, unclear vote controls, posts whose restaurant you cannot open, loading stalls, and whether the feed's tabs or sort options feel different from each other."
+    },
+    {
+      "id": "profile-and-leaderboard",
+      "persona": "lurker",
+      "surface": "both",
+      "seeds": "none",
+      "goal": "Find the leaderboard and open three profiles from it. Judge: do the numbers add up, do rank changes make sense, do profile grids load, what does an empty profile look like, can you get back. Then open /friends logged out and note what a stranger sees."
+    },
+    {
+      "id": "first-open",
+      "persona": "first-timer",
+      "surface": "both",
+      "seeds": "none",
+      "goal": "Open the root cold (/ on web, /m on phone). With no prior knowledge, work out what the app is for within a minute of browsing. Record what confused you, what the copy failed to explain, dead ends, and whether the primary action is obvious. Also skim /privacy and /terms for anything broken."
+    },
+    {
+      "id": "design-pass",
+      "persona": "picky-designer",
+      "surface": "both",
+      "seeds": "none",
+      "goal": "Walk discover, one restaurant page, the feed, and one profile. Take one screenshot per screen (shot) and Read each png. Look for truncated names, inconsistent pill styles, numbers not in monospace, labels in the wrong case, orphaned punctuation, low-contrast small text, controls that look identical but do different things, and layout that breaks at this viewport."
+    },
+    {
+      "id": "keyboard-pass",
+      "persona": "keyboard-only",
+      "surface": "web",
+      "seeds": "none",
+      "goal": "From / press Tab repeatedly; after each few presses run: eval document.activeElement.outerHTML.slice(0,200) to see what has focus. Can you reach the search box, the filters, a restaurant card, and open it with Enter? Any trap? Does Escape close the suggestion dropdown? Report the tab order in words."
+    },
+    {
+      "id": "perf-pass",
+      "persona": "hungry-now",
+      "surface": "phone",
+      "seeds": "restaurants",
+      "goal": "Measure. goto /m, /m/feed, a restaurant page (search one of {seeds}), a search with a common word, a search with a rare word, and the leaderboard, twice each, and record the ms reported. Run errors after each. Report anything above 2500ms on the second (warm) load and every console/network error."
+    },
+    {
+      "id": "post-flow",
+      "persona": "poster",
+      "surface": "phone",
+      "seeds": "restaurants",
+      "needsLogin": true,
+      "goal": "Log in (login command). Go through posting a plate for one of {seeds}: reach the post screen, pick the restaurant via its search, pick or type a dish, set the verdict. STOP before the final submit unless your session says writes are allowed. Report every step that was unclear, slow, or that lost your input."
+    },
+    {
+      "id": "social-flow",
+      "persona": "social",
+      "surface": "both",
+      "seeds": "none",
+      "needsLogin": true,
+      "goal": "Log in. Search for a user, open their profile, look at the friend controls, vote on a plate in the feed and un-vote it, open comments on a post and read them. Only write (send a request, post a comment) if your session says writes are allowed. Judge whether each control gives feedback and whether counts update."
+    },
+    {
+      "id": "auth-edges",
+      "persona": "first-timer",
+      "surface": "web",
+      "seeds": "none",
+      "goal": "Without logging in: try to vote, save, post, and open /account. What happens? Is the prompt to sign in clear? Open /forgot-password, /reset-password and /verify-email cold and judge the copy and error states. Do not submit forms with real data; an obviously fake address like nobody@example.invalid is fine."
+    }
+  ]
+}

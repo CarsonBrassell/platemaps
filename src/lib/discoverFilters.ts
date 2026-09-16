@@ -24,7 +24,9 @@ import {
   SEARCH_SCOPES,
   prepare,
   scopeOf,
+  scoreCuisine,
   scoreRestaurant,
+  TIER,
   type Prepared,
   type SearchFields,
   type SearchScope,
@@ -93,8 +95,9 @@ export type DiscoverFilters = {
    * One dish, named exactly — "show me the places that serve Birria Taco".
    *
    * Separate from `q` because it is a different question. `q` is a search and
-   * is *ranked*: a name match beats a cuisine match beats a dish match, so a
-   * misspelled restaurant still outranks a wall of menus. This is a *filter*,
+   * is *ranked*: a literal cuisine match beats a soft name match beats a dish
+   * match (Calvin, 2026-09-13 — see the TIER comment in lib/textMatch.ts), so
+   * a misspelled restaurant still outranks a wall of menus. This is a *filter*,
    * chosen from the search dropdown out of real dish names, and it either holds
    * or it doesn't. The two compose — `?q=thai&dish=pad thai` is a text search
    * inside the set of places that serve Pad Thai.
@@ -345,8 +348,9 @@ export const NO_CONTEXT: FilterContext = {
  * neighbourhood concatenated into it, tested with `String.includes`. Two things
  * were wrong with that and both were visible to a visitor: one mistyped letter
  * returned nothing at all, and a single string cannot say *which* field
- * matched, so "the name first, then cuisine, then dish" was not
- * expressible. lib/textMatch.ts holds the replacement; this holds the cache.
+ * matched, so an ordering by field — literal cuisine over soft name over dish,
+ * per TIER in lib/textMatch.ts — was not expressible. lib/textMatch.ts holds
+ * the replacement; this holds the cache.
  *
  * `matchesFilters` runs six times per restaurant per request — once for the
  * grid and once for each facet dimension being counted — so preparing this
@@ -442,15 +446,68 @@ function preparedQuery(raw: string): Prepared {
   return lastQuery.prepared;
 }
 
+/**
+ * Whether the query literally names a real category somewhere in the corpus
+ * — some restaurant's cuisine or tags read it back exactly or as a whole
+ * word, not merely fuzzily. One cheap pass over the corpus, cuisine only.
+ *
+ * This is what tells "tacos" (a real cuisine tag on dozens of rows) apart
+ * from a query that only happens to spell one restaurant's sign — see the
+ * "literal-name trap" note on `scoreMatches` below. A single row's own
+ * fields cannot answer this; a restaurant literally named "Tacos" may itself
+ * carry only a generic imported tag ("Mexican Restaurant") with no "tacos" in
+ * it at all, which is exactly the case BACKLOG.md caught.
+ */
+export function corpusHasLiteralCategory(
+  restaurants: readonly RestaurantView[],
+  query: Prepared,
+): boolean {
+  for (const r of restaurants) {
+    if (scoreCuisine(query, searchFieldsFor(r)) >= TIER.CUISINE_TAG_SUBSTRING) return true;
+  }
+  return false;
+}
+
+/**
+ * `NAME_EXACT`, unless the query is also a real category (see
+ * `corpusHasLiteralCategory`) — then it drops below every literal cuisine
+ * rung instead of automatically beating all of them. "Calvin's (2026-09-13)"
+ * ordering on `TIER` gives a whole sign typed exactly the top rung because it
+ * can only mean the one place with that sign; that reasoning fails when the
+ * sign *is* the category word ("Tacos", "Pizza"), because then every other
+ * restaurant of that category answers just as well. Confirmed three times
+ * (BACKLOG.md "literal-name trap"): q=tacos put an unrated restaurant
+ * literally named "Tacos" ten-plus miles out ahead of a 4.7-star taco stand
+ * 0.3 miles away, same for q=pizza against 4.3-4.9-star pizzerias a few
+ * blocks off.
+ *
+ * The demoted value is not this row's own cuisine score — "Tacos" carries the
+ * generic imported tag "Mexican Restaurant" and scores 0 there, which would
+ * drop it out of the results altogether — nor a fixed literal-cuisine tier,
+ * which (tried first) still sat above "The Taco Stand" (tagged exactly
+ * "tacos", CUISINE_TAG_EXACT = 920) and "Tacos El Gordo" (name-prefix match,
+ * 940) alike, because a fixed 950 beats both. It is `CUISINE_TAG_FUZZY`
+ * (900): strictly below every tier `corpusHasLiteralCategory` accepts as
+ * proof the query names a real category (>= 910, by construction), so a
+ * bare-name coincidence can never again outrank an actual literal category
+ * match, while it still outranks a soft, non-category name reading
+ * (NAME_TOKENS tops out at 899) — the restaurant still appears, just no
+ * higher than a fuzzy guess would put it.
+ */
+export function withCategoryDemotion(score: number, categoryWord: boolean): number {
+  return score === TIER.NAME_EXACT && categoryWord ? TIER.CUISINE_TAG_FUZZY : score;
+}
+
 export function scoreMatches(
   restaurants: readonly RestaurantView[],
   q: string,
   dishes: Map<string, MatchedDish> | null,
 ): Map<string, number> {
   const query = prepare(q);
+  const categoryWord = corpusHasLiteralCategory(restaurants, query);
   const scores = new Map<string, number>();
   for (const r of restaurants) {
-    const score = relevanceFor(r, query, dishes);
+    const score = withCategoryDemotion(relevanceFor(r, query, dishes), categoryWord);
     if (score > 0) scores.set(r.id, score);
   }
   return scores;
@@ -828,8 +885,9 @@ function promote(
    * called "Pizza", against the cuisine Pizza — and without this it cannot be
    * reached by typing its name at all: the term promotes to `?cuisine=Pizza`
    * and the restaurant sits somewhere inside 400 pizza places instead of first.
-   * As a search it is first, because a name match outranks everything (TIER in
-   * lib/textMatch.ts).
+   * As a search it is first, because an exact whole-name match still outranks
+   * everything, including a literal cuisine match (TIER in lib/textMatch.ts,
+   * Calvin 2026-09-13).
    *
    * Deliberately *exact*, and not "matches a name" in the looser senses the
    * ranked search uses. 248 restaurants here begin with a cuisine word

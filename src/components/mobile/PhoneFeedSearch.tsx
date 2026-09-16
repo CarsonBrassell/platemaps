@@ -156,7 +156,7 @@ export function PhoneFeedSearch({
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close search" : "Search restaurants"}
+          aria-label={open ? "Close search" : onSearch ? "Search the feed" : "Search restaurants"}
           aria-expanded={open}
           /* Still 44px of hit area, which is now the whole element rather than
              transparent padding around a painted disc — the min-h-11 floor in

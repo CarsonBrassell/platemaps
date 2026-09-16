@@ -620,7 +620,18 @@ function StepMark({
    */
   useEffect(() => {
     if (step.lock !== "scroll") return;
+    // Same race as the outside-click fold above, and the same fix: the tap
+    // that just advanced the walk onto *this* dwell step is still
+    // propagating (capture fires before React commits the new step, and the
+    // browser can flush that commit between the capture and bubble phases of
+    // one user gesture), so without a guard this mount adds a capture
+    // listener on `document` in time to catch the tail of its own arriving
+    // click — swallowing the very press that was supposed to reach the
+    // link underneath and navigate. `armedAt` excludes anything with an
+    // earlier timestamp than "when this lock turned on".
+    const armedAt = performance.now();
     function swallow(e: MouseEvent) {
+      if (e.timeStamp <= armedAt) return;
       const target = e.target as HTMLElement | null;
       if (target?.closest?.("[data-coach-caption]")) return;
       e.preventDefault();
@@ -706,9 +717,14 @@ function StepMark({
         type="button"
         onClick={() => setCollapsed(false)}
         /* Clear of both bottom navs — MobileNav's bar is ~76px and PhoneNav's
-           arc reserves 96px — so the one place it can sit on either body is
-           above them, on the left where neither puts a control. */
-        className="fixed bottom-28 left-4 z-[60] flex min-h-11 items-center gap-2 rounded-full bg-pm-charcoal px-4 text-[#F7F4EC] transition-transform active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+           arc reserves 96px (NAV_RESERVE, above) — so the one place it can
+           sit on either body is above them, on the left where neither puts a
+           control. `bottom-28` (112px) used to leave only 16px above that
+           96px band, which read as overlapping the filter rail and mid-feed
+           text on shorter screens; `bottom-36` (144px) clears it by 48px,
+           matched to the same NAV_RESERVE band the rest of this file clamps
+           against rather than a second guessed number. */
+        className="fixed bottom-36 left-4 z-[60] flex min-h-11 items-center gap-2 rounded-full bg-pm-charcoal px-4 text-[#F7F4EC] transition-transform active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
       >
         <span className="mono-label">Tour</span>
         <span className="font-mono text-[11px] tabular-nums text-[#F7F4EC]/70">

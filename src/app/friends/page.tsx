@@ -178,6 +178,19 @@ export default function FriendsPage() {
             >
               Sign in
             </Link>
+            {/* Signing in is the primary action, but not the only way off
+                this screen — the onboarding tour tells a logged-out visitor
+                nothing is locked, and this page shouldn't be the exception
+                (BACKLOG: "/friends logged out is a dead end"). No preview of
+                friend activity here: that data is exactly what signing in
+                gates, and there is no usage count to show per PRODUCT.md. */}
+            <p className="mt-3 text-sm text-zinc-500">
+              Or{" "}
+              <Link href="/feed" className="underline decoration-zinc-300 underline-offset-2 hover:decoration-zinc-500">
+                browse the public feed
+              </Link>{" "}
+              without an account.
+            </p>
           </div>
         ) : (
           <>

@@ -7,8 +7,9 @@
  * a restaurant — and the dropdown is where the visitor says which one they
  * meant. Picking a line commits to that reading and lands on Discover scoped to
  * it (`?q=…&in=dish`); picking nothing and pressing Enter falls through to the
- * ranked search in lib/textMatch.ts, where names beat cuisines beat dishes.
- * Both halves are Calvin's spec.
+ * ranked search in lib/textMatch.ts, where a literal cuisine match beats a
+ * soft name match beats a dish match (Calvin, 2026-09-13). Both halves are
+ * Calvin's spec.
  *
  * Each line carries how many restaurants it returns, which is the shape Calvin
  * asked for twice — "(cannonball dishes 2 results)", then "one selection for
@@ -45,7 +46,12 @@
 import type { MatchedDish, RestaurantView } from "@/data/restaurantTypes";
 import { dishMatchesFor, nearestDishName } from "@/lib/db";
 import { loadCorpus } from "@/lib/discover";
-import { MAX_QUERY, relevanceFor } from "@/lib/discoverFilters";
+import {
+  corpusHasLiteralCategory,
+  MAX_QUERY,
+  relevanceFor,
+  withCategoryDemotion,
+} from "@/lib/discoverFilters";
 import {
   MIN_SUGGEST_QUERY,
   type SuggestAnswer,
@@ -57,6 +63,7 @@ import {
   prepare,
   scopeOf,
   SEARCH_SCOPES,
+  TIER,
   type Prepared,
   type SearchScope,
 } from "@/lib/textMatch";
@@ -158,12 +165,14 @@ function emptyTally(): Tally {
 /**
  * Score the corpus the way the grid scores it, and file the rows by field.
  *
- * `scoreRestaurant` tries name, then cuisine, then neighbourhood, then dish and
- * returns the *first* hit, so every matched row belongs to exactly one reading
- * and the four counts sum to the size of the unscoped result set. A restaurant
- * called Cannonball that also serves a cannonball roll is counted once, under
- * Restaurant — which is right, because that is the line it appears on and the
- * Dish line's page will not contain it.
+ * `scoreRestaurant` scores name and cuisine and keeps the higher of the two —
+ * the ladder interleaves them, so neither can be tried first — then falls back
+ * to neighbourhood, then dish, only when both are 0. Either way it returns one
+ * number, `scopeOf` reads back exactly one field from it, so every matched row
+ * belongs to exactly one reading and the four counts sum to the size of the
+ * unscoped result set. A restaurant called Cannonball that also serves a
+ * cannonball roll is counted once, under Restaurant — which is right, because
+ * that is the line it appears on and the Dish line's page will not contain it.
  */
 function scan(
   query: Prepared,
@@ -181,8 +190,16 @@ function scan(
     best: null,
   };
 
+  // Same "literal-name trap" demotion the grid applies in `scoreMatches` —
+  // otherwise the dropdown would send a visitor typing "tacos" straight to
+  // an unrated restaurant literally called "Tacos" via `value` (single
+  // restaurant match, one click to its page) while the grid it lands on next
+  // ranks that restaurant correctly. See the comment on `withCategoryDemotion`
+  // in lib/discoverFilters.ts.
+  const categoryWord = corpusHasLiteralCategory(restaurants, query);
+
   for (const r of restaurants) {
-    const score = relevanceFor(r, query, dishes);
+    const score = withCategoryDemotion(relevanceFor(r, query, dishes), categoryWord);
     const scope = scopeOf(score);
     if (scope === null) continue;
 
@@ -211,6 +228,52 @@ function scan(
   }
 
   return found;
+}
+
+/**
+ * Whether the Cuisines line should print above Restaurants, on this one term.
+ *
+ * `SEARCH_SCOPES` iterates restaurant before cuisine (see its own comment in
+ * lib/textMatch.ts) and `suggest` below builds `scopes` in that fixed order,
+ * but the dropdown's ordering is a different question from the ranked
+ * ladder's tiering: a visitor who typed a category word wants the category,
+ * even if some restaurant's name also happens to contain the same letters,
+ * regardless of how any one term's name-score and cuisine-score compare on
+ * the ladder. Calvin, after "breaksfast" landed on a restaurant ten miles
+ * away instead of the Breakfast category: a misspelled category word means
+ * the category.
+ *
+ * Three calls, in order:
+ *  1. The term hits a cuisine or search tag *literally* (exact, prefix or
+ *     substring — the literal rungs `explainTerm` in lib/textMatch.ts scores,
+ *     which `scoreCuisine` climbs the same way for this exact vocabulary) —
+ *     Cuisines first, unconditionally. This is the "breaksfast" shape once the
+ *     spelling is fixed to "breakfast": a literal category beats any name.
+ *  2. Failing that, the term reaches a cuisine only through the similarity
+ *     pass, *and* it names one restaurant exactly, whole word for word —
+ *     Restaurants first. A perfect name match is not a guess the way a
+ *     corrected category word is.
+ *  3. Failing that, both readings are guesses (fuzzy cuisine, fuzzy or no
+ *     exact-name restaurant) — Cuisines first, Calvin's call: between two
+ *     corrections, the category is the more useful one to land on.
+ *  4. Otherwise, today's order stands: Restaurants first.
+ *
+ * Reads `found` rather than re-deriving anything, so this never disagrees with
+ * whether the two lines are shown at all or what `fuzzy` says about them —
+ * `suggest` below computes both from the same tallies.
+ */
+function cuisineBeforeRestaurant(found: Scan): boolean {
+  const cuisineLiteral = found.by.cuisine.literal > 0;
+  if (cuisineLiteral) return true;
+
+  const cuisineFuzzy = found.by.cuisine.all > 0; // literal is false here, so this is fuzzy-only
+  if (!cuisineFuzzy) return false;
+
+  const restaurantExactName = found.best !== null && found.best.score === TIER.NAME_EXACT;
+  if (restaurantExactName) return false;
+
+  const restaurantFuzzy = found.by.restaurant.all > 0 && found.by.restaurant.literal === 0;
+  return restaurantFuzzy;
 }
 
 /* --- The endpoint's answer ------------------------------------------------ */
@@ -359,6 +422,19 @@ export async function suggest(raw: string): Promise<SuggestAnswer> {
       },
     ];
   });
+
+  /* Restaurants leads Cuisines by default (`SEARCH_SCOPES`'s own iteration
+     order), except the three calls `cuisineBeforeRestaurant` documents —
+     swapped here rather than in `SEARCH_SCOPES.flatMap` above so
+     that loop stays one thing (what each line says) and this stays another
+     (what order the lines print in). Both readings are 0-or-1 entries, so a
+     swap is the whole reorder; a kind missing from `scopes` (nothing to show)
+     leaves `indexOf` at -1 and this is a no-op. */
+  const restaurantAt = scopes.findIndex((s) => s.kind === "restaurant");
+  const cuisineAt = scopes.findIndex((s) => s.kind === "cuisine");
+  if (restaurantAt !== -1 && cuisineAt !== -1 && cuisineBeforeRestaurant(found)) {
+    [scopes[restaurantAt], scopes[cuisineAt]] = [scopes[cuisineAt], scopes[restaurantAt]];
+  }
 
   /* Calvin: "add an all tab that comes first."
    *

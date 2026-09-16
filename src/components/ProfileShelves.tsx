@@ -1066,3 +1066,82 @@ export function ProfileShelves({
     </section>
   );
 }
+
+/**
+ * The plates on a *public* profile — anyone's, not just your own.
+ *
+ * This is the other half of `ProfileShelves` (the "All posts" archive: same
+ * `Collage`, same `PlateTile`, same `PlateDetailSheet`) with the "New
+ * reactions" shelf and its roll-call left out on purpose. That shelf answers
+ * "what happened on my plates since I last looked" — its badge totals come
+ * from `/api/account/activity`, which is author-scoped by construction (see
+ * that route and the header comment on `useRollCallArrival`) — so it has no
+ * honest answer when the visitor and the subject are different people. Public
+ * profile pages fetch with `getUserPublicPosts` (lib/db.ts), which already
+ * strips private media and never joins hearts, so `posts` here is safe to
+ * render to a stranger as-is.
+ *
+ * The empty state is a real sentence, not an absent section: a profile with a
+ * full grid and one with nothing posted must not render pixel-identical, or a
+ * visitor can't tell "no plates yet" from "this is still loading."
+ */
+export function PublicProfilePlates({ posts: initialPosts }: { posts: ShelfPost[] }) {
+  const [posts, setPosts] = useState(initialPosts);
+  const [openId, setOpenId] = useState<string | null>(null);
+  const openPost = openId ? (posts.find((p) => p.id === openId) ?? null) : null;
+
+  if (posts.length === 0) {
+    return (
+      <section aria-label="Plates" className="mb-6">
+        <p className="mono-label mb-2.5 text-zinc-900">Plates</p>
+        <div className="rounded-2xl bg-white px-5 py-8 text-center text-sm text-zinc-500">
+          No plates posted yet.
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section aria-label="Plates" className="mb-6">
+      <p className="mono-label mb-2.5 text-zinc-900">{`Plates · ${posts.length}`}</p>
+      <Collage
+        posts={posts}
+        tile={(post, tone) => (
+          <PlateTile key={post.id} post={post} tone={tone} onOpen={() => setOpenId(post.id)} />
+        )}
+      />
+      {openPost && (
+        <PlateDetailSheet
+          post={openPost}
+          onClose={() => setOpenId(null)}
+          onCommentAdded={(comment) =>
+            setPosts((prev) =>
+              prev.map((p) =>
+                p.id === openPost.id ? { ...p, comments: [...(p.comments ?? []), comment] } : p
+              )
+            )
+          }
+          onCommentVoted={(commentId, patch) =>
+            setPosts((prev) =>
+              prev.map((p) =>
+                p.id === openPost.id
+                  ? {
+                      ...p,
+                      comments: (p.comments ?? []).map((c) =>
+                        c.id === commentId ? { ...c, ...patch } : c
+                      ),
+                    }
+                  : p
+              )
+            )
+          }
+          onVoted={(patch) =>
+            setPosts((prev) =>
+              prev.map((p) => (p.id === openPost.id ? { ...p, ...patch } : p))
+            )
+          }
+        />
+      )}
+    </section>
+  );
+}

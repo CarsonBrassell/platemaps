@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/lib/auth";
 import { useNavAlerts } from "@/lib/navAlerts";
 import { BrandMark, WordMark } from "@/components/BrandMark";
 import { RestaurantSearch } from "@/components/RestaurantSearch";
@@ -34,11 +35,21 @@ const DOTS: Record<string, { slot: "friends" | "profile"; label: string }> = {
 
 export function Header() {
   const pathname = usePathname();
+  const { account } = useAuth();
 
   /* The unread dots on Friends and Profile. This is the only place in the app
      that surfaces either outside its own page — the request badge used to live
      on the side rail's Profile row, which went away with the rail. */
   const alerts = useNavAlerts();
+
+  /* Logged out, the Profile slot is the account screen's sign-in form, but
+     "Profile" reads as something you already have — it was not landing as a
+     sign-in entry point at all. Same href, same slot, so the row's width is
+     unaffected ("Sign in" and "Profile" are both 7 characters); only the
+     label depends on auth state. */
+  const navRight = NAV_RIGHT.map((link) =>
+    link.href === "/account" && !account ? { ...link, label: "Sign in" } : link
+  );
 
   /* Nav items are mono section labels — the same voice as THE HITS and FULL
      MENU — rather than pills. "You are here" is carried by the 5px orange
@@ -195,7 +206,7 @@ export function Header() {
           <PlusIcon className="h-4 w-4 shrink-0" />
           Post a plate
         </Link>
-        {NAV_RIGHT.map(navItem)}
+        {navRight.map(navItem)}
       </nav>
       {/* The right column, and the search is now all of it.
 

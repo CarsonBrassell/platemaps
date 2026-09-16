@@ -137,6 +137,15 @@ export function PhoneFriendsScreen() {
   const nav = useSearchParams().get("nav");
   const to = (href: string) => (nav ? `${href}?nav=${nav}` : href);
 
+  /* Every link to a public profile from here tags `from=friends` so that
+     page's back link can read "← Friends" instead of guessing — see
+     BACKLOG "Profile's back link is hardcoded to Friends". */
+  const profileHref = (id: string) => {
+    const params = new URLSearchParams({ from: "friends" });
+    if (nav) params.set("nav", nav);
+    return `/m/u/${id}?${params.toString()}`;
+  };
+
   const [friends, setFriends] = useState<Friend[] | null>(null);
   const [incoming, setIncoming] = useState<FriendRequest[]>([]);
   const [outgoing, setOutgoing] = useState<FriendRequest[]>([]);
@@ -283,6 +292,17 @@ export function PhoneFriendsScreen() {
           >
             Sign in
           </Link>
+          {/* Same escape hatch as the web /friends twin — signing in is the
+              primary action, but the tour promises nothing is locked, so a
+              logged-out visitor still needs a way off this screen that isn't
+              a dead end (BACKLOG: "/friends logged out is a dead end"). */}
+          <p className="mt-3 text-sm text-zinc-500">
+            Or{" "}
+            <Link href={to("/m/feed")} className="underline decoration-zinc-300 underline-offset-2">
+              browse the public feed
+            </Link>{" "}
+            without an account.
+          </p>
         </div>
       ) : (
         <>
@@ -388,7 +408,7 @@ export function PhoneFriendsScreen() {
                   >
                     <Avatar name={friend.name} avatarUrl={friend.avatarUrl} />
                     <Link
-                      href={to(`/m/u/${friend.id}`)}
+                      href={profileHref(friend.id)}
                       className={`min-w-0 flex-1 rounded-lg py-1.5 ${FOCUS}`}
                     >
                       <span className="font-display flex items-center gap-1 text-[16px] font-semibold leading-tight text-zinc-900">
@@ -436,7 +456,7 @@ export function PhoneFriendsScreen() {
             {account && (
               <p className="mt-6 text-xs leading-relaxed text-pm-grey-text">
                 <Link
-                  href={to(`/m/u/${account.id}`)}
+                  href={profileHref(account.id)}
                   className={`rounded-sm underline decoration-zinc-300 underline-offset-2 ${FOCUS}`}
                 >
                   See your public profile
@@ -466,7 +486,7 @@ export function PhoneFriendsScreen() {
                     <div className="flex items-center gap-3">
                       <Avatar name={r.name} avatarUrl={r.avatarUrl} />
                       <Link
-                        href={to(`/m/u/${r.userId}`)}
+                        href={profileHref(r.userId)}
                         className={`font-display min-w-0 flex-1 truncate rounded-lg text-[16px] font-semibold leading-tight text-zinc-900 ${FOCUS}`}
                       >
                         {r.name}
@@ -511,7 +531,7 @@ export function PhoneFriendsScreen() {
                   >
                     <Avatar name={r.name} avatarUrl={r.avatarUrl} />
                     <Link
-                      href={to(`/m/u/${r.userId}`)}
+                      href={profileHref(r.userId)}
                       className={`font-display min-w-0 flex-1 truncate rounded-lg text-[16px] font-semibold leading-tight text-zinc-500 ${FOCUS}`}
                     >
                       {r.name}

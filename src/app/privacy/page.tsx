@@ -117,11 +117,11 @@ export default function PrivacyPage() {
               <li>
                 <span className="font-medium text-zinc-900">Content you create:</span> posts,
                 photos attached to posts, restaurant and dish ratings, comments, upvotes,
-                hearts, and aspect votes. See Section 9 of our{" "}
+                hearts, and aspect votes. See Section 6 of our{" "}
                 <Link href="/terms" className="underline underline-offset-2">
                   Terms of Service
                 </Link>{" "}
-                for how ratings and &ldquo;Hits&rdquo; scores work.
+                for how ratings and plate scores work.
               </li>
               <li>
                 <span className="font-medium text-zinc-900">Information collected automatically:</span>{" "}

@@ -423,7 +423,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
     distance ?? post.locationLabel ?? null,
   ].filter(Boolean) as string[];
 
-  const authorHref = isOwner ? "/m/account" : `/m/u/${post.userId}`;
+  const authorHref = isOwner ? "/m/account" : `/m/u/${post.userId}?from=feed`;
   const authorLabel = isOwner ? "View your profile" : `View ${post.authorName}'s profile`;
 
   return (
@@ -455,13 +455,6 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
             restaurant={post.restaurant}
           />
           <DoubleTapPop kind={popKind} popKey={doubleTap.popKey} />
-          {post.price && (
-            <div className="pointer-events-none absolute bottom-3 left-3">
-              <span className="rounded-full bg-white/95 px-2.5 py-1 font-mono text-xs font-medium tabular-nums text-zinc-700">
-                {post.price}
-              </span>
-            </div>
-          )}
         </div>
       )}
 
@@ -598,8 +591,12 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
 
             {/* The verdict, and under it the price — both machine values, both
                 right-aligned, the same pairing THE HITS uses (muted price, bold
-                orange percent). The price only lands here when there is no hero
-                photo wearing its chip. */}
+                orange percent). Always here now, hero photo or not: a badge
+                over the photo was a second home for the same value depending
+                on the post (BACKLOG: "Post price renders in three different
+                card positions depending on the post") — the byline row can't
+                take a fourth segment (see bylineTail above), so this column
+                is the one place both a photo and a photo-less post can share. */}
             <div className="flex shrink-0 flex-col items-end">
               {/* Flat rust rather than the composer meter's heat gradient the
                   web card wears: this is squarely the "large/bold numeral"
@@ -646,7 +643,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                   </span>
                 </span>
               )}
-              {!showsHero && post.price && (
+              {post.price && (
                 <span className="mt-0.5 font-mono text-[11px] tabular-nums text-zinc-500">
                   {post.price}
                 </span>

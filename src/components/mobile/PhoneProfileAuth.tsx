@@ -235,7 +235,7 @@ export function PhoneProfileAuth() {
                 setName(e.target.value);
                 clear("name");
               }}
-              placeholder="carsonb"
+              placeholder="yourname"
               autoComplete="username"
               maxLength={24}
               aria-invalid={badFields.includes("name")}

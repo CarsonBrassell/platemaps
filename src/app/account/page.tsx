@@ -237,7 +237,7 @@ function AuthForm() {
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="carsonb"
+              placeholder="yourname"
               autoComplete="username"
               maxLength={24}
               className={inputClass}
@@ -324,7 +324,7 @@ function AuthForm() {
         <button
           type="submit"
           disabled={submitting || (mode === "signup" && !agreed)}
-          className="w-full rounded-lg bg-pm-orange px-3 py-2 text-sm font-medium text-white transition-transform active:scale-[0.97] disabled:opacity-60"
+          className="w-full rounded-full bg-pm-orange px-3 py-2 text-sm font-medium text-white transition-transform active:scale-[0.97] disabled:opacity-60"
         >
           {mode === "signup" ? "Create account" : "Log in"}
         </button>

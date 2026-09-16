@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import {
   createPasswordReset,
   getLastPasswordResetSentAt,
@@ -61,13 +61,17 @@ export async function POST(req: Request) {
     expiresAt: new Date(Date.now() + RESET_TTL_MS),
   });
 
-  const send = await sendPasswordResetEmail(user.email, user.name, token);
-  const verdict = describeSend(send);
-
-  // Logged rather than returned, for the same reason. A send failure is real
-  // and worth seeing in the server output; it is not worth telling an
-  // anonymous caller that this particular address failed to receive mail.
-  if (!verdict.ok) console.error(`password reset mail failed for ${user.id}: ${verdict.error}`);
+  // The mail send happens after this response is already on the wire: the
+  // reset token is created, so there is nothing left the caller needs to
+  // wait on, and a slow or unreachable mail provider must never hold the
+  // "if that address exists we sent a link" response hostage. Failures are
+  // logged, not returned, for the same account-enumeration reason as above —
+  // an anonymous caller never learns whether a particular send worked.
+  after(async () => {
+    const send = await sendPasswordResetEmail(user.email, user.name, token);
+    const verdict = describeSend(send);
+    if (!verdict.ok) console.error(`password reset mail failed for ${user.id}: ${verdict.error}`);
+  });
 
   return ok;
 }

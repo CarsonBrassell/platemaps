@@ -86,6 +86,22 @@ export function usePostFeed({
     [endpoint],
   );
 
+  /* Endpoint changes (tab switches) must drop the previous feed's data before
+     the new one arrives — otherwise a stale, possibly-empty list from the old
+     endpoint renders under the new tab's copy for the gap between switching
+     and the fetch resolving. That is what "Friends feed is quiet" flashing
+     as "No plates yet" on Discover (or vice versa) was: `posts` stayed `[]`
+     from Friends while `tab` had already moved on. Keyed on `endpoint` alone,
+     not `reloadKey`, so a manual refresh still shows the existing feed while
+     it re-fetches rather than flashing the skeleton. Done during render (the
+     "adjusting state when a prop changes" pattern) rather than in an effect,
+     so the stale list never reaches the screen for even one frame. */
+  const [shownEndpoint, setShownEndpoint] = useState(endpoint);
+  if (shownEndpoint !== endpoint) {
+    setShownEndpoint(endpoint);
+    setPosts(null);
+  }
+
   useEffect(() => {
     let cancelled = false;
     void load(() => cancelled);

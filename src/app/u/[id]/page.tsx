@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
-import { getPublicProfile, getRestaurantById } from "@/lib/db";
+import { getPublicProfile, getRestaurantById, getUserPublicPosts } from "@/lib/db";
+import { getCurrentUser } from "@/lib/session";
 import { initials } from "@/lib/format";
 import { PlateStarIcon } from "@/components/icons";
 import { RankInsignia } from "@/components/RankInsignia";
@@ -9,14 +10,15 @@ import { rankFor } from "@/lib/ranks";
 import { ProfileFriendButton } from "@/components/ProfileFriendButton";
 import { ProfileBlockButton } from "@/components/ProfileBlockButton";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { PublicProfilePlates } from "@/components/ProfileShelves";
 
 /**
  * The public profile — what anyone, friend or stranger, sees when they look
- * this person up. Deliberately thin: name, avatar, rank, favorites, points. No
- * posts, no saved list, no follower/friend count. getPublicProfile in
- * lib/db.ts doesn't even join the posts table, so there's no post history to
- * accidentally leak here later by someone adding a "recent activity" section
- * without re-reading why this page looks the way it does.
+ * this person up. Name, avatar, rank, favorites, points, and — see
+ * `PublicProfilePlates` — the plates this person has posted, or a stated
+ * empty state when they haven't posted any. `getUserPublicPosts` in
+ * lib/db.ts is the query built to answer that safely for an arbitrary
+ * visitor: no saved posts, no hearts, private media stripped in SQL.
  */
 export default async function PublicProfilePage({
   params,
@@ -24,12 +26,13 @@ export default async function PublicProfilePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const profile = await getPublicProfile(id);
+  const [profile, viewer] = await Promise.all([getPublicProfile(id), getCurrentUser()]);
   if (!profile) notFound();
 
-  const favoriteRestaurant = profile.favoriteRestaurantId
-    ? await getRestaurantById(profile.favoriteRestaurantId)
-    : null;
+  const [favoriteRestaurant, posts] = await Promise.all([
+    profile.favoriteRestaurantId ? getRestaurantById(profile.favoriteRestaurantId) : null,
+    getUserPublicPosts(profile.id, viewer?.id ?? null),
+  ]);
 
   const rank = rankFor(profile.points);
 
@@ -107,6 +110,12 @@ export default async function PublicProfilePage({
           <ProfileFriendButton userId={profile.id} />
           <ProfileBlockButton userId={profile.id} />
         </div>
+      </div>
+
+      {/* Straight on the cream ground, not inside the white card above — see
+          the layout note on PublicProfilePlates/ProfileShelves. */}
+      <div className="mx-4 mt-6 sm:mx-6">
+        <PublicProfilePlates posts={posts} />
       </div>
       </div>
     </>

@@ -2217,9 +2217,18 @@ for (const file of files) {
      * So a dated first-party photograph outranks the markup heuristic: the
      * heuristic infers a fee that the evidence rules out. DATED_PHOTO already
      * exists for exactly this kind of "we can see the real thing" exemption.
+     *
+     * The Google Maps "Menu" photo harvest (probe/menu-photos, 2026-09-14) is
+     * the same evidence at scale: every entry it produces is read off a
+     * photograph of the board or printed page, and the agent stamps
+     * crossCheckedAgainst with the harvest name. Sandwich Place ($9.90 subs,
+     * 48/68 divide by 1.1), Mood ALsham (quarter pricing, 22/33 divide by
+     * 1.25) and 664 (28/33 divide by 1.04) all tripped the fee test off their
+     * own boards. Same provenance, same exemption - no need to list each name.
      */
+    const isGoogleMenuPhoto = e.crossCheckedAgainst === "google-maps-menu-photos";
     const priceProvenanceBeatsHeuristic =
-      DATED_PHOTO.has(e.name) || CROSS_CHECKED.has(e.name);
+      DATED_PHOTO.has(e.name) || CROSS_CHECKED.has(e.name) || isGoogleMenuPhoto;
     const looksMarkedUp =
       (markupRatio?.ratio ?? 0) > 0.6 && !priceProvenanceBeatsHeuristic;
 

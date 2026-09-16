@@ -177,6 +177,15 @@ function ProfileOverview() {
   const nav = useSearchParams().get("nav");
   const to = (href: string) => (nav ? `${href}?nav=${nav}` : href);
 
+  /* Tags the one link out to the public profile with `from=account` so its
+     back link reads "← Profile" — see BACKLOG "Profile's back link is
+     hardcoded to Friends". */
+  const profileHref = (id: string) => {
+    const params = new URLSearchParams({ from: "account" });
+    if (nav) params.set("nav", nav);
+    return `/m/u/${id}?${params.toString()}`;
+  };
+
   const [myPosts, setMyPosts] = useState<Post[]>([]);
   const [savedPosts, setSavedPosts] = useState<Post[]>([]);
   const [postsReady, setPostsReady] = useState(false);
@@ -457,7 +466,7 @@ function ProfileOverview() {
 
           <p className="mt-6 text-xs leading-relaxed text-zinc-500">
             <Link
-              href={to(`/m/u/${account.id}`)}
+              href={profileHref(account.id)}
               className={`rounded-sm underline decoration-zinc-300 underline-offset-2 ${FOCUS}`}
             >
               See your public profile

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { QUERY_PARAM } from "@/lib/discoverFilters";
 import { SuggestMenu } from "@/components/SuggestMenu";
@@ -51,6 +51,17 @@ export function RestaurantSearch() {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  /**
+   * Feedback for the gap between Enter and the grid actually changing
+   * (BACKLOG.md: "no visible loading/submit feedback before the grid
+   * changes"). `router.push` is not itself a transition — Next only marks it
+   * as one when the caller wraps it in `startTransition` — so without this
+   * the glass just sits there through a full server round trip and Enter
+   * looks like it did nothing. The magnifier spins in its own place instead
+   * of dimming the field, since the text just typed is the one thing this
+   * search should not visually disturb on submit.
+   */
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     if (!open) return;
@@ -79,7 +90,9 @@ export function RestaurantSearch() {
     if (!q) return;
     setOpen(false);
     inputRef.current?.blur();
-    router.push(`${destination}?${QUERY_PARAM}=${encodeURIComponent(q)}`);
+    startTransition(() => {
+      router.push(`${destination}?${QUERY_PARAM}=${encodeURIComponent(q)}`);
+    });
   }
 
   /**
@@ -98,7 +111,9 @@ export function RestaurantSearch() {
     inputRef.current?.blur();
     // Nothing carried, and always Discover: a search from the header is a fresh
     // question, and a cuisine or dish param is only a filter over there.
-    router.push(hrefForScope(scope, "/"));
+    startTransition(() => {
+      router.push(hrefForScope(scope, "/"));
+    });
   }
 
   const suggest = useSuggest({
@@ -128,20 +143,42 @@ export function RestaurantSearch() {
   // The pinned width above still describes `xl`, where it does matter.
   return (
     <div ref={wrapRef} className="relative hidden w-56 min-w-0 sm:block">
-      <div className="flex items-center gap-2.5 rounded-full bg-white px-4 py-2 transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-pm-orange">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="shrink-0 text-zinc-500"
-          aria-hidden="true"
-        >
-          <circle cx="11" cy="11" r="7" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
+      <div
+        className="flex items-center gap-2.5 rounded-full bg-white px-4 py-2 transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-pm-orange"
+        aria-busy={isPending}
+      >
+        {isPending ? (
+          // The glass itself spins in place rather than being swapped for a
+          // generic spinner, so the one thing that changes on Enter is a
+          // motion cue, not a new shape to parse mid-submit.
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="shrink-0 animate-spin text-zinc-500"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7" strokeOpacity="0.25" />
+            <path d="M18 11a7 7 0 0 0-7-7" strokeLinecap="round" />
+          </svg>
+        ) : (
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="shrink-0 text-zinc-500"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        )}
         <input
           ref={inputRef}
           type="text"

@@ -4,10 +4,12 @@ import { PlateStarIcon } from "@/components/icons";
 import { RankInsignia } from "@/components/RankInsignia";
 import { PhoneProfileFriendButton } from "@/components/mobile/PhoneProfileFriendButton";
 import { ProfileBlockButton } from "@/components/ProfileBlockButton";
-import { getPublicProfile, getRestaurantById } from "@/lib/db";
+import { getPublicProfile, getRestaurantById, getUserPublicPosts } from "@/lib/db";
+import { getCurrentUser } from "@/lib/session";
 import { initials } from "@/lib/format";
 import { rankFor } from "@/lib/ranks";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { PublicProfilePlates } from "@/components/ProfileShelves";
 
 /**
  * The public profile, phone version — what anyone, friend or stranger, sees
@@ -18,13 +20,12 @@ import { VerifiedBadge } from "@/components/VerifiedBadge";
  * there is no hover, no status bar and no second column to put context in.
  * Every one of those links lands here.
  *
- * Deliberately thin, and thin in exactly the same way as `/u/[id]`: name,
- * avatar, rank, points, two favorites. **No posts, no saved list, no hearts,
- * and no friend or follower count.** `getPublicProfile` in lib/db.ts does not even
- * join the posts table, so there is no history to accidentally leak here later
- * by adding a "recent activity" section without re-reading why this page looks
- * the way it does. Hearts are author-only and live behind the session on
- * /m/account; they must never appear on this screen.
+ * Same shape as `/u/[id]`: name, avatar, rank, points, two favorites, and the
+ * plates this person posted — see `PublicProfilePlates` and
+ * `getUserPublicPosts` in lib/db.ts, which is the one query built to answer
+ * "what did they post" for an arbitrary visitor (private media stripped in
+ * SQL, no saved posts, no hearts). Hearts stay author-only and live behind
+ * the session on /m/account; they must never appear on this screen.
  *
  * The favourite restaurant is resolved with `getRestaurantById` rather than by
  * scanning the `restaurants` seed array the web page imports — Postgres is the
@@ -38,18 +39,37 @@ export default async function PhonePublicProfilePage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { id } = await params;
-  const profile = await getPublicProfile(id);
+  const [profile, viewer] = await Promise.all([getPublicProfile(id), getCurrentUser()]);
   if (!profile) notFound();
 
   /* The nav-variant switcher rides in `?nav=` and every link has to carry it or
      the first tap drops you back to the default. Goes away with the switcher. */
-  const rawNav = (await searchParams).nav;
+  const sp = await searchParams;
+  const rawNav = sp.nav;
   const nav = Array.isArray(rawNav) ? rawNav[0] : rawNav;
   const to = (href: string) => (nav ? `${href}?nav=${nav}` : href);
 
-  const favoriteRestaurant = profile.favoriteRestaurantId
-    ? await getRestaurantById(profile.favoriteRestaurantId)
-    : null;
+  /* The back link used to be hardcoded to Friends regardless of where the
+     visitor actually came from (BACKLOG: "Profile's back link is hardcoded
+     to Friends"). This page is a server component and `document.referrer`
+     doesn't update on client-side navigation, so every link site that sends
+     someone here tags `?from=<surface>` instead (PhoneFriendsScreen,
+     PhoneProfileScreen, PhoneFeedPostCard, PhoneFindFriends). Anything
+     missing or unrecognized — a bookmarked or shared link — falls back to
+     the surface root rather than a guess. */
+  const rawFrom = sp.from;
+  const from = Array.isArray(rawFrom) ? rawFrom[0] : rawFrom;
+  const BACK_TARGETS: Record<string, { href: string; label: string }> = {
+    feed: { href: "/m/feed", label: "Feed" },
+    friends: { href: "/m/friends", label: "Friends" },
+    account: { href: "/m/account", label: "Profile" },
+  };
+  const back = (from && BACK_TARGETS[from]) || { href: "/m", label: "Discover" };
+
+  const [favoriteRestaurant, posts] = await Promise.all([
+    profile.favoriteRestaurantId ? getRestaurantById(profile.favoriteRestaurantId) : null,
+    getUserPublicPosts(profile.id, viewer?.id ?? null),
+  ]);
 
   const rank = rankFor(profile.points);
 
@@ -57,10 +77,10 @@ export default async function PhonePublicProfilePage({
     <div className="min-h-dvh">
       <header className="px-4 pb-3 pt-4">
         <Link
-          href={to("/m/friends")}
+          href={to(back.href)}
           className="mono-label inline-flex min-h-11 items-center rounded-full pr-2 text-pm-grey-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
         >
-          ← Friends
+          ← {back.label}
         </Link>
       </header>
 
@@ -138,6 +158,10 @@ export default async function PhonePublicProfilePage({
           <PhoneProfileFriendButton userId={profile.id} />
           <ProfileBlockButton userId={profile.id} />
         </div>
+      </div>
+
+      <div className="mx-4 mt-6">
+        <PublicProfilePlates posts={posts} />
       </div>
     </div>
   );
