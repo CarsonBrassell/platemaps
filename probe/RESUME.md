@@ -39,6 +39,42 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   Calvin: delete the 7 stale POSTGRES_*/PG* lines in .env.local (old
   password), check Vercel env, decide repo visibility (#11/#12).
 
+- **Stage 3 / Phase 2 fixes CODE DONE 2026-09-15, committed on main, NOT PUSHED
+  (push deploys).** Eleven commits, each named `security #N`. #1+#3: photo gate
+  lives in `hydratePosts` (author, mutual friend, or photos_public; else
+  `media: []`), `getPostById` returns null for blocked pairs. #4: new
+  `src/lib/rateLimit.ts` (`limitOrReject`, Postgres table `rate_limit_hits`,
+  fails open) on signup 5/h per IP, forgot 10/h per IP, upload 30/h, posts 20/h,
+  comments 30/15m, votes/hearts/saves 120/15m, friend requests/reports 20/h,
+  blocks 30/h, email 10/h (per user). #5: `headers()` in next.config.ts — HSTS
+  includeSubDomains (no preload on purpose), nosniff, X-Frame DENY, referrer,
+  permissions (camera/geolocation self), CSP enforced = `frame-ancestors 'none'`
+  only; a full CSP is Report-Only and WILL log console violations for Next's
+  inline hydration scripts (needs a nonce middleware before it can be enforced).
+  #6: `**` remotePatterns wildcard removed; `RestaurantPhoto` is `unoptimized`
+  (photos load straight from restaurant hosts); blob host allowlisted. #8:
+  sessions store SHA-256 of the cookie token + `expires_at` (400 d, slid by
+  /api/auth/me); a 36-char legacy row upgrades in place on first use. #9
+  robots.ts + `drafts/layout.tsx` 404 in production. #10 profile pages honour
+  blocks. #13 200-char cap. #14 every `req.json()` → 400. #15 dummy-hash
+  compare + 72-byte cap on login. #16 comment votes honour blocks. #18 strays
+  and 545 menus/wip logs untracked (.gitignore). #19 SIM_OWNER_EMAIL.
+  **DDL already applied to Neon main** (rate_limit_hits, sessions.created_at /
+  expires_at, idx_sessions_expires). **Deploy order matters:** push main, wait
+  for the deploy, THEN `npm run db:migrate` — its UPDATE hashes the 55 legacy
+  plaintext session tokens; run before the deploy it signs everyone out. Then
+  check `curl -sI https://platemaps.com` for the headers; probe/verify-stage3.sh
+  runs the same curl checks against a local `next start`.
+  #7 done: next 16.2.12 → 16.3.5 (+eslint-config-next), bundled sharp 0.35.4;
+  `npm audit fix` also took maplibre-gl 6.2.0 → 6.10.0 (XSS critical) and the
+  static worker files were regenerated. `npm audit --omit=dev` = 0 vulns (one
+  moderate dev-only uuid via @capacitor/cli left). PhoneFeedMapPanel mapRouter
+  shim gained the new required `bfcacheId`. Build + `next start` smoke test:
+  all verify-stage3.sh checks green (headers, 404 drafts, /_next/image 400,
+  bad-JSON 400, 401 no cookie, private media [], signup 429 + Retry-After).
+  Still Calvin: #11/#12 (repo visibility, untrack probe/), #17 .env.local prune,
+  Vercel env check, Blob sweep for orphaned uploads (not done, #4 note).
+
 ## Since 2026-09-05 (newest decisions, read these)
 
 - **Restaurant comment threads show their photos, 2026-09-14 (uncommitted).**
