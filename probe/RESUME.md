@@ -69,7 +69,7 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   auth problem; do Vercel work via click paths or the Vercel CLI. Stale user-config MCP
   entry `vercel` still to remove (`claude mcp remove vercel`). Still open on Calvin's side:
   Analytics tab enabled, MAPTILER_KEY, Sentry DSN, Better Stack monitor, Blob backup
-  decision, Neon data-transfer number. Next: Calvin says "go" -> Stage 2 repo prep
+  decision, Neon data-transfer number. Calvin said "go" 2026-09-15; Stage 2 repo prep done, see next bullet
   (clean tree, baseline, Neon branch sweep, posts indexes, speed-insights + analytics pkgs).
   **Stage 2 / Phase A code DONE 2026-09-15 (no spend):** four indexes created on Neon main
   and recorded in scripts/migrate.mjs (idx_posts_created, idx_posts_user,
