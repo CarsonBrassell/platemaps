@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { castCommentVote, getCommentContext, awardPoints } from "@/lib/db";
+import { castCommentVote, getCommentContext, awardPoints, getBlockStatus } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES } from "@/lib/points";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * Replaces /api/comments/[id]/like. A comment carries a score now, not a like
@@ -17,7 +18,24 @@ export async function POST(
     return NextResponse.json({ error: "Sign in to vote on comments." }, { status: 401 });
   }
 
-  const { direction } = await req.json();
+  const limited = await limitOrReject({
+    scope: "comment-vote:user",
+    key: user.id,
+    max: 120,
+    windowMinutes: 15,
+  });
+  if (limited) return limited;
+
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+  }
+  const { direction } = body as { direction?: unknown };
   if (direction !== "up" && direction !== "down") {
     return NextResponse.json({ error: "Unknown vote direction." }, { status: 400 });
   }
@@ -26,6 +44,14 @@ export async function POST(
   const comment = await getCommentContext(id);
   if (!comment) {
     return NextResponse.json({ error: "That comment is no longer here." }, { status: 404 });
+  }
+
+  /* Same rule as commenting itself: a block in either direction closes the
+     door on interacting with that person's content. See
+     posts/[id]/comments/route.ts for the identical check on the comment
+     write path — this covers the vote path finding #16 flagged as missing. */
+  if ((await getBlockStatus(user.id, comment.userId)) !== "none") {
+    return NextResponse.json({ error: "You can't vote on this comment." }, { status: 403 });
   }
 
   const { myVote, upvoteCount, downvoteCount, firstTimeUpvote } = await castCommentVote(
