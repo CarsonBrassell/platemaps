@@ -181,6 +181,12 @@ export function Header() {
 
           No vertical padding: the bare 44px slots centre in the 60px row at
           the same y as the wordmark and the search field. */}
+      {/* Signed out there is nothing to navigate to: sign-in is mandatory
+          (src/proxy.ts), so every destination here would bounce straight back
+          to the form. The row keeps only the wordmark; nav, search and the
+          MobileNav bar all wait for an account. Keyed on `account` rather than
+          `loading` so the sign-in screen never flashes a menu. */}
+      {account && (
       <nav aria-label="Main" className="hidden shrink-0 items-center xl:flex">
         {NAV_LEFT.map(navItem)}
         {/* The compose button, named rather than left as a bare glyph. Orange
@@ -208,6 +214,7 @@ export function Header() {
         </Link>
         {navRight.map(navItem)}
       </nav>
+      )}
       {/* The right column, and the search is now all of it.
 
           An avatar disc used to sit on the right edge here, a second route to
@@ -225,12 +232,12 @@ export function Header() {
           sits. If it ever reads unbalanced, give the search back the width;
           don't put an ornament in the corner to weigh the scales. */}
       <div className="flex min-w-0 items-center justify-end">
-        <RestaurantSearch />
+        {account && <RestaurantSearch />}
       </div>
     </header>
     {/* Rendered here rather than in each page: Header is already on all of
         them, so this keeps the two halves of one menu in one file. */}
-    <MobileNav alerts={alerts} />
+    {account && <MobileNav alerts={alerts} />}
     </>
   );
 }

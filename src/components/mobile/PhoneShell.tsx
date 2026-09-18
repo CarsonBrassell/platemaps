@@ -2,6 +2,7 @@
 
 import { useQueryParams } from "@/lib/queryString";
 import { PhoneNav, parseNavVariant } from "@/components/mobile/PhoneNav";
+import { useAuth } from "@/lib/auth";
 import { PostFlash } from "@/components/mobile/PostFlash";
 import { PhonePointsFly } from "@/components/mobile/PhonePointsFly";
 import { PhoneSwipeBack } from "@/components/mobile/PhoneSwipeBack";
@@ -35,11 +36,15 @@ import { PhoneSwipeBack } from "@/components/mobile/PhoneSwipeBack";
  */
 export function PhoneShell({ children }: { children: React.ReactNode }) {
   const variant = parseNavVariant(useQueryParams().get("nav") ?? undefined);
+  /* Signed out, the only screen is the sign-in form (src/proxy.ts), and every
+     tab would bounce back to it — so the bar waits for an account. Twin of
+     the same rule in the web Header. */
+  const { account } = useAuth();
 
   return (
     <div className="pm-phone-shell" data-nav={variant}>
       <div className="pm-phone-content">{children}</div>
-      <PhoneNav variant={variant} />
+      {account && <PhoneNav variant={variant} />}
       <PhoneSwipeBack />
       <PostFlash />
       <PhonePointsFly />
