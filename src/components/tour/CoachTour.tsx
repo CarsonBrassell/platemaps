@@ -848,15 +848,17 @@ function StepMark({
  * Whether the tour runs, and the once-per-visit latch that stops it reopening
  * mid-session.
  *
- * ## It does not wait for a login
+ * ## It waits for a login (since 2026-09-17)
  *
- * A signed-out visitor is the *most* first-run person there is — somebody who
- * has just opened the app and is deciding what it is for. Gating the tour on an
- * account meant the one audience it was written for never saw it, and it made
- * the thing untestable locally without signing in first. So the latch has two
- * halves: the account flag when there is an account, `localStorage` when there
- * is not. Signing in later hands over to the account flag, which is the
- * durable one.
+ * It used to fire signed out too, on the argument that a signed-out visitor is
+ * the most first-run person there is. That stopped making sense the day
+ * sign-in became mandatory (`src/proxy.ts`): the only screen a signed-out
+ * visitor can stand on is the sign-in form, and the tour's first move is "Tap
+ * Feed", which the gate bounces straight back. So the walk is deferred — not
+ * latched — until `account` exists, and then it starts on whatever screen the
+ * `?next=` redirect lands them on. The `localStorage` half of the latch is
+ * kept as the fallback `seen` source, but with an account always present it
+ * no longer decides anything.
  *
  * `loading` is waited on deliberately. Firing on the first render would open
  * the tour for a signed-in returner in the moment before `/api/auth/me`
@@ -895,7 +897,7 @@ export function useCoachTour() {
    * the server render and the first client render — the pair that has to match
    * — both bail out above this line.
    */
-  if (loading) return { open: false, fresh: false, close: () => setClosed(true) };
+  if (loading || !account) return { open: false, fresh: false, close: () => setClosed(true) };
 
   const seen = account ? account.tourSeen : readLocalSeen();
 

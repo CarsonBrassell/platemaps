@@ -203,6 +203,16 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   Mexitcatessen". Held chains are the `excluded: generic chain (...)` hold reasons (65 patterns).
   Fixed lines in BACKLOG.md are marked `- [x] fixed:`.
 
+- **Sign-in is mandatory everywhere since 2026-09-17:** `src/proxy.ts` (cookie
+  presence → redirect to `/account?next=` or `/m/account?next=`, 401 for
+  `/api/*`), `src/lib/signInGate.ts` holds the public-path list,
+  `RequireSignIn.tsx` is the client fallback for stale cookies. Two follow-ons:
+  `/api/auth/me` now deletes a dead cookie (so the proxy, not the client,
+  bounces the next visit), and `useCoachTour` waits for an account (the tour's
+  "Tap Feed" first step bounced off the gate). Verified signed out: `/` →
+  `/account?next=%2F`, `/m/feed` → `/m/account?next=%2Fm%2Ffeed`, no tour.
+  Uncommitted.
+
 - **Overnight audit harness, built 2026-09-13, uncommitted; first full run started
   2026-09-15 03:02.** `probe/audit/`: Sonnet agents (`claude -p`) play personas in a
   headless Chromium via `browse.mjs` and file JSON findings; `oracle.mts` scores search

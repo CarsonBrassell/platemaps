@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AuthProvider } from "@/lib/auth";
 import { CoachTourMount } from "@/components/tour/CoachTourMount";
+import { RequireSignIn } from "@/components/RequireSignIn";
 import "./globals.css";
 
 /* The machine voice: every number and machine-generated value — prices,
@@ -144,6 +145,9 @@ export default function RootLayout({
           {/* The first-run walkthrough. Here rather than on a page because
               every step of it ends in a navigation — see CoachTourMount. */}
           <CoachTourMount />
+          {/* Client-side backstop for the sign-in gate in src/proxy.ts — see
+              its own doc comment for what it catches that the proxy can't. */}
+          <RequireSignIn />
         </AuthProvider>
         {/* Field measurement (probe/PERF-PLAN.md #7): Core Web Vitals per route
             and page views. Both are free on Hobby, both are no-ops on localhost

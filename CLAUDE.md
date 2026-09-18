@@ -112,6 +112,7 @@ The remaining scripts regenerate `src/data/` from external APIs and are **not** 
 
 ## Security invariants (Stage 3, 2026-09-15)
 
+- **Sign-in is mandatory everywhere (2026-09-17).** `src/proxy.ts` redirects any request without a `platemap_session` cookie to `/account?next=` (or `/m/account?next=` under `/m`) and answers 401 on `/api/*`; the public-path list lives only in `src/lib/signInGate.ts`; `RequireSignIn.tsx` is the client backstop for a stale cookie. The proxy checks cookie presence only — every route still calls `getCurrentUser()`.
 - `npm run security:check` (`scripts/check-security.mjs`) runs automatically as `prebuild`, so a regression fails the Vercel deploy — it is not optional CI decoration.
 - A new mutating API route (`POST`/`PUT`/`PATCH`/`DELETE` in `src/app/api/**/route.ts`) must call `limitOrReject` — copy an existing route, e.g. `src/app/api/reports/route.ts`.
 - Every `req.json()` must be wrapped in `try`/`catch` or chained with `.catch(` — an unguarded parse 500s on bad input.

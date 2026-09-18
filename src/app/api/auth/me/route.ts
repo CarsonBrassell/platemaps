@@ -30,7 +30,14 @@ export async function GET() {
   if (!token) return NextResponse.json({ user: null });
 
   const user = await getSessionUser(token);
-  if (!user) return NextResponse.json({ user: null });
+  if (!user) {
+    /* Clear the dead cookie, not just decline to renew it. src/proxy.ts gates
+       on cookie *presence*, so a lingering dead token would let every page
+       render fully and then bounce client-side (RequireSignIn) on each visit
+       instead of being redirected before the page is built. */
+    cookieStore.delete(SESSION_COOKIE);
+    return NextResponse.json({ user: null });
+  }
 
   await setSessionCookie(token);
   await touchSession(token);

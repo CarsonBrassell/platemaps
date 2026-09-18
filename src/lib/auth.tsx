@@ -28,6 +28,16 @@ type AuthContextValue = {
   account: Account | null;
   isSignedIn: boolean;
   loading: boolean;
+  /**
+   * True once `/api/auth/me` has given an authoritative answer — either a
+   * user or `{ user: null }`. Stays false while the only thing that has
+   * happened is `UNREACHABLE` (see `fetchAccount`), so a consumer deciding
+   * whether to treat `account === null` as "really signed out" (e.g.
+   * `RequireSignIn`) can wait for this rather than acting on a network blip.
+   * `loading` keeps its existing meaning — this is a separate axis, not a
+   * replacement.
+   */
+  resolved: boolean;
   signUp: (
     name: string,
     email: string,
@@ -140,10 +150,14 @@ async function fetchAccount(): Promise<Account | null | typeof UNREACHABLE> {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [account, setAccount] = useState<Account | null>(null);
   const [loading, setLoading] = useState(true);
+  const [resolved, setResolved] = useState(false);
 
   async function refresh() {
     const account = await fetchAccount();
-    if (account !== UNREACHABLE) setAccount(account);
+    if (account !== UNREACHABLE) {
+      setAccount(account);
+      setResolved(true);
+    }
   }
 
   useEffect(() => {
@@ -155,7 +169,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       /* Only a real answer moves the UI. If the server could not be reached at
          all, stay as we are rather than rendering signed-out — see
          fetchAccount. */
-      if (account !== UNREACHABLE) setAccount(account);
+      if (account !== UNREACHABLE) {
+        setAccount(account);
+        setResolved(true);
+      }
       setLoading(false);
     })();
 
@@ -303,6 +320,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         account,
         isSignedIn: !!account,
         loading,
+        resolved,
         signUp,
         signIn,
         signOut,

@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useQueryParams } from "@/lib/queryString";
+import { safeNext } from "@/lib/signInGate";
 import { PointsBadge } from "@/components/feed/PointsBadge";
 import { CameraIcon, SettingsIcon } from "@/components/icons";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
@@ -532,6 +534,22 @@ function LegalLinks({ className = "" }: { className?: string }) {
 
 export function PhoneProfileScreen() {
   const { isSignedIn, loading } = useAuth();
+  const router = useRouter();
+  const params = useQueryParams();
+
+  /* Twin of the redirect in app/account/page.tsx: once signed in, return to
+     wherever the sign-in gate (src/proxy.ts / RequireSignIn) pulled the
+     visitor in from, if `?next=` names a safe same-origin path and isn't the
+     sign-in screen itself (which would loop). Hooks stay above the `loading`
+     early return below, unconditionally, per rules of hooks. */
+  useEffect(() => {
+    if (!isSignedIn) return;
+    const next = safeNext(params.get("next"));
+    if (!next) return;
+    const destPath = new URL(next, window.location.origin).pathname;
+    if (destPath === "/account" || destPath === "/m/account") return;
+    router.replace(next);
+  }, [isSignedIn, params, router]);
 
   /* Nothing renders while the session is resolving: an auth form that flashes
      and is replaced by a profile is worse than a beat of cream. */

@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
+import { safeNext } from "@/lib/signInGate";
 import { PASSWORD_HINT, checkPassword } from "@/lib/password";
 import { initials } from "@/lib/format";
 import { AvatarCropper } from "@/components/AvatarCropper";
@@ -617,6 +619,21 @@ function AccountOverview() {
 
 export default function AccountPage() {
   const { isSignedIn, loading } = useAuth();
+  const router = useRouter();
+
+  /* Once signed in, send the visitor back to wherever the sign-in gate
+     (src/proxy.ts / RequireSignIn) pulled them in from, if `next` names a
+     safe same-origin path. No `next`, or an unsafe one: stay on the profile,
+     unchanged from before this existed. A `next` pointing back at this page
+     itself is ignored so signing in can never bounce here again. */
+  useEffect(() => {
+    if (!isSignedIn) return;
+    const next = safeNext(new URLSearchParams(window.location.search).get("next"));
+    if (!next) return;
+    const destPath = new URL(next, window.location.origin).pathname;
+    if (destPath === "/account" || destPath === "/m/account") return;
+    router.replace(next);
+  }, [isSignedIn, router]);
 
   return (
     <>
