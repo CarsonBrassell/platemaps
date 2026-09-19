@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getPostById, castVote, awardPoints } from "@/lib/db";
+import { getPostById, castVote, awardPoints, getBlockStatus } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES, milestoneFor } from "@/lib/points";
 import { limitOrReject } from "@/lib/rateLimit";
@@ -38,6 +38,14 @@ export async function POST(
   const { id } = await params;
   const post = await getPostById(id);
   if (!post) {
+    return NextResponse.json({ error: "Post not found." }, { status: 404 });
+  }
+
+  /* Same guard posts/[id]/comments uses: a block is meant to sever contact,
+     and a vote otherwise stays writable (and payable — see awardPoints
+     below) across a block. Read as "not found" like the missing post above,
+     so the id confirms nothing. */
+  if ((await getBlockStatus(user.id, post.userId)) !== "none") {
     return NextResponse.json({ error: "Post not found." }, { status: 404 });
   }
 

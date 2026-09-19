@@ -181,21 +181,46 @@ function foldings(input: string): [string, string] {
 /**
  * Builds the repeat-tolerant, boundary-anchored pattern for one term.
  *
- * `coon` becomes `\bc+o+o+n+\b`, which matches "coon" and "cooooon" but not
- * "con" — two `o+` groups require two separate runs of o.
+ * `coon` becomes `\bc+o{2,}n+\b`, which matches "coon" and "cooooon" but not
+ * "con" — a run of at least two `o`s is required, same as the term itself has.
+ *
+ * A term with a *doubled* letter (`faggot`, `assss`) used to be built as two
+ * adjacent identical repeat groups (`g+g+`, `s+s+`): each accepts the same
+ * characters, so a run of that letter in the input could be split between the
+ * two groups in any of ~N ways, and the regex engine tries all of them via
+ * backtracking — quadratic time in the input length (F30). Collapsing each
+ * run of a repeated letter in the *term* into one `{n,}`-quantified atom
+ * keeps the exact same match set (a run of >= n of that letter, same as
+ * before) while removing the split entirely — one atom can't be internally
+ * ambiguous — so matching stays linear in the input length.
  *
  * Compiled once at module load rather than per call: these are hot paths on
  * every write, and `RegExp` construction is the expensive part.
  */
 function patternFor(term: string, suffixes: readonly string[]): RegExp {
-  const body = term
-    .split("")
-    .map((c) => `${c}+`)
-    .join("");
+  const runs: { char: string; count: number }[] = [];
+  for (const c of term) {
+    const last = runs[runs.length - 1];
+    if (last && last.char === c) last.count += 1;
+    else runs.push({ char: c, count: 1 });
+  }
+  const body = runs.map(({ char, count }) => (count > 1 ? `${char}{${count},}` : `${char}+`)).join("");
   const tail = suffixes.filter(Boolean).join("|");
   const ending = tail ? `(?:${tail})?` : "";
   return new RegExp(`\\b${body}${ending}\\b`);
 }
+
+/**
+ * Hard ceiling on what moderateText will ever run a pattern against.
+ *
+ * Belt-and-braces alongside the per-caller length caps (post text 200,
+ * dishName 120, comment text 1,000 — see postLimits.ts and the comment
+ * route): a caller cap only helps if every caller remembers it, so this is
+ * the backstop that makes the function safe to call with arbitrary input.
+ * Comfortably above every real caller's limit; well below where even a
+ * pathological pattern could matter (F30).
+ */
+const MODERATION_MAX_LENGTH = 2_000;
 
 const BLOCK_PATTERNS = BLOCK_TERMS.map((t) => [t, patternFor(t, [""])] as const);
 const REVIEW_PATTERNS = REVIEW_TERMS.map((t) => [t, patternFor(t, SUFFIXES)] as const);
@@ -207,7 +232,8 @@ const REVIEW_PATTERNS = REVIEW_TERMS.map((t) => [t, patternFor(t, SUFFIXES)] as 
  */
 export function moderateText(input: string): ModerationVerdict {
   if (!input) return { action: "allow" };
-  const forms = foldings(input).filter(Boolean);
+  const capped = input.length > MODERATION_MAX_LENGTH ? input.slice(0, MODERATION_MAX_LENGTH) : input;
+  const forms = foldings(capped).filter(Boolean);
   if (forms.length === 0) return { action: "allow" };
 
   const hits = (patterns: ReadonlyArray<readonly [string, RegExp]>) =>

@@ -288,32 +288,17 @@ export function usePostFeed({
     if (!account) return;
     const current = posts?.find((p) => p.id === postId);
     if (!current) return;
-    const wasSaved = current.savedBy.includes(account.id);
+    const wasSaved = current.savedByMe;
 
-    patchPost(postId, (p) => ({
-      ...p,
-      savedBy: wasSaved
-        ? p.savedBy.filter((id) => id !== account.id)
-        : [...p.savedBy, account.id],
-    }));
+    patchPost(postId, (p) => ({ ...p, savedByMe: !wasSaved }));
 
     try {
       const res = await fetch(`/api/posts/${postId}/save`, { method: "POST" });
       if (!res.ok) throw new Error("failed");
       const data = await res.json();
-      patchPost(postId, (p) => ({
-        ...p,
-        savedBy: data.saved
-          ? [...p.savedBy.filter((id) => id !== account.id), account.id]
-          : p.savedBy.filter((id) => id !== account.id),
-      }));
+      patchPost(postId, (p) => ({ ...p, savedByMe: data.saved }));
     } catch {
-      patchPost(postId, (p) => ({
-        ...p,
-        savedBy: wasSaved
-          ? [...p.savedBy.filter((id) => id !== account.id), account.id]
-          : p.savedBy.filter((id) => id !== account.id),
-      }));
+      patchPost(postId, (p) => ({ ...p, savedByMe: wasSaved }));
       setBanner("Couldn't update your saved plates.");
     }
   }

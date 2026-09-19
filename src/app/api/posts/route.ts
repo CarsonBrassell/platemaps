@@ -127,8 +127,11 @@ export async function POST(req: NextRequest) {
      flagged. The check covers the caption *and* the dish name, because a
      custom dish is free text the composer lets someone type — filtering only
      the caption would leave the obvious hole open. See lib/moderation.ts. */
+  /* dishName has no length check of its own before this point (only text
+     does, above) — cap it here to the same 120 enforced at the write below,
+     so an oversized dishName can't reach the moderation regexes. See F30. */
   const moderated = moderateText(
-    [String(text), dishName ? String(dishName) : ""].join(" "),
+    [String(text), dishName ? String(dishName).slice(0, 120) : ""].join(" "),
   );
   if (moderated.action === "block") {
     return NextResponse.json({ error: BLOCKED_MESSAGE }, { status: 422 });

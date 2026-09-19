@@ -298,7 +298,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
     }
   }
 
-  const saved = currentUserId ? post.savedBy.includes(currentUserId) : false;
+  const saved = currentUserId ? post.savedByMe : false;
   const isOwner = currentUserId === post.userId;
 
   /* The review. Tested for content rather than for null: `text` is nullable and

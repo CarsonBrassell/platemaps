@@ -168,7 +168,7 @@ export function FoodPostCard(props: FoodPostCardProps) {
   const [blocking, setBlocking] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const saved = currentUserId ? post.savedBy.includes(currentUserId) : false;
+  const saved = currentUserId ? post.savedByMe : false;
   const isOwner = currentUserId === post.userId;
   const palette = avatarPalette(post.authorName);
   useEffect(() => {

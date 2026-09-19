@@ -12,6 +12,7 @@ import {
   recordLoginFailure,
 } from "@/lib/loginThrottle";
 import { MAX_PASSWORD_BYTES } from "@/lib/password";
+import { isSameOriginRequest } from "@/lib/originCheck";
 
 /**
  * A hash of a password nobody typed, generated once at module load rather
@@ -64,6 +65,13 @@ function capToBytes(value: string, maxBytes: number): string {
  * same ~50-100ms, with the same 401 body either way.
  */
 export async function POST(req: NextRequest) {
+  // A cross-site <form enctype="text/plain"> can reach this route as a top-
+  // level navigation without ever touching CORS, and SameSite=Lax does not
+  // stop a cookie being *set* by that response — see lib/originCheck.ts.
+  if (!isSameOriginRequest(req)) {
+    return NextResponse.json({ error: "Bad request." }, { status: 403 });
+  }
+
   let parsed: unknown;
   try {
     parsed = await req.json();

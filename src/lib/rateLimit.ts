@@ -22,9 +22,8 @@ import { sql } from "@/lib/sqlClient";
  *
  * **Fails open.** A route that cannot reach the counter must still serve real
  * users — the alternative is one flaky query taking down the whole write
- * path. `checkLimit` and `recordHit` therefore never throw into the caller;
- * `limitOrReject` treats a failed check as "not limited" the same way
- * `loginThrottle` swallows a failed `recordLoginFailure`.
+ * path. `limitOrReject` treats a failed `checkAndRecord` as "not limited" the
+ * same way `loginThrottle` swallows a failed `recordLoginFailure`.
  */
 
 export interface RateLimitOptions {
@@ -45,8 +44,29 @@ interface Verdict {
   retryAfterSeconds: number;
 }
 
-async function checkLimit(opts: RateLimitOptions): Promise<Verdict> {
+/**
+ * Records this hit and counts the window in one statement (F41).
+ *
+ * The previous version awaited a `SELECT count(*)` and only then fired the
+ * INSERT — and fired it without awaiting, so the *next* request's SELECT
+ * could easily run before this one's INSERT had even been sent, let alone
+ * committed. Any number of requests issued concurrently by the same caller
+ * would all read the pre-insert count and all pass, so the cap was only ever
+ * enforced against traffic slow enough to serialize on its own.
+ *
+ * Putting the INSERT in a CTE ahead of the SELECT means this call's own hit
+ * is guaranteed to exist before its own count is taken — the two can no
+ * longer land in the wrong order because they are the same round trip. A
+ * request is blocked when the window's count, *including the row this call
+ * just wrote*, exceeds `max` — equivalent to the old "previous count >= max"
+ * check, just computed after recording instead of before.
+ */
+async function checkAndRecord(opts: RateLimitOptions): Promise<Verdict> {
   const rows = await sql`
+    WITH ins AS (
+      INSERT INTO rate_limit_hits (scope, key) VALUES (${opts.scope}, ${opts.key})
+      RETURNING at
+    )
     SELECT count(*)::int AS hits, max(at) AS last_at
     FROM rate_limit_hits
     WHERE scope = ${opts.scope} AND key = ${opts.key}
@@ -54,7 +74,7 @@ async function checkLimit(opts: RateLimitOptions): Promise<Verdict> {
   `;
   const row = rows[0];
   const hits = Number(row?.hits ?? 0);
-  if (hits < opts.max) return { blocked: false, retryAfterSeconds: 0 };
+  if (hits <= opts.max) return { blocked: false, retryAfterSeconds: 0 };
 
   /* Counted from the most recent hit, not the oldest — same reasoning as
      loginThrottle: someone hammering a limited route stays limited rather
@@ -67,19 +87,16 @@ async function checkLimit(opts: RateLimitOptions): Promise<Verdict> {
   };
 }
 
-/** Records one hit. Prunes its own window roughly one write in twenty, which
+/** Opportunistic housekeeping, unrelated to the atomicity of the check
+    above: prunes this scope's expired rows roughly one call in twenty, which
     keeps the table from growing unbounded without doubling every request's
-    write cost — the same "opportunistic, not scheduled" housekeeping
-    `pruneLoginAttempts` describes, just probabilistic instead of tied to a
-    specific route's success path (this one has no single "success" moment
-    shared by every caller). */
-async function recordHit(scope: string, key: string, windowMinutes: number): Promise<void> {
-  await sql`INSERT INTO rate_limit_hits (scope, key) VALUES (${scope}, ${key})`;
+    write cost. Fire-and-forget — a failed prune must not affect the caller. */
+function pruneOccasionally(scope: string, windowMinutes: number): void {
   if (Math.random() < 0.05) {
-    await sql`
+    sql`
       DELETE FROM rate_limit_hits
       WHERE scope = ${scope} AND at < now() - (${windowMinutes} || ' minutes')::interval
-    `;
+    `.catch(() => {});
   }
 }
 
@@ -101,10 +118,12 @@ async function recordHit(scope: string, key: string, windowMinutes: number): Pro
 export async function limitOrReject(opts: RateLimitOptions): Promise<NextResponse | null> {
   let verdict: Verdict;
   try {
-    verdict = await checkLimit(opts);
+    verdict = await checkAndRecord(opts);
   } catch {
     return null;
   }
+
+  pruneOccasionally(opts.scope, opts.windowMinutes);
 
   if (verdict.blocked) {
     return NextResponse.json(
@@ -113,8 +132,5 @@ export async function limitOrReject(opts: RateLimitOptions): Promise<NextRespons
     );
   }
 
-  recordHit(opts.scope, opts.key, opts.windowMinutes).catch(() => {
-    /* A throttle that cannot write must not block a request it just allowed. */
-  });
   return null;
 }

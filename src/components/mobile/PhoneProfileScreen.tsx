@@ -54,7 +54,7 @@ type Post = {
   downvotedByMe: boolean;
   /** When it was posted — the profile tiles print the day. */
   createdAt: string;
-  savedBy: string[];
+  savedByMe: boolean;
   /**
    * Full comments — the sheet reads them, and replies written from it are
    * appended here; the tiles print the length. `parentId` is what makes the
@@ -215,7 +215,7 @@ function ProfileOverview() {
       .then((data: { posts: Post[] }) => {
         if (cancelled) return;
         setMyPosts(data.posts.filter((p) => p.userId === account.id));
-        setSavedPosts(data.posts.filter((p) => p.savedBy.includes(account.id)));
+        setSavedPosts(data.posts.filter((p) => p.savedByMe));
         setPostsReady(true);
       })
       .catch(() => {

@@ -76,17 +76,42 @@ function buildThread(comments: Comment[], rank: Map<string, number>): ThreadNode
     // Equal standing reads oldest-first, so a conversation stays a conversation.
     Date.parse(a.comment.createdAt) - Date.parse(b.comment.createdAt);
 
-  const sortLevel = (level: ThreadNode[]) => {
+  /* Iterative rather than recursive: a reply chain is depth built one API
+     call at a time (POST /api/posts/[id]/comments has no server-side depth
+     cap), so nesting can run far deeper than the JS call stack allows.
+     `visited` is a second, independent guard against a cyclic parent chain
+     looping this forever instead of overflowing — nodes are unique object
+     references here, so identity is enough (F45). */
+  const visited = new Set<ThreadNode>();
+  const stack: ThreadNode[][] = [roots];
+  while (stack.length > 0) {
+    const level = stack.pop()!;
     level.sort(compare);
-    for (const node of level) sortLevel(node.replies);
-  };
-  sortLevel(roots);
+    for (const node of level) {
+      if (visited.has(node)) continue;
+      visited.add(node);
+      if (node.replies.length > 0) stack.push(node.replies);
+    }
+  }
 
   return roots;
 }
 
-function countReplies(node: ThreadNode): number {
-  return node.replies.reduce((sum, child) => sum + 1 + countReplies(child), 0);
+/** Iterative for the same reason `sortLevel` above is: an attacker-built
+    reply chain can be deeper than the call stack, and a cycle must not spin
+    forever. See F45. */
+function countReplies(root: ThreadNode): number {
+  const visited = new Set<ThreadNode>();
+  const stack: ThreadNode[] = [...root.replies];
+  let count = 0;
+  while (stack.length > 0) {
+    const node = stack.pop()!;
+    if (visited.has(node)) continue;
+    visited.add(node);
+    count += 1;
+    if (node.replies.length > 0) stack.push(...node.replies);
+  }
+  return count;
 }
 
 /**

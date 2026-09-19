@@ -54,12 +54,22 @@ export function signInHrefFor(pathname: string, search: string): string {
  * path: must start with exactly one `/` (rejects `//…`, which a browser
  * reads as protocol-relative to a different host), must not contain a
  * backslash (some browsers normalize `\` to `/`, which is how `/\evil.com`
- * becomes protocol-relative too), and must not carry a scheme
- * (`javascript:`, `data:`, …) anywhere after the leading slash. Returns the
- * raw string unchanged when it passes, or null.
+ * becomes protocol-relative too), must not carry a scheme (`javascript:`,
+ * `data:`, …) anywhere after the leading slash, and must not contain any
+ * whitespace or control character — the WHATWG URL parser silently strips
+ * ASCII tab/CR/LF before parsing, so `/\t/evil.com` would otherwise sail
+ * past every check above and resolve to `//evil.com` (protocol-relative).
+ *
+ * As a last line of defense, the candidate is also resolved against a fixed
+ * dummy origin and required to still point at that same origin afterwards —
+ * this catches any other parser quirk that turns a "safe-looking" string
+ * into a different host without needing to enumerate every trick by name.
+ * Returns the normalized `pathname + search + hash` when it passes, or
+ * null.
  */
 export function safeNext(raw: string | null | undefined): string | null {
   if (typeof raw !== "string" || raw.length === 0) return null;
+  if (/[\s\x00-\x1f\x7f]/.test(raw)) return null;
   if (raw[0] !== "/") return null;
   if (raw[1] === "/") return null;
   if (raw.includes("\\")) return null;
@@ -68,5 +78,13 @@ export function safeNext(raw: string | null | undefined): string | null {
   // without rejecting an ordinary path that happens to contain a colon deep
   // inside a query string.
   if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(raw.slice(1))) return null;
-  return raw;
+  const DUMMY_ORIGIN = "http://safe-next.invalid";
+  let resolved: URL;
+  try {
+    resolved = new URL(raw, DUMMY_ORIGIN);
+  } catch {
+    return null;
+  }
+  if (resolved.origin !== DUMMY_ORIGIN) return null;
+  return `${resolved.pathname}${resolved.search}${resolved.hash}`;
 }

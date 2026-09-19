@@ -38,8 +38,10 @@ export async function POST(
   }
 
   /* Same filter as a post, and checked before anything is looked up: a
-     blocked comment should cost no queries. See lib/moderation.ts. */
-  if (moderateText(String(text)).action === "block") {
+     blocked comment should cost no queries. Capped to the same 1,000 the
+     comment is stored at (below) before moderation runs, so an oversized
+     body can't reach the moderation regexes. See lib/moderation.ts, F30. */
+  if (moderateText(String(text).slice(0, 1_000)).action === "block") {
     return NextResponse.json({ error: BLOCKED_MESSAGE }, { status: 422 });
   }
 

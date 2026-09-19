@@ -2,11 +2,13 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import {
   deleteAllSessions,
+  deleteEmailVerificationsForUser,
   deletePasswordReset,
   deletePasswordResetsForUser,
   getPasswordReset,
   getUserById,
   markEmailVerified,
+  setPendingEmail,
   updatePasswordHash,
 } from "@/lib/db";
 import { checkPassword } from "@/lib/password";
@@ -89,6 +91,14 @@ export async function POST(req: Request) {
   // that fails partway can never leave a spent link redeemable.
   await deletePasswordResetsForUser(user.id);
   await deleteAllSessions(user.id);
+
+  // A password reset is the "someone else has my password" remedy, and a
+  // pending email-change link mailed to an attacker-chosen address must not
+  // survive it — otherwise the attacker, locked out of sign-in, can still
+  // redeem that link and move users.email to their own address, recovering
+  // the account through /api/auth/forgot afterward. See F33.
+  await deleteEmailVerificationsForUser(user.id);
+  await setPendingEmail(user.id, null);
 
   if (!user.emailVerifiedAt) await markEmailVerified(user.id);
 

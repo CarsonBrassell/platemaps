@@ -414,7 +414,7 @@ function FeedPageInner() {
   const scopedPosts = useMemo(() => {
     if (!posts) return [];
     if (navKey === "saved") {
-      return account ? posts.filter((p) => p.savedBy.includes(account.id)) : [];
+      return account ? posts.filter((p) => p.savedByMe) : [];
     }
     return posts;
   }, [posts, navKey, account]);

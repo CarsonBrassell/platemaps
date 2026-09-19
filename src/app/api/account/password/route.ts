@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
-import { updatePasswordHash, deleteOtherSessions } from "@/lib/db";
+import {
+  updatePasswordHash,
+  deleteOtherSessions,
+  deleteEmailVerificationsForUser,
+  setPendingEmail,
+} from "@/lib/db";
 import { getCurrentUser, SESSION_COOKIE } from "@/lib/session";
 import { checkPassword } from "@/lib/password";
 
@@ -69,6 +74,12 @@ export async function POST(req: Request) {
   // Same cost factor as signup and the seed script. Changing it here only
   // would leave two generations of hash in one table for no reason.
   await updatePasswordHash(user.id, await bcrypt.hash(newPassword, 10));
+
+  // Same reasoning as /api/auth/reset: an attacker who parked a pending
+  // email-change link (via /api/account/email) before the real owner
+  // changed the password must not be able to redeem it afterward. See F33.
+  await deleteEmailVerificationsForUser(user.id);
+  await setPendingEmail(user.id, null);
 
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE)?.value ?? "";

@@ -477,12 +477,25 @@ export async function touchSession(token: string): Promise<void> {
 }
 
 /**
- * Deletes both the hashed and legacy-raw forms of the token in one
- * statement — a session that hasn't been read since the migration (so never
- * got upgraded in place) still has to be possible to sign out of.
+ * Deletes the session for this raw token, hashing it the same way
+ * `getSessionUser` does before matching.
+ *
+ * The legacy plaintext branch is gated by `token.length === 36`, exactly
+ * like `getSessionUser`'s upgrade path — never a bare `IN (hash, token)`.
+ * Without that gate, `token` here is caller-controlled (it comes straight
+ * off the logout request's cookie), so a 64-hex value equal to *another
+ * user's* stored hash would match the table's hashed column directly and
+ * delete their session — turning a leaked hash into a working logout
+ * credential. Only an actual 36-char legacy raw token can hit the second
+ * form, and a 64-hex string can never be one.
  */
 export async function deleteSession(token: string): Promise<void> {
-  await sql`DELETE FROM sessions WHERE token IN (${hashToken(token)}, ${token})`;
+  const hash = hashToken(token);
+  if (token.length === 36) {
+    await sql`DELETE FROM sessions WHERE token IN (${hash}, ${token})`;
+  } else {
+    await sql`DELETE FROM sessions WHERE token = ${hash}`;
+  }
 }
 
 /**
@@ -634,7 +647,14 @@ export type Post = {
    * yours to see", never "zero" — a plate with no hearts reports 0.
    */
   heartCount?: number | null;
-  savedBy: string[];
+  /**
+   * Whether the requesting viewer has saved this post. Deliberately NOT the
+   * full list of savers — that list is a behavioral profile (which plates a
+   * given user has bookmarked) and is never assembled for a caller other
+   * than the saver themselves (see getProfilePosts' own id-from-session
+   * rule). Scoped to viewerId the same way upvotedByMe/heartedByMe are.
+   */
+  savedByMe: boolean;
   comments: Comment[];
 };
 
@@ -684,7 +704,7 @@ async function hydratePosts(
   // direction, instead of two queries that differ only in table name. Every
   // one is an HTTP call to Neon, and they multiply by concurrent readers.
   const [
-    saveRows,
+    mySaveRows,
     commentRows,
     commentVoteRows,
     myCommentVoteRows,
@@ -693,7 +713,12 @@ async function hydratePosts(
     myHeartRows,
     friendRows,
   ] = await Promise.all([
-    sql`SELECT post_id, user_id FROM post_saves WHERE post_id = ANY(${ids})`,
+    // Scoped to the viewer's own row only — like myHeartRows below, never the
+    // full list of who saved a post (probe/CLAUDE-SECURITY... F34: that list
+    // is a private, reconstructable saved-post profile per user).
+    viewerId
+      ? sql`SELECT post_id FROM post_saves WHERE post_id = ANY(${ids}) AND user_id = ${viewerId}`
+      : Promise.resolve([]),
     // Flat, in the order they were written. The reply tree is assembled from
     // parent_id by whoever renders it — a recursive CTE would order the rows
     // for one presentation (depth-first, oldest-first) and the thread offers
@@ -787,6 +812,7 @@ async function hydratePosts(
     myPostVoteRows.filter((r) => r.dir === "down").map((r) => r.post_id as string),
   );
   const myHearts = new Set(myHeartRows.map((r) => r.post_id as string));
+  const mySaves = new Set(mySaveRows.map((r) => r.post_id as string));
 
   const commentUpvotes = new Map(
     commentVoteRows.map((r) => [r.comment_id as string, r.up as number]),
@@ -834,7 +860,7 @@ async function hydratePosts(
       // Only getProfilePosts asks for the column, and its CASE has already
       // nulled it for anything the requester did not write.
       heartCount: row.heart_count ?? null,
-      savedBy: saveRows.filter((s) => s.post_id === postId).map((s) => s.user_id as string),
+      savedByMe: mySaves.has(postId),
       comments: commentRows
         .filter((c) => c.post_id === postId)
         .map((c) => ({
@@ -865,7 +891,14 @@ const POST_SELECT = `
 `;
 
 export async function getPosts(viewerId: string | null = null): Promise<Post[]> {
-  const rows = await sql.query(`${POST_SELECT} ORDER BY p.created_at ASC`);
+  // Same block filter every sibling reader applies (getPostById, the
+  // discover/friends feeds, getDishPosts) — this was the one unfiltered path
+  // that handed a blocked pair each other's posts in bulk.
+  const blockedIds = viewerId ? await getBlockedEitherWayIds(viewerId) : [];
+  const rows = await sql.query(
+    `${POST_SELECT} WHERE p.user_id != ALL($1) ORDER BY p.created_at ASC`,
+    [blockedIds],
+  );
   return hydratePosts(rows, viewerId);
 }
 
@@ -884,8 +917,10 @@ export async function getPosts(viewerId: string | null = null): Promise<Post[]> 
  * The `OR` is what keeps it one query rather than two: the saved grid and the
  * plate shelves are both on this screen, and fetching them separately would
  * trade one oversized request for two round trips plus a second hydration.
- * Both sets pass through the same `savedBy`/`userId` fields the callers
- * already filter on, so the client code splitting them apart is unchanged.
+ * Both sets pass through the same `savedByMe`/`userId` fields the callers
+ * already filter on, so the client code splitting them apart is unchanged —
+ * `savedByMe` reads correctly here because this is always called with
+ * `viewerId === userId` (the caller's own profile), never a third party's.
  *
  * Takes the id from the session at the call site, never from a query
  * parameter — a caller-supplied id here would hand anyone another person's
@@ -1380,7 +1415,7 @@ export async function createPost(data: {
     upvotedByMe: true,
     downvotedByMe: false,
     heartedByMe: false,
-    savedBy: [],
+    savedByMe: false,
     comments: [],
   };
 }
@@ -1400,16 +1435,33 @@ export async function createPost(data: {
  */
 export async function deletePost(id: string): Promise<void> {
   const rows = (await sql`
-    SELECT jsonb_array_elements(media)->>'url' AS url
+    SELECT user_id, jsonb_array_elements(media)->>'url' AS url
       FROM posts
      WHERE id = ${id} AND jsonb_array_length(media) > 0
-  `) as { url: string | null }[];
+  `) as { user_id: string; url: string | null }[];
 
   await sql`DELETE FROM posts WHERE id = ${id}`;
 
-  const urls = rows
-    .map((r) => r.url)
-    .filter((u): u is string => typeof u === "string" && isStoredPhotoUrl(u));
+  // The row's own author, read back from the DB — never trusted from the
+  // caller — is the only identity a URL is allowed to match. Mirrors the
+  // `pathname.includes(`/${user.id}/`)` ownership check blob/upload's DELETE
+  // enforces for the same reason: without it, this is an endpoint that lets
+  // anyone delete any photo on the app whose URL they happen to know, by
+  // attaching it to a throwaway post and deleting that post (CLAUDE-SECURITY
+  // F28/F29).
+  const ownerId = rows[0]?.user_id;
+  const urls = ownerId
+    ? rows
+        .map((r) => r.url)
+        .filter((u): u is string => typeof u === "string" && isStoredPhotoUrl(u))
+        .filter((u) => {
+          try {
+            return new URL(u).pathname.includes(`/${ownerId}/`);
+          } catch {
+            return false;
+          }
+        })
+    : [];
   if (urls.length === 0) return;
 
   try {

@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Header } from "@/components/Header";
 import { getBlockStatus, getPublicProfile, getRestaurantById, getUserPublicPosts } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { signInHrefFor } from "@/lib/signInGate";
 import { initials } from "@/lib/format";
 import { PlateStarIcon } from "@/components/icons";
 import { RankInsignia } from "@/components/RankInsignia";
@@ -29,10 +30,20 @@ export default async function PublicProfilePage({
   const [profile, viewer] = await Promise.all([getPublicProfile(id), getCurrentUser()]);
   if (!profile) notFound();
 
+  /* This page isn't in signInGate's public list, so it's meant to require a
+     session — but the proxy only checks that a `platemap_session` cookie is
+     present, not that it resolves to anyone (see src/proxy.ts). A cookie
+     that fails to resolve must be treated as no session at all, not as a
+     free pass to view the page as an anonymous stranger: that was the hole
+     that let a forged cookie skip the block check below entirely. */
+  if (!viewer) {
+    redirect(signInHrefFor(`/u/${id}`, ""));
+  }
+
   /* A block in either direction hides the profile card the same way an
      unknown id does — blocking is expected to make someone disappear, not
      just hide the friend/follow affordance. See SECURITY-FINDINGS.md #10. */
-  if (viewer && viewer.id !== id) {
+  if (viewer.id !== id) {
     const blockStatus = await getBlockStatus(viewer.id, id);
     if (blockStatus !== "none") notFound();
   }

@@ -60,7 +60,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Enter your current password." }, { status: 400 });
   }
 
-  if (typeof email !== "string" || !EMAIL_PATTERN.test(email.trim())) {
+  /* Length is checked before the regex ever runs — an unbounded string into
+     a two-adjacent-dot-accepting-class pattern is quadratic-backtracking
+     territory (F39). 254 is RFC 5321's cap on the whole address. */
+  if (typeof email !== "string" || email.trim().length > 254 || !EMAIL_PATTERN.test(email.trim())) {
     return NextResponse.json({ error: "That doesn't look like an email address." }, { status: 400 });
   }
 

@@ -75,7 +75,7 @@ export type Post = {
   downvotedByMe: boolean;
   /** Private acknowledgment. Never a count — see lib/db.ts's getHeartsForAuthor. */
   heartedByMe: boolean;
-  savedBy: string[];
+  savedByMe: boolean;
   comments: Comment[];
 };
 
