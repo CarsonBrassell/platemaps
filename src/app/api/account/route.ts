@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { deleteUser, restaurantIdsPostedBy } from "@/lib/db";
 import { invalidateRestaurantPage } from "@/lib/restaurantPage";
 import { getCurrentUser, SESSION_COOKIE } from "@/lib/session";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * Delete the signed-in account and everything it produced.
@@ -49,6 +50,18 @@ export async function DELETE(req: Request) {
       { status: 400 }
     );
   }
+
+  // Same counter as the password-change route, and for the same reason: the
+  // re-authentication only means something if it can't be guessed at speed
+  // from behind a session the attacker already has. See F11/F12.
+  const limited = await limitOrReject({
+    scope: "account:reauth",
+    key: user.id,
+    max: 10,
+    windowMinutes: 15,
+    message: "Too many password attempts. Try again in a few minutes.",
+  });
+  if (limited) return limited;
 
   if (!(await bcrypt.compare(password, user.passwordHash))) {
     // Deliberately not "wrong password for this account" — the caller is

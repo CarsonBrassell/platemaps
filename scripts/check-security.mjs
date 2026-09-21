@@ -48,8 +48,6 @@ const warnings = [];
 // reason
 const RATE_LIMIT_ALLOWLIST = new Set([
   "src/app/api/account/email/verify/route.ts",
-  "src/app/api/account/password/route.ts",
-  "src/app/api/account/route.ts",
   "src/app/api/account/sessions/route.ts",
   "src/app/api/account/settings/route.ts",
   "src/app/api/account/username/route.ts",

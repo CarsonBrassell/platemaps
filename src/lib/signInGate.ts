@@ -86,5 +86,10 @@ export function safeNext(raw: string | null | undefined): string | null {
     return null;
   }
   if (resolved.origin !== DUMMY_ORIGIN) return null;
+  // The parser collapses dot segments, so "/..//evil.com" comes back with a
+  // pathname of "//evil.com" — protocol-relative, and router.replace follows
+  // it off-site. The raw[1] check above only sees the input; this sees the
+  // output. See F13.
+  if (resolved.pathname.startsWith("//")) return null;
   return `${resolved.pathname}${resolved.search}${resolved.hash}`;
 }

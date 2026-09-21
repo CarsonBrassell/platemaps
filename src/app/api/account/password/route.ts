@@ -9,6 +9,7 @@ import {
 } from "@/lib/db";
 import { getCurrentUser, SESSION_COOKIE } from "@/lib/session";
 import { checkPassword } from "@/lib/password";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * Change the password, current password required.
@@ -59,6 +60,20 @@ export async function POST(req: Request) {
   if (weak) {
     return NextResponse.json({ error: weak }, { status: 400 });
   }
+
+  /* The re-authentication is what a stolen session cannot pass on its own, so
+     it has to be counted like the login form is — otherwise it is an oracle
+     for guessing the password behind a cookie the attacker already holds.
+     Keyed by user, shared with the delete route: ten tries in fifteen minutes
+     is generous for a person and useless for a wordlist. See F11/F12. */
+  const limited = await limitOrReject({
+    scope: "account:reauth",
+    key: user.id,
+    max: 10,
+    windowMinutes: 15,
+    message: "Too many password attempts. Try again in a few minutes.",
+  });
+  if (limited) return limited;
 
   if (!(await bcrypt.compare(currentPassword, user.passwordHash))) {
     return NextResponse.json({ error: "That password isn't right." }, { status: 401 });

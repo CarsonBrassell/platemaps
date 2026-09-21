@@ -64,12 +64,24 @@ import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { promisify } from "node:util";
 import { neon } from "@neondatabase/serverless";
 import { chromium } from "playwright";
 import { junkReason } from "./junk-menu.mjs";
 
-const execFileAsync = promisify(execFile);
+/* execFile with a body fed over stdin — promisify(execFile) has no way to
+   write to the child, and the curl replay must not put a captured body on the
+   command line (see curlReplays). */
+function execCurl(args, stdin) {
+  return new Promise((resolve, reject) => {
+    const child = execFile(
+      "curl", args, { maxBuffer: 64 * 1024 * 1024, timeout: 30_000 },
+      (err, stdout) => (err ? reject(err) : resolve({ stdout })),
+    );
+    child.stdin.on("error", () => {});
+    if (stdin != null) child.stdin.end(String(stdin));
+    else child.stdin.end();
+  });
+}
 
 /* ------------------------------------------------------------------ flags */
 
@@ -746,19 +758,31 @@ async function followMenuLink(page, r, log) {
  * move into the router and stop costing a browser launch per branch.
  */
 async function curlReplays(cap, sampleNames) {
+  /* Everything in `cap` was captured off a third-party page, so none of it is
+     trusted as a curl argument. The URL goes after `--` and must be http(s) —
+     curl also speaks file://, gopher:// and friends. The body never goes on
+     the command line at all: `--data-binary @path` reads a local file, so a
+     captured body of `@.env.local` would have sent our env file to the
+     restaurant's server. It is piped over stdin instead (`@-`). See F10. */
+  if (!/^https?:\/\//i.test(String(cap.url ?? ""))) {
+    return { ok: false, note: `curl replay skipped: not an http(s) URL` };
+  }
+  if (!/^[A-Z]{3,10}$/.test(String(cap.method ?? "GET"))) {
+    return { ok: false, note: `curl replay skipped: odd method` };
+  }
   const args = [
     "-sS", "-o", "-", "-w", "\\n__STATUS__%{http_code}", "--max-time", "25",
     "--compressed", "-A", UA, "-H", "Accept: application/json,text/html,text/plain,*/*",
   ];
   if (cap.method !== "GET") args.push("-X", cap.method);
   if (cap.postData) {
-    args.push("--data-binary", cap.postData);
-    const ct = cap.reqContentType ?? "application/json";
+    args.push("--data-binary", "@-");
+    const ct = String(cap.reqContentType ?? "application/json").replace(/[\r\n]/g, "");
     args.push("-H", `Content-Type: ${ct}`);
   }
-  args.push(cap.url);
+  args.push("--", cap.url);
   try {
-    const { stdout } = await execFileAsync("curl", args, { maxBuffer: 64 * 1024 * 1024, timeout: 30_000 });
+    const { stdout } = await execCurl(args, cap.postData ?? null);
     const status = Number(stdout.match(/__STATUS__(\d+)\s*$/)?.[1] ?? 0);
     const body = stdout.replace(/\n__STATUS__\d+\s*$/, "");
     if (status < 200 || status >= 300) return { ok: false, note: `curl replay returned HTTP ${status}` };
