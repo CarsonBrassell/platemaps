@@ -314,6 +314,8 @@ function PhoneAddressControl() {
           <input
             id={inputId}
             type="text"
+            // Mounted by the tap that opened it; see DiscoverFilters.
+            autoFocus
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             onKeyDown={(e) => {

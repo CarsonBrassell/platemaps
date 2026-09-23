@@ -45,3 +45,34 @@ export function milesBetween(a: Coords, b: Coords): number {
 export function formatMiles(mi: number): string {
   return mi < 10 ? `${mi.toFixed(1)} mi` : `${Math.round(mi)} mi`;
 }
+
+/** The digits half of `formatMiles`, without the unit — shared with `formatWalk`
+    below so a routed distance and a straight-line one read as the same number
+    at the same precision. */
+function milesDigits(mi: number): string {
+  return mi < 10 ? mi.toFixed(1) : String(Math.round(mi));
+}
+
+const METERS_PER_MILE = 1609.34;
+
+/**
+ * A routed walk, as a card prints it: "0.7 mi · 14 min". See
+ * lib/walking.ts, the only caller — it is the thing that turns a straight
+ * line into an actual number of metres and seconds, this just formats them.
+ *
+ * `estimated` marks a straight-line guess standing in for a routed answer
+ * (ORS unreachable, over quota, or this one pair unroutable) with a leading
+ * `~` — "~0.7 mi · 14 min" — that covers the whole reading.
+ *
+ * No "walk" suffix: the card's distance slot is a narrow mono column beside a
+ * truncating name, and "0.7 mi · 14 min walk" does not fit it. The phone card
+ * prints the minutes alone with the word (see PhoneDiscoverResults).
+ *
+ * Minutes round up and floor at 1: a walk is never "0 min", and rounding down
+ * would print one for a distance that takes closer to two.
+ */
+export function formatWalk(meters: number, seconds: number, estimated: boolean): string {
+  const miles = meters / METERS_PER_MILE;
+  const minutes = Math.max(1, Math.ceil(seconds / 60));
+  return `${estimated ? "~" : ""}${milesDigits(miles)} mi · ${minutes} min`;
+}

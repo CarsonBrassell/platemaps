@@ -138,8 +138,13 @@ export function PhoneRestaurantCardGrid({
                 {restaurant.matchedDish.price}
               </span>
             )}
+            {/* max-w + truncate: this row is a three-way split with the dish
+                chip and price, and a routed walk string runs much longer
+                than the seeded "0.8 mi" this was sized for. The card is
+                overflow-hidden, so uncapped it would clip mid-character
+                instead of ellipsizing. */}
             {distance && (
-              <span className="ml-auto shrink-0 font-mono tabular-nums text-zinc-500">
+              <span className="ml-auto max-w-[6rem] shrink-0 truncate font-mono tabular-nums text-zinc-500">
                 {distance}
               </span>
             )}
@@ -164,7 +169,9 @@ export function PhoneRestaurantCardGrid({
                 </span>
               )}
               {distance && (
-                <span className="ml-auto shrink-0 font-mono tabular-nums">{distance}</span>
+                <span className="ml-auto max-w-[6rem] shrink-0 truncate font-mono tabular-nums">
+                  {distance}
+                </span>
               )}
             </p>
           )

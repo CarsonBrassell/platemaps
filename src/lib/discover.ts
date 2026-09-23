@@ -60,7 +60,8 @@ import {
 // keep working. New code should take them from discoverFilters directly.
 export { PAGE_SIZE, parseShown } from "@/lib/discoverFilters";
 import type { FeedPlace } from "@/lib/feedFilters";
-import { formatMiles, milesBetween, type Coords } from "@/lib/geo";
+import { formatMiles, formatWalk, milesBetween, type Coords } from "@/lib/geo";
+import { walkingFor } from "@/lib/walking";
 import type { RestaurantView } from "@/data/restaurantTypes";
 import {
   dishMatchesFor,
@@ -98,6 +99,18 @@ export type DiscoverResult = RestaurantView & {
    * the card says so rather than falling back to a borrowed number.
    */
   plateScore: PlateScore;
+  /**
+   * A routed walk in meters, when this row is within walking range (3 mi) of
+   * `here` and lib/walking.ts managed to price it — routed or estimated
+   * either way. Absent for anything farther out, which keeps `distance` as
+   * the straight-line string `withDistance` already produces for those rows.
+   */
+  walkMeters?: number;
+  /** The same walk, in minutes rounded up (never below 1). */
+  walkMinutes?: number;
+  /** True when `walkMeters`/`walkMinutes` are a straight-line guess standing
+      in for a routed answer — see lib/walking.ts's `estimateFor`. */
+  walkEstimated?: boolean;
 };
 
 export type DiscoverPage = {
@@ -287,10 +300,18 @@ export async function getDiscoverPage(
 
   const matched = orderResults(applyFilters(restaurants, filters, ctx), filters, here, scores);
   const limit = Math.min(Math.max(shown, PAGE_SIZE), MAX_SHOWN);
+  // Sort order stays straight-line (orderResults, above, is untouched) — only
+  // the printed distance on this page's rows gets upgraded to a routed walk.
+  const shownRows = matched.slice(0, limit);
+  // Priced against exactly the rows this response is about to show, never the
+  // whole `matched` set: walkingFor's cost is per-restaurant, and a page the
+  // visitor never scrolls to has no business spending an ORS call. Only when
+  // `here` is set — the same guard withDistance already uses below.
+  const walking = here ? await walkingFor(here, shownRows) : null;
 
   return {
     filters,
-    results: matched.slice(0, limit).map((r) => {
+    results: shownRows.map((r) => {
       const score = filters.aspect ? aspects.get(r.id)?.get(filters.aspect) : undefined;
       const plate = plates[r.id] ?? EMPTY_PLATE_SCORE;
       // Attached to the page slice, not to the corpus rows: the matched dish
@@ -300,9 +321,22 @@ export async function getDiscoverPage(
       const dish = namedDish?.get(r.id) ?? dishes?.get(r.id);
       const withDish = dish ? { ...r, matchedDish: dish } : r;
       const base = here ? withDistance(withDish, here) : withDish;
+      // A routed walk replaces the straight-line `distance` string wholesale
+      // (formatWalk, not formatMiles) — beyond 3 mi, or when walkingFor found
+      // nothing for this id, `base.distance` from withDistance stands as-is.
+      const walk = walking?.get(r.id);
+      const withWalk = walk
+        ? {
+            ...base,
+            distance: formatWalk(walk.meters, walk.seconds, walk.estimated),
+            walkMeters: walk.meters,
+            walkMinutes: Math.max(1, Math.ceil(walk.seconds / 60)),
+            walkEstimated: walk.estimated,
+          }
+        : base;
       return score === undefined
-        ? { ...base, plateScore: plate }
-        : { ...base, plateScore: plate, aspectScore: score };
+        ? { ...withWalk, plateScore: plate }
+        : { ...withWalk, plateScore: plate, aspectScore: score };
     }),
     total: matched.length,
     shown: Math.min(limit, matched.length),

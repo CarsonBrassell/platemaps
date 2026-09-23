@@ -117,7 +117,13 @@ export function PhoneDiscoverResults({
                 /* `distance` is the downtown-origin string on an unlocated
                    page, and this card has never printed that — `milesAway` is
                    only ever set beside a distance measured from the reader. */
-                distance={restaurant.milesAway !== undefined ? restaurant.distance : null}
+                distance={
+                  restaurant.walkMinutes !== undefined
+                    ? `${restaurant.walkEstimated ? "~" : ""}${restaurant.walkMinutes} min walk`
+                    : restaurant.milesAway !== undefined
+                      ? restaurant.distance
+                      : null
+                }
                 /* Only a restaurant that actually scored in the filtered
                    category — `getDiscoverPage` attaches `aspectScore` under
                    exactly those conditions. */

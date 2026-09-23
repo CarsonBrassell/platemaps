@@ -516,6 +516,9 @@ function AddressControl({
         <input
           id={inputId}
           type="text"
+          // Mounted by the tap on "Use an address", so focusing it is the answer
+          // to that tap, not a grab on page load.
+          autoFocus
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           onKeyDown={(e) => {

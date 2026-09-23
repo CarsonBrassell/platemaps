@@ -185,7 +185,13 @@ export function RestaurantCard({
           <p className="font-display truncate text-[15px] font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-pm-orange-text">
             {restaurant.name}
           </p>
-          <span className="shrink-0 pt-0.5 font-mono text-xs tabular-nums text-zinc-500">
+          {/* max-w + truncate rather than the bare shrink-0 this used to be:
+              a routed walk ("~0.7 mi · 14 min", lib/geo.ts's
+              formatWalk) runs 2-4x longer than the seeded "3.4 mi" this was
+              sized for. The card itself is overflow-hidden, so without a cap
+              a too-long string would be hard-clipped mid-character with no
+              ellipsis instead of degrading visibly. */}
+          <span className="max-w-[8.5rem] shrink-0 truncate pt-0.5 font-mono text-xs tabular-nums text-zinc-500">
             {restaurant.distance}
           </span>
         </div>

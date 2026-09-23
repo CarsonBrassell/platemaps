@@ -1304,6 +1304,26 @@ const statements = [
   `ALTER TABLE posts ADD COLUMN IF NOT EXISTS meal_id TEXT REFERENCES posts(id) ON DELETE CASCADE`,
   `ALTER TABLE posts ADD COLUMN IF NOT EXISTS course_index INTEGER NOT NULL DEFAULT 0`,
   `CREATE INDEX IF NOT EXISTS idx_posts_meal ON posts (meal_id) WHERE meal_id IS NOT NULL`,
+
+  // Walking distance (lib/walking.ts). Discover cards within 3 miles show a
+  // routed walk — "0.7 mi · 14 min" — instead of the straight line, from
+  // OpenRouteService's matrix API. That API is metered (free tier: 500
+  // requests/day), so answers are shared across every visitor standing in
+  // roughly the same place: `cell` is the visitor's position snapped to a
+  // ~150m grid (see `cellOf` in lib/walking.ts), not a raw coordinate, so a
+  // block of readers asking "how far is this taco shop" in the same hour
+  // costs one ORS call instead of one per person. `restaurant_id` is TEXT to
+  // match `restaurants.id`. This is a cache, not a source of truth — rows
+  // expire after 90 days of disuse (lib/walking.ts) and nothing here is ever
+  // updated in place, only inserted or deleted wholesale.
+  `CREATE TABLE IF NOT EXISTS walk_cache (
+    cell TEXT NOT NULL,
+    restaurant_id TEXT NOT NULL,
+    meters INTEGER NOT NULL,
+    seconds INTEGER NOT NULL,
+    last_used_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (cell, restaurant_id)
+  )`,
 ];
 
 for (const statement of statements) {
