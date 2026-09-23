@@ -71,6 +71,11 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   `npm audit --omit=dev` high/critical). A regression fails the Vercel build;
   `SKIP_AUDIT=1` skips only the audit step. `npm run security:check` /
   `npm run security:verify`. Avatar POST got the missing 30/h limit.
+  **Claude Security remaining-areas scan (2026-09-23):** report in
+  `CLAUDE-SECURITY-20260923-005845/`. F1-F5, F7-F10 fixed in e5d7325 (block
+  check on replies + pushes, signup origin check, own-blob-host photo URLs,
+  dish-review injection, menu-script SSRF guard `scripts/public-url.mjs`).
+  F6 (password length) left as-is by owner decision.
   #7 done: next 16.2.12 → 16.3.5 (+eslint-config-next), bundled sharp 0.35.4;
   `npm audit fix` also took maplibre-gl 6.2.0 → 6.10.0 (XSS critical) and the
   static worker files were regenerated. `npm audit --omit=dev` = 0 vulns (one
