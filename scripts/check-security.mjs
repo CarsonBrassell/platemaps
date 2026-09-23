@@ -56,6 +56,9 @@ const RATE_LIMIT_ALLOWLIST = new Set([
   "src/app/api/friends/respond/route.ts",
   "src/app/api/friends/route.ts",
   "src/app/api/posts/[id]/route.ts",
+  // Read-only: POST only to keep the Nearby coords out of the URL, same as
+  // restaurants/discover below.
+  "src/app/api/posts/discover/route.ts",
   "src/app/api/restaurants/discover/route.ts",
 ]);
 
