@@ -1,5 +1,7 @@
 # Resume pack
 
+- **Deployed 2026-09-22:** everything to date pushed as 55561f8 + fc39189 (prebuild security check needed posts/discover POST allowlisted). Vercel green.
+
 Read this and nothing else when a session starts or continues after
 compaction. It is kept under 2K tokens on purpose. RUNBOOK, STATE, CONTEXT,
 TRIAGE and FINDINGS are for humans and for `grep`; do not read them whole.
@@ -88,7 +90,7 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
 
 ## Since 2026-09-05 (newest decisions, read these)
 
-- **Nearby redesigned as a filter chip, not a sort (2026-09-22, uncommitted,
+- **Nearby redesigned as a filter chip, not a sort (2026-09-22, shipped 55561f8,
   web + phone).** The first pass added Nearby as a third Discover sort
   segment; Calvin didn't like it. Reverted: `FeedSort` is back to
   `"trending" | "new"` two segments, `FeedSortSwitch` restored via
@@ -105,13 +107,13 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   max 4.35 mi, 0 over-radius; LA both sorts 0; no-coords returns the full 29;
   paging (new+coords, limit 5) 3 pages, 11 unique, 0 duplicates. **No
   screenshot yet** — Calvin said he'd verify visually himself.
-  **Restyled to "radar pulse" (2026-09-22, uncommitted).** No more chip fill:
+  **Restyled to "radar pulse" (2026-09-22, shipped).** No more chip fill:
   off is a bare outline pin (`--pm-grey-text`), on is a filled `--pm-orange`
   pin with two `--pm-orange` rings pulsing outward (`.nearby-radar-ring` in
   globals.css) plus the "5 mi" label; `prefers-reduced-motion` swaps the
   pulse for one static faint ring. Behavior/props unchanged.
 
-- **Meals (multi-plate posts) built 2026-09-20 (uncommitted, migrated, web + phone).**
+- **Meals (multi-plate posts) built 2026-09-20 (shipped 55561f8 2026-09-22, migrated, web + phone).**
   One post can hold up to 6 plates. **Collage = overlay labels (2026-09-22; white "mini post"
   strips and a Bodoni Moda trial both dropped):** brick columns edge to edge,
   each plate's name (Fraunces) + peach % · price (mono) on a short dark
@@ -151,13 +153,13 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
   react-hooks/refs. Not yet exercised: posting a real meal through the
   composer end to end (needs photos) — do that once on the phone build.
 
-- **Hits ranking (2026-09-22, uncommitted).** Rated plates show in THE HITS
+- **Hits ranking (2026-09-22, shipped).** Rated plates show in THE HITS
   from one rating; off-menu rated plates (`offMenu`, lib/ratedPlates.ts) are
   listed but always rank below every rated menu plate (`topPlates`). An
   off-menu plate with repeat ratings gets reviewed and added to the menu.
   `probe/hits-order.mjs <id>` shows which rated plates match the menu.
 
-- **iOS push notifications built 2026-09-20 (uncommitted, needs Mac + Apple portal to go live).**
+- **iOS push notifications built 2026-09-20 (code shipped 55561f8; APNS_* env unset on Vercel so it no-ops; needs Mac + Apple portal to go live).**
   Direct APNs over HTTP/2 with a .p8 key, no Firebase, no SDK. Pieces:
   `src/lib/push.ts` (sender: ES256 JWT, dead-token cleanup, never throws),
   `src/lib/notify.ts` (the four events + copy: comment on your plate, reply to
@@ -1654,7 +1656,7 @@ is all this one needs.
 kills the router's no-website fallback and every agent's search tool, so the
 next wave will be materially weaker until Calvin tops it up.
 
-## Address as location (2026-09-22) — built, NOT committed
+## Address as location (2026-09-22) — shipped in 55561f8
 Discover "Use an address" box (web: DiscoverFilters; phone: PhoneFilterSheet).
 Address -> POST /api/geocode (Nominatim proxy, signed-in, 20/h) -> saved in
 localStorage `platemaps:saved-location`, device-only by Calvin's choice;
@@ -1662,3 +1664,13 @@ overrides GPS in useNearby (src/lib/nearby.ts) until cleared. tsc + eslint
 clean; geocode verified server-side. Not yet clicked through signed-in in a
 browser (Chrome extension was disconnected). Files: src/app/api/geocode/route.ts,
 src/lib/nearby.ts, DiscoverFilters.tsx, DiscoverBrowser.tsx, PhoneFilterSheet.tsx.
+
+## Walking distance on Discover (2026-09-22) — pushed 2026-09-23 as eeadacd
+Cards within 3 mi show road-routed distance only, "0.7 mi" on web and phone —
+Calvin asked 2026-09-23 for distance along roads, no walk time (~ prefix = straight-line x1.3 estimate fallback). src/lib/walking.ts calls
+OpenRouteService foot-walking matrix (ORS_API_KEY in .env.local; free 500/day;
+must also be added to Vercel env before deploy). Shared cache table walk_cache
+(migrated), keyed by ~150 m grid cell; rows unused 90 days are deleted (cache,
+not posts). Sort order still straight-line. Plan: move to self-hosted OSRM
+(~$10/mo) near ~100 daily users. Verified in Chrome on web + /m from Calvin's
+saved address. Unrelated: /m has a hydration mismatch in PhoneNav post-flash.

@@ -186,8 +186,8 @@ export function RestaurantCard({
             {restaurant.name}
           </p>
           {/* max-w + truncate rather than the bare shrink-0 this used to be:
-              a routed walk ("~0.7 mi · 14 min", lib/geo.ts's
-              formatWalk) runs 2-4x longer than the seeded "3.4 mi" this was
+              a routed distance ("~0.7 mi", lib/geo.ts's
+              formatWalk) can run longer than the seeded "3.4 mi" this was
               sized for. The card itself is overflow-hidden, so without a cap
               a too-long string would be hard-clipped mid-character with no
               ellipsis instead of degrading visibly. */}

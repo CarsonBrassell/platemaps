@@ -1306,7 +1306,7 @@ const statements = [
   `CREATE INDEX IF NOT EXISTS idx_posts_meal ON posts (meal_id) WHERE meal_id IS NOT NULL`,
 
   // Walking distance (lib/walking.ts). Discover cards within 3 miles show a
-  // routed walk — "0.7 mi · 14 min" — instead of the straight line, from
+  // routed distance — "0.7 mi" along the streets — instead of the straight line, from
   // OpenRouteService's matrix API. That API is metered (free tier: 500
   // requests/day), so answers are shared across every visitor standing in
   // roughly the same place: `cell` is the visitor's position snapped to a

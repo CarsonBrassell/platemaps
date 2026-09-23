@@ -24,7 +24,7 @@
  * non-2xx, an unroutable pair) fall back to a straight-line guess — distance
  * × 1.3 for the fact that streets are not as-the-crow-flies, at a flat 3mph
  * for time. That guess is marked `estimated: true` so the card can say so
- * (`~0.7 mi · ~14 min walk`, see `formatWalk` in lib/geo.ts) and it is never
+ * (`~0.7 mi`, see `formatWalk` in lib/geo.ts) and it is never
  * written to `walk_cache` — caching a guess would let one bad ORS response
  * outlive the outage that caused it.
  */

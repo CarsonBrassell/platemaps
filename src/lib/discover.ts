@@ -106,9 +106,7 @@ export type DiscoverResult = RestaurantView & {
    * the straight-line string `withDistance` already produces for those rows.
    */
   walkMeters?: number;
-  /** The same walk, in minutes rounded up (never below 1). */
-  walkMinutes?: number;
-  /** True when `walkMeters`/`walkMinutes` are a straight-line guess standing
+  /** True when `walkMeters` is a straight-line guess standing
       in for a routed answer — see lib/walking.ts's `estimateFor`. */
   walkEstimated?: boolean;
 };
@@ -328,9 +326,8 @@ export async function getDiscoverPage(
       const withWalk = walk
         ? {
             ...base,
-            distance: formatWalk(walk.meters, walk.seconds, walk.estimated),
+            distance: formatWalk(walk.meters, walk.estimated),
             walkMeters: walk.meters,
-            walkMinutes: Math.max(1, Math.ceil(walk.seconds / 60)),
             walkEstimated: walk.estimated,
           }
         : base;

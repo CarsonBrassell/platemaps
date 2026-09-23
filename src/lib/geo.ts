@@ -56,23 +56,15 @@ function milesDigits(mi: number): string {
 const METERS_PER_MILE = 1609.34;
 
 /**
- * A routed walk, as a card prints it: "0.7 mi · 14 min". See
- * lib/walking.ts, the only caller — it is the thing that turns a straight
- * line into an actual number of metres and seconds, this just formats them.
+ * A routed distance, as a card prints it: "0.7 mi" — metres along the walking
+ * route from lib/walking.ts, not the straight line, so a place across a canyon
+ * reads as far as it actually is. Time is left off on purpose: the number
+ * people wanted on the card is how far, measured along the streets.
  *
  * `estimated` marks a straight-line guess standing in for a routed answer
  * (ORS unreachable, over quota, or this one pair unroutable) with a leading
- * `~` — "~0.7 mi · 14 min" — that covers the whole reading.
- *
- * No "walk" suffix: the card's distance slot is a narrow mono column beside a
- * truncating name, and "0.7 mi · 14 min walk" does not fit it. The phone card
- * prints the minutes alone with the word (see PhoneDiscoverResults).
- *
- * Minutes round up and floor at 1: a walk is never "0 min", and rounding down
- * would print one for a distance that takes closer to two.
+ * `~`, so a guess never passes for a measured route.
  */
-export function formatWalk(meters: number, seconds: number, estimated: boolean): string {
-  const miles = meters / METERS_PER_MILE;
-  const minutes = Math.max(1, Math.ceil(seconds / 60));
-  return `${estimated ? "~" : ""}${milesDigits(miles)} mi · ${minutes} min`;
+export function formatWalk(meters: number, estimated: boolean): string {
+  return `${estimated ? "~" : ""}${milesDigits(meters / METERS_PER_MILE)} mi`;
 }
