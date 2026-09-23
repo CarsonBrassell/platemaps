@@ -28,7 +28,7 @@ import { useAuth } from "@/lib/auth";
  * screen's chip is, minus the scrim it does not need.
  */
 export function PhoneSettingsScreen() {
-  const { isSignedIn, loading } = useAuth();
+  const { isSignedIn, loading, signOut } = useAuth();
 
   /* The nav variant travels in `?nav=` and every in-app link has to carry it
      or the first tap throws you back to the default. Same rule PhoneNav and
@@ -78,6 +78,23 @@ export function PhoneSettingsScreen() {
               <SettingsLedger variant="phone" />
 
               <AccountLedger variant="phone" />
+
+              {/* Log out is an ordinary action and has to read as one: the same
+                  tan rank-3 pill PhoneProfileScreen uses, and the same bare
+                  `onClick={signOut}` — no navigation. The context drops the
+                  account, `isSignedIn` flips, and this screen re-renders into
+                  its own signed-out branch, so you land on the settings screen
+                  you were already looking at rather than being thrown
+                  somewhere. It sits above the delete block, separated by its
+                  own space, because the two must never be mistaken for one
+                  menu: that one is destructive and wears red. */}
+              <button
+                type="button"
+                onClick={signOut}
+                className="mt-6 min-h-11 w-full rounded-full bg-pm-grey-tint px-4 text-sm font-medium text-pm-grey-text transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+              >
+                Log out
+              </button>
 
               <PhoneDeleteAccountPanel />
             </>

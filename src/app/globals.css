@@ -1987,3 +1987,54 @@ a {
      sit on top of the new one. */
   .rank-ring-title-out { display: none; }
 }
+
+/* --- Post action tap -------------------------------------------------- */
+
+/* Comment, Share, Save and Heart in PostActions.tsx. Read that file's header
+ * first: this row is deliberately quiet, and what is below is the smallest
+ * thing that still answers a tap.
+ *
+ * **The press is a transform, so the row's geometry never changes.** Scale
+ * leaves layout alone, which is what keeps the neighbouring controls from
+ * sliding out from under a thumb that is already mid-press — the twitch the
+ * row's own comment refuses. The vote arrows are deliberately not in here:
+ * they own `.vote-btn` and the cast animation further up, and one row with
+ * two ideas of what a press looks like is worse than either idea.
+ *
+ * `.post-action` owns the colour transition as well, rather than leaving it
+ * to a `transition-colors` utility. An element has one `transition-property`
+ * list, so a utility and this rule would take turns winning it. */
+.post-action {
+  transition:
+    color 0.15s ease,
+    transform 0.16s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+.post-action:active {
+  transform: scale(0.94);
+}
+
+/* The toggles' confirmation, worn by the icon and only when the toggle turns
+ * *on* — taking a save or a heart back is a correction, and the vote arrows
+ * already set the rule that corrections are not celebrated.
+ *
+ * It rides a child span rather than the button so it never shares an element
+ * with the press scale above; see `nav-kick` for what happens when two rules
+ * drive one element's transform through the same gesture. Same easing as
+ * `nav-kick` and `pct-kick`, one beat smaller — the app has one idea of what
+ * a kick is, at three sizes. */
+@keyframes action-kick {
+  0%   { transform: scale(0.9); }
+  45%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.action-kick { animation: action-kick 0.2s cubic-bezier(0.2, 0.8, 0.3, 1); }
+
+/* Colour survives; only the motion stops. A hue change moves nothing on
+   screen, and without it a press would read as doing nothing at all. */
+@media (prefers-reduced-motion: reduce) {
+  .post-action { transition: color 0.15s ease; }
+  .post-action:active { transform: none; }
+  .action-kick { animation: none; }
+}

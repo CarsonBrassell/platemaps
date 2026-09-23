@@ -12,21 +12,31 @@ import {
 import { voteBurst } from "@/lib/voteBurst";
 
 /**
- * Every control in this row is color-only on press — nothing scales, pops or
- * bursts. A row of icons that grows under the cursor makes the whole card
- * twitch at the moment you're trying to read what you just did to it, so
- * state changes here are carried entirely by fill and hue.
+ * State changes in this row are carried mostly by fill and hue, and the bar
+ * for adding anything else is high: a row of icons that grows under the
+ * cursor makes the whole card twitch at the moment you're trying to read what
+ * you just did to it.
  *
- * **The vote arrows are the one exception, and they respect the rule they
- * appear to break.** Casting a vote throws the arrow, trails it, and scatters
- * a few embers (see "Casting a vote" in globals.css) — but every layer of it
- * is translation and light. Nothing in the row changes size, so the card
- * still cannot twitch. Votes earn the exception because they are the only
- * control here whose whole point is that you did something to the ranking;
- * a save or a share is bookkeeping and stays quiet.
+ * What the four utilities get is a press, not a pop — `.post-action` in
+ * globals.css, a 160ms scale to 0.94 that ends where it started. It is a
+ * transform, so nothing in the row's geometry moves and no neighbour shifts
+ * under a thumb mid-press; the twitch the paragraph above refuses was a
+ * *resize*, and this is only a depress. Save and Heart add one small kick on
+ * the icon (`.action-kick`) when they turn on, and nothing at all when they
+ * turn off — taking a save back is a correction, and corrections are not
+ * celebrated here.
+ *
+ * **The vote arrows are louder, and they respect the rule they appear to
+ * break.** Casting a vote throws the arrow, trails it, and scatters a few
+ * embers (see "Casting a vote" in globals.css) — but every layer of it is
+ * translation and light, never size. They keep their own class (`vote-btn`)
+ * and never wear `.post-action`: one row with two ideas of what a press looks
+ * like would be worse than either. Votes earn the louder treatment because
+ * they are the only control here whose whole point is that you did something
+ * to the ranking; a save or a share is bookkeeping and stays quiet.
  */
 const action =
-  "flex min-h-11 items-center gap-1.5 rounded-full px-1.5 text-sm text-zinc-500 transition-colors hover:text-zinc-900 disabled:opacity-45 disabled:hover:text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
+  "post-action flex min-h-11 items-center gap-1.5 rounded-full px-1.5 text-sm text-zinc-500 hover:text-zinc-900 disabled:opacity-45 disabled:hover:text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 
 /** Which way this viewer voted. Mirrors VoteDirection in lib/db.ts. */
 export type VoteDirection = "up" | "down";
@@ -78,6 +88,16 @@ export function PostActions(props: PostActionsProps) {
   const [savedToast, setSaved_toast] = useState(false);
   const [shareNote, setShareNote] = useState<string | null>(null);
 
+  /* Which toggle last confirmed a turn-on, and a counter so pressing the same
+     one twice replays the kick rather than doing nothing — a CSS animation
+     only restarts if the element it sits on is a new one, which is what the
+     `key` below buys. Same shape PhoneNav uses for `nav-kick`. */
+  const [kick, setKick] = useState<{ which: "save" | "heart" | null; n: number }>({
+    which: null,
+    n: 0,
+  });
+  const kicking = (which: "save" | "heart") => kick.which === which && kick.n > 0;
+
   function handleSave() {
     if (!canInteract) {
       onRequireSignIn();
@@ -87,6 +107,7 @@ export function PostActions(props: PostActionsProps) {
     if (!saved) {
       setSaved_toast(true);
       setTimeout(() => setSaved_toast(false), 1650);
+      setKick((prev) => ({ which: "save", n: prev.n + 1 }));
     }
     onSave();
   }
@@ -96,7 +117,11 @@ export function PostActions(props: PostActionsProps) {
       onRequireSignIn();
       return;
     }
-    if (props.surface === "friends") props.onReact();
+    if (props.surface !== "friends") return;
+    // Same rule as save and as the vote arrows: confirm the cast, not the
+    // take-back.
+    if (!props.hearted) setKick((prev) => ({ which: "heart", n: prev.n + 1 }));
+    props.onReact();
   }
 
   function handleVote(direction: VoteDirection) {
@@ -147,7 +172,12 @@ export function PostActions(props: PostActionsProps) {
             aria-label={props.hearted ? "Remove heart" : "Heart this plate"}
             className={`${action} ${props.hearted ? "text-pm-red hover:text-pm-red" : ""}`}
           >
-            <HeartIcon filled={props.hearted} className="h-[19px] w-[19px]" />
+            {/* Same wrapper and same reason as Save's above: the kick rides a
+                child span so it never shares an element with the button's own
+                :active transform. */}
+            <span key={kicking("heart") ? kick.n : "rest"} className={`flex ${kicking("heart") ? "action-kick" : ""}`}>
+              <HeartIcon filled={props.hearted} className="h-[19px] w-[19px]" />
+            </span>
           </button>
         </div>
       )}
@@ -181,10 +211,17 @@ export function PostActions(props: PostActionsProps) {
           aria-label={saved ? "Remove from saved" : "Save this plate"}
           className={action}
         >
-          <BookmarkIcon
-            filled={saved}
-            className={`h-[18px] w-[18px] ${saved ? "text-pm-orange" : ""}`}
-          />
+          {/* The kick rides this span, never the button — the button is
+              already carrying the press scale, and two rules driving one
+              element's transform through the same gesture is the fight
+              `nav-kick` documents. `flex` so wrapping the icon adds no
+              line-box of its own and the row's rhythm is unchanged. */}
+          <span key={kicking("save") ? kick.n : "rest"} className={`flex ${kicking("save") ? "action-kick" : ""}`}>
+            <BookmarkIcon
+              filled={saved}
+              className={`h-[18px] w-[18px] ${saved ? "text-pm-orange" : ""}`}
+            />
+          </span>
         </button>
       </div>
 

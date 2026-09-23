@@ -266,6 +266,22 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
   const trending = props.surface === "discover" && props.trending;
 
   const [menuOpen, setMenuOpen] = useState(false);
+  /*
+   * Which way the options menu opens, decided per tap.
+   *
+   * Taking the clip off the card let the menu escape, and that only moved the
+   * bug: the trigger sits at the bottom of the card, so on a card near the
+   * bottom of the screen the menu opened past the viewport and "Report post"
+   * landed under the nav. Measured on /m/feed: menu 659-799 in a 719px
+   * viewport.
+   *
+   * Opening upward always is the other half of the same bug — on the first
+   * card the menu would slide under the sticky bar (z-30) and the nav (z-40),
+   * which this menu deliberately sits below. So neither direction is right on
+   * its own; the direction is a fact about where the button is at the moment
+   * it is pressed, and it is measured then.
+   */
+  const [dropUp, setDropUp] = useState(false);
   /* The reason sheet. Separate from `status` because opening it is not the
      same as having reported — only a 200 from /api/reports sets that. */
   const [reporting, setReporting] = useState(false);
@@ -440,10 +456,34 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
          now leads the card. */
       aria-labelledby={lineDish || lineRestaurant ? `${titleId} ${subId}` : titleId}
       onClick={doubleTap.onClick}
-      /* touch-manipulation: the second tap of a double-tap must not become
-         a zoom on iOS — see useDoubleTap. relative: anchors the pop when the
-         post has no photo to centre it on. */
-      className="relative touch-manipulation overflow-hidden rounded-2xl bg-white"
+      /*
+       * touch-manipulation: the second tap of a double-tap must not become a
+       * zoom on iOS — see useDoubleTap. relative: anchors the pop when the
+       * post has no photo to centre it on.
+       *
+       * No `overflow-hidden` here, and that absence is load-bearing — it is
+       * the whole of the "Report post" bug, so please read this before adding
+       * it back.
+       *
+       * The clip was doing one job: rounding the top of the hero photo, the
+       * only full-bleed child the card has. What it was *also* doing was
+       * clipping the options menu, which lives at the bottom of the card and
+       * is roughly 150px tall against the ~16px of padding below it. Overflow
+       * clips an absolutely positioned descendant whenever it sits above that
+       * descendant's containing block, and this element does — and a clip is
+       * applied before paint order is consulted, so the menu's `z-20` was
+       * faithfully painting a box already cut to a sliver. That sliver ended
+       * where the next card's photo began, which is why it read as "behind
+       * the photo". The photo is innocent: neither the hero wrapper nor
+       * `PostMediaCarousel` sets a z-index, and `position: relative` alone is
+       * not a stacking context.
+       *
+       * The clip now lives on the hero wrapper below, which is the only child
+       * that needs it. See `dropUp` for the second half of this bug — with the
+       * clip gone the menu escaped the card and ran off the bottom of the
+       * screen instead, so the direction it opens is measured per tap.
+       */
+      className="relative touch-manipulation rounded-2xl bg-white"
     >
       {!showsHero && <DoubleTapPop kind={popKind} popKey={doubleTap.popKey} />}
       {/*
@@ -453,9 +493,15 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
         picture. Nothing is overlaid on it but the price — the handle that used
         to sit in the top-left has moved down into the byline, where the new
         hierarchy puts the author.
+       *
+        `overflow-hidden rounded-t-2xl` sits here rather than on the article
+        because the photo is the only thing in the card that runs to the edge
+        and therefore the only thing that needs the corners cut. Clipping at
+        this level rounds exactly the same pixels the card-level clip used to,
+        and costs the options menu nothing — see the long note on the article.
       */}
       {showsHero && (
-        <div className="relative">
+        <div className="relative overflow-hidden rounded-t-2xl">
           {isMeal ? (
             <MealCollage
               plates={collagePlatesFor(post)}
@@ -737,7 +783,17 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
         <div ref={menuRef} className="relative shrink-0">
           <button
             type="button"
-            onClick={() => setMenuOpen((o) => !o)}
+            onClick={(e) => {
+              /* Measured off the trigger rather than the menu, because the
+                 menu does not exist yet when this runs. 176px is the three
+                 44px items plus the box's own padding — an over-estimate is
+                 safe here, it just flips a little earlier than it must. */
+              if (!menuOpen) {
+                const below = window.innerHeight - e.currentTarget.getBoundingClientRect().bottom;
+                setDropUp(below < 176);
+              }
+              setMenuOpen((o) => !o);
+            }}
             aria-label="Post options"
             aria-expanded={menuOpen}
             aria-haspopup="menu"
@@ -750,8 +806,24 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
               role="menu"
               /* An overlay edge, not a grouping border — the one place
                  DESIGN.md allows a ring, and only because this floats over a
-                 white card. */
-              className="absolute right-0 top-full z-20 mt-1 w-44 overflow-hidden rounded-xl bg-white p-1 ring-1 ring-zinc-200"
+                 white card.
+
+                 This menu hangs well past the bottom of the card, over the
+                 cards after it in the feed, and it is allowed to: the article
+                 deliberately does not clip (long note up there), and nothing
+                 between this box and the feed column opens a stacking context,
+                 so `z-20` genuinely outranks the later siblings. It stays
+                 *under* the sticky bar's `z-30` and the nav's `z-40`, which is
+                 correct — a menu should never cover the app's chrome, and it
+                 never has to, because it opens away from whichever edge is
+                 closest (see `dropUp`).
+
+                 The `overflow-hidden` on this line is only rounding this box's
+                 own items into its corners. It clips nothing that matters, and
+                 it is not the one that caused the bug. */
+              className={`absolute right-0 z-20 w-44 overflow-hidden rounded-xl bg-white p-1 ring-1 ring-zinc-200 ${
+                dropUp ? "bottom-full mb-1" : "top-full mt-1"
+              }`}
             >
               {isOwner ? (
                 <button

@@ -362,7 +362,17 @@ export function Dialog({
                 type="button"
                 onClick={onClose}
                 aria-label={`Back from ${title}`}
-                className="-ml-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-zinc-600 transition-colors hover:bg-pm-grey-tint hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                /* The tan disc is drawn at rest, not on hover.
+                   It used to be a bare chevron in zinc-600 on the cream
+                   header, and it read as decoration: people got out of the
+                   comments by swiping, because nothing on screen looked like
+                   a control. A phone has no hover, so a hover-only ground is
+                   a ground that never appears — the affordance existed for
+                   exactly the pointer this screen is never used with.
+                   `bg-pm-grey-tint` is DESIGN.md's rank-3 treatment, the same
+                   tan pill the log-out control wears, so this stays a quiet
+                   secondary action while actually looking like a button. */
+                className="-ml-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint text-zinc-700 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
               >
                 <ChevronIcon className="h-5 w-5 rotate-180" />
               </button>
