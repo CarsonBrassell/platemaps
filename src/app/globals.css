@@ -2007,11 +2007,15 @@ a {
 .post-action {
   transition:
     color 0.15s ease,
-    transform 0.16s cubic-bezier(0.2, 0.8, 0.3, 1);
+    transform 0.13s cubic-bezier(0.2, 0.8, 0.3, 1);
 }
 
+/* 0.97, not 0.94. Six percent off a 19px icon is a visible lurch — it reads
+   as the row flinching, which is the objection the original colour-only rule
+   in PostActions was written against. Three percent is felt more than seen:
+   the control answers the thumb without the eye being asked to watch it. */
 .post-action:active {
-  transform: scale(0.94);
+  transform: scale(0.97);
 }
 
 /* The toggles' confirmation, worn by the icon and only when the toggle turns
@@ -2023,13 +2027,17 @@ a {
  * drive one element's transform through the same gesture. Same easing as
  * `nav-kick` and `pct-kick`, one beat smaller — the app has one idea of what
  * a kick is, at three sizes. */
+/* A confirm, not a pop. This overshot to 1.12 and bounced off 0.9, which on a
+   toggle that has *already* changed colour is two signals shouting the same
+   thing. The colour is what says "it is on"; this only has to say "that
+   registered", so the travel is halved and the dip is nearly gone. */
 @keyframes action-kick {
-  0%   { transform: scale(0.9); }
-  45%  { transform: scale(1.12); }
+  0%   { transform: scale(0.96); }
+  45%  { transform: scale(1.06); }
   100% { transform: scale(1); }
 }
 
-.action-kick { animation: action-kick 0.2s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.action-kick { animation: action-kick 0.18s cubic-bezier(0.2, 0.8, 0.3, 1); }
 
 /* Colour survives; only the motion stops. A hue change moves nothing on
    screen, and without it a press would read as doing nothing at all. */
