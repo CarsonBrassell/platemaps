@@ -860,7 +860,9 @@ h3 {
    while Nearby is on, the same "still receiving" language as MyLocation's
    `.map-me-pulse` (see that comment) but on land rather than the map, so it
    gets its own name and its own orange rather than that marker's blue.
-   Two spans share one box (`.nearby-radar-ring` twice, the second delayed),
+   Two spans share one box (`.nearby-radar-ring` twice, the second started
+   half a beat in with a negative delay; a positive one left it sitting as a
+   static full-size ring for 1.3s on the first tap),
    both `pointer-events-none` and absolutely positioned so neither the pulse
    nor its layout ever competes with the tap target. */
 @keyframes nearby-radar-pulse {
@@ -868,7 +870,7 @@ h3 {
   100% { transform: scale(1.75); opacity: 0; }
 }
 .nearby-radar-ring       { animation: nearby-radar-pulse 2.6s ease-out infinite; }
-.nearby-radar-ring-delay { animation-delay: 1.3s; }
+.nearby-radar-ring-delay { animation-delay: -1.3s; }
 
 @media (prefers-reduced-motion: reduce) {
   /* No beat: a single faint ring stands in for the pulse instead of
