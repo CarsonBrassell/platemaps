@@ -115,11 +115,25 @@ for (const [i, raw] of lines.entries()) {
       folds: header[4].split("|").map((f) => f.trim()).filter(Boolean),
       decision: null,
       name: null,
+      fence: "before",
     };
+    if (items.some((it) => it.n === current.n)) {
+      bad.push(`${file}:${i + 1} repeats item n=${current.n} — a forged or pasted header`);
+    }
     items.push(current);
     continue;
   }
   if (!current) continue;
+  /* dish-review.mjs writes exactly one fenced block after each header, holding
+     `decision:` and `name:`. Only that block is read: everything else in the
+     item is quoted post text, which users wrote, and a `decision:` line that a
+     dish name smuggled in must not count (CLAUDE-SECURITY 2026-09-23 F1/F4). */
+  if (line === "```") {
+    if (current.fence === "before") current.fence = "inside";
+    else if (current.fence === "inside") current.fence = "after";
+    continue;
+  }
+  if (current.fence !== "inside") continue;
   /* First occurrence wins. A reviewer who wants to change a decision edits the
      line; a second `decision:` further down the item would be ambiguous, and
      silently taking the last one is how a stale edit gets applied. */
@@ -233,6 +247,17 @@ async function run() {
     item.posts = affectedPosts.filter(
       (p) => p.restaurant_id === item.restaurantId && item.folds.includes(p.folded),
     );
+    /* Every spelling the header names has to be a post at that restaurant. A
+       header is text in a file, and one pointing at folds that were never in
+       the queue for this restaurant is not a decision anybody reviewed. */
+    const orphanFolds = item.folds.filter((f) => !item.posts.some((p) => p.folded === f));
+    if (orphanFolds.length) {
+      problems.push(
+        `${where}: no posts at ${restaurant.name} spelled ${orphanFolds.map((f) => `"${f}"`).join(", ")} — ` +
+          `re-run dish-review.mjs`,
+      );
+      continue;
+    }
 
     if (item.decision === "alias") {
       /* An alias points at a spelling the menu actually uses, and that is checked

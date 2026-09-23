@@ -162,16 +162,47 @@ export async function uploadPhotos(photos: PhotoDraft[]): Promise<string[]> {
  * check the host rather than trusting the string — otherwise the column
  * becomes a place to park arbitrary URLs, and every feed render turns into a
  * request to somebody else's server.
+ *
+ * The host is *this project's* store, not the shared
+ * `.public.blob.vercel-storage.com` suffix — every Vercel customer's public
+ * store lives under that suffix, so checking only the suffix let anyone park a
+ * file in their own store and have it rendered here (and promoted to a
+ * restaurant cover). The store id is read from BLOB_READ_WRITE_TOKEN
+ * (`vercel_blob_rw_<storeId>_<secret>`), which the upload route already needs,
+ * and the path must be the `<folder>/<userId>/<uuid>.jpg` shape that route
+ * writes. Server-only: the token is not in the client bundle, so this is
+ * always false in a browser.
  */
 export function isStoredPhotoUrl(url: string): boolean {
+  return storedPhotoParts(url) !== null;
+}
+
+/**
+ * The user id segment of a stored photo's path, or null when the URL is not a
+ * stored photo. Ownership checks compare this exactly rather than looking for
+ * `/<id>/` anywhere in the path.
+ */
+export function storedPhotoOwner(url: string): string | null {
+  return storedPhotoParts(url)?.owner ?? null;
+}
+
+const STORED_PHOTO_PATH = /^\/(?:posts|avatars)\/([^/]+)\/[0-9a-f-]{36}\.jpg$/;
+
+function ownBlobHost(): string | null {
+  const m = process.env.BLOB_READ_WRITE_TOKEN?.match(/^vercel_blob_rw_([A-Za-z0-9]+)_/);
+  return m ? `${m[1].toLowerCase()}.public.blob.vercel-storage.com` : null;
+}
+
+function storedPhotoParts(url: string): { owner: string } | null {
+  const host = ownBlobHost();
+  if (!host) return null;
   try {
     const parsed = new URL(url);
-    return (
-      parsed.protocol === "https:" &&
-      parsed.hostname.endsWith(".public.blob.vercel-storage.com")
-    );
+    if (parsed.protocol !== "https:" || parsed.hostname !== host) return null;
+    const m = parsed.pathname.match(STORED_PHOTO_PATH);
+    return m ? { owner: m[1] } : null;
   } catch {
-    return false;
+    return null;
   }
 }
 

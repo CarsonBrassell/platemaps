@@ -1,4 +1,5 @@
 import { after } from "next/server";
+import { getBlockStatus } from "@/lib/db";
 import { pushConfigured, sendPushToUser, type PushMessage } from "@/lib/push";
 
 /**
@@ -17,8 +18,10 @@ import { pushConfigured, sendPushToUser, type PushMessage } from "@/lib/push";
  * everything else.
  *
  * Every recipient check ("not yourself", "not twice") lives here rather than
- * in the routes, so a route cannot forget one. Block checks are the routes'
- * — a blocked pair never reaches a write, so it never reaches this file.
+ * in the routes, so a route cannot forget one. Block checks start in the
+ * routes — a blocked pair should never reach a write — and are repeated here
+ * per recipient, because a write can reach more people than the route
+ * checked (a reply notifies the parent comment's author, not just the post's).
  *
  * URLs are the phone's: the only thing that receives a push is the app, and
  * the app is `/m`. `PushRegistration` navigates to `url` when the
@@ -41,9 +44,12 @@ function snippet(text: string, max = 110): string {
   return flat.length > max ? `${flat.slice(0, max - 1).trimEnd()}…` : flat;
 }
 
-function queue(userId: string, message: PushMessage): void {
+function queue(userId: string, actorId: string, message: PushMessage): void {
   if (!pushConfigured()) return;
-  after(() => sendPushToUser(userId, message));
+  after(async () => {
+    if ((await getBlockStatus(actorId, userId)) !== "none") return;
+    await sendPushToUser(userId, message);
+  });
 }
 
 /**
@@ -62,7 +68,7 @@ export function notifyComment(
   const body = snippet(text);
 
   if (parentAuthorId && parentAuthorId !== commenter.id) {
-    queue(parentAuthorId, {
+    queue(parentAuthorId, commenter.id, {
       title: `${commenter.name} replied to your comment`,
       body,
       url,
@@ -71,7 +77,7 @@ export function notifyComment(
   }
 
   if (post.userId !== commenter.id && post.userId !== parentAuthorId) {
-    queue(post.userId, {
+    queue(post.userId, commenter.id, {
       title: `${commenter.name} commented on ${plateLabel(post)}`,
       body,
       url,
@@ -87,7 +93,7 @@ export function notifyComment(
  */
 export function notifyHeart(post: PostLike, hearter: Actor): void {
   if (post.userId === hearter.id) return;
-  queue(post.userId, {
+  queue(post.userId, hearter.id, {
     title: `${hearter.name} hearted ${plateLabel(post)}`,
     body: "Tap to see who else has.",
     url: `/m/feed?post=${post.id}`,
@@ -99,7 +105,7 @@ export function notifyHeart(post: PostLike, hearter: Actor): void {
 /** Someone wants to be friends. Sent only for a request that was actually created. */
 export function notifyFriendRequest(recipientId: string, requester: Actor): void {
   if (recipientId === requester.id) return;
-  queue(recipientId, {
+  queue(recipientId, requester.id, {
     title: `${requester.name} sent you a friend request`,
     body: "Accept it to see each other's plates.",
     url: "/m/friends",
@@ -111,7 +117,7 @@ export function notifyFriendRequest(recipientId: string, requester: Actor): void
 /** The request you sent was accepted. */
 export function notifyFriendAccepted(requesterId: string, accepter: Actor): void {
   if (requesterId === accepter.id) return;
-  queue(requesterId, {
+  queue(requesterId, accepter.id, {
     title: `${accepter.name} accepted your friend request`,
     body: "You're friends now — their plates are in your feed.",
     url: `/m/u/${accepter.id}`,

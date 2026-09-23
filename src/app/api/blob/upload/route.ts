@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { put, del } from "@vercel/blob";
 import { randomUUID } from "node:crypto";
 import { getCurrentUser } from "@/lib/session";
-import { MAX_UPLOAD_BYTES, isStoredPhotoUrl } from "@/lib/photos";
+import { MAX_UPLOAD_BYTES, isStoredPhotoUrl, storedPhotoOwner } from "@/lib/photos";
 import { limitOrReject } from "@/lib/rateLimit";
 
 /**
@@ -100,7 +100,7 @@ export async function DELETE(req: Request) {
   if (typeof url !== "string" || !isStoredPhotoUrl(url)) {
     return NextResponse.json({ error: "Not a stored photo." }, { status: 400 });
   }
-  if (!new URL(url).pathname.includes(`/${user.id}/`)) {
+  if (storedPhotoOwner(url) !== user.id) {
     return NextResponse.json({ error: "That isn't your photo." }, { status: 403 });
   }
 

@@ -29,6 +29,7 @@
 
 import { createHash } from "node:crypto";
 import { neon } from "@neondatabase/serverless";
+import { publicFetch } from "./public-url.mjs";
 
 function flag(name, fallback) {
   const i = process.argv.indexOf(`--${name}`);
@@ -81,7 +82,9 @@ function fingerprint(html) {
 async function fetchPage(url) {
   // A plain fetch, not a browser — that is the whole point. Pages this cannot
   // read return null and are simply skipped, not marked changed.
-  const res = await fetch(url, {
+  // publicFetch, not fetch: source_url is scraped data and must not reach a
+  // private address, directly or by redirect.
+  const res = await publicFetch(url, {
     headers: {
       // Some sites serve a bot page to a bare fetch; a normal UA gets the real
       // one often enough to be worth sending, and this is a read-only check.
@@ -89,7 +92,6 @@ async function fetchPage(url) {
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
       Accept: "text/html,application/xhtml+xml",
     },
-    redirect: "follow",
     signal: AbortSignal.timeout(20_000),
   });
   if (!res.ok) return null;

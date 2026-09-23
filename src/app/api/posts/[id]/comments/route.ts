@@ -64,6 +64,16 @@ export async function POST(
   if (parent && parentContext?.postId !== id) {
     return NextResponse.json({ error: "That comment is no longer here." }, { status: 400 });
   }
+  // The check above covers the commenter and the post's author; a reply also
+  // reaches the parent comment's author (as a push, and under their comment),
+  // so a block between those two has to stop it too.
+  if (
+    parentContext &&
+    parentContext.userId !== post.userId &&
+    (await getBlockStatus(user.id, parentContext.userId)) !== "none"
+  ) {
+    return NextResponse.json({ error: "You can't reply to this comment." }, { status: 403 });
+  }
 
   const comment = await addComment(id, {
     id: randomUUID(),

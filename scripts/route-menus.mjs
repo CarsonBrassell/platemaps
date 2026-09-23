@@ -79,6 +79,7 @@ import path from "node:path";
 import { promisify } from "node:util";
 import vm from "node:vm";
 import { neon } from "@neondatabase/serverless";
+import { assertPublicUrl, publicFetch } from "./public-url.mjs";
 
 const execFileAsync = promisify(execFile);
 
@@ -161,9 +162,13 @@ const cacheKey = (method, url, body) =>
  */
 async function curlGet(url, method, body, extraHeaders) {
   const tmp = path.join(CACHE_DIR, `curl-${randomUUID()}.tmp`);
+  /* No `-L`: redirects are followed below, one hop at a time, so each hop
+   * goes through assertPublicUrl the way publicFetch's do. `--proto` keeps
+   * curl from ever speaking file://, gopher:// or anything else. */
   const args = [
     "-s",
-    "-L",
+    "--proto",
+    "=http,https",
     "--max-time",
     String(Math.round(TIMEOUT_MS / 1000)),
     "--compressed",
@@ -174,18 +179,33 @@ async function curlGet(url, method, body, extraHeaders) {
     "-o",
     tmp,
     "-w",
-    "%{http_code} %{url_effective}",
+    "%{http_code} %{url_effective} %{redirect_url}",
   ];
   for (const [k, v] of Object.entries(extraHeaders ?? {})) args.push("-H", `${k}: ${v}`);
-  if (method === "POST") {
-    args.push("-X", "POST");
-    /* `-d '{}'` matters on NetWaiter: a bodyless POST returns 411. */
-    args.push("-d", body ?? "{}");
-  }
-  args.push(url);
   try {
-    const { stdout } = await execFileAsync("curl", args, { maxBuffer: 1 << 20 });
-    const [code, finalUrl] = String(stdout).trim().split(/\s+/);
+    let current = url;
+    let verb = method;
+    let code = "0";
+    let finalUrl = url;
+    for (let hop = 0; ; hop++) {
+      if (hop > 8) throw new Error("too many redirects");
+      await assertPublicUrl(current);
+      const hopArgs = [...args];
+      if (verb === "POST") {
+        hopArgs.push("-X", "POST");
+        /* `-d '{}'` matters on NetWaiter: a bodyless POST returns 411. */
+        hopArgs.push("-d", body ?? "{}");
+      }
+      hopArgs.push(current);
+      const { stdout } = await execFileAsync("curl", hopArgs, { maxBuffer: 1 << 20 });
+      const [c, effective, next] = String(stdout).trim().split(/\s+/);
+      code = c;
+      finalUrl = effective || current;
+      const status = Number(c) || 0;
+      if (status < 300 || status >= 400 || !next) break;
+      current = new URL(next, current).toString();
+      if (status === 303 || ((status === 301 || status === 302) && verb === "POST")) verb = "GET";
+    }
     let text = "";
     try {
       text = await readFile(tmp, "utf8");
@@ -239,10 +259,11 @@ async function get(url, opts = {}) {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
     try {
-      const res = await fetch(url, {
+      /* publicFetch follows redirects itself and refuses any hop that lands
+       * on a private address — these URLs come from OSM tags and search hits. */
+      const res = await publicFetch(url, {
         method,
         body,
-        redirect: "follow",
         signal: ctrl.signal,
         headers: {
           "User-Agent": ua,

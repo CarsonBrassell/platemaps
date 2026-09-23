@@ -10,6 +10,7 @@ import { BLOCKED_MESSAGE, moderateUsername } from "@/lib/moderation";
 import { userConflictMessage } from "@/lib/uniqueViolation";
 import { clientIp } from "@/lib/loginThrottle";
 import { limitOrReject } from "@/lib/rateLimit";
+import { isSameOriginRequest } from "@/lib/originCheck";
 
 /** Same charset a handle already renders in — no space could survive
     FoodPostCard's handleFor() anyway, so a signup that let one through would
@@ -17,6 +18,14 @@ import { limitOrReject } from "@/lib/rateLimit";
 const USERNAME_PATTERN = /^[a-zA-Z0-9_]{3,24}$/;
 
 export async function POST(req: NextRequest) {
+  // Signup ends in setSessionCookie just like login does, so it needs the same
+  // guard: a cross-site <form enctype="text/plain"> can otherwise sign a
+  // visitor into an account the attacker made and holds the password to
+  // (login CSRF) — see lib/originCheck.ts.
+  if (!isSameOriginRequest(req)) {
+    return NextResponse.json({ error: "Bad request." }, { status: 403 });
+  }
+
   const limited = await limitOrReject({
     scope: "signup:ip",
     key: clientIp(req),

@@ -499,17 +499,30 @@ function parseRoots(body) {
     return roots;
   } catch { /* not a bare JSON document */ }
 
-  for (const m of body.matchAll(/^[0-9a-f]+:(?:[A-Z]\[)?(\{[\s\S]*?\}|\[[\s\S]*?\])\s*$/gm)) {
-    try { roots.push(JSON.parse(m[1])); } catch { /* a partial chunk */ }
+  /* One line at a time. The old single multiline regex started a lazy scan to
+   * the end of the body at every `<hex>:{` line that no `}` closed, which is
+   * quadratic in a body the scraped site controls. */
+  for (const raw of body.split("\n")) {
+    const m = raw.match(/^[0-9a-f]+:(?:[A-Z]\[)?([{[].*)$/);
+    if (!m) continue;
+    const chunk = m[1].trimEnd();
+    if (!/[}\]]$/.test(chunk)) continue;
+    try { roots.push(JSON.parse(chunk)); } catch { /* a partial chunk */ }
   }
   if (roots.length) return roots;
 
   if (!/<script|<html/i.test(body)) return roots;
 
+  /* indexOf for the closing tag rather than a lazy `[\s\S]*?</script>`, which
+   * rescans to the end of the body for every opening tag left unclosed. */
+  const lower = body.toLowerCase();
   for (const m of body.matchAll(
-    /<script[^>]+type=["'](?:application\/json|application\/ld\+json)["'][^>]*>([\s\S]*?)<\/script>/gi,
+    /<script[^>]{1,1000}?type=["'](?:application\/json|application\/ld\+json)["'][^>]{0,1000}>/gi,
   )) {
-    try { roots.push(JSON.parse(m[1].trim())); } catch { /* not valid on its own */ }
+    const start = m.index + m[0].length;
+    const end = lower.indexOf("</script>", start);
+    if (end === -1) break;
+    try { roots.push(JSON.parse(body.slice(start, end).trim())); } catch { /* not valid on its own */ }
   }
 
   /* A global assignment whose name suggests a preloaded catalog. The brace
@@ -1056,7 +1069,7 @@ async function visit(r) {
       sentCookie: false,
       sentAuth: false,
       rendered: true,
-      body: await page.content(),
+      body: (await page.content()).slice(0, MAX_BODY),
     });
   } catch { /* the page closed under us */ }
 

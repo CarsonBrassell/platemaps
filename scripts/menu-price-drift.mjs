@@ -24,6 +24,7 @@
 import { neon } from "@neondatabase/serverless";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { hostOf } from "./junk-menu.mjs";
+import { publicFetch } from "./public-url.mjs";
 
 const sql = neon(process.env.DATABASE_URL);
 const args = process.argv.slice(2);
@@ -53,9 +54,10 @@ console.log(`${rows.length} own-source menus on listed restaurants; ${targets.le
 
 async function fetchText(url) {
   try {
-    const res = await fetch(url, {
+    /* publicFetch: source_url is scraped data and must not reach a private address. */
+    const res = await publicFetch(url, {
       headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36", Accept: "text/html,application/xhtml+xml,application/pdf" },
-      redirect: "follow", signal: AbortSignal.timeout(20_000),
+      signal: AbortSignal.timeout(20_000),
     });
     if (!res.ok) return { status: `http ${res.status}` };
     const ct = res.headers.get("content-type") ?? "";

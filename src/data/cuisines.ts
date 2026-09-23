@@ -470,6 +470,14 @@ function key(raw: string): string {
   return raw.replace(/_/g, " ").replace(/\s+/g, " ").trim().toLowerCase();
 }
 
+/* ALIASES and SYNONYMS are plain object literals indexed by third-party text
+   (an OSM `cuisine` tag), and `constructor` survives key() — so a bare
+   `ALIASES[k]` hands back the inherited Object function instead of undefined.
+   Own properties only. */
+function own<T>(table: Readonly<Record<string, T>>, k: string): T | undefined {
+  return Object.prototype.hasOwnProperty.call(table, k) ? table[k] : undefined;
+}
+
 /**
  * The canonical cuisine for a raw label, or null when the label names no
  * cuisine — either because it is one of the known non-answers above, or
@@ -482,7 +490,8 @@ function key(raw: string): string {
  */
 export function canonicalCuisine(raw: string | null | undefined): Cuisine | null {
   if (!raw) return null;
-  return ALIASES[key(raw)] ?? null;
+  const hit = own(ALIASES, key(raw));
+  return hit !== undefined && isCuisine(hit) ? hit : null;
 }
 
 /** Whether a label is a known non-cuisine rather than merely unmapped. */
@@ -570,7 +579,7 @@ export function tagsFor(raw: string | null | undefined): string[] {
   if (!raw || isUnsetCuisine(raw)) return [];
   const k = key(raw);
   const out: string[] = [raw.replace(/_/g, " ").replace(/\s+/g, " ").trim()];
-  for (const extra of SYNONYMS[k] ?? []) out.push(extra);
+  for (const extra of own(SYNONYMS, k) ?? []) out.push(extra);
 
   const seen = new Set<string>();
   return out.filter((t) => {

@@ -15,7 +15,7 @@ import {
 import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
 import { RANKS, rankByKey } from "@/lib/ranks";
 import { dishRatingKey } from "@/lib/dishRatingKey";
-import { isStoredPhotoUrl } from "@/lib/photos";
+import { isStoredPhotoUrl, storedPhotoOwner } from "@/lib/photos";
 import { brandKey, foldAccents } from "@/lib/brandName";
 import { hashToken, SESSION_TTL_SECONDS } from "@/lib/tokens";
 // From lib/geo.ts for the same reason discoverFilters.ts takes it from there:
@@ -1587,7 +1587,7 @@ export async function deletePost(id: string): Promise<void> {
 
   // The row's own author, read back from the DB — never trusted from the
   // caller — is the only identity a URL is allowed to match. Mirrors the
-  // `pathname.includes(`/${user.id}/`)` ownership check blob/upload's DELETE
+  // `storedPhotoOwner(url) === user.id` ownership check blob/upload's DELETE
   // enforces for the same reason: without it, this is an endpoint that lets
   // anyone delete any photo on the app whose URL they happen to know, by
   // attaching it to a throwaway post and deleting that post (CLAUDE-SECURITY
@@ -1596,14 +1596,7 @@ export async function deletePost(id: string): Promise<void> {
   const urls = ownerId
     ? rows
         .map((r) => r.url)
-        .filter((u): u is string => typeof u === "string" && isStoredPhotoUrl(u))
-        .filter((u) => {
-          try {
-            return new URL(u).pathname.includes(`/${ownerId}/`);
-          } catch {
-            return false;
-          }
-        })
+        .filter((u): u is string => typeof u === "string" && storedPhotoOwner(u) === ownerId)
     : [];
   if (urls.length === 0) return;
 
