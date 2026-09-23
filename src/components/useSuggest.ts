@@ -131,11 +131,11 @@ export function useSuggest({ query, open, onPick, onSubmit, onClose }: Options) 
   const scopes = useMemo(() => (asking && answer ? answer.scopes : []), [asking, answer]);
 
   /**
-   * True when nothing was matched literally and every line on offer is a
-   * correction. It is all-or-nothing by construction — `suggest` in
-   * lib/suggest.ts counts literal hits everywhere first and only falls back to
-   * the similarity band when there are none — so this is one notice above the
-   * list rather than a "Did you mean" repeated on each of four lines.
+   * True when nothing was matched literally and the list is a correction. By
+   * construction that list is the All line alone — `suggest` in lib/suggest.ts
+   * drops every scoped line without a literal hit and lets All carry the
+   * guess — so this is one notice above it rather than a "Did you mean"
+   * repeated per line.
    */
   const correcting = scopes.length > 0 && scopes.every((s) => s.fuzzy);
 
@@ -214,7 +214,11 @@ export function facetParamFor(scope: SuggestScope): string | null {
  * counted 723. `in=all` narrows nothing and exists only to say "already
  * chosen — do not promote" (`ALL_SCOPE`). It is a line rather than only a key
  * because the default was otherwise the one answer with nothing on screen
- * naming it.
+ * naming it. It is also the one line that recommends: when the server has
+ * completed or corrected the term (`suggest` in lib/suggest.ts — Calvin:
+ * "tacos el" should fill in Tacos El Gordo "and tehn you can browse from
+ * there"), `scope.term` is that wording and this is the ranked search for it,
+ * with the recommended thing first on the grid.
  *
  * **One restaurant** is a place, not a narrowing, and gets its own page —
  * typing a name to go somewhere is the commonest thing this field is used for
@@ -233,8 +237,8 @@ export function facetParamFor(scope: SuggestScope): string | null {
  * `?dish=` is an equality on menu wording and this line is asking the looser
  * question the count was measured with.
  *
- * `scope.term`, not the typed text: a corrected dish searches for the
- * correction, which is the only spelling the grid can find (see `term` on
+ * `scope.term`, not the typed text: a recommending All line searches for the
+ * recommendation, which is the wording the grid can find (see `term` on
  * SuggestScope). A facet pick drops `?q=` entirely — the typed term and the
  * picked filter are two readings of the same intent, so keeping both would AND
  * a misspelling against the correct filter and return an empty grid, the exact

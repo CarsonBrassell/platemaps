@@ -72,6 +72,45 @@ function parseMedia(raw: unknown): PostMedia[] | { error: string } {
   return media;
 }
 
+/** Plates in a meal beyond the first. Six frames is where a collage stops
+    being readable at card width (see MealCollage), so five extra courses. */
+const MAX_COURSES = 5;
+
+type ParsedCourse = { dishName?: string; price?: string; rating: number; media: PostMedia[] };
+
+/** The extra plates of a meal, held to the same rules as the hero. */
+function parseCourses(raw: unknown): ParsedCourse[] | { error: string } {
+  if (raw === undefined || raw === null) return [];
+  if (!Array.isArray(raw)) return { error: "Courses must be a list." };
+  if (raw.length > MAX_COURSES) {
+    return { error: `A meal is up to ${MAX_COURSES + 1} plates.` };
+  }
+  const courses: ParsedCourse[] = [];
+  for (const item of raw) {
+    if (!item || typeof item !== "object") return { error: "Invalid course." };
+    const { dishName, price, rating } = item as Record<string, unknown>;
+    if (rating === undefined || rating === null || rating === "") {
+      return { error: "Every plate in a meal gets a percent." };
+    }
+    const n = Number(rating);
+    if (Number.isNaN(n) || n < 0 || n > 100) {
+      return { error: "A rating is 0 to 100%." };
+    }
+    const name = dishName ? String(dishName).trim().slice(0, 120) : "";
+    if (!name) return { error: "Every plate in a meal names its dish." };
+    if (moderateText(name).action === "block") return { error: BLOCKED_MESSAGE };
+    const media = parseMedia((item as Record<string, unknown>).media);
+    if ("error" in media) return media;
+    courses.push({
+      dishName: name,
+      price: price ? String(price).trim().slice(0, 20) : undefined,
+      rating: Math.round(n),
+      media,
+    });
+  }
+  return courses;
+}
+
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
   if (!user) {
@@ -210,6 +249,16 @@ export async function POST(req: NextRequest) {
   const rawWorst = pickAspect(body.worstAspect);
   const worstAspect = rawWorst && rawWorst !== bestAspect ? rawWorst : undefined;
 
+  /* A meal: the rest of the plates, each held to the same rules as the first
+     — a rating in range, a dish name capped and moderated, photos from our
+     own blob store. Optional and empty for the ordinary single-plate post.
+     Capped at MAX_COURSES beyond the hero so the collage stays a collage and
+     one write cannot fan out into an unbounded number of rows. */
+  const courses = parseCourses(body.courses);
+  if ("error" in courses) {
+    return NextResponse.json({ error: courses.error }, { status: 400 });
+  }
+
   const post = await createPost({
     id: randomUUID(),
     userId: user.id,
@@ -236,6 +285,7 @@ export async function POST(req: NextRequest) {
     photosPublic: user.sharePhotosPublicly,
     bestAspect,
     worstAspect,
+    courses: courses.length > 0 ? courses : undefined,
   });
   // The restaurant's page is served from cache until told otherwise
   // (lib/restaurantPage.ts); a new plate is exactly what changes it.

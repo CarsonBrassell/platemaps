@@ -718,11 +718,18 @@ export function scopeOf(score: number): SearchScope | null {
 export function isLiteralScore(score: number): boolean {
   const scope = scopeOf(score);
   if (scope === "restaurant") return score >= TIER.NAME_SUBSTRING;
-  // The lowest literal cuisine rung is now the tag's substring rung, not the
+  // The lowest literal cuisine rung is the tag's substring rung, not the
   // canonical cuisine's — a tag match is still the visitor's own spelling,
-  // just a weaker field than the cuisine itself. Only CUISINE_TAG_FUZZY below
-  // it is a correction.
-  if (scope === "cuisine") return score >= TIER.CUISINE_TAG_SUBSTRING;
+  // just a weaker field than the cuisine itself. Two rungs are corrections:
+  // CUISINE_TAG_FUZZY below it, and CUISINE_FUZZY *above* it, which the
+  // 2026-09-13 reorder parked between NAME_PREFIX and the tag band (with its
+  // 0-9 closeness bonus) — a floor alone read "breaksfast" as a literal
+  // Breakfast and printed the misspelling on the Cuisine line as if the
+  // corpus contained it.
+  if (scope === "cuisine") {
+    const cuisineFuzzy = score >= TIER.CUISINE_FUZZY && score < TIER.NAME_PREFIX;
+    return !cuisineFuzzy && score >= TIER.CUISINE_TAG_SUBSTRING;
+  }
   if (scope === "neighborhood") return score >= TIER.NEIGHBORHOOD_SUBSTRING;
   return scope !== null;
 }

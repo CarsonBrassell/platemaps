@@ -30,7 +30,10 @@ import {
 import { FeedLoadMore } from "@/components/feed/FeedLoadMore";
 import type { FeedTab, NavKey, Post } from "@/components/feed/types";
 import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
+import { NearbyChip } from "@/components/feed/NearbyChip";
+import { NearbyFeedGate } from "@/components/feed/NearbyFeedGate";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
+import { useNearby } from "@/lib/nearby";
 import { FeedSearchField } from "@/components/feed/FeedSearchField";
 import { searchFeed } from "@/lib/feedFilters";
 import { QUERY_PARAM } from "@/lib/discoverFilters";
@@ -79,6 +82,28 @@ function FeedPageInner() {
   const [navKey, setNavKey] = useState<NavKey>(
     searchParams.get("view") === "saved" ? "saved" : "home",
   );
+
+  /* The one hook allowed to raise the location prompt — see its header
+     comment. Read here rather than inside FeedSortSwitch because the tap
+     that should raise the prompt is "switch on Nearby", a decision this
+     screen owns, not a thing the segmented control itself should know how
+     to do. */
+  const nearby = useNearby();
+  const handleSortChange = useCallback((next: FeedSort) => {
+    setSort(next);
+  }, []);
+  /* The Nearby filter's own on/off — deliberately not part of `sort` and
+     deliberately not in the URL (see NearbyChip's header comment): it's a
+     per-visit narrowing, not a shareable view, and switching New/Trending
+     while it's on must leave it on rather than resetting it. */
+  const [nearbyOn, setNearbyOn] = useState(false);
+  const handleNearbyToggle = useCallback(() => {
+    setNearbyOn((on) => {
+      const next = !on;
+      if (next && nearby.state !== "ready") nearby.request();
+      return next;
+    });
+  }, [nearby]);
 
   const [commentsPostId, setCommentsPostId] = useState<string | null>(null);
   /** Which feed backs the Map tab's bubbles — its own switch, independent of
@@ -148,6 +173,10 @@ function FeedPageInner() {
     endpoint,
     reloadKey,
     onPointsAwarded: () => setRanksVersion((v) => v + 1),
+    // Only Discover with the Nearby filter on ever carries a position, and
+    // only once one has been fixed — see NearbyFeedGate for what covers the
+    // gap before that.
+    coords: tab === "discover" && nearbyOn && nearby.state === "ready" ? nearby.coords : null,
   });
 
   /*
@@ -483,6 +512,13 @@ function FeedPageInner() {
     : null;
 
   const showMap = tab === "map" && navKey !== "saved";
+  /* Nearby with no fix yet has nothing to rank — the request hasn't answered,
+     or hasn't been asked (denied/unsupported/failed). NearbyFeedGate covers
+     every one of those in place of the skeleton/empty/list chain below; once
+     `nearby.state` is "ready" this stops matching and that chain takes over
+     same as any other sort. */
+  const showNearbyGate =
+    tab === "discover" && navKey !== "saved" && nearbyOn && nearby.state !== "ready";
 
   const feedColumn = (
     <>
@@ -509,7 +545,12 @@ function FeedPageInner() {
            touch. Rendered only on Discover — see FeedSortSwitch. */
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <FeedTabs active={tab} onChange={setTab} className="mb-0" />
-          {tab === "discover" && <FeedSortSwitch active={sort} onChange={setSort} />}
+          {tab === "discover" && (
+            <div className="flex items-center gap-2">
+              <FeedSortSwitch active={sort} onChange={handleSortChange} />
+              <NearbyChip on={nearbyOn} onToggle={handleNearbyToggle} />
+            </div>
+          )}
         </div>
       )}
 
@@ -682,14 +723,18 @@ function FeedPageInner() {
         </div>
       ) : (
         <>
-          {posts === null ? (
+          {showNearbyGate ? (
+            <NearbyFeedGate nearby={nearby} />
+          ) : posts === null ? (
             <FeedSkeleton />
           ) : loadError && posts.length === 0 ? (
             <FeedErrorState onRetry={() => setReloadKey((k) => k + 1)} />
           ) : visiblePosts.length === 0 ? (
-            /* Three different empties, and telling them apart is the point: a
+            /* Four different empties, and telling them apart is the point: a
                feed with nothing in it needs an invitation to post, a feed
-               searched down to nothing needs the way back out. */
+               searched down to nothing needs the way back out, and Nearby
+               empty on a real fix means exactly what it says — nothing within
+               the radius yet — rather than "nobody has posted at all". */
             searched ? (
               <div className="rounded-2xl bg-white px-6 py-12 text-center">
                 <p className="font-display text-base font-semibold text-zinc-900">
@@ -714,6 +759,16 @@ function FeedPageInner() {
                 </p>
                 <p className="mx-auto mt-1 max-w-xs text-sm text-zinc-500">
                   Tap the bookmark on a plate and it&apos;ll show up here.
+                </p>
+              </div>
+            ) : tab === "discover" && nearbyOn ? (
+              <div className="rounded-2xl bg-white px-6 py-12 text-center">
+                <p className="font-display text-base font-semibold text-zinc-900">
+                  No plates within 5 mi yet
+                </p>
+                <p className="mx-auto mt-1 max-w-xs text-sm text-zinc-500">
+                  Nobody nearby has posted a plate. Switch to Trending or New to see the
+                  rest of San Diego.
                 </p>
               </div>
             ) : (

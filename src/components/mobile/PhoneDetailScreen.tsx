@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQueryParams } from "@/lib/queryString";
 import type { Restaurant } from "@/data/restaurantTypes";
-import { dishStats, type Dish } from "@/data/dishes";
+import type { Dish } from "@/data/dishes";
 import { DishSheet } from "@/components/DishSheet";
 import { FullMenu } from "@/components/FullMenu";
 import { RestaurantAspects } from "@/components/RestaurantAspects";
@@ -14,8 +14,7 @@ import { PhoneDetailHits } from "@/components/mobile/PhoneDetailHits";
 import type { RestaurantAspectTally, SiblingLocation } from "@/lib/db";
 import { PhoneFirstPlate } from "@/components/mobile/PhoneFirstPlate";
 import type { PlateScore } from "@/lib/plateScore";
-import type { RatedDish } from "@/lib/plateScore";
-import { dishRatingKey } from "@/lib/dishRatingKey";
+import { platesWithStats, topPlates, type RatedPlate } from "@/lib/ratedPlates";
 import { mapCommentsByRestaurant, withDishIds } from "@/data/mapComments";
 
 /**
@@ -68,7 +67,7 @@ export function PhoneDetailScreen({
   /** What this restaurant's plates add up to. Also read server-side. */
   plateScore: PlateScore;
   /** Per-plate rating averages, keyed by `dishRatingKey`. Also server-side. */
-  dishRatings: Record<string, RatedDish>;
+  dishRatings: Record<string, RatedPlate>;
   /** The chain's other branches, nearest first. Empty for most restaurants. */
   otherLocations: SiblingLocation[];
 }) {
@@ -104,47 +103,22 @@ export function PhoneDetailScreen({
      the param staying put is what makes the link survive a refresh. */
   const highlightPostId = searchParams.get("post");
 
-  /**
-   * Each plate's percent, and how many people it came from — the web page's
-   * rule, which this screen was missing.
-   *
-   * A plate someone has actually rated shows **its rating average**, the same
-   * numbers the header's percent is the average of, so the page adds up.
-   * Without this the two halves read different sources: the header counted
-   * `posts.rating` while every row below it counted the older yes/no tally, so
-   * Landini's could say "38 ratings across 10 plates" and then show no rated
-   * plates at all, because no dish there has ever been thumbed.
-   *
-   * A plate nobody has rated still falls back to that yes/no tally, which is
-   * the only signal those rows have — read-only now that the dish sheet's
-   * verdict buttons are gone. Transitional and not to build on — see the
-   * fuller note in RestaurantDetail, which owns this rule.
-   */
-  const dishesWithStats = useMemo(
-    () =>
-      dishes.map((dish) => {
-        const rated = dishRatings[dishRatingKey(dish.name)];
-        if (rated) return { ...dish, total: rated.ratings, pct: Math.round(rated.average) };
+  /* Each plate's percent, and how many people it came from — the web page's
+     rule, shared through lib/ratedPlates.ts so the two screens cannot drift.
+     Before it was shared this screen was missing it entirely: the header
+     counted `posts.rating` while every row below counted the older yes/no
+     tally, so Landini's could say "38 ratings across 10 plates" and then show
+     no rated plates at all. */
+  const dishesWithStats = useMemo(() => platesWithStats(dishes, dishRatings), [dishes, dishRatings]);
 
-        const { total, pct } = dishStats(dish.yesVotes, dish.noVotes);
-        return { ...dish, total, pct };
-      }),
-    [dishes, dishRatings],
-  );
-
-  const topPicks = useMemo(
-    () =>
-      [...dishesWithStats]
-        .filter((dish) => dish.total > 0)
-        .sort((a, b) => (b.pct ?? 0) - (a.pct ?? 0) || b.total - a.total)
-        .slice(0, TOP_PICKS_COUNT),
-    [dishesWithStats],
-  );
+  const topPicks = useMemo(() => topPlates(dishesWithStats, TOP_PICKS_COUNT), [dishesWithStats]);
 
   const sections = useMemo(() => {
     const order: string[] = [];
     const bySection = new Map<string, typeof dishesWithStats>();
     for (const dish of dishesWithStats) {
+      // A rated plate that is not on the menu is a hit, not a menu row.
+      if (dish.offMenu) continue;
       if (!bySection.has(dish.section)) {
         order.push(dish.section);
         bySection.set(dish.section, []);
@@ -192,9 +166,10 @@ export function PhoneDetailScreen({
           `--phone-nav-space` already reserves the arc nav's room. */}
       <div className="flex flex-col gap-5 px-4 pt-5">
         <PhoneDetailHits dishes={topPicks} ratedBy={ratedBy} onSelect={setSelectedDishId} />
-        {/* Renders only while the plate score's floor is unmet — the invitation
-            and the hits list never share a screen. It sits where the hits
-            would, because it is the hits' absence being stated. */}
+        {/* Renders only while the plate score's floor is unmet. With nothing
+            rated it stands where the hits would, stating their absence; once
+            one plate is rated the hits list is above it (a single rating is a
+            hit) and this becomes the countdown to the hero's score. */}
         <PhoneFirstPlate restaurant={restaurant} score={plateScore} href={postHref} />
         <RestaurantAspects tally={aspectTally} />
         {/* Above the menu, as on the web page — the reader who is on the wrong

@@ -1,3 +1,4 @@
+/// <reference types="@capacitor/push-notifications" />
 import type { CapacitorConfig } from '@capacitor/cli';
 
 /*
@@ -65,6 +66,15 @@ const config: CapacitorConfig = {
     // the override — harmless for internal testing, and it self-corrects the
     // moment the default is what ships.
     errorPath: 'offline.html'
+  },
+  plugins: {
+    // How a push is shown while the app is in the foreground. Without this
+    // iOS swallows it silently; with it a comment on your plate still shows a
+    // banner while you are reading someone else's. The web side of push is
+    // src/lib/pushClient.ts; the sender is src/lib/push.ts.
+    PushNotifications: {
+      presentationOptions: ['badge', 'sound', 'alert']
+    }
   }
 };
 

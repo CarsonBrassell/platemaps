@@ -17,6 +17,7 @@ import {
 import { VotePair, type VoteDirection } from "@/components/feed/PostActions";
 import { PostOptionsMenu } from "@/components/PostOptionsMenu";
 import type { ShelfPost } from "@/components/ProfileShelves";
+import { MealCollage, collagePlatesFor } from "@/components/feed/MealCollage";
 
 /**
  * One of your own plates, opened up: the photo, what it scored, who hearted
@@ -676,13 +677,14 @@ export function PlateDetailSheet({
   const photo = post.media?.find((m) => m.type === "image");
   /** No photo but something said: the sheet leads with the words block. */
   const words = !photo && post.text.trim().length > 0;
+  const isMeal = (post.courses?.length ?? 0) > 0;
   const pct =
-    post.ratingKind === "dish" && post.rating != null
+    !isMeal && post.ratingKind === "dish" && post.rating != null
       ? Math.round(post.rating)
       : null;
   const comments = post.comments ?? [];
   const thread = buildComments(comments);
-  const name = post.dishName ?? post.restaurant ?? post.text;
+  const name = (isMeal ? post.restaurant : post.dishName) ?? post.restaurant ?? post.text;
 
   /* The tile behind this sheet is already gone the moment `onDelete` fires —
      `ProfileShelves`' own `handleDeletePost` drops it from `posts`
@@ -904,12 +906,19 @@ export function PlateDetailSheet({
              popping out of an `overflow-hidden` frame gets cut off by it. */
           <div className="relative mb-3">
             <div className="overflow-hidden rounded-xl">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={photo.url}
-                alt={photo.alt ?? ""}
-                className="block max-h-[46dvh] w-full rounded-xl object-cover"
-              />
+              {post.courses?.length ? (
+                <MealCollage
+                  plates={collagePlatesFor({ ...post, media: post.media ?? [] })}
+                  restaurant={post.restaurant}
+                />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={photo.url}
+                  alt={photo.alt ?? ""}
+                  className="block max-h-[46dvh] w-full rounded-xl object-cover"
+                />
+              )}
               <HeartCluster
                 anchored
                 hearts={hearts}

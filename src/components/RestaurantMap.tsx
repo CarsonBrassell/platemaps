@@ -352,15 +352,18 @@ function leaderDrop(comment: MapComment, offsetY: number) {
 // The closer you zoom in, the more room a bubble gets before its text is
 // clipped — so more of a long comment becomes readable as you zoom. These
 // caps only bound a LONG headline: the box hugs its content, so a short
-// bubble never pays for the cap it isn't using. The far steps sit a little
-// above where they did when the box was floor-forced to 150 wide, because
-// the headline now shares its row with the score and would otherwise clip
-// two words in.
+// bubble never pays for the cap it isn't using. Each step is 25% over the
+// 178/213/240/275 it was (2026-09-20, by request): a quarter more line is
+// roughly two more words of the comment before the ellipsis. A wider box
+// costs placements — the collision pass fits fewer of them — which is the
+// trade the request made. The open box (`.map-bubble-box`, globals.css) has
+// to stay at or above the widest step, or opening a z18 bubble would narrow
+// it.
 function bubbleMaxWidthForZoom(zoom: number) {
-  if (zoom >= 18) return 275;
-  if (zoom >= 16) return 240;
-  if (zoom >= 14) return 213;
-  return 178;
+  if (zoom >= 18) return 344;
+  if (zoom >= 16) return 300;
+  if (zoom >= 14) return 266;
+  return 222;
 }
 
 /**

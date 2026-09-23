@@ -2,25 +2,23 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth";
-import { avatarPalette, initials, relativeTime } from "@/lib/format";
-import { StarRating } from "@/components/StarRating";
+import { ShortPostRow, useShortThreadActions, type ShortPost } from "@/components/feed/ShortThread";
 import type { Restaurant } from "@/data/restaurantTypes";
 
 /**
- * The slice of `/api/posts` this thread reads — a narrowed mirror of `Post` in
- * components/feed/types.ts.
+ * The slice of `/api/posts` this thread reads: the short thread's row plus the
+ * three fields that decide whether a post belongs to *this* restaurant.
  *
- * `rating` and `dishName` are the point of it. This list used to render
- * `post.text` and nothing else, so a plate someone scored 91% arrived here as
- * unattributed prose while the number it carried — the same number the
- * restaurant's whole score is derived from — was dropped on the floor.
+ * `rating` and `dishName` (on `ShortPost`) are the point of it. This list used
+ * to render `post.text` and nothing else, so a plate someone scored 91%
+ * arrived here as unattributed prose while the number it carried — the same
+ * number the restaurant's whole score is derived from — was dropped on the
+ * floor. The arrows and the Reply that are on the same post in the feed
+ * weren't here either; they come with the row now.
  */
-type Post = {
-  id: string;
-  authorName: string;
-  authorAvatarUrl?: string;
-  text: string;
+type Post = ShortPost & {
   restaurant?: string;
   /**
    * The listing the post actually resolved to, server-side, and the id the
@@ -33,38 +31,8 @@ type Post = {
   placeId?: string;
   /** What the composer wrote. The fallback when `placeId` is absent. */
   restaurantId?: string;
-  dishName?: string;
-  rating?: number;
-  ratingKind?: "restaurant" | "dish";
-  /**
-   * The plate. Already gated server-side: `getPosts` in lib/db.ts hands back
-   * `[]` for a post whose author hasn't opted into public photos, so whatever
-   * arrives here is showable and this list just renders it — the same contract
-   * the feed card and the dish sheet rely on.
-   */
-  media?: { url: string; type: "image" | "video"; alt?: string }[];
-  createdAt: string;
 };
 
-/** Photos shown per comment; the same cap the dish sheet uses. */
-const VISIBLE_PHOTOS = 3;
-
-/**
- * Everything posted about a restaurant, under the restaurant.
- *
- * **There is no composer here any more.** This card used to carry a six-stage
- * wizard of its own — comment or review, restaurant or food, a star picker, a
- * dish picker, a percent slider — that ended by *prefixing a string onto the
- * post text* (`@Landini's - Sopranos Pizza 91%; …`). Nothing it wrote ever
- * reached `posts.rating` or `posts.dish_name`, so none of it counted toward a
- * plate score, a dish's percent or a category tally; it only looked like a
- * review. Its star branch wrote a 1-5 restaurant rating years after that scale
- * was retired, and as text, where `/api/posts`' refusal to store one couldn't
- * catch it.
- *
- * The field is a link to the real composer now, holding this restaurant, and
- * every rating on this page comes from one flow.
- */
 export function RestaurantComments({
   restaurant,
   postHref,
@@ -86,7 +54,8 @@ export function RestaurantComments({
    */
   highlightPostId?: string | null;
 }) {
-  const { isSignedIn } = useAuth();
+  const { account, isSignedIn } = useAuth();
+  const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
   /* Which row is currently ringed. Separate from `highlightPostId` because it
      is temporary — the ring fades after a few seconds while the URL keeps its
@@ -133,6 +102,20 @@ export function RestaurantComments({
     };
   }, [highlightPostId, posts]);
 
+  /* The votes and replies themselves — the feed's routes and the feed's
+     three-state arithmetic, shared with the dish sheet in ShortThread. */
+  const { votePost, voteComment, addComment, error } = useShortThreadActions<Post>({
+    getPost: (postId) => posts.find((p) => p.id === postId),
+    patchPost: (postId, patch) =>
+      setPosts((prev) => prev.map((p) => (p.id === postId ? patch(p) : p))),
+  });
+
+  /* Where the "Sign in" line already points. A dead arrow gives no clue why
+     nothing happened, so a signed-out press goes to the door instead. */
+  function requireSignIn() {
+    router.push("/account");
+  }
+
   return (
     <div className="rounded-2xl bg-white px-5 py-5 sm:px-6">
       <p className="mono-label mb-4 text-zinc-500">Comments &amp; reviews</p>
@@ -158,122 +141,33 @@ export function RestaurantComments({
         </Link>
       )}
 
+      {error && (
+        <p role="status" className="mb-3 text-sm text-red-700">
+          {error}
+        </p>
+      )}
+
       <div className="flex flex-col gap-4">
         {posts.length === 0 ? (
           <p className="text-sm text-zinc-500">No comments yet — be the first.</p>
         ) : (
           posts.map((post) => (
-            <PostRow
+            <ShortPostRow
               key={post.id}
               post={post}
+              canInteract={isSignedIn}
+              currentUserId={account?.id ?? null}
               highlighted={post.id === highlighted}
               rowRef={(el) => {
                 rowRefs.current[post.id] = el;
               }}
+              onRequireSignIn={requireSignIn}
+              onVote={(direction) => votePost(post.id, direction)}
+              onVoteComment={(commentId, direction) => voteComment(post.id, commentId, direction)}
+              onReply={(text, parentId) => addComment(post.id, text, parentId)}
             />
           ))
         )}
-      </div>
-    </div>
-  );
-}
-
-function PostRow({
-  post,
-  highlighted,
-  rowRef,
-}: {
-  post: Post;
-  /** Deep-linked from the map — ringed for a moment so it can be found. */
-  highlighted?: boolean;
-  rowRef?: (el: HTMLDivElement | null) => void;
-}) {
-  const { avatarBg } = avatarPalette(post.authorName);
-  const photos = (post.media ?? []).filter((m) => m.type === "image").slice(0, VISIBLE_PHOTOS);
-
-  return (
-    /* The ring is the feed card's — `ring-2 ring-pm-orange` — so arriving from
-       a bubble marks the same thing the same way on either page. The padding
-       and negative margin are only so the ring has something to sit around: a
-       row is bare text against the card, and a ring drawn tight on it clips the
-       avatar. `scroll-mt-4` keeps the scrolled-to row off the rail's top edge. */
-    <div
-      ref={rowRef}
-      className={`flex scroll-mt-4 gap-2.5 rounded-xl transition-shadow ${
-        highlighted ? "-mx-2 px-2 py-2 ring-2 ring-pm-orange" : ""
-      }`}
-    >
-      {post.authorAvatarUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={post.authorAvatarUrl}
-          alt=""
-          className="h-8 w-8 shrink-0 rounded-full object-cover"
-        />
-      ) : (
-        <span
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${avatarBg} font-mono text-[11px] font-semibold text-white`}
-        >
-          {initials(post.authorName)}
-        </span>
-      )}
-
-      <div className="min-w-0 flex-1">
-        <div className="flex items-baseline justify-between gap-3">
-          {/* A username is a machine handle, so it sets in the mono. */}
-          <span className="truncate font-mono text-[13px] font-medium text-zinc-900">
-            {post.authorName}
-          </span>
-          {/* Each scale renders as itself. A 0-100 plate rating and an old 1-5
-              restaurant review answer different questions, and neither is ever
-              redrawn as the other — see the rating note in lib/db.ts. */}
-          {post.rating !== undefined && post.ratingKind === "dish" && (
-            <span className="shrink-0 font-mono text-sm font-semibold tabular-nums text-pm-orange-text">
-              {Math.round(post.rating)}%
-            </span>
-          )}
-          {post.rating !== undefined && post.ratingKind === "restaurant" && (
-            <span className="flex shrink-0 items-center gap-1">
-              <StarRating rating={post.rating} className="h-3 w-3" />
-              <span className="font-mono text-xs tabular-nums text-zinc-500">
-                {post.rating}/5
-              </span>
-            </span>
-          )}
-        </div>
-
-        {/* What the percent is *about*. A dish name used as a compact reference
-            to a record sets in mono, not Fraunces — DESIGN.md's one exception
-            to the type split, the same one the feed card's byline takes. */}
-        {post.dishName && (
-          <p className="mt-0.5 truncate font-mono text-xs text-zinc-500">{post.dishName}</p>
-        )}
-
-        <p className="mt-0.5 text-sm leading-snug text-zinc-700">{post.text}</p>
-
-        {/* The photo the comment was posted with. This thread used to drop it
-            on the floor — a plate someone shot arrived here as prose only,
-            while the feed and the dish sheet showed the picture. Same
-            treatment as DishPosts: a lone photo takes the column at 4:3, two
-            or three share the row as squares, inset and rounded per DESIGN.md. */}
-        {photos.length > 0 && (
-          <div className="mt-2 flex gap-1.5">
-            {photos.map((photo) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                key={photo.url}
-                src={photo.url}
-                alt={photo.alt ?? ""}
-                loading="lazy"
-                className={`min-w-0 flex-1 rounded-xl bg-[var(--pm-tone-1)] object-cover ${
-                  photos.length === 1 ? "aspect-[4/3]" : "aspect-square"
-                }`}
-              />
-            ))}
-          </div>
-        )}
-
-        <p className="mt-1 font-mono text-xs text-zinc-500">{relativeTime(post.createdAt)}</p>
       </div>
     </div>
   );

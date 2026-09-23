@@ -1275,6 +1275,35 @@ const statements = [
   // a previous run of this statement is 64 chars and fails the WHERE, so
   // re-running `db:migrate` never double-hashes a row.
   `UPDATE sessions SET token = encode(sha256(convert_to(token, 'UTF8')), 'hex') WHERE length(token) = 36`,
+
+  // Push notifications (lib/push.ts). One row per device token, bound to the
+  // *session* that registered it rather than only to the user: signing out,
+  // "sign out other devices" and session expiry all delete the session row,
+  // and the cascade takes the device with it — so a phone that is no longer
+  // signed in as you stops receiving your notifications without any client
+  // code having to remember to unregister. ON UPDATE CASCADE is for the
+  // legacy-token upgrade in getSessionUser, which rewrites `sessions.token`
+  // in place.
+  `CREATE TABLE IF NOT EXISTS push_devices (
+    token TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    session_token TEXT NOT NULL REFERENCES sessions(token) ON DELETE CASCADE ON UPDATE CASCADE,
+    platform TEXT NOT NULL DEFAULT 'ios',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    last_seen_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_push_devices_user ON push_devices (user_id)`,
+  `CREATE INDEX IF NOT EXISTS idx_push_devices_session ON push_devices (session_token)`,
+
+  // Meals (multi-course posts). Every course is its own `posts` row so the
+  // plate stays the unit of truth — dish ratings, plate score and the dish
+  // sheet all count it with no special casing. `meal_id` points a course at
+  // the hero row that owns the feed card, the words, the votes and the
+  // points; NULL means the row IS the hero (or a plain single-plate post).
+  // Deleting the hero cascades through its courses.
+  `ALTER TABLE posts ADD COLUMN IF NOT EXISTS meal_id TEXT REFERENCES posts(id) ON DELETE CASCADE`,
+  `ALTER TABLE posts ADD COLUMN IF NOT EXISTS course_index INTEGER NOT NULL DEFAULT 0`,
+  `CREATE INDEX IF NOT EXISTS idx_posts_meal ON posts (meal_id) WHERE meal_id IS NOT NULL`,
 ];
 
 for (const statement of statements) {

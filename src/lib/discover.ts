@@ -465,7 +465,12 @@ function dishKey(restaurantId: string, name: string): string {
 }
 
 export async function resolvePostRefs<
-  T extends { restaurantId?: string; restaurant?: string; dishName?: string },
+  T extends {
+    restaurantId?: string;
+    restaurant?: string;
+    dishName?: string;
+    courses?: { dishName?: string; dishId?: string }[];
+  },
 >(
   posts: readonly T[],
 ): Promise<{ posts: (T & { placeId?: string; dishId?: string })[]; places: PostPlaces }> {
@@ -482,7 +487,7 @@ export async function resolvePostRefs<
   // Only the restaurants whose menus a post on this page actually asks about.
   const menusWanted = new Set<string>();
   for (const post of posts) {
-    if (!post.dishName?.trim()) continue;
+    if (!post.dishName?.trim() && !post.courses?.length) continue;
     const place = placeFor(post);
     if (place) menusWanted.add(place.id);
   }
@@ -516,11 +521,18 @@ export async function resolvePostRefs<
       neighborhood: place.neighborhood,
     };
 
-    const dishId = post.dishName?.trim()
-      ? dishIds.get(dishKey(place.id, post.dishName))
-      : undefined;
+    const idFor = (name?: string) =>
+      name?.trim() ? dishIds.get(dishKey(place.id, name)) : undefined;
+    const dishId = idFor(post.dishName);
+    // A meal's other plates resolve the same way, so each tile in the
+    // collage can open its own dish.
+    const withCourses = post.courses
+      ? { ...post, courses: post.courses.map((c) => ({ ...c, dishId: idFor(c.dishName) })) }
+      : post;
 
-    return dishId ? { ...post, placeId: place.id, dishId } : { ...post, placeId: place.id };
+    return dishId
+      ? { ...withCourses, placeId: place.id, dishId }
+      : { ...withCourses, placeId: place.id };
   });
 
   return { posts: resolved, places };

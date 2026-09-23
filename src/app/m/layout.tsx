@@ -3,6 +3,7 @@ import { QuerySync } from "@/components/QuerySync";
 import type { Metadata } from "next";
 import { PhoneShell } from "@/components/mobile/PhoneShell";
 import { PhoneSplash } from "@/components/mobile/PhoneSplash";
+import { PushRegistration } from "@/components/mobile/PushRegistration";
 import "./phone.css";
 
 /**
@@ -45,6 +46,11 @@ export default function PhoneLayout({ children }: { children: React.ReactNode })
           first byte, not wait on whatever the shell is suspended for. It
           mounts once per document, which in the app is once per cold open. */}
       <PhoneSplash />
+      {/* Registers the iOS app for push and routes a tapped notification.
+          Nothing in a browser tab. */}
+      <Suspense fallback={null}>
+        <PushRegistration />
+      </Suspense>
       <Suspense fallback={<div className="pm-phone-shell" />}>
         <PhoneShell>{children}</PhoneShell>
       </Suspense>

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { acceptFriendRequest, declineFriendRequest } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { notifyFriendAccepted } from "@/lib/notify";
 
 /**
  * Accept or decline an incoming request. Both db.ts functions check that
@@ -30,7 +31,8 @@ export async function POST(req: Request) {
 
   try {
     if (action === "accept") {
-      await acceptFriendRequest(requestId, user.id);
+      const { requesterId } = await acceptFriendRequest(requestId, user.id);
+      notifyFriendAccepted(requesterId, user);
     } else {
       await declineFriendRequest(requestId, user.id);
     }

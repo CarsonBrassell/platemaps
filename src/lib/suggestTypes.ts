@@ -47,8 +47,7 @@ export type SuggestScope = {
    * What the line prints where the term goes.
    *
    * The corpus's own spelling when the reading names one thing — one restaurant,
-   * one cuisine, one dish name — or when the term was corrected to reach it at
-   * all, since echoing a misspelling under "Did you mean" would be no answer.
+   * one cuisine — and on the All line whenever it recommends (see `term`).
    * Otherwise the term as typed, because "cannonball" describes ten dish names
    * and any one of their labels would misrepresent the other nine.
    */
@@ -56,27 +55,35 @@ export type SuggestScope = {
   /**
    * The text this line searches for — what goes in `?q=`.
    *
-   * Usually the term as typed, and separate from `label` for the one case where
-   * they part: a dish nothing is spelled like. The grid's dish half is a
-   * substring match (`dishMatchesFor` in lib/db.ts) with no similarity pass of
-   * its own, so a misspelling scoped to dishes would land on an empty grid
-   * under a line promising 161 places. The correction is searched for instead,
-   * and `label` is what that correction is called.
+   * The term as typed on every scoped line, always: those lines search the
+   * field for exactly what the visitor wrote (Calvin: they "are for when
+   * people are searching for just a specific dish and it might be auto
+   * correcting to something they dont want"). It parts from the typed term
+   * only on the All line, which is the one line that recommends — completing
+   * "tacos el" to "Tacos El Gordo", or correcting "breaksfast" to
+   * "Breakfast" — and then `label` and `term` are both that wording, and
+   * `count` is the size of the search it opens.
    */
   term: string;
   /** How many restaurants this line returns. The same unit on every line,
    *  because every line lands on a grid of restaurants. */
   count: number;
   /**
-   * True when only the similarity pass reached this reading: the visitor's
-   * spelling does not appear in it. The dropdown labels these rather than
-   * mixing them in (Calvin: "the dropdown menue should include like spell
-   * chekced version to").
+   * True when nothing in the corpus contains the visitor's spelling. Only the
+   * All line can carry it — the scoped lines exist only for literal hits — and
+   * the dropdown prints it as a "Did you mean" notice over the list rather
+   * than mixing a guess in with answers (Calvin: "the dropdown menue should
+   * include like spell chekced version to").
    */
   fuzzy: boolean;
   /**
    * Set when the reading names exactly one thing, and then it is that thing's
    * canonical value: a restaurant's id, a cuisine's label, a neighbourhood's.
+   * Always null on the All line, even when it has completed the term to a
+   * restaurant's name (Calvin: "tacos el" → Tacos El Gordo): that line puts
+   * the name in `term` and runs the ranked search for it, so the place is
+   * first on a grid the visitor can keep browsing, rather than opening its
+   * page. `count` is the size of that search.
    *
    * It is what lets a line land somewhere better than a scoped search. One
    * restaurant goes to its own page — typing a name to go to a place is the

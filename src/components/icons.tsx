@@ -248,11 +248,35 @@ export function TagIcon({ className = "" }: IconProps) {
   );
 }
 
-export function PinIcon({ className = "" }: IconProps) {
+/**
+ * `filled` is the NearbyChip radar-pulse state: a solid `currentColor` pin
+ * with a white cutout dot, rather than the outline this draws by default —
+ * same two shapes, just which one carries the fill. Every other caller
+ * (NearbyFeedGate) leaves `filled` unset and gets the original outline.
+ */
+export function PinIcon({
+  filled = false,
+  className = "",
+}: IconProps & { filled?: boolean }) {
   return (
-    <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 24 24"
+      fill={filled ? "currentColor" : "none"}
+      stroke={filled ? "none" : "currentColor"}
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
       <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
-      <circle cx="12" cy="10" r="3" />
+      <circle
+        cx="12"
+        cy="10"
+        r="3"
+        fill={filled ? "white" : "none"}
+        stroke={filled ? "none" : "currentColor"}
+      />
     </svg>
   );
 }

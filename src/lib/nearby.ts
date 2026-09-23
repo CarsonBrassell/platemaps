@@ -45,7 +45,124 @@ export type Nearby = {
   coords: Coords | null;
   /** Raises the permission prompt. A no-op once coordinates are in hand. */
   request: () => void;
+  /** The saved address, if one is set — see `SavedLocation` below. */
+  saved: { label: string } | null;
+  /** Saves an address as this device's location, taking over from GPS. */
+  setSavedLocation: (loc: SavedLocation) => void;
+  /** Drops the saved address and returns to ordinary GPS behaviour. */
+  clearSavedLocation: () => void;
 };
+
+/**
+ * A typed address, geocoded once (src/app/api/geocode/route.ts) and kept on
+ * this device only — no DB column, no account setting. Desktop Windows rarely
+ * has usable GPS, and "where I'm asking from" is a fine thing to just type.
+ *
+ * Stored the same way `myLocation.ts` stores `readLastFix`: `localStorage`,
+ * wrapped in try/catch because Safari private mode throws on read, and never
+ * sent anywhere — the address itself never reaches this file at all, only
+ * the coordinates and the short label the geocode route already reduced it
+ * to.
+ */
+export type SavedLocation = { lat: number; lng: number; label: string };
+
+const SAVED_LOCATION_KEY = "platemaps:saved-location";
+
+function readSavedLocation(): SavedLocation | null {
+  if (typeof localStorage === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(SAVED_LOCATION_KEY);
+    if (!raw) return null;
+    const stored = JSON.parse(raw) as Partial<SavedLocation>;
+    if (
+      typeof stored.lat !== "number" ||
+      typeof stored.lng !== "number" ||
+      typeof stored.label !== "string"
+    ) {
+      return null;
+    }
+    return { lat: stored.lat, lng: stored.lng, label: stored.label };
+  } catch {
+    return null;
+  }
+}
+
+/*
+ * A plain module-level external store, not React state: `useNearby` is called
+ * from more than one component at once (the filters rail and the results grid
+ * each hold their own instance), and setting an address in one has to be seen
+ * by all of them on the same render rather than after a prop threaded down
+ * from a common ancestor that doesn't exist. `useSyncExternalStore` is the
+ * documented way to subscribe a hook to state that lives outside React;
+ * the `storage` event is what closes the loop across two tabs open on the
+ * same device.
+ *
+ * `cached` is read lazily rather than at module load — this file is imported
+ * by client components that can themselves be evaluated during SSR, where
+ * `localStorage` does not exist.
+ */
+let cached: SavedLocation | null | undefined;
+const savedLocationListeners = new Set<() => void>();
+
+function notifySavedLocationChanged() {
+  cached = readSavedLocation();
+  for (const listener of savedLocationListeners) listener();
+}
+
+let storageListenerAttached = false;
+function subscribeToSavedLocation(listener: () => void): () => void {
+  savedLocationListeners.add(listener);
+  if (!storageListenerAttached && typeof window !== "undefined") {
+    storageListenerAttached = true;
+    // Fires only for a *different* tab's write to this key — this tab's own
+    // writes go through `setSavedLocation`/`clearSavedLocation` below, which
+    // notify directly.
+    window.addEventListener("storage", (e) => {
+      if (e.key === null || e.key === SAVED_LOCATION_KEY) notifySavedLocationChanged();
+    });
+  }
+  return () => {
+    savedLocationListeners.delete(listener);
+  };
+}
+
+function getSavedLocationSnapshot(): SavedLocation | null {
+  if (cached === undefined) cached = readSavedLocation();
+  return cached;
+}
+
+/** No saved location exists in prerendered HTML — there is no browser yet to
+    have saved one — so hydration always starts from "none" and corrects on
+    the client's first read, same shape as `geolocationSupportedOnServer`. */
+function getSavedLocationServerSnapshot(): SavedLocation | null {
+  return null;
+}
+
+/** Saves an address as this device's location. Exported standalone (not just
+    through the hook) so it stays one function no matter how many components
+    call it. */
+export function setSavedLocation(loc: SavedLocation): void {
+  if (typeof localStorage !== "undefined") {
+    try {
+      localStorage.setItem(SAVED_LOCATION_KEY, JSON.stringify(loc));
+    } catch {
+      // Quota or a blocked store — the tab that just set it still gets the
+      // in-memory value below, it just won't survive a reload.
+    }
+  }
+  notifySavedLocationChanged();
+}
+
+export function clearSavedLocation(): void {
+  if (typeof localStorage !== "undefined") {
+    try {
+      localStorage.removeItem(SAVED_LOCATION_KEY);
+    } catch {
+      // See setSavedLocation.
+    }
+  }
+  notifySavedLocationChanged();
+}
 
 /**
  * Whether the browser has a geolocation API, read as an external store rather
@@ -71,6 +188,12 @@ export function useNearby(): Nearby {
     subscribeToNothing,
     geolocationSupported,
     geolocationSupportedOnServer,
+  );
+
+  const saved = useSyncExternalStore(
+    subscribeToSavedLocation,
+    getSavedLocationSnapshot,
+    getSavedLocationServerSnapshot,
   );
 
   const request = useCallback(() => {
@@ -107,7 +230,11 @@ export function useNearby(): Nearby {
    * that explains why.
    */
   useEffect(() => {
-    if (!supported) return;
+    // A saved location already answers "where" — taking a GPS fix nobody
+    // asked for while one is in effect would be work spent on an answer
+    // nothing uses, and could flip `state` to "denied" under a saved address
+    // that was never blocked.
+    if (!supported || saved) return;
     const permissions = typeof navigator !== "undefined" ? navigator.permissions : undefined;
     if (!permissions || typeof permissions.query !== "function") return;
     let cancelled = false;
@@ -123,7 +250,28 @@ export function useNearby(): Nearby {
     return () => {
       cancelled = true;
     };
-  }, [supported, request]);
+  }, [supported, saved, request]);
 
-  return { state: supported ? state : "unsupported", coords, request };
+  // A saved location takes precedence over GPS: it answers `coords` directly,
+  // in the `"ready"` state, without ever touching the geolocation API or its
+  // permission prompt. Clearing it (`clearSavedLocation`) falls straight back
+  // to whatever GPS had already resolved, with no re-request needed — `coords`
+  // and `state` below are exactly what they were before a location was saved.
+  return saved
+    ? {
+        state: "ready",
+        coords: { lat: saved.lat, lng: saved.lng },
+        request,
+        saved: { label: saved.label },
+        setSavedLocation,
+        clearSavedLocation,
+      }
+    : {
+        state: supported ? state : "unsupported",
+        coords,
+        request,
+        saved: null,
+        setSavedLocation,
+        clearSavedLocation,
+      };
 }

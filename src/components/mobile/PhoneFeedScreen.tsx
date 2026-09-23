@@ -11,7 +11,12 @@ import { FeedLoadMore } from "@/components/feed/FeedLoadMore";
 import { UtensilsIcon, CompassIcon, WifiOffIcon, PlusIcon } from "@/components/icons";
 import type { FeedTab, Post } from "@/components/feed/types";
 import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
+import { NearbyChip } from "@/components/feed/NearbyChip";
+import { NearbyFeedGate } from "@/components/feed/NearbyFeedGate";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
+import { useNearby, milesBetween } from "@/lib/nearby";
+import { formatMiles } from "@/lib/geo";
+import { useQueryParams } from "@/lib/queryString";
 /* Just the colour string — mapStyle declares no side effects and MapLibre
    itself is only a type import there, so this does not drag the map into the
    eager bundle that PhoneFeedMapPanel's dynamic import exists to avoid. */
@@ -89,6 +94,26 @@ export function PhoneFeedScreen() {
      `created_at DESC`, which makes "your post is the top card" a fact rather
      than a hope — and the top card is the one that renders full width. */
   const [sort, setSort] = useState<FeedSort>(landing ? "new" : FEED_SORT_DEFAULT);
+  /* The one hook allowed to raise the location prompt — see its header
+     comment. Read here, not inside FeedSortSwitch, because the tap that
+     should raise the prompt is "switch on Nearby", a decision this screen
+     owns rather than a thing the segmented control should know how to do. */
+  const nearby = useNearby();
+  const handleSortChange = useCallback((next: FeedSort) => {
+    setSort(next);
+  }, []);
+  /* The Nearby filter's own on/off — deliberately not part of `sort` and
+     deliberately not in the URL (see NearbyChip's header comment): it's a
+     per-visit narrowing, not a shareable view, and switching New/Trending
+     while it's on must leave it on rather than resetting it. */
+  const [nearbyOn, setNearbyOn] = useState(false);
+  const handleNearbyToggle = useCallback(() => {
+    setNearbyOn((on) => {
+      const next = !on;
+      if (next && nearby.state !== "ready") nearby.request();
+      return next;
+    });
+  }, [nearby]);
   const [reloadKey, setReloadKey] = useState(0);
   const [commentsPostId, setCommentsPostId] = useState<string | null>(null);
   /* Set by the search FAB on the card tabs — see PhoneFeedSearch's onSearch.
@@ -141,7 +166,14 @@ export function PhoneFeedScreen() {
     hasMore,
     loadingMore,
     loadMore,
-  } = usePostFeed({ endpoint, reloadKey });
+  } = usePostFeed({
+    endpoint,
+    reloadKey,
+    // Only Discover with the Nearby filter on ever carries a position, and
+    // only once one has been fixed — see NearbyFeedGate for what covers the
+    // gap before that.
+    coords: tab === "discover" && nearbyOn && nearby.state === "ready" ? nearby.coords : null,
+  });
 
   /* The flame is a Discover-only signal. Friends is explicitly not an
      engagement-ranked feed, so flaming a card there would contradict the
@@ -162,6 +194,23 @@ export function PhoneFeedScreen() {
   const activePost = commentsPostId
     ? (posts?.find((p) => p.id === commentsPostId) ?? null)
     : null;
+
+  /* `?post=<id>` is where a tapped push notification lands (lib/notify.ts):
+     "someone commented on your plate" opens that plate's comments. Once, when
+     the post is in the loaded list — the web feed's `?post=` highlight has
+     the same reach and the same limit, and a post outside the window or the
+     first page is left to the feed rather than fetched on its own. */
+  const linkedPostId = useQueryParams().get("post");
+  const openedFromUrl = useRef<string | null>(null);
+  useEffect(() => {
+    if (!linkedPostId || !posts || openedFromUrl.current === linkedPostId) return;
+    if (!posts.some((p) => p.id === linkedPostId)) return;
+    openedFromUrl.current = linkedPostId;
+    // Same shape as /feed's ?post= effect: the URL is the external system
+    // being synchronised, and the ref above makes this fire once per id.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setCommentsPostId(linkedPostId);
+  }, [linkedPostId, posts]);
 
   /* Filters the loaded list in place rather than re-querying: the point is to
      let someone see every post about one restaurant instead of one, not to
@@ -272,6 +321,12 @@ export function PhoneFeedScreen() {
   }, [highlighted, posts]);
 
   const showMap = tab === "map";
+  /* Nearby with no fix yet has nothing to rank — the request hasn't answered,
+     or hasn't been asked (denied/unsupported/failed). NearbyFeedGate covers
+     every one of those in place of the skeleton/empty/list chain below; once
+     `nearby.state` is "ready" this stops matching and that chain takes over
+     same as any other sort. */
+  const showNearbyGate = tab === "discover" && nearbyOn && nearby.state !== "ready";
 
   /*
    * Lock the document while the map is up, and hand the status bar the map's
@@ -468,7 +523,14 @@ export function PhoneFeedScreen() {
           switch 153px, inside 358px of usable width. That is 355px before
           search asks for its 36, so the row is over on the sort switch alone.
           Both rows below the tabs are modifiers on the feed the tabs pick,
-          which is also why they wear rank 3 and the tabs wear rank 2. */}
+          which is also why they wear rank 3 and the tabs wear rank 2.
+
+          NearbyChip now rides beside the sort switch in this same `leading`
+          slot rather than opening a third row — see NearbyChip's header
+          comment for why it's a separate filter and not a segment of the
+          switch. It is sized to its own short "5 mi" label rather than
+          stretched, the same restraint FeedSortSwitch itself follows, so it
+          adds only what its content needs rather than a fixed column. */}
       {/* Two tiers, and which row is in which is the whole design.
 
           The tabs never move: they are welded to the top and they are what you
@@ -512,7 +574,14 @@ export function PhoneFeedScreen() {
         lower={
           <div className="pt-0.5">
             <PhoneFeedSearch
-              leading={tab === "discover" ? <FeedSortSwitch active={sort} onChange={setSort} /> : null}
+              leading={
+                tab === "discover" ? (
+                  <div className="flex items-center gap-2">
+                    <FeedSortSwitch active={sort} onChange={handleSortChange} />
+                    <NearbyChip on={nearbyOn} onToggle={handleNearbyToggle} />
+                  </div>
+                ) : null
+              }
               onSearch={setRestaurantFilter}
             />
           </div>
@@ -558,7 +627,9 @@ export function PhoneFeedScreen() {
           </p>
         )}
 
-        {posts === null ? (
+        {showNearbyGate ? (
+          <NearbyFeedGate nearby={nearby} />
+        ) : posts === null ? (
           <FeedSkeleton count={2} />
         ) : loadError && posts.length === 0 ? (
           <PhoneFeedState
@@ -597,6 +668,12 @@ export function PhoneFeedScreen() {
                 )
               }
             />
+          ) : tab === "discover" && nearbyOn ? (
+            <PhoneFeedState
+              icon={<CompassIcon className="h-6 w-6" />}
+              title="No plates within 5 mi yet"
+              body="Nobody nearby has posted a plate. Switch to Trending or New to see the rest of San Diego."
+            />
           ) : (
             <PhoneFeedState
               icon={<UtensilsIcon className="h-6 w-6" />}
@@ -634,9 +711,28 @@ export function PhoneFeedScreen() {
                    card's props are a union on `surface`, so the vote handler
                    and the heart handler cannot both reach one card — the
                    guarantee the two feeds depend on. */
+                /* Only the Nearby filter ever has a position to measure
+                   from, and only once one has landed — with it off (the
+                   ordinary case, any sort) this leaves the value undefined
+                   and PhoneFeedPostCard falls back to `post.locationLabel`,
+                   same as before Nearby existed. */
+                const distance =
+                  tab === "discover" &&
+                  nearbyOn &&
+                  nearby.coords &&
+                  typeof post.restaurantLat === "number" &&
+                  typeof post.restaurantLng === "number"
+                    ? formatMiles(
+                        milesBetween(nearby.coords, {
+                          lat: post.restaurantLat,
+                          lng: post.restaurantLng,
+                        }),
+                      )
+                    : undefined;
                 const shared = {
                   post,
                   currentUserId: account?.id ?? null,
+                  distance,
                   onSave: handleSave,
                   onShare: handleShare,
                   onOpenComments: setCommentsPostId,

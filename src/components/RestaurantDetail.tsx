@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQueryParams } from "@/lib/queryString";
 import type { Restaurant } from "@/data/restaurantTypes";
-import { dishStats, type Dish } from "@/data/dishes";
+import type { Dish } from "@/data/dishes";
 import { RestaurantHeader } from "@/components/RestaurantHeader";
 import { TopPicks } from "@/components/TopPicks";
 import { FullMenu } from "@/components/FullMenu";
@@ -12,8 +12,8 @@ import { RestaurantComments } from "@/components/RestaurantComments";
 import { RestaurantAspects } from "@/components/RestaurantAspects";
 import { OtherLocations } from "@/components/OtherLocations";
 import type { RestaurantAspectTally, SiblingLocation } from "@/lib/db";
-import type { PlateScore, RatedDish } from "@/lib/plateScore";
-import { dishRatingKey } from "@/lib/dishRatingKey";
+import type { PlateScore } from "@/lib/plateScore";
+import { platesWithStats, topPlates, type RatedPlate } from "@/lib/ratedPlates";
 import { mapCommentsByRestaurant, withDishIds } from "@/data/mapComments";
 
 /* Eight, so the grid's two columns come out even — seven left a widowed card
@@ -42,7 +42,7 @@ export function RestaurantDetail({
   /** What this restaurant's plates add up to. Also read server-side. */
   plateScore: PlateScore;
   /** Per-plate rating averages, keyed by `dishRatingKey`. Also server-side. */
-  dishRatings: Record<string, RatedDish>;
+  dishRatings: Record<string, RatedPlate>;
   /** The chain's other branches, nearest first. Empty for most restaurants. */
   otherLocations: SiblingLocation[];
 }) {
@@ -71,50 +71,19 @@ export function RestaurantDetail({
      the param staying put is what makes the link survive a refresh. */
   const highlightPostId = searchParams.get("post");
 
-  /**
-   * Each plate's percent, and how many people it came from.
-   *
-   * A plate someone has actually rated shows **its rating average** — the same
-   * numbers the header's percent is the average of, so the page adds up. A
-   * plate nobody has rated falls back to the older "would you eat this?" yes/no
-   * tally, which is the only signal those rows have.
-   *
-   * The fallback is transitional and not something to build on: the two are
-   * different questions ("how good was this, 0-100" against "what share would
-   * order it again") wearing the same percent sign, and only the first is on the
-   * product's rating scale. It exists so restaurants whose plates aren't rated
-   * yet keep a populated menu instead of going blank overnight.
-   *
-   * **It is now read-only.** The dish sheet's yes/no buttons were the only way
-   * to cast one and they are gone, so these counts are whatever the import left
-   * and can no longer move. The stored tally still renders; nothing adds to it.
-   */
-  const dishesWithStats = useMemo(
-    () =>
-      dishes.map((dish) => {
-        const rated = dishRatings[dishRatingKey(dish.name)];
-        if (rated) {
-          return { ...dish, total: rated.ratings, pct: Math.round(rated.average) };
-        }
-        const { total, pct } = dishStats(dish.yesVotes, dish.noVotes);
-        return { ...dish, total, pct };
-      }),
-    [dishes, dishRatings],
-  );
+  /* Each plate's percent, and how many people it came from — the menu, then
+     any rated plate the menu does not have. The rule and its caveats live in
+     lib/ratedPlates.ts so the phone screen and this one cannot drift. */
+  const dishesWithStats = useMemo(() => platesWithStats(dishes, dishRatings), [dishes, dishRatings]);
 
-  const topPicks = useMemo(
-    () =>
-      [...dishesWithStats]
-        .filter((dish) => dish.total > 0)
-        .sort((a, b) => (b.pct ?? 0) - (a.pct ?? 0) || b.total - a.total)
-        .slice(0, TOP_PICKS_COUNT),
-    [dishesWithStats],
-  );
+  const topPicks = useMemo(() => topPlates(dishesWithStats, TOP_PICKS_COUNT), [dishesWithStats]);
 
   const sections = useMemo(() => {
     const order: string[] = [];
     const bySection = new Map<string, typeof dishesWithStats>();
     for (const dish of dishesWithStats) {
+      // A rated plate that is not on the menu is a hit, not a menu row.
+      if (dish.offMenu) continue;
       if (!bySection.has(dish.section)) {
         order.push(dish.section);
         bySection.set(dish.section, []);

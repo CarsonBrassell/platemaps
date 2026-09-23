@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useQueryParams } from "@/lib/queryString";
 import { useAuth } from "@/lib/auth";
 import { openPostFlash, closePostFlash, stashLanding } from "@/lib/postCelebration";
-import { discardPhoto, uploadPhotos, type PhotoDraft } from "@/lib/photos";
+import { discardPhoto, type PhotoDraft } from "@/lib/photos";
 import { BEST_AT } from "@/data/reviewScales";
 import { CloseIcon, ChevronIcon } from "@/components/icons";
 import { CameraCapture } from "@/components/post/CameraCapture";
@@ -15,6 +15,13 @@ import { DishPicker, type PickedDish } from "@/components/post/DishPicker";
 import { useStepHistory } from "@/components/post/useStepHistory";
 import { PercentMeter, bandForPercent } from "@/components/post/PercentMeter";
 import { PhotoPrivacyNotice } from "@/components/post/PhotoPrivacyNotice";
+import {
+  MealPlates,
+  assembleMeal,
+  coursesPayload,
+  uploadMealPhotos,
+  type PlateDraft,
+} from "@/components/post/MealPlates";
 import type { PostMedia } from "@/components/feed/types";
 import { CharCount } from "@/components/post/CharCount";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
@@ -87,6 +94,13 @@ export default function PhonePost() {
   const [note, setNote] = useState("");
   const [bestAt, setBestAt] = useState<string | null>(null);
   const [worstAt, setWorstAt] = useState<string | null>(null);
+  /**
+   * Plates already asked about and set aside, when this post is a meal. The
+   * plate currently in photos/dish/pct is not in here until "Add another
+   * plate" banks it — so a single-plate post never touches this list, and
+   * the flow it walks is exactly the one it always walked.
+   */
+  const [plates, setPlates] = useState<PlateDraft[]>([]);
 
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -220,6 +234,28 @@ export default function PhonePost() {
     return [dish?.name, place?.name].filter(Boolean).join(" · ") || null;
   }
 
+  /**
+   * Where the photo step goes next. A second plate of the same meal skips
+   * "where" — the place was answered by the first plate and cannot differ —
+   * and lands on the menu.
+   */
+  const afterPhoto = plates.length > 0 && place ? STEPS.indexOf("dish") : STEPS.indexOf("where");
+
+  /**
+   * "Add another plate": bank what has been answered about this one and walk
+   * the photo → dish → rate loop again for the next. The words and the
+   * best-at chips are asked once, at the end, about the meal.
+   */
+  function addPlate() {
+    if (!dish) return;
+    setPlates((prev) => [...prev, { photos, dish, pct }]);
+    setPhotos([]);
+    setDish(null);
+    setPct(80);
+    setError(null);
+    go(STEPS.indexOf("photo"));
+  }
+
   /** Returns an error to show, or null when the step is complete. */
   function problemWith(current: Step): string | null {
     if (current === "photo" && photos.length === 0) {
@@ -240,16 +276,21 @@ export default function PhonePost() {
     return null;
   }
 
-  function altFor() {
-    if (dish && place) return `${dish.name} at ${place.name}`;
-    if (dish) return dish.name;
+  function altFor(d: PickedDish | null) {
+    if (d && place) return `${d.name} at ${place.name}`;
+    if (d) return d.name;
     if (place) return `A plate at ${place.name}`;
     return "";
   }
 
   /** `mediaUrls` are the blob store's, handed over by `publish` once they exist. */
-  function payload(mediaUrls: string[]) {
-    const media = mediaUrls.map<PostMedia>((url) => ({ url, type: "image", alt: altFor() }));
+  function payload(meal: ReturnType<typeof assembleMeal>, urlsByPlate: string[][]) {
+    const { hero, courses } = meal;
+    const media = urlsByPlate[0].map<PostMedia>((url) => ({
+      url,
+      type: "image",
+      alt: altFor(hero.dish),
+    }));
     // Same wire shape as the web composer, deliberately: restaurantId/lat/lng
     // ride along so the post can be geo-filtered later, and `photosPublic` is
     // never sent — the API route reads it server-side off the signed-in user's
@@ -269,10 +310,13 @@ export default function PhonePost() {
     return {
       ...shared,
       text: note.trim(),
-      dishName: dish?.name,
-      price: dish?.price,
-      rating: pct,
+      dishName: hero.dish.name,
+      price: hero.dish.price,
+      rating: hero.pct,
       ratingKind: "dish" as const,
+      // The rest of the meal, if there is one; the route writes each as its
+      // own plate row behind this one. Empty on a single-plate post.
+      courses: coursesPayload(courses, urlsByPlate.slice(1), place?.name),
       vibe: bestAt ?? undefined,
       bestAspect: bestAt ?? undefined,
       worstAspect: worstAt ?? undefined,
@@ -293,9 +337,13 @@ export default function PhonePost() {
        restaurant's signal, and once the white screen is up it *is* the
        confirmation — there is no honest way to raise it and then say the
        plate didn't make it. */
-    let urls: string[];
+    /* The plate on screen is the last of the meal; whatever was banked came
+       before it. On a single-plate post this is a list of one. */
+    if (!dish) return;
+    const meal = assembleMeal(plates, { photos, dish, pct });
+    let urlsByPlate: string[][];
     try {
-      urls = await uploadPhotos(photos);
+      urlsByPlate = await uploadMealPhotos([meal.hero, ...meal.courses]);
     } catch {
       setError("Your photos didn't upload. Check your connection and try again.");
       setSubmitting(false);
@@ -311,7 +359,7 @@ export default function PhonePost() {
       const res = await fetch("/api/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload(urls)),
+        body: JSON.stringify(payload(meal, urlsByPlate)),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -319,7 +367,7 @@ export default function PhonePost() {
         /* The photos landed but the post was refused, so they belong to
            nothing. Taking them back out is the whole reason the upload waits
            until this press. */
-        await Promise.allSettled(urls.map(discardPhoto));
+        await Promise.allSettled(urlsByPlate.flat().map(discardPhoto));
         setError(data.error ?? "Couldn't publish that. Try again.");
         setSubmitting(false);
         return;
@@ -340,7 +388,7 @@ export default function PhonePost() {
       router.push(to("/m/feed"));
     } catch {
       closePostFlash();
-      await Promise.allSettled(urls.map(discardPhoto));
+      await Promise.allSettled(urlsByPlate.flat().map(discardPhoto));
       setError("Couldn't reach PlateMaps. Check your connection and try again.");
       setSubmitting(false);
     }
@@ -358,7 +406,7 @@ export default function PhonePost() {
       void publish();
       return;
     }
-    go(index + 1);
+    go(step === "photo" ? afterPhoto : index + 1);
   }
 
   /*
@@ -376,10 +424,10 @@ export default function PhonePost() {
       photos={photos}
       onChange={setPhotos}
       onClose={() => router.push(to("/m/feed"))}
-      onDone={() => go(index + 1)}
+      onDone={() => go(afterPhoto)}
       onSkip={() => {
         setError(null);
-        go(1);
+        go(afterPhoto);
       }}
     />
   );
@@ -412,6 +460,7 @@ export default function PhonePost() {
             The number itself is never restated here: POINT_RULES owns it. */}
         <div className="mb-2 flex items-center justify-between gap-3 font-mono text-[11px] tabular-nums text-pm-grey-text">
           <span>
+            {plates.length > 0 && `Plate ${plates.length + 1} · `}
             Step {index + 1} of {STEPS.length}
           </span>
           <span>Upvotes &amp; replies earn points</span>
@@ -470,6 +519,12 @@ export default function PhonePost() {
                 value={pct}
                 onChange={setPct}
                 label={dish ? `Your rating for the ${dish.name.toLowerCase()}` : "Your rating"}
+              />
+              <MealPlates
+                banked={plates}
+                canAdd={dish !== null}
+                onAdd={addPlate}
+                onRemove={(i) => setPlates((prev) => prev.filter((_, j) => j !== i))}
               />
             </div>
           )}
@@ -588,23 +643,46 @@ export default function PhonePost() {
               <div className="rounded-2xl bg-white px-4 py-3">
                 <p className="mono-label text-zinc-500">How it will read</p>
                 <p className="font-display mt-1 text-base font-semibold text-zinc-900">
-                  {dish?.name ?? place?.name ?? "Your post"}
-                  {dish && place && (
+                  {plates.length > 0
+                    ? `${plates.length + 1} plates`
+                    : (dish?.name ?? place?.name ?? "Your post")}
+                  {(plates.length > 0 || dish) && place && (
                     <span className="font-sans text-sm font-normal text-zinc-500"> at {place.name}</span>
                   )}
                 </p>
-                <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-zinc-600">
-                  <span>
-                    <span className="font-mono tabular-nums">{pct}%</span> · {bandForPercent(pct)}
-                    {dish?.price ? (
-                      <>
-                        {" · "}
-                        <span className="font-mono tabular-nums">{dish.price}</span>
-                      </>
-                    ) : null}
-                    {bestAt && ` · best at ${bestAt.toLowerCase()}`}
-                  </span>
-                </div>
+                {/* A meal lists every plate with its own number — that is
+                    what the collage's pills will say, one per frame. */}
+                {plates.length > 0 ? (
+                  <ul className="mt-1 space-y-0.5 text-sm text-zinc-600">
+                    {[...plates, dish ? { dish, pct } : null]
+                      .filter((p): p is { dish: PickedDish; pct: number } => p !== null)
+                      .map((p, i) => (
+                        <li key={i} className="flex items-baseline gap-1.5">
+                          <span className="truncate">{p.dish.name}</span>
+                          <span className="font-mono font-semibold tabular-nums text-pm-orange-text">
+                            {p.pct}%
+                          </span>
+                          {p.dish.price && (
+                            <span className="font-mono tabular-nums text-zinc-500">{p.dish.price}</span>
+                          )}
+                        </li>
+                      ))}
+                    {bestAt && <li>best at {bestAt.toLowerCase()}</li>}
+                  </ul>
+                ) : (
+                  <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-zinc-600">
+                    <span>
+                      <span className="font-mono tabular-nums">{pct}%</span> · {bandForPercent(pct)}
+                      {dish?.price ? (
+                        <>
+                          {" · "}
+                          <span className="font-mono tabular-nums">{dish.price}</span>
+                        </>
+                      ) : null}
+                      {bestAt && ` · best at ${bestAt.toLowerCase()}`}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           )}

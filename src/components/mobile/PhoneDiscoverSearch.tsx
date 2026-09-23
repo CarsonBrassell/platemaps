@@ -112,9 +112,10 @@ export function PhoneDiscoverSearch({ value = "" }: { value?: string }) {
    * how a search looks broken.
    *
    * A line that stayed a scoped text search keeps its term, because `?q=` is
-   * still set — and it keeps `scope.term` rather than what was typed, so a
-   * corrected dish shows the spelling the grid was actually searched for. An
-   * empty field over a filtered grid is the same lie in the other direction.
+   * still set — and it keeps `scope.term` rather than what was typed, so an
+   * All line that completed or corrected the term shows the spelling the grid
+   * was actually searched for. An empty field over a filtered grid is the same
+   * lie in the other direction.
    */
   function pickScope(scope: SuggestScope) {
     setOpen(false);

@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PostMediaCarousel } from "./PostMediaCarousel";
+import { MealCollage, collagePlatesFor } from "./MealCollage";
 import { PostActions, type VoteDirection } from "./PostActions";
 import { DoubleTapPop } from "./DoubleTapPop";
 import { useDoubleTap } from "./useDoubleTap";
@@ -235,7 +236,10 @@ export function FoodPostCard(props: FoodPostCardProps) {
   /* What the plate *is*. Stars belong to the place, so a restaurant review
      names the restaurant even when a dish is given; everything else leads with
      the dish when there is one. */
-  const titleIsDish = post.ratingKind !== "restaurant" && !!post.dishName;
+  /* A meal's plates each carry their own name, percent and price in the
+     collage, so the card around it names only the place. */
+  const isMeal = (post.courses?.length ?? 0) > 0;
+  const titleIsDish = !isMeal && post.ratingKind !== "restaurant" && !!post.dishName;
   const title = titleIsDish
     ? post.dishName
     : (post.restaurant ?? post.dishName ?? "A plate worth sharing");
@@ -308,7 +312,7 @@ export function FoodPostCard(props: FoodPostCardProps) {
    * headline falls back to the name. There is no third case: a post with words
    * shows both, a post without shows the other one.
    */
-  const lineDish = headline === post.dishName ? null : post.dishName;
+  const lineDish = isMeal || headline === post.dishName ? null : post.dishName;
   const lineRestaurant = headline === post.restaurant ? null : post.restaurant;
 
   /* When it was, printed at the foot of the card — the footnote to the plate,
@@ -322,7 +326,7 @@ export function FoodPostCard(props: FoodPostCardProps) {
      renders in three different card positions depending on the post").
      Every post has a byline, not every post has a photo, so the byline is
      the one home that answers "where's the price" the same way every time. */
-  const bylineParts = [relativeTime(post.createdAt), post.price].filter(Boolean);
+  const bylineParts = [relativeTime(post.createdAt), isMeal ? undefined : post.price].filter(Boolean);
 
   // Reads either vocabulary the `vibe` column has held — "Lively", or "Food"
   // written back out as "Best at food".
@@ -336,7 +340,10 @@ export function FoodPostCard(props: FoodPostCardProps) {
    * then read as the caption underneath. With no photo there is nothing to
    * overlay, so the name goes back into the meta row and the card is words the
    * whole way down. The handle is printed once either way. */
-  const hasPhoto = post.media.length > 0;
+  /* A meal leads with its collage even when the photos are gated away —
+     the pills still say what was eaten and how it rated, which is the card's
+     whole point, and a tone-block collage is still a picture of a table. */
+  const hasPhoto = post.media.length > 0 || isMeal;
 
   /* Mutual friends only — a one-directional follow isn't a state this button
      can land in. "Incoming" routes to the account page rather than accepting
@@ -397,11 +404,25 @@ export function FoodPostCard(props: FoodPostCardProps) {
           pre-split rows were converted by scripts/backfill-rating-kind.mjs). */}
       {hasPhoto && (
         <div className="relative mx-2.5 mt-2.5 overflow-hidden rounded-xl">
-          <PostMediaCarousel
-            media={post.media}
-            dishName={post.dishName}
-            restaurant={post.restaurant}
-          />
+          {isMeal ? (
+            <MealCollage
+              plates={collagePlatesFor(post)}
+              restaurant={post.restaurant}
+              hrefFor={(p) =>
+                placeId
+                  ? p.dishId
+                    ? `/restaurant/${placeId}?dish=${p.dishId}`
+                    : `/restaurant/${placeId}`
+                  : undefined
+              }
+            />
+          ) : (
+            <PostMediaCarousel
+              media={post.media}
+              dishName={post.dishName}
+              restaurant={post.restaurant}
+            />
+          )}
           <DoubleTapPop kind={popKind} popKey={doubleTap.popKey} />
 
           {/* Top-left, clear of everything the carousel puts on the photo: the
@@ -471,7 +492,7 @@ export function FoodPostCard(props: FoodPostCardProps) {
               genuinely ambiguous; `items-baseline` on the row still lands the
               numeral's baseline on the headline's first line, since a flex
               column aligns on its own first baseline. */}
-          {post.rating !== undefined && post.ratingKind === "dish" && (
+          {post.rating !== undefined && post.ratingKind === "dish" && !isMeal && (
             <span className="flex shrink-0 flex-col items-end">
               <span
                 data-heat={heatFor(post.rating)}

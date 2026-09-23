@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES } from "@/lib/points";
 import { BLOCKED_MESSAGE, moderateText } from "@/lib/moderation";
 import { limitOrReject } from "@/lib/rateLimit";
+import { notifyComment } from "@/lib/notify";
 
 export async function POST(
   req: Request,
@@ -59,7 +60,8 @@ export async function POST(
   // crafted parentId would graft a reply from one thread onto another, where
   // it would render under a post its author never opened.
   const parent = parentId ? String(parentId) : null;
-  if (parent && (await getCommentContext(parent))?.postId !== id) {
+  const parentContext = parent ? await getCommentContext(parent) : null;
+  if (parent && parentContext?.postId !== id) {
     return NextResponse.json({ error: "That comment is no longer here." }, { status: 400 });
   }
 
@@ -73,6 +75,7 @@ export async function POST(
   // The author earns for the discussion their post attracts; commenting on
   // your own post pays nothing.
   const isSelfComment = post.userId === user.id;
+  notifyComment(post, user, comment.text, parentContext?.userId ?? null);
   let awarded = false;
   if (!isSelfComment) {
     ({ awarded } = await awardPoints(

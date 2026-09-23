@@ -63,7 +63,9 @@ import {
   prepare,
   scopeOf,
   SEARCH_SCOPES,
+  similarity,
   TIER,
+  VOCABULARY_ENOUGH,
   type Prepared,
   type SearchScope,
 } from "@/lib/textMatch";
@@ -86,39 +88,96 @@ const NOTHING: SuggestAnswer["scopes"] = [];
 /* --- The controlled vocabularies ----------------------------------------- */
 
 /**
- * How many restaurants each distinct cuisine and neighbourhood holds.
+ * How many restaurants each distinct cuisine and neighbourhood holds, and
+ * every category word the corpus can be searched by.
  *
- * Only *sizes*, and only for the two facet readings, because those are the two
- * lines that do not navigate to a scoped search: a line naming one cuisine goes
- * to `?cuisine=Thai`, and the number on it therefore has to be the size of the
- * facet rather than the size of the match. Everything else is counted by `scan`.
+ * The *sizes* are for the two facet readings, because those are the two lines
+ * that do not navigate to a scoped search: a line naming one cuisine goes to
+ * `?cuisine=Thai`, and the number on it therefore has to be the size of the
+ * facet rather than the size of the match. Everything else is counted by
+ * `scan`.
+ *
+ * The *words* are for the All line's correction of a misspelled category.
+ * `scoreCuisine` in lib/textMatch.ts reaches a row through its cuisine label
+ * or through its search tags, and the tags are where the words people
+ * actually type live — "breaksfast" reaches a coffee shop through the tag
+ * "Breakfast", while the shop's cuisine label is "Bakery & Desserts". The
+ * label the matched rows carry is therefore the wrong thing to offer; the
+ * word that matched is the right one, and this is the list it is looked up
+ * in: each cuisine label whole, and each word of each tag string (the tags
+ * are stored space-joined, so a two-word tag is two entries — a limit
+ * accepted, since no misspelling of "fast food" is going to be nearer to
+ * "food" than to a real cuisine).
  *
  * Keyed on the corpus's own array so the entry is dropped when the 60s cache
  * is replaced — the same trick, and the same reason, as `SEARCH_FIELDS` in
  * lib/discoverFilters.ts.
  */
-const VOCABULARY = new WeakMap<
-  readonly RestaurantView[],
-  Record<"cuisine" | "neighborhood", Map<string, number>>
->();
+type Vocabulary = Record<"cuisine" | "neighborhood", Map<string, number>> & {
+  words: { shown: string; word: Prepared; label: boolean }[];
+};
 
-function vocabularyFor(restaurants: readonly RestaurantView[]) {
+const VOCABULARY = new WeakMap<readonly RestaurantView[], Vocabulary>();
+
+function vocabularyFor(restaurants: readonly RestaurantView[]): Vocabulary {
   let vocab = VOCABULARY.get(restaurants);
   if (vocab === undefined) {
-    vocab = { cuisine: new Map<string, number>(), neighborhood: new Map<string, number>() };
+    vocab = {
+      cuisine: new Map<string, number>(),
+      neighborhood: new Map<string, number>(),
+      words: [],
+    };
 
     const bump = (into: Map<string, number>, label: string | null | undefined) => {
       const name = label?.trim();
       if (name) into.set(name, (into.get(name) ?? 0) + 1);
     };
 
+    const seen = new Set<string>();
+    const word = (shown: string, label: boolean) => {
+      const prepared = prepare(shown);
+      if (!prepared.text || seen.has(prepared.text)) return;
+      seen.add(prepared.text);
+      vocab!.words.push({ shown, word: prepared, label });
+    };
+
     for (const r of restaurants) {
       bump(vocab.cuisine, r.cuisine);
       bump(vocab.neighborhood, r.neighborhood);
     }
+    // Labels before tags, so a word that is both — "Mexican" — is kept as
+    // the label, with the label's casing and the label's tie-break.
+    for (const label of vocab.cuisine.keys()) word(label, true);
+    for (const r of restaurants) {
+      for (const tag of (r.cuisineTags ?? "").split(/\s+/)) {
+        if (tag) word(tag[0].toUpperCase() + tag.slice(1), false);
+      }
+    }
     VOCABULARY.set(restaurants, vocab);
   }
   return vocab;
+}
+
+/**
+ * The category word nearest to what was typed, or null when none is near.
+ *
+ * The same floor and the same short-query guard `scoreVocabulary` applies —
+ * below five letters bigram similarity is noise ("cod" reaches "Co."), and
+ * under 0.5 nothing in a 29-cuisine vocabulary is a plausible reading. A
+ * cuisine label beats a tag word on a tie, because it is the wording the
+ * filter rail speaks.
+ */
+function nearestCategory(query: Prepared, vocab: Vocabulary): string | null {
+  if (query.text.length <= 4) return null;
+  let pick: { shown: string; close: number; label: boolean } | null = null;
+  for (const { shown, word, label } of vocab.words) {
+    const close = similarity(query, word);
+    if (close < VOCABULARY_ENOUGH) continue;
+    if (pick === null || close > pick.close || (close === pick.close && label && !pick.label)) {
+      pick = { shown, close, label };
+    }
+  }
+  return pick?.shown ?? null;
 }
 
 /* --- One pass, four readings --------------------------------------------- */
@@ -128,38 +187,51 @@ function vocabularyFor(restaurants: readonly RestaurantView[]) {
  * every reading has been measured.
  *
  * `literal` counts only the rows whose text actually contains what was typed;
- * `all` includes the ones the similarity band reached. A correction is what you
- * offer when you found nothing, so the moment *any* reading has a literal hit,
- * a reading holding none of its own drops off the menu entirely. `literal`
- * decides that and nothing else — a line that survives always prints `all`,
- * which is the count its page holds; see the note at the emit site.
+ * `all` includes the ones the similarity band reached. A scoped line exists
+ * only when its `literal` is above zero, and a line that exists prints `all`,
+ * which is the count its page holds; see the note at the emit site. Whether
+ * *any* reading has a literal hit is what decides if the All line completes
+ * (something was understood) or corrects (nothing was).
  *
- * That rule is not tidiness, it is what makes the menu readable. Typing
- * "landini" reaches three real Landini's by prefix, and unfiltered the same
- * dropdown also claimed a Cuisine reading (Indian) and a longer Restaurant one
- * (Rolando, Casa de Bandini) — all genuinely above the similarity floor, all
- * obviously wrong beside an exact prefix hit. The floors cannot fix that alone:
- * a floor asks "are these two strings alike", and the question here is "given
- * that the visitor has already been understood, is a guess worth printing".
+ * The literal-only rule is not tidiness, it is what makes the menu readable.
+ * Typing "landini" reaches three real Landini's by prefix, and unfiltered the
+ * same dropdown also claimed a Cuisine reading (Indian) and a longer
+ * Restaurant one (Rolando, Casa de Bandini) — all genuinely above the
+ * similarity floor, all obviously wrong beside an exact prefix hit. The floors
+ * cannot fix that alone: a floor asks "are these two strings alike", and the
+ * question here is "is a guess worth printing on a line that promises a
+ * specific field" — and Calvin's answer is no, guesses belong on All.
  */
 type Tally = { all: number; literal: number };
 
 type Scan = {
   by: Record<SearchScope, Tally>;
   /**
-   * Which cuisine and neighbourhood labels the matched rows carry. One label
-   * under a reading means the line can become a facet
-   * (`?cuisine=Thai`, which the rail reads back and lights up); two means it
-   * cannot, and "Mexican" printed over a count that also includes Tex-Mex would
-   * misname it.
+   * Which cuisine and neighbourhood labels the matched rows carry, and how
+   * many rows carry each. One label under a reading means the line can become
+   * a facet (`?cuisine=Thai`, which the rail reads back and lights up); two
+   * means it cannot, and "Mexican" printed over a count that also includes
+   * Tex-Mex would misname it. The counts are for the All line's neighbourhood
+   * correction: the label most of the reached rows carry is the one to offer.
    */
-  labels: Record<"cuisine" | "neighborhood", Set<string>>;
+  labels: Record<"cuisine" | "neighborhood", Map<string, number>>;
   /** The best-scoring name match, for the line that holds exactly one place. */
   best: { r: RestaurantView; score: number } | null;
 };
 
 function emptyTally(): Tally {
   return { all: 0, literal: 0 };
+}
+
+/**
+ * Whether `a` is the better answer to "which one did you mean" than `b`, when
+ * both scored the same: more reviews, then a higher rating. Nulls count as
+ * zero — a row with no sourced numbers is the least likely thing anyone typed.
+ */
+function morePopular(a: RestaurantView, b: RestaurantView): boolean {
+  const reviews = (a.reviewCount ?? 0) - (b.reviewCount ?? 0);
+  if (reviews !== 0) return reviews > 0;
+  return (a.rating ?? 0) > (b.rating ?? 0);
 }
 
 /**
@@ -186,7 +258,7 @@ function scan(
       neighborhood: emptyTally(),
       dish: emptyTally(),
     },
-    labels: { cuisine: new Set(), neighborhood: new Set() },
+    labels: { cuisine: new Map(), neighborhood: new Map() },
     best: null,
   };
 
@@ -209,21 +281,28 @@ function scan(
     if (literal) tally.literal += 1;
 
     if (scope === "restaurant") {
-      // Rating breaks ties beside the score rather than inside it, for the
+      // Ties on the score are broken beside it rather than inside it, for the
       // reason spelled out in lib/restaurantRank.ts: added, a 4.8 crosses a
       // rung. A literal hit always outscores a fuzzy one, so the winner here is
       // also the winner of the literal-only count.
+      //
+      // Review count first, then rating. This is the row the All line
+      // completes the term to, so the tie asks "which of these did the
+      // visitor mean", and the answer is the one everybody has been to:
+      // against "tacos el", Tacos El Gordo (4.4, ~19,000 reviews) and Tacos
+      // "El Moy" (5.0, seven reviews) are both prefix hits, and rating-first
+      // completed to El Moy.
       const best = found.best;
       if (
         best === null ||
         score > best.score ||
-        (score === best.score && (r.rating ?? 0) > (best.r.rating ?? 0))
+        (score === best.score && morePopular(r, best.r))
       ) {
         found.best = { r, score };
       }
     } else if (scope === "cuisine" || scope === "neighborhood") {
       const label = (scope === "cuisine" ? r.cuisine : r.neighborhood)?.trim();
-      if (label) found.labels[scope].add(label);
+      if (label) found.labels[scope].set(label, (found.labels[scope].get(label) ?? 0) + 1);
     }
   }
 
@@ -287,101 +366,81 @@ export async function suggest(raw: string): Promise<SuggestAnswer> {
   const asking = query.text.length >= DISH_MIN_QUERY;
   const found = scan(query, corpus.restaurants, asking ? await dishMatchesFor(text) : null);
 
-  /* The whole matched set, taken here because nothing below has reshaped a
-     reading yet. `?q=` with no `in=` is precisely the scan that just ran, so
-     the All line's number is the sum of the four tallies — and deliberately not
-     the sum of the numbers the four lines print, which are the sizes of four
-     different pages: a cuisine line prints its facet's size, and a corrected
-     dish line counts rows this spelling cannot reach at all. */
+  /* The whole matched set. `?q=` with no `in=` is precisely the scan that just
+     ran, so an All line that stands on the typed term prints the sum of the
+     four tallies — and deliberately not the sum of the numbers the four lines
+     print, which are the sizes of four different pages: a cuisine line prints
+     its facet's size, a single-restaurant line prints 1. */
   const total = SEARCH_SCOPES.reduce((n, kind) => n + found.by[kind].all, 0);
 
-  // Corrections everywhere, or nowhere — see the note above `Tally`.
+  // Understood, or not — see the note above `Tally`.
   const anyLiteral = SEARCH_SCOPES.some((kind) => found.by[kind].literal > 0);
 
   /**
-   * The one reading that gets a second look, and the only place a second round
-   * trip is spent.
+   * The size of the ranked search for `term` — what `?q=<term>&in=all` opens.
    *
-   * Names, cuisines and neighbourhoods carry their own similarity pass through
-   * `scoreRestaurant`, so a misspelling of one is already in `found`. Dish text
-   * is not in the corpus at all — it arrives as an `ILIKE` from Postgres, which
-   * either contains the typed spelling or does not — so the only way to offer
-   * "did you mean" for a dish is to ask `dish_names` for the nearest wording and
-   * score the corpus again with it.
-   *
-   * Both guards matter. Zero dish rows means the spelling reaches no menu, so a
-   * correction is the only dish answer left; no literal hit anywhere means
-   * nothing else has understood the visitor yet, and a guess printed beside a
-   * real hit is noise. Skipping it there saves two round trips on the commonest
-   * search there is — a restaurant's name, which is on nobody's menu.
-   *
-   * The rescore uses the corrected term as the *query*, not just as the dish
-   * map, because that is exactly what the grid will do when the line is picked:
-   * `?q=<nearest>&in=dish`.
+   * A second `scan`, with its own dish lookup, because the All line prints the
+   * count of the page it opens and that page is not the typed term's when the
+   * term has been completed or corrected: a dish literally called "Cannonball"
+   * is on the grid `?q=Cannonball` opens, and the dish map for "cannonbal"
+   * cannot stand in for it. One more ILIKE, spent knowingly: the answer is
+   * cached at the edge for a minute, and a wrong count is what the dropdown
+   * exists to avoid — the first cut printed "101 results" over a line that
+   * opened one page, and Calvin asked why.
    */
-  let dishTerm: string | null = null;
-  if (asking && !anyLiteral && found.by.dish.all === 0) {
-    const nearest = await nearestDishName(query.text);
-    if (nearest !== null) {
-      const corrected = scan(
-        prepare(nearest),
-        corpus.restaurants,
-        await dishMatchesFor(nearest),
-      );
-      if (corrected.by.dish.all > 0) {
-        // `literal` stays zero: nothing is spelled the way the visitor spelled
-        // it, which is exactly what makes this line a correction.
-        found.by.dish = { all: corrected.by.dish.all, literal: 0 };
-        dishTerm = nearest;
-      }
-    }
+  async function sizeOf(term: string): Promise<number> {
+    const named = scan(prepare(term), corpus.restaurants, await dishMatchesFor(term));
+    return SEARCH_SCOPES.reduce((n, kind) => n + named.by[kind].all, 0);
   }
 
   const vocab = vocabularyFor(corpus.restaurants);
 
+  /* The four scoped lines: Restaurant, Cuisine, Neighborhood, Dish.
+   *
+   * Literal only. A line appears when something in its field actually
+   * contains what was typed, and it searches for what was typed — never for a
+   * correction, never for a completion. Calvin: "if there is a recommended
+   * search result it should show up in all, not under restaurants dish,
+   * cuisine cus those are for when people are searching for just a specific
+   * dish and it might be auto correcting to something they dont want." So the
+   * spell-checked lines these used to become when nothing matched literally
+   * are gone, and the one correction that lived on a scoped line — a
+   * misspelled dish rewritten to the nearest dish name — moved to the All line
+   * with the rest of the guessing.
+   *
+   * What a line *prints* is still the size of the page it opens, and for a
+   * scoped search that is `all`, not `literal`: `?in=` knows nothing about
+   * corrections and keeps every row that matched on the field, fuzzy tail
+   * included. Printing `literal` is what put "140 results" over a page of
+   * 150. `literal` decides only whether the line exists. */
   const scopes = SEARCH_SCOPES.flatMap((kind): SuggestScope[] => {
     const tally = found.by[kind];
+    if (tally.literal === 0) return [];
 
-    /* Two different questions, once answered with one number.
-       *Whether* the line appears is the readability rule above: with a literal
-       hit somewhere, a reading reached only by correcting spelling is a guess
-       beside an answer, and drops off. `shown` is that test, and it is also
-       what "this reading is a single thing" means — one literal hit beside a
-       fuzzy tail is still one restaurant.
-
-       What the line *prints* is a promise about the next screen, so it is the
-       size of the page it opens, decided per branch below. For a scoped search
-       that is `all`, because `?in=` knows nothing about corrections and keeps
-       every row that matched on the field, fuzzy tail included. Printing
-       `literal` there is what put "140 results" over a page of 150. */
-    const shown = anyLiteral ? tally.literal : tally.all;
-    if (shown === 0) return [];
-
-    const fuzzy = !anyLiteral;
     const line = {
       kind,
       label: text,
       term: text,
       count: tally.all,
-      fuzzy,
+      fuzzy: false,
       value: null,
       percent: null,
       rating: null,
     };
 
     if (kind === "restaurant") {
-      /* One reading, one restaurant: the line becomes that place, goes to its
-         own page, and counts 1 — which is the page it opens, not the size of a
-         search nobody is about to run. "cannonbal" is the case, and Calvin's
-         own example of the shape: Cannonball is the answer, while Smoking
-         Cannon Brewery is the similarity band's opinion about the same nine
-         letters and does not belong on a line that says "Cannonball".
+      /* One literal hit, one restaurant: the line becomes that place, goes to
+         its own page, and counts 1 — which is the page it opens, not the size
+         of a search nobody is about to run. That is not a correction: the
+         visitor typed this place's name, or enough of it that no other sign
+         contains it. A literal hit always outscores a fuzzy one, so
+         `found.best` is the literal one.
 
          Otherwise the line is called by what was typed, and this is the half
-         that is easy to get wrong: 253 places score against "sushhi", and
-         labelling that line with the best of them ("Arbor Sushi & Grill
-         Express") promises a page it does not go to. */
-      const one = shown === 1 ? (found.best?.r ?? null) : null;
+         that is easy to get wrong: 36 places have Pizza on their sign, and
+         labelling that line with the best of them promises a page it does not
+         go to. */
+      const one = tally.literal === 1 ? (found.best?.r ?? null) : null;
       if (one === null) return [line];
 
       return [
@@ -396,13 +455,9 @@ export async function suggest(raw: string): Promise<SuggestAnswer> {
       ];
     }
 
-    if (kind === "dish") {
-      /* `dishTerm` is set only on a correction, and it is both what is printed
-         and what is searched for — echoing "sushhi" back under a "Did you mean"
-         is not an answer. Dishes never carry a `value`: `?dish=` is an equality
-         on menu wording, which is a narrower question than the count measured. */
-      return [{ ...line, label: dishTerm ?? text, term: dishTerm ?? text }];
-    }
+    /* Dishes never carry a `value`: `?dish=` is an equality on menu wording,
+       which is a narrower question than the count measured. */
+    if (kind === "dish") return [line];
 
     /* A facet line reports the size of the facet, not the size of the match,
        because `?cuisine=Thai` is where it goes — and that page holds every Thai
@@ -411,7 +466,7 @@ export async function suggest(raw: string): Promise<SuggestAnswer> {
        keeps the count `scan` measured. Two labels means two the *grid* would
        hold, corrections included, for the same reason the count is `all`. */
     const matched = found.labels[kind];
-    const only = matched.size === 1 ? [...matched][0] : null;
+    const only = matched.size === 1 ? [...matched.keys()][0] : null;
 
     return [
       {
@@ -424,12 +479,12 @@ export async function suggest(raw: string): Promise<SuggestAnswer> {
   });
 
   /* Restaurants leads Cuisines by default (`SEARCH_SCOPES`'s own iteration
-     order), except the three calls `cuisineBeforeRestaurant` documents —
-     swapped here rather than in `SEARCH_SCOPES.flatMap` above so
-     that loop stays one thing (what each line says) and this stays another
-     (what order the lines print in). Both readings are 0-or-1 entries, so a
-     swap is the whole reorder; a kind missing from `scopes` (nothing to show)
-     leaves `indexOf` at -1 and this is a no-op. */
+     order), except the calls `cuisineBeforeRestaurant` documents — swapped
+     here rather than in `SEARCH_SCOPES.flatMap` above so that loop stays one
+     thing (what each line says) and this stays another (what order the lines
+     print in). Both readings are 0-or-1 entries, so a swap is the whole
+     reorder; a kind missing from `scopes` (nothing to show) leaves `indexOf`
+     at -1 and this is a no-op. */
   const restaurantAt = scopes.findIndex((s) => s.kind === "restaurant");
   const cuisineAt = scopes.findIndex((s) => s.kind === "cuisine");
   if (restaurantAt !== -1 && cuisineAt !== -1 && cuisineBeforeRestaurant(found)) {
@@ -445,17 +500,87 @@ export async function suggest(raw: string): Promise<SuggestAnswer> {
    * with no number beside it.
    *
    * First rather than last because it is the fallback, and a fallback offered
-   * after four alternatives reads as a fifth alternative. It is also the only
-   * line that cannot be the wrong choice, which is what a default is.
+   * after four alternatives reads as a fifth alternative.
    *
-   * Suppressed when nothing matched at all — an All line over an empty grid is
-   * the failure Calvin reported, printed in advance. */
-  if (total > 0) {
+   * Calvin, later: "this all option should auto jump to the thing the most
+   * obvious, for example if im typing tacos el it should just jump to tacos
+   * el gordo" — then, once it opened the restaurant's page: "it shouldnt take
+   * you directly to the sight it should just auto fil tacos el gordo and tehn
+   * you can browse from there" — and then: "if there is a recommended search
+   * result it should show up in all, not under restaurants dish, cuisine".
+   *
+   * So this is the one line that recommends. It completes or corrects the
+   * term to the corpus's own wording, prints that, puts it in the field when
+   * picked, and runs the ranked search *for it* — where the recommended thing
+   * is first on the grid and the rest of the grid is there to browse. It is
+   * an autocomplete, not a shortcut to one page: `value` stays null and the
+   * line never carries a rating, because it opens a grid and not a place.
+   * `count` is the size of that search (`sizeOf`), not of the typed term's.
+   *
+   * Two shapes, told apart by `anyLiteral`:
+   *
+   *  - Something contains what was typed. The recommendation is a completion,
+   *    and only of a restaurant's sign: the ranked search's own first row
+   *    (`found.best`, scored the way the grid scores and tie-broken by review
+   *    count then rating), when it is a literal hit and the term is not a
+   *    category — a cuisine, by `cuisineBeforeRestaurant`, the same call that
+   *    puts Cuisines above Restaurants in the menu, or a neighbourhood some
+   *    sign literally contains, unless the sign was typed whole. Rewriting
+   *    "pizza" into the name of the most-reviewed place with Pizza on its
+   *    sign is the literal-name trap this dropdown exists to avoid, and
+   *    rewriting "little italy" into Little Italy Ristorante Pizzeria is the
+   *    same trap through the other facet; both stay as typed. A literal
+   *    cuisine, neighbourhood or dish is not completed either: the typed word
+   *    already is the wording, and the scoped lines below say so.
+   *
+   *  - Nothing does. Every scoped line has dropped, and this line alone
+   *    carries the "Did you mean" (`fuzzy: true`, which the menu prints as a
+   *    notice over the list). The correction is chosen in the order
+   *    `cuisineBeforeRestaurant` ranks two guesses — a category before a
+   *    sign, because between two corrections the category is the more useful
+   *    one to land on: the nearest category word (`nearestCategory`, so
+   *    "breaksfast" means Breakfast, the tag it reached, and not the cuisine
+   *    label of the coffee shops that carry it), then the neighbourhood most
+   *    of the reached rows are in, then the nearest restaurant's sign, then
+   *    the nearest dish name — asked of `dish_names` only here, because dish
+   *    text is not in the corpus and a similarity pass over it is a second
+   *    round trip that a name search should never pay. With no guess at all
+   *    the term stands as typed over whatever the similarity band reached.
+   *
+   * Suppressed when the search it would open is empty — an All line over an
+   * empty grid is the failure Calvin reported, printed in advance. */
+  let recommended: string | null = null;
+  if (anyLiteral) {
+    const best = found.best;
+    const wholeSign = best !== null && best.score === TIER.NAME_EXACT;
+    const category =
+      cuisineBeforeRestaurant(found) || (found.by.neighborhood.literal > 0 && !wholeSign);
+    if (best !== null && isLiteralScore(best.score) && !category) recommended = best.r.name;
+  } else {
+    recommended =
+      (found.by.cuisine.all > 0 ? nearestCategory(query, vocab) : null) ??
+      commonest(found.labels.neighborhood, vocab.neighborhood) ??
+      found.best?.r.name ??
+      (asking ? await nearestDishName(query.text) : null);
+  }
+
+  let term = text;
+  let count = total;
+  if (recommended !== null) {
+    const size = await sizeOf(recommended);
+    // A recommendation the grid cannot find is no recommendation; the typed
+    // term over whatever the similarity band reached is the honest fallback.
+    if (size > 0) {
+      term = recommended;
+      count = size;
+    }
+  }
+  if (count > 0) {
     scopes.unshift({
       kind: "all",
-      label: text,
-      term: text,
-      count: total,
+      label: term,
+      term,
+      count,
       fuzzy: !anyLiteral,
       value: null,
       percent: null,
@@ -464,4 +589,25 @@ export async function suggest(raw: string): Promise<SuggestAnswer> {
   }
 
   return { query: text, scopes };
+}
+
+/**
+ * The label most of a reading's matched rows carry — ties broken by the size
+ * of the facet — or null when the reading reached none. Matched rows first,
+ * because they are what the visitor's spelling reached. Used for
+ * neighbourhoods, where the label *is* the word that matched; cuisines go
+ * through `nearestCategory` instead, because there the word that matched is
+ * usually a tag and not the label.
+ */
+function commonest(labels: Map<string, number>, sizes: Map<string, number>): string | null {
+  let pick: string | null = null;
+  for (const [label, matched] of labels) {
+    if (pick === null) {
+      pick = label;
+      continue;
+    }
+    const lead = matched - (labels.get(pick) ?? 0);
+    if (lead > 0 || (lead === 0 && (sizes.get(label) ?? 0) > (sizes.get(pick) ?? 0))) pick = label;
+  }
+  return pick;
 }

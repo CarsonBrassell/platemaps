@@ -224,19 +224,20 @@ h3 {
   z-index: 10000 !important;
 }
 
-/* 276px, not 280: the box below opens to a 300px border-box, and its own
-   padding (11) and border (1) on each side leave exactly 276 inside. The row
-   STAYS a flex row here — flipping it to a block would let the score flow in
-   behind the name and lose the right edge the whole design hangs on. Only the
-   clipping stops, so a long subject wraps in its own column with the score
-   still pinned opposite it. */
+/* 332px, not 336: the box below opens to a 360px border-box, and its own
+   padding (13) and border (1) on each side leave exactly 332 inside. 360 is
+   a step over the widest resting cap (344, bubbleMaxWidthForZoom), so opening
+   never narrows a bubble. The row STAYS a flex row here — flipping it to a
+   block would let the score flow in behind the name and lose the right edge
+   the whole design hangs on. Only the clipping stops, so a long subject wraps
+   in its own column with the score still pinned opposite it. */
 .map-bubble-open .map-bubble-text,
 .map-bubble:hover .map-bubble-text,
 .map-bubble-box:hover .map-bubble-text,
 .map-bubble-box:focus-within .map-bubble-text {
   white-space: normal;
   overflow: visible;
-  max-width: 276px !important;
+  max-width: 332px !important;
 }
 
 .map-bubble-open .map-line-clip,
@@ -266,7 +267,7 @@ h3 {
 .map-bubble:hover .map-bubble-box,
 .map-bubble-box:hover,
 .map-bubble-box:focus-within {
-  max-width: 300px !important;
+  max-width: 360px !important;
 }
 
 /* The dish leading a bubble is a reference to another record in the app — it
@@ -854,6 +855,34 @@ h3 {
 
 .badge-arrive { animation: badge-arrive 0.42s cubic-bezier(0.3, 1.6, 0.4, 1) both; }
 .ring-pulse   { animation: ring-pulse 0.75s ease-out; }
+
+/* NearbyChip's radar pulse: two orange rings echoing outward from the pin
+   while Nearby is on, the same "still receiving" language as MyLocation's
+   `.map-me-pulse` (see that comment) but on land rather than the map, so it
+   gets its own name and its own orange rather than that marker's blue.
+   Two spans share one box (`.nearby-radar-ring` twice, the second delayed),
+   both `pointer-events-none` and absolutely positioned so neither the pulse
+   nor its layout ever competes with the tap target. */
+@keyframes nearby-radar-pulse {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+.nearby-radar-ring       { animation: nearby-radar-pulse 2s ease-out infinite; }
+.nearby-radar-ring-delay { animation-delay: 1s; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* No beat: a single faint ring stands in for the pulse instead of
+     vanishing outright, so "Nearby is on" still reads without motion. The
+     delayed second ring is redundant once neither moves, so it's hidden
+     rather than left doubled up on the first. */
+  .nearby-radar-ring {
+    animation: none;
+    opacity: 0.35;
+  }
+  .nearby-radar-ring-delay {
+    display: none;
+  }
+}
 
 .animate-fade-in   { animation: fade-in 0.18s ease-out; }
 .animate-dialog-in { animation: dialog-in 0.2s cubic-bezier(0.2, 0.8, 0.3, 1); }

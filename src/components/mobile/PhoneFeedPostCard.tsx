@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 import { heatFor, heatRamp, HEAT_RAMP_FLOOR, isPerfect } from "@/components/post/PercentMeter";
 import Link from "next/link";
 import { PostMediaCarousel } from "@/components/feed/PostMediaCarousel";
+import { MealCollage, collagePlatesFor } from "@/components/feed/MealCollage";
 import { PostActions, type VoteDirection } from "@/components/feed/PostActions";
 import { DoubleTapPop } from "@/components/feed/DoubleTapPop";
 import { useDoubleTap } from "@/components/feed/useDoubleTap";
@@ -392,15 +393,21 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
      no headline, so the dish (or failing that the restaurant) is promoted into
      the slot. Whichever name goes up is then dropped from the line below rather
      than printed twice. */
-  const headline = words ?? post.dishName ?? post.restaurant ?? "A plate worth sharing";
-  const lineDish = headline === post.dishName ? null : post.dishName;
+  /* A meal's plates each carry their own name, percent and price in the
+     collage, so the card around it names only the place. */
+  const isMeal = (post.courses?.length ?? 0) > 0;
+  const headline =
+    words ?? (isMeal ? undefined : post.dishName) ?? post.restaurant ?? "A plate worth sharing";
+  const lineDish = isMeal || headline === post.dishName ? null : post.dishName;
   const lineRestaurant = headline === post.restaurant ? null : post.restaurant;
 
   const titleId = `post-${post.id}-title`;
   const subId = `post-${post.id}-dish`;
 
   /** Every photo runs full width — see the header note. */
-  const showsHero = post.media.length > 0;
+  /* A meal shows its collage even with the photos gated — the pills alone
+     say what was eaten and how each plate rated. See the web card. */
+  const showsHero = post.media.length > 0 || isMeal;
 
   // Reads either vocabulary the `vibe` column has held — "Lively", or "Food"
   // written back out as "Best at food".
@@ -449,11 +456,23 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
       */}
       {showsHero && (
         <div className="relative">
-          <PostMediaCarousel
-            media={post.media}
-            dishName={post.dishName}
-            restaurant={post.restaurant}
-          />
+          {isMeal ? (
+            <MealCollage
+              plates={collagePlatesFor(post)}
+              restaurant={post.restaurant}
+              hrefFor={(p) => {
+                const id = restaurantIdFor(post);
+                if (!id) return undefined;
+                return p.dishId ? `/m/restaurant/${id}?dish=${p.dishId}` : `/m/restaurant/${id}`;
+              }}
+            />
+          ) : (
+            <PostMediaCarousel
+              media={post.media}
+              dishName={post.dishName}
+              restaurant={post.restaurant}
+            />
+          )}
           <DoubleTapPop kind={popKind} popKey={doubleTap.popKey} />
         </div>
       )}
@@ -609,7 +628,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                * outweighs everything else in the row. The RATING label under
                * it answers "percent of what" — a bare percent next to a price
                * is the one place this scale is genuinely ambiguous. */}
-              {post.rating !== undefined && post.ratingKind === "dish" && (
+              {post.rating !== undefined && post.ratingKind === "dish" && !isMeal && (
                 <>
                   {/* Flat rust below the ramp's floor, gradient above it. The
                       original objection to the web card's heat gradient down
@@ -643,7 +662,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                   </span>
                 </span>
               )}
-              {post.price && (
+              {post.price && !isMeal && (
                 <span className="mt-0.5 font-mono text-[11px] tabular-nums text-zinc-500">
                   {post.price}
                 </span>

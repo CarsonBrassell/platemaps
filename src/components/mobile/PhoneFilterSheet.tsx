@@ -5,6 +5,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { CloseIcon } from "@/components/icons";
 import { PRICE_BANDS } from "@/data/priceBands";
 import { BEST_AT } from "@/data/reviewScales";
+import { useNearby } from "@/lib/nearby";
 
 /**
  * Every filter dimension the web rail offers, as a phone bottom sheet.
@@ -216,6 +217,131 @@ function FacetRow({
     >
       {body}
     </Link>
+  );
+}
+
+/**
+ * A typed address standing in for GPS, on the one row Nearby itself can't
+ * take (see the comment above `Facet group={model.neighborhood}` below).
+ * Every other control in this sheet is a `Link` built from the URL by the
+ * screen that owns `model` — there's no query param for an address, only a
+ * coordinate pair kept on this device (lib/nearby.ts), so this one talks to
+ * `useNearby()` directly instead of going through `model`. Saving one needs
+ * no extra wiring to reach the grid: `useDiscoverQuery` already reads
+ * `nearby.coords` for the fetch that answers every phone URL, GPS or typed
+ * address alike.
+ */
+function PhoneAddressControl() {
+  const nearby = useNearby();
+  const inputId = useId();
+  const [editing, setEditing] = useState(false);
+  const [address, setAddress] = useState("");
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function save() {
+    const trimmed = address.trim();
+    if (!trimmed || pending) return;
+    setPending(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/geocode", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address: trimmed }),
+      });
+      const data = (await res.json().catch(() => null)) as
+        | { lat: number; lng: number; label: string }
+        | { error?: string }
+        | null;
+      if (!res.ok || !data || !("label" in data)) {
+        setError((data && "error" in data && data.error) || "Couldn't look that up.");
+        return;
+      }
+      nearby.setSavedLocation({ lat: data.lat, lng: data.lng, label: data.label });
+      setEditing(false);
+      setAddress("");
+    } catch {
+      setError("Couldn't look that up. Try again.");
+    } finally {
+      setPending(false);
+    }
+  }
+
+  return (
+    <section>
+      <p className="mono-label mb-2 text-zinc-500">Location</p>
+      {nearby.saved ? (
+        <div className="flex min-h-11 flex-wrap items-center gap-2 rounded-full bg-pm-grey-tint/60 px-3 text-[15px] text-zinc-800">
+          <span className="min-w-0 truncate">Near {nearby.saved.label}</span>
+          <button
+            type="button"
+            onClick={() => {
+              setEditing(true);
+              setAddress("");
+              setError(null);
+            }}
+            className="ml-auto shrink-0 rounded-full px-2 py-1 text-[13px] text-zinc-600 underline decoration-zinc-300 underline-offset-2"
+          >
+            Change
+          </button>
+          <button
+            type="button"
+            onClick={() => nearby.clearSavedLocation()}
+            className="shrink-0 rounded-full px-2 py-1 text-[13px] text-zinc-600 underline decoration-zinc-300 underline-offset-2"
+          >
+            Clear
+          </button>
+        </div>
+      ) : (
+        !editing && (
+          <button
+            type="button"
+            onClick={() => setEditing(true)}
+            className="flex min-h-11 w-full items-center rounded-full bg-pm-grey-tint/60 px-3 text-left text-[15px] text-zinc-800"
+          >
+            Use an address
+          </button>
+        )
+      )}
+      {editing && !nearby.saved && (
+        <div className="mt-2 flex items-center gap-2">
+          <label htmlFor={inputId} className="sr-only">
+            Address
+          </label>
+          {/* 16px (text-base), same reason as FacetSearch above: anything
+              smaller makes iOS zoom the page in on focus. */}
+          <input
+            id={inputId}
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                void save();
+              }
+            }}
+            placeholder="Address or intersection"
+            autoComplete="off"
+            className="min-h-11 w-full min-w-0 flex-1 rounded-full bg-pm-grey-tint/70 px-3 text-base text-zinc-900 placeholder:text-zinc-500 focus:outline-none"
+          />
+          <button
+            type="button"
+            onClick={() => void save()}
+            disabled={pending || !address.trim()}
+            className="min-h-11 shrink-0 rounded-full bg-pm-orange px-4 text-[13px] font-medium text-[#F7F4EC] disabled:opacity-50"
+          >
+            {pending ? "…" : "Save"}
+          </button>
+        </div>
+      )}
+      {error && (
+        <p role="status" className="mt-1.5 text-[12px] leading-snug text-zinc-500">
+          {error}
+        </p>
+      )}
+    </section>
   );
 }
 
@@ -503,10 +629,14 @@ export function PhoneFilterSheet({
         </div>
 
         <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto overscroll-contain px-4 pb-4 pt-1">
-          {/* Nearby is deliberately absent: it needs coordinates, and
-              coordinates travel in a POST body rather than the URL (see
-              lib/discover.ts). This screen is rendered from the URL alone, so a
-              Nearby row here would light up and filter nothing. */}
+          {/* Nearby-the-filter-row is deliberately absent: it needs
+              coordinates, and coordinates travel in a POST body rather than
+              the URL (see lib/discover.ts). This screen is rendered from the
+              URL alone, so a Nearby row here would light up and filter
+              nothing. The address control right below is the same idea
+              without that problem — it lives entirely on this device (see
+              PhoneAddressControl above) and never touches the URL at all. */}
+          <PhoneAddressControl />
           <Facet group={model.neighborhood} />
           <Facet group={model.cuisine} />
           <Facet group={model.price} />

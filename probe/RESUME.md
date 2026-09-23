@@ -83,6 +83,106 @@ agent briefs to read. "Listed" is the only number a visitor experiences.
 
 ## Since 2026-09-05 (newest decisions, read these)
 
+- **Nearby redesigned as a filter chip, not a sort (2026-09-22, uncommitted,
+  web + phone).** The first pass added Nearby as a third Discover sort
+  segment; Calvin didn't like it. Reverted: `FeedSort` is back to
+  `"trending" | "new"` two segments, `FeedSortSwitch` restored via
+  `git checkout` (its whole diff was the Nearby segment). Nearby is now
+  `NearbyChip` ("📍 5 mi"), a separate `aria-pressed` toggle beside the
+  switch in the same row — filters whichever order is already selected down
+  to posts within `NEARBY_RADIUS_MI` (5), rather than replacing it. State is
+  `nearbyOn`, component state in `/feed` and `PhoneFeedScreen`, default
+  false, deliberately **not in the URL** — switching New/Trending leaves it
+  on. Coords still only ride a POST body to /api/posts/discover, never the
+  URL, never cached; `getDiscoverFeed` applies the radius `WHERE` whenever
+  `here` is non-null, for both sorts. GET (no coords) always returns the
+  unfiltered page. Checked against the DB: downtown SD both sorts 11 posts,
+  max 4.35 mi, 0 over-radius; LA both sorts 0; no-coords returns the full 29;
+  paging (new+coords, limit 5) 3 pages, 11 unique, 0 duplicates. **No
+  screenshot yet** — Calvin said he'd verify visually himself.
+  **Restyled to "radar pulse" (2026-09-22, uncommitted).** No more chip fill:
+  off is a bare outline pin (`--pm-grey-text`), on is a filled `--pm-orange`
+  pin with two `--pm-orange` rings pulsing outward (`.nearby-radar-ring` in
+  globals.css) plus the "5 mi" label; `prefers-reduced-motion` swaps the
+  pulse for one static faint ring. Behavior/props unchanged.
+
+- **Meals (multi-plate posts) built 2026-09-20 (uncommitted, migrated, web + phone).**
+  One post can hold up to 6 plates. **Collage = overlay labels (2026-09-22; white "mini post"
+  strips and a Bodoni Moda trial both dropped):** brick columns edge to edge,
+  each plate's name (Fraunces) + peach % · price (mono) on a short dark
+  shadow at the photo's foot; bigger text on columns >=160 units. % uses the feed's
+  pct-heat paint at 15/17px. Each tile links to its dish (resolvePostRefs now
+  resolves course dishIds) or the restaurant. Ellie's plates got Lazy Dog
+  Mission Valley menu prices $17.50 / $19.95 (snapshot
+  probe/snapshot-ellie-prices-2026-09-22.json; undo = set price NULL). Best-rated plate is the
+  hero/widest column. Band heights are solved at module load to keep the
+  most-cropped photo as whole as possible (2→90% … 6→75%). Profile tiles show
+  a split-square `MealThumb` (ProfileShelves) and `PlateDetailSheet` draws
+  the full collage. Under the collage a meal card shows only the caption
+  and the restaurant — no dish line, no big % RATING, no price (the tiles
+  carry them; isMeal gates in both cards + the sheet). Mockups: scratchpad gen8.mjs. Each course is its **own
+  `posts` row** (`meal_id` → hero id, `course_index` 1..5, id `<hero>-cN`,
+  empty text, rating_kind dish, no self-upvote) so dish ratings / plate score
+  / dish sheet count every plate with no other change; feeds, leaderboard,
+  profile and activity filter `meal_id IS NULL`, `hydratePosts` attaches
+  `courses`, votes/comments/saves/points live on the hero only, delete
+  cascades and blob-deletes course photos. Pieces: `scripts/migrate.mjs`
+  (meal_id, course_index, idx_posts_meal), `src/lib/db.ts`,
+  `src/app/api/posts/route.ts` (`courses[]`, MAX_COURSES 5),
+  `src/components/feed/MealCollage.tsx` (templates 1–6),
+  `src/components/post/MealPlates.tsx` (banked chips + "Add another plate",
+  assembleMeal / uploadMealPhotos / coursesPayload), both composers
+  (`/post`, `/m/post`: "Add another plate" on the rate step banks the plate
+  and loops back to photo → dish, skipping "where"; hero = first plate
+  entered). Verified by Chrome screenshot on /feed and /m/feed with a seeded
+  test meal `meal-demo-1` (+ `-c1..-c3`) on Calvin's account. **Deleted
+  2026-09-22**; rows in `probe/snapshot-meal-demo-1*.json`.
+  **First real meal (2026-09-22):** Elliefelber's two Lazy Dog posts merged —
+  hero `85513cd7…` (crispy rice 95), course `a3440e08…` (Tex mex salad 88,
+  course_index 1). Salad's own 3 upvotes/1 heart/2 aspect votes and caption
+  "Delectable" stay in the DB but no longer show. Undo: set its meal_id NULL,
+  course_index 0 (snapshot `probe/snapshot-ellie-meal-2026-09-22.json`).
+  Pre-existing lint error unrelated to this: `RankRing.tsx:103`
+  react-hooks/refs. Not yet exercised: posting a real meal through the
+  composer end to end (needs photos) — do that once on the phone build.
+
+- **Hits ranking (2026-09-22, uncommitted).** Rated plates show in THE HITS
+  from one rating; off-menu rated plates (`offMenu`, lib/ratedPlates.ts) are
+  listed but always rank below every rated menu plate (`topPlates`). An
+  off-menu plate with repeat ratings gets reviewed and added to the menu.
+  `probe/hits-order.mjs <id>` shows which rated plates match the menu.
+
+- **iOS push notifications built 2026-09-20 (uncommitted, needs Mac + Apple portal to go live).**
+  Direct APNs over HTTP/2 with a .p8 key, no Firebase, no SDK. Pieces:
+  `src/lib/push.ts` (sender: ES256 JWT, dead-token cleanup, never throws),
+  `src/lib/notify.ts` (the four events + copy: comment on your plate, reply to
+  you, heart, friend request sent/accepted — no votes, no points), wired with
+  `after()` in the comments, heart, friends/request and friends/respond routes;
+  `POST|DELETE /api/push/devices` (rate-limited, hex token check);
+  `push_devices` table (migrated, empty) keyed by token and **bound to the
+  session row with ON DELETE CASCADE**, so logout / sign-out-others / expiry
+  drop the token with no client call. Client: `src/lib/pushClient.ts`
+  (dynamic-imports the Capacitor plugin; no-op in a browser tab),
+  `PushRegistration` mounted in `/m` layout (registers on sign-in, asks once,
+  routes a tapped push to its `/m/...` url), "Push notifications" row in the
+  shared SettingsLedger (On/Off in the app; text-only on web; "denied" points
+  at iOS Settings), and `/m/feed?post=<id>` opens that plate's comments.
+  iOS: `@capacitor/push-notifications@8.1.2` installed, Podfile updated,
+  AppDelegate forwards the token, `App.entitlements` (aps-environment) added
+  and referenced from both pbxproj configs, `plugins.PushNotifications.
+  presentationOptions` in capacitor.config.ts.
+  **Calvin's steps to switch it on:** (1) Mac: `cd ios/App && pod install`,
+  open in Xcode, confirm Push Notifications shows under Signing & Capabilities
+  (the entitlement file is there; Xcode may need the App ID's Push capability
+  enabled in the portal — Identifiers → com.platemapsapp.ios → Push
+  Notifications). (2) Portal → Keys → new key with APNs ticked → download the
+  .p8 once, note Key ID. (3) Vercel env: `APNS_TEAM_ID` (93Q75H5U7Z),
+  `APNS_KEY_ID`, `APNS_AUTH_KEY` (whole .p8 contents), optional
+  `APNS_BUNDLE_ID` (defaults com.platemapsapp.ios) and `APNS_ENVIRONMENT`
+  (production default; "sandbox" only for an Xcode-run debug build), then
+  redeploy. Unset = push silently off, nothing else breaks. Web push
+  (service worker + VAPID) is deliberately not built.
+
 - **Restaurant comment threads show their photos, 2026-09-14 (uncommitted).**
   `RestaurantComments.tsx` read `text`, `rating` and `dishName` off `/api/posts`
   but never `media`, so a plate shot arrived under the restaurant as prose only
@@ -1548,3 +1648,12 @@ is all this one needs.
 **Serper is out of credits** (`400 {"message":"Not enough credits"}`). That
 kills the router's no-website fallback and every agent's search tool, so the
 next wave will be materially weaker until Calvin tops it up.
+
+## Address as location (2026-09-22) — built, NOT committed
+Discover "Use an address" box (web: DiscoverFilters; phone: PhoneFilterSheet).
+Address -> POST /api/geocode (Nominatim proxy, signed-in, 20/h) -> saved in
+localStorage `platemaps:saved-location`, device-only by Calvin's choice;
+overrides GPS in useNearby (src/lib/nearby.ts) until cleared. tsc + eslint
+clean; geocode verified server-side. Not yet clicked through signed-in in a
+browser (Chrome extension was disconnected). Files: src/app/api/geocode/route.ts,
+src/lib/nearby.ts, DiscoverFilters.tsx, DiscoverBrowser.tsx, PhoneFilterSheet.tsx.

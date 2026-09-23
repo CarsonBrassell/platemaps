@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getPostById, toggleHeart, getHeartsForAuthor, getBlockStatus } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { limitOrReject } from "@/lib/rateLimit";
+import { notifyHeart } from "@/lib/notify";
 
 /**
  * Friends' reaction. The response is deliberately shaped differently from
@@ -40,6 +41,7 @@ export async function POST(
   }
 
   const { hearted } = await toggleHeart(id, user.id);
+  if (hearted) notifyHeart(post, user);
   return NextResponse.json({ hearted });
 }
 

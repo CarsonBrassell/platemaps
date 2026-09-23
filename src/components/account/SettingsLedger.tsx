@@ -11,6 +11,7 @@ import {
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { cuisines } from "@/data/restaurantFacets";
+import { disablePush, enablePush, getPushStatus, type PushStatus } from "@/lib/pushClient";
 
 /**
  * Everything that changes what the app shows about you, on both bodies.
@@ -29,6 +30,7 @@ import { cuisines } from "@/data/restaurantFacets";
 export function SettingsLedger({ variant = "web" }: { variant?: LedgerVariant }) {
   const { account, updateSettings } = useAuth();
   const privacy = useLedgerRows();
+  const notifications = useLedgerRows();
   const taste = useLedgerRows();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -169,6 +171,14 @@ export function SettingsLedger({ variant = "web" }: { variant?: LedgerVariant })
         </LedgerRow>
 
         <BlockedRow variant={variant} open={privacy.isOpen("blocked")} onToggle={() => privacy.toggle("blocked")} />
+      </LedgerSection>
+
+      <LedgerSection label="Notifications">
+        <NotificationsRow
+          variant={variant}
+          open={notifications.isOpen("push")}
+          onToggle={() => notifications.toggle("push")}
+        />
       </LedgerSection>
 
       <LedgerSection label="Taste">
@@ -354,6 +364,94 @@ function BlockedRow({
             </li>
           ))}
         </ul>
+      )}
+    </LedgerRow>
+  );
+}
+
+/**
+ * Push notifications — comments, hearts and friend requests, on the phone.
+ *
+ * The same row renders on both bodies because the ledger is shared, but only
+ * the iOS app can act on it: a browser tab has no APNs token to offer. There
+ * the row says where notifications live rather than showing a switch that
+ * could do nothing — web push (a service worker and VAPID keys) is a separate
+ * piece of work, and a control that silently no-ops is worse than none.
+ *
+ * "Denied" is iOS's answer, not ours. Once the system dialog has been refused
+ * the app cannot ask again, so the row points at the Settings app instead of
+ * offering a switch that would flip back on its own.
+ */
+function NotificationsRow({
+  variant,
+  open,
+  onToggle,
+}: {
+  variant: LedgerVariant;
+  open: boolean;
+  onToggle: () => void;
+}) {
+  const [status, setStatus] = useState<PushStatus | null>(null);
+  const [pending, setPending] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    void getPushStatus().then((value) => {
+      if (!cancelled) setStatus(value);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  async function pick(on: boolean) {
+    setPending(true);
+    try {
+      setStatus(on ? await enablePush() : await disablePush());
+    } finally {
+      setPending(false);
+    }
+  }
+
+  const state =
+    status === null
+      ? "…"
+      : status === "granted"
+        ? "On"
+        : status === "unsupported"
+          ? "In the app"
+          : status === "denied"
+            ? "Off in iOS Settings"
+            : "Off";
+
+  const description =
+    status === "unsupported"
+      ? "Comments, hearts and friend requests reach you as notifications in the PlateMaps app on your phone. This browser doesn't get them."
+      : status === "denied"
+        ? "Notifications were turned off for PlateMaps in iOS. To get them back, open the Settings app → PlateMaps → Notifications."
+        : "A comment on your plate, a reply to you, a heart, a friend request. Nothing about restaurants, and never a vote.";
+
+  return (
+    <LedgerRow
+      label="Push notifications"
+      state={state}
+      description={description}
+      variant={variant}
+      open={open}
+      onToggle={onToggle}
+    >
+      {(status === "granted" || status === "off" || status === "prompt") && (
+        <LedgerChoice
+          label="Push notifications"
+          options={[
+            { value: true, label: "On" },
+            { value: false, label: "Off" },
+          ]}
+          value={status === "granted"}
+          disabled={pending}
+          variant={variant}
+          onPick={(value) => void pick(value)}
+        />
       )}
     </LedgerRow>
   );

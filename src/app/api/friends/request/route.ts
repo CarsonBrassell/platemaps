@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { sendFriendRequest } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { limitOrReject } from "@/lib/rateLimit";
+import { notifyFriendAccepted, notifyFriendRequest } from "@/lib/notify";
 
 /**
  * Sends a friend request — or, if the target already requested this user,
@@ -41,5 +42,10 @@ export async function POST(req: Request) {
   }
 
   const status = await sendFriendRequest(user.id, userId);
+  // "requested" is a new pending row; "friends" here means the other person
+  // had already asked and this call accepted for them. Anything else
+  // (already friends, already pending, blocked) changed nothing worth saying.
+  if (status === "requested") notifyFriendRequest(userId, user);
+  else if (status === "friends") notifyFriendAccepted(userId, user);
   return NextResponse.json({ status });
 }

@@ -17,7 +17,11 @@
  */
 export function formatPrice(raw: string | null | undefined): string {
   if (raw == null) return "";
-  const n = Number(raw.replace(/[^0-9.]/g, ""));
+  const digits = raw.replace(/[^0-9.]/g, "");
+  // `Number("")` is 0, and a plate with no price is not a free one. A rated
+  // plate that is not on the menu (`platesWithStats`) carries "" here.
+  if (digits === "") return "";
+  const n = Number(digits);
   if (!Number.isFinite(n)) return raw;
   const hasCents = Math.round(n * 100) % 100 !== 0;
   return `$${hasCents ? n.toFixed(2) : n.toFixed(0)}`;

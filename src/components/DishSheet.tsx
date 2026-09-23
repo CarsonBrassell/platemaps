@@ -58,7 +58,7 @@ export function DishSheet({
         <div className="px-4 pb-6 pt-3">
           <h2 className="font-display text-2xl font-semibold text-zinc-900">{dish.name}</h2>
           <p className="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-zinc-500">
-            {formatPrice(dish.price)} · {restaurantName}
+            {[formatPrice(dish.price), restaurantName].filter(Boolean).join(" · ")}
           </p>
           {dish.description && (
             <p className="mt-2 text-sm leading-snug text-zinc-700">{dish.description}</p>

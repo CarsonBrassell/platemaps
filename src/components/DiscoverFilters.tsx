@@ -11,7 +11,7 @@ import {
   type FacetOption,
   type QuickFilter,
 } from "@/lib/discoverFilters";
-import { NEARBY_RADIUS_MI, type NearbyState } from "@/lib/nearby";
+import { NEARBY_RADIUS_MI, type NearbyState, type SavedLocation } from "@/lib/nearby";
 
 /**
  * Facet lists open at this many rows; the rest are one tap away.
@@ -49,6 +49,10 @@ export type NearbyProps = {
   state: NearbyState;
   /** Null until there are coordinates to measure from. */
   count: number | null;
+  /** A typed address standing in for GPS, if one is saved — see lib/nearby.ts. */
+  saved: { label: string } | null;
+  setSavedLocation: (loc: SavedLocation) => void;
+  clearSavedLocation: () => void;
 };
 
 const PRICE_HINTS = new Map(PRICE_BANDS.map((b) => [b.value as string, b.hint]));
@@ -412,6 +416,136 @@ function Facet({
 }
 
 /**
+ * A typed address standing in for GPS, offered right under the Nearby row —
+ * for desktop Windows, which rarely has usable location, and for anyone who
+ * would rather answer "where" by typing than by a permission prompt. Saving
+ * one geocodes through /api/geocode (never called from the browser directly —
+ * see that route's header comment) and hands the coordinates to
+ * `setSavedLocation`, which takes over from GPS everywhere `useNearby` is
+ * used until it's cleared.
+ */
+function AddressControl({
+  saved,
+  onSave,
+  onClear,
+}: {
+  saved: { label: string } | null;
+  onSave: (loc: SavedLocation) => void;
+  onClear: () => void;
+}) {
+  const inputId = useId();
+  const [editing, setEditing] = useState(false);
+  const [address, setAddress] = useState("");
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function save() {
+    const trimmed = address.trim();
+    if (!trimmed || pending) return;
+    setPending(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/geocode", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address: trimmed }),
+      });
+      const data = (await res.json().catch(() => null)) as
+        | { lat: number; lng: number; label: string }
+        | { error?: string }
+        | null;
+      if (!res.ok || !data || !("label" in data)) {
+        setError((data && "error" in data && data.error) || "Couldn't look that up.");
+        return;
+      }
+      onSave({ lat: data.lat, lng: data.lng, label: data.label });
+      setEditing(false);
+      setAddress("");
+    } catch {
+      setError("Couldn't look that up. Try again.");
+    } finally {
+      setPending(false);
+    }
+  }
+
+  if (saved) {
+    return (
+      <p className="flex flex-wrap items-center gap-1.5 px-2.5 pb-1 pt-0.5 text-[11px] leading-snug text-zinc-500">
+        <span>Near {saved.label}.</span>
+        <button
+          type="button"
+          onClick={() => {
+            setEditing(true);
+            setAddress("");
+            setError(null);
+          }}
+          className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-900"
+        >
+          Change
+        </button>
+        <span aria-hidden="true">·</span>
+        <button
+          type="button"
+          onClick={onClear}
+          className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-900"
+        >
+          Clear
+        </button>
+      </p>
+    );
+  }
+
+  if (!editing) {
+    return (
+      <button
+        type="button"
+        onClick={() => setEditing(true)}
+        className="px-2.5 pb-1 pt-0.5 text-[11px] leading-snug text-zinc-500 underline decoration-zinc-300 underline-offset-2 hover:text-zinc-900"
+      >
+        Use an address instead
+      </button>
+    );
+  }
+
+  return (
+    <div className="px-2.5 pb-1.5 pt-0.5">
+      <div className="flex items-center gap-1.5">
+        <label htmlFor={inputId} className="sr-only">
+          Address
+        </label>
+        <input
+          id={inputId}
+          type="text"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              void save();
+            }
+          }}
+          placeholder="Address or intersection"
+          className="min-h-8 flex-1 rounded-full bg-pm-grey-tint/60 px-3 text-[12px] text-zinc-900 outline-none placeholder:text-zinc-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+        />
+        <button
+          type="button"
+          onClick={() => void save()}
+          disabled={pending || !address.trim()}
+          className="min-h-8 shrink-0 rounded-full bg-pm-orange px-3 text-[12px] font-medium text-[#F7F4EC] disabled:opacity-50"
+        >
+          {pending ? "Looking…" : "Save"}
+        </button>
+      </div>
+      {error && (
+        <p role="status" className="pt-1 text-[11px] leading-snug text-zinc-500">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/**
  * "Nearby" as a row inside the neighbourhood list, because it answers the same
  * question — where — and picking it should replace a neighbourhood rather than
  * narrow one. The permission prompt only goes up when this is tapped; see the
@@ -421,14 +555,24 @@ function NearbyRow({
   on,
   state,
   count,
+  saved,
   onSelect,
+  onSaveLocation,
+  onClearLocation,
 }: {
   on: boolean;
   state: NearbyState;
   count: number | null;
+  saved: { label: string } | null;
   onSelect: () => void;
+  onSaveLocation: (loc: SavedLocation) => void;
+  onClearLocation: () => void;
 }) {
-  if (state === "unsupported") return null;
+  // Unsupported hides the GPS row itself — there's no fix for a browser
+  // without the API — but never hides the address control below it, which
+  // needs nothing from `navigator.geolocation` and is the fallback this
+  // browser actually wants.
+  const showGpsRow = state !== "unsupported";
 
   const hint =
     state === "locating"
@@ -441,28 +585,33 @@ function NearbyRow({
 
   return (
     <>
-      <FacetRow
-        label="Nearby"
-        hint={hint}
-        count={count}
-        selected={on}
-        disabled={false}
-        onSelect={onSelect}
-      />
+      {showGpsRow && (
+        <FacetRow
+          label="Nearby"
+          hint={hint}
+          count={count}
+          selected={on}
+          disabled={false}
+          onSelect={onSelect}
+        />
+      )}
       {/* Only after a refusal, and only as a sentence — a browser permission
           can't be re-prompted from here, so the honest thing is to say where
-          it now lives rather than offer a button that would do nothing. */}
+          it now lives rather than offer a button that would do nothing. The
+          address control right below is the actual way out of either state. */}
       {on && state === "denied" && (
         <p role="status" className="px-2.5 pb-1 pt-0.5 text-[11px] leading-snug text-zinc-500">
-          Location is blocked for this site. Allow it in your browser settings to
-          filter by distance.
+          Location is blocked for this site. Allow it in your browser settings, or
+          use an address below.
         </p>
       )}
       {on && state === "failed" && (
         <p role="status" className="px-2.5 pb-1 pt-0.5 text-[11px] leading-snug text-zinc-500">
-          Couldn&rsquo;t get your location. Tap Nearby again to retry.
+          Couldn&rsquo;t get your location. Tap Nearby again to retry, or use an
+          address below.
         </p>
       )}
+      <AddressControl saved={saved} onSave={onSaveLocation} onClear={onClearLocation} />
     </>
   );
 }
@@ -561,7 +710,10 @@ export function FilterControls({
           on={filters.nearby}
           state={nearby.state}
           count={counts.nearby}
+          saved={nearby.saved}
           onSelect={onNearby}
+          onSaveLocation={nearby.setSavedLocation}
+          onClearLocation={nearby.clearSavedLocation}
         />
       </Facet>
       <Facet

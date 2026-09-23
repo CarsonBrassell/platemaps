@@ -43,9 +43,13 @@ export function PhoneFirstPlate({
 
   return (
     <section aria-label="No plate score yet">
-      <h2 className="mono-label px-1 text-pm-grey-text">The Hits</h2>
+      {/* The label only when this card is standing in for the hits. Once one
+          plate is rated, `PhoneDetailHits` renders above with the label
+          already on it, and this card is that list's footer — a second
+          "THE HITS" a card apart would read as two sections. */}
+      {first && <h2 className="mono-label px-1 text-pm-grey-text">The Hits</h2>}
 
-      <div className="mt-2.5 rounded-2xl bg-white px-4 py-5">
+      <div className={`rounded-2xl bg-white px-4 py-5 ${first ? "mt-2.5" : ""}`}>
         <p className="font-display text-[19px] font-semibold leading-snug text-zinc-900">
           {first ? "No plates here yet" : "Almost enough plates"}
         </p>

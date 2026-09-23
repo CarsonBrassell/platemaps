@@ -15,12 +15,18 @@
  *   with, which is also what makes posting feel like it did something.
  *
  * That pair is deliberately the Yik Yak split, and it is the whole of what was
- * borrowed. **No geofence came with it.** Yik Yak's defining mechanic was a
- * ~5-mile herd radius, and this feed does not have one and is not getting one:
- * the feed is all of San Diego. Nothing here reads a viewer position, which is
- * also why "coordinates never go in the URL" (see lib/discover) stays true of
- * the feed without any effort. Neither is there a `-5` auto-hide; a downvoted
- * plate sinks, it does not vanish.
+ * borrowed. Yik Yak's other defining mechanic was a ~5-mile herd radius, and
+ * New and Trending don't have one baked in: both cover all of San Diego unless
+ * the viewer turns on the separate **Nearby filter** (`NearbyChip`, beside this
+ * switch, not a third segment of it) — which limits whichever ordering is
+ * already selected to posts within `NEARBY_RADIUS_MI` (see lib/geo.ts) rather
+ * than replacing it. A radius nobody asked for on the default view would
+ * quietly hide plates from someone who never opted into a geofence, so the
+ * position that filter needs is opt-in and arrives only by POST body, never a
+ * query string (see lib/nearby.ts's header comment on the tap, and the route
+ * in api/posts/discover) — New and Trending alone still take no coordinates
+ * and remain answerable by a plain GET. Neither is there a `-5` auto-hide; a
+ * downvoted plate sinks, it does not vanish.
  *
  * The Friends feed has no switch and must not get one: it is chronological by
  * specification (see `getFriendsFeed`), so "New" is the only order it has and
@@ -95,7 +101,9 @@ export const FEED_SORTS: ReadonlyArray<{ value: FeedSort; label: string }> = [
   { value: "trending", label: "Trending" },
 ];
 
-/** Anything unrecognised falls back to the default rather than erroring. */
+/** Anything unrecognised — including a stale `?sort=nearby` from before Nearby
+    became a filter rather than a sort — falls back to the default rather than
+    erroring. */
 export function parseFeedSort(raw: string | null | undefined): FeedSort {
-  return raw === "new" ? "new" : FEED_SORT_DEFAULT;
+  return raw === "new" ? raw : FEED_SORT_DEFAULT;
 }

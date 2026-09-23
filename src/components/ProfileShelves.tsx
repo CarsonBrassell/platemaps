@@ -5,6 +5,7 @@ import { UPVOTE_MILESTONES } from "@/lib/points";
 import { ChatIcon } from "@/components/icons";
 import { postedDate } from "@/lib/format";
 import { packBy } from "@/lib/photoShape";
+import { orderForCollage, type CollagePlate } from "@/components/feed/MealCollage";
 import {
   PlateDetailSheet,
   type CommentVotePatch,
@@ -96,6 +97,8 @@ export type ShelfPost = {
    */
   createdAt: string;
   media?: { url: string; type: "image" | "video"; alt?: string }[];
+  /** The other plates of a meal, when this row is its hero (see MealCollage). */
+  courses?: CollagePlate[];
   /**
    * The full comments, not a count. They already ride along in the
    * /api/posts?mine=1 payload — the profile just used to type them as
@@ -521,6 +524,52 @@ function CardPhoto({
 }
 
 /**
+ * A meal on a square tile: the plates split the square, best-rated first, so
+ * the shelf shows it was more than one plate before it is opened. No labels —
+ * at this size they would be unreadable; the sheet carries them.
+ */
+const MEAL_THUMB_AREAS: Record<number, string[]> = {
+  2: ["1 / 1 / 3 / 2", "1 / 2 / 3 / 3"],
+  3: ["1 / 1 / 3 / 2", "1 / 2 / 2 / 3", "2 / 2 / 3 / 3"],
+  4: ["1 / 1 / 2 / 2", "1 / 2 / 2 / 3", "2 / 1 / 3 / 2", "2 / 2 / 3 / 3"],
+};
+function MealThumb({ post, tone }: { post: ShelfPost; tone: number }) {
+  const plates = orderForCollage([
+    {
+      id: post.id,
+      rating: post.ratingKind === "dish" ? post.rating : undefined,
+      media: post.media ?? [],
+    },
+    ...(post.courses ?? []),
+  ]);
+  const shown = plates.slice(0, 4);
+  const areas = MEAL_THUMB_AREAS[shown.length] ?? MEAL_THUMB_AREAS[4];
+  const more = plates.length - shown.length;
+  return (
+    <span className="grid aspect-square w-full grid-cols-2 grid-rows-2 gap-0.5 overflow-hidden rounded-lg">
+      {shown.map((p, i) => {
+        const photo = p.media.find((m) => m.type === "image");
+        return (
+          <span key={p.id} className="relative block min-h-0 min-w-0" style={{ gridArea: areas[i] }}>
+            {photo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={photo.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            ) : (
+              <span className="absolute inset-0" style={{ background: `var(--pm-tone-${tone})` }} />
+            )}
+            {more > 0 && i === shown.length - 1 && (
+              <span className="absolute inset-0 flex items-center justify-center bg-black/45 font-mono text-[13px] font-semibold text-white">
+                +{more}
+              </span>
+            )}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
+/**
  * A plate that is only words: no image to show, but something was said. A
  * video-only plate is not one — it has nothing to quote, so it keeps the
  * tone block a missing photo gets.
@@ -803,7 +852,11 @@ function PlateTile({
         <WordsClipping post={post} />
       ) : (
         <span className="relative block">
-          <CardPhoto post={post} tone={tone} className="block aspect-square w-full rounded-lg" />
+          {post.courses?.length ? (
+            <MealThumb post={post} tone={tone} />
+          ) : (
+            <CardPhoto post={post} tone={tone} className="block aspect-square w-full rounded-lg" />
+          )}
           {milestone && (
             <MilestoneTag upvotes={milestone.upvotes} className="absolute bottom-1.5 left-1.5" />
           )}

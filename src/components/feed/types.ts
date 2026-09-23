@@ -77,6 +77,23 @@ export type Post = {
   heartedByMe: boolean;
   savedByMe: boolean;
   comments: Comment[];
+  /**
+   * The other plates of a meal, when this post is its hero — mirrors
+   * `courses` on Post in lib/db.ts. Each is a real post row of its own; the
+   * card draws them as one collage (MealCollage). Absent on a single plate.
+   */
+  courses?: PostCourse[];
+  /** Set on a course row: the hero post it belongs to. */
+  mealId?: string;
+};
+
+/** One frame of a meal collage. Mirrors PostCourse in lib/db.ts. */
+export type PostCourse = {
+  id: string;
+  dishName?: string;
+  price?: string;
+  rating?: number;
+  media: PostMedia[];
 };
 
 export type LeaderboardEntry = {

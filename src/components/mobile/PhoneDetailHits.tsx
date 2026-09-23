@@ -76,9 +76,11 @@ export function PhoneDetailHits({
               <span className="block font-mono text-xl font-bold leading-none tabular-nums text-pm-orange">
                 {dish.pct}%
               </span>
-              <span className="mt-1 block font-mono text-[11px] tabular-nums text-zinc-500">
-                {formatPrice(dish.price)}
-              </span>
+              {dish.price && (
+                <span className="mt-1 block font-mono text-[11px] tabular-nums text-zinc-500">
+                  {formatPrice(dish.price)}
+                </span>
+              )}
             </span>
           </button>
         ))}

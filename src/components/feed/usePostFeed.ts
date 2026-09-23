@@ -5,6 +5,7 @@ import { useAuth } from "@/lib/auth";
 import type { VoteDirection } from "./PostActions";
 import type { Comment, Post } from "./types";
 import type { FeedPlaces } from "@/lib/feedFilters";
+import type { Coords } from "@/lib/geo";
 
 /**
  * One list of posts and everything you can do to a card in it.
@@ -24,6 +25,7 @@ export function usePostFeed({
   endpoint,
   reloadKey = 0,
   onPointsAwarded,
+  coords = null,
 }: {
   /** The feed behind this screen. Changing it refetches. */
   endpoint: string;
@@ -31,6 +33,16 @@ export function usePostFeed({
   reloadKey?: number;
   /** An action just paid the post's author — the leaderboard's cue to re-read. */
   onPointsAwarded?: () => void;
+  /**
+   * The viewer's fix, for Discover's Nearby sort. Present, `load` and
+   * `loadMore` both switch from a plain GET to a POST carrying
+   * `{ coords }` in the body — coordinates never go in a URL (see
+   * api/posts/discover/route.ts), so this is the only way Nearby's endpoint
+   * ever learns where the viewer is. Null for every other sort and every
+   * other screen this hook backs, which keeps their requests exactly the
+   * GETs they always were.
+   */
+  coords?: Coords | null;
 }) {
   const { account, refresh } = useAuth();
 
@@ -74,7 +86,14 @@ export function usePostFeed({
    */
   const load = useCallback(
     (isStale: () => boolean = () => false) =>
-      fetch(endpoint)
+      (coords
+        ? fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ coords }),
+          })
+        : fetch(endpoint)
+      )
         .then((res) => (res.ok ? res.json() : Promise.reject(new Error("failed"))))
         .then((data) => {
           if (isStale()) return;
@@ -88,7 +107,13 @@ export function usePostFeed({
           setPosts((prev) => prev ?? []);
           setLoadError(true);
         }),
-    [endpoint],
+    // `coords` itself isn't a stable dependency — a fresh fix is a new object
+    // every time — so this depends on the two primitives that actually decide
+    // whether a new call is warranted. A changed fix has to recreate `load`:
+    // the mount effect below re-runs it whenever the callback identity
+    // changes, which is what turns "the browser resolved a position" into
+    // "the feed re-fetches against it".
+    [endpoint, coords?.lat, coords?.lng],
   );
 
   /* Endpoint changes (tab switches) must drop the previous feed's data before
@@ -122,9 +147,16 @@ export function usePostFeed({
     const askedFor = endpoint;
     setLoadingMore(true);
     try {
-      const res = await fetch(
-        `${askedFor}${askedFor.includes("?") ? "&" : "?"}cursor=${encodeURIComponent(nextCursor)}`,
-      );
+      // `cursor=` still rides the URL on both verbs — it's opaque paging
+      // state, not a position — only `coords` moves to the body.
+      const url = `${askedFor}${askedFor.includes("?") ? "&" : "?"}cursor=${encodeURIComponent(nextCursor)}`;
+      const res = await (coords
+        ? fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ coords }),
+          })
+        : fetch(url));
       if (!res.ok) throw new Error("failed");
       const data = await res.json();
       if (endpointRef.current !== askedFor) return;
@@ -139,7 +171,7 @@ export function usePostFeed({
     } finally {
       setLoadingMore(false);
     }
-  }, [endpoint, nextCursor, loadingMore]);
+  }, [endpoint, nextCursor, loadingMore, coords?.lat, coords?.lng]);
 
 
   useEffect(() => {

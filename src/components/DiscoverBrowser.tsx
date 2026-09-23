@@ -220,7 +220,13 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
     apply({ ...filters, dish: null });
   }
 
-  const nearbyProps = { state: nearby.state, count: counts.nearby };
+  const nearbyProps = {
+    state: nearby.state,
+    count: counts.nearby,
+    saved: nearby.saved,
+    setSavedLocation: nearby.setSavedLocation,
+    clearSavedLocation: nearby.clearSavedLocation,
+  };
 
   const emptyHint = filters.dish
     ? // Honest about what `?dish=` does: it is an equality on the menu wording

@@ -5,6 +5,7 @@ import type { Dish } from "@/data/dishes";
 import type { PriceBand } from "@/data/priceBands";
 import type { Hours } from "@/lib/openState";
 import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
+import type { RatedPlate } from "@/lib/ratedPlates";
 import {
   FEED_SORT_DEFAULT,
   TRENDING_COMMENT_WEIGHT,
@@ -19,7 +20,7 @@ import { brandKey, foldAccents } from "@/lib/brandName";
 import { hashToken, SESSION_TTL_SECONDS } from "@/lib/tokens";
 // From lib/geo.ts for the same reason discoverFilters.ts takes it from there:
 // lib/nearby.ts is a React hook and this module is server-only.
-import { milesBetween } from "@/lib/geo";
+import { milesBetween, NEARBY_RADIUS_MI, type Coords } from "@/lib/geo";
 
 /* Which driver this is depends on DATABASE_URL — see lib/sqlClient. */
 import { sql } from "@/lib/sqlClient";
@@ -262,7 +263,7 @@ export async function getLeaderboard(
     const rows = await sql`
       SELECT u.id, u.name, u.avatar_url, u.points AS pts,
              RANK() OVER (ORDER BY u.points DESC)::int AS rnk,
-             (SELECT count(*) FROM posts po WHERE po.user_id = u.id)::int AS post_count
+             (SELECT count(*) FROM posts po WHERE po.user_id = u.id AND po.meal_id IS NULL)::int AS post_count
       FROM users u
       WHERE u.points > 0
         AND NOT u.hide_from_leaderboard
@@ -311,6 +312,7 @@ export async function getLeaderboard(
     SELECT u.id, u.name, u.avatar_url, c.pts, c.rnk, p.rnk AS prev_rnk,
            (SELECT count(*) FROM posts po
              WHERE po.user_id = u.id
+               AND po.meal_id IS NULL
                AND po.created_at >= ${bounds.start.toISOString()})::int AS post_count
     FROM cur_ranked c
     JOIN users u ON u.id = c.user_id
@@ -656,6 +658,26 @@ export type Post = {
    */
   savedByMe: boolean;
   comments: Comment[];
+  /**
+   * The other plates of a meal, when this post is the hero row of one. Each
+   * course is its own `posts` row (meal_id = this id) so it counts wherever a
+   * plate counts; here it is carried as the little that the collage draws —
+   * name, price, percent, one photo. Absent on a plain single-plate post.
+   * Entry order (`course_index`); the hero's own plate is not repeated here.
+   */
+  courses?: PostCourse[];
+  /** Set on a course row: the hero post this plate belongs to. */
+  mealId?: string;
+};
+
+export type PostCourse = {
+  id: string;
+  dishName?: string;
+  /** Set by `resolvePostRefs` when the name matches a line on the menu. */
+  dishId?: string;
+  price?: string;
+  rating?: number;
+  media: PostMedia[];
 };
 
 /**
@@ -712,6 +734,7 @@ async function hydratePosts(
     myPostVoteRows,
     myHeartRows,
     friendRows,
+    courseRows,
   ] = await Promise.all([
     // Scoped to the viewer's own row only — like myHeartRows below, never the
     // full list of who saved a post (probe/CLAUDE-SECURITY... F34: that list
@@ -795,7 +818,25 @@ async function hydratePosts(
              OR (user_b = ${viewerId} AND user_a = ANY(${gatedAuthorIds}))
         `
       : Promise.resolve([]),
+    // The other courses of any meal in this page. Course rows never reach a
+    // feed on their own (every feed reader filters `meal_id IS NULL`), so this
+    // is the one read that fetches them, and it fetches only what the
+    // collage draws. Their media goes through the same gate as the hero's
+    // below — same author, same photos_public snapshot, written together.
+    sql`
+      SELECT id, meal_id, dish_name, price, rating, media
+      FROM posts
+      WHERE meal_id = ANY(${ids})
+      ORDER BY course_index ASC
+    `,
   ]);
+
+  const coursesByMeal = new Map<string, typeof courseRows>();
+  for (const c of courseRows) {
+    const list = coursesByMeal.get(c.meal_id as string) ?? [];
+    list.push(c);
+    coursesByMeal.set(c.meal_id as string, list);
+  }
 
   const friendIds = new Set(
     friendRows.map((r) => (r.user_a === viewerId ? r.user_b : r.user_a) as string),
@@ -826,8 +867,19 @@ async function hydratePosts(
 
   return postRows.map((row) => {
     const postId = row.id as string;
+    const courses = coursesByMeal.get(postId);
     return {
       id: postId,
+      mealId: row.meal_id ?? undefined,
+      courses: courses
+        ? courses.map((c) => ({
+            id: c.id as string,
+            dishName: (c.dish_name as string | null) ?? undefined,
+            price: (c.price as string | null) ?? undefined,
+            rating: c.rating === null || c.rating === undefined ? undefined : Number(c.rating),
+            media: maySeeMedia(row) ? ((c.media as PostMedia[] | null) ?? []) : [],
+          }))
+        : undefined,
       userId: row.user_id,
       authorName: row.author_name,
       authorAvatarUrl: row.author_avatar_url ?? undefined,
@@ -883,7 +935,7 @@ const POST_SELECT = `
   SELECT p.id, p.user_id, p.text, p.restaurant, p.created_at,
          p.restaurant_id, p.restaurant_lat, p.restaurant_lng,
          p.dish_name, p.price, p.rating, p.rating_kind, p.location_label, p.media,
-         p.vibe, p.photos_public,
+         p.vibe, p.photos_public, p.meal_id,
          u.name AS author_name, u.avatar_url AS author_avatar_url,
          u.points AS author_points
   FROM posts p
@@ -896,7 +948,7 @@ export async function getPosts(viewerId: string | null = null): Promise<Post[]> 
   // that handed a blocked pair each other's posts in bulk.
   const blockedIds = viewerId ? await getBlockedEitherWayIds(viewerId) : [];
   const rows = await sql.query(
-    `${POST_SELECT} WHERE p.user_id != ALL($1) ORDER BY p.created_at ASC`,
+    `${POST_SELECT} WHERE p.user_id != ALL($1) AND p.meal_id IS NULL ORDER BY p.created_at ASC`,
     [blockedIds],
   );
   return hydratePosts(rows, viewerId);
@@ -949,8 +1001,9 @@ export async function getProfilePosts(
                  ELSE NULL
             END AS heart_count
        FROM (${POST_SELECT}
-             WHERE p.user_id = $1
-                OR p.id IN (SELECT post_id FROM post_saves WHERE user_id = $1)) p
+             WHERE p.meal_id IS NULL
+               AND (p.user_id = $1
+                OR p.id IN (SELECT post_id FROM post_saves WHERE user_id = $1))) p
       ORDER BY p.created_at ASC`,
     [userId]
   );
@@ -1012,7 +1065,7 @@ export async function getUserPublicPosts(
            u.points AS author_points
     FROM posts p
     JOIN users u ON u.id = p.user_id
-    WHERE p.user_id = ${userId}
+    WHERE p.user_id = ${userId} AND p.meal_id IS NULL
     ORDER BY p.created_at DESC
   `;
   return hydratePosts(rows, viewerId, /* includeHearts */ false);
@@ -1161,6 +1214,15 @@ export async function getDiscoverFeed(
   limit = FEED_PAGE_SIZE,
   sort: FeedSort = FEED_SORT_DEFAULT,
   cursor: FeedCursor | null = null,
+  /**
+   * The viewer's position, for the Nearby *filter* — never read to pick an
+   * ordering, only to narrow whichever one `sort` already named. Null (a GET,
+   * or a POST before `useNearby` has resolved a fix) means no radius applies
+   * and this runs the ordinary unfiltered query for that sort — unlike the
+   * old Nearby sort, there is no "nothing to show yet" page to return here,
+   * because New and Trending both have a real answer with no `here` at all.
+   */
+  here: Coords | null = null,
 ): Promise<FeedPage> {
   const blockedIds = viewerId ? await getBlockedEitherWayIds(viewerId) : [];
   const at = cursor?.at ?? new Date().toISOString();
@@ -1172,6 +1234,29 @@ export async function getDiscoverFeed(
     after = trending
       ? "WHERE (s.rank_score, s.id) < ($4::float8, $5)"
       : "WHERE (s.created_at, s.id) < ($4::timestamptz, $5)";
+  }
+  // Bound after the cursor params rather than at a fixed slot, so the
+  // placeholder number is right whether or not a cursor pushed $4/$5 first —
+  // this filter exists only when `here` does, and by then `params` already
+  // holds everything ahead of it.
+  let nearbyFilter = "";
+  if (here) {
+    const latIdx = params.length + 1;
+    const lngIdx = params.length + 2;
+    params.push(here.lat, here.lng);
+    // Same haversine `milesBetween` computes in lib/geo.ts, inlined as SQL so
+    // the filter runs in the database rather than pulling every post's
+    // restaurant coordinates out to score in JS. LEAST(1, ...) guards ASIN
+    // the same way `Math.min(1, Math.sqrt(h))` does there — floating-point
+    // rounding can push the value fractionally over 1 for two points that are
+    // (nearly) antipodal, and ASIN of anything past 1 is NaN.
+    nearbyFilter = `
+         AND p.restaurant_lat IS NOT NULL AND p.restaurant_lng IS NOT NULL
+         AND (2 * 3958.8 * ASIN(LEAST(1, SQRT(
+               POWER(SIN(RADIANS(p.restaurant_lat - $${latIdx}::float8) / 2), 2)
+               + COS(RADIANS($${latIdx}::float8)) * COS(RADIANS(p.restaurant_lat))
+                 * POWER(SIN(RADIANS(p.restaurant_lng - $${lngIdx}::float8) / 2), 2)
+             )))) <= ${NEARBY_RADIUS_MI}`;
   }
   // The window is measured from `at` too, so a post ageing out of it between
   // two pages of one scroll does not shift everything below it up a slot.
@@ -1198,7 +1283,9 @@ export async function getDiscoverFeed(
          SELECT post_id, count(*) AS count FROM comments GROUP BY post_id
        ) cm ON cm.post_id = p.id
        WHERE p.user_id != ALL($2)
+         AND p.meal_id IS NULL
          AND p.created_at > $1::timestamptz - make_interval(days => ${FEED_WINDOW_DAYS})
+         ${nearbyFilter}
      ) s
      ${after}
      ORDER BY ${trending ? "s.rank_score DESC, s.id DESC" : "s.created_at DESC, s.id DESC"}
@@ -1232,6 +1319,7 @@ export async function getFriendsFeed(
          WHERE f.user_a = $1 OR f.user_b = $1
        )
        AND p.user_id != ALL($2)
+       AND p.meal_id IS NULL
        AND p.created_at > $4::timestamptz - make_interval(days => ${FEED_WINDOW_DAYS})
        ${after}
      ) s
@@ -1283,6 +1371,19 @@ export async function createPost(data: {
   bestAspect?: string;
   /** The aspect that let them down, if they named one. */
   worstAspect?: string;
+  /**
+   * The rest of a meal, in the order it was entered. Each becomes its own
+   * `posts` row pointing back at this one through `meal_id` — a real plate
+   * with a real rating, so the dish sheet and the plate score count it —
+   * while the words, the votes and the points stay on this hero row. The
+   * route caps how many arrive; nothing here re-checks it.
+   */
+  courses?: Array<{
+    dishName?: string;
+    price?: string;
+    rating: number;
+    media: PostMedia[];
+  }>;
 }): Promise<Post> {
   const media = data.media ?? [];
   const rows = await sql`
@@ -1300,6 +1401,35 @@ export async function createPost(data: {
     )
     RETURNING created_at
   `;
+
+  /* The other courses, written straight after the hero so the FK holds.
+     Same restaurant, same author, same photos_public snapshot — a course is
+     the same visit as its hero, so every column that describes the visit is
+     copied rather than re-decided. No text: the words belong to the meal and
+     live once, on the hero. No self-upvote either — votes are cast on the
+     card, and the card is the hero. `course_index` starts at 1; 0 is the
+     hero's own default. */
+  const courses = (data.courses ?? []).map((c, i) => ({
+    ...c,
+    id: `${data.id}-c${i + 1}`,
+    courseIndex: i + 1,
+  }));
+  for (const c of courses) {
+    await sql`
+      INSERT INTO posts (
+        id, user_id, text, restaurant, restaurant_id, restaurant_lat, restaurant_lng,
+        dish_name, price, rating, rating_kind, location_label, media, vibe,
+        photos_public, meal_id, course_index
+      )
+      VALUES (
+        ${c.id}, ${data.userId}, '', ${data.restaurant ?? null},
+        ${data.restaurantId ?? null}, ${data.restaurantLat ?? null}, ${data.restaurantLng ?? null},
+        ${c.dishName ?? null}, ${c.price ?? null}, ${c.rating}, 'dish',
+        ${data.locationLabel ?? null}, ${JSON.stringify(c.media)}::jsonb,
+        NULL, ${data.photosPublic}, ${data.id}, ${c.courseIndex}
+      )
+    `;
+  }
 
   /*
    * The author's own upvote, seeded at publish time so a fresh plate starts
@@ -1417,6 +1547,16 @@ export async function createPost(data: {
     heartedByMe: false,
     savedByMe: false,
     comments: [],
+    courses:
+      courses.length > 0
+        ? courses.map((c) => ({
+            id: c.id,
+            dishName: c.dishName,
+            price: c.price,
+            rating: c.rating,
+            media: c.media,
+          }))
+        : undefined,
   };
 }
 
@@ -1434,10 +1574,13 @@ export async function createPost(data: {
  * not a reason to tell someone their post is still there.
  */
 export async function deletePost(id: string): Promise<void> {
+  // A meal's courses go with their hero (the FK cascades), so their photos
+  // are read here too — otherwise the cascade would strand them exactly the
+  // way dropping the row alone would strand the hero's.
   const rows = (await sql`
     SELECT user_id, jsonb_array_elements(media)->>'url' AS url
       FROM posts
-     WHERE id = ${id} AND jsonb_array_length(media) > 0
+     WHERE (id = ${id} OR meal_id = ${id}) AND jsonb_array_length(media) > 0
   `) as { user_id: string; url: string | null }[];
 
   await sql`DELETE FROM posts WHERE id = ${id}`;
@@ -1895,7 +2038,14 @@ export async function sendFriendRequest(
  * their own outgoing request would let one person will a friendship into
  * existence unilaterally, exactly what "both people must accept" rules out.
  */
-export async function acceptFriendRequest(requestId: string, respondingUserId: string): Promise<void> {
+/**
+ * Returns who asked, so the route can tell them — the request row is gone by
+ * the time this resolves, and it was the only place the requester was named.
+ */
+export async function acceptFriendRequest(
+  requestId: string,
+  respondingUserId: string,
+): Promise<{ requesterId: string }> {
   const rows = await sql`
     SELECT requester_id, recipient_id FROM friend_requests WHERE id = ${requestId}
   `;
@@ -1914,6 +2064,7 @@ export async function acceptFriendRequest(requestId: string, respondingUserId: s
     ON CONFLICT DO NOTHING
   `;
   await sql`DELETE FROM friend_requests WHERE id = ${requestId}`;
+  return { requesterId: request.requester_id };
 }
 
 export async function declineFriendRequest(requestId: string, respondingUserId: string): Promise<void> {
@@ -2482,7 +2633,7 @@ export async function exportUserData(userId: string): Promise<Record<string, unk
                p.photos_public, p.created_at,
                (SELECT count(*) FROM post_upvotes v WHERE v.post_id = p.id)::int AS upvotes,
                (SELECT count(*) FROM comments c WHERE c.post_id = p.id)::int AS comment_count
-        FROM posts p WHERE p.user_id = ${userId} ORDER BY p.created_at ASC`,
+        FROM posts p WHERE p.user_id = ${userId} AND p.meal_id IS NULL ORDER BY p.created_at ASC`,
     sql`SELECT id, post_id, text, created_at FROM comments
         WHERE user_id = ${userId} ORDER BY created_at ASC`,
     sql`SELECT post_id FROM post_saves WHERE user_id = ${userId}`,
@@ -2694,6 +2845,11 @@ function toRatedDish(row: Record<string, unknown>): RatedDish {
  * earned and the header's percent is visibly the average of exactly these.
  * A caller matches a menu row by `dishRatingKey(dish.name)`.
  *
+ * `name` is the spelling the most recent rater used, because the key is
+ * lowercased and a rated plate is not always on the menu — the composer takes
+ * the dish name as free text, and a plate the menu extraction never saw still
+ * has to print under a name someone wrote (`platesWithStats`).
+ *
  * This is distinct from `dishes.yes_votes`/`no_votes`, the older "would you eat
  * this?" tally that `dishStats` reads. Both render as a percent, and that is a
  * known problem: they answer different questions from different inputs. Ratings
@@ -2701,11 +2857,12 @@ function toRatedDish(row: Record<string, unknown>): RatedDish {
  */
 export async function getDishRatingsForRestaurant(
   restaurantId: string,
-): Promise<Record<string, RatedDish>> {
+): Promise<Record<string, RatedPlate>> {
   const rows = await sql`
     SELECT ${sql.unsafe(PLATE_GROUP)} AS dish_key,
            ${sql.unsafe(PLATE_AVERAGE)}::float AS average,
-           count(*)::int AS ratings
+           count(*)::int AS ratings,
+           (array_agg(trim(posts.dish_name) ORDER BY posts.created_at DESC))[1] AS name
     FROM posts
     LEFT JOIN users ON users.id = posts.user_id
     WHERE restaurant_id = ${restaurantId}
@@ -2715,8 +2872,10 @@ export async function getDishRatingsForRestaurant(
     GROUP BY ${sql.unsafe(PLATE_GROUP)}
   `;
 
-  const byDish: Record<string, RatedDish> = {};
-  for (const row of rows) byDish[row.dish_key as string] = toRatedDish(row);
+  const byDish: Record<string, RatedPlate> = {};
+  for (const row of rows) {
+    byDish[row.dish_key as string] = { ...toRatedDish(row), name: row.name as string };
+  }
   return byDish;
 }
 
@@ -3702,4 +3861,70 @@ export async function getRestaurantFacets(): Promise<{
     cuisines: cuisineRows.map((r) => r.cuisine as string),
     neighborhoods: neighborhoodRows.map((r) => r.neighborhood as string),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Push devices — the APNs tokens the iOS app hands us. See lib/push.ts for the
+// sender and scripts/migrate.mjs for why a row is bound to a session.
+// ---------------------------------------------------------------------------
+
+export type PushPlatform = "ios";
+
+/**
+ * Records (or refreshes) a device token for the signed-in session.
+ *
+ * Upsert on the token, not on the user: APNs hands the same device the same
+ * token across launches, so re-registering on every launch is how
+ * `last_seen_at` stays honest — and if the device was last registered under a
+ * different account (a shared phone, a sign-out and sign-in), the row moves
+ * to the new user and session rather than duplicating.
+ *
+ * `sessionToken` is the raw cookie value; the row stores its hash, which is
+ * what `sessions.token` holds, so the foreign key can cascade.
+ */
+export async function registerPushDevice(
+  userId: string,
+  sessionToken: string,
+  token: string,
+  platform: PushPlatform,
+): Promise<void> {
+  await sql`
+    INSERT INTO push_devices (token, user_id, session_token, platform)
+    VALUES (${token}, ${userId}, ${hashToken(sessionToken)}, ${platform})
+    ON CONFLICT (token) DO UPDATE SET
+      user_id = EXCLUDED.user_id,
+      session_token = EXCLUDED.session_token,
+      platform = EXCLUDED.platform,
+      last_seen_at = now()
+  `;
+}
+
+/** Removes one device — only the user it belongs to can do it. */
+export async function unregisterPushDevice(userId: string, token: string): Promise<void> {
+  await sql`DELETE FROM push_devices WHERE token = ${token} AND user_id = ${userId}`;
+}
+
+/**
+ * Every token that should still be paged for a user. Joined to `sessions` so
+ * a device whose session has expired (the row is still there until the expiry
+ * sweep) is skipped rather than sent a notification for an account it can
+ * no longer open.
+ */
+export async function getPushTokensForUser(userId: string): Promise<{ token: string; platform: PushPlatform }[]> {
+  const rows = await sql`
+    SELECT d.token, d.platform
+    FROM push_devices d
+    JOIN sessions s ON s.token = d.session_token
+    WHERE d.user_id = ${userId} AND s.expires_at > now()
+  `;
+  return rows.map((r) => ({ token: r.token as string, platform: r.platform as PushPlatform }));
+}
+
+/**
+ * Drops tokens APNs has told us are dead (410 Unregistered, 400
+ * BadDeviceToken). Called by the sender, never by a request handler.
+ */
+export async function deletePushTokens(tokens: string[]): Promise<void> {
+  if (tokens.length === 0) return;
+  await sql`DELETE FROM push_devices WHERE token = ANY(${tokens})`;
 }
