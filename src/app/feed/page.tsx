@@ -546,7 +546,7 @@ function FeedPageInner() {
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <FeedTabs active={tab} onChange={setTab} className="mb-0" />
           {tab === "discover" && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-0.5">
               <FeedSortSwitch active={sort} onChange={handleSortChange} />
               <NearbyChip on={nearbyOn} onToggle={handleNearbyToggle} />
             </div>

@@ -51,22 +51,24 @@ export function NearbyChip({
       aria-pressed={on}
       aria-label={on ? undefined : "Only show plates within 5 mi"}
       onClick={onToggle}
-      className={`inline-flex h-10 min-h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-2 font-mono text-[11px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+      className={`inline-flex h-10 min-h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full pl-0 pr-2 font-mono text-[11px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
         on ? "text-pm-orange-text" : "text-pm-grey-text hover:text-zinc-900"
       }`}
     >
       {/* 40px (`h-10`) so the rings read as radiating from the pin, not from
-          a circle that no longer exists — see the header comment. */}
+          a circle that no longer exists — see the header comment. The rings sit
+          inset to 28px and grow to ~39px, so the pulse stays clear of the sort
+          pill 2px to the left. */}
       <span className="relative inline-flex h-10 w-10 shrink-0 items-center justify-center">
         {on && (
           <>
             <span
               aria-hidden="true"
-              className="nearby-radar-ring pointer-events-none absolute inset-0 rounded-full border-[1.5px] border-pm-orange"
+              className="nearby-radar-ring pointer-events-none absolute inset-1.5 rounded-full border-[1.5px] border-pm-orange"
             />
             <span
               aria-hidden="true"
-              className="nearby-radar-ring nearby-radar-ring-delay pointer-events-none absolute inset-0 rounded-full border-[1.5px] border-pm-orange"
+              className="nearby-radar-ring nearby-radar-ring-delay pointer-events-none absolute inset-1.5 rounded-full border-[1.5px] border-pm-orange"
             />
           </>
         )}

@@ -576,7 +576,7 @@ export function PhoneFeedScreen() {
             <PhoneFeedSearch
               leading={
                 tab === "discover" ? (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-0.5">
                     <FeedSortSwitch active={sort} onChange={handleSortChange} />
                     <NearbyChip on={nearbyOn} onToggle={handleNearbyToggle} />
                   </div>
