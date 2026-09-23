@@ -57,8 +57,8 @@ export function NearbyChip({
     >
       {/* 40px (`h-10`) so the rings read as radiating from the pin, not from
           a circle that no longer exists — see the header comment. The rings sit
-          inset to 28px and grow to ~39px, so the pulse stays clear of the sort
-          pill 2px to the left. */}
+          inset to 28px and pulse from ~17px out to ~49px, faded to almost
+          nothing by the time they reach the sort pill 2px to the left. */}
       <span className="relative inline-flex h-10 w-10 shrink-0 items-center justify-center">
         {on && (
           <>
