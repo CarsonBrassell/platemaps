@@ -180,11 +180,26 @@ h3 {
   pointer-events: auto;
 }
 
+/* At rest the subject wraps to two lines and clips the second with an
+   ellipsis; opening the bubble lifts the clamp (rules below). `width:
+   max-content` on the row is what lets it wrap at the cap rather than at
+   every word: the box is absolutely positioned inside a zero-width wrapper,
+   so without it shrink-to-fit would size it to the longest single word.
+   RestaurantMap.tsx reserves the second line's height (restingRows). */
+.map-bubble-text {
+  width: max-content;
+}
+
 .map-line-clip {
   flex: 0 1 auto;
   min-width: 0;
   overflow: hidden;
-  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .map-line-score {
@@ -244,6 +259,9 @@ h3 {
 .map-bubble:hover .map-line-clip,
 .map-bubble-box:hover .map-line-clip,
 .map-bubble-box:focus-within .map-line-clip {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: none;
   overflow: visible;
   text-overflow: clip;
   white-space: normal;
@@ -302,6 +320,9 @@ h3 {
   letter-spacing: -0.01em;
 }
 
+/* The bubble's @handle links to the poster's profile; it keeps the meta
+   row's look and answers hover the same way the dish does. */
+.map-author-link:hover,
 .map-dish-link:hover {
   text-decoration: underline;
   text-underline-offset: 2px;

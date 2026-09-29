@@ -355,6 +355,7 @@ export function buildMapComments(
           createdAt: p.createdAt,
           // Same "Maya Ellis" -> "mayaellis" reading the feed card uses.
           author: p.authorName.trim().toLowerCase().replace(/\s+/g, ""),
+          authorId: p.userId,
           rating: bubbleRating(p),
           dishPrefix: bubbleDishPrefix(p),
           postId: p.id,

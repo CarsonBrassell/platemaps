@@ -17,6 +17,8 @@ export type MapComment = {
   /** Poster's handle, shown in the bubble's mono meta row (`@DANNYQ`). Only
       real posts carry one; seeded chatter stays anonymous. */
   author?: string;
+  /** The poster's user id — where tapping the handle goes (`/u/[id]`). */
+  authorId?: string;
   rating?: string | null;
   dishPrefix?: string | null;
   /** Replies on the underlying post. Seeded chatter has none and shows none. */

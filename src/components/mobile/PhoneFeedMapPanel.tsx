@@ -135,6 +135,10 @@ function phoneTarget(
     // screen doesn't read is ignored rather than failed on.
     return { kind: "route", href: query ? `/m${path}?${query}` : `/m${path}` };
   }
+  // A bubble's @handle opens the poster's phone profile.
+  if (path.startsWith("/u/")) {
+    return { kind: "route", href: `/m${path}` };
+  }
   if (path === "/feed") {
     return { kind: "post", postId: new URLSearchParams(query).get("post") };
   }
