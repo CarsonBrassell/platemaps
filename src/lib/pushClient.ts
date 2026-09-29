@@ -32,7 +32,7 @@ export type PushStatus = "unsupported" | "prompt" | "granted" | "denied" | "off"
 const TOKEN_KEY = "pm-push-token";
 /** Set when the user turned notifications off in Settings; cleared by turning them on. */
 const OFF_KEY = "pm-push-off";
-/** Set once the one automatic permission prompt has been shown. */
+/** Set once the system permission prompt has been shown (by an in-context ask or Settings). */
 const ASKED_KEY = "pm-push-asked";
 
 function read(key: string): string | null {
@@ -124,16 +124,27 @@ export async function registerForPush(): Promise<PushStatus> {
 }
 
 /**
- * Runs on launch, when signed in. Registers if permission was granted
- * earlier and not switched off here; asks once, the first time, if it has
- * never been asked. A "denied" answer is respected and never re-asked.
+ * Runs on launch, when signed in. Registers silently if permission was
+ * granted earlier and not switched off here. It never shows the system
+ * prompt: that waits for `askForPushInContext` (after the user's first post
+ * or comment) or the Settings toggle.
  */
 export async function syncPushRegistration(): Promise<void> {
   const status = await getPushStatus();
-  if (status === "granted") {
-    await registerForPush();
-  } else if (status === "prompt" && !read(ASKED_KEY)) {
-    await registerForPush();
+  if (status === "granted") await registerForPush();
+}
+
+/**
+ * The in-context ask. Call it right after a post or comment succeeds: shows
+ * the system permission prompt if it has never been shown, and does nothing
+ * otherwise (already answered, switched off in Settings, or a browser tab).
+ * Never throws, so a caller can fire it without awaiting.
+ */
+export async function askForPushInContext(): Promise<void> {
+  try {
+    if ((await getPushStatus()) === "prompt" && !read(ASKED_KEY)) await registerForPush();
+  } catch {
+    // Best effort; the Settings toggle is the fallback.
   }
 }
 

@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ThumbsUpIcon } from "@/components/icons";
 import { ShortPostRow, useShortThreadActions, type ShortPost } from "@/components/feed/ShortThread";
 import { useAuth } from "@/lib/auth";
 import { relativeTime } from "@/lib/format";
+import { signInPathFor } from "@/lib/signInGate";
 import type { MapComment } from "@/data/mapComments";
 
 /**
@@ -58,6 +59,7 @@ export function DishPosts({
   >(null);
   const { account, isSignedIn } = useAuth();
   const router = useRouter();
+  const signInPath = signInPathFor(usePathname());
 
   useEffect(() => {
     const controller = new AbortController();
@@ -97,7 +99,7 @@ export function DishPosts({
   /* Where the "Sign in" line already points. A dead arrow gives no clue why
      nothing happened, so a signed-out press goes to the door instead. */
   function requireSignIn() {
-    router.push("/account");
+    router.push(signInPath);
   }
 
   return (
@@ -134,7 +136,7 @@ export function DishPosts({
               dish sheet that didn't. */}
           {!isSignedIn && (
             <Link
-              href="/account"
+              href={signInPath}
               className="font-medium text-zinc-700 underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
             >
               Sign in to rate it

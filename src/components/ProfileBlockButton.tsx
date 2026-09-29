@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
+import { ReportButton } from "@/components/feed/ReportButton";
 
 const button =
   "inline-flex min-h-11 items-center rounded-full px-5 text-sm font-medium transition-transform active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
@@ -10,6 +11,11 @@ const button =
  * Sits beside ProfileFriendButton on a public profile. Reads the same
  * GET /api/blocks list the account settings panel uses to find out whether
  * this profile is already blocked, rather than a dedicated status endpoint.
+ *
+ * Also carries the "Report" action for the person (App Store Guideline 1.2):
+ * blocking and reporting are the two things you can do about someone, and this
+ * is the one component both profile pages (`/u/[id]`, `/m/u/[id]`) already
+ * render, so the report entry point lives here rather than being wired twice.
  */
 export function ProfileBlockButton({ userId }: { userId: string }) {
   const { account, isSignedIn } = useAuth();
@@ -48,16 +54,25 @@ export function ProfileBlockButton({ userId }: { userId: string }) {
   }
 
   return (
-    <button
-      type="button"
-      onClick={toggle}
-      className={`${button} ${
-        blocked
-          ? "bg-pm-grey-tint text-pm-grey-text"
-          : "bg-white text-red-700 ring-1 ring-red-100 hover:bg-red-50"
-      }`}
-    >
-      {blocked ? "Unblock" : "Block"}
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={toggle}
+        className={`${button} ${
+          blocked
+            ? "bg-pm-grey-tint text-pm-grey-text"
+            : "bg-white text-red-700 ring-1 ring-red-100 hover:bg-red-50"
+        }`}
+      >
+        {blocked ? "Unblock" : "Block"}
+      </button>
+      <ReportButton
+        kind="user"
+        targetId={userId}
+        authorId={userId}
+        currentUserId={account?.id ?? null}
+        className={`${button} bg-white text-red-700 ring-1 ring-red-100 hover:bg-red-50`}
+      />
+    </>
   );
 }

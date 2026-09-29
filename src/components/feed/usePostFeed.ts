@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "@/lib/auth";
+import { askForPushInContext } from "@/lib/pushClient";
 import type { VoteDirection } from "./PostActions";
 import type { Comment, Post } from "./types";
 import type { FeedPlaces } from "@/lib/feedFilters";
@@ -359,6 +360,7 @@ export function usePostFeed({
         onPointsAwarded?.();
         if (data.authorId === account?.id) refresh();
       }
+      void askForPushInContext();
       return null;
     } catch {
       return "Couldn't reach PlateMaps. Check your connection.";

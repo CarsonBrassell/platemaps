@@ -35,15 +35,21 @@ const REASONS: ReadonlyArray<{ value: string; label: string }> = [
 
 export function ReportSheet({
   postId,
+  commentId,
+  userId,
   onClose,
   onReported,
 }: {
-  postId: string;
+  /** Exactly one of these three is the thing being reported. */
+  postId?: string;
+  commentId?: string;
+  userId?: string;
   /** Dismissed without sending. */
   onClose: () => void;
   /** Sent successfully — the card swaps itself for its confirmation. */
   onReported: () => void;
 }) {
+  const noun = commentId ? "comment" : userId ? "person" : "plate";
   const [reason, setReason] = useState<string | null>(null);
   const [note, setNote] = useState("");
   const [sending, setSending] = useState(false);
@@ -57,7 +63,7 @@ export function ReportSheet({
       const res = await fetch("/api/reports", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ postId, reason, note }),
+        body: JSON.stringify({ postId, commentId, userId, reason, note }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -74,11 +80,11 @@ export function ReportSheet({
   }
 
   return (
-    <Dialog title="Report this plate" onClose={onClose} variant="sheet">
+    <Dialog title={`Report this ${noun}`} onClose={onClose} variant="sheet">
       <div className="px-5 py-4">
         <p className="mb-4 text-sm leading-relaxed text-zinc-600">
           Tell us what&rsquo;s wrong and we&rsquo;ll take a look. Your name isn&rsquo;t shown
-          to the person who posted it.
+          to {userId ? "them" : "the person who posted it"}.
         </p>
 
         <div role="radiogroup" aria-label="Reason" className="flex flex-col gap-1.5">

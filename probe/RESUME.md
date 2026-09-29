@@ -1,6 +1,8 @@
 # Resume pack
 
-- **Deployed 2026-09-22:** everything to date pushed as 55561f8 + fc39189 (prebuild security check needed posts/discover POST allowlisted). Vercel green.
+- **Map bubbles 2026-09-28:** resting bubble now shows 2 lines (was 1) then ellipsis; tap/hover still opens full. RestaurantMap.tsx restingRows + globals.css .map-line-clip. Uncommitted.
+- **App Store fixes 2026-09-28 (UNCOMMITTED, not deployed):** /m terms/privacy/forgot/reset/verify pages (shared components, template lines gone), Support & legal in phone Settings, report comments+users (MIGRATION in scripts/migrate.mjs must run before deploy: content_reports post_id nullable + comment_id/reported_user_id), deleteUser deletes Blob photos, signed-out links -> /m/account on phone, push prompt after first post/comment not at launch, Info.plist photo string + arm64, PrivacyInfo.xcprivacy, public/_*.html -> archive/public-mocks, /m/drafts 404 in prod. Build + security check green. Left: iPad (TARGETED_DEVICE_FAMILY, Calvin deciding), Mac pod install, demo account for review notes. See probe/APPSTORE-CHECK-2026-09-28.md.
+- **Deployed 2026-09-28:** main at 1ff385b (address → Google Maps link; profile cover band removed) on top of 4fe177f + f9d8498. Vercel Ready on platemaps.com.
 
 Read this and nothing else when a session starts or continues after
 compaction. It is kept under 2K tokens on purpose. RUNBOOK, STATE, CONTEXT,

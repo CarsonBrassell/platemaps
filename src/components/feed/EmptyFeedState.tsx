@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { signInPathFor } from "@/lib/signInGate";
 import { UtensilsIcon, WifiOffIcon, CompassIcon, PlusIcon } from "@/components/icons";
 
 function Shell({
@@ -39,6 +41,7 @@ export function EmptyFeedState({
   onCreate: () => void;
   isSignedIn: boolean;
 }) {
+  const signInPath = signInPathFor(usePathname());
   if (tab === "friends") {
     return (
       <Shell
@@ -51,7 +54,7 @@ export function EmptyFeedState({
         }
         action={
           !isSignedIn && (
-            <Link href="/account" className={primaryButton}>
+            <Link href={signInPath} className={primaryButton}>
               Sign in
             </Link>
           )

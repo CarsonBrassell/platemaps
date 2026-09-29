@@ -3,9 +3,12 @@ import { randomUUID } from "node:crypto";
 import {
   REPORT_REASONS,
   createReport,
+  getCommentContext,
   getPostById,
+  getUserById,
   openReportCount,
   type ReportReason,
+  type ReportTarget,
 } from "@/lib/db";
 import { sendReportNotice } from "@/lib/mail";
 import { getCurrentUser } from "@/lib/session";
@@ -34,7 +37,7 @@ import { limitOrReject } from "@/lib/rateLimit";
 export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) {
-    return NextResponse.json({ error: "Sign in to report a post." }, { status: 401 });
+    return NextResponse.json({ error: "Sign in to report." }, { status: 401 });
   }
 
   const limited = await limitOrReject({
@@ -52,27 +55,58 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Bad request." }, { status: 400 });
   }
 
-  const { postId, reason, note } = (body ?? {}) as {
+  const { postId, commentId, userId, reason, note } = (body ?? {}) as {
     postId?: unknown;
+    commentId?: unknown;
+    userId?: unknown;
     reason?: unknown;
     note?: unknown;
   };
 
-  if (typeof postId !== "string" || !postId) {
-    return NextResponse.json({ error: "No post provided." }, { status: 400 });
+  /* Exactly one target: a plate, a comment, or a person (App Store Guideline
+     1.2 covers all user-generated content). */
+  const given = [postId, commentId, userId].filter((v) => v !== undefined && v !== null);
+  if (given.length !== 1 || typeof given[0] !== "string" || !given[0]) {
+    return NextResponse.json({ error: "Nothing to report." }, { status: 400 });
   }
   if (typeof reason !== "string" || !REPORT_REASONS.includes(reason as ReportReason)) {
     return NextResponse.json({ error: "Pick a reason." }, { status: 400 });
   }
 
   /* Checked before the row is written so the table cannot fill with reports
-     against posts that never existed — the id comes from a client. */
-  const post = await getPostById(postId);
-  if (!post) {
-    return NextResponse.json({ error: "That post is no longer here." }, { status: 404 });
-  }
-  if (post.userId === user.id) {
-    return NextResponse.json({ error: "You can't report your own post." }, { status: 400 });
+     against things that never existed — the id comes from a client. */
+  let target: ReportTarget;
+  let notePostId: string | null = null;
+  if (typeof postId === "string") {
+    const post = await getPostById(postId);
+    if (!post) {
+      return NextResponse.json({ error: "That post is no longer here." }, { status: 404 });
+    }
+    if (post.userId === user.id) {
+      return NextResponse.json({ error: "You can't report your own post." }, { status: 400 });
+    }
+    target = { kind: "post", id: postId };
+    notePostId = postId;
+  } else if (typeof commentId === "string") {
+    const comment = await getCommentContext(commentId);
+    if (!comment) {
+      return NextResponse.json({ error: "That comment is no longer here." }, { status: 404 });
+    }
+    if (comment.userId === user.id) {
+      return NextResponse.json({ error: "You can't report your own comment." }, { status: 400 });
+    }
+    target = { kind: "comment", id: commentId };
+    notePostId = comment.postId;
+  } else {
+    const uid = userId as string;
+    if (uid === user.id) {
+      return NextResponse.json({ error: "You can't report yourself." }, { status: 400 });
+    }
+    const reported = await getUserById(uid);
+    if (!reported) {
+      return NextResponse.json({ error: "That person is no longer here." }, { status: 404 });
+    }
+    target = { kind: "user", id: uid };
   }
 
   /* The note is optional free text and capped at the same length as a plate's
@@ -82,7 +116,7 @@ export async function POST(req: Request) {
 
   const filed = await createReport({
     id: randomUUID(),
-    postId,
+    target,
     reporterId: user.id,
     reason: reason as ReportReason,
     note: trimmedNote,
@@ -93,9 +127,12 @@ export async function POST(req: Request) {
        is the nudge, and a moderator who misses one notification can still find
        everything in the table. Awaited rather than fired and forgotten because
        the function may be frozen the moment this handler returns. */
-    const openCount = await openReportCount(postId);
+    const openCount = await openReportCount(target);
     await sendReportNotice({
-      postId,
+      kind: target.kind,
+      postId: notePostId,
+      commentId: target.kind === "comment" ? target.id : null,
+      reportedUserId: target.kind === "user" ? target.id : null,
       reason,
       note: trimmedNote,
       reporterName: user.name,

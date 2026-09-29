@@ -12,8 +12,9 @@ import { onPushOpened, syncPushRegistration } from "@/lib/pushClient";
  * lib/pushClient.ts checks for the app first):
  *
  * 1. When the signed-in account is known, register this device for push —
- *    silently if permission was already granted, with the system prompt the
- *    first time. Re-runs on sign-in so a new account gets a token bound to
+ *    silently, and only if permission was already granted. The system prompt
+ *    is never shown at launch; it comes after the user's first post or
+ *    comment (askForPushInContext) or from the Settings toggle. Re-runs on sign-in so a new account gets a token bound to
  *    its own session (the previous session's row was cascaded away by the
  *    sign-out).
  *

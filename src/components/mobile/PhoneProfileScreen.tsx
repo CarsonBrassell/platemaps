@@ -512,14 +512,14 @@ function LegalLinks({ className = "" }: { className?: string }) {
       className={`flex items-center justify-center gap-3 pb-4 text-xs text-pm-grey-text ${className}`}
     >
       <Link
-        href="/terms"
+        href="/m/terms"
         className="inline-flex min-h-11 items-center rounded-sm px-1 underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
       >
         Terms of Service
       </Link>
       <span aria-hidden="true">&middot;</span>
       <Link
-        href="/privacy"
+        href="/m/privacy"
         className="inline-flex min-h-11 items-center rounded-sm px-1 underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
       >
         Privacy Policy

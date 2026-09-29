@@ -147,7 +147,11 @@ export function sendPasswordResetEmail(
  * attention their reports get.
  */
 export function sendReportNotice(input: {
-  postId: string;
+  /** What was reported. A comment's `postId` is the plate it sits under. */
+  kind: "post" | "comment" | "user";
+  postId?: string | null;
+  commentId?: string | null;
+  reportedUserId?: string | null;
   reason: string;
   note: string | null;
   reporterName: string;
@@ -156,18 +160,26 @@ export function sendReportNotice(input: {
   const to = process.env.MODERATION_EMAIL || process.env.MAIL_FROM;
   if (!to) return Promise.resolve({ ok: false, reason: "unconfigured" });
 
+  const noun = input.kind === "post" ? "plate" : input.kind === "comment" ? "comment" : "user";
+  const where =
+    input.kind === "user"
+      ? `User: ${appUrl()}/u/${input.reportedUserId}`
+      : input.kind === "comment"
+        ? `Comment ${input.commentId} on: ${appUrl()}/feed?post=${input.postId}`
+        : `Post: ${appUrl()}/feed?post=${input.postId}`;
+
   const lines = [
     `Reported by: ${input.reporterName}`,
     `Reason: ${input.reason}`,
     input.note ? `Note: ${input.note}` : null,
     "",
-    `Open reports on this plate: ${input.openCount}`,
-    `Post: ${appUrl()}/feed?post=${input.postId}`,
+    `Open reports on this ${noun}: ${input.openCount}`,
+    where,
   ].filter(Boolean);
 
   return deliver(
     to,
-    `PlateMaps report — ${input.reason} (${input.openCount} open)`,
+    `PlateMaps report (${noun}) — ${input.reason} (${input.openCount} open)`,
     lines.join("\n"),
   );
 }

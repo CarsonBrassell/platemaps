@@ -26,6 +26,7 @@ import type { PostMedia } from "@/components/feed/types";
 import { CharCount } from "@/components/post/CharCount";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
 import { tapFlash } from "@/lib/tapFlash";
+import { askForPushInContext } from "@/lib/pushClient";
 
 /**
  * Posting a plate, phone version.
@@ -373,6 +374,7 @@ export default function PhonePost() {
         return;
       }
       await refresh();
+      void askForPushInContext();
       /*
        * The plate travels in memory rather than in the URL.
        *
