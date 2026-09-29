@@ -43,6 +43,18 @@ export function formatSiblingAddress(raw: string): string {
   return parts.slice(0, 2).join(", ");
 }
 
+/**
+ * A maps link for a restaurant's address. The Google Maps search URL is the
+ * one form that works everywhere: it opens the Maps app on a phone that has
+ * it and the website on anything else. The name goes in with the address so
+ * the search lands on the business itself — hours, photos, directions — rather
+ * than a bare pin on a strip-mall lot shared by six storefronts.
+ */
+export function mapsHref(name: string, address: string): string {
+  const query = encodeURIComponent(`${name}, ${address}`);
+  return `https://www.google.com/maps/search/?api=1&query=${query}`;
+}
+
 export function initials(name: string) {
   const parts = name.trim().split(/\s+/);
   return parts
