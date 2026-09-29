@@ -303,17 +303,13 @@ function ProfileOverview() {
           white thing on it — the plate frames above all — reads as a card
           instead of dissolving into a white sheet. */}
       <div className="mx-4">
-        {/* A flat band of warm tone where a cover photo would go — deliberate,
-            not a gradient. */}
-        <div className="m-2.5 h-20 rounded-xl bg-[var(--pm-tone-1)]" aria-hidden="true" />
-
-        <div className="px-4 pb-6">
-          <div className="mb-5 flex items-end gap-4">
+        <div className="px-4 pt-5 pb-6">
+          <div className="mb-5 flex items-center gap-4">
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading}
-              className={`group relative -mt-9 h-[72px] w-[72px] shrink-0 rounded-full ring-4 ring-white transition-transform active:scale-95 disabled:opacity-60 ${FOCUS}`}
+              className={`group relative h-[72px] w-[72px] shrink-0 rounded-full ring-4 ring-white transition-transform active:scale-95 disabled:opacity-60 ${FOCUS}`}
               aria-label="Change profile photo"
             >
               {account.avatarUrl ? (

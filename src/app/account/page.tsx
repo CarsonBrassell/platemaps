@@ -437,16 +437,13 @@ function AccountOverview() {
           onSave={handleCropped}
         />
       )}
-      {/* A flat band of warm tone where a cover photo would go — deliberate,
-          not a gradient. */}
-      <div className="m-2.5 h-24 rounded-xl bg-[var(--pm-tone-1)]" aria-hidden="true" />
-      <div className="px-5 pb-8">
-        <div className="mb-6 flex items-end gap-5">
+      <div className="px-5 pt-6 pb-8">
+        <div className="mb-6 flex items-center gap-5">
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="group relative -mt-10 h-20 w-20 shrink-0 rounded-full ring-4 ring-white transition-transform active:scale-95 disabled:opacity-60"
+            className="group relative h-20 w-20 shrink-0 rounded-full ring-4 ring-white transition-transform active:scale-95 disabled:opacity-60"
             aria-label="Change profile photo"
           >
             {account.avatarUrl ? (
