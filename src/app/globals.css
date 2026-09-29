@@ -239,6 +239,118 @@ h3 {
   z-index: 10000 !important;
 }
 
+/* The photo drawer.
+
+   A post with a photo gets two extra children on its box (bubbleElement):
+   `.map-photo-drawer`, the photo, and `.map-photo-arrow`, the button that
+   opens it. Both hang off the card's left edge and are absolutely positioned,
+   so nothing here can change the card's own size or the collision rect
+   (RestaurantMap.tsx reserves PHOTO_LEFT_RESERVE for them: 12 + 10 + 22).
+
+   At rest the drawer is a 12px sliver (plus 4px tucked under the card) inset
+   7px from the card's top and bottom, and the arrow floats detached to its
+   left. `.map-photo-open` (on the bubble, set with .map-bubble-open) widens it
+   to the whole photo at its own aspect ratio (--photo-w) flush against the
+   card and moves the arrow out
+   with it, flipped. Everything animated is a transform, or paint on an
+   absolutely positioned box.
+
+   `z-index: -1` is what tucks the sliver behind the card, which only works
+   while the box is NOT a stacking context — and the rule above makes it one
+   on :hover/:focus-within. That z-index is a no-op for raising (the wrapper
+   is already its own stacking context; the marker element does the raising),
+   so photo boxes opt out and the marker gets :focus-within instead. */
+.map-bubble:focus-within {
+  z-index: 10000 !important;
+}
+
+.map-bubble-box.map-has-photo:hover,
+.map-bubble-box.map-has-photo:focus-within {
+  z-index: auto !important;
+}
+
+.map-photo-drawer {
+  position: absolute;
+  z-index: -1;
+  top: 6px;
+  bottom: 6px;
+  right: calc(100% - 3px);
+  width: 16px;
+  border-radius: 5px 0 0 5px;
+  background-color: #3a332e;
+  background-repeat: no-repeat;
+  background-size: 140px auto;
+  background-position: 45% 50%;
+  box-shadow: -2px 2px 6px rgba(0, 0, 0, 0.45);
+  transition:
+    width 180ms ease,
+    top 180ms ease,
+    bottom 180ms ease,
+    border-radius 180ms ease;
+}
+
+.map-photo-arrow {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 12px);
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  padding: 0;
+  border: 0;
+  background: none;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 180ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.map-photo-arrow svg {
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.7));
+  transition: transform 180ms ease;
+}
+
+.map-photo-arrow:focus-visible {
+  outline: 2px solid var(--pm-orange);
+  outline-offset: -6px;
+  border-radius: 12px;
+}
+
+.map-photo-open .map-photo-drawer {
+  top: -1px;
+  bottom: -1px;
+  /* --photo-w: the photo's own width at the card's height (sizePhotoDrawer) */
+  width: var(--photo-w, 122px);
+  border-radius: 8px 0 0 8px;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.map-photo-open .map-bubble-box {
+  border-left-color: transparent;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.map-photo-open .map-photo-arrow {
+  transform: translateX(calc(16px - var(--photo-w, 122px)));
+}
+
+.map-photo-open .map-photo-arrow svg {
+  transform: scaleX(-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-photo-drawer,
+  .map-photo-arrow,
+  .map-photo-arrow svg {
+    transition: none;
+  }
+}
+
 /* 332px, not 336: the box below opens to a 360px border-box, and its own
    padding (13) and border (1) on each side leave exactly 332 inside. 360 is
    a step over the widest resting cap (344, bubbleMaxWidthForZoom), so opening

@@ -4,8 +4,7 @@ import { useEffect, useMemo, useState, type ComponentType, type RefObject } from
 import dynamic from "next/dynamic";
 import type { Map as MapLibreMap } from "maplibre-gl";
 import type { RestaurantView } from "@/data/restaurantTypes";
-import type { Dish } from "@/data/dishes";
-import { mapCommentsByRestaurant, withDishIds, type MapComment } from "@/data/mapComments";
+import type { MapComment } from "@/data/mapComments";
 
 /**
  * DRAFT SURFACE — the real map, with one candidate search field on it.
@@ -64,44 +63,19 @@ export type DraftSearchField = ComponentType<{
 
 export function DraftMapStage({ field: Field }: { field: DraftSearchField }) {
   const [restaurants, setRestaurants] = useState<DraftSeed[]>([]);
-  const [menus, setMenus] = useState<Record<string, Dish[]>>({});
 
-  /* The same pair `/feed` fetches, for the same reason: half of this data draws
-     pins with dead dish links. */
+  /* The same restaurant index `/feed` fetches. */
   useEffect(() => {
     let cancelled = false;
     void (async () => {
       try {
-        /*
-         * Both requests are narrowed, and the dish one was the expensive
-         * mistake: `/api/restaurants/dishes` with no query returns every dish
-         * in the database — 18.3 MB measured, against 3.4 MB for the whole
-         * restaurant corpus — and this stage joined all of it to
-         * `mapCommentsByRestaurant`, a hand-authored seed naming a few dozen
-         * restaurants. Every other dish was fetched, parsed and discarded.
-         *
-         * A draft route costs nothing until someone opens it, which is exactly
-         * why this survived: three prototypes at 21.7 MB a load are invisible
-         * until an afternoon of design iteration puts a few hundred megabytes
-         * through a metered database.
-         *
-         * `?ids=` is the same seam the shipped map already uses (see
-         * mapBubbles.ts, which batches because the route caps a request at 500
-         * ids). The seed is well under that, so one request does it.
-         */
-        const commentedIds = Object.keys(mapCommentsByRestaurant);
-        const [restaurantRes, dishRes] = await Promise.all([
-          fetch("/api/restaurants?fields=index"),
-          fetch(`/api/restaurants/dishes?ids=${encodeURIComponent(commentedIds.join(","))}`),
-        ]);
-        if (!restaurantRes.ok || !dishRes.ok) return;
-        const [{ restaurants: rows }, { dishes }] = await Promise.all([
-          restaurantRes.json() as Promise<{ restaurants: DraftSeed[] }>,
-          dishRes.json() as Promise<{ dishes: Record<string, Dish[]> }>,
-        ]);
+        const restaurantRes = await fetch("/api/restaurants?fields=index");
+        if (!restaurantRes.ok) return;
+        const { restaurants: rows } = (await restaurantRes.json()) as {
+          restaurants: DraftSeed[];
+        };
         if (cancelled) return;
         setRestaurants(rows);
-        setMenus(dishes);
       } catch {
         // The page still renders; the map just comes up empty.
       }
@@ -119,16 +93,8 @@ export function DraftMapStage({ field: Field }: { field: DraftSearchField }) {
      pins on a prototype is the kind of cost that got us here. */
   const pins = useMemo(() => restaurants.map((r) => ({ ...r, hours: null })), [restaurants]);
 
-  const comments = useMemo(() => {
-    const out: Record<string, MapComment[]> = {};
-    for (const restaurant of restaurants) {
-      out[restaurant.id] = withDishIds(
-        mapCommentsByRestaurant[restaurant.id] ?? [],
-        menus[restaurant.id] ?? [],
-      );
-    }
-    return out;
-  }, [restaurants, menus]);
+  /* No bubbles: there is no post data on a draft route. */
+  const comments = useMemo<Record<string, MapComment[]>>(() => ({}), []);
 
   /* RestaurantMap's seam hands its field one prop, `mapRef`. The corpus is
      bound in here rather than threaded through the map, which has no business

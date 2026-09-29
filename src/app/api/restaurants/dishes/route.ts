@@ -15,7 +15,7 @@ import { getDishesByRestaurant } from "@/lib/db";
  *
  * **The feed map does legitimately need more, and it asks in batches.** This
  * comment used to say nothing came close, on the reasoning that the map's set
- * is bounded by `getDiscoverFeed`'s 120 posts plus the ~19 seeded restaurants.
+ * is bounded by `getDiscoverFeed`'s 120 posts.
  * It isn't: `menuRestaurantIdsKey` matches restaurants by NAME, so one post
  * about a chain names every listing that shares it — 200 Starbucks, 135
  * Subways in this corpus — and four chain posts clear 500. The client-side
@@ -33,10 +33,7 @@ const MAX_IDS = 500;
  * `/feed` and `/m/feed` ask for the few dozen they draw rather than the 10.5MB
  * of every dish in the corpus they used to pull on mount.
  *
- * The no-`ids` mode still returns the whole dish table, unchanged, because
- * `DraftMapStage` still reads it that way. That one is narrowable too — it only
- * ever resolves seeded chatter, so `Object.keys(mapCommentsByRestaurant)` is
- * its whole id set — but it is not on the map-feed path this change is about.
+ * The no-`ids` mode still returns the whole dish table, unchanged.
  *
  * Public: menus are public data, same as the restaurants themselves.
  */

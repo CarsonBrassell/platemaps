@@ -1,5 +1,4 @@
 import { DishPosts } from "@/components/DishPosts";
-import type { MapComment } from "@/data/mapComments";
 import { formatPrice } from "@/lib/format";
 
 type SheetDish = {
@@ -15,7 +14,6 @@ export function DishSheet({
   dish,
   restaurantId,
   restaurantName,
-  comments,
   onClose,
   onSeeAll,
 }: {
@@ -24,8 +22,6 @@ export function DishSheet({
   restaurantId: string;
   /** For the mono byline under the dish name — "$3.25 · TACOS EL GORDO". */
   restaurantName: string;
-  /** Seed map bubbles about this specific dish, newest first. */
-  comments: MapComment[];
   onClose: () => void;
   onSeeAll: () => void;
 }) {
@@ -107,7 +103,6 @@ export function DishSheet({
           <DishPosts
             restaurantId={restaurantId}
             dishName={dish.name}
-            seedComments={comments}
             onSeeAll={onSeeAll}
           />
         </div>

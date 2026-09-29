@@ -28,7 +28,7 @@
 
 import type { Dish } from "@/data/dishes";
 import type { Post } from "@/components/feed/types";
-import { mapCommentsByRestaurant, withDishIds, type MapComment } from "@/data/mapComments";
+import type { MapComment } from "@/data/mapComments";
 
 /**
  * All a bubble needs to know about a restaurant: which one it is, and what it
@@ -190,12 +190,10 @@ export function indexPostsByRestaurant(
 /**
  * Which restaurants actually need their menu fetched, as a comma-joined string.
  *
- * A menu is read for exactly two things — `findDishId` for a real post's dish
- * link, and `withDishIds` for a seeded bubble's — so only a restaurant that
- * *gets a bubble* needs one. That is the restaurants with at least one post,
- * plus the ones with seeded chatter in `mapCommentsByRestaurant`: 64 + ~19 as
- * this database stands, against the 5,701 whose entire dish table (10.5MB, 6s)
- * the map used to pull on mount.
+ * A menu is read for one thing — `findDishId` for a real post's dish link — so
+ * only a restaurant that *gets a bubble* needs one. That is the restaurants
+ * with at least one post, against the 5,701 whose entire dish table (10.5MB,
+ * 6s) the map used to pull on mount.
  *
  * ## The set is *usually* one id per post, but not bounded by that
  *
@@ -226,7 +224,7 @@ export function menuRestaurantIdsKey(
   for (const restaurant of restaurants) {
     // `.has` rather than a length check: the index never stores an empty
     // bucket, so presence *is* "has at least one post".
-    if (postsByRestaurant.has(restaurant.id) || mapCommentsByRestaurant[restaurant.id]) {
+    if (postsByRestaurant.has(restaurant.id)) {
       ids.push(restaurant.id);
     }
   }
@@ -317,26 +315,14 @@ export async function fetchMenus(ids: readonly string[]): Promise<MenuFetchResul
  * (RestaurantMap reads it as `commentsByRestaurant[id] ?? []`, so the empty
  * entries are not load-bearing, but this is a data-structure change and not a
  * behaviour one.)
- *
- * ## Why `source` decides whether the seeded chatter is drawn
- *
- * `mapCommentsByRestaurant` is authored flavour text — anonymous, upvote counts
- * invented by a hash, pinned to the 19 seeded restaurants. On Discover that is
- * filler among strangers' plates and reads as what it is. On Friends it breaks
- * the one promise that switch makes: everything on this map was said by someone
- * you are friends with. A bubble nobody you know wrote is as wrong there as a
- * stranger's real post would be, so on that source the map draws real friend
- * posts or nothing at all.
  */
 export function buildMapComments(
   postsByRestaurant: PostsByRestaurant,
   restaurants: readonly BubbleRestaurant[],
   menus: Record<string, Dish[]>,
-  source: "discover" | "friends" = "discover",
 ): Record<string, MapComment[]> {
   const out: Record<string, MapComment[]> = {};
   for (const restaurant of restaurants) {
-    const menu = menus[restaurant.id] ?? [];
     const real: MapComment[] = (postsByRestaurant.get(restaurant.id) ?? [])
       .map((p) => {
         const parsedDish = dishNameFromPost(p.text);
@@ -360,18 +346,13 @@ export function buildMapComments(
           dishPrefix: bubbleDishPrefix(p),
           postId: p.id,
           dishId: dish ? findDishId(menus, restaurant.id, dish) : undefined,
+          // p.media is already through hydratePosts's photo gate, so a photo
+          // the viewer may not see is simply absent here.
+          photoUrl: p.media?.find((m) => m.type === "image" && m.url)?.url,
         };
       })
       .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
-    // The seeded bubbles name their dish rather than carrying its id, since
-    // menus are database rows now — resolved here against the menu this
-    // restaurant actually has. See withDishIds. Discover only — on Friends
-    // the audience filter is the whole point of the surface (see above).
-    const seeded =
-      source === "discover"
-        ? withDishIds(mapCommentsByRestaurant[restaurant.id] ?? [], menu)
-        : [];
-    out[restaurant.id] = [...real, ...seeded];
+    out[restaurant.id] = real;
   }
   return out;
 }
