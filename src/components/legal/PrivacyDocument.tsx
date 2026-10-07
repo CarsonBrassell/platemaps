@@ -60,6 +60,11 @@ const TABLE_ROWS = [
     purpose: "Operate, secure, and improve the Service",
   },
   {
+    category: "Device identifiers",
+    examples: "Push notification token for the iOS app, only if you allow notifications",
+    purpose: "Deliver the notifications you turned on",
+  },
+  {
     category: "Inferences",
     examples: "Favorite cuisine or restaurant, if you set one in your profile",
     purpose: "Personalize your experience",
@@ -157,8 +162,9 @@ export function PrivacyDocument({ termsHref }: { termsHref: string }) {
         <Section id="cookies" title="5. Cookies and Similar Technologies">
           <p>
             We use a session cookie to keep you signed in — it is required for the Service to
-            function and is not used for advertising. If we add analytics or advertising
-            cookies in the future, we will update this Policy and, where required, ask for
+            function and is not used for advertising. We use Vercel Web Analytics and Speed
+            Insights, which are cookieless and record page views and page performance without
+            identifying you. If we add analytics or advertising cookies in the future, we will update this Policy and, where required, ask for
             your consent first. We currently do not respond to browser &ldquo;Do Not
             Track&rdquo; signals, but see Section 8 for how we handle Global Privacy Control
             (GPC) signals.
