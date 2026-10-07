@@ -2,6 +2,9 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ReportButton } from "./ReportButton";
+import { signInPathFor } from "@/lib/signInGate";
 import { Dialog } from "./Dialog";
 import { Composer } from "./Composer";
 import { ChatIcon, VoteArrowUpIcon, VoteArrowDownIcon } from "@/components/icons";
@@ -141,6 +144,7 @@ export function CommentsScreen({
   /** Points an upvote just paid a comment's author, keyed by comment id. */
   reactPoints: Record<string, number>;
 }) {
+  const pathname = usePathname();
   const [sort, setSort] = useState<Sort>("top");
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
   const [replyTo, setReplyTo] = useState<string | null>(null);
@@ -203,7 +207,7 @@ export function CommentsScreen({
         ) : (
           <p className="py-1.5 text-sm text-pm-grey-text">
             <Link
-              href="/account"
+              href={signInPathFor(pathname)}
               className="font-medium text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:decoration-zinc-500"
             >
               Sign in
@@ -412,6 +416,14 @@ function CommentNode({
                   Reply
                 </button>
               )}
+
+              <ReportButton
+                kind="comment"
+                targetId={comment.id}
+                authorId={comment.userId}
+                currentUserId={currentUserId}
+                className="min-h-11 rounded-full px-2 font-mono text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+              />
             </div>
 
             {replyTo === comment.id && (

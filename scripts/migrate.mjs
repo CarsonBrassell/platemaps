@@ -790,6 +790,19 @@ const statements = [
   `CREATE INDEX IF NOT EXISTS idx_content_reports_open
      ON content_reports (status, created_at DESC)`,
 
+  // Reports on comments and on people (App Store Guideline 1.2 covers all
+  // user-generated content, not just plates). A report now targets exactly one
+  // of post / comment / user; the route enforces "exactly one". All three are
+  // soft references for the same reason post_id is: the record of why
+  // something was removed must outlive it. post_id therefore loses NOT NULL.
+  `ALTER TABLE content_reports ALTER COLUMN post_id DROP NOT NULL`,
+  `ALTER TABLE content_reports ADD COLUMN IF NOT EXISTS comment_id TEXT`,
+  `ALTER TABLE content_reports ADD COLUMN IF NOT EXISTS reported_user_id TEXT`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_content_reports_comment_once
+     ON content_reports (comment_id, reporter_id) WHERE comment_id IS NOT NULL`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_content_reports_user_once
+     ON content_reports (reported_user_id, reporter_id) WHERE reported_user_id IS NOT NULL`,
+
   // Failed sign-in attempts, for the login throttle in lib/loginThrottle.ts.
   // Postgres rather than memory on purpose: every serverless instance gets its
   // own heap and instances scale to zero, so an in-process counter would reset

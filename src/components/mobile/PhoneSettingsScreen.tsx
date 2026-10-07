@@ -5,7 +5,15 @@ import { useQueryParams } from "@/lib/queryString";
 import { AccountLedger } from "@/components/account/AccountLedger";
 import { SettingsLedger } from "@/components/account/SettingsLedger";
 import { PhoneDeleteAccountPanel } from "@/components/mobile/PhoneDeleteAccountPanel";
+import { LedgerSection } from "@/components/account/ledger";
+import { ChevronIcon } from "@/components/icons";
 import { useAuth } from "@/lib/auth";
+
+/** The address Terms section 21 and the Privacy Policy give for questions. */
+const SUPPORT_MAILTO = "mailto:helloplatemaps@gmail.com";
+
+const ROW_CLASS =
+  "flex min-h-11 items-center justify-between gap-3 rounded-[10px] bg-white px-3.5 py-2.5 text-[15px] font-medium text-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 
 /**
  * Settings, phone version — the twin of the web `/account/settings` page, and
@@ -111,6 +119,26 @@ export function PhoneSettingsScreen() {
               </Link>
             </>
           )}
+
+          {/* Reachable signed out as well: the people who most need a way to
+              write to us are the ones who cannot get in. Terms and Privacy are
+              the /m twins, so they open in the app instead of on the desktop
+              site, and Back returns here. Contact is a mailto, which iOS hands
+              to whichever mail app the person has set up. */}
+          <LedgerSection label="Support &amp; legal" className="mb-0 mt-8">
+            <a href={SUPPORT_MAILTO} className={ROW_CLASS}>
+              Contact &amp; support
+              <ChevronIcon className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
+            </a>
+            <Link href={to("/m/terms")} className={ROW_CLASS}>
+              Terms of Service
+              <ChevronIcon className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
+            </Link>
+            <Link href={to("/m/privacy")} className={ROW_CLASS}>
+              Privacy Policy
+              <ChevronIcon className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
+            </Link>
+          </LedgerSection>
         </div>
       </div>
     </div>

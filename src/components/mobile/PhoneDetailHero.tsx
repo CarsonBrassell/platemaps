@@ -6,6 +6,7 @@ import type { Restaurant } from "@/data/restaurantTypes";
 import { OpenStatePill } from "@/components/OpenStatePill";
 import { RestaurantPhoto, PostFirstPlate, photoCredit } from "@/components/RestaurantPhoto";
 import { StarRating } from "@/components/StarRating";
+import { mapsHref } from "@/lib/format";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import {
   BLEND_CAPTION,
@@ -147,7 +148,16 @@ export function PhoneDetailHero({
             actually needs, not a walk time measured from a fixed seed origin
             that had nothing to do with them. Same rule as the web header. */}
         {restaurant.address && (
-          <p className="mt-0.5 text-[13px] text-pm-grey-text">{restaurant.address}</p>
+          <p className="mt-0.5 text-[13px] text-pm-grey-text">
+            <a
+              href={mapsHref(restaurant.name, restaurant.address)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="-my-3 inline-flex min-h-11 items-center underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            >
+              {restaurant.address}
+            </a>
+          </p>
         )}
 
         <div className="mt-3">

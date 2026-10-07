@@ -110,6 +110,14 @@ export default function SettingsPage() {
           <Link href="/privacy" className="hover:text-zinc-600 hover:underline">
             Privacy Policy
           </Link>
+          <span aria-hidden="true">&middot;</span>
+          {/* The address Terms section 21 gives for questions. */}
+          <a
+            href="mailto:helloplatemaps@gmail.com"
+            className="hover:text-zinc-600 hover:underline"
+          >
+            Contact &amp; support
+          </a>
         </div>
       </div>
     </>

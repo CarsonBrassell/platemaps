@@ -2,22 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { ThumbsUpIcon } from "@/components/icons";
+import { usePathname, useRouter } from "next/navigation";
 import { ShortPostRow, useShortThreadActions, type ShortPost } from "@/components/feed/ShortThread";
 import { useAuth } from "@/lib/auth";
-import { relativeTime } from "@/lib/format";
-import type { MapComment } from "@/data/mapComments";
+import { signInPathFor } from "@/lib/signInGate";
 
 /**
  * What people wrote about one plate.
  *
- * The dish sheet used to answer this from `mapComments` alone — hand-authored
- * seed bubbles keyed to the 19 restaurants the app shipped with. Every real
- * write-up about a dish was already in Postgres and reachable nowhere except
- * the restaurant's undifferentiated thread at the bottom of the page, so
- * tapping a plate showed nothing about it on all but a handful of restaurants.
- * The posts lead now; the seed chatter follows them, unchanged.
+ * The dish sheet used to answer this from hand-authored seed bubbles alone,
+ * while every real write-up about a dish sat in Postgres, reachable nowhere
+ * except the restaurant's undifferentiated thread at the bottom of the page.
+ * Real posts are all it shows now.
  *
  * Each post is the short thread's row — `ShortPostRow` in feed/ShortThread —
  * so the arrows and Reply that are on the same post in the feed and in the
@@ -32,14 +28,11 @@ import type { MapComment } from "@/data/mapComments";
 export function DishPosts({
   restaurantId,
   dishName,
-  seedComments,
   onSeeAll,
 }: {
   restaurantId: string;
   /** The menu's spelling. Normalised server-side — see `dishRatingKey`. */
   dishName: string;
-  /** Seed map bubbles about this dish: anonymous, unrated, newest first. */
-  seedComments: MapComment[];
   onSeeAll: () => void;
 }) {
   /**
@@ -58,6 +51,7 @@ export function DishPosts({
   >(null);
   const { account, isSignedIn } = useAuth();
   const router = useRouter();
+  const signInPath = signInPathFor(usePathname());
 
   useEffect(() => {
     const controller = new AbortController();
@@ -97,7 +91,7 @@ export function DishPosts({
   /* Where the "Sign in" line already points. A dead arrow gives no clue why
      nothing happened, so a signed-out press goes to the door instead. */
   function requireSignIn() {
-    router.push("/account");
+    router.push(signInPath);
   }
 
   return (
@@ -123,7 +117,7 @@ export function DishPosts({
         <p className="font-mono text-xs text-zinc-500">Loading…</p>
       ) : failed ? (
         <p className="text-sm text-zinc-500">Couldn&apos;t load posts about this plate.</p>
-      ) : count === 0 && seedComments.length === 0 ? (
+      ) : count === 0 ? (
         <div className="flex flex-col items-start gap-1.5">
           <p className="text-sm text-zinc-500">
             Nobody has posted about this plate yet — be the first.
@@ -134,7 +128,7 @@ export function DishPosts({
               dish sheet that didn't. */}
           {!isSignedIn && (
             <Link
-              href="/account"
+              href={signInPath}
               className="font-medium text-zinc-700 underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
             >
               Sign in to rate it
@@ -159,26 +153,6 @@ export function DishPosts({
                 }
                 onReply={(text, parentId) => addComment(post.id, text, parentId)}
               />
-            </li>
-          ))}
-
-          {/* The old seed bubbles, below the real posts and still anonymous:
-              they carry no author, no rating and no photo, so they set as
-              plain prose with a timestamp. Nothing to reply to or vote on —
-              there is no post row behind them — so the thumbs-up here is the
-              one DESIGN.md keeps: a count of approvals being reported. */}
-          {seedComments.map((comment) => (
-            <li key={comment.id} className="flex flex-col gap-1">
-              <p className="text-sm leading-snug text-zinc-700">{comment.text}</p>
-              <div className="flex items-center gap-2.5 font-mono text-xs text-zinc-500">
-                {comment.upvotes !== undefined && (
-                  <span className="inline-flex items-center gap-1">
-                    <ThumbsUpIcon className="h-3 w-3" />
-                    {comment.upvotes}
-                  </span>
-                )}
-                {comment.createdAt && <span>{relativeTime(comment.createdAt)}</span>}
-              </div>
             </li>
           ))}
         </ul>

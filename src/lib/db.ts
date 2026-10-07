@@ -543,7 +543,37 @@ export async function deleteAllSessions(userId: string): Promise<void> {
  * here — this function trusts that it has.
  */
 export async function deleteUser(userId: string): Promise<void> {
+  // Collect the user's stored photos (post media incl. meal courses, plus the
+  // avatar) BEFORE the delete: the cascade removes the rows that name them, and
+  // dropping the rows alone would strand the files in Blob for good. Read back
+  // from the DB, never trusted from the caller.
+  let urls: string[] = [];
+  try {
+    const [mediaRows, avatarRows] = await Promise.all([
+      sql`SELECT jsonb_array_elements(media)->>'url' AS url
+            FROM posts WHERE user_id = ${userId} AND jsonb_array_length(media) > 0`,
+      sql`SELECT avatar_url AS url FROM users WHERE id = ${userId}`,
+    ]);
+    // Only our own blob host, and only paths this user owns — the same
+    // ownership check deletePost applies.
+    urls = [...mediaRows, ...avatarRows]
+      .map((r) => r.url as string | null)
+      .filter((u): u is string => typeof u === "string" && storedPhotoOwner(u) === userId);
+  } catch (err) {
+    console.error(`[deleteUser] ${userId}: could not list photos to delete`, err);
+  }
+
   await sql`DELETE FROM users WHERE id = ${userId}`;
+
+  if (urls.length === 0) return;
+  try {
+    await del(urls);
+  } catch (err) {
+    console.error(
+      `[deleteUser] ${userId}: account deleted, ${urls.length} photo(s) left behind`,
+      err,
+    );
+  }
 }
 
 export type Comment = {
@@ -2202,7 +2232,10 @@ export type ReportReason = (typeof REPORT_REASONS)[number];
 
 export type ContentReport = {
   id: string;
-  postId: string;
+  /** Exactly one of the three targets is set. */
+  postId: string | null;
+  commentId: string | null;
+  reportedUserId: string | null;
   reporterId: string | null;
   reason: ReportReason;
   note: string | null;
@@ -2210,43 +2243,61 @@ export type ContentReport = {
   createdAt: string;
 };
 
+export type ReportTarget =
+  | { kind: "post"; id: string }
+  | { kind: "comment"; id: string }
+  | { kind: "user"; id: string };
+
 /**
- * Files a report, or returns `false` if this person already reported this post.
+ * Files a report, or returns `false` if this person already reported this
+ * target.
  *
  * The duplicate is swallowed rather than surfaced as an error: from the
  * reporter's side "I reported this" is already true, and telling them off for
- * tapping twice serves nobody. The unique index is what enforces it — a second
- * tap must not be able to inflate a plate's report count.
+ * tapping twice serves nobody. The unique indexes are what enforce it — a
+ * second tap must not be able to inflate a report count. `ON CONFLICT DO
+ * NOTHING` without a target covers all three (post / comment / user) indexes.
  */
 export async function createReport(input: {
   id: string;
-  postId: string;
+  target: ReportTarget;
   reporterId: string;
   reason: ReportReason;
   note?: string | null;
 }): Promise<boolean> {
+  const { kind, id } = input.target;
+  const postId = kind === "post" ? id : null;
+  const commentId = kind === "comment" ? id : null;
+  const reportedUserId = kind === "user" ? id : null;
   const rows = await sql`
-    INSERT INTO content_reports (id, post_id, reporter_id, reason, note)
-    VALUES (${input.id}, ${input.postId}, ${input.reporterId}, ${input.reason},
-            ${input.note ?? null})
-    ON CONFLICT (post_id, reporter_id) DO NOTHING
+    INSERT INTO content_reports
+      (id, post_id, comment_id, reported_user_id, reporter_id, reason, note)
+    VALUES (${input.id}, ${postId}, ${commentId}, ${reportedUserId},
+            ${input.reporterId}, ${input.reason}, ${input.note ?? null})
+    ON CONFLICT DO NOTHING
     RETURNING id
   `;
   return rows.length > 0;
 }
 
 /**
- * How many open reports stand against one post.
+ * How many open reports stand against one target.
  *
  * Read by the report route so the notification can say "this is the third
- * person to flag this plate", which is the difference between one annoyed
- * diner and something that needs looking at tonight.
+ * person to flag this", which is the difference between one annoyed diner and
+ * something that needs looking at tonight.
  */
-export async function openReportCount(postId: string): Promise<number> {
-  const rows = await sql`
-    SELECT count(*)::int AS c FROM content_reports
-    WHERE post_id = ${postId} AND status = 'open'
-  `;
+export async function openReportCount(target: ReportTarget): Promise<number> {
+  const { kind, id } = target;
+  const rows =
+    kind === "post"
+      ? await sql`SELECT count(*)::int AS c FROM content_reports
+                  WHERE post_id = ${id} AND status = 'open'`
+      : kind === "comment"
+        ? await sql`SELECT count(*)::int AS c FROM content_reports
+                    WHERE comment_id = ${id} AND status = 'open'`
+        : await sql`SELECT count(*)::int AS c FROM content_reports
+                    WHERE reported_user_id = ${id} AND status = 'open'`;
   return Number(rows[0]?.c ?? 0);
 }
 

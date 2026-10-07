@@ -20,6 +20,13 @@ const PUBLIC_EXACT_PATHS = new Set<string>([
   "/verify-email",
   "/terms",
   "/privacy",
+  // Phone twins of the four pages above: the /m app links to these rather than
+  // to the desktop site, and they must be just as reachable signed out.
+  "/m/forgot-password",
+  "/m/reset-password",
+  "/m/verify-email",
+  "/m/terms",
+  "/m/privacy",
   // The email-link verifier is token-based and deliberately has no session —
   // see the doc comment on the route itself for why.
   "/api/account/email/verify",

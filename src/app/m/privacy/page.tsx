@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Header } from "@/components/Header";
+import { PhoneLegalFrame } from "@/components/mobile/PhoneLegalFrame";
 import { PrivacyDocument } from "@/components/legal/PrivacyDocument";
 
 export const metadata: Metadata = {
@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   description: "How PlateMaps collects, uses, and protects your information.",
 };
 
-export default function PrivacyPage() {
+/** Privacy, phone. Same text as `/privacy` (PrivacyDocument), phone frame around it. */
+export default function Page() {
   return (
-    <div className="mx-auto w-full max-w-7xl pb-16">
-      <Header />
-      <PrivacyDocument termsHref="/terms" />
-    </div>
+    <PhoneLegalFrame>
+      <PrivacyDocument termsHref="/m/terms" />
+    </PhoneLegalFrame>
   );
 }

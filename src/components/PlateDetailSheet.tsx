@@ -15,7 +15,10 @@ import {
   postedDate,
 } from "@/lib/format";
 import { VotePair, type VoteDirection } from "@/components/feed/PostActions";
+import { ReportButton } from "@/components/feed/ReportButton";
+import { useAuth } from "@/lib/auth";
 import { PostOptionsMenu } from "@/components/PostOptionsMenu";
+import { askForPushInContext } from "@/lib/pushClient";
 import type { ShelfPost } from "@/components/ProfileShelves";
 import { MealCollage, collagePlatesFor } from "@/components/feed/MealCollage";
 
@@ -457,6 +460,7 @@ function CommentRow({
 }) {
   const { comment, replies } = node;
   const open = replyTo === comment.id;
+  const { account } = useAuth();
 
   return (
     <li>
@@ -507,6 +511,15 @@ function CommentRow({
             >
               Reply
             </button>
+            {comment.userId && (
+              <ReportButton
+                kind="comment"
+                targetId={comment.id}
+                authorId={comment.userId}
+                currentUserId={account?.id ?? null}
+                className="min-h-11 rounded-full px-2 font-mono text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+              />
+            )}
           </div>
         </div>
       </div>
@@ -717,6 +730,7 @@ export function PlateDetailSheet({
       if (!res.ok) return data.error ?? "Couldn't post that comment.";
       onCommentAdded?.(data.comment as DetailComment);
       setReplyTo(null);
+      void askForPushInContext();
       return null;
     } catch {
       return "Couldn't reach PlateMaps. Check your connection.";

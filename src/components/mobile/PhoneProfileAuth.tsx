@@ -295,7 +295,7 @@ export function PhoneProfileAuth() {
         {mode === "login" && (
           <p className="-mt-2 mb-4">
             <Link
-              href="/forgot-password"
+              href="/m/forgot-password"
               className="inline-flex min-h-11 items-center text-xs text-zinc-500 underline underline-offset-2"
             >
               Forgot your password?
@@ -351,11 +351,11 @@ export function PhoneProfileAuth() {
             />
             <span className="leading-relaxed">
               I am 13 or older and I agree to the{" "}
-              <Link href="/terms" target="_blank" className="underline underline-offset-2">
+              <Link href="/m/terms" className="underline underline-offset-2">
                 Terms of Service
               </Link>{" "}
               and{" "}
-              <Link href="/privacy" target="_blank" className="underline underline-offset-2">
+              <Link href="/m/privacy" className="underline underline-offset-2">
                 Privacy Policy
               </Link>
               .

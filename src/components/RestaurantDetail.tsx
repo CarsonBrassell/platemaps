@@ -14,7 +14,6 @@ import { OtherLocations } from "@/components/OtherLocations";
 import type { RestaurantAspectTally, SiblingLocation } from "@/lib/db";
 import type { PlateScore } from "@/lib/plateScore";
 import { platesWithStats, topPlates, type RatedPlate } from "@/lib/ratedPlates";
-import { mapCommentsByRestaurant, withDishIds } from "@/data/mapComments";
 
 /* Eight, so the grid's two columns come out even — seven left a widowed card
    on the last row. This is the whole of "the hits": a plate outside it is still
@@ -97,18 +96,6 @@ export function RestaurantDetail({
     ? dishesWithStats.find((dish) => dish.id === selectedDishId)
     : undefined;
 
-  // Comments already tagged to this dish, newest first.
-  //
-  // The seed bubbles name their dish rather than carrying its id, since menus
-  // live in the database now and the id can only be resolved against a menu
-  // that has been loaded — `dishes` here is that menu. See withDishIds.
-  const selectedDishComments = useMemo(() => {
-    if (!selectedDishId) return [];
-    return withDishIds(mapCommentsByRestaurant[restaurant.id] ?? [], dishes)
-      .filter((comment) => comment.dishId === selectedDishId)
-      .sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""));
-  }, [restaurant.id, selectedDishId, dishes]);
-
   /** Close the sheet and drop the reader at the full comment thread. */
   function handleSeeAllComments() {
     setSelectedDishId(null);
@@ -173,7 +160,6 @@ export function RestaurantDetail({
           dish={selectedDish}
           restaurantId={restaurant.id}
           restaurantName={restaurant.name}
-          comments={selectedDishComments}
           onClose={() => setSelectedDishId(null)}
           onSeeAll={handleSeeAllComments}
         />

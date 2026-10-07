@@ -135,6 +135,10 @@ function phoneTarget(
     // screen doesn't read is ignored rather than failed on.
     return { kind: "route", href: query ? `/m${path}?${query}` : `/m${path}` };
   }
+  // A bubble's @handle opens the poster's phone profile.
+  if (path.startsWith("/u/")) {
+    return { kind: "route", href: `/m${path}` };
+  }
   if (path === "/feed") {
     return { kind: "post", postId: new URLSearchParams(query).get("post") };
   }
@@ -285,13 +289,12 @@ export function PhoneFeedMapPanel({
    * menu whenever it arrives. A superseded response is not stale, just late.
    *
    * Discarding it would actively lose data, on the ordinary load path rather
-   * than an exotic one: restaurants land first, the key becomes the ~19 seeded
-   * restaurants and their fetch goes out, then the feed lands and the key
-   * grows. A per-run flag would cancel that first response — while its ids stay
-   * marked as requested, since the second run computed its own `missing`
-   * synchronously before the first could un-mark — and the seeded bubbles would
-   * silently lose their dish links on nearly every visit. So the only thing
-   * worth refusing here is a write after unmount.
+   * than an exotic one: the first batch of posts lands and its fetch goes out,
+   * then more posts land and the key grows. A per-run flag would cancel that
+   * first response — while its ids stay marked as requested, since the second
+   * run computed its own `missing` synchronously before the first could
+   * un-mark — and those bubbles would silently lose their dish links. So the
+   * only thing worth refusing here is a write after unmount.
    */
   useEffect(() => {
     const missing = menuIdsKey.split(",").filter((id) => id && !requestedMenuIds.current.has(id));
@@ -321,13 +324,9 @@ export function PhoneFeedMapPanel({
     })();
   }, [menuIdsKey]);
 
-  /* `source` is a dependency because it decides more than which posts were
-     fetched: the seeded chatter is Discover-only, so switching to Friends has
-     to rebuild the bubbles rather than leave the seeds standing on a map that
-     now claims to show only people you know. */
   const mapComments = useMemo(
-    () => buildMapComments(postsByRestaurant, restaurants, menus, source),
-    [postsByRestaurant, restaurants, menus, source],
+    () => buildMapComments(postsByRestaurant, restaurants, menus),
+    [postsByRestaurant, restaurants, menus],
   );
 
   /**

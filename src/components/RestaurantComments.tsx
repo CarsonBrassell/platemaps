@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { ShortPostRow, useShortThreadActions, type ShortPost } from "@/components/feed/ShortThread";
+import { signInPathFor } from "@/lib/signInGate";
 import type { Restaurant } from "@/data/restaurantTypes";
 
 /**
@@ -56,6 +57,7 @@ export function RestaurantComments({
 }) {
   const { account, isSignedIn } = useAuth();
   const router = useRouter();
+  const signInPath = signInPathFor(usePathname());
   const [posts, setPosts] = useState<Post[]>([]);
   /* Which row is currently ringed. Separate from `highlightPostId` because it
      is temporary — the ring fades after a few seconds while the URL keeps its
@@ -113,7 +115,7 @@ export function RestaurantComments({
   /* Where the "Sign in" line already points. A dead arrow gives no clue why
      nothing happened, so a signed-out press goes to the door instead. */
   function requireSignIn() {
-    router.push("/account");
+    router.push(signInPath);
   }
 
   return (
@@ -123,7 +125,7 @@ export function RestaurantComments({
       {!isSignedIn ? (
         <p className="mb-4 text-sm text-zinc-500">
           <Link
-            href="/account"
+            href={signInPath}
             className="font-medium text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:decoration-zinc-500"
           >
             Sign in

@@ -15,7 +15,6 @@ import type { RestaurantAspectTally, SiblingLocation } from "@/lib/db";
 import { PhoneFirstPlate } from "@/components/mobile/PhoneFirstPlate";
 import type { PlateScore } from "@/lib/plateScore";
 import { platesWithStats, topPlates, type RatedPlate } from "@/lib/ratedPlates";
-import { mapCommentsByRestaurant, withDishIds } from "@/data/mapComments";
 
 /**
  * The restaurant screen, phone version.
@@ -132,15 +131,6 @@ export function PhoneDetailScreen({
     ? dishesWithStats.find((dish) => dish.id === selectedDishId)
     : undefined;
 
-  // Comments already tagged to this dish, newest first. The seed bubbles name
-  // their dish rather than carrying its id — see withDishIds.
-  const selectedDishComments = useMemo(() => {
-    if (!selectedDishId) return [];
-    return withDishIds(mapCommentsByRestaurant[restaurant.id] ?? [], dishes)
-      .filter((comment) => comment.dishId === selectedDishId)
-      .sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""));
-  }, [restaurant.id, selectedDishId, dishes]);
-
   /** Close the sheet and drop the reader at the full comment thread. */
   function handleSeeAllComments() {
     setSelectedDishId(null);
@@ -195,7 +185,6 @@ export function PhoneDetailScreen({
           dish={selectedDish}
           restaurantId={restaurant.id}
           restaurantName={restaurant.name}
-          comments={selectedDishComments}
           onClose={() => setSelectedDishId(null)}
           onSeeAll={handleSeeAllComments}
         />

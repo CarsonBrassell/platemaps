@@ -149,10 +149,8 @@ const COMMENT_HALF_LIFE_HOURS = 96;
  * old it is. Drives both which restaurants get a bubble at all and the order of
  * a stack, so the two can never disagree about what "best" means.
  *
- * Real posts carry `score` (net votes); seeded chatter carries only `upvotes`.
- * Reading just `score` — which every sort here used to do — silently flattened
- * every seeded comment to zero, so a 24-upvote remark ranked below a real post
- * with no votes at all. Either field is the popularity signal.
+ * Posts carry `score` (net votes) and `upvotes`; either field is the popularity
+ * signal.
  *
  * The +1 keeps age meaningful at the bottom of the scale: without it every
  * zero-vote comment ties at zero and the newest of them never wins.
@@ -181,20 +179,11 @@ function commentHeat(comment: MapComment, now: number) {
 }
 
 /**
- * Real posts outrank seeded chatter, before heat is even consulted.
- *
- * Heat alone couldn't decide this fairly, because the two aren't measuring the
- * same thing. A real post's count is votes people actually cast — 0 or 1 on
- * most of them today. A seeded bubble's is `2 + (seed % 23)` from
- * data/mapComments.ts: a number invented to make an empty map look busy. There
- * are 65 of them and they land between 2 and 24, so filler took every bubble
- * slot in San Diego at every zoom, and the vote chips — which only render on a
- * bubble with a post behind it — were unreachable. The downvote button on the
- * map wasn't broken; nothing that could be clicked was ever on screen.
- *
- * So filler is what it was always meant to be: what fills a gap when nobody has
- * said anything real about a place. Within each tier, `commentHeat` still
- * decides, so the most-upvoted real post is still the one that shows.
+ * Bubbles backed by a post outrank any without one, before heat is even
+ * consulted. Every bubble the map is handed comes from a real post; this tier
+ * split only matters for a caller that passes something else. Within each tier,
+ * `commentHeat` still decides, so the most-upvoted post is still the one that
+ * shows.
  */
 function isRealPost(comment: MapComment) {
   return Boolean(comment.postId);
@@ -237,6 +226,22 @@ const BUBBLE_GAP = 6;
 /* Vertical room the neon restaurant sign takes above a stack's top edge —
    part of the collision footprint so no other bubble lands on the name. */
 const NEON_SIGN_CLEARANCE = 14;
+/* A bubble whose post has a photo carries an arrow and a sliver of the photo
+   to the left of the card: the sliver's 12px peek, a 10px gap, and the 22px
+   chevron. The collision pass reserves this much to the left of the card so a
+   neighbour cannot land on the affordance. The open drawer (118px) may overlap
+   neighbours, the way the open text already does, so it is not reserved. Keep
+   in step with .map-photo-arrow / .map-photo-drawer in globals.css. */
+const PHOTO_LEFT_RESERVE = 12 + 10 + 22;
+/* Only http(s) and same-origin paths reach a CSS url(); the value came out of
+   a database column and is written into an inline style. */
+function photoCssUrl(raw: string) {
+  if (!/^(https?:\/\/|\/(?!\/))/i.test(raw)) return null;
+  return raw.replace(
+    /[\s'"()<>\\]/g,
+    (c) => "%" + c.charCodeAt(0).toString(16).toUpperCase().padStart(2, "0"),
+  );
+}
 /* Utilitarian palette: warm near-white card, hairline edge, one orange accent.
    No pop-shadow, no pinstripe, no drop shadow — over a dark map the light card
    already separates itself, and PRODUCT.md's aesthetic direction rules shadows
@@ -331,12 +336,38 @@ function compactTime(iso: string) {
 
 type Rect = { x: number; y: number; w: number; h: number };
 
-function bubbleHeight(comment: MapComment) {
+/* The resting bubble shows up to two lines of the headline before it clips
+   (`.map-line-clip`, globals.css); opening it shows the rest. A line that
+   fits the zoom's width cap stays one row, so a short comment's box is no
+   taller than it was. Whether it wraps is the same width estimate the
+   collision pass reserves, so the height reserved and the height drawn agree
+   to within that estimate. Changed by request 2026-09-28 — one line clipped
+   most comments to a few words. */
+const BUBBLE_RESTING_LINES = 2;
+/* 14px at line-height 1.35 is 18.9px a line; the first row's 20 already
+   carries the rounding margin. */
+const BUBBLE_EXTRA_LINE_HEIGHT = 19;
+
+/* The width estimate runs a little narrow for the bold sans (measured: a
+   30-character line it put under a 222 cap wrapped). Leaning toward the second
+   line costs a few px of gap in a stack; leaning away lets the box grow up
+   into the bubble above it. */
+const RESTING_WRAP_SLACK = 1.12;
+
+function restingRows(comment: MapComment, zoom: number) {
+  return restingLineWidth(comment) * RESTING_WRAP_SLACK > bubbleWidthCap(comment, zoom)
+    ? BUBBLE_RESTING_LINES
+    : 1;
+}
+
+function bubbleHeight(comment: MapComment, zoom: number) {
   const border = BUBBLE_BORDER * 2;
   const padding = BUBBLE_PADDING_Y * 2;
   const meta =
     comment.upvotes !== undefined ? BUBBLE_META_GAP + BUBBLE_META_ROW_HEIGHT : 0;
-  return border + padding + BUBBLE_TEXT_ROW_HEIGHT + meta;
+  const text =
+    BUBBLE_TEXT_ROW_HEIGHT + (restingRows(comment, zoom) - 1) * BUBBLE_EXTRA_LINE_HEIGHT;
+  return border + padding + text + meta;
 }
 
 /**
@@ -345,8 +376,8 @@ function bubbleHeight(comment: MapComment) {
  * renderBubbles so the space reserved and the space used are the same number,
  * rather than two hand-kept-in-sync ones.
  */
-function leaderDrop(comment: MapComment, offsetY: number) {
-  return Math.max(0, offsetY - bubbleHeight(comment) - LEADER_PIN_CLEARANCE);
+function leaderDrop(comment: MapComment, offsetY: number, zoom: number) {
+  return Math.max(0, offsetY - bubbleHeight(comment, zoom) - LEADER_PIN_CLEARANCE);
 }
 
 // The closer you zoom in, the more room a bubble gets before its text is
@@ -502,12 +533,17 @@ function estimateMetaWidth(comment: MapComment) {
 // row, and the resting row is the dish plus its words (restingLineFor), so
 // a chatty dish comment reserves what it draws, up to the zoom cap. The nowrap meta row still sets a floor, but its own, computed
 // one — not a constant.
-function estimateBubbleWidth(comment: MapComment, zoom: number) {
+function restingLineWidth(comment: MapComment) {
   const score = bubbleScoreFor(comment);
-  const line =
+  return (
     22 +
     restingLineFor(comment).length * 6.3 +
-    (score ? 10 + scoreLabelFor(score).length * 7 : 0);
+    (score ? 10 + scoreLabelFor(score).length * 7 : 0)
+  );
+}
+
+function estimateBubbleWidth(comment: MapComment, zoom: number) {
+  const line = restingLineWidth(comment);
   const floor =
     comment.upvotes !== undefined ? estimateMetaWidth(comment) : BUBBLE_MIN_WIDTH;
   return Math.min(bubbleWidthCap(comment, zoom), Math.max(floor, line));
@@ -946,7 +982,14 @@ function bubbleElement(
      boundary. */
   const metaSeparator = '<span aria-hidden="true">·</span>';
   const metaParts = [
-    comment.author ? `<span>@${escapeHtml(comment.author.toUpperCase())}</span>` : "",
+    /* The handle is a link to the poster's profile when there is a real
+       person behind it — a span for the same reason the dish is (it sits in
+       a nowrap run), answering Enter in the keydown handler. */
+    comment.author
+      ? comment.authorId
+        ? `<span class="map-author-link" role="link" tabindex="0" style="cursor: pointer;">@${escapeHtml(comment.author.toUpperCase())}</span>`
+        : `<span>@${escapeHtml(comment.author.toUpperCase())}</span>`
+      : "",
     comment.createdAt ? `<span>${escapeHtml(compactTime(comment.createdAt))}</span>` : "",
     reactionHtml,
     repliesHtml,
@@ -995,7 +1038,7 @@ function bubbleElement(
 
      pointer-events stay off so it never steals a click meant for the box or
      the map beneath it. */
-  const drop = leaderDrop(comment, offsetY);
+  const drop = leaderDrop(comment, offsetY, zoom);
   /* The svg spans from just left of the pin to just right of the run, rather
      than riding on `overflow: visible` — the path now reaches left of the
      box's own edge, and an SVG root that clips would eat the elbow.
@@ -1043,6 +1086,18 @@ function bubbleElement(
     </svg>`
       : "";
 
+  /* The photo affordance, only when the post has a viewable photo: a sliver of
+     it peeking from behind the card's left edge (the drawer, closed) and a
+     floating chevron that opens it. Both are children of the box so they track
+     its height as the text opens; globals.css lays them out. */
+  const photoSrc = comment.photoUrl ? photoCssUrl(comment.photoUrl) : null;
+  const photoHtml = photoSrc
+    ? `<span class="map-photo-drawer" data-src="${escapeHtml(comment.photoUrl ?? "")}" style="background-image: url('${escapeHtml(photoSrc)}');" aria-hidden="true"></span>
+        <button type="button" class="map-photo-arrow" aria-label="Show photo" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#a3a9b2" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4 L7 12 L15 20"/></svg>
+        </button>`
+    : "";
+
   const el = document.createElement("div");
   el.className = "map-bubble";
   /* One plain card: warm near-white, a hairline edge, a 3px corner. No pop
@@ -1079,11 +1134,11 @@ function bubbleElement(
   el.innerHTML = `<div style="
       position: relative;
       width: 0;
-      height: ${bubbleHeight(comment)}px;
+      height: ${bubbleHeight(comment, zoom)}px;
       transform: translate(${offsetX}px, -${offsetY}px);
       cursor: pointer;
     ">
-      <div class="map-bubble-box" style="
+      <div class="map-bubble-box${photoHtml ? " map-has-photo" : ""}" style="
         position: absolute;
         bottom: 0;
         left: 0;
@@ -1108,6 +1163,7 @@ function bubbleElement(
              headline is what slides. The prose is
              now inline inside the headline row itself, so there is no third
              row to order — the headline just wraps taller when open. -->
+        ${photoHtml}
         <div class="map-bubble-text" style="max-width: ${textMaxWidth}px; font-weight: 700;">${headlineHtml}</div>
         ${metaRow}
       </div>
@@ -1121,7 +1177,81 @@ function bubbleElement(
 const BUBBLE_OPEN_CLASS = "map-bubble-open";
 
 function closeOpenBubbles(els: Map<string, HTMLElement>) {
-  for (const el of els.values()) el.classList.remove(BUBBLE_OPEN_CLASS);
+  for (const el of els.values()) {
+    el.classList.remove(BUBBLE_OPEN_CLASS);
+    setPhotoDrawer(el, false);
+  }
+}
+
+/* The photo drawer's state lives on the bubble as a class (globals.css slides
+   the drawer and flips the chevron off it) and on the arrow as aria. Opening
+   the drawer also opens the bubble's text, so callers add BUBBLE_OPEN_CLASS. */
+const PHOTO_OPEN_CLASS = "map-photo-open";
+
+function setPhotoDrawer(el: HTMLElement, open: boolean) {
+  if (!el.classList.contains(PHOTO_OPEN_CLASS) && !open) return;
+  el.classList.toggle(PHOTO_OPEN_CLASS, open);
+  const arrow = el.querySelector<HTMLElement>(".map-photo-arrow");
+  if (arrow) {
+    arrow.setAttribute("aria-expanded", open ? "true" : "false");
+    arrow.setAttribute("aria-label", open ? "Hide photo" : "Show photo");
+  }
+  if (open) sizePhotoDrawer(el);
+}
+
+/* The open drawer takes the photo's own shape: as tall as the opened card,
+   as wide as the photo's aspect ratio makes it, so nothing is cropped. The
+   ratio comes from the image itself (already cached by the sliver) and is
+   kept on the drawer; until it loads the drawer opens square. */
+const PHOTO_MIN_W = 44;
+const PHOTO_MAX_W = 260;
+
+function sizePhotoDrawer(el: HTMLElement) {
+  const drawer = el.querySelector<HTMLElement>(".map-photo-drawer");
+  const box = el.querySelector<HTMLElement>(".map-bubble-box");
+  if (!drawer || !box) return;
+  const apply = (ratio: number) => {
+    if (!el.classList.contains(PHOTO_OPEN_CLASS)) return;
+    const w = Math.round((box.offsetHeight + 2) * ratio);
+    el.style.setProperty("--photo-w", `${Math.min(PHOTO_MAX_W, Math.max(PHOTO_MIN_W, w))}px`);
+  };
+  const known = Number(drawer.dataset.ratio);
+  if (known > 0) return apply(known);
+  apply(1);
+  const src = drawer.dataset.src;
+  if (!src) return;
+  const img = new Image();
+  img.onload = () => {
+    if (!img.naturalWidth || !img.naturalHeight) return;
+    const ratio = img.naturalWidth / img.naturalHeight;
+    drawer.dataset.ratio = String(ratio);
+    apply(ratio);
+  };
+  img.src = src;
+}
+
+/* Whether the resting bubble is hiding anything — the only case where a tap
+   should open it rather than follow what it landed on. Measured once, right
+   after the bubble is drawn, and cached on the element: at click time iOS
+   has already applied its sticky :hover, which lifts the clamp, so a
+   measurement taken then reads every bubble as fully shown. If the bubble is
+   already open or hovered when measured, the collision pass's width estimate
+   stands in. */
+const EXPANDABLE_ATTR = "data-expandable";
+
+function measureExpandable(el: HTMLElement, comment: MapComment, zoom: number) {
+  let expandable: boolean;
+  if (el.classList.contains(BUBBLE_OPEN_CLASS) || el.matches(":hover, :focus-within")) {
+    expandable =
+      restingLineWidth(comment) * RESTING_WRAP_SLACK >
+      bubbleWidthCap(comment, zoom) * BUBBLE_RESTING_LINES;
+  } else {
+    const clip = el.querySelector<HTMLElement>(".map-line-clip");
+    expandable =
+      !!clip &&
+      (clip.scrollHeight > clip.clientHeight + 1 || clip.scrollWidth > clip.clientWidth + 1);
+  }
+  el.setAttribute(EXPANDABLE_ATTR, expandable ? "1" : "0");
 }
 
 /* ---------------------------------------------------------------------------
@@ -1192,6 +1322,7 @@ function bubbleIdentity(comment: MapComment) {
     comment.rating ?? "",
     comment.dishId ?? "",
     comment.author ?? "",
+    comment.authorId ?? "",
     comment.createdAt ?? "",
     comment.commentCount ?? "",
     comment.upvotes === undefined ? "" : "meta",
@@ -2465,7 +2596,7 @@ export function RestaurantMap({
          `bareW` is the width before the neon sign widened it, so the crown can
          be handed from one card to the next without the reservation it made
          being left behind on a card that no longer wears it. */
-      type PlacedRect = Rect & { owner: string; bareW: number };
+      type PlacedRect = Rect & { owner: string; bareW: number; leftPad: number };
       const placed: PlacedRect[] = [];
 
       type Stack = {
@@ -2518,7 +2649,7 @@ export function RestaurantMap({
         if (signEl) signsByRestaurantRef.current.set(restaurant.id, signEl);
         topRect.y -= NEON_SIGN_CLEARANCE;
         topRect.h += NEON_SIGN_CLEARANCE;
-        topRect.w = Math.max(topRect.bareW, estimateSignWidth(restaurant));
+        topRect.w = Math.max(topRect.bareW, topRect.leftPad + estimateSignWidth(restaurant));
       }
 
       /** The exact inverse, so nothing the old top reserved outlives it. */
@@ -2546,7 +2677,7 @@ export function RestaurantMap({
           const comment = comments[stack.next];
           stack.next++;
           const width = estimateBubbleWidth(comment, zoom);
-          const height = bubbleHeight(comment);
+          const height = bubbleHeight(comment, zoom);
           /* Offsets measure the box's TOP edge, so a card stacked above the
              last one has to clear that card's own height as well as the gap.
              Advancing by only the lower card's height (which is what this did)
@@ -2565,13 +2696,19 @@ export function RestaurantMap({
           /* The sign is NOT reserved here: it crowns the stack, not this card,
              and which card ends up on top isn't known until the stack is laid.
              `crown` below grows whichever rect ends up highest. */
+          /* A photo bubble also owns the strip to the card's left where its
+             arrow and sliver sit, so the rect starts there and is that much
+             wider. The card itself is still at point.x + 12. */
+          const leftPad =
+            comment.photoUrl && photoCssUrl(comment.photoUrl) ? PHOTO_LEFT_RESERVE : 0;
           const rect: PlacedRect = {
             owner: restaurant.id,
-            x: point.x + 12,
+            x: point.x + 12 - leftPad,
             y: point.y - offsetY,
-            w: width,
-            bareW: width,
-            h: height + (stack.count === 0 ? leaderDrop(comment, offsetY) : 0),
+            w: width + leftPad,
+            bareW: width + leftPad,
+            leftPad,
+            h: height + (stack.count === 0 ? leaderDrop(comment, offsetY, zoom) : 0),
           };
           if (placed.some((r) => r.owner !== restaurant.id && rectsOverlap(rect, r))) continue;
           placed.push(rect);
@@ -2599,8 +2736,46 @@ export function RestaurantMap({
           const commentHref = comment.postId
             ? `/restaurant/${restaurant.id}?post=${comment.postId}`
             : `/restaurant/${restaurant.id}`;
+          const profileHref = comment.authorId ? `/u/${comment.authorId}` : null;
+          /* The photo arrow toggles the drawer and nothing else. Every event the
+             map or the bubble itself would act on is stopped at the button:
+             the bubble's click (navigation / tap-to-open, below), and MapLibre's
+             own press, drag, double-tap-zoom and tap-to-close-bubbles handling,
+             which listen on the canvas container the marker lives in. Stopping
+             (never preventDefault) leaves the button's own click and focus
+             intact. */
+          const photoArrow = el.querySelector<HTMLElement>(".map-photo-arrow");
+          if (photoArrow) {
+            for (const type of [
+              "pointerdown",
+              "pointerup",
+              "mousedown",
+              "mouseup",
+              "touchstart",
+              "touchend",
+              "dblclick",
+              "keydown",
+            ]) {
+              photoArrow.addEventListener(type, (e) => e.stopPropagation());
+            }
+            photoArrow.addEventListener("click", (e) => {
+              e.stopPropagation();
+              if (el.classList.contains(PHOTO_OPEN_CLASS)) {
+                /* Closing hides the text again on a phone; on a mouse the
+                   pointer is still over the bubble, so :hover keeps it open. */
+                setPhotoDrawer(el, false);
+                el.classList.remove(BUBBLE_OPEN_CLASS);
+              } else {
+                closeOpenBubbles(bubbleElementsRef.current);
+                el.classList.add(BUBBLE_OPEN_CLASS);
+                setPhotoDrawer(el, true);
+              }
+            });
+          }
           el.addEventListener("click", (e) => {
             const target = e.target as HTMLElement;
+            // Backstop: the arrow's own handler already stopped this.
+            if (target.closest(".map-photo-arrow")) return;
             const upvoteChip = target.closest(".map-upvote-chip");
             if (upvoteChip) {
               // Voting stays on the map rather than opening the post — the
@@ -2634,7 +2809,10 @@ export function RestaurantMap({
               return;
             }
             /* On a phone the prose is not one hover away — there is no hover —
-               so the first tap OPENS the bubble and the second follows it. Same
+               so the first tap on a bubble that is hiding text OPENS it, wherever
+               it lands (dish, handle or body), and the second follows it. A
+               bubble already showing everything has nothing to open, so its
+               first tap follows straight away. Same
                `(hover: none)` gate the pins use for their name-then-commit tap
                (applyPinData below) and for the same reason: a tap has to show
                what it is about to open before it opens it. The chips above act
@@ -2643,8 +2821,14 @@ export function RestaurantMap({
                see the map handlers in applyPinData. The propagation stop keeps
                the map's own click (which treats a miss as "tap outside") from
                closing what this tap just opened. */
+            /* `pointerType` catches a tap on a touchscreen laptop, whose
+               mouse makes the media query answer "hover". */
+            const touch =
+              window.matchMedia("(hover: none)").matches ||
+              (e as PointerEvent).pointerType === "touch";
             if (
-              window.matchMedia("(hover: none)").matches &&
+              touch &&
+              el.getAttribute(EXPANDABLE_ATTR) !== "0" &&
               !el.classList.contains(BUBBLE_OPEN_CLASS)
             ) {
               e.stopPropagation();
@@ -2654,6 +2838,8 @@ export function RestaurantMap({
             }
             if (target.closest(".map-dish-link")) {
               router.push(dishHref);
+            } else if (profileHref && target.closest(".map-author-link")) {
+              router.push(profileHref);
             } else {
               router.push(commentHref);
             }
@@ -2664,14 +2850,22 @@ export function RestaurantMap({
              unbound: this is a link, and links don't activate on Space. */
           el.addEventListener("keydown", (e) => {
             if (e.key !== "Enter") return;
-            if (!(e.target as HTMLElement).closest(".map-dish-link")) return;
-            e.preventDefault();
-            router.push(dishHref);
+            const t = e.target as HTMLElement;
+            if (t.closest(".map-dish-link")) {
+              e.preventDefault();
+              router.push(dishHref);
+            } else if (profileHref && t.closest(".map-author-link")) {
+              e.preventDefault();
+              router.push(profileHref);
+            }
           });
           const marker = new Marker({ element: el, anchor: "top-left" })
             .setLngLat([restaurant.lng, restaurant.lat])
             .addTo(map!);
           bubbleMarkersRef.current.push(marker);
+          /* A timer, not rAF: a backgrounded tab or webview never runs frames,
+             and the flag has to be there before the first tap. */
+          setTimeout(() => measureExpandable(el, comment, zoom), 0);
           /* Registered here, beside the marker, because these two are the same
              fact seen from two sides: the marker is how the map takes the
              bubble away, this is how a vote reaches into the one that is still
@@ -2749,6 +2943,7 @@ export function RestaurantMap({
           y: point.y - SIGN_ONLY_OFFSET_Y - NEON_SIGN_CLEARANCE,
           w: signWidth,
           bareW: signWidth,
+          leftPad: 0,
           h: NEON_SIGN_CLEARANCE + SIGN_ONLY_OFFSET_Y,
         };
         if (placed.some((r) => rectsOverlap(signRect, r))) return;

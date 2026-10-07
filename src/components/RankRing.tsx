@@ -100,7 +100,6 @@ export function RankRing({
   const busyRef = useRef(false);
   const latestRef = useRef(points);
   const timersRef = useRef<number[]>([]);
-  latestRef.current = points;
 
   const [crest, setCrest] = useState<{ rank: RankKey; out: boolean; pop: number }>({
     rank: now.rank.key,
@@ -111,6 +110,11 @@ export function RankRing({
     text: now.rank.title,
     prev: null,
     key: 0,
+  });
+
+  /* Kept current after each render (not during it) for the async animation callbacks. */
+  useEffect(() => {
+    latestRef.current = points;
   });
 
   useEffect(() => {

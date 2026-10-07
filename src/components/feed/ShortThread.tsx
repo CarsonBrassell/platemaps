@@ -2,12 +2,16 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ReportButton } from "@/components/feed/ReportButton";
+import { signInPathFor } from "@/lib/signInGate";
 import { Composer } from "@/components/feed/Composer";
 import { VotePair, type VoteDirection } from "@/components/feed/PostActions";
 import { VoteArrowUpIcon, VoteArrowDownIcon } from "@/components/icons";
 import { StarRating } from "@/components/StarRating";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
 import type { Comment } from "@/components/feed/types";
+import { askForPushInContext } from "@/lib/pushClient";
 
 /**
  * The short thread: one post, its arrows, and the replies under it.
@@ -237,6 +241,7 @@ export function useShortThreadActions<P extends ShortPost>({
       const data = await res.json();
       if (!res.ok) return data.error ?? "Couldn't post that reply.";
       patchPost(postId, (p) => ({ ...p, comments: [...p.comments, data.comment as Comment] }));
+      void askForPushInContext();
       return null;
     } catch {
       return "Couldn't reach PlateMaps. Check your connection.";
@@ -251,9 +256,12 @@ export function useShortThreadActions<P extends ShortPost>({
  * sits in.
  */
 function SignInLink({ children }: { children: React.ReactNode }) {
+  /* /m/account inside the phone app, /account on the desktop site — the same
+     pathname test the proxy and RequireSignIn use (signInPathFor). */
+  const pathname = usePathname();
   return (
     <Link
-      href="/account"
+      href={signInPathFor(pathname)}
       className="font-medium text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:decoration-zinc-500"
     >
       {children}
@@ -560,6 +568,13 @@ function CommentRow({
             >
               Reply
             </button>
+            <ReportButton
+              kind="comment"
+              targetId={comment.id}
+              authorId={comment.userId}
+              currentUserId={currentUserId}
+              className="min-h-11 rounded-full px-2 font-mono text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            />
           </div>
         </div>
       </div>

@@ -29,6 +29,7 @@ export function NoticeCard({
   title,
   body,
   action,
+  compact = false,
   children,
 }: {
   label: string;
@@ -36,10 +37,12 @@ export function NoticeCard({
   body?: ReactNode;
   /** A link out. Forms go in `children` instead. */
   action?: { href: string; label: string };
+  /** Sits tight under a back bar (the phone pages) instead of centred with tall padding. */
+  compact?: boolean;
   children?: ReactNode;
 }) {
   return (
-    <div className="mx-auto w-full max-w-md px-4 py-16">
+    <div className={`mx-auto w-full max-w-md px-4 ${compact ? "pb-6 pt-2" : "py-16"}`}>
       <div className="rounded-2xl bg-white px-6 py-8">
         <p className="mono-label mb-3 text-zinc-500">{label}</p>
         <h1 className="mb-2 font-display text-xl font-semibold text-zinc-900">{title}</h1>
