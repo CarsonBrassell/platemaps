@@ -21,6 +21,22 @@ import type { CapacitorConfig } from '@capacitor/cli';
  */
 const SITE_URL = process.env.PLATEMAPS_APP_URL ?? 'https://platemaps.com/m/feed';
 
+/*
+ * **The whole host is the app, not just this URL.** Capacitor decides whether
+ * a navigation stays in the WebView by a string prefix match against
+ * server.url (WebViewDelegationHandler.swift, `isApplicationNavigation`), so
+ * with the path in it only URLs under /m/feed counted as the app. On a fresh
+ * install the sign-in redirect to /m/account was handed to Safari, the
+ * cancelled load painted offline.html, and its "Try again" (to /m) went to
+ * Safari as well. That was the build 8 rejection, Guideline 2.1(a).
+ * server.allowNavigation below is what keeps every page of the site in the app.
+ *
+ * Not server.appStartPath with an origin-only url: Capacitor also requires
+ * appStartPath to exist as a file in the bundled webDir and exits the app at
+ * launch when it does not (CAPBridgeViewController `loadWebView`).
+ */
+const SITE_HOST = new URL(SITE_URL).hostname;
+
 const config: CapacitorConfig = {
   appId: 'com.platemapsapp.ios',
   appName: 'PlateMaps',
@@ -50,6 +66,7 @@ const config: CapacitorConfig = {
     // after: platemap-five.vercel.app was a hosting-provider subdomain that
     // would have been frozen into v1.
     url: SITE_URL,
+    allowNavigation: [SITE_HOST],
     cleartext: false,
 
     // What the WebView shows when it cannot reach that URL. Without this it
