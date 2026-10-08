@@ -36,7 +36,7 @@
  * When that day comes, these are also then dead and can go: `StarRating`, the
  * `yelpRating`/`googleRating` columns' only reader, and `npm run ratings:blend`.
  */
-export const SHOW_BLEND_STARS = true;
+export const SHOW_BLEND_STARS = false;
 
 /**
  * The scale categories are reported on, for the `/5` a caller prints beside one.

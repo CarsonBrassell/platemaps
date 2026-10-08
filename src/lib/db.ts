@@ -26,6 +26,26 @@ import { milesBetween, NEARBY_RADIUS_MI, type Coords } from "@/lib/geo";
 import { sql } from "@/lib/sqlClient";
 import type { FeedCursor } from "@/lib/feedCursor";
 
+/**
+ * Whether restaurant covers from other sites are shown at all.
+ *
+ * Off for App Store review: Apple asks for documentary proof of rights to
+ * third-party content, and there is none for the Yelp CDN photos (Yelp's free
+ * API tier, which they came through, has ended) or for photos lifted from
+ * restaurants' own websites. With this off, only covers we host ourselves
+ * (Vercel Blob, or files under public/) render; every other restaurant gets
+ * the warm "no photo yet" tone block, the same as the 12,000 that never had
+ * one. The rows keep their URLs, so turning this back on is a one-line change.
+ * Filtered here, at the two row projections, so no surface can render one.
+ */
+const SHOW_THIRD_PARTY_PHOTOS = false;
+
+function displayablePhoto(photo: string | null | undefined): string | undefined {
+  if (!photo) return undefined;
+  if (SHOW_THIRD_PARTY_PHOTOS || photo.startsWith("/") || isStoredPhotoUrl(photo)) return photo;
+  return undefined;
+}
+
 export type User = {
   id: string;
   name: string;
@@ -3186,7 +3206,7 @@ function rowToRestaurant(row: any): Restaurant {
     googleRating: row.google_rating ?? undefined,
     googleReviewCount: row.google_review_count ?? undefined,
     trending: row.trending ?? false,
-    photo: row.photo ?? undefined,
+    photo: displayablePhoto(row.photo),
     photoAlt: row.photo_alt ?? undefined,
     yelpUrl: row.yelp_url ?? undefined,
     // Detail page only. Deliberately absent from `RestaurantView`, which is
@@ -3288,7 +3308,7 @@ function rowToRestaurantView(row: Record<string, unknown>): RestaurantView {
     rating: (row.rating as number | null) ?? null,
     reviewCount: (row.review_count as number | null) ?? null,
     trending: (row.trending as boolean) ?? false,
-    photo: (row.photo as string | null) ?? undefined,
+    photo: displayablePhoto(row.photo as string | null),
     photoAlt: (row.photo_alt as string | null) ?? undefined,
     // Both or neither: half a pair is not a ratio, and a caller that got one
     // would have to re-check the other anyway.
