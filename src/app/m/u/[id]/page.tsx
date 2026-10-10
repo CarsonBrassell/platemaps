@@ -4,13 +4,20 @@ import { PlateStarIcon } from "@/components/icons";
 import { RankInsignia } from "@/components/RankInsignia";
 import { PhoneProfileFriendButton } from "@/components/mobile/PhoneProfileFriendButton";
 import { ProfileBlockButton } from "@/components/ProfileBlockButton";
-import { getBlockStatus, getPublicProfile, getRestaurantById, getUserPublicPosts } from "@/lib/db";
+import {
+  getBlockStatus,
+  getPublicProfile,
+  getRestaurantById,
+  getTasteMatchForProfile,
+  getUserPublicPosts,
+} from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { signInHrefFor } from "@/lib/signInGate";
 import { initials } from "@/lib/format";
 import { rankFor } from "@/lib/ranks";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { PublicProfilePlates } from "@/components/ProfileShelves";
+import { PhoneTasteMatchCard } from "@/components/mobile/PhoneTasteMatchCard";
 
 /**
  * The public profile, phone version — what anyone, friend or stranger, sees
@@ -86,9 +93,12 @@ export default async function PhonePublicProfilePage({
   };
   const back = (from && BACK_TARGETS[from]) || { href: "/m", label: "Discover" };
 
-  const [favoriteRestaurant, posts] = await Promise.all([
+  /* Null for yourself and for non-friends — no card at all; see
+     getTasteMatchForProfile. The block check above has already run. */
+  const [favoriteRestaurant, posts, taste] = await Promise.all([
     profile.favoriteRestaurantId ? getRestaurantById(profile.favoriteRestaurantId) : null,
     getUserPublicPosts(profile.id, viewer?.id ?? null),
+    getTasteMatchForProfile(viewer.id, profile.id),
   ]);
 
   const rank = rankFor(profile.points);
@@ -179,6 +189,8 @@ export default async function PhonePublicProfilePage({
           <ProfileBlockButton userId={profile.id} />
         </div>
       </div>
+
+      {taste && <PhoneTasteMatchCard friendName={profile.name} match={taste.match} to={to} />}
 
       <div className="mx-4 mt-6">
         <PublicProfilePlates posts={posts} />

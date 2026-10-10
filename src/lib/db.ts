@@ -15,6 +15,12 @@ import {
 import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
 import { RANKS, rankByKey } from "@/lib/ranks";
 import { dishRatingKey } from "@/lib/dishRatingKey";
+import {
+  computeTasteMatch,
+  tasteInputFor,
+  type CuisineCountRow,
+  type TasteMatch,
+} from "@/lib/tasteMatch";
 import { isStoredPhotoUrl, storedPhotoOwner } from "@/lib/photos";
 import { brandKey, foldAccents } from "@/lib/brandName";
 import { hashToken, SESSION_TTL_SECONDS } from "@/lib/tokens";
@@ -1119,6 +1125,62 @@ export async function getUserPublicPosts(
     ORDER BY p.created_at DESC
   `;
   return hydratePosts(rows, viewerId, /* includeHearts */ false);
+}
+
+/**
+ * Each user's posts, grouped by cuisine and restaurant — the one query
+ * behind the profile's Taste match (see lib/tasteMatch.ts).
+ *
+ * One grouped read for any number of users, not a fetch of whole posts: the
+ * match needs counts, and a per-restaurant grain is the finest it asks for (the
+ * friend's most-posted place in a cuisine). `meal_id IS NULL` is the same
+ * convention as `getUserPublicPosts` — a meal's plates are not separate
+ * posts. A post with no `restaurant_id`, or at a restaurant with no `cuisine`,
+ * says nothing about taste and drops out of the join. `restaurant_id` is a soft
+ * reference, so a deleted restaurant drops out the same way.
+ *
+ * `listed` rides along so the "try their pick" link is never an unlisted
+ * restaurant (whose page 404s); unlisted posts still count toward the mix.
+ */
+export async function getCuisineCounts(userIds: string[]): Promise<CuisineCountRow[]> {
+  if (userIds.length === 0) return [];
+  const rows = await sql`
+    SELECT p.user_id, r.cuisine, r.id AS restaurant_id, r.name AS restaurant_name,
+           r.listed, COUNT(*)::int AS n
+    FROM posts p
+    JOIN restaurants r ON r.id = p.restaurant_id
+    WHERE p.user_id = ANY(${userIds}) AND p.meal_id IS NULL AND r.cuisine IS NOT NULL
+    GROUP BY p.user_id, r.cuisine, r.id, r.name, r.listed
+  `;
+  return rows.map((r) => ({
+    userId: r.user_id as string,
+    cuisine: r.cuisine as string,
+    restaurantId: r.restaurant_id as string,
+    restaurantName: r.restaurant_name as string,
+    listed: r.listed as boolean,
+    count: r.n as number,
+  }));
+}
+
+/**
+ * What the Taste match card needs on `otherId`'s profile, from `viewerId`'s side.
+ *
+ * Returns `null` when the card must not render at all — viewing yourself, or
+ * anyone who isn't a friend — and `{ match: null }` when it renders its empty
+ * state (too few cuisine-tagged plates on either side). The two are different
+ * answers: no card versus "post a few more plates".
+ *
+ * The caller has already refused a blocked pair (both profile pages 404 on
+ * `getBlockStatus` first), so blocks never reach this function.
+ */
+export async function getTasteMatchForProfile(
+  viewerId: string,
+  otherId: string
+): Promise<{ match: TasteMatch | null } | null> {
+  if (viewerId === otherId) return null;
+  if ((await getFriendStatus(viewerId, otherId)) !== "friends") return null;
+  const rows = await getCuisineCounts([viewerId, otherId]);
+  return { match: computeTasteMatch(tasteInputFor(rows, viewerId), tasteInputFor(rows, otherId)) };
 }
 
 /**
