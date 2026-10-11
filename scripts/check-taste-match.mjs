@@ -7,7 +7,7 @@
  * over the pure module, exits non-zero on the first regression.
  */
 import assert from "node:assert/strict";
-import { computeTasteMatch, tasteInputFor } from "../src/lib/tasteMatch.ts";
+import { computeFlavorProfile, computeTasteMatch, tasteInputFor } from "../src/lib/tasteMatch.ts";
 
 const input = (counts, topPlaces = {}) => ({ counts, topPlaces });
 const place = (id, name, count = 1) => ({ id, name, count });
@@ -68,5 +68,40 @@ const rows = [
 const folded = tasteInputFor(rows, "u");
 assert.equal(folded.counts.Thai, 9);
 assert.equal(folded.topPlaces.Thai.id, "t1");
+
+// Flavor profile: your own mix, top cuisines by share, nothing about a friend.
+let f = computeFlavorProfile(you);
+assert.equal(f.spokes.length, 8);
+assert.deepEqual(f.spokes.slice(0, 3), ["Mexican", "Japanese", "American"]);
+assert.deepEqual(f.topCuisines, ["Mexican", "Japanese", "American"]);
+assert.equal(f.cuisineCount, 8);
+near(f.you.reduce((a, b) => a + b, 0), 100);
+assert.ok(f.you.every((v, i, a) => i === 0 || a[i - 1] >= v), "spokes sorted by share");
+assert.equal(f.axisMax, 25); // Mexican is 22% of posts; the ring rounds up to a 5
+
+// Only the top 8 are drawn, but "cuisines tried" counts all of them; ties break A-Z.
+f = computeFlavorProfile(input(ten));
+assert.equal(f.spokes.length, 8);
+assert.deepEqual(f.spokes, "ABCDEFGH".split(""));
+assert.deepEqual(f.topCuisines, ["A", "B", "C"]);
+assert.equal(f.cuisineCount, 10);
+near(f.you[0], 10);
+assert.equal(f.axisMax, 10);
+
+// Shares, not counts: a heavy poster gets the same shape.
+const fLight = computeFlavorProfile(input({ A: 1, B: 1, C: 2 }));
+const fHeavy = computeFlavorProfile(input({ A: 10, B: 10, C: 20 }));
+assert.deepEqual(fLight.you, fHeavy.you);
+assert.deepEqual(fLight.topCuisines, ["C", "A", "B"]);
+
+// A zero count is not a cuisine tried.
+assert.equal(computeFlavorProfile(input({ A: 3, B: 3, C: 0 })), null, "zero counts don't make a spoke");
+
+// Empty states.
+assert.equal(computeFlavorProfile(input({ A: 1, B: 1 })), null, "under 3 posts");
+assert.equal(computeFlavorProfile(input({})), null, "no posts");
+assert.equal(computeFlavorProfile(input({ A: 5, B: 5 })), null, "under 3 cuisines");
+assert.ok(computeFlavorProfile(input({ A: 1, B: 1, C: 1 })), "exactly 3 posts and 3 cuisines is enough");
+
 
 console.log("taste match: all cases pass");

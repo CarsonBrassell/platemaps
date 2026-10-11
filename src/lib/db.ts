@@ -16,9 +16,11 @@ import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
 import { RANKS, rankByKey } from "@/lib/ranks";
 import { dishRatingKey } from "@/lib/dishRatingKey";
 import {
+  computeFlavorProfile,
   computeTasteMatch,
   tasteInputFor,
   type CuisineCountRow,
+  type FlavorProfile,
   type TasteMatch,
 } from "@/lib/tasteMatch";
 import { isStoredPhotoUrl, storedPhotoOwner } from "@/lib/photos";
@@ -1181,6 +1183,19 @@ export async function getTasteMatchForProfile(
   if ((await getFriendStatus(viewerId, otherId)) !== "friends") return null;
   const rows = await getCuisineCounts([viewerId, otherId]);
   return { match: computeTasteMatch(tasteInputFor(rows, viewerId), tasteInputFor(rows, otherId)) };
+}
+
+/**
+ * Your own cuisine mix, for the "Your flavor profile" card. One
+ * `getCuisineCounts` call for `userId`; `flavor` is null for the empty state
+ * (too few cuisine-tagged plates, or fewer than three cuisines).
+ *
+ * Callers pass the session user's own id and nothing else: the card is shown
+ * to yourself only, on your account screen and on your own public profile.
+ */
+export async function getFlavorProfile(userId: string): Promise<{ flavor: FlavorProfile | null }> {
+  const rows = await getCuisineCounts([userId]);
+  return { flavor: computeFlavorProfile(tasteInputFor(rows, userId)) };
 }
 
 /**

@@ -6,6 +6,7 @@ import { PhoneProfileFriendButton } from "@/components/mobile/PhoneProfileFriend
 import { ProfileBlockButton } from "@/components/ProfileBlockButton";
 import {
   getBlockStatus,
+  getFlavorProfile,
   getPublicProfile,
   getRestaurantById,
   getTasteMatchForProfile,
@@ -17,7 +18,7 @@ import { initials } from "@/lib/format";
 import { rankFor } from "@/lib/ranks";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { PublicProfilePlates } from "@/components/ProfileShelves";
-import { PhoneTasteMatchCard } from "@/components/mobile/PhoneTasteMatchCard";
+import { PhoneFlavorProfileCard, PhoneTasteMatchCard } from "@/components/mobile/PhoneTasteMatchCard";
 
 /**
  * The public profile, phone version — what anyone, friend or stranger, sees
@@ -93,12 +94,16 @@ export default async function PhonePublicProfilePage({
   };
   const back = (from && BACK_TARGETS[from]) || { href: "/m", label: "Discover" };
 
-  /* Null for yourself and for non-friends — no card at all; see
-     getTasteMatchForProfile. The block check above has already run. */
-  const [favoriteRestaurant, posts, taste] = await Promise.all([
+  /* Taste match is null for yourself and for non-friends — no card at all; see
+     getTasteMatchForProfile. On your own profile the flavor profile takes its
+     place, so exactly one of the two is ever non-null. The block check above
+     has already run. */
+  const isSelf = viewer.id === profile.id;
+  const [favoriteRestaurant, posts, taste, flavor] = await Promise.all([
     profile.favoriteRestaurantId ? getRestaurantById(profile.favoriteRestaurantId) : null,
     getUserPublicPosts(profile.id, viewer?.id ?? null),
     getTasteMatchForProfile(viewer.id, profile.id),
+    isSelf ? getFlavorProfile(profile.id) : null,
   ]);
 
   const rank = rankFor(profile.points);
@@ -191,6 +196,7 @@ export default async function PhonePublicProfilePage({
       </div>
 
       {taste && <PhoneTasteMatchCard friendName={profile.name} match={taste.match} to={to} />}
+      {flavor && <PhoneFlavorProfileCard flavor={flavor.flavor} />}
 
       <div className="mx-4 mt-6">
         <PublicProfilePlates posts={posts} />

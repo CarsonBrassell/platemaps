@@ -1,10 +1,13 @@
 import { Header } from "@/components/Header";
-import { TasteMatchCard } from "@/components/TasteMatchCard";
-import { PhoneTasteMatchCard } from "@/components/mobile/PhoneTasteMatchCard";
-import { computeTasteMatch, type TasteInput } from "@/lib/tasteMatch";
+import { FlavorProfileCard, TasteMatchCard } from "@/components/TasteMatchCard";
+import {
+  PhoneFlavorProfileCard,
+  PhoneTasteMatchCard,
+} from "@/components/mobile/PhoneTasteMatchCard";
+import { computeFlavorProfile, computeTasteMatch, type TasteInput } from "@/lib/tasteMatch";
 
 /**
- * DRAFT — the Taste match card, web and phone, from fixed sample counts so the
+ * DRAFT — the Taste match and Your flavor profile cards, web and phone, from fixed sample counts so the
  * design can be looked at without a database or two friends with a history.
  *
  * The numbers go through the real `computeTasteMatch`; only the posts are
@@ -48,6 +51,8 @@ const SPARSE: TasteInput = { counts: { Mexican: 1, Thai: 1 }, topPlaces: {} };
 export default function TasteMatchDraftPage() {
   const match = computeTasteMatch(YOU, SAM);
   const empty = computeTasteMatch(SPARSE, SAM);
+  const flavor = computeFlavorProfile(YOU);
+  const flavorEmpty = computeFlavorProfile(SPARSE);
 
   return (
     <>
@@ -75,6 +80,22 @@ export default function TasteMatchDraftPage() {
         </div>
         <div className="-mx-4 mt-6 w-[390px] max-w-full">
           <PhoneTasteMatchCard friendName="Sam" match={empty} />
+        </div>
+
+        <p className="mono-label mb-3 mt-10 text-zinc-900">Your flavor profile</p>
+        <div className="-mx-4 sm:-mx-6">
+          <FlavorProfileCard flavor={flavor} />
+        </div>
+        <div className="-mx-4 mt-6 w-[390px] max-w-full">
+          <PhoneFlavorProfileCard flavor={flavor} />
+        </div>
+
+        <p className="mono-label mb-3 mt-10 text-zinc-900">Your flavor profile, empty state</p>
+        <div className="-mx-4 sm:-mx-6">
+          <FlavorProfileCard flavor={flavorEmpty} />
+        </div>
+        <div className="-mx-4 mt-6 w-[390px] max-w-full">
+          <PhoneFlavorProfileCard flavor={flavorEmpty} />
         </div>
       </main>
     </>

@@ -14,6 +14,7 @@ import { SettingsIcon } from "@/components/icons";
 import { PlatePointsPanel } from "@/components/PlatePointsPanel";
 import { ProfileShelves, useRollCallArrival } from "@/components/ProfileShelves";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { AccountFlavorProfile } from "@/components/AccountFlavorProfile";
 
 const inputClass =
   "mb-4 w-full rounded-xl bg-pm-grey-tint/60 px-3.5 py-2.5 text-sm transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange";
@@ -552,6 +553,11 @@ function AccountOverview() {
           )
         }
       />
+
+      {/* Right under the plates it is made of: your cuisine mix, from the
+          same posts the shelves show. The phone twin sits in the same place
+          in PhoneProfileScreen. */}
+      <AccountFlavorProfile variant="web" />
 
       {/* Friend requests used to sit here. They moved to /friends, where the
           people they're about already live — this page is about you. */}

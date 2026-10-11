@@ -15,6 +15,7 @@ import { uploadAvatar } from "@/lib/photos";
 import { PlatePointsPanel } from "@/components/PlatePointsPanel";
 import { ProfileShelves, useRollCallArrival } from "@/components/ProfileShelves";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { AccountFlavorProfile } from "@/components/AccountFlavorProfile";
 
 /**
  * Profile, phone version.
@@ -424,6 +425,10 @@ function ProfileOverview() {
               )
             }
           />
+
+          {/* Your cuisine mix, right under the plates it is made of — the twin
+              of the card in app/account/page.tsx. */}
+          <AccountFlavorProfile variant="phone" />
 
           {/* Friend requests are answered on /m/friends, where the people they
               are about already live — this screen is about you. No total here,

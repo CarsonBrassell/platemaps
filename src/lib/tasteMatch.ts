@@ -43,6 +43,23 @@ export type TasteMatch = {
   tryPick: { cuisine: string; restaurantId: string; restaurantName: string } | null;
 };
 
+/** What the single-person "Your flavor profile" card needs. Same spokes, same
+ *  shares, same ring as the two-person radar, just one series. */
+export type FlavorProfile = {
+  /** Up to MAX_SPOKES cuisines, biggest share first. */
+  spokes: string[];
+  /** Percent (0-100) of your posts at each spoke, same order. */
+  you: number[];
+  /** The chart's outer ring, in percent. */
+  axisMax: number;
+  /** Your three biggest cuisines, biggest first (always three: a profile
+   *  needs at least three cuisines to exist). */
+  topCuisines: string[];
+  /** How many distinct cuisines you've posted at: all of them, not just the
+   *  drawn spokes. */
+  cuisineCount: number;
+};
+
 export const MAX_SPOKES = 8;
 /** Below this many cuisine-tagged posts a person's mix is noise, not taste. */
 export const MIN_POSTS = 3;
@@ -52,6 +69,16 @@ function total(counts: Record<string, number>): number {
   let n = 0;
   for (const c of Object.values(counts)) n += c;
   return n;
+}
+
+/* Alphabetical tiebreak so equal shares can't reorder between renders. */
+const byName = (a: { cuisine: string }, b: { cuisine: string }) =>
+  a.cuisine.localeCompare(b.cuisine);
+
+/** The chart's outer ring: the tallest drawn spoke rounded up to a 5, so the
+ *  shapes fill the grid. Shared by both radars so they scale the same way. */
+function axisMaxFor(peak: number): number {
+  return Math.min(100, Math.max(10, Math.ceil(peak / 5) * 5));
 }
 
 /**
@@ -69,10 +96,6 @@ export function computeTasteMatch(you: TasteInput, them: TasteInput): TasteMatch
     const t = ((them.counts[cuisine] ?? 0) / themTotal) * 100;
     return { cuisine, y, t, shared: Math.min(y, t), gap: t - y };
   });
-
-  /* Alphabetical tiebreak so equal shares can't reorder between renders. */
-  const byName = (a: { cuisine: string }, b: { cuisine: string }) =>
-    a.cuisine.localeCompare(b.cuisine);
 
   const drawn = [...rows]
     .sort((a, b) => b.y + b.t - (a.y + a.t) || byName(a, b))
@@ -100,7 +123,7 @@ export function computeTasteMatch(you: TasteInput, them: TasteInput): TasteMatch
   }
 
   const peak = Math.max(...drawn.map((r) => Math.max(r.y, r.t)));
-  const axisMax = Math.min(100, Math.max(10, Math.ceil(peak / 5) * 5));
+  const axisMax = axisMaxFor(peak);
 
   return {
     spokes: drawn.map((r) => r.cuisine),
@@ -110,6 +133,31 @@ export function computeTasteMatch(you: TasteInput, them: TasteInput): TasteMatch
     matchPct,
     bothLove,
     tryPick,
+  };
+}
+
+/**
+ * Your own cuisine mix, for the "Your flavor profile" card. Null is the empty
+ * state, by the same two rules as `computeTasteMatch`: too few cuisine-tagged
+ * posts, or fewer than three cuisines (a radar needs a polygon).
+ */
+export function computeFlavorProfile(input: TasteInput): FlavorProfile | null {
+  const t = total(input.counts);
+  if (t < MIN_POSTS) return null;
+
+  const rows = Object.entries(input.counts)
+    .filter(([, count]) => count > 0)
+    .map(([cuisine, count]) => ({ cuisine, share: (count / t) * 100 }))
+    .sort((a, b) => b.share - a.share || byName(a, b));
+  if (rows.length < MIN_SPOKES) return null;
+
+  const drawn = rows.slice(0, MAX_SPOKES);
+  return {
+    spokes: drawn.map((r) => r.cuisine),
+    you: drawn.map((r) => r.share),
+    axisMax: axisMaxFor(drawn[0].share),
+    topCuisines: rows.slice(0, 3).map((r) => r.cuisine),
+    cuisineCount: rows.length,
   };
 }
 

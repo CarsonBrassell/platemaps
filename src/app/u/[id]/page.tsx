@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { Header } from "@/components/Header";
 import {
   getBlockStatus,
+  getFlavorProfile,
   getPublicProfile,
   getRestaurantById,
   getTasteMatchForProfile,
@@ -18,7 +19,7 @@ import { ProfileFriendButton } from "@/components/ProfileFriendButton";
 import { ProfileBlockButton } from "@/components/ProfileBlockButton";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { PublicProfilePlates } from "@/components/ProfileShelves";
-import { TasteMatchCard } from "@/components/TasteMatchCard";
+import { FlavorProfileCard, TasteMatchCard } from "@/components/TasteMatchCard";
 
 /**
  * The public profile — what anyone, friend or stranger, sees when they look
@@ -55,12 +56,16 @@ export default async function PublicProfilePage({
     if (blockStatus !== "none") notFound();
   }
 
-  /* Null for yourself and for non-friends — no card at all; see
-     getTasteMatchForProfile. The block check above has already run. */
-  const [favoriteRestaurant, posts, taste] = await Promise.all([
+  /* Taste match is null for yourself and for non-friends — no card at all; see
+     getTasteMatchForProfile. On your own profile the flavor profile takes its
+     place, so exactly one of the two is ever non-null. The block check above
+     has already run. */
+  const isSelf = viewer.id === profile.id;
+  const [favoriteRestaurant, posts, taste, flavor] = await Promise.all([
     profile.favoriteRestaurantId ? getRestaurantById(profile.favoriteRestaurantId) : null,
     getUserPublicPosts(profile.id, viewer?.id ?? null),
     getTasteMatchForProfile(viewer.id, profile.id),
+    isSelf ? getFlavorProfile(profile.id) : null,
   ]);
 
   const rank = rankFor(profile.points);
@@ -142,6 +147,7 @@ export default async function PublicProfilePage({
       </div>
 
       {taste && <TasteMatchCard friendName={profile.name} match={taste.match} />}
+      {flavor && <FlavorProfileCard flavor={flavor.flavor} />}
 
       {/* Straight on the cream ground, not inside the white card above — see
           the layout note on PublicProfilePlates/ProfileShelves. */}

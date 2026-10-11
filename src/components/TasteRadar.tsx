@@ -5,6 +5,9 @@ import type { TasteMatch } from "@/lib/tasteMatch";
  * phone cards. There is no chart library in this project and a radar is eight
  * lines of trigonometry, so there isn't going to be one.
  *
+ * Pass `them` for the two-person Taste match; leave it off for the one-series
+ * "Your flavor profile", which draws only the solid shape.
+ *
  * Two series, told apart by more than colour: "You" is a solid orange stroke
  * with round points; the friend is a dashed charcoal stroke with square points.
  * Someone who can't tell orange from charcoal still can tell solid from dashed
@@ -41,9 +44,9 @@ export function TasteRadar({
   youLabel = "You",
   themLabel,
 }: {
-  match: Pick<TasteMatch, "spokes" | "you" | "them" | "axisMax">;
+  match: Pick<TasteMatch, "spokes" | "you" | "axisMax"> & Partial<Pick<TasteMatch, "them">>;
   youLabel?: string;
-  themLabel: string;
+  themLabel?: string;
 }) {
   const { spokes, you, them, axisMax } = match;
   const n = spokes.length;
@@ -62,10 +65,16 @@ export function TasteRadar({
   const scale = (values: number[]) => values.map((v) => Math.min(1, v / axisMax));
 
   const youFrac = scale(you);
-  const themFrac = scale(them);
+  /* No `them` is the single-series mode, your own flavor profile: the friend's
+     dashed shape, square points and legend entry all go with it. */
+  const themFrac = them ? scale(them) : null;
 
   const summary = spokes
-    .map((s, i) => `${s}: ${youLabel} ${Math.round(you[i])}%, ${themLabel} ${Math.round(them[i])}%`)
+    .map((s, i) =>
+      them
+        ? `${s}: ${youLabel} ${Math.round(you[i])}%, ${themLabel} ${Math.round(them[i])}%`
+        : `${s}: ${Math.round(you[i])}%`,
+    )
     .join("; ");
 
   return (
@@ -73,10 +82,10 @@ export function TasteRadar({
       <svg
         viewBox={`0 0 ${W} ${H}`}
         role="img"
-        aria-label={`Cuisine mix, ${youLabel} against ${themLabel}`}
+        aria-label={them ? `Cuisine mix, ${youLabel} against ${themLabel}` : "Your cuisine mix"}
         className="mx-auto block h-auto w-full max-w-[440px]"
       >
-        <desc>{`Share of each person's posts by cuisine. ${summary}.`}</desc>
+        <desc>{`Share of ${them ? "each person's" : "your"} posts by cuisine. ${summary}.`}</desc>
 
         {RINGS.map((f) => (
           <polygon
@@ -94,14 +103,16 @@ export function TasteRadar({
           );
         })}
 
-        <polygon
-          points={poly(themFrac)}
-          className="fill-pm-charcoal-light stroke-pm-charcoal-light"
-          fillOpacity={0.14}
-          strokeWidth={2}
-          strokeDasharray="5 4"
-          strokeLinejoin="round"
-        />
+        {themFrac && (
+          <polygon
+            points={poly(themFrac)}
+            className="fill-pm-charcoal-light stroke-pm-charcoal-light"
+            fillOpacity={0.14}
+            strokeWidth={2}
+            strokeDasharray="5 4"
+            strokeLinejoin="round"
+          />
+        )}
         <polygon
           points={poly(youFrac)}
           className="fill-pm-orange stroke-pm-orange"
@@ -110,7 +121,7 @@ export function TasteRadar({
           strokeLinejoin="round"
         />
 
-        {themFrac.map((f, i) => {
+        {themFrac?.map((f, i) => {
           const p = point(i, f);
           return (
             <rect
@@ -166,21 +177,23 @@ export function TasteRadar({
           </svg>
           {youLabel}
         </li>
-        <li className="flex items-center gap-2">
-          <svg width="26" height="10" aria-hidden="true">
-            <line
-              x1="0"
-              y1="5"
-              x2="26"
-              y2="5"
-              className="stroke-pm-charcoal-light"
-              strokeWidth={2}
-              strokeDasharray="5 4"
-            />
-            <rect x="9.5" y="1.5" width="7" height="7" className="fill-pm-charcoal-light" />
-          </svg>
-          {themLabel}
-        </li>
+        {themFrac && (
+          <li className="flex items-center gap-2">
+            <svg width="26" height="10" aria-hidden="true">
+              <line
+                x1="0"
+                y1="5"
+                x2="26"
+                y2="5"
+                className="stroke-pm-charcoal-light"
+                strokeWidth={2}
+                strokeDasharray="5 4"
+              />
+              <rect x="9.5" y="1.5" width="7" height="7" className="fill-pm-charcoal-light" />
+            </svg>
+            {themLabel}
+          </li>
+        )}
         <li className="font-mono text-zinc-600">Outer ring {axisMax}%</li>
       </ul>
     </div>
