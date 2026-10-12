@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useQueryParams } from "@/lib/queryString";
 import { useAuth } from "@/lib/auth";
 import { openPostFlash, closePostFlash, stashLanding } from "@/lib/postCelebration";
+import { RivalPostChip } from "@/components/post/RivalPostChip";
 import { discardPhoto, type PhotoDraft } from "@/lib/photos";
 import { BEST_AT } from "@/data/reviewScales";
 import { CloseIcon, ChevronIcon } from "@/components/icons";
@@ -436,8 +437,9 @@ export default function PhonePost() {
 
   const body = (
     /* pb-20 on top of the shell's own `--phone-nav-space` padding: the action
-       bar floats above the nav, so the last field has to clear both. */
-    <div className="px-4 pb-20 pt-4">
+       bar floats above the nav, so the last field has to clear both. On the
+       last step the bar also carries the rival chip, so it clears that too. */
+    <div className={`px-4 pt-4 ${isLast ? "pb-32" : "pb-20"}`}>
       <div className="mb-5 flex items-start gap-3">
         <div className="min-w-0 flex-1">
           <h1 className="font-display text-[26px] font-semibold leading-tight tracking-tight text-zinc-900">
@@ -779,6 +781,8 @@ export default function PhonePost() {
           className="fixed inset-x-0 bottom-0 z-30 bg-[#F7F4EC] min-[480px]:left-1/2 min-[480px]:right-auto min-[480px]:w-[390px] min-[480px]:-translate-x-1/2"
           style={{ paddingBottom: "var(--phone-nav-space)" }}
         >
+          {/* Display only — what this plate does to the Friends' Table. */}
+          {isLast && <RivalPostChip />}
           <div className="flex items-center gap-3 px-4 pb-2 pt-2">
             <button
               type="button"

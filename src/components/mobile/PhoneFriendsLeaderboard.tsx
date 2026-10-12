@@ -1,68 +1,76 @@
-import { formatPoints } from "@/lib/points";
-import { avatarPalette, initials } from "@/lib/format";
-import { rankFor } from "@/lib/ranks";
+"use client";
+
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
+import { POINT_RULES, formatPoints } from "@/lib/points";
 import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { ChangeMark } from "@/components/mobile/leaderboard/ChangeMark";
+import { MovementBanner } from "@/components/mobile/leaderboard/MovementBanner";
+import { Podium } from "@/components/mobile/leaderboard/Podium";
+import { RivalCallout } from "@/components/mobile/leaderboard/RivalCallout";
+import { SeatDetail } from "@/components/mobile/leaderboard/SeatDetail";
+import { deriveMovement, readSnapshot, writeSnapshot } from "@/components/mobile/leaderboard/memory";
+import { CountUp, layoutCenter, usePrefersReducedMotion } from "@/components/mobile/leaderboard/motion";
+import { Avatar, Sparks } from "@/components/mobile/leaderboard/parts";
+import type { BoardCtx, Entry, Seat } from "@/components/mobile/leaderboard/types";
+import "@/components/mobile/leaderboard/leaderboard.css";
 
-type Entry = { id: string; name: string; avatarUrl?: string; points: number };
+export type { Seat } from "@/components/mobile/leaderboard/types";
 
 /**
  * Plate Points, ranked against your friends and only your friends — never the
- * whole site. The site-wide leaderboard (`getLeaderboard` in lib/db.ts,
- * `/api/leaderboard`) still exists but has no importer anywhere in the
- * product (see PhoneFeedScreen's header comment); this is a different,
- * narrower thing, not that one rebuilt. Ranking is computed here, client-side,
- * off the same `friends` list and `account` the rest of the screen already
- * fetched — no new endpoint, and nothing to fall out of sync with `points.ts`
- * since `points` on both is the same live column every post/like/comment
- * award writes to.
+ * whole site. Ranking is computed here, client-side, off the same `friends`
+ * list and `account` the rest of the screen already fetched; no new endpoint.
  *
- * **It is laid out as a printed menu**, which is the whole of its visual
- * design and the reason for every choice below:
+ * **It is built to make you want to post.** Carson asked (2026-10) for the
+ * table to be "more interactive", for out-pointing your friends to be a
+ * bigger post incentive, and for the animation to be obvious — which
+ * supersedes the earlier quiet printed-menu treatment. So, top to bottom:
  *
- * - **Courses, not one flat list.** The top three sit under `CHEF'S TABLE`,
- *   everyone else under `THE LINE`, each heading centred between dotted rules.
- *   Two `<ol>`s rather than one, with `start={4}` on the second so the split
- *   is presentational and the ordinal semantics survive it.
- * - **Points are set like prices**: name hard left, mono number hard right,
- *   dotted leader running between them — the same device `LeaderboardRow`
- *   uses on the web. It replaced a `PointsBadge tone="orange"` on every row;
- *   a column of orange pills spent the accent DESIGN.md rations to about
- *   three per screen, and a price on a menu is ink, not a highlight.
- * - **The `№` rank prefix** is the same "machine-issued record number" idiom
- *   PhoneDetailHero uses for "Spot №001", and `№1` is the one thing that
- *   still takes orange. Every row also wears its rank-ladder title
- *   (`lib/ranks.ts` — Newcomer through Institution) as a chip. It used to be
- *   kitchen stations for the top three only (`lib/stations.ts`); Calvin asked
- *   on 2026-09-07 for those to go and for everyone's rank to show instead, so
- *   the podium is now the `№` and the chip is the title the points earned.
- * - **The dotted rules are typography, not grouping.** DESIGN.md's no-borders
- *   rule is about how cards group — this is one white card, and the leaders
- *   inside it are how a menu sets a price. All of them are `aria-hidden`.
+ * - **Movement banner** — since your last visit (a browser-local snapshot,
+ *   `leaderboard/memory.ts`): "You passed Sam!" with sparks, or "Sam slipped
+ *   past you — 1 plate takes it back".
+ * - **Rival callout** — the nearest friend strictly ahead and the plates it
+ *   takes to pass them, with the composer one tap away. Leading, it says by
+ *   how much.
+ * - **Podium** — the top three on stepped plinths, №1 crowned and glowing,
+ *   springing in one after another.
+ * - **The line** — everyone else, each row a button that opens the gap to the
+ *   seat above, the plates it takes, and their rank title with progress.
+ *   Rows that moved since last visit slide in from their old seat; yours
+ *   climbs past the people you overtook, then bursts.
+ *
+ * Every animation is transform/opacity (CSS keyframes, plus WAAPI for the
+ * climb, measured off the offset chain so no layout is read mid-animation),
+ * and `prefers-reduced-motion` collapses all of it to the end state.
  *
  * **No count of people appears anywhere**, and none may be added — not "5 at
  * the table", not a rank denominator like `№2 of 6`. Friend counts never
  * display in this product (see PhoneFriendsScreen's header comment and
  * `getFriends` in lib/db.ts); a leaderboard is the easiest place to leak one
- * back in, since its last rank *is* the count.
- *
- * The standing line under each name is computed from the same sorted array,
- * not a second query — "how far to the rank above" is just the previous row's
- * points minus this one's.
+ * back in, since its last rank *is* the count. The movement banner names
+ * people rather than counting them for the same reason.
  */
-
-/** Dotted leader/rule. Decorative everywhere it is used. */
-const DOTS = "h-px flex-1 border-b border-dotted border-pm-orange-border";
-
-export type Seat = { entry: Entry; rank: number; gap: number; isYou: boolean };
 
 /**
  * The one ranking, exported so the friends list above can badge each row with
- * the same `№` this card gives them. Two sorts of the same array is how a list
- * and the leaderboard under it end up disagreeing about who is second.
+ * the same `№` this card gives them. Ties put you first, then by name, so the
+ * order is stable between visits (a tie that reshuffled would read as a move).
  */
 export function rankSeats(friends: Entry[], you: Entry): Seat[] {
-  const ranked = [...friends, you].sort((a, b) => b.points - a.points);
+  const ranked = [...friends.filter((f) => f.id !== you.id), you].sort(
+    (a, b) =>
+      b.points - a.points ||
+      (a.id === you.id ? -1 : b.id === you.id ? 1 : a.name.localeCompare(b.name)),
+  );
   return ranked.map((entry, index) => ({
     entry,
     rank: index + 1,
@@ -71,182 +79,233 @@ export function rankSeats(friends: Entry[], you: Entry): Seat[] {
   }));
 }
 
-/**
- * A course heading, centred between two rules. `.mono-label` is unlayered in
- * globals.css and outranks Tailwind's font utilities, so this sets colour
- * only — a weight alongside it would be silently discarded.
- */
-function Course({ label }: { label: string }) {
-  return (
-    <div className="flex items-center gap-2 pb-2 pt-4">
-      <span aria-hidden="true" className={DOTS} />
-      <span aria-hidden="true" className="text-[7px] leading-none text-pm-orange-border">
-        ◆
-      </span>
-      <span className="mono-label text-pm-orange-text">{label}</span>
-      <span aria-hidden="true" className="text-[7px] leading-none text-pm-orange-border">
-        ◆
-      </span>
-      <span aria-hidden="true" className={DOTS} />
-    </div>
-  );
-}
+/** When the climb starts: after the podium and the rows have landed. */
+const CLIMB_DELAY = 900;
+const CLIMB_MS = 1000;
 
-/**
- * Rank 1 has nothing above it to close the gap on, and a tie prints its own
- * line rather than "0 to catch" reading like a bug. The rank chip sits ahead
- * of it, so the line reads as a menu item's tags do.
- */
-function standingFor(rank: number, gap: number) {
-  const standing =
-    rank === 1
-      ? "In the lead"
-      : gap > 0
-        ? `${formatPoints(gap)} to catch №${rank - 1}`
-        : `Tied for №${rank - 1}`;
-  return standing;
-}
+function SeatRow({ seat, ctx, index }: { seat: Seat; ctx: BoardCtx; index: number }) {
+  const { entry, rank, isYou } = seat;
+  const open = ctx.openId === entry.id;
+  const panelId = `lb-detail-${entry.id}`;
+  const gained = ctx.movement?.gained.get(entry.id) ?? 0;
+  const climbed = (ctx.movement?.change.get(entry.id) ?? 0) > 0;
+  const delay = 520 + index * 70;
 
-/**
- * The title this person's lifetime points have earned, as a chip — the same
- * ladder the profile crest reads (`rankFor`), so a Critic here is a Critic
- * there. Every row gets one: it says what the person has done, not where they
- * sit tonight, and the `№` beside it already carries the position. Tan on
- * every row rather than orange for №1, because the orange tint already means
- * "this row is you" and two meanings on one colour is how a legend stops
- * working.
- */
-function RankChip({ points }: { points: number }) {
-  return (
-    <span className="shrink-0 rounded-full bg-pm-grey-tint px-2 py-px font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-pm-grey-text">
-      {rankFor(points).title}
-    </span>
-  );
-}
-
-function Seat({ entry, rank, gap, isYou }: Seat) {
   return (
     <li
-      className={`flex items-center gap-3 rounded-xl px-1.5 py-2 ${
-        isYou ? "bg-pm-orange-tint" : ""
-      }`}
+      ref={ctx.slotRef(rank)}
+      className="lb-row-in"
+      style={{ "--lb-delay": `${delay}ms` } as CSSProperties}
     >
-      <span
-        className={`w-7 shrink-0 font-mono text-[11px] font-medium tabular-nums ${
-          rank <= 3 ? "text-pm-orange-text" : "text-zinc-500"
+      <div
+        ref={ctx.moverRef(entry.id)}
+        className={`relative rounded-xl ${isYou ? "lb-you bg-pm-orange-tint" : ""} ${
+          isYou && climbed ? "lb-climber" : ""
         }`}
       >
-        №{rank}
-      </span>
-
-      {entry.avatarUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={entry.avatarUrl}
-          alt=""
-          className="h-9 w-9 shrink-0 rounded-full object-cover"
-        />
-      ) : (
-        <span
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-mono text-xs font-medium text-white ${avatarPalette(entry.name).avatarBg}`}
+        {isYou && ctx.landed && <Sparks count={18} spread={90} />}
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-controls={panelId}
+          onClick={() => ctx.toggle(entry.id)}
+          className="relative flex min-h-14 w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
         >
-          {initials(entry.name)}
-        </span>
-      )}
+          <span className="flex w-8 shrink-0 flex-col items-start gap-0.5">
+            <span className="font-mono text-[12px] font-semibold tabular-nums text-zinc-500">№{rank}</span>
+            <ChangeMark id={entry.id} ctx={ctx} />
+          </span>
 
-      {/* A menu item, set the way a menu sets one: name, leader dots, price on
-          one line; the description on its own line beneath, where it gets the
-          full width. Both halves competing for one line was the first draft —
-          the dots collapsed to nothing on exactly the rows with the longest
-          standing line, and that line truncated mid-number. */}
-      <span className="min-w-0 flex-1">
-        <span className="flex items-end gap-1.5">
-          <span className="font-display flex min-w-0 items-center gap-1 text-[15px] font-semibold leading-tight text-zinc-900">
-            <span className="truncate">{isYou ? "You" : entry.name}</span>
-            {/* Rendered on your own row too — "You" is still a verified
-                account, and hiding it there would make the badge look like
-                something only other people have. */}
-            <VerifiedBadge userId={entry.id} />
+          <Avatar entry={entry} size={40} className={isYou ? "ring-2 ring-pm-orange" : ""} />
+
+          <span className="min-w-0 flex-1">
+            <span className="font-display flex min-w-0 items-center gap-1 text-[15px] font-semibold leading-tight text-zinc-900">
+              <span className="truncate">{isYou ? "You" : entry.name}</span>
+              <VerifiedBadge userId={entry.id} />
+            </span>
+            <span className="mt-0.5 block truncate font-mono text-[11px] leading-tight tabular-nums text-zinc-500">
+              {seat.gap > 0 ? `${formatPoints(seat.gap)} PP to №${rank - 1}` : `Level with №${rank - 1}`}
+            </span>
           </span>
-          <span aria-hidden="true" className={`${DOTS} mb-[5px] min-w-4`} />
-          <span className="shrink-0 whitespace-nowrap font-mono text-sm font-semibold leading-none tabular-nums text-zinc-900">
-            {formatPoints(entry.points)}
-            {/* The unit, the way a price on a menu carries its currency. */}
-            <span className="ml-0.5 text-[10px] font-medium text-pm-grey-text">PP</span>
-            <span className="sr-only"> Plate Points</span>
+
+          <span className="flex shrink-0 flex-col items-end">
+            <span className="whitespace-nowrap font-mono text-[15px] font-semibold leading-none text-zinc-900">
+              <CountUp
+                to={entry.points}
+                from={gained ? entry.points - gained : 0}
+                delay={delay + 120}
+                reduced={ctx.reduced}
+              />
+              <span className="ml-0.5 text-[10px] font-medium text-pm-grey-text" aria-hidden="true">
+                PP
+              </span>
+              <span className="sr-only">{entry.points.toLocaleString("en-US")} Plate Points</span>
+            </span>
+            {gained > 0 && (
+              <span
+                className="lb-gain mt-1 font-mono text-[10px] font-semibold tabular-nums text-pm-orange-text"
+                style={{ "--lb-delay": `${delay + 900}ms` } as CSSProperties}
+              >
+                +{formatPoints(gained)}
+                <span className="sr-only"> Plate Points since your last visit</span>
+              </span>
+            )}
           </span>
-        </span>
-        <span className="mt-1 flex items-center gap-1.5">
-          <RankChip points={entry.points} />
-          <span className="truncate font-mono text-[11px] leading-tight tabular-nums text-zinc-500">
-            {standingFor(rank, gap)}
+
+          <span
+            aria-hidden="true"
+            className={`shrink-0 text-pm-grey-text transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </span>
-        </span>
-      </span>
+        </button>
+        <div id={panelId} hidden={!open}>
+          {open && <SeatDetail seat={seat} seats={ctx.seats} youSeat={ctx.youSeat} />}
+        </div>
+      </div>
     </li>
   );
 }
 
 export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; you: Entry }) {
+  const seats = useMemo(() => rankSeats(friends, you), [friends, you]);
+  const youSeat = seats.find((s) => s.isYou) ?? seats[0];
+  const reduced = usePrefersReducedMotion();
+
+  /* Read once, at mount: "since your last visit" is fixed for this visit. */
+  const [memory] = useState(() => readSnapshot(you.id));
+  const movement = useMemo(() => deriveMovement(memory, seats, you.id), [memory, seats, you.id]);
+
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [bannerOpen, setBannerOpen] = useState(true);
+  const [landed, setLanded] = useState(false);
+
+  const slots = useRef(new Map<number, HTMLElement>());
+  const movers = useRef(new Map<string, HTMLElement>());
+  const climbed = useRef(false);
+
+  const slotRef = useCallback(
+    (rank: number) => (el: HTMLElement | null) => {
+      if (el) slots.current.set(rank, el);
+      else slots.current.delete(rank);
+    },
+    [],
+  );
+  const moverRef = useCallback(
+    (id: string) => (el: HTMLElement | null) => {
+      if (el) movers.current.set(id, el);
+      else movers.current.delete(id);
+    },
+    [],
+  );
+  const toggle = useCallback((id: string) => setOpenId((cur) => (cur === id ? null : id)), []);
+
+  useEffect(() => {
+    if (friends.length > 0) writeSnapshot(you.id, seats);
+  }, [friends.length, you.id, seats]);
+
+  /* The climb. Every seat that moved since last visit starts at its old
+     slot and springs into its new one — so the people you passed visibly
+     drop as you rise past them. Runs once per visit. */
+  useLayoutEffect(() => {
+    if (climbed.current || !movement || reduced) return;
+    climbed.current = true;
+    const n = seats.length;
+    let yours: Animation | null = null;
+    for (const seat of seats) {
+      const d = movement.change.get(seat.entry.id);
+      if (!d) continue;
+      const src = slots.current.get(Math.min(n, Math.max(1, seat.rank + d)));
+      const dst = slots.current.get(seat.rank);
+      const mover = movers.current.get(seat.entry.id);
+      if (!src || !dst || !mover || src === dst || typeof mover.animate !== "function") continue;
+      const a = layoutCenter(src);
+      const b = layoutCenter(dst);
+      const lift = seat.isYou && d > 0;
+      const anim = mover.animate(
+        [
+          { transform: `translate(${a.x - b.x}px, ${a.y - b.y}px) scale(${lift ? 1.08 : 1})` },
+          { transform: `translate(${(a.x - b.x) * 0.15}px, ${(a.y - b.y) * 0.15}px) scale(${lift ? 1.1 : 1})`, offset: 0.7 },
+          { transform: "translate(0, 0) scale(1)" },
+        ],
+        {
+          duration: CLIMB_MS,
+          delay: CLIMB_DELAY,
+          easing: "cubic-bezier(0.45, 0, 0.2, 1)",
+          fill: "backwards",
+        },
+      );
+      if (lift) yours = anim;
+    }
+    if (yours) {
+      (yours as Animation).finished.then(() => setLanded(true)).catch(() => {});
+    }
+  }, [movement, reduced, seats]);
+
   if (friends.length === 0) return null;
 
-  const seats = rankSeats(friends, you);
+  const ctx: BoardCtx = {
+    seats,
+    youSeat,
+    openId,
+    toggle,
+    slotRef,
+    moverRef,
+    movement,
+    reduced,
+    landed,
+  };
 
-  const chefsTable = seats.slice(0, 3);
-  const theLine = seats.slice(3);
+  const top = seats.slice(0, 3);
+  const rest = seats.slice(3);
 
   return (
-    <section aria-labelledby="phone-leaderboard-heading" className="mb-7 px-4">
+    <section aria-labelledby="phone-leaderboard-heading" className="lb-root mb-7 px-4">
       <PhoneSectionLabel>Leaderboard</PhoneSectionLabel>
 
-      {/* `overflow-hidden` so the header band takes the card's own corner
-          radius instead of squaring off inside it. */}
-      <div className="overflow-hidden rounded-2xl bg-white">
-        {/* The cover. Charcoal rather than white because a menu's head is
-            printed on the board, and because it gives the card a top edge
-            without drawing a border to get one. Cream on charcoal is the
-            highest-contrast pairing the app owns, which is what lets the
-            title carry without spending the accent on it. */}
-        <div className="bg-pm-charcoal px-4 py-4 text-center">
-          <p className="mono-label text-pm-orange-tint">Tonight&rsquo;s service</p>
+      <div className="overflow-hidden rounded-2xl bg-white pb-3">
+        <div className="lb-cover relative overflow-hidden bg-pm-charcoal px-4 py-4 text-center">
+          <span className="lb-cover-sweep" aria-hidden="true" />
+          <p className="mono-label relative text-pm-orange-tint">Tonight&rsquo;s service</p>
           <h2
             id="phone-leaderboard-heading"
-            className="font-display mt-1.5 text-[21px] font-semibold leading-tight text-[#F7F4EC]"
+            className="font-display relative mt-1.5 text-[22px] font-semibold leading-tight text-[#F7F4EC]"
           >
             Friends&rsquo; Table
           </h2>
-          <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-[#bdb3a4]">
-            Ranked by Plate Points
+          <p className="relative mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-[#bdb3a4]">
+            Out-post your friends · tap anyone
           </p>
         </div>
 
-        <div className="px-3 pb-3">
-
-        <Course label="Chef's table" />
-        <ol className="flex flex-col gap-0.5">
-          {chefsTable.map((seat) => (
-            <Seat key={seat.entry.id} {...seat} />
-          ))}
-        </ol>
-
-        {theLine.length > 0 && (
-          <>
-            <Course label="The line" />
-            <ol start={4} className="flex flex-col gap-0.5">
-              {theLine.map((seat) => (
-                <Seat key={seat.entry.id} {...seat} />
-              ))}
-            </ol>
-          </>
+        {movement && bannerOpen && (
+          <MovementBanner
+            passed={movement.passed}
+            passedBy={movement.passedBy}
+            youSeat={youSeat}
+            reduced={reduced}
+            onDismiss={() => setBannerOpen(false)}
+          />
         )}
 
-          <div className="mt-4 flex" aria-hidden="true">
-            <span className={DOTS} />
-          </div>
-          <p className="mt-2.5 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-pm-grey-text">
-            Prices in Plate Points · no substitutions
-          </p>
-        </div>
+        <RivalCallout seats={seats} youSeat={youSeat} />
+
+        <Podium top={top} ctx={ctx} />
+
+        {rest.length > 0 && (
+          <ol start={4} className="mt-1 flex flex-col gap-1 px-2">
+            {rest.map((seat, i) => (
+              <SeatRow key={seat.entry.id} seat={seat} ctx={ctx} index={i} />
+            ))}
+          </ol>
+        )}
+
+        <p className="mt-3 px-4 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-pm-grey-text">
+          Plate +{POINT_RULES.createPost} · upvote +{POINT_RULES.receiveUpvote} · comment +
+          {POINT_RULES.receiveComment}
+        </p>
       </div>
     </section>
   );

@@ -5,6 +5,7 @@ import { PhoneNav, parseNavVariant } from "@/components/mobile/PhoneNav";
 import { useAuth } from "@/lib/auth";
 import { PostFlash } from "@/components/mobile/PostFlash";
 import { PhonePointsFly } from "@/components/mobile/PhonePointsFly";
+import { PhoneRivalToast } from "@/components/mobile/PhoneRivalToast";
 import { PhoneSwipeBack } from "@/components/mobile/PhoneSwipeBack";
 
 /**
@@ -48,6 +49,8 @@ export function PhoneShell({ children }: { children: React.ReactNode }) {
       <PhoneSwipeBack />
       <PostFlash />
       <PhonePointsFly />
+      {/* After the points land: who you just passed on the Friends' Table. */}
+      <PhoneRivalToast />
     </div>
   );
 }
