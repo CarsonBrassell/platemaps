@@ -13,8 +13,8 @@
  * **The match is histogram overlap**: the sum, over every cuisine either person
  * has posted at, of min(yourShare, theirShare). Identical mixes score 100,
  * mixes with nothing in common score 0. It runs over all cuisines, not only the
- * drawn spokes — the radar is a picture of the top few, the number is about
- * everything.
+ * drawn spokes — the radar is a picture of each person's favorites, the
+ * number is about everything.
  */
 
 /** A person's posting history, already reduced to what the match needs. */
@@ -27,7 +27,8 @@ export type TasteInput = {
 };
 
 export type TasteMatch = {
-  /** Up to MAX_SPOKES cuisines, biggest combined share first. */
+  /** 7–8 cuisines: each person's top 4 (shared ones merged), topped up in
+   *  pairs. Ordered from leaning-you to leaning-them. */
   spokes: string[];
   /** Percent (0–100) of the viewer's posts at each spoke, same order. */
   you: number[];
@@ -64,6 +65,10 @@ export const MAX_SPOKES = 8;
 /** Below this many cuisine-tagged posts a person's mix is noise, not taste. */
 export const MIN_POSTS = 3;
 const MIN_SPOKES = 3;
+/** The friend radar: each person's top this-many cuisines... */
+const TOP_PER_PERSON = 4;
+/** ...topped up in pairs until there are at least this many spokes. */
+const MIN_DRAWN = 7;
 
 function total(counts: Record<string, number>): number {
   let n = 0;
@@ -97,9 +102,26 @@ export function computeTasteMatch(you: TasteInput, them: TasteInput): TasteMatch
     return { cuisine, y, t, shared: Math.min(y, t), gap: t - y };
   });
 
-  const drawn = [...rows]
-    .sort((a, b) => b.y + b.t - (a.y + a.t) || byName(a, b))
-    .slice(0, MAX_SPOKES);
+  /* Spokes: each person's top 4, a cuisine in both merging into one spoke.
+     While that leaves fewer than 7, both people add their next pick together,
+     so neither side gets more say — always 7 or 8 unless someone has posted
+     at very few cuisines. */
+  const ranked = (share: (r: (typeof rows)[number]) => number) =>
+    rows.filter((r) => share(r) > 0).sort((a, b) => share(b) - share(a) || byName(a, b));
+  const yourList = ranked((r) => r.y);
+  const theirList = ranked((r) => r.t);
+  const picked = new Set<(typeof rows)[number]>();
+  for (let i = 0; i < TOP_PER_PERSON; i++) {
+    if (yourList[i]) picked.add(yourList[i]);
+    if (theirList[i]) picked.add(theirList[i]);
+  }
+  for (let i = TOP_PER_PERSON; picked.size < MIN_DRAWN && (i < yourList.length || i < theirList.length); i++) {
+    if (yourList[i]) picked.add(yourList[i]);
+    if (theirList[i]) picked.add(theirList[i]);
+  }
+  /* Ordered by who leans harder on it: your cuisines sweep one side of the
+     chart, theirs the other, so the shapes pull apart where tastes differ. */
+  const drawn = [...picked].sort((a, b) => b.y - b.t - (a.y - a.t) || byName(a, b));
   if (drawn.length < MIN_SPOKES) return null;
 
   const matchPct = Math.round(rows.reduce((sum, r) => sum + r.shared, 0));
