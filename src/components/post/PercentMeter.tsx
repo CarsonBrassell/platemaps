@@ -1,5 +1,7 @@
 "use client";
 
+import { startTransition, useState } from "react";
+
 /** The meter's stops, in the product's own voice rather than a bare number. */
 const BANDS: ReadonlyArray<{ from: number; label: string }> = [
   { from: 95, label: "Order it twice" },
@@ -114,9 +116,20 @@ export function PercentMeter({
   onChange: (pct: number) => void;
   label: string;
 }) {
-  const heat = heatFor(value);
-  const chill = chillRamp(value);
-  const fill = `${value}%`;
+  /* The meter owns the number while you drag. It used to be fully controlled,
+     so every step re-rendered the whole composer page before the thumb could
+     move — on a phone those renders queued up, and the bar kept creeping
+     after your finger was off it. Now the drag paints from local state and
+     the page hears about it as a transition, which React drops or interrupts
+     whenever the next step arrives first.
+
+     Seeded once and never re-synced from `value`: the rate step is keyed by
+     step, so the meter remounts every time it is shown, and the only outside
+     reset (`addPlate` → 80) happens while it is unmounted. */
+  const [live, setLive] = useState(value);
+  const heat = heatFor(live);
+  const chill = chillRamp(live);
+  const fill = `${live}%`;
 
   return (
     <div>
@@ -148,7 +161,7 @@ export function PercentMeter({
             style={{ ["--chill" as string]: chill }}
             className="pct-chill-text font-display block text-4xl font-semibold leading-none tracking-tight tabular-nums"
           >
-            {value}%
+            {live}%
           </span>
         </p>
       </div>
@@ -164,9 +177,13 @@ export function PercentMeter({
           min={0}
           max={100}
           step={1}
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          aria-valuetext={`${value} percent — ${bandForPercent(value)}`}
+          value={live}
+          onChange={(e) => {
+            const next = Number(e.target.value);
+            setLive(next);
+            startTransition(() => onChange(next));
+          }}
+          aria-valuetext={`${live} percent — ${bandForPercent(live)}`}
           className="pct-meter"
           data-heat={heat}
           style={{ ["--fill" as string]: fill, ["--chill" as string]: chill }}
@@ -193,7 +210,7 @@ export function PercentMeter({
             heat === "blazing" ? "text-pm-orange-text" : "text-zinc-900"
           }`}
         >
-          {bandForPercent(value)}
+          {bandForPercent(live)}
         </span>
         <span className="text-right text-zinc-400">100%</span>
       </div>
