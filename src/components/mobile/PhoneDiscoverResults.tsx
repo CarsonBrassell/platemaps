@@ -6,7 +6,7 @@ import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCard
 import { matchMarksFor } from "@/lib/discoverFilters";
 import type { DiscoverPage } from "@/lib/discover";
 import { packColumns } from "@/lib/photoShape";
-import { useNearby } from "@/lib/nearby";
+import type { Nearby } from "@/lib/nearby";
 
 /**
  * The wall of cards, its empty state and Show more. The page it shows is
@@ -22,15 +22,25 @@ export function PhoneDiscoverResults({
   viewKey,
   clearHref,
   moreHref,
+  nearby,
 }: {
   view: DiscoverPage;
   pending: boolean;
   viewKey: string;
   clearHref: string;
   moreHref: string;
+  /**
+   * The query's own `useNearby`, handed down rather than called again here.
+   * `useNearby` keeps its fix in component state, so a second call is a second,
+   * private position: this file used to take one, the prompt went up from it,
+   * and the fix landed where useDiscoverQuery could not see it. The search
+   * then ran unlocated — relevance order with no distances — until a reload
+   * found the permission already granted. One instance means the fix this
+   * asks for is the fix the query sends.
+   */
+  nearby: Nearby;
 }) {
   const { filters } = view;
-  const nearby = useNearby();
 
   /* Ask for a position once the reader has narrowed the grid at all: a
      "Nearby" filter needs it outright, and any other filter is a sign they

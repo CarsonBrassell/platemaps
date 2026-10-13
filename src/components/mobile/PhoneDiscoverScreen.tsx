@@ -28,7 +28,7 @@ import { useDiscoverQuery } from "@/lib/useDiscoverQuery";
  * navigation up through DiscoverQuerySync rather than re-rendering the route.
  */
 export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
-  const { view, pending, viewKey, search, raw } = useDiscoverQuery(initial, "/m");
+  const { view, pending, viewKey, search, raw, nearby } = useDiscoverQuery(initial, "/m");
   const { filters, counts, options } = view;
 
   /* `?nav=` selects a nav variant on the phone; it rides along on every link
@@ -259,6 +259,7 @@ export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
         viewKey={viewKey}
         clearHref={clearHref}
         moreHref={hrefWith({ shown: String(view.shown + PAGE_SIZE) })}
+        nearby={nearby}
       />
     </div>
   );
