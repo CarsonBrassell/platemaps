@@ -1682,3 +1682,5 @@ must also be added to Vercel env before deploy). Shared cache table walk_cache
 not posts). Sort order still straight-line. Plan: move to self-hosted OSRM
 (~$10/mo) near ~100 daily users. Verified in Chrome on web + /m from Calvin's
 saved address. Unrelated: /m has a hydration mismatch in PhoneNav post-flash.
+
+- 2026-10-12: Reverted the Plate Points rank card from ec158c9 back to the old orange ring card (commit 1e43135, not pushed). Leaderboard/post-to-pass parts of ec158c9 kept.
