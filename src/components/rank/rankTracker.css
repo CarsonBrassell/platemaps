@@ -1,0 +1,103 @@
+/*
+ * The profile rank card (RankRing.tsx): the collection row plus the level bar.
+ * House kit (white card, cream and tan fills, one orange), no shadows or
+ * gradients; the life is in the motion below.
+ */
+
+/* The row scrolls but shows no scrollbar. */
+.rk-row {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.rk-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* Cards rise in, nearest to yours first (delay set inline). */
+.rk-tile {
+  animation: rk-rise 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes rk-rise {
+  from { transform: translateY(14px) scale(0.96); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+/* Your plate breathes, slowly. */
+.rk-plate {
+  animation: rk-breathe 3.6s ease-in-out 1.2s infinite;
+}
+@keyframes rk-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
+}
+
+/* The bar fills (mount from zero, then follows points). */
+.rk-fill {
+  transition: width 1100ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* A flash at the bar's tip when points land. */
+.rk-tip-flash {
+  background: #fff;
+  animation: rk-flash 700ms ease-out both;
+}
+@keyframes rk-flash {
+  0% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+/* "+N" next to the total. */
+.rk-gain {
+  animation: rk-gain 1.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes rk-gain {
+  0% { transform: translateY(8px) scale(0.6); opacity: 0; }
+  14% { transform: translateY(0) scale(1.15); opacity: 1; }
+  24% { transform: translateY(0) scale(1); }
+  70% { transform: translateY(-4px); opacity: 1; }
+  100% { transform: translateY(-18px); opacity: 0; }
+}
+
+/* "Rank up" chip under the title. */
+.rk-chip {
+  animation: rk-chip 3.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes rk-chip {
+  0% { transform: scale(0.4); opacity: 0; }
+  10% { transform: scale(1); opacity: 1; }
+  88% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0; }
+}
+
+/* Burst dots off the crest on a rank-up. */
+.rk-burst-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 9999px;
+  animation: rk-burst 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes rk-burst {
+  0% { transform: rotate(var(--a)) translateX(40px) scale(1); opacity: 1; }
+  100% { transform: rotate(var(--a)) translateX(78px) scale(0.3); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rk-tile,
+  .rk-plate,
+  .rk-tip-flash,
+  .rk-chip,
+  .rk-burst-dot {
+    animation: none;
+  }
+  .rk-fill {
+    transition: none;
+  }
+  .rk-gain,
+  .rk-burst-dot {
+    display: none;
+  }
+}

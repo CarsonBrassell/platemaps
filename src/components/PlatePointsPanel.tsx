@@ -45,17 +45,16 @@ export function PlatePointsPanel({
 }: {
   points: number;
   /**
-   * Renders the rung you are on under the rules row as a `RankRing`: your
-   * crest on a white disc, an orange arc for how far along the rung you are,
-   * your title and how far is left. It animates — the arc follows the
-   * roll-call's count-up and a threshold crossing gets a full sequence
-   * (see RankRing.tsx). It replaced a crest + 6px track row (2026-09).
+   * Renders the rank card (`RankRing`) instead of the tint panel: your
+   * crest in a progress ring, your title, the total counting up, the six
+   * rungs as pips and the distance to the next title. It animates —
+   * the ring follows the roll-call's count-up and a threshold crossing gets a
+   * full rank-up sequence (see RankRing.tsx). It replaced a bare ring on the
+   * cream (2026-09), which replaced a crest + 6px track row (2026-08).
    *
-   * Deliberately the *step*, not the ladder. The whole six-rung ladder was
-   * the other candidate and it loses here — the panel's job is the total and
-   * what it is worth next, and a full ladder turns a four-line panel into the
-   * tallest thing on the profile to answer a question nobody asked at their
-   * own total. The rules row above already says how to climb.
+   * The pips put the whole ladder on the card after all — Carson (2026-10)
+   * wanted the tracker to read as a progression screen, and the ladder
+   * is what makes it one. The sheet behind a tap still has the detail.
    *
    * Own-profile surfaces only — the public profile has its own insignia
    * treatment (bigger, beside the avatar, no track, because a stranger is
@@ -79,24 +78,19 @@ export function PlatePointsPanel({
   ];
 
   if (showRank) {
-    /* The owner's view is the ring and nothing else: crest, arc, title, total
-       and distance, centred, straight on the cream — no card, no tint (Calvin,
-       2026-09: "the same color as the background"). The tint panel below
-       stays for every bare-total caller. The info button is the one control,
-       parked in the corner. */
+    /* The owner's view is the rank card and nothing else: crest, ring,
+       title, total, the rungs as pips and the distance to the next title, on
+       a plain white card in the house kit (Carson, 2026-10-15). The tint
+       panel below stays for every bare-total caller. The card is the ladder
+       button; the info button rides in its corner. */
     return (
       <>
-        <div className={`relative pb-2 pt-3 ${className}`}>
-          <button
-            type="button"
-            onClick={() => setInfoOpen(true)}
-            aria-label="How Plate Points work"
-            className="absolute -right-2 -top-1 flex h-11 w-11 items-center justify-center rounded-full text-pm-grey-text transition-colors hover:bg-pm-grey-tint focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-          >
-            <InfoIcon className="h-3.5 w-3.5" />
-          </button>
-          <RankRing points={points} size={116} onOpenLadder={() => setLadderOpen(true)} />
-        </div>
+        <RankRing
+          points={points}
+          className={className}
+          onOpenLadder={() => setLadderOpen(true)}
+          onOpenInfo={() => setInfoOpen(true)}
+        />
         {infoOpen && <PointsInfoModal onClose={() => setInfoOpen(false)} />}
         {ladderOpen && <RankLadderModal points={points} onClose={() => setLadderOpen(false)} />}
       </>

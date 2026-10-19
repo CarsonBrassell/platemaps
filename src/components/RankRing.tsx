@@ -1,348 +1,403 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { CheckIcon, InfoIcon } from "@/components/icons";
 import { RankInsignia } from "@/components/RankInsignia";
-import { formatPoints } from "@/lib/points";
-import { RANKS, rankFor, type RankKey } from "@/lib/ranks";
+import { POINT_RULES, formatPoints } from "@/lib/points";
+import { RANKS, rankFor } from "@/lib/ranks";
+import "@/components/rank/rankTracker.css";
 
 /**
- * The rung you are on, drawn as a ring: your crest, an orange arc around it
- * that is your progress toward the next title, your title under it in Fraunces
- * and the total and the points still owed in mono. It sits straight on the
- * cream — no card, no plaque — with the crest in its usual inks.
+ * The owner's rank card on their own profile (Carson picked this design on
+ * 2026-10-19 from five concepts: "the Collection" crossed with "the Level
+ * Bar", with more detail).
  *
- * This is the owner's progression view — `PlatePointsPanel` mounts it under
- * the rules row on both the web and phone profiles. It replaced a 6px track
- * beside a 46px crest (2026-09): the arc says the same thing as the track but
- * puts the crest, which is the thing you actually earned, at the centre.
+ * Top to bottom:
+ * - **Header**: `PLATE POINTS · LV 3 OF 6` and the earn-rules info button.
+ * - **The collection**: every title as a card in a swipeable, snapping row.
+ *   Yours is the big tinted card in the middle (YOU tag, its rating weight,
+ *   "since N PP"); earned ones carry an orange check, locked ones a 🔒 and the
+ *   total they unlock at. Any card opens the full ladder.
+ * - **The level bar**: this crest, a quartered bar with the points marks under
+ *   it, and the next crest waiting locked on the right.
+ * - **Unlock panel**: points to go, what that is in plates, comments or
+ *   upvotes (from `POINT_RULES`), and the real perk of the next title — its
+ *   rating weight from `lib/ranks.ts`.
  *
- * Motion, all of it keyed off the `points` prop changing:
- *
- * - **Mount** draws the arc in from empty over 900ms.
- * - **Points rising** (the profile's roll-call counts `displayPoints` up over
- *   a few hundred ms) tweens the arc after the number with a little overshoot,
- *   and once the number stops moving the tip flashes and the crest nudges —
- *   one acknowledgment per delivery, not one per tick.
- * - **Crossing a threshold** fills the arc to full, throws sparks and two
- *   halos, scales the old crest out, pops the new one in star by star
- *   (`RankInsignia pop`), slides the new title up under the old, then empties
- *   the arc and draws the new rung's progress. Skipping two rungs in one
- *   delivery plays the sequence twice.
- *
- * `prefers-reduced-motion` collapses all of it to instant paints and flat
- * swaps. The arc, tip and sparks are driven imperatively (rAF + WAAPI) rather
- * than through React state because the count-up changes `points` every frame
- * and a re-render per frame of a 300ms roll is exactly the jank it would be
- * trying to animate over.
+ * Motion: the total counts up and the bar fills on mount; new points count up,
+ * float a "+N" and pulse the bar's tip. Crossing a threshold bursts dots off
+ * your card, pops the new crest, shows a "Rank up" chip and scrolls the row to
+ * the new card. `prefers-reduced-motion` gets instant paints.
  */
 
-const R = 46;
-const C = 2 * Math.PI * R;
-
-const clamp = (n: number) => Math.max(0, Math.min(100, n));
-const easeOut = (k: number) => 1 - Math.pow(1 - k, 3);
-const easeBack = (k: number) => {
-  const c = 0.9;
-  return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2);
-};
+const fmt = formatPoints;
 
 function model(points: number) {
-  const rank = rankFor(points);
+  const p = Math.max(0, points);
+  const rank = rankFor(p);
   const index = RANKS.findIndex((r) => r.key === rank.key);
   const next = RANKS[index + 1] ?? null;
-  const pct = next
-    ? clamp(((points - rank.minPoints) / (next.minPoints - rank.minPoints)) * 100)
-    : 100;
-  return { rank, index, next, pct };
+  const span = next ? next.minPoints - rank.minPoints : 1;
+  const pct = next ? Math.min(100, ((p - rank.minPoints) / span) * 100) : 100;
+  const toGo = next ? next.minPoints - p : 0;
+  return { rank, index, next, span, pct, toGo };
 }
 
-function replay(el: Element | null, cls: string) {
-  if (!el) return;
-  el.classList.remove(cls);
-  // Reading a layout property forces the style flush that lets the same
-  // animation class start over instead of being ignored as already applied.
-  void (el as HTMLElement).offsetWidth;
-  el.classList.add(cls);
-}
+const easeOut = (k: number) => 1 - Math.pow(1 - k, 3);
 
 export function RankRing({
   points,
-  size = 116,
   className = "",
   onOpenLadder,
+  onOpenInfo,
 }: {
   points: number;
-  /** Outer diameter in px. The crest inside is drawn at 60% of it. */
-  size?: number;
   className?: string;
-  /**
-   * When given, the ring is a button that opens the full ladder
-   * (`RankLadderModal`). The "N to <next>" line under the total went away
-   * with it (Calvin, 2026-09) — the ladder shows the distance to every rung
-   * instead of the caption quoting one.
-   */
+  /** Any card in the row opens the full ladder (`RankLadderModal`). */
   onOpenLadder?: () => void;
+  /** The header info button opens the earn rules (`PointsInfoModal`). */
+  onOpenInfo?: () => void;
 }) {
   const now = model(points);
 
-  const hostRef = useRef<HTMLElement>(null);
-  const arcRef = useRef<SVGCircleElement>(null);
-  const tipRef = useRef<SVGCircleElement>(null);
-  const tipFlashRef = useRef<SVGCircleElement>(null);
-  const crestRef = useRef<HTMLDivElement>(null);
-  const halo1Ref = useRef<HTMLSpanElement>(null);
-  const halo2Ref = useRef<HTMLSpanElement>(null);
-
-  const reducedRef = useRef(false);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const totalRef = useRef<HTMLSpanElement>(null);
   const shownRef = useRef(0);
-  const animRef = useRef(0);
-  const seenRankRef = useRef<RankKey | null>(null);
-  const busyRef = useRef(false);
-  const latestRef = useRef(points);
+  const countRef = useRef(0);
+  const reducedRef = useRef(false);
+  const lastIndexRef = useRef<number | null>(null);
+  const settledRef = useRef<number | null>(null);
   const timersRef = useRef<number[]>([]);
 
-  const [crest, setCrest] = useState<{ rank: RankKey; out: boolean; pop: number }>({
-    rank: now.rank.key,
-    out: false,
-    pop: 0,
-  });
-  const [title, setTitle] = useState<{ text: string; prev: string | null; key: number }>({
-    text: now.rank.title,
-    prev: null,
-    key: 0,
-  });
-
-  /* Kept current after each render (not during it) for the async animation callbacks. */
-  useEffect(() => {
-    latestRef.current = points;
-  });
+  const [filled, setFilled] = useState(false);
+  const [pop, setPop] = useState(0);
+  const [rankUp, setRankUp] = useState(0);
+  const [gain, setGain] = useState<{ n: number; key: number } | null>(null);
+  const [tipKey, setTipKey] = useState(0);
 
   useEffect(() => {
-    reducedRef.current =
-      typeof window !== "undefined" &&
-      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    reducedRef.current = !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const raf = requestAnimationFrame(() => setFilled(true));
     const timers = timersRef.current;
     return () => {
-      animRef.current += 1;
+      cancelAnimationFrame(raf);
+      countRef.current += 1;
       timers.forEach((t) => window.clearTimeout(t));
     };
   }, []);
 
+  /* Centre a card in the row. Instant on mount, smooth on a rank-up. */
+  function centre(index: number, smooth: boolean) {
+    const row = rowRef.current;
+    const card = cardRefs.current[index];
+    if (!row || !card) return;
+    const left = card.offsetLeft - (row.clientWidth - card.offsetWidth) / 2;
+    row.scrollTo({ left, behavior: smooth && !reducedRef.current ? "smooth" : "auto" });
+  }
+
+  useLayoutEffect(() => {
+    centre(now.index, false);
+    // Mount only: later moves are rank-ups, handled below.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     const later = (fn: () => void, ms: number) => {
-      const id = window.setTimeout(fn, ms);
-      timersRef.current.push(id);
-      return id;
+      timersRef.current.push(window.setTimeout(fn, ms));
     };
 
-    function paint(pct: number) {
-      const c = clamp(pct);
-      shownRef.current = c;
-      const arc = arcRef.current;
-      const tip = tipRef.current;
-      const flash = tipFlashRef.current;
-      if (!arc || !tip || !flash) return;
-      arc.style.strokeDashoffset = String(C * (1 - c / 100));
-      const th = (c / 100) * Math.PI * 2;
-      const x = (50 + R * Math.cos(th)).toFixed(2);
-      const y = (50 + R * Math.sin(th)).toFixed(2);
-      tip.setAttribute("cx", x);
-      tip.setAttribute("cy", y);
-      flash.setAttribute("cx", x);
-      flash.setAttribute("cy", y);
-      tip.style.visibility = c <= 0.5 ? "hidden" : "visible";
-    }
-
-    function animateTo(target: number, dur: number, ease: (k: number) => number) {
-      if (reducedRef.current || !dur) {
-        paint(target);
-        return Promise.resolve();
-      }
-      const id = ++animRef.current;
+    // The count: from what is on screen to the new total.
+    const el = totalRef.current;
+    if (el) {
       const from = shownRef.current;
-      const t0 = performance.now();
-      return new Promise<void>((resolve) => {
+      const to = Math.max(0, points);
+      if (reducedRef.current || from === to) {
+        el.textContent = fmt(to);
+        shownRef.current = to;
+      } else {
+        const id = ++countRef.current;
+        const dur = from === 0 ? 1100 : 600;
+        const t0 = performance.now();
         const frame = (t: number) => {
-          if (id !== animRef.current) return resolve();
+          if (id !== countRef.current) return;
           const k = Math.min(1, (t - t0) / dur);
-          paint(from + (target - from) * ease(k));
+          const v = Math.round(from + (to - from) * easeOut(k));
+          el.textContent = fmt(v);
+          shownRef.current = v;
           if (k < 1) requestAnimationFrame(frame);
-          else resolve();
         };
-        frame(t0);
-      });
-    }
-
-    function spark() {
-      if (reducedRef.current) return;
-      tipFlashRef.current?.animate(
-        [
-          { transform: "scale(1)", opacity: 0.9 },
-          { transform: "scale(3.2)", opacity: 0 },
-        ],
-        { duration: 450, easing: "cubic-bezier(.16,1,.3,1)" }
-      );
-    }
-
-    function sparks(n: number) {
-      const host = hostRef.current;
-      if (!host || reducedRef.current) return;
-      const d0 = size / 2 - 4;
-      for (let i = 0; i < n; i++) {
-        const s = document.createElement("span");
-        s.className = "rank-ring-spark";
-        if (i % 3 === 1) s.style.background = "var(--pm-orange-border)";
-        if (i % 3 === 2) s.style.width = s.style.height = "4px";
-        host.appendChild(s);
-        const a = (i / n) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
-        const d1 = d0 * 1.4 + Math.random() * size * 0.22;
-        s.animate(
-          [
-            {
-              transform: `translate(-50%,-50%) translate(${Math.cos(a) * d0}px,${Math.sin(a) * d0}px) scale(1)`,
-              opacity: 1,
-            },
-            {
-              transform: `translate(-50%,-50%) translate(${Math.cos(a) * d1}px,${Math.sin(a) * d1}px) scale(.2)`,
-              opacity: 0,
-            },
-          ],
-          { duration: 650 + Math.random() * 350, easing: "cubic-bezier(.16,1,.3,1)", fill: "forwards" }
-        ).finished.then(() => s.remove(), () => s.remove());
+        requestAnimationFrame(frame);
       }
     }
 
-    function rankUp(to: ReturnType<typeof model>) {
-      busyRef.current = true;
-      spark();
-      void animateTo(100, 480, easeOut).then(() => {
-        sparks(14);
-        replay(halo1Ref.current, "rank-ring-halo-go");
-        replay(halo2Ref.current, "rank-ring-halo-go");
-        setCrest((c) => ({ ...c, out: true }));
-        setTitle((t) => ({ text: to.rank.title, prev: t.text, key: t.key + 1 }));
-        later(() => setCrest({ rank: to.rank.key, out: false, pop: Date.now() }), 220);
-        later(() => setTitle((t) => ({ ...t, prev: null })), 620);
-        later(() => {
-          paint(0);
-          busyRef.current = false;
-          const latest = model(latestRef.current);
-          if (latest.rank.key !== seenRankRef.current) {
-            // Two rungs in one delivery: play it again for the second one.
-            seenRankRef.current = latest.rank.key;
-            void animateTo(100, 700, easeOut).then(() => rankUp(latest));
-          } else {
-            void animateTo(latest.pct, 900, easeOut);
-          }
-        }, 380);
-      });
-    }
-
-    const seen = seenRankRef.current;
-    if (seen === null) {
-      seenRankRef.current = now.rank.key;
-      paint(0);
-      void animateTo(now.pct, 900, easeOut);
+    const prevIndex = lastIndexRef.current;
+    lastIndexRef.current = now.index;
+    if (prevIndex === null) {
+      settledRef.current = points;
       return;
     }
-    if (busyRef.current) return;
 
-    if (now.rank.key !== seen) {
-      seenRankRef.current = now.rank.key;
-      const seenIndex = RANKS.findIndex((r) => r.key === seen);
-      if (now.index < seenIndex || reducedRef.current) {
-        // Downward only ever happens on a dev reset; no motion means no
-        // ceremony. Either way: swap flat and paint the new rung.
-        animRef.current += 1;
-        setCrest({ rank: now.rank.key, out: false, pop: 0 });
-        setTitle({ text: now.rank.title, prev: null, key: 0 });
-        paint(now.pct);
-        return;
+    // Points arriving: once the roll-call settles, float the gain once.
+    const settle = window.setTimeout(() => {
+      const before = settledRef.current ?? points;
+      settledRef.current = points;
+      if (points > before && !reducedRef.current) {
+        setGain({ n: points - before, key: Date.now() });
+        setTipKey(Date.now());
       }
-      rankUp(now);
-      return;
-    }
-
-    void animateTo(now.pct, 650, easeBack);
-    const settle = later(() => {
-      if (busyRef.current) return;
-      spark();
-      replay(crestRef.current, "rank-ring-nudge");
     }, 320);
+
+    if (now.index > prevIndex) {
+      setPop(Date.now());
+      setRankUp(Date.now());
+      later(() => setRankUp(0), 3200);
+      later(() => centre(now.index, true), 150);
+    } else if (now.index < prevIndex) {
+      centre(now.index, false);
+    }
     return () => window.clearTimeout(settle);
-    // `now` is derived from `points`; `size` only matters to spark distances.
+    // `now` is derived from `points`.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [points]);
 
-  /* The ring is a button only when there is somewhere for it to go; a bare
-     ring stays a div so the public-profile-style callers don't grow a
-     focusable nothing. */
-  const Host: "button" | "div" = onOpenLadder ? "button" : "div";
-  const hostProps = onOpenLadder
-    ? {
-        type: "button" as const,
-        onClick: onOpenLadder,
-        "aria-label": `${now.rank.title} rank — see the ladder`,
-        className:
-          "rank-ring block cursor-pointer rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange",
-      }
-    : { className: "rank-ring" };
+  const { rank, index: cur, next, span, pct, toGo } = now;
+  const plates = Math.ceil(toGo / POINT_RULES.createPost);
+  const comments = Math.ceil(toGo / POINT_RULES.receiveComment);
+  const upvotes = Math.ceil(toGo / POINT_RULES.receiveUpvote);
+  const marks = [0, 25, 50, 75, 100];
 
   return (
-    <div className={`flex flex-col items-center text-center ${className}`}>
-      <Host ref={hostRef as RefObject<HTMLButtonElement & HTMLDivElement>} {...hostProps} style={{ width: size, height: size }}>
-        <svg viewBox="0 0 100 100" className="rank-ring-svg" aria-hidden="true">
-          <circle className="rank-ring-track" cx="50" cy="50" r={R} />
-          <circle
-            ref={arcRef}
-            className="rank-ring-arc"
-            cx="50"
-            cy="50"
-            r={R}
-            style={{ strokeDasharray: C, strokeDashoffset: C }}
-          />
-          <circle ref={tipFlashRef} className="rank-ring-tipflash" cx="96" cy="50" r="3" />
-          <circle
-            ref={tipRef}
-            className="rank-ring-tip"
-            cx="96"
-            cy="50"
-            r="3"
-            style={{ visibility: "hidden" }}
-          />
-        </svg>
-        <span ref={halo1Ref} className="rank-ring-halo" aria-hidden="true" />
-        <span ref={halo2Ref} className="rank-ring-halo rank-ring-halo-2" aria-hidden="true" />
-        {/* The crest labels itself "<title> rank" and the title is written
-            right under it, so the picture is decorative to a screen reader. */}
-        <div
-          ref={crestRef}
-          aria-hidden="true"
-          className={`rank-ring-crest ${crest.out ? "rank-ring-crest-out" : ""}`}
-        >
-          <RankInsignia
-            key={crest.pop}
-            rank={crest.rank}
-            size={Math.round(size * 0.62)}
-            pop={crest.pop > 0}
-          />
-        </div>
-      </Host>
+    <section
+      aria-label={`Plate Points: ${fmt(points)}. ${rank.title}, level ${cur + 1} of ${RANKS.length}.`}
+      className={`rk-card rounded-2xl bg-white pb-4 pt-3.5 ${className}`}
+    >
+      <div className="flex items-center gap-2 px-4">
+        <span className="mono-label text-pm-orange-text">Plate Points</span>
+        <span aria-hidden="true" className="mono-label text-zinc-400">·</span>
+        <span className="mono-label text-pm-grey-text">
+          Lv {cur + 1} of {RANKS.length}
+        </span>
+        {onOpenInfo && (
+          <button
+            type="button"
+            onClick={onOpenInfo}
+            aria-label="How Plate Points work"
+            className="-my-3 -mr-3 ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-pm-grey-text transition-colors hover:bg-pm-grey-tint focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+          >
+            <InfoIcon className="h-3.5 w-3.5" />
+          </button>
+        )}
+      </div>
 
-      <p className="rank-ring-title mt-3.5 font-display text-[22px] font-semibold leading-tight text-pm-charcoal">
-        {title.prev !== null && (
-          <span key={`o${title.key}`} aria-hidden="true" className="rank-ring-title-out">
-            {title.prev}
+      {/* The collection. Real horizontal scroll with snap; the side padding
+          lets the first and last cards reach the middle too. */}
+      <div
+        ref={rowRef}
+        className="rk-row mt-3 flex snap-x snap-mandatory items-end gap-2.5 overflow-x-auto px-[calc(50%-98px)]"
+      >
+        {RANKS.map((r, i) => {
+          const isCur = i === cur;
+          const earned = i < cur;
+          const locked = i > cur;
+          return (
+            <button
+              key={r.key}
+              ref={(node) => {
+                cardRefs.current[i] = node;
+              }}
+              type="button"
+              onClick={onOpenLadder}
+              aria-label={`${r.title}: ${isCur ? "your title" : earned ? "earned" : `unlocks at ${fmt(r.minPoints)} Plate Points`}. See the ladder.`}
+              style={{ animationDelay: `${Math.abs(i - cur) * 70}ms` }}
+              className={`rk-tile relative flex shrink-0 snap-center flex-col items-center rounded-2xl px-2.5 pb-3 pt-3.5 transition-transform active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+                isCur ? "w-[196px] bg-pm-orange-tint" : earned ? "w-[104px] bg-[#FBF8F2]" : "w-[104px] bg-[#F4F1EA]"
+              }`}
+            >
+              {isCur && (
+                <>
+                  <span className="absolute left-2.5 top-2.5 rounded-full bg-pm-orange px-2 py-px font-mono text-[9px] font-semibold uppercase tracking-[0.12em] text-[#F7F4EC]">
+                    You
+                  </span>
+                  <span className="absolute right-2.5 top-2.5 font-mono text-[10px] tabular-nums text-pm-orange-text">
+                    ×{r.weight.toFixed(2)}
+                  </span>
+                </>
+              )}
+              <span
+                className={`relative ${isCur ? "rk-plate flex h-[112px] w-[112px] items-center justify-center rounded-full bg-white" : "block"}`}
+              >
+                <span className={locked ? "block opacity-30 grayscale" : "block"}>
+                  <RankInsignia
+                    key={isCur ? pop : 0}
+                    rank={r.key}
+                    size={isCur ? 96 : 60}
+                    pop={isCur && pop > 0}
+                  />
+                </span>
+                {locked && (
+                  <span aria-hidden="true" className="absolute bottom-0 right-1 flex h-6 w-6 items-center justify-center rounded-full bg-white text-[12px]">
+                    🔒
+                  </span>
+                )}
+                {earned && (
+                  <span aria-hidden="true" className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-pm-orange text-[#F7F4EC]">
+                    <CheckIcon className="h-3 w-3" />
+                  </span>
+                )}
+                {isCur && rankUp > 0 && <Burst key={rankUp} />}
+              </span>
+              <span
+                className={`mt-2 font-display font-semibold leading-tight ${
+                  isCur ? "text-[24px] text-zinc-900" : earned ? "text-[14px] text-zinc-900" : "text-[14px] text-zinc-500"
+                }`}
+              >
+                {r.title}
+              </span>
+              {isCur ? (
+                rankUp > 0 ? (
+                  <span key={rankUp} className="rk-chip mt-1 rounded-full bg-pm-orange px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-[#F7F4EC]">
+                    Rank up
+                  </span>
+                ) : (
+                  <span className="mt-0.5 font-mono text-[11px] tabular-nums text-pm-orange-text">
+                    Since {fmt(r.minPoints)} PP
+                  </span>
+                )
+              ) : (
+                <span className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.1em] tabular-nums text-zinc-500">
+                  {earned ? "Earned" : `${fmt(r.minPoints)} PP`}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      <div aria-hidden="true" className="mt-3 flex justify-center gap-1.5">
+        {RANKS.map((r, i) => (
+          <span
+            key={r.key}
+            className={`h-1.5 rounded-full transition-all duration-500 ${
+              i === cur ? "w-5 bg-pm-orange" : i < cur ? "w-1.5 bg-pm-orange-border" : "w-1.5 bg-pm-grey-tint"
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* The level bar. */}
+      <div className="mx-4 mt-4 flex items-center gap-2.5">
+        <span aria-hidden="true" className="shrink-0">
+          <RankInsignia rank={rank.key} size={40} />
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-baseline justify-between font-mono tabular-nums">
+            <span className="flex items-baseline">
+              <span ref={totalRef} className="text-[22px] font-semibold leading-none text-pm-orange">
+                {fmt(points)}
+              </span>
+              <span className="ml-1 text-[11px] text-pm-grey-text">PP</span>
+              {gain && (
+                <span key={gain.key} aria-hidden="true" className="rk-gain ml-1.5 inline-block text-[12px] font-semibold text-pm-orange-text">
+                  +{fmt(gain.n)}
+                </span>
+              )}
+            </span>
+            <span className="text-[11px] text-zinc-500">{next ? `${fmt(next.minPoints)} PP` : "Top rank"}</span>
+          </div>
+          <div
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(pct)}
+            aria-label={next ? `Progress to ${next.title}` : "Top of the ladder"}
+            className="relative mt-1.5 h-3.5 overflow-hidden rounded-full bg-pm-grey-tint"
+          >
+            <div
+              className="rk-fill relative h-full rounded-full bg-pm-orange"
+              style={{ width: filled ? `${pct}%` : "0%" }}
+            >
+              {tipKey > 0 && <span key={tipKey} className="rk-tip-flash absolute inset-y-0 right-0 w-6 rounded-full" />}
+            </div>
+            {[25, 50, 75].map((t) => (
+              <span key={t} className="absolute inset-y-0 w-0.5 bg-white" style={{ left: `${t}%` }} />
+            ))}
+          </div>
+          {next && (
+            <div aria-hidden="true" className="mt-1 flex justify-between font-mono text-[9px] tabular-nums text-zinc-500">
+              {marks.map((t) => (
+                <span key={t} className={pct >= t ? "text-pm-orange-text" : ""}>
+                  {fmt(rank.minPoints + Math.round((span * t) / 100))}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+        {next && (
+          <span aria-hidden="true" className="relative block shrink-0">
+            <span className="block opacity-30 grayscale">
+              <RankInsignia rank={next.key} size={40} />
+            </span>
+            <span className="absolute -bottom-1 -right-1 text-[11px]">🔒</span>
           </span>
         )}
-        <span key={`n${title.key}`} className={title.key > 0 ? "rank-ring-title-in" : "block"}>
-          {title.text}
-        </span>
-      </p>
-      <p className="mt-1.5 font-mono text-[12px] tabular-nums text-pm-grey-text">
-        <span className="text-[14px] font-semibold text-pm-orange-text">{formatPoints(points)}</span>{" "}
-        points
-      </p>
-    </div>
+      </div>
+
+      {/* What the next title takes, and what it gives. */}
+      {next ? (
+        <div className="mx-4 mt-4 rounded-xl bg-[#FBF8F2] p-3">
+          <div className="flex items-baseline justify-between gap-2">
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-pm-grey-text">
+              Unlock <span className="text-pm-orange-text">{next.title}</span>
+            </p>
+            <p className="font-mono text-[11px] tabular-nums text-zinc-900">
+              <span className="font-semibold">{fmt(toGo)}</span> PP to go
+            </p>
+          </div>
+          <p className="mt-1.5 text-[11px] text-zinc-600">Get there with any mix of</p>
+          <div className="mt-1.5 grid grid-cols-3 gap-2">
+            {[
+              { n: plates, label: plates === 1 ? "plate" : "plates", each: POINT_RULES.createPost },
+              { n: comments, label: comments === 1 ? "comment" : "comments", each: POINT_RULES.receiveComment },
+              { n: upvotes, label: upvotes === 1 ? "upvote" : "upvotes", each: POINT_RULES.receiveUpvote },
+            ].map((s) => (
+              <div key={s.label} className="rounded-lg bg-white px-2 py-2 text-center">
+                <p className="font-mono text-[17px] font-semibold leading-none tabular-nums text-zinc-900">{fmt(s.n)}</p>
+                <p className="mt-1 text-[11px] leading-tight text-zinc-600">{s.label}</p>
+                <p className="font-mono text-[9px] tabular-nums text-zinc-500">+{s.each} each</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-2.5 flex items-center gap-1.5 text-[12px] leading-snug text-zinc-600">
+            <span aria-hidden="true" className="text-pm-orange">★</span>
+            Your dish ratings count{" "}
+            <span className="font-mono font-semibold tabular-nums text-pm-orange-text">{next.weight.toFixed(2)}×</span> at {next.title}
+          </p>
+        </div>
+      ) : (
+        <div className="mx-4 mt-4 rounded-xl bg-[#FBF8F2] p-3 text-center">
+          <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-pm-orange-text">Top of the ladder</p>
+          <p className="mt-1 text-[12px] text-zinc-600">
+            Your dish ratings count{" "}
+            <span className="font-mono font-semibold tabular-nums text-pm-orange-text">{rank.weight.toFixed(2)}×</span>, the most anyone&rsquo;s do.
+          </p>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/** A ring of flat orange dots off the crest when a title is earned. */
+function Burst() {
+  return (
+    <span aria-hidden="true" className="pointer-events-none absolute inset-0">
+      {Array.from({ length: 12 }, (_, i) => (
+        <span
+          key={i}
+          className="rk-burst-dot"
+          style={{ "--a": `${(i / 12) * 360}deg`, background: i % 2 ? "var(--pm-orange-text)" : "var(--pm-orange)" } as CSSProperties}
+        />
+      ))}
+    </span>
   );
 }
