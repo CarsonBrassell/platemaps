@@ -11,8 +11,8 @@ import "./freefood.css";
  *
  * A charcoal pill rather than an orange one so it does not read as the
  * primary action — the + in the nav still is — and the pulsing orange dot is
- * what says something is happening right now. It scrolls away with the
- * header rather than joining the sticky bar, which has no room to spare.
+ * what says something is happening right now. It rides in the feed's pinned
+ * bar above the tabs, so it stays in reach at any scroll depth.
  *
  * It renders nothing until mounted: whether the event is still on depends on
  * the clock, and the server's clock and the phone's need not agree on the
@@ -34,7 +34,7 @@ export function ClaimFreeFoodButton() {
 
   return (
     <>
-      <div className="ff-root px-4 pb-1 pt-2">
+      <div className="ff-root pt-2">
         <button
           type="button"
           onClick={() => setOpen(true)}

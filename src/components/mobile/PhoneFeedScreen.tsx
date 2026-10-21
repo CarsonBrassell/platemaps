@@ -517,11 +517,6 @@ export function PhoneFeedScreen() {
           takes a `subtitle` for the screens that want one. */}
       <PhoneFeedHeader />
 
-      {/* The Pizza on Pearl Plate-Off, while it runs (lib/freeFoodEvent.ts).
-          Above the tabs and out of the sticky bar, so it scrolls away with
-          the header and costs the pinned row nothing. */}
-      <ClaimFreeFoodButton />
-
       {/* Tabs get the row to themselves; the sort and search share the next
           one. All three on one row is what this was, and it did not fit — and
           it fits less now that the tabs are 16px: measured at 390px they take
@@ -594,6 +589,13 @@ export function PhoneFeedScreen() {
         }
       >
         <div className="px-4">
+          {/* The Pizza on Pearl Plate-Off, while it runs (lib/freeFoodEvent.ts).
+              Inside the pinned bar, not above it: the bar is `position: fixed`
+              over a spacer, so anything in the flow above it sits underneath
+              the bar and is never seen. The bar re-measures itself, so the row
+              appearing after mount pushes the feed down rather than covering
+              it. */}
+          <ClaimFreeFoodButton />
           <PhoneFeedTabs active={tab} onChange={setTab} />
         </div>
       </PhoneStickyBar>
