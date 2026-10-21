@@ -11,9 +11,16 @@ export async function GET(req: NextRequest) {
     ? (raw as LeaderboardWindow)
     : "week";
 
+  // Ten by default, which is what every board drew before this was a
+  // parameter. The free-food board asks for a couple more so the people just
+  // under the cut are visible; 25 caps what any caller can make one request
+  // pull.
+  const rawLimit = Number(req.nextUrl.searchParams.get("limit"));
+  const limit = Number.isInteger(rawLimit) && rawLimit > 0 ? Math.min(rawLimit, 25) : 10;
+
   const user = await getCurrentUser();
   const [leaderboard, you] = await Promise.all([
-    getLeaderboard(window, 10),
+    getLeaderboard(window, limit),
     user ? getUserRank(user.id, window) : Promise.resolve(null),
   ]);
 

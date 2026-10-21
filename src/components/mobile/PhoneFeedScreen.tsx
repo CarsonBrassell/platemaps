@@ -23,6 +23,7 @@ import { useQueryParams } from "@/lib/queryString";
 import { MAP_GROUND } from "@/lib/mapStyle";
 import { announceAward, closePostFlash, takeLanding, usePostFlash } from "@/lib/postCelebration";
 import { PhoneFeedHeader } from "./PhoneFeedHeader";
+import { ClaimFreeFoodButton } from "./freefood/ClaimFreeFoodButton";
 import { PhoneFeedSearch } from "./PhoneFeedSearch";
 import { PhoneFeedTabs } from "./PhoneFeedTabs";
 import { PhoneStickyBar } from "./PhoneStickyBar";
@@ -515,6 +516,11 @@ export function PhoneFeedScreen() {
           the reference design gives the count no room. `PhoneFeedHeader` still
           takes a `subtitle` for the screens that want one. */}
       <PhoneFeedHeader />
+
+      {/* The Pizza on Pearl Plate-Off, while it runs (lib/freeFoodEvent.ts).
+          Above the tabs and out of the sticky bar, so it scrolls away with
+          the header and costs the pinned row nothing. */}
+      <ClaimFreeFoodButton />
 
       {/* Tabs get the row to themselves; the sort and search share the next
           one. All three on one row is what this was, and it did not fit — and
