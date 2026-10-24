@@ -49,10 +49,47 @@ function isStaticAsset(pathname: string): boolean {
   return lastSegment.includes(".");
 }
 
+/** Phones only — iPads report a Mac user agent and stay on the web version,
+ *  which is the point: a tablet has the room for it. */
+const PHONE_UA = /\b(iPhone|iPod)\b|Android.+Mobile|Windows Phone/i;
+
+/** Web pages that have a phone twin under /m. Prefix entries cover their
+ *  `/[id]` children. Anything not listed (drafts, API) is left alone. */
+const PHONE_TWIN_EXACT = new Set([
+  "/", "/feed", "/account", "/account/settings", "/post", "/friends",
+  "/terms", "/privacy", "/forgot-password", "/reset-password", "/verify-email",
+]);
+const PHONE_TWIN_PREFIXES = ["/restaurant/", "/u/"];
+
+/** Calvin, 2026-10-24: one version on a phone. A phone opening platemaps.com
+ *  (or any shared web link) lands on the /m phone app — the same screens the
+ *  iOS app loads — instead of the desktop site squeezed onto a phone.
+ *  Desktop keeps the web version. Query string rides along so reset and
+ *  verify tokens survive the hop. */
+function phoneTwinFor(request: NextRequest): string | null {
+  const { pathname } = request.nextUrl;
+  if (pathname === "/m" || pathname.startsWith("/m/")) return null;
+  const ua = request.headers.get("user-agent") ?? "";
+  if (!PHONE_UA.test(ua)) return null;
+  const hasTwin =
+    PHONE_TWIN_EXACT.has(pathname) ||
+    PHONE_TWIN_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+  if (!hasTwin) return null;
+  return pathname === "/" ? "/m" : `/m${pathname}`;
+}
+
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
   if (isStaticAsset(pathname)) return NextResponse.next();
+
+  const twin = phoneTwinFor(request);
+  if (twin) {
+    const res = NextResponse.redirect(new URL(twin + search, request.url), 307);
+    res.headers.set("Vary", "User-Agent");
+    return res;
+  }
+
   if (isPublicPath(pathname)) return NextResponse.next();
 
   const hasSession = request.cookies.has(SESSION_COOKIE_NAME);
