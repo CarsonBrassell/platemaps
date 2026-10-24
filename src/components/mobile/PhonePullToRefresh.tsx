@@ -136,9 +136,13 @@ export function PhonePullToRefresh({
      inside the touch handler, while React re-renders nothing but this
      component's own dial. */
   const scrollerRef = useRef<HTMLElement | null>(null);
+  /* Where `--pm-pull` is written: the shell, which holds both readers. The gap
+     can be portaled out of the scroller with PhoneStickyBar's pinned frame, so
+     a value set on the scroller would reach the spacer and never the dial. */
+  const pullHostRef = useRef<HTMLElement | null>(null);
   const applyPull = useCallback((next: number, instant = false) => {
     setPull(next);
-    const el = scrollerRef.current;
+    const el = pullHostRef.current;
     if (!el) return;
     /* The gap's own transition is switched off by `data-phase` below; the
        spacer reading this property is not in a position to see that attribute,
@@ -202,9 +206,18 @@ export function PhonePullToRefresh({
   useEffect(() => {
     /* Same lookup PhoneStickyBar makes, and for the same reason: the document
        does not scroll under /m, `.pm-phone-content` does (phone.css). */
-    const scroller = anchorRef.current?.closest<HTMLElement>(".pm-phone-content");
+    /* Not only `closest`: inside the pinned bar this tree is portaled into the
+       shell, beside the scroller rather than under it. */
+    const anchor = anchorRef.current;
+    const shell = anchor?.closest<HTMLElement>(".pm-phone-shell") ?? null;
+    const scroller =
+      anchor?.closest<HTMLElement>(".pm-phone-content") ??
+      shell?.querySelector<HTMLElement>(".pm-phone-content") ??
+      null;
     if (!scroller) return;
     scrollerRef.current = scroller;
+    const pullHost = shell ?? scroller;
+    pullHostRef.current = pullHost;
 
     /* The point the pull is measured from. Not where the touch began: while
        the scroller is still moving this is rewritten every frame, so it ends up
@@ -359,9 +372,10 @@ export function PhonePullToRefresh({
       scroller.removeEventListener("touchcancel", onEnd);
       /* Leaving it behind would hold the bar's spacer open on a screen with no
          gap left to fill. */
-      scroller.style.removeProperty("--pm-pull");
-      scroller.style.removeProperty("--pm-pull-ease");
+      pullHost.style.removeProperty("--pm-pull");
+      pullHost.style.removeProperty("--pm-pull-ease");
       scrollerRef.current = null;
+      pullHostRef.current = null;
     };
   }, [runRefresh, applyPull]);
 
@@ -380,7 +394,7 @@ export function PhonePullToRefresh({
       <div
         className="phone-refresh"
         data-phase={phase}
-        /* `--pm-pull` is not here: it lives on the scroller so the bar's spacer
+        /* `--pm-pull` is not here: it lives on the shell so the bar's spacer
            can read it too (above). These two only ever dress the dial inside
            this box, so they stay local. */
         style={

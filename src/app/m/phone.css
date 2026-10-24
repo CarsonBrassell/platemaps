@@ -118,11 +118,14 @@ html.pm-lock-scroll .pm-phone-content {
  * because MapLibre already takes the gesture and calls preventDefault; native
  * scrolling was never how the map panned.
  *
- * The `translateZ(0)` is the same trick the 390px desktop frame uses further
- * down, for the same reason: it makes the frame the containing block for its
- * fixed children, so the nav and the overlays resolve `bottom: 0` against the
+ * `contain: layout` makes the frame the containing block for its fixed
+ * children, so the nav and the overlays resolve `bottom: 0` against the
  * frame's real 852 instead of the viewport's 793 and sit their usual distance
- * above the glass rather than 59px up in the air.
+ * above the glass rather than 59px up in the air. Not the `translateZ(0)` the
+ * 390px desktop frame uses further down: that also makes the whole frame one
+ * composited layer, and a home-screen iPhone draws the pinned feed tabs soft
+ * inside it — the same site in the TestFlight WebView, which never matches
+ * this block, stays sharp.
  *
  * `display-mode: standalone` is load-bearing, not decoration. In a Safari tab
  * the layout height is already right and `100vh` is the number that is wrong —
@@ -161,7 +164,7 @@ html.pm-lock-scroll .pm-phone-content {
 
   .pm-phone-shell {
     height: 100vh;
-    transform: translateZ(0);
+    contain: layout;
   }
 }
 
