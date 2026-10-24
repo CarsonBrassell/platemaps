@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 /**
  * A control row that stays at the top of the screen and gets out of the way:
@@ -198,6 +199,22 @@ export function PhoneStickyBar({
      live `--pm-pull`, added in CSS rather than measured, so the cards move in
      the same frame as the finger instead of a ResizeObserver's. */
   const [lowerHeight, setLowerHeight] = useState(0);
+  /* Where the pinned frame is drawn: `.pm-phone-shell`, beside PhoneNav, and
+     not here inside `.pm-phone-content`. A `position: fixed` box whose DOM
+     parent is the scroller is one iOS has to counter-scroll as its own layer,
+     and it rasterises that layer soft — the tabs read blurry on a handset
+     while the nav, already a child of the shell, stays sharp. The containing
+     block does not change (the shell is it whenever it is transformed, the
+     viewport otherwise), so only the paint moves. Null until mounted: there is
+     no document to look in during the server render. */
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!pinned) return;
+    setPortalTarget(
+      anchorRef.current?.closest<HTMLElement>(".pm-phone-shell") ?? null,
+    );
+  }, [pinned]);
 
   useEffect(() => {
     const bar = barRef.current;
@@ -208,13 +225,14 @@ export function PhoneStickyBar({
     /* The document does not scroll under /m — `.pm-phone-content` is the
        scroller (phone.css). Falling back to the window keeps this component
        usable if it is ever rendered outside the phone shell. */
-    const scroller = bar.closest<HTMLElement>(".pm-phone-content");
+    const scroller = anchor.closest<HTMLElement>(".pm-phone-content");
     const target: HTMLElement | Window = scroller ?? window;
     const readTop = () => (scroller ? scroller.scrollTop : window.scrollY);
     /* Where the top of the visible area is, in client coordinates. The frame is
        inset from the window on a desktop preview (phone.css), so this is not
        always 0. */
-    const frameTop = () => (scroller ? scroller.getBoundingClientRect().top : 0);
+    const frameTop = () =>
+      scroller ? scroller.getBoundingClientRect().top : 0;
 
     const frameBox = frameRef.current;
     const lowerBox = lowerRef.current;
@@ -303,7 +321,9 @@ export function PhoneStickyBar({
       insetObserver.disconnect();
       if (frame) cancelAnimationFrame(frame);
     };
-  }, []);
+    /* Again once the frame has moved into the shell: the portal mounts fresh
+       nodes, and the observers would otherwise be watching the inline ones. */
+  }, [portalTarget]);
 
   /* Zero-width, height equal to the resolved inset — see the header note on
      why `env()` needs a laid-out probe rather than a read. Rendered by both
@@ -331,6 +351,8 @@ export function PhoneStickyBar({
   );
 
   if (pinned) {
+    const mountFrame = (frame: React.ReactNode) =>
+      portalTarget ? createPortal(frame, portalTarget) : frame;
     return (
       <>
         {/* Still here, and still in the flow: `settle` measures `stuck` off it
@@ -352,12 +374,13 @@ export function PhoneStickyBar({
           The padding is the inset, and it is the reason this build needs no
           separate slab: the strip under the clock is the bar's own ground.
         */}
-        <div
-          ref={frameRef}
-          className={`fixed inset-x-0 z-30 bg-background transition-[top,box-shadow] duration-200 ease-out motion-reduce:transition-none ${
-            stuck ? "shadow-[0_1px_0_0_rgba(35,32,25,0.08)]" : ""
-          }`}
-          /* `top`, not a transform: a transformed element becomes the
+        {mountFrame(
+          <div
+            ref={frameRef}
+            className={`fixed inset-x-0 z-30 bg-background transition-[top,box-shadow] duration-200 ease-out motion-reduce:transition-none ${
+              stuck ? "shadow-[0_1px_0_0_rgba(35,32,25,0.08)]" : ""
+            }`}
+            /* `top`, not a transform: a transformed element becomes the
              containing block for every `position: fixed` descendant, which is
              the trap the header opens on. Nothing in the feed's tab row is
              fixed today, and this is the one place where writing it the safe
@@ -368,21 +391,22 @@ export function PhoneStickyBar({
              it has travelled both. Zero until the effect measures, which is one
              paint on a bar that starts visible anyway — `hidden` cannot be
              true before then. */
-          style={{
-            paddingTop: "env(safe-area-inset-top, 0px)",
-            top: hidden ? `-${frameHeight}px` : 0,
-          }}
-        >
-          <div ref={barRef} className={className}>
-            {children}
-          </div>
-          {/* Between the tiers, so a pull holds the top row still and carries
+            style={{
+              paddingTop: "env(safe-area-inset-top, 0px)",
+              top: hidden ? `-${frameHeight}px` : 0,
+            }}
+          >
+            <div ref={barRef} className={className}>
+              {children}
+            </div>
+            {/* Between the tiers, so a pull holds the top row still and carries
               the lower one down with the cards — which is the shape of the
               gesture: the thing you navigate with stays put, the things you
               were reading move. */}
-          {gap}
-          {lower ? <div ref={lowerRef}>{lower}</div> : null}
-        </div>
+            {gap}
+            {lower ? <div ref={lowerRef}>{lower}</div> : null}
+          </div>,
+        )}
         {/* What the bar used to occupy. Measured rather than guessed: the row's
             height changes with the sort switch and with a long search value,
             and a hardcoded number would put the first card under the bar the
@@ -399,7 +423,9 @@ export function PhoneStickyBar({
           aria-hidden="true"
           className="pm-sticky-spacer"
           style={{
-            height: gap ? `calc(${height + lowerHeight}px + var(--pm-pull, 0px))` : height,
+            height: gap
+              ? `calc(${height + lowerHeight}px + var(--pm-pull, 0px))`
+              : height,
           }}
         />
       </>
