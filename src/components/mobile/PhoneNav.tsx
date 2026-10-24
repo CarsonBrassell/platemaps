@@ -8,6 +8,7 @@ import { NavDot } from "@/components/NavDot";
 import { COACH_KEYS } from "@/components/MobileNav";
 import { useNavAlerts } from "@/lib/navAlerts";
 import { useAuth } from "@/lib/auth";
+import { OPEN_BROWSING } from "@/lib/signInGate";
 import { HomeIcon, CompassIcon, UsersIcon, UserIcon, PlusIcon } from "@/components/icons";
 
 /**
@@ -106,7 +107,11 @@ export function PhoneNav({ variant = DEFAULT_VARIANT }: { variant?: NavVariant }
       <NavDot label={slot.dot.label} className="absolute -right-1 -top-0.5" />
     ) : null;
 
-  const shared = { to, isCurrent, dotFor, showCreate: isSignedIn };
+  /* In open-browsing demo mode a signed-out visitor still gets the button —
+     it is how they find out posting needs an account (the proxy sends
+     /m/post to sign-in). Still hidden on the sign-in form itself. */
+  const showCreate = isSignedIn || (OPEN_BROWSING && pathname !== "/m/account");
+  const shared = { to, isCurrent, dotFor, showCreate };
 
   if (variant === "strip") return <StripNav {...shared} />;
   if (variant === "pill") return <PillNav {...shared} />;

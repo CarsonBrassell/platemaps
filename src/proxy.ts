@@ -20,6 +20,10 @@ import { isPublicPath, signInHrefFor } from "@/lib/signInGate";
  * `/api/auth/me` answers `{ user: null }`. Those two layers are load-bearing,
  * not redundant — do not remove either one on the assumption this file makes
  * them unnecessary.
+ *
+ * Demo mode (2026-10-24): `OPEN_BROWSING` in src/lib/signInGate.ts opens
+ * browsing to everyone; only posting, settings, friends and profiles still
+ * redirect here. Flip it to false to restore the everywhere-gate.
  */
 
 /** Excludes `_next/*` at the matcher level; the dot-suffix rule below catches

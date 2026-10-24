@@ -35,10 +35,45 @@ const PUBLIC_EXACT_PATHS = new Set<string>([
 /** Path prefixes that never require a session, matched by `startsWith`. */
 const PUBLIC_PREFIXES: readonly string[] = ["/api/auth/"];
 
+/**
+ * Demo mode, Calvin 2026-10-24: "make it so you dont have to sign in when you
+ * open the app for now at least so i can send people a demo version ... if
+ * they wana make posts thou they have to sign up."
+ *
+ * While true, everything is browsable signed out (map, feed, restaurants) and
+ * only the paths in `SIGNED_IN_ONLY_PREFIXES` still bounce to sign-in. API
+ * routes are not gated here at all in this mode: every route that writes or
+ * reads private data already calls `getCurrentUser()` and answers 401 itself,
+ * and the handful that don't (restaurants, discover, auth) are public reads.
+ *
+ * Set to false to go back to the 2026-09-17 rule: sign-in required everywhere.
+ */
+export const OPEN_BROWSING = true;
+
+/** Still need a session in open-browsing mode: making posts, your own
+ *  settings, friends, and user profiles (the profile pages need a viewer for
+ *  the block check — see src/app/u/[id]/page.tsx). Matched as the exact path
+ *  or the path followed by `/`. */
+const SIGNED_IN_ONLY_PREFIXES: readonly string[] = [
+  "/post",
+  "/m/post",
+  "/account/settings",
+  "/m/account/settings",
+  "/friends",
+  "/m/friends",
+  "/u",
+  "/m/u",
+];
+
 /** True when `pathname` may be visited without a session cookie. */
 export function isPublicPath(pathname: string): boolean {
   if (PUBLIC_EXACT_PATHS.has(pathname)) return true;
-  return PUBLIC_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+  if (PUBLIC_PREFIXES.some((prefix) => pathname.startsWith(prefix))) return true;
+  if (!OPEN_BROWSING) return false;
+  if (pathname.startsWith("/api/")) return true;
+  return !SIGNED_IN_ONLY_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
 }
 
 /** Which sign-in screen a non-public path should bounce to. */

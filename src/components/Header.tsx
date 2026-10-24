@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth";
+import { OPEN_BROWSING } from "@/lib/signInGate";
 import { useNavAlerts } from "@/lib/navAlerts";
 import { BrandMark, WordMark } from "@/components/BrandMark";
 import { RestaurantSearch } from "@/components/RestaurantSearch";
@@ -36,6 +37,11 @@ const DOTS: Record<string, { slot: "friends" | "profile"; label: string }> = {
 export function Header() {
   const pathname = usePathname();
   const { account } = useAuth();
+  /* Nav, search and the MobileNav bar. Signed out they used to wait for an
+     account because every destination bounced to sign-in; in open-browsing
+     demo mode (src/lib/signInGate.ts) the destinations are reachable, so the
+     chrome shows for everyone. */
+  const showChrome = !!account || OPEN_BROWSING;
 
   /* The unread dots on Friends and Profile. This is the only place in the app
      that surfaces either outside its own page — the request badge used to live
@@ -185,8 +191,9 @@ export function Header() {
           (src/proxy.ts), so every destination here would bounce straight back
           to the form. The row keeps only the wordmark; nav, search and the
           MobileNav bar all wait for an account. Keyed on `account` rather than
-          `loading` so the sign-in screen never flashes a menu. */}
-      {account && (
+          `loading` so the sign-in screen never flashes a menu. Open-browsing
+          demo mode overrides this — see `showChrome`. */}
+      {showChrome && (
       <nav aria-label="Main" className="hidden shrink-0 items-center xl:flex">
         {NAV_LEFT.map(navItem)}
         {/* The compose button, named rather than left as a bare glyph. Orange
@@ -232,12 +239,12 @@ export function Header() {
           sits. If it ever reads unbalanced, give the search back the width;
           don't put an ornament in the corner to weigh the scales. */}
       <div className="flex min-w-0 items-center justify-end">
-        {account && <RestaurantSearch />}
+        {showChrome && <RestaurantSearch />}
       </div>
     </header>
     {/* Rendered here rather than in each page: Header is already on all of
         them, so this keeps the two halves of one menu in one file. */}
-    {account && <MobileNav alerts={alerts} />}
+    {showChrome && <MobileNav alerts={alerts} />}
     </>
   );
 }
