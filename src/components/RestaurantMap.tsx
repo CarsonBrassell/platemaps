@@ -5,6 +5,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
   type ComponentType,
   type RefObject,
 } from "react";
@@ -226,13 +227,12 @@ const BUBBLE_GAP = 6;
 /* Vertical room the neon restaurant sign takes above a stack's top edge —
    part of the collision footprint so no other bubble lands on the name. */
 const NEON_SIGN_CLEARANCE = 14;
-/* A bubble whose post has a photo carries an arrow and a sliver of the photo
-   to the left of the card: the sliver's 12px peek, a 10px gap, and the 22px
-   chevron. The collision pass reserves this much to the left of the card so a
-   neighbour cannot land on the affordance. The open drawer (118px) may overlap
-   neighbours, the way the open text already does, so it is not reserved. Keep
-   in step with .map-photo-arrow / .map-photo-drawer in globals.css. */
-const PHOTO_LEFT_RESERVE = 12 + 10 + 22;
+/* A bubble whose post has a photo shows it as a thumbnail flush against the
+   card's left edge, always visible. The collision pass reserves its width to
+   the left of the card so a neighbour cannot land on it. 44px is the same
+   strip the old arrow + sliver reserved, so photos cost no extra map room.
+   Keep in step with .map-photo-thumb in globals.css. */
+const PHOTO_LEFT_RESERVE = 44;
 /* Only http(s) and same-origin paths reach a CSS url(); the value came out of
    a database column and is written into an inline style. */
 function photoCssUrl(raw: string) {
@@ -1086,16 +1086,14 @@ function bubbleElement(
     </svg>`
       : "";
 
-  /* The photo affordance, only when the post has a viewable photo: a sliver of
-     it peeking from behind the card's left edge (the drawer, closed) and a
-     floating chevron that opens it. Both are children of the box so they track
-     its height as the text opens; globals.css lays them out. */
+  /* The photo, only when the post has a viewable photo: a thumbnail flush
+     against the card's left edge, always showing. It is a child of the box so
+     it tracks the box's height as the text opens; tapping it opens the photo
+     full screen (the click handler in the placement pass). globals.css lays
+     it out. */
   const photoSrc = comment.photoUrl ? photoCssUrl(comment.photoUrl) : null;
   const photoHtml = photoSrc
-    ? `<span class="map-photo-drawer" data-src="${escapeHtml(comment.photoUrl ?? "")}" style="background-image: url('${escapeHtml(photoSrc)}');" aria-hidden="true"></span>
-        <button type="button" class="map-photo-arrow" aria-label="Show photo" aria-expanded="false">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#a3a9b2" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4 L7 12 L15 20"/></svg>
-        </button>`
+    ? `<button type="button" class="map-photo-thumb" style="background-image: url('${escapeHtml(photoSrc)}');" aria-label="Enlarge photo"></button>`
     : "";
 
   const el = document.createElement("div");
@@ -1177,57 +1175,7 @@ function bubbleElement(
 const BUBBLE_OPEN_CLASS = "map-bubble-open";
 
 function closeOpenBubbles(els: Map<string, HTMLElement>) {
-  for (const el of els.values()) {
-    el.classList.remove(BUBBLE_OPEN_CLASS);
-    setPhotoDrawer(el, false);
-  }
-}
-
-/* The photo drawer's state lives on the bubble as a class (globals.css slides
-   the drawer and flips the chevron off it) and on the arrow as aria. Opening
-   the drawer also opens the bubble's text, so callers add BUBBLE_OPEN_CLASS. */
-const PHOTO_OPEN_CLASS = "map-photo-open";
-
-function setPhotoDrawer(el: HTMLElement, open: boolean) {
-  if (!el.classList.contains(PHOTO_OPEN_CLASS) && !open) return;
-  el.classList.toggle(PHOTO_OPEN_CLASS, open);
-  const arrow = el.querySelector<HTMLElement>(".map-photo-arrow");
-  if (arrow) {
-    arrow.setAttribute("aria-expanded", open ? "true" : "false");
-    arrow.setAttribute("aria-label", open ? "Hide photo" : "Show photo");
-  }
-  if (open) sizePhotoDrawer(el);
-}
-
-/* The open drawer takes the photo's own shape: as tall as the opened card,
-   as wide as the photo's aspect ratio makes it, so nothing is cropped. The
-   ratio comes from the image itself (already cached by the sliver) and is
-   kept on the drawer; until it loads the drawer opens square. */
-const PHOTO_MIN_W = 44;
-const PHOTO_MAX_W = 260;
-
-function sizePhotoDrawer(el: HTMLElement) {
-  const drawer = el.querySelector<HTMLElement>(".map-photo-drawer");
-  const box = el.querySelector<HTMLElement>(".map-bubble-box");
-  if (!drawer || !box) return;
-  const apply = (ratio: number) => {
-    if (!el.classList.contains(PHOTO_OPEN_CLASS)) return;
-    const w = Math.round((box.offsetHeight + 2) * ratio);
-    el.style.setProperty("--photo-w", `${Math.min(PHOTO_MAX_W, Math.max(PHOTO_MIN_W, w))}px`);
-  };
-  const known = Number(drawer.dataset.ratio);
-  if (known > 0) return apply(known);
-  apply(1);
-  const src = drawer.dataset.src;
-  if (!src) return;
-  const img = new Image();
-  img.onload = () => {
-    if (!img.naturalWidth || !img.naturalHeight) return;
-    const ratio = img.naturalWidth / img.naturalHeight;
-    drawer.dataset.ratio = String(ratio);
-    apply(ratio);
-  };
-  img.src = src;
+  for (const el of els.values()) el.classList.remove(BUBBLE_OPEN_CLASS);
 }
 
 /* Whether the resting bubble is hiding anything — the only case where a tap
@@ -1544,6 +1492,8 @@ export function RestaurantMap({
   const canUpvote = !!onUpvote;
   const canHeart = !!onHeart;
   const router = useRouter();
+  /* The bubble photo open full screen, if any (PhotoLightbox). */
+  const [enlargedPhoto, setEnlargedPhoto] = useState<{ src: string; alt: string } | null>(null);
 
   /* What the search field has asked the map to light up, and the handle to
      redraw with it.
@@ -2697,8 +2647,8 @@ export function RestaurantMap({
              and which card ends up on top isn't known until the stack is laid.
              `crown` below grows whichever rect ends up highest. */
           /* A photo bubble also owns the strip to the card's left where its
-             arrow and sliver sit, so the rect starts there and is that much
-             wider. The card itself is still at point.x + 12. */
+             thumbnail sits, so the rect starts there and is that much wider.
+             The card itself is still at point.x + 12. */
           const leftPad =
             comment.photoUrl && photoCssUrl(comment.photoUrl) ? PHOTO_LEFT_RESERVE : 0;
           const rect: PlacedRect = {
@@ -2737,15 +2687,15 @@ export function RestaurantMap({
             ? `/restaurant/${restaurant.id}?post=${comment.postId}`
             : `/restaurant/${restaurant.id}`;
           const profileHref = comment.authorId ? `/u/${comment.authorId}` : null;
-          /* The photo arrow toggles the drawer and nothing else. Every event the
-             map or the bubble itself would act on is stopped at the button:
-             the bubble's click (navigation / tap-to-open, below), and MapLibre's
-             own press, drag, double-tap-zoom and tap-to-close-bubbles handling,
-             which listen on the canvas container the marker lives in. Stopping
-             (never preventDefault) leaves the button's own click and focus
-             intact. */
-          const photoArrow = el.querySelector<HTMLElement>(".map-photo-arrow");
-          if (photoArrow) {
+          /* The photo thumbnail opens the photo full screen and nothing else.
+             Every event the map or the bubble itself would act on is stopped at
+             the button: the bubble's click (navigation / tap-to-open, below),
+             and MapLibre's own press, drag, double-tap-zoom and
+             tap-to-close-bubbles handling, which listen on the canvas container
+             the marker lives in. Stopping (never preventDefault) leaves the
+             button's own click and focus intact. */
+          const photoThumb = el.querySelector<HTMLElement>(".map-photo-thumb");
+          if (photoThumb) {
             for (const type of [
               "pointerdown",
               "pointerup",
@@ -2756,26 +2706,22 @@ export function RestaurantMap({
               "dblclick",
               "keydown",
             ]) {
-              photoArrow.addEventListener(type, (e) => e.stopPropagation());
+              photoThumb.addEventListener(type, (e) => e.stopPropagation());
             }
-            photoArrow.addEventListener("click", (e) => {
+            photoThumb.addEventListener("click", (e) => {
               e.stopPropagation();
-              if (el.classList.contains(PHOTO_OPEN_CLASS)) {
-                /* Closing hides the text again on a phone; on a mouse the
-                   pointer is still over the bubble, so :hover keeps it open. */
-                setPhotoDrawer(el, false);
-                el.classList.remove(BUBBLE_OPEN_CLASS);
-              } else {
-                closeOpenBubbles(bubbleElementsRef.current);
-                el.classList.add(BUBBLE_OPEN_CLASS);
-                setPhotoDrawer(el, true);
+              if (comment.photoUrl) {
+                setEnlargedPhoto({
+                  src: comment.photoUrl,
+                  alt: comment.dishPrefix ?? comment.text ?? "Photo",
+                });
               }
             });
           }
           el.addEventListener("click", (e) => {
             const target = e.target as HTMLElement;
-            // Backstop: the arrow's own handler already stopped this.
-            if (target.closest(".map-photo-arrow")) return;
+            // Backstop: the thumbnail's own handler already stopped this.
+            if (target.closest(".map-photo-thumb")) return;
             const upvoteChip = target.closest(".map-upvote-chip");
             if (upvoteChip) {
               // Voting stays on the map rather than opening the post — the
@@ -3028,6 +2974,52 @@ export function RestaurantMap({
           arriving thirty times a minute re-renders one small component instead
           of this one. */}
       <MyLocation mapRef={mapRef} />
+      {enlargedPhoto && (
+        <PhotoLightbox photo={enlargedPhoto} onClose={() => setEnlargedPhoto(null)} />
+      )}
+    </div>
+  );
+}
+
+/* A map bubble's photo, full screen. Fixed to the viewport so it escapes the
+   map's rounded, clipped container; tap anywhere or press Escape to close. */
+function PhotoLightbox({
+  photo,
+  onClose,
+}: {
+  photo: { src: string; alt: string };
+  onClose: () => void;
+}) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    closeRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Photo"
+      className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/90 p-4"
+      onClick={onClose}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element -- user Blob photo at its own aspect ratio */}
+      <img src={photo.src} alt={photo.alt} className="max-h-full max-w-full rounded-lg object-contain" />
+      <button
+        ref={closeRef}
+        type="button"
+        aria-label="Close photo"
+        className="absolute right-3 top-[max(12px,env(safe-area-inset-top))] grid h-11 w-11 place-items-center rounded-full bg-black/60 text-white focus-visible:outline-2 focus-visible:outline-pm-orange"
+        onClick={onClose}
+      >
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
     </div>
   );
 }
