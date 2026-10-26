@@ -2982,7 +2982,9 @@ export function RestaurantMap({
 }
 
 /* A map bubble's photo, full screen. Fixed to the viewport so it escapes the
-   map's rounded, clipped container; tap anywhere or press Escape to close. */
+   map's rounded, clipped container; tap anywhere or press Escape to close.
+   There is deliberately no close button: the whole overlay is the target.
+   The overlay takes focus on open so Escape works and focus leaves the map. */
 function PhotoLightbox({
   photo,
   onClose,
@@ -2990,9 +2992,9 @@ function PhotoLightbox({
   photo: { src: string; alt: string };
   onClose: () => void;
 }) {
-  const closeRef = useRef<HTMLButtonElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    closeRef.current?.focus();
+    overlayRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
@@ -3001,25 +3003,16 @@ function PhotoLightbox({
   }, [onClose]);
   return (
     <div
+      ref={overlayRef}
       role="dialog"
       aria-modal="true"
-      aria-label="Photo"
-      className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/90 p-4"
+      aria-label="Photo, tap to close"
+      tabIndex={-1}
+      className="fixed inset-0 z-[100000] flex cursor-zoom-out items-center justify-center bg-black/90 p-4 outline-none"
       onClick={onClose}
     >
       {/* eslint-disable-next-line @next/next/no-img-element -- user Blob photo at its own aspect ratio */}
       <img src={photo.src} alt={photo.alt} className="max-h-full max-w-full rounded-lg object-contain" />
-      <button
-        ref={closeRef}
-        type="button"
-        aria-label="Close photo"
-        className="absolute right-3 top-[max(12px,env(safe-area-inset-top))] grid h-11 w-11 place-items-center rounded-full bg-black/60 text-white focus-visible:outline-2 focus-visible:outline-pm-orange"
-        onClick={onClose}
-      >
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
-          <path d="M6 6l12 12M18 6L6 18" />
-        </svg>
-      </button>
     </div>
   );
 }
