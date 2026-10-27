@@ -1,0 +1,80 @@
+4119 Wonderful Sushi: held menu sourced from menujoys aggregator showing GBP; verify
+270 El Torito: re-read quarantined (allmenus aggregator); fingerprint was nulled by mistake, so its page change is masked until next re-read
+7145 Antique Row Cafe: re-read withheld, agent paired a scrambled grid by row (descriptions may be misaligned)
+397 Shan Xi Magic Kitchen: re-read quarantined (beyondmenu aggregator); own site domain is hijacked spam - check website field
+431 Urban Plates: skipped, client-rendered order page
+11733 Le Caramel: re-read quarantined, 1.25 markup pattern on own site
+336 Donnys Cafe: held menu likely from placejoys aggregator; site unreachable
+2343 Money Pit: held menu from placejoys aggregator; skipped
+81 Punch Bowl Social: skipped, only brunch page found
+5324 Ramberto's Taco Shop: skipped, held menu from grubbio aggregator
+1548 Ramen Ryoma: skipped, talech 403
+5629 Meal Prep Sunday: agent says subscription plans only, no per-dish prices - held menu may be wrong / hold candidate
+4048 Himalayan Grill, 834 Key and Cleaver: skipped, blocked sources
+773 Wet Stone / 1744 Taproom / 3343 Coin-Op / 2499 Pizza on Pearl / 2687 Bongiorno's: skipped in re-read, old menu kept
+7960 Pastaphony: skipped, page lists ~13 priced of 27 held (Square Online)
+7322 Bonjour Patisserie: skipped, products.json ~29 of 54 held
+3601 Blue Bottle Coffee: re-read from DoorDash JSON-LD, medium confidence
+6090 Firefly Eatery & Bar: skipped, Cloudflare blocks curl, multi-tab menu
+5876 Rum Jungle Cafe: skipped, Square variants unpairable
+5906 Roberto's Taco Shop #1: SpotOn /1.04 divisor applied this read (prices drop vs old filing)
+4617 The Pool House: skipped, Pendry Cloudflare; browser showed 14 of 68
+3167 South Bay Tap House: skipped, taplist.io unpairable
+6061 Fatte's Pizza Chula Vista: whole page Out of stock at read time; specialty pizzas unpriced
+1944 Lucky Doughnut: skipped, DoorDash 403, own site unpriced
+8711 Ahi Sushi: skipped, DoorDash 83 of 212 held
+7520 Chocolate Bash: skipped, only 36 of 104 items priced
+8899 Mainstream Bar & Grill West: read from mainstreampoway.net (Carlsbad section) - confirm location
+8665 Cicciotti's: cash prices filed (3% card fee)
+9393 See's Candies: skipped, retail e-commerce page (also a candidate to hold: retail candy, not a restaurant?)
+8691 Dominic's: whole page Out of stock at read time (possibly closed?)
+7409 La Mesa Pizzaworks: skipped, PDF fonts broken, /menu 404
+9750 Ginger Noodle Bar: skipped, viejas.com 403
+7302 AleSmith Brewing: skipped, beer-only front-page image
+10739 Läderach: skipped, retail chocolate (hold candidate, like See's)
+3831 Party Time Liquor: liquor store, hold candidate
+Barona casino 14026/11288/14064/14058/11163/10735: each holds the SAME 65-dish shared food-court menu - wrong per-vendor data, needs per-vendor split or hold
+3163 Sushi Cafe + Deli (524 Stevens): holds Encore Sushi's menu (112 S Cedros) - IDENTITY ERROR, old menu is wrong
+8113 The Encore Sushi: skipped, Toast bot wall, site only happy hour
+7114 MOOYAH: skipped, Olo needs browser
+3188 Steady State Coffee: skipped, Cash App ordering
+8700 Texas de Brazil Carlsbad: skipped, prix-fixe buffet
+5616 La Colombe: skipped, retail only
+9879 Farm Fresh Meals: weekly-rotating meal prep (8 dishes) - hold candidate like Meal Prep Sunday
+9410 Steady State Roasting: skipped, cash.app ordering
+91 The Prado at Balboa Park: skipped, own page unpriced; held placejoys menu looks stale
+412 Georges at the Cove: lunch menu only filed
+10213 Milk & Honey Bakery / 11123 Adam Ice Cream: NOT loaded - Shopify per-variant explosion (1514 / 472 rows); kept old menus. Raw in rx-result-35.orig.json
+29 Urban Plates: skipped, client-rendered
+10569 The Coffee Shop (Jamul): held source is Parabola Coffee Shopify merch - identity unverified, suspect
+1087 One Door North: skipped, few prices
+1220 Jimmy Os: skipped, food page only 21 of 63
+4567 Burekas Box: skipped, Toast 403
+9975 Cayenne Food Truck: only menu found is a different location
+1293 Little Ceasar's: fast-food chain - check exclusion scope
+14120 Harland Brewing Bay Park: skipped, products.json is merch only - held menu may be merch too, check
+14113 Yipao Coffee: skipped, retail catalog (beans/merch) - check held menu
+2024 Cork & Stem: skipped, wine/gift/flower shop catalog - hold candidate (retail)
+1722 Bernardo Winery: skipped, kitchen page partial
+1786 Slowly Restaurant + Bar: skipped, 35 of 68
+1830 Notorious Burger: site now Notorious Sports Bar & Grill Suite 107 vs #106 - possible rebrand, check
+2141 Samurai: skipped, price formats unpairable
+14056 Everytable: loaded 97 (variants collapsed from 393)
+6582 Talitha Coffee Roasters: skipped, retail beans catalog - check held menu
+6598 Feast and Fareway: skipped, brunch image only
+6968 Clem's Station: skipped, food image only
+7432 The Harland Clubhouse: skipped, merch-only products.json - check held menu
+5974 European Cake Gallery: 54 vs 117 (old was variant rows)
+3382 Giant Bronx Pizza: skipped, 93 of 187
+3541 Stratford Court Cafe: skipped, 33 of 66
+3640 Babe: site is a Shopify COSMETICS store - held menu suspect, review/hold
+2670 George's Rooftop / 2671 George's Bar: both filed identical 133-dish menu - shared venue? check
+5861 Downtown Cafe Bar & Grill: skipped, no prices in page text
+5048 Alice's Italian Gourmet: filed 50 vs 93 with note (catering excluded)
+4406/4582 Everytable: 90 each (old 393 were variant rows)
+4272 Sunlife Organics: skipped, merch/supplements products.json - check held menu
+BATCH 42 NOT LOADED: every entry is a Shopify retail catalog (clothing, jewelry, Pokemon cards, candles, merch). The HELD menus are the same catalogs, worse (Morning Lavender 895 rows = dresses, High Tide 1650). Ids: 9272 J.Sweets, 9279 Venchi, 9286 Morning Lavender, 9299 Communal Coffee, 9337 High Tide Coffee, 9345 Parabola Coffee, 9347 Provecho, 9348 Tito Ricks, 9421 CAKED. Calvin: hold these or rebuild from a real cafe menu.
+9499 Claire's Too: skipped, SpotOn 403
+8787/9164 Bump Coffee, 9202 Yipao, 9004 Harland 4S, 9700 Harland Scripps: products.json retail/merch only - held menus likely the same retail catalogs, review with batch 42 list
+899 Pine House Cafe: skipped, prices match held
+953 Sushi Hana: held source is a spam site (superoffers.com), own site dead - possibly closed, review
