@@ -13,9 +13,7 @@ import type { TasteMatch } from "@/lib/tasteMatch";
  * Someone who can't tell orange from charcoal still can tell solid from dashed
  * and circle from square. Labels are in the text colour, never a series colour.
  *
- * Spoke values are percent of your own posts on the one-person profile, and a
- * 0–100 like score (how often + how highly, see lib/tasteMatch.ts) on the
- * two-person match; either way scaled to `axisMax` so
+ * Spoke values are percent of each person's own posts, scaled to `axisMax` so
  * the shapes fill the grid instead of huddling in the middle; the legend says
  * what the outer ring is (a label on the chart collides with the top spoke's).
  *
@@ -87,7 +85,7 @@ export function TasteRadar({
         aria-label={them ? `Cuisine mix, ${youLabel} against ${themLabel}` : "Your cuisine mix"}
         className="mx-auto block h-auto w-full max-w-[440px]"
       >
-        <desc>{`${them ? "How much each of you likes the cuisines you share most" : "Share of your posts by cuisine"}. ${summary}.`}</desc>
+        <desc>{`Share of ${them ? "each person's" : "your"} posts by cuisine. ${summary}.`}</desc>
 
         {RINGS.map((f) => (
           <polygon

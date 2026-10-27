@@ -13,14 +13,8 @@
  * **The match is histogram overlap**: the sum, over every cuisine either person
  * has posted at, of min(yourShare, theirShare). Identical mixes score 100,
  * mixes with nothing in common score 0. It runs over all cuisines, not only the
- * drawn spokes.
- *
- * **The radar is what you share, graded by how much each of you likes it**
- * (Calvin, 2026-10-26). Spokes are the 8 cuisines with the biggest overlap;
- * each person's point on a spoke is a 0–100 "like" score: half how often they
- * eat it (share against their own favorite cuisine, so their favorite is 100),
- * half how they rate it (average rating there). No rated plates at a cuisine
- * means the score is frequency alone.
+ * drawn spokes — the radar is a picture of each person's favorites, the
+ * number is about everything.
  */
 
 /** A person's posting history, already reduced to what the match needs. */
@@ -30,15 +24,13 @@ export type TasteInput = {
   /** Per cuisine, the restaurant they posted at most (listed restaurants only,
    *  so the link can't land on a 404). */
   topPlaces: Record<string, { id: string; name: string; count: number }>;
-  /** Per cuisine, the sum and number of their ratings, each on 0–100. */
-  ratings?: Record<string, { sum: number; n: number }>;
 };
 
 export type TasteMatch = {
-  /** Up to 8 cuisines, the biggest overlap picked first; drawn ordered from
-   *  leaning-you to leaning-them. */
+  /** 7–8 cuisines: each person's top 4 (shared ones merged), topped up in
+   *  pairs. Ordered from leaning-you to leaning-them. */
   spokes: string[];
-  /** The viewer's like score (0–100) at each spoke, same order. */
+  /** Percent (0–100) of the viewer's posts at each spoke, same order. */
   you: number[];
   /** Same for the friend. */
   them: number[];
@@ -46,7 +38,7 @@ export type TasteMatch = {
   axisMax: number;
   /** 0–100, whole number. */
   matchPct: number;
-  /** The two shared cuisines where both like scores are highest (min of the two). */
+  /** The two cuisines where both shares are highest (min of the two). */
   bothLove: string[];
   /** The cuisine the friend over-indexes on most, and where they go for it. */
   tryPick: { cuisine: string; restaurantId: string; restaurantName: string } | null;
@@ -73,6 +65,10 @@ export const MAX_SPOKES = 8;
 /** Below this many cuisine-tagged posts a person's mix is noise, not taste. */
 export const MIN_POSTS = 3;
 const MIN_SPOKES = 3;
+/** The friend radar: each person's top this-many cuisines... */
+const TOP_PER_PERSON = 4;
+/** ...topped up in pairs until there are at least this many spokes. */
+const MIN_DRAWN = 7;
 
 function total(counts: Record<string, number>): number {
   let n = 0;
@@ -88,23 +84,6 @@ const byName = (a: { cuisine: string }, b: { cuisine: string }) =>
  *  shapes fill the grid. Shared by both radars so they scale the same way. */
 function axisMaxFor(peak: number): number {
   return Math.min(100, Math.max(10, Math.ceil(peak / 5) * 5));
-}
-
-/** A person's 0–100 like score per cuisine: half frequency (share against their
- *  own top cuisine), half average rating; frequency alone with no ratings. */
-function likeScores(input: TasteInput, shares: Record<string, number>): Record<string, number> {
-  const top = Math.max(0, ...Object.values(shares));
-  const out: Record<string, number> = {};
-  for (const [cuisine, share] of Object.entries(shares)) {
-    if (share <= 0 || top <= 0) {
-      out[cuisine] = 0;
-      continue;
-    }
-    const freq = (share / top) * 100;
-    const r = input.ratings?.[cuisine];
-    out[cuisine] = r && r.n > 0 ? (freq + Math.min(100, Math.max(0, r.sum / r.n))) / 2 : freq;
-  }
-  return out;
 }
 
 /**
@@ -123,27 +102,33 @@ export function computeTasteMatch(you: TasteInput, them: TasteInput): TasteMatch
     return { cuisine, y, t, shared: Math.min(y, t), gap: t - y };
   });
 
-  const yourScore = likeScores(you, Object.fromEntries(rows.map((r) => [r.cuisine, r.y])));
-  const theirScore = likeScores(them, Object.fromEntries(rows.map((r) => [r.cuisine, r.t])));
-
-  /* Spokes: the 8 cuisines you two have most in common (biggest overlap).
-     Past the shared ones, the cuisines you post most between you fill in so
-     the chart still has a shape. */
-  const picked = [...rows]
-    .sort((a, b) => b.shared - a.shared || b.y + b.t - (a.y + a.t) || byName(a, b))
-    .slice(0, MAX_SPOKES);
-  /* Ordered by who likes it more: your cuisines sweep one side of the chart,
-     theirs the other, so the shapes pull apart where tastes differ. */
-  const lean = (r: (typeof rows)[number]) => yourScore[r.cuisine] - theirScore[r.cuisine];
-  const drawn = picked.sort((a, b) => lean(b) - lean(a) || byName(a, b));
+  /* Spokes: each person's top 4, a cuisine in both merging into one spoke.
+     While that leaves fewer than 7, both people add their next pick together,
+     so neither side gets more say — always 7 or 8 unless someone has posted
+     at very few cuisines. */
+  const ranked = (share: (r: (typeof rows)[number]) => number) =>
+    rows.filter((r) => share(r) > 0).sort((a, b) => share(b) - share(a) || byName(a, b));
+  const yourList = ranked((r) => r.y);
+  const theirList = ranked((r) => r.t);
+  const picked = new Set<(typeof rows)[number]>();
+  for (let i = 0; i < TOP_PER_PERSON; i++) {
+    if (yourList[i]) picked.add(yourList[i]);
+    if (theirList[i]) picked.add(theirList[i]);
+  }
+  for (let i = TOP_PER_PERSON; picked.size < MIN_DRAWN && (i < yourList.length || i < theirList.length); i++) {
+    if (yourList[i]) picked.add(yourList[i]);
+    if (theirList[i]) picked.add(theirList[i]);
+  }
+  /* Ordered by who leans harder on it: your cuisines sweep one side of the
+     chart, theirs the other, so the shapes pull apart where tastes differ. */
+  const drawn = [...picked].sort((a, b) => b.y - b.t - (a.y - a.t) || byName(a, b));
   if (drawn.length < MIN_SPOKES) return null;
 
   const matchPct = Math.round(rows.reduce((sum, r) => sum + r.shared, 0));
 
-  const both = (r: (typeof rows)[number]) => Math.min(yourScore[r.cuisine], theirScore[r.cuisine]);
   const bothLove = rows
     .filter((r) => r.shared > 0)
-    .sort((a, b) => both(b) - both(a) || b.shared - a.shared || byName(a, b))
+    .sort((a, b) => b.shared - a.shared || b.y + b.t - (a.y + a.t) || byName(a, b))
     .slice(0, 2)
     .map((r) => r.cuisine);
 
@@ -159,14 +144,13 @@ export function computeTasteMatch(you: TasteInput, them: TasteInput): TasteMatch
     }
   }
 
-  const youScores = drawn.map((r) => yourScore[r.cuisine]);
-  const themScores = drawn.map((r) => theirScore[r.cuisine]);
-  const axisMax = axisMaxFor(Math.max(...youScores, ...themScores));
+  const peak = Math.max(...drawn.map((r) => Math.max(r.y, r.t)));
+  const axisMax = axisMaxFor(peak);
 
   return {
     spokes: drawn.map((r) => r.cuisine),
-    you: youScores,
-    them: themScores,
+    you: drawn.map((r) => r.y),
+    them: drawn.map((r) => r.t),
     axisMax,
     matchPct,
     bothLove,
@@ -207,9 +191,6 @@ export type CuisineCountRow = {
   restaurantName: string;
   listed: boolean;
   count: number;
-  /** Sum of this group's ratings on 0–100, and how many posts were rated. */
-  ratingSum?: number;
-  ratedCount?: number;
 };
 
 /** Folds the query's rows into one TasteInput for `userId`. */
@@ -218,13 +199,6 @@ export function tasteInputFor(rows: CuisineCountRow[], userId: string): TasteInp
   for (const r of rows) {
     if (r.userId !== userId) continue;
     input.counts[r.cuisine] = (input.counts[r.cuisine] ?? 0) + r.count;
-    if (r.ratedCount) {
-      const ratings = (input.ratings ??= {});
-      const acc = ratings[r.cuisine] ?? { sum: 0, n: 0 };
-      acc.sum += r.ratingSum ?? 0;
-      acc.n += r.ratedCount;
-      ratings[r.cuisine] = acc;
-    }
     if (!r.listed) continue;
     const best = input.topPlaces[r.cuisine];
     /* Ties go to the lower id so the pick is stable across requests. */

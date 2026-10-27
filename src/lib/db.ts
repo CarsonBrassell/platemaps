@@ -1160,9 +1160,6 @@ export async function getUserPublicPosts(
  * says nothing about taste and drops out of the join. `restaurant_id` is a soft
  * reference, so a deleted restaurant drops out the same way.
  *
- * Ratings ride along on one 0–100 scale (dish percent as-is, restaurant stars
- * x20, pre-split /10 numbers x10) for the match's like scores.
- *
  * `listed` rides along so the "try their pick" link is never an unlisted
  * restaurant (whose page 404s); unlisted posts still count toward the mix.
  */
@@ -1170,13 +1167,7 @@ export async function getCuisineCounts(userIds: string[]): Promise<CuisineCountR
   if (userIds.length === 0) return [];
   const rows = await sql`
     SELECT p.user_id, r.cuisine, r.id AS restaurant_id, r.name AS restaurant_name,
-           r.listed, COUNT(*)::int AS n,
-           COUNT(p.rating)::int AS rated,
-           COALESCE(SUM(CASE p.rating_kind
-             WHEN 'dish' THEN p.rating
-             WHEN 'restaurant' THEN p.rating * 20
-             ELSE p.rating * 10
-           END), 0)::float AS rating_sum
+           r.listed, COUNT(*)::int AS n
     FROM posts p
     JOIN restaurants r ON r.id = p.restaurant_id
     WHERE p.user_id = ANY(${userIds}) AND p.meal_id IS NULL AND r.cuisine IS NOT NULL
@@ -1189,8 +1180,6 @@ export async function getCuisineCounts(userIds: string[]): Promise<CuisineCountR
     restaurantName: r.restaurant_name as string,
     listed: r.listed as boolean,
     count: r.n as number,
-    ratingSum: r.rating_sum as number,
-    ratedCount: r.rated as number,
   }));
 }
 
