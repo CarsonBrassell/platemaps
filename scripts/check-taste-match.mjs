@@ -24,10 +24,10 @@ assert.equal(m.matchPct, 0);
 assert.deepEqual(m.bothLove, []);
 
 // The match counts every cuisine, not just the drawn ones: 10 cuisines, shared
-// evenly. Identical lists share all 4, then top up in pairs that also merge: 7.
+// evenly. Only the 8 with the most overlap are drawn.
 const ten = Object.fromEntries("ABCDEFGHIJ".split("").map((c) => [c, 3]));
 m = computeTasteMatch(input(ten), input(ten));
-assert.equal(m.spokes.length, 7);
+assert.equal(m.spokes.length, 8);
 assert.equal(m.matchPct, 100);
 
 // Sample from the design review.
@@ -37,17 +37,20 @@ const sam = input(
   { Indian: place("i1", "Himalayan Kitchen", 7), Mediterranean: place("m1", "Olive & Thyme", 9) },
 );
 m = computeTasteMatch(you, sam);
-// Top 4s share Mexican + American (6 spokes), then each adds #5: Thai, and
-// Japanese (already in) → 7. Indian and Mediterranean are Sam's, Korean yours.
-assert.deepEqual([...m.spokes].sort(), ["American", "Indian", "Japanese", "Korean", "Mediterranean", "Mexican", "Thai"]);
+// All 8 cuisines are shared, so all 8 are drawn.
+assert.deepEqual([...m.spokes].sort(), ["American", "Indian", "Italian", "Japanese", "Korean", "Mediterranean", "Mexican", "Thai"]);
 assert.ok(m.spokes.every((c, i, a) => i === 0 || m.you[i - 1] - m.them[i - 1] >= m.you[i] - m.them[i]), "leaning-you first");
 assert.equal(m.matchPct, 72);
 assert.deepEqual(m.bothLove, ["Mexican", "American"]);
 assert.equal(m.tryPick.cuisine, "Mediterranean");
 assert.equal(m.tryPick.restaurantId, "m1");
-// Italian (9 of 100 posts) is nobody's pick, so the drawn shares sum to 91.
-near(m.you.reduce((a, b) => a + b, 0), 91);
-near(m.them.reduce((a, b) => a + b, 0), 94);
+// No ratings: the score is frequency against your own favorite, so Mexican
+// (both people's top cuisine) is 100 for both.
+const mx = m.spokes.indexOf("Mexican");
+near(m.you[mx], 100);
+near(m.them[mx], 100);
+near(m.you[m.spokes.indexOf("Thai")], (12 / 22) * 100);
+assert.equal(m.axisMax, 100);
 
 // Shares, not counts: a heavy poster doesn't change the shape.
 const light = computeTasteMatch(input({ A: 1, B: 1, C: 2 }), sam);
@@ -63,16 +66,23 @@ assert.equal(computeTasteMatch(input({ A: 3 }), input({ A: 3, B: 3 })), null, "u
 m = computeTasteMatch(input({ A: 6, B: 2, C: 2 }), input({ A: 1, B: 3, C: 1, D: 5 }, { B: place("b1", "Bee's") }));
 assert.equal(m.tryPick.restaurantId, "b1");
 
-// Spoke count by overlap: each person's top 4, topped up in pairs to 7+.
+// Spokes are the cuisines you two have most in common: shared ones beat each
+// person's unshared favorites, however big those are.
 const list = (names) => Object.fromEntries(names.map((c, i) => [c, 20 - i]));
 const mine = list(["A", "B", "C", "D", "E", "F", "G", "H"]);
-const count = (names) => computeTasteMatch(input(mine), input(list(names))).spokes.length;
-assert.equal(count(["P", "Q", "R", "S", "T", "U"]), 8, "0 shared");
-assert.equal(count(["A", "Q", "R", "S", "T", "U"]), 7, "1 shared");
-assert.equal(count(["A", "B", "R", "S", "T", "U"]), 8, "2 shared");
-assert.equal(count(["A", "B", "C", "S", "T", "U"]), 7, "3 shared");
-assert.equal(count(["A", "B", "C", "D", "T", "U"]), 8, "4 shared");
+m = computeTasteMatch(input(mine), input(list(["P", "Q", "R", "S", "T", "U", "H", "G"])));
+assert.equal(m.spokes.length, 8);
+assert.ok(m.spokes.includes("H") && m.spokes.includes("G"), "shared cuisines are drawn");
+m = computeTasteMatch(input(list("ABCDEFGHIJ".split(""))), input(list("JIHGFEDCBA".split(""))));
+assert.equal(m.spokes.length, 8, "never more than 8");
 assert.equal(computeTasteMatch(input({ A: 3, B: 3, C: 3 }), input({ A: 3, B: 3, C: 3 })).spokes.length, 3, "few cuisines: fewer spokes");
+
+// Like score: half frequency, half average rating; frequency alone when unrated.
+const rated = { counts: { A: 2, B: 1, C: 1 }, topPlaces: {}, ratings: { A: { sum: 100, n: 2 }, C: { sum: 100, n: 1 } } };
+m = computeTasteMatch(rated, input({ A: 1, B: 1, C: 1 }));
+near(m.you[m.spokes.indexOf("A")], 75); // freq 100, rating 50
+near(m.you[m.spokes.indexOf("B")], 50); // freq 50, unrated
+near(m.you[m.spokes.indexOf("C")], 75); // freq 50, rating 100
 
 // Row folding: top place per cuisine, unlisted ones count but are never the pick.
 const rows = [
@@ -84,6 +94,14 @@ const rows = [
 const folded = tasteInputFor(rows, "u");
 assert.equal(folded.counts.Thai, 9);
 assert.equal(folded.topPlaces.Thai.id, "t1");
+const foldedRated = tasteInputFor(
+  [
+    { userId: "u", cuisine: "Thai", restaurantId: "t1", restaurantName: "T1", listed: true, count: 2, ratingSum: 160, ratedCount: 2 },
+    { userId: "u", cuisine: "Thai", restaurantId: "t2", restaurantName: "T2", listed: true, count: 1, ratingSum: 0, ratedCount: 0 },
+  ],
+  "u",
+);
+assert.deepEqual(foldedRated.ratings.Thai, { sum: 160, n: 2 });
 
 // Flavor profile: your own mix, top cuisines by share, nothing about a friend.
 let f = computeFlavorProfile(you);

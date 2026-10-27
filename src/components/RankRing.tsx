@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { CheckIcon, InfoIcon } from "@/components/icons";
 import { RankInsignia } from "@/components/RankInsignia";
-import { POINT_RULES, formatPoints } from "@/lib/points";
+import { formatPoints } from "@/lib/points";
 import { RANKS, rankFor } from "@/lib/ranks";
 import "@/components/rank/rankTracker.css";
 
@@ -20,9 +20,6 @@ import "@/components/rank/rankTracker.css";
  *   total they unlock at. Any card opens the full ladder.
  * - **The level bar**: this crest, a quartered bar with the points marks under
  *   it, and the next crest waiting locked on the right.
- * - **Unlock panel**: points to go, what that is in plates, comments or
- *   upvotes (from `POINT_RULES`), and the real perk of the next title — its
- *   rating weight from `lib/ranks.ts`.
  *
  * Motion: the total counts up and the bar fills on mount; new points count up,
  * float a "+N" and pulse the bar's tip. Crossing a threshold bursts dots off
@@ -39,8 +36,7 @@ function model(points: number) {
   const next = RANKS[index + 1] ?? null;
   const span = next ? next.minPoints - rank.minPoints : 1;
   const pct = next ? Math.min(100, ((p - rank.minPoints) / span) * 100) : 100;
-  const toGo = next ? next.minPoints - p : 0;
-  return { rank, index, next, span, pct, toGo };
+  return { rank, index, next, span, pct };
 }
 
 const easeOut = (k: number) => 1 - Math.pow(1 - k, 3);
@@ -161,10 +157,7 @@ export function RankRing({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [points]);
 
-  const { rank, index: cur, next, span, pct, toGo } = now;
-  const plates = Math.ceil(toGo / POINT_RULES.createPost);
-  const comments = Math.ceil(toGo / POINT_RULES.receiveComment);
-  const upvotes = Math.ceil(toGo / POINT_RULES.receiveUpvote);
+  const { rank, index: cur, next, span, pct } = now;
   const marks = [0, 25, 50, 75, 100];
 
   return (
@@ -342,47 +335,6 @@ export function RankRing({
           </span>
         )}
       </div>
-
-      {/* What the next title takes, and what it gives. */}
-      {next ? (
-        <div className="mx-4 mt-4 rounded-xl bg-[#FBF8F2] p-3">
-          <div className="flex items-baseline justify-between gap-2">
-            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-pm-grey-text">
-              Unlock <span className="text-pm-orange-text">{next.title}</span>
-            </p>
-            <p className="font-mono text-[11px] tabular-nums text-zinc-900">
-              <span className="font-semibold">{fmt(toGo)}</span> PP to go
-            </p>
-          </div>
-          <p className="mt-1.5 text-[11px] text-zinc-600">Get there with any mix of</p>
-          <div className="mt-1.5 grid grid-cols-3 gap-2">
-            {[
-              { n: plates, label: plates === 1 ? "plate" : "plates", each: POINT_RULES.createPost },
-              { n: comments, label: comments === 1 ? "comment" : "comments", each: POINT_RULES.receiveComment },
-              { n: upvotes, label: upvotes === 1 ? "upvote" : "upvotes", each: POINT_RULES.receiveUpvote },
-            ].map((s) => (
-              <div key={s.label} className="rounded-lg bg-white px-2 py-2 text-center">
-                <p className="font-mono text-[17px] font-semibold leading-none tabular-nums text-zinc-900">{fmt(s.n)}</p>
-                <p className="mt-1 text-[11px] leading-tight text-zinc-600">{s.label}</p>
-                <p className="font-mono text-[9px] tabular-nums text-zinc-500">+{s.each} each</p>
-              </div>
-            ))}
-          </div>
-          <p className="mt-2.5 flex items-center gap-1.5 text-[12px] leading-snug text-zinc-600">
-            <span aria-hidden="true" className="text-pm-orange">★</span>
-            Your dish ratings count{" "}
-            <span className="font-mono font-semibold tabular-nums text-pm-orange-text">{next.weight.toFixed(2)}×</span> at {next.title}
-          </p>
-        </div>
-      ) : (
-        <div className="mx-4 mt-4 rounded-xl bg-[#FBF8F2] p-3 text-center">
-          <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-pm-orange-text">Top of the ladder</p>
-          <p className="mt-1 text-[12px] text-zinc-600">
-            Your dish ratings count{" "}
-            <span className="font-mono font-semibold tabular-nums text-pm-orange-text">{rank.weight.toFixed(2)}×</span>, the most anyone&rsquo;s do.
-          </p>
-        </div>
-      )}
     </section>
   );
 }
