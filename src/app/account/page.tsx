@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
-import { safeNext } from "@/lib/signInGate";
+import { safeNext, signInPromptFor } from "@/lib/signInGate";
+import { useQueryParams } from "@/lib/queryString";
 import { PASSWORD_HINT, checkPassword } from "@/lib/password";
 import { initials } from "@/lib/format";
 import { AvatarCropper } from "@/components/AvatarCropper";
@@ -149,6 +150,8 @@ function AuthForm() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [agreed, setAgreed] = useState(false);
+  /* Why the visitor is here, when a gated tap (Post, Friends) sent them. */
+  const prompt = signInPromptFor(useQueryParams().get("next"));
 
   /* Shown as a hint rather than an error: it appears while the field is still
      half-typed, when "Use at least 8 characters" is information, not a
@@ -224,6 +227,12 @@ function AuthForm() {
             Log in
           </button>
         </div>
+
+        {prompt && (
+          <p role="status" className="mb-3 text-sm font-medium text-pm-orange-text">
+            {prompt}
+          </p>
+        )}
 
         <h1 className="mb-1 font-display text-xl font-semibold text-zinc-900">
           {mode === "signup" ? "Create your account" : "Welcome back"}

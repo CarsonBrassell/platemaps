@@ -193,6 +193,18 @@ function ownBlobHost(): string | null {
   return m ? `${m[1].toLowerCase()}.public.blob.vercel-storage.com` : null;
 }
 
+/**
+ * `isStoredPhotoUrl` as a Postgres regex (for `~`), so SQL can apply the same
+ * gate: https, this project's blob host, the posts/avatars path shape. Null
+ * when the store id is unknown (no token), which matches nothing. Stricter
+ * than the JS check in one way only: a query string or fragment fails here.
+ */
+export function storedPhotoSqlPattern(): string | null {
+  const host = ownBlobHost();
+  if (!host) return null;
+  return `^https://${host.replace(/\./g, "\\.")}/(posts|avatars)/[^/]+/[0-9a-f-]{36}\\.jpg$`;
+}
+
 function storedPhotoParts(url: string): { owner: string } | null {
   const host = ownBlobHost();
   if (!host) return null;

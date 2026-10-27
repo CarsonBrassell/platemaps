@@ -41,6 +41,7 @@
 import {
   applyFilters,
   countFacets,
+  activeFilterCount,
   aspectOptions,
   cuisineOptions,
   filtersFromSearch,
@@ -296,7 +297,16 @@ export async function getDiscoverPage(
     namedDish,
   };
 
-  const matched = orderResults(applyFilters(restaurants, filters, ctx), filters, here, scores);
+  const ordered = orderResults(applyFilters(restaurants, filters, ctx), filters, here, scores);
+  // The bare grid (no search text, no filter of any kind) puts every restaurant
+  // with a photo ahead of every one without. A stable partition: each half
+  // keeps the order `orderResults` gave it. "Has a photo" is exactly what the
+  // tile draws -- `RestaurantPhoto` shows its fallback when `photo` is falsy.
+  // Any query or filter leaves the order untouched.
+  const matched =
+    activeFilterCount(filters) === 0
+      ? [...ordered.filter((r) => r.photo), ...ordered.filter((r) => !r.photo)]
+      : ordered;
   const limit = Math.min(Math.max(shown, PAGE_SIZE), MAX_SHOWN);
   // Sort order stays straight-line (orderResults, above, is untouched) — only
   // the printed distance on this page's rows gets upgraded to a routed walk.

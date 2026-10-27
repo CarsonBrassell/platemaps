@@ -135,3 +135,19 @@ export function safeNext(raw: string | null | undefined): string | null {
   if (resolved.pathname.startsWith("//")) return null;
   return `${resolved.pathname}${resolved.search}${resolved.hash}`;
 }
+
+/**
+ * The one line the sign-in screen shows above its form when a gated tap sent
+ * the visitor there, so they know why they are looking at a sign-up form.
+ * `next` is the raw `?next=` value; anything unsafe or absent gives null (no
+ * line - a visitor who opened Profile on purpose is not being redirected).
+ */
+export function signInPromptFor(rawNext: string | null | undefined): string | null {
+  const next = safeNext(rawNext);
+  if (!next) return null;
+  const path = next.split(/[?#]/)[0];
+  const is = (prefix: string) => path === prefix || path.startsWith(`${prefix}/`);
+  if (is("/post") || is("/m/post")) return "Sign up to post a plate";
+  if (is("/friends") || is("/m/friends")) return "Sign up to see your friends";
+  return "Sign up to continue";
+}

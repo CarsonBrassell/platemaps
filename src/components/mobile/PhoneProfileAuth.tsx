@@ -55,9 +55,20 @@ const USERNAME_RE = /^[A-Za-z0-9_]{3,24}$/;
    failure for a signup form than refusing an address that works. */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function PhoneProfileAuth() {
+export function PhoneProfileAuth({
+  prompt = null,
+  variant = "page",
+  initialMode = "signup",
+}: {
+  /** Why the visitor is here ("Sign up to post a plate"), from a gated tap. */
+  prompt?: string | null;
+  /** "sheet": no page chrome or white card - sits inside the sign-up sheet. */
+  variant?: "page" | "sheet";
+  initialMode?: "signup" | "login";
+}) {
   const { signUp, signIn } = useAuth();
-  const [mode, setMode] = useState<"signup" | "login">("signup");
+  const [mode, setMode] = useState<"signup" | "login">(initialMode);
+  const inSheet = variant === "sheet";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -188,11 +199,24 @@ export function PhoneProfileAuth() {
   );
 
   return (
-    <div className="min-h-dvh px-4 pt-6">
-      <div className="mb-5 flex items-center justify-center gap-2">
-        <BrandMark className="h-7 w-7" />
-        <WordMark tone="dark" />
-      </div>
+    <div className={inSheet ? "" : "min-h-dvh px-4 pt-6"}>
+      {!inSheet && (
+        <div className="mb-5 flex items-center justify-center gap-2">
+          <BrandMark className="h-7 w-7" />
+          <WordMark tone="dark" />
+        </div>
+      )}
+
+      {/* Why am I here: a gated tap (Post, Friends) lands on this form, and
+          without a line saying so it reads as a button that did nothing. */}
+      {prompt && !inSheet && (
+        <p
+          role="status"
+          className="font-display mb-3 text-center text-base font-semibold text-zinc-900"
+        >
+          {prompt}
+        </p>
+      )}
 
       {/* `noValidate` hands validation to us, and without it none of the red
           below ever appears.
@@ -208,7 +232,7 @@ export function PhoneProfileAuth() {
           The input keeps `type="email"` regardless — it is what summons the
           @-key keyboard on a phone, which is the bigger win and is unrelated
           to validation. */}
-      <form onSubmit={handleSubmit} noValidate className="rounded-2xl bg-white p-5">
+      <form onSubmit={handleSubmit} noValidate className={inSheet ? "" : "rounded-2xl bg-white p-5"}>
         <div className="mb-5 flex gap-1 rounded-full bg-pm-grey-tint p-1">
           {segment("signup", "Sign up")}
           {segment("login", "Log in")}

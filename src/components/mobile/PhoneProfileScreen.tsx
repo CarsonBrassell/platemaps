@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQueryParams } from "@/lib/queryString";
-import { safeNext } from "@/lib/signInGate";
+import { safeNext, signInPromptFor } from "@/lib/signInGate";
 import { PointsBadge } from "@/components/feed/PointsBadge";
 import { CameraIcon, SettingsIcon } from "@/components/icons";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
@@ -562,7 +562,7 @@ export function PhoneProfileScreen() {
         <ProfileOverview />
       ) : (
         <>
-          <PhoneProfileAuth />
+          <PhoneProfileAuth prompt={signInPromptFor(params.get("next"))} />
           <LegalLinks className="mt-2" />
         </>
       )}

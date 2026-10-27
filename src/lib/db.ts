@@ -23,7 +23,7 @@ import {
   type FlavorProfile,
   type TasteMatch,
 } from "@/lib/tasteMatch";
-import { isStoredPhotoUrl, storedPhotoOwner } from "@/lib/photos";
+import { isStoredPhotoUrl, storedPhotoOwner, storedPhotoSqlPattern } from "@/lib/photos";
 import { brandKey, foldAccents } from "@/lib/brandName";
 import { hashToken, SESSION_TTL_SECONDS } from "@/lib/tokens";
 // From lib/geo.ts for the same reason discoverFilters.ts takes it from there:
@@ -591,7 +591,26 @@ export async function deleteUser(userId: string): Promise<void> {
     console.error(`[deleteUser] ${userId}: could not list photos to delete`, err);
   }
 
+  // Restaurants whose cover may have been this user's photo; refreshed (and
+  // the route already invalidates every page they posted on) once the cascade has run.
+  let restaurantIds: string[] = [];
+  try {
+    const rs = (await sql`SELECT DISTINCT restaurant_id FROM posts
+      WHERE user_id = ${userId} AND restaurant_id IS NOT NULL`) as { restaurant_id: string }[];
+    restaurantIds = rs.map((r) => r.restaurant_id);
+  } catch {
+    /* A cover refresh is never worth blocking account deletion. */
+  }
+
   await sql`DELETE FROM users WHERE id = ${userId}`;
+
+  for (const rid of restaurantIds) {
+    try {
+      await refreshRestaurantCover(rid, urls);
+    } catch {
+      /* see above */
+    }
+  }
 
   if (urls.length === 0) return;
   try {
@@ -1457,6 +1476,68 @@ export async function getFriendsFeed(
   return feedPage(rows as FeedRow[], limit, at, false, viewerId, true);
 }
 
+/**
+ * Recomputes a restaurant's main photo: the public post photo with the most
+ * upvotes there, ties going to the earlier post (then the earlier photo in
+ * it), so the first poster keeps the cover until someone beats them. This is
+ * what the restaurant page's "most-upvoted photo becomes the main photo" note
+ * promises, and it wins even over a seeded photo.
+ *
+ * Eligibility is what createPost always used: `photos_public` (the author's
+ * share-photos setting frozen on the post) and an image in our own blob store
+ * (`storedPhotoSqlPattern`, the SQL twin of `isStoredPhotoUrl` - media is
+ * client-supplied and a cover is the field you would point at someone else's
+ * server). With no eligible photo the existing `photo` is left alone, so
+ * seeded covers survive. One statement, so concurrent callers cannot
+ * interleave a read and a write; it only writes when the winner differs from
+ * the current photo, so photo_w/h are not reset needlessly.
+ *
+ * Call after anything that can change the answer: a post created, a vote cast
+ * or taken back, a post deleted, an account deleted. Returns true when the
+ * photo changed, so the caller knows to `invalidateRestaurantPage`. Pass
+ * `droppedUrls` (photos just deleted from the blob store) and a cover still
+ * pointing at one with no replacement is cleared rather than left dangling.
+ */
+export async function refreshRestaurantCover(
+  restaurantId: string,
+  droppedUrls: string[] = [],
+): Promise<boolean> {
+  const pattern = storedPhotoSqlPattern();
+  let changed = false;
+  if (pattern) {
+    const rows = await sql`
+      UPDATE restaurants r
+         SET photo = c.url, photo_alt = c.alt, photo_w = NULL, photo_h = NULL
+        FROM (
+          SELECT m.elem->>'url' AS url, m.elem->>'alt' AS alt
+            FROM posts p
+           CROSS JOIN LATERAL jsonb_array_elements(p.media) WITH ORDINALITY AS m(elem, ord)
+           WHERE p.restaurant_id = ${restaurantId}
+             AND p.photos_public
+             AND m.elem->>'type' = 'image'
+             AND m.elem->>'url' ~ ${pattern}
+           ORDER BY (SELECT count(*) FROM post_upvotes u WHERE u.post_id = p.id) DESC,
+                    p.created_at ASC, p.id ASC, m.ord ASC
+           LIMIT 1
+        ) c
+       WHERE r.id = ${restaurantId}
+         AND r.photo IS DISTINCT FROM c.url
+      RETURNING r.id
+    `;
+    changed = rows.length > 0;
+  }
+  if (droppedUrls.length > 0) {
+    const cleared = await sql`
+      UPDATE restaurants
+         SET photo = NULL, photo_alt = NULL, photo_w = NULL, photo_h = NULL
+       WHERE id = ${restaurantId} AND photo = ANY(${droppedUrls})
+      RETURNING id
+    `;
+    if (cleared.length > 0) changed = true;
+  }
+  return changed;
+}
+
 /** Every restaurant a user has posted at, for invalidating their cached pages. */
 export async function restaurantIdsPostedBy(userId: string): Promise<string[]> {
   const rows = await sql`
@@ -1582,46 +1663,17 @@ export async function createPost(data: {
   `;
 
   /*
-   * A restaurant with no cover adopts the first plate posted there.
+   * The restaurant's cover is its most-upvoted public plate photo, so a new
+   * post can take it (it may be the only candidate, or the first poster keeps
+   * it on a tie). The rules live in `refreshRestaurantCover`.
    *
-   * Most listed restaurants have no photo — the Google ones were removed
-   * because we could not use them honestly, and Yelp only covers a slice —
-   * so the alternative is a tone block forever. The people eating there can
-   * fix that in a way no API can, and this is the moment they do it.
-   *
-   * Three conditions, and all three are load-bearing:
-   *
-   * - **`photos_public`.** A cover is the most public surface a photo can
-   *   land on. This is the author's own share-photos setting, frozen onto
-   *   this post at creation, so a photo only ever gets promoted if the person
-   *   who took it had already said their photos may be seen publicly.
-   * - **`isStoredPhotoUrl`.** Our own blob store only. A post's media column
-   *   is client-supplied, and a restaurant cover is exactly the field you
-   *   would want to point at someone else's server.
-   * - **`photo IS NULL` in the WHERE, not in a preceding SELECT.** Two people
-   *   posting the first plate at the same restaurant within the same second
-   *   is rare but not impossible, and read-then-write would let the second
-   *   overwrite the first. Postgres settles it; the loser's update matches no
-   *   rows and does nothing.
-   *
-   * Deliberately never replaces an existing cover. This fills an absence, it
-   * does not run a competition — a restaurant's photo changing every time
-   * somebody posts is churn, not curation.
-   *
-   * Failure is swallowed on purpose. The post is already written and is the
+   * Failure is swallowed on purpose: the post is already written and is the
    * thing the author is waiting on; a cover is a nicety, and a 500 here would
    * lose a review over a decoration.
    */
-  const cover = media.find((m) => m.type === "image" && isStoredPhotoUrl(m.url));
-  if (data.restaurantId && cover && data.photosPublic) {
+  if (data.restaurantId && data.photosPublic) {
     try {
-      await sql`
-        UPDATE restaurants
-        SET photo = ${cover.url}, photo_alt = ${cover.alt ?? null},
-            photo_w = NULL, photo_h = NULL
-        WHERE id = ${data.restaurantId}
-          AND (photo IS NULL OR photo = '')
-      `;
+      await refreshRestaurantCover(data.restaurantId);
     } catch {
       /* See above: a cover is never worth failing a post over. */
     }
@@ -1710,7 +1762,21 @@ export async function deletePost(id: string): Promise<void> {
      WHERE (id = ${id} OR meal_id = ${id}) AND jsonb_array_length(media) > 0
   `) as { user_id: string; url: string | null }[];
 
+  const restaurantRows = (await sql`
+    SELECT DISTINCT restaurant_id FROM posts
+     WHERE (id = ${id} OR meal_id = ${id}) AND restaurant_id IS NOT NULL
+  `) as { restaurant_id: string }[];
   await sql`DELETE FROM posts WHERE id = ${id}`;
+
+  // The deleted photos may have been the cover (or the runner-up): recompute,
+  // and clear a cover left pointing at a file about to be removed. Failure
+  // must not fail the delete.
+  try {
+    const gone = rows.map((r) => r.url).filter((u): u is string => typeof u === "string");
+    for (const r of restaurantRows) await refreshRestaurantCover(r.restaurant_id, gone);
+  } catch (err) {
+    console.error(`[deletePost] ${id}: cover refresh failed`, err);
+  }
 
   // The row's own author, read back from the DB — never trusted from the
   // caller — is the only identity a URL is allowed to match. Mirrors the

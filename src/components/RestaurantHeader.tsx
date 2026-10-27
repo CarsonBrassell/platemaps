@@ -64,6 +64,10 @@ export function RestaurantHeader({
         )}
       </div>
 
+      <p className="px-5 text-[11px] leading-tight text-zinc-500 sm:px-6">
+        The most-upvoted photo here becomes the restaurant&apos;s main photo.
+      </p>
+
       <div className="px-5 pb-5 pt-1 sm:px-6">
         <h1 className="mt-1.5 font-display text-3xl font-semibold text-zinc-900 sm:text-4xl">
           {restaurant.name}

@@ -1,5 +1,12 @@
 import { NextResponse } from "next/server";
-import { getPostById, castVote, awardPoints, getBlockStatus } from "@/lib/db";
+import {
+  getPostById,
+  castVote,
+  awardPoints,
+  getBlockStatus,
+  refreshRestaurantCover,
+} from "@/lib/db";
+import { invalidateRestaurantPage } from "@/lib/restaurantPage";
 import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES, milestoneFor } from "@/lib/points";
 import { limitOrReject } from "@/lib/rateLimit";
@@ -54,6 +61,20 @@ export async function POST(
     user.id,
     direction,
   );
+
+  // Upvote counts decide the restaurant's main photo (the most-upvoted public
+  // plate photo), so a vote or an un-vote can change it. A downvote only
+  // matters when it replaced an upvote, and the refresh is one cheap
+  // statement that writes only on a change. Best effort: never fail a vote.
+  if (post.restaurantId) {
+    try {
+      if (await refreshRestaurantCover(post.restaurantId)) {
+        invalidateRestaurantPage(post.restaurantId);
+      }
+    } catch {
+      /* a cover is never worth failing a vote over */
+    }
+  }
 
   // Points go to the author, not the voter, and only upvotes pay: a downvote
   // never debits the author, so a pile-on can't drain someone's total. Self

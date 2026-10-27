@@ -137,7 +137,11 @@ export function PhoneDetailHero({
         )}
       </div>
 
-      <div className="px-4 pt-4">
+      <p className="px-4 pt-2 text-[11px] leading-tight text-pm-grey-text">
+        The most-upvoted photo here becomes the restaurant&apos;s main photo.
+      </p>
+
+      <div className="px-4 pt-2">
         <h1 className="font-display mt-1.5 text-[26px] font-semibold leading-tight tracking-tight text-zinc-900">
           {restaurant.name}
         </h1>

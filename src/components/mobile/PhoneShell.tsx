@@ -7,6 +7,7 @@ import { OPEN_BROWSING } from "@/lib/signInGate";
 import { PostFlash } from "@/components/mobile/PostFlash";
 import { PhonePointsFly } from "@/components/mobile/PhonePointsFly";
 import { PhoneRivalToast } from "@/components/mobile/PhoneRivalToast";
+import { PhoneSignUpSheet } from "@/components/mobile/PhoneSignUpSheet";
 import { PhoneSwipeBack } from "@/components/mobile/PhoneSwipeBack";
 
 /**
@@ -49,6 +50,8 @@ export function PhoneShell({ children }: { children: React.ReactNode }) {
       <div className="pm-phone-content">{children}</div>
       {(account || OPEN_BROWSING) && <PhoneNav variant={variant} />}
       <PhoneSwipeBack />
+      {/* First-open prompt for signed-out visitors; dismissible. */}
+      <PhoneSignUpSheet />
       <PostFlash />
       <PhonePointsFly />
       {/* After the points land: who you just passed on the Friends' Table. */}
