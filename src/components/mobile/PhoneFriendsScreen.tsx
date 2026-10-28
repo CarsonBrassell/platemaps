@@ -307,6 +307,8 @@ export function PhoneFriendsScreen() {
       ) : (
         <>
           <PhoneFindFriends
+            viewerId={account?.id ?? ""}
+            friends={friends ?? []}
             friendIds={friends?.map((f) => f.id) ?? []}
             incomingIds={incoming.map((r) => r.userId)}
             outgoingIds={outgoing.map((r) => r.userId)}
