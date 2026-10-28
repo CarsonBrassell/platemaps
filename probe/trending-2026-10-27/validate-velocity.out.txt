@@ -1,0 +1,178 @@
+SQL ok. 45 rows at $1=2026-10-27T23:08:48.693Z. rank_score typeof: number
+all finite: true  min 2.45e-4  max 6.86e-2
+JS re-scored 45 rows (0 live rows not in snapshot); max relative error SQL vs JS: 1.35e-8
+SQL order == JS order (45 shared rows): true
+
+harness velocity top10 : 435b701c f614c85b bafc4992 58d1e679 4dcb5b19 a6f238a5 476e5b29 1f975975 24d8989e 3a7b3fdb
+SQL velocity top10     : 435b701c f614c85b bafc4992 58d1e679 4dcb5b19 a6f238a5 476e5b29 1f975975 24d8989e 3a7b3fdb
+velocity SQL == velocity harness: true
+harness baseline top10 : 435b701c f614c85b bafc4992 58d1e679 4dcb5b19 a6f238a5 476e5b29 1f975975 24d8989e 3a7b3fdb
+SQL baseline top10     : 435b701c f614c85b bafc4992 58d1e679 4dcb5b19 a6f238a5 476e5b29 1f975975 24d8989e 3a7b3fdb
+baseline SQL == baseline harness: true
+velocity vs production top10 overlap: 10/10
+rows created after $1 (negative age, clamped to 0): 0
+
+keyset paging: 45 rows over pages of 7, equals unpaged order: true, dupes: false
+
+edge cases: {"clamped_underflow":1.9293791012677518e-63,"future_post":0.15}
+raw POWER(0.5, 5000) raises: value out of range: underflow -> the LEAST(..., 800) clamp is required
+
+EXPLAIN (ANALYZE, BUFFERS), LIMIT 31, 5 runs each:
+baseline (uv, dv, cm joins)                  exec ms: min 0.229  median 0.234  max 0.314
+velocity (uv, dv mass joins + cm)            exec ms: min 0.279  median 0.282  max 0.3
+velocity, comments join dropped (weight 0)   exec ms: min 0.284  median 0.301  max 0.317
+baseline, comments join dropped              exec ms: min 0.229  median 0.234  max 0.242
+
+--- velocity plan (no cm join) ---
+Limit  (cost=36.47..36.55 rows=31 width=54) (actual time=0.220..0.226 rows=31 loops=1)
+  Buffers: shared hit=25
+  ->  Sort  (cost=36.47..36.59 rows=47 width=54) (actual time=0.219..0.223 rows=31 loops=1)
+        Sort Key: ((GREATEST(((COALESCE(uv.mass, '0'::double precision) - COALESCE(dv.mass, '0'::double precision)) + '0.3'::double precision), '0.03'::double precision) / (GREATEST(((EXTRACT(epoch FROM ('2026-10-27 23:0
+        Sort Method: quicksort  Memory: 30kB
+        Buffers: shared hit=25
+        ->  Hash Left Join  (cost=28.72..35.17 rows=47 width=54) (actual time=0.162..0.211 rows=45 loops=1)
+              Hash Cond: (p.id = dv.post_id)
+              Buffers: shared hit=25
+              ->  Hash Left Join  (cost=20.24..25.38 rows=47 width=54) (actual time=0.121..0.150 rows=45 loops=1)
+                    Hash Cond: (p.id = uv.post_id)
+                    Buffers: shared hit=18
+                    ->  Hash Join  (cost=4.43..9.43 rows=47 width=46) (actual time=0.024..0.046 rows=45 loops=1)
+                          Hash Cond: (p.user_id = u.id)
+                          Buffers: shared hit=8
+                          ->  Seq Scan on posts p  (cost=0.00..4.86 rows=47 width=83) (actual time=0.008..0.021 rows=45 loops=1)
+                                Filter: ((meal_id IS NULL) AND (created_at > ('2026-10-27 23:08:48.693+00'::timestamp with time zone - '60 days'::interval)))
+                                Rows Removed by Filter: 3
+                                Buffers: shared hit=4
+                          ->  Hash  (cost=4.19..4.19 rows=19 width=37) (actual time=0.013..0.013 rows=22 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                                Buffers: shared hit=4
+                                ->  Seq Scan on users u  (cost=0.00..4.19 rows=19 width=37) (actual time=0.004..0.009 rows=22 loops=1)
+                                      Buffers: shared hit=4
+                    ->  Hash  (cost=15.24..15.24 rows=46 width=45) (actual time=0.095..0.095 rows=30 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                          Buffers: shared hit=10
+                          ->  Subquery Scan on uv  (cost=14.32..15.24 rows=46 width=45) (actual time=0.085..0.091 rows=30 loops=1)
+                                Buffers: shared hit=10
+                                ->  HashAggregate  (cost=14.32..14.78 rows=46 width=45) (actual time=0.085..0.088 rows=30 loops=1)
+                                      Group Key: v.post_id
+                                      Batches: 1  Memory Usage: 24kB
+                                      Buffers: shared hit=10
+                                      ->  Hash Join  (cost=5.46..12.84 rows=59 width=45) (actual time=0.025..0.053 rows=51 loops=1)
+                                            Hash Cond: (v.post_id = q.id)
+                                            Join Filter: (v.user_id <> q.user_id)
+                                            Rows Removed by Join Filter: 38
+                                            Buffers: shared hit=10
+                                            ->  Seq Scan on post_upvotes v  (cost=0.00..7.12 rows=90 width=82) (actual time=0.003..0.015 rows=93 loops=1)
+                                                  Filter: (created_at <= '2026-10-27 23:08:48.693+00'::timestamp with time zone)
+                                                  Buffers: shared hit=6
+                                            ->  Hash  (cost=4.86..4.86 rows=48 width=75) (actual time=0.019..0.019 rows=46 loops=1)
+                                                  Buckets: 1024  Batches: 1  Memory Usage: 13kB
+                                                  Buffers: shared hit=4
+                                                  ->  Seq Scan on posts q  (cost=0.00..4.86 rows=48 width=75) (actual time=0.002..0.013 rows=46 loops=1)
+                                                        Filter: (created_at > ('2026-10-27 23:08:48.693+00'::timestamp with time zone - '60 days'::interval))
+                                                        Rows Removed by Filter: 2
+                                                        Buffers: shared hit=4
+              ->  Hash  (cost=8.43..8.43 rows=4 width=47) (actual time=0.039..0.040 rows=7 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                    Buffers: shared hit=7
+                    ->  Subquery Scan on dv  (cost=8.24..8.43 rows=4 width=47) (actual time=0.033..0.038 rows=7 loops=1)
+                          Buffers: shared hit=7
+                          ->  GroupAggregate  (cost=8.24..8.39 rows=4 width=47) (actual time=0.033..0.037 rows=7 loops=1)
+                                Group Key: v_1.post_id
+                                Buffers: shared hit=7
+                                ->  Sort  (cost=8.24..8.25 rows=4 width=47) (actual time=0.030..0.031 rows=8 loops=1)
+                                      Sort Key: v_1.post_id
+                                      Sort Method: quicksort  Memory: 25kB
+                                      Buffers: shared hit=7
+                                      ->  Hash Join  (cost=3.12..8.20 rows=4 width=47) (actual time=0.011..0.025 rows=8 loops=1)
+                                            Hash Cond: (q_1.id = v_1.post_id)
+                                            Buffers: shared hit=7
+                                            ->  Seq Scan on posts q_1  (cost=0.00..4.86 rows=48 width=38) (actual time=0.002..0.011 rows=46 loops=1)
+                                                  Filter: (created_at > ('2026-10-27 23:08:48.693+00'::timestamp with time zone - '60 days'::interval))
+                                                  Rows Removed by Filter: 2
+                                                  Buffers: shared hit=4
+                                            ->  Hash  (cost=3.06..3.06 rows=5 width=47) (actual time=0.007..0.007 rows=8 loops=1)
+                                                  Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                                  Buffers: shared hit=3
+                                                  ->  Seq Scan on post_downvotes v_1  (cost=0.00..3.06 rows=5 width=47) (actual time=0.003..0.005 rows=8 loops=1)
+                                                        Filter: (created_at <= '2026-10-27 23:08:48.693+00'::timestamp with time zone)
+                                                        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=32
+Planning Time: 0.567 ms
+Execution Time: 0.284 ms
+
+--- baseline plan ---
+Limit  (cost=24.38..24.45 rows=31 width=54) (actual time=0.177..0.182 rows=31 loops=1)
+  Buffers: shared hit=17
+  ->  Sort  (cost=24.38..24.49 rows=47 width=54) (actual time=0.176..0.179 rows=31 loops=1)
+        Sort Key: (((((GREATEST((COALESCE(uv.count, '0'::bigint) - COALESCE(dv.count, '0'::bigint)), '0'::bigint) + 1))::numeric / power(((EXTRACT(epoch FROM ('2026-10-27 23:08:48.693+00'::timestamp with time zone - p.cr
+        Sort Method: quicksort  Memory: 30kB
+        Buffers: shared hit=17
+        ->  Hash Left Join  (cost=16.51..23.07 rows=47 width=54) (actual time=0.092..0.166 rows=45 loops=1)
+              Hash Cond: (p.id = dv.post_id)
+              Buffers: shared hit=17
+              ->  Hash Left Join  (cost=13.27..18.41 rows=47 width=54) (actual time=0.073..0.106 rows=45 loops=1)
+                    Hash Cond: (p.id = uv.post_id)
+                    Buffers: shared hit=14
+                    ->  Hash Join  (cost=4.43..9.43 rows=47 width=46) (actual time=0.024..0.049 rows=45 loops=1)
+                          Hash Cond: (p.user_id = u.id)
+                          Buffers: shared hit=8
+                          ->  Seq Scan on posts p  (cost=0.00..4.86 rows=47 width=83) (actual time=0.009..0.025 rows=45 loops=1)
+                                Filter: ((meal_id IS NULL) AND (created_at > ('2026-10-27 23:08:48.693+00'::timestamp with time zone - '60 days'::interval)))
+                                Rows Removed by Filter: 3
+                                Buffers: shared hit=4
+                          ->  Hash  (cost=4.19..4.19 rows=19 width=37) (actual time=0.013..0.013 rows=22 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                                Buffers: shared hit=4
+                                ->  Seq Scan on users u  (cost=0.00..4.19 rows=19 width=37) (actual time=0.004..0.008 rows=22 loops=1)
+                                      Buffers: shared hit=4
+                    ->  Hash  (cost=8.27..8.27 rows=46 width=45) (actual time=0.047..0.047 rows=46 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 12kB
+                          Buffers: shared hit=6
+                          ->  Subquery Scan on uv  (cost=7.35..8.27 rows=46 width=45) (actual time=0.033..0.042 rows=46 loops=1)
+                                Buffers: shared hit=6
+                                ->  HashAggregate  (cost=7.35..7.81 rows=46 width=45) (actual time=0.033..0.037 rows=46 loops=1)
+                                      Group Key: post_upvotes.post_id
+                                      Batches: 1  Memory Usage: 24kB
+                                      Buffers: shared hit=6
+                                      ->  Seq Scan on post_upvotes  (cost=0.00..6.90 rows=90 width=37) (actual time=0.004..0.013 rows=93 loops=1)
+                                            Buffers: shared hit=6
+              ->  Hash  (cost=3.17..3.17 rows=5 width=47) (actual time=0.010..0.010 rows=7 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                    Buffers: shared hit=3
+                    ->  Subquery Scan on dv  (cost=3.08..3.17 rows=5 width=47) (actual time=0.008..0.009 rows=7 loops=1)
+                          Buffers: shared hit=3
+                          ->  HashAggregate  (cost=3.08..3.12 rows=5 width=47) (actual time=0.007..0.008 rows=7 loops=1)
+                                Group Key: post_downvotes.post_id
+                                Batches: 1  Memory Usage: 24kB
+                                Buffers: shared hit=3
+                                ->  Seq Scan on post_downvotes  (cost=0.00..3.05 rows=5 width=39) (actual time=0.003..0.005 rows=8 loops=1)
+                                      Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=13
+Planning Time: 0.425 ms
+Execution Time: 0.229 ms
+
+table sizes: {"posts":"48","ups":"93","downs":"8","comments":"20"}
+
+SQL expression:
+(GREATEST(COALESCE(uv.mass, 0) - COALESCE(dv.mass, 0) + 0.3, 0.03)
+        / (GREATEST(EXTRACT(EPOCH FROM ($1::timestamptz - p.created_at))::float8 / 3600, 0) + 2))::float8
+LEFT JOIN (
+         SELECT v.post_id, SUM(POWER(0.5::float8, LEAST(GREATEST(EXTRACT(EPOCH FROM ($1::timestamptz - v.created_at))::float8 / 3600, 0) / 24::float8, 800))) AS mass
+         FROM post_upvotes v
+         JOIN posts q ON q.id = v.post_id
+         WHERE v.user_id <> q.user_id
+           AND v.created_at <= $1::timestamptz
+           AND q.created_at > $1::timestamptz - make_interval(days => 60)
+         GROUP BY v.post_id
+       ) uv ON uv.post_id = p.id
+LEFT JOIN (
+         SELECT v.post_id, SUM(POWER(0.5::float8, LEAST(GREATEST(EXTRACT(EPOCH FROM ($1::timestamptz - v.created_at))::float8 / 3600, 0) / 24::float8, 800))) AS mass
+         FROM post_downvotes v
+         JOIN posts q ON q.id = v.post_id
+         WHERE v.created_at <= $1::timestamptz
+           AND q.created_at > $1::timestamptz - make_interval(days => 60)
+         GROUP BY v.post_id
+       ) dv ON dv.post_id = p.id

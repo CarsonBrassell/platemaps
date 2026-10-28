@@ -9,7 +9,9 @@ import type { RatedPlate } from "@/lib/ratedPlates";
 import {
   FEED_SORT_DEFAULT,
   TRENDING_COMMENT_WEIGHT,
+  TRENDING_EDGE,
   TRENDING_GRAVITY,
+  TRENDING_WINDOW_HOURS,
   type FeedSort,
 } from "@/lib/feedSort";
 import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
@@ -1218,100 +1220,58 @@ export async function getFlavorProfile(userId: string): Promise<{ flavor: Flavor
 }
 
 /**
- * Discover feed: every post, ranked by recency with steep time decay and
- * public engagement — net votes plus comments — as the secondary factor.
- * Moved server-side from the old client-side hotScore because it has to join
- * the vote and comment tables.
+ * The Trending score as a SQL expression over the feed query's aliases:
+ * `v(net) * fresh(age)`, which is `trendingScore` in lib/feedSort.ts line for
+ * line — the reasoning for every number lives there, and `npm run feed:check`
+ * asserts the JS side. Change the two together.
  *
- * **A negative score sinks below everything, and the ranking is in two tiers
- * because of the arithmetic.** The score used to be floored at zero, so a plate
- * everybody downvoted ranked exactly like one nobody had voted on — past zero,
- * downvotes stopped meaning anything. They mean something now.
- *
- * They can't mean it through the same division, though. `net / age^1.5` shrinks
- * toward zero as a post gets older, which is what makes it decay while positive
- * — and for a negative score, shrinking toward zero is a promotion. A month-old
- * −9 would climb over a fresh −1. So the sort is: everything at zero or above
- * first, on the original curve, untouched; then everything below zero, worst
- * first, newest breaking ties. Age deliberately does not lift a negative post
- * back up. Only votes can.
- *
- * This function — and only this function — is allowed to touch post_upvotes
- * and post_downvotes for ranking/counting purposes. It must never
- * be extended to join post_hearts; that is the one invariant this whole
- * feature exists to hold. If you're adding a signal to this query, it does
- * not belong here unless it is public.
- *
- * Photo privacy is enforced here, not trusted to the client: a post whose
- * photos_public is false has its media stripped from the payload entirely,
- * so a private photo's URL never reaches a Discover response in the first
- * place.
- *
- * Only the last `FEED_WINDOW_DAYS` of posts are eligible — see lib/feedWindow.
- * The cutoff is a filter on this read, never a delete: the post stays in the
- * table and keeps counting toward the restaurant's rating forever.
- *
- * **`limit` is the binding constraint on this feed, not the window**, and the
- * map is why that matters. `/feed`'s Map tab draws its bubbles from this same
- * response, so this number is also how many comments the whole city gets to
- * have. At 30 it ran out after 11 days — the cap was cutting the feed off well
- * inside even the old fortnight, so widening FEED_WINDOW_DAYS to two months
- * moved nothing, and searching the map for a cuisine found most of its matches
- * silent. 120 is what makes the wider window reach anything.
- *
- * It costs the feed LIST the same rows, since `/feed` fetches once and renders
- * both surfaces from it. That is the trade being made here: a longer scroll for
- * a map that has something to say about more than thirty plates. If the list
- * becomes the problem, the fix is to give the map its own read rather than to
- * put this back — see the same note in lib/feedWindow.
- */
-/**
- * The two orderings, as literal SQL keyed by a validated union.
- *
- * `sql.unsafe` is safe here for the same reason `POST_SELECT` uses it: what it
- * splices is a constant chosen from this map, never a value off a request.
- * `parseFeedSort` narrows the query string to the union before it can reach
- * this object, so an unknown `?sort=` lands on "trending" rather than
- * anywhere near the query. Do not extend this to interpolate a caller's
- * string.
- *
- * "trending" is *recent plates with the most upvotes*:
- * `(netVotes + COMMENT_WEIGHT*comments + 1) / (ageHours + 2)^GRAVITY`.
- *
- * Both constants live in `lib/feedSort` rather than here, because that module
- * is the pure one — the UI can read them without pulling the Neon driver into
- * the browser bundle, and the reasoning for each number is written out beside
- * it.
- *
- * `TRENDING_COMMENT_WEIGHT` is 0 today, and the ternary below omits the term
- * rather than writing `0 * cm.count`, so the ranking is the expression it
- * looks like rather than one with a dead multiply in it. **The `cm` join in
- * the query itself stays either way**, and it is free while the weight is 0:
- * checked on 2026-08-24, `EXPLAIN` of this ordering drops the `cm` node from
- * the plan entirely (`uv` and `dv` both survive as Hash Left Joins, `cm` does
- * not appear). Keeping it in the text means turning the knob back on is a
- * one-line change in `feedSort` and nothing here.
- *
- * The vote total is floored at zero so a heavily downvoted plate sinks to "as
- * if nobody voted" rather than sorting *below* older neutral posts by going
- * negative and inverting the age decay. That floor is also the whole of what
- * happens to a downvoted plate: there is **no Yik Yak-style `-5` removal**
- * here, and there should not be — see the note in `lib/feedSort`.
- *
- * The decay stays. Without it "Trending" is an all-time leaderboard that
- * never changes and a plate posted this evening can never reach — which is
- * "Top", not "Trending", and there is already a "New" for chronology.
- */
-/**
- * The trending score as a SQL expression over the feed query's aliases.
- * $1 is the clock the scroll is ranked against (lib/feedCursor.ts) — a fixed
+ * `$1` is the clock the scroll is ranked against (lib/feedCursor.ts) — a fixed
  * timestamp rather than now(), so a row scores the same on every page of one
- * scroll and a cursor of (score, id) names an exact position.
+ * scroll and a cursor of (score, id) names an exact position. Age is floored at
+ * zero (`GREATEST`) so a row stamped a hair after `$1` scores exactly as brand
+ * new rather than a hair below it. The floor is also what keeps the base of the
+ * fractional power at 1 or more if `TRENDING_EDGE` is ever retuned to an odd
+ * number, where a negative age would otherwise put a negative base under it.
+ *
+ * Net is `upvotes - downvotes`, cast to float8 so `POWER` and the reciprocal
+ * stay in floating point instead of drifting into `numeric`.
+ * `TRENDING_COMMENT_WEIGHT` is 0 today, and the ternary omits the term rather
+ * than writing `0 * cm.count`, so the ranking is the expression it looks like
+ * rather than one with a dead multiply in it. **The `cm` join in the query
+ * itself stays either way**, and it is free while the weight is 0: checked on
+ * 2026-08-24, `EXPLAIN` drops the `cm` node from the plan entirely when nothing
+ * references it (`uv` and `dv` both survive as Hash Left Joins, `cm` does not
+ * appear). Keeping it in the text means turning the knob back on is a one-line
+ * change in `feedSort` and nothing here.
+ *
+ * The vote term is `net + 1` at zero or above and `1 / (1 - net)^2` below it.
+ * It is positive for every net, which is what lets a multiplicative decay sit
+ * on top of it: a downvoted plate sinks below a brand-new zero-vote one, and
+ * ageing only shrinks it further, never promotes it. That sink is also the
+ * whole of what happens to a downvoted plate — there is **no Yik Yak-style `-5`
+ * removal** here, and there should not be (see the note in `lib/feedSort`).
+ *
+ * The four constants are module constants, interpolated as numbers, never
+ * values off a request — the same reason `NEARBY_RADIUS_MI` and
+ * `FEED_WINDOW_DAYS` are spliced into the text below instead of bound.
+ *
+ * **The decay exponent is divided in JavaScript, not in the SQL.** The
+ * interpolated text is the single number `-GRAVITY / EDGE` (-0.375 today).
+ * Writing it as `-${GRAVITY} / ${EDGE}` would be integer division in Postgres
+ * whenever both constants are integers: `-3 / 6` is 0, `POWER(x, 0)` is 1, and
+ * the freshness decay switches off in SQL while the JS twin still decays — with
+ * `feed:check` (JS only) still printing "feed order ok". `feed:check` now
+ * asserts the exponent that lands in this text, and
+ * `probe/trending-2026-10-27/verify-impl.mjs` runs the real text against the
+ * database; rerun both after retuning a constant.
  */
-const TRENDING_SCORE = `((GREATEST(COALESCE(uv.count, 0) - COALESCE(dv.count, 0), 0)${
-    TRENDING_COMMENT_WEIGHT > 0 ? ` + ${TRENDING_COMMENT_WEIGHT} * COALESCE(cm.count, 0)` : ""
-  } + 1)
-        / POWER(EXTRACT(EPOCH FROM ($1::timestamptz - p.created_at)) / 3600 + 2, ${TRENDING_GRAVITY}))::float8`;
+const TRENDING_NET = `(COALESCE(uv.count, 0) - COALESCE(dv.count, 0)${
+  TRENDING_COMMENT_WEIGHT > 0 ? ` + ${TRENDING_COMMENT_WEIGHT} * COALESCE(cm.count, 0)` : ""
+})::float8`;
+const TRENDING_SCORE = `((CASE WHEN ${TRENDING_NET} >= 0
+         THEN ${TRENDING_NET} + 1
+         ELSE 1.0 / POWER(1 - ${TRENDING_NET}, 2) END)
+    * POWER(1 + POWER((GREATEST(EXTRACT(EPOCH FROM ($1::timestamptz - p.created_at)), 0) / 3600.0)::float8 / ${TRENDING_WINDOW_HOURS}, ${TRENDING_EDGE}), ${-TRENDING_GRAVITY / TRENDING_EDGE}))::float8`;
 
 export const FEED_PAGE_SIZE = 30;
 
@@ -1355,6 +1315,43 @@ async function feedPage(
   return { posts, nextCursor };
 }
 
+/**
+ * Discover feed: one page of posts in the order `sort` names — "trending" (the
+ * default) or "new" — optionally narrowed to the viewer's Nearby radius. It is
+ * server-side because Trending has to join the vote tables.
+ *
+ * **Trending** orders by `TRENDING_SCORE` (above): net votes inside a soft
+ * 24-hour window, newest first on ties, falling away polynomially after it so
+ * the feed never empties at this app's volume while only a genuinely popular
+ * plate survives past a day or two. **New** is `created_at DESC, id DESC` and
+ * ignores votes. Both break ties on `id DESC`.
+ *
+ * Paging is keyset, not OFFSET. Each query asks for `limit + 1` rows so it knows
+ * whether another page exists, and the cursor it returns is (score, id) for
+ * Trending or (created_at, id) for New, plus `at` — the clock fixed on the first
+ * page. `at` is what Trending is scored against and what the feed window is
+ * measured from, so a post ageing past either edge between two pages of one
+ * scroll does not shift everything below it up a slot. The page size is
+ * `FEED_PAGE_SIZE` (30).
+ *
+ * Nearby is a filter, not a sort: when `here` is given, the 5 mile haversine
+ * condition narrows whichever ordering was chosen and changes nothing about it.
+ *
+ * This function — and only this function — is allowed to touch post_upvotes
+ * and post_downvotes for ranking/counting purposes. It must never
+ * be extended to join post_hearts; that is the one invariant this whole
+ * feature exists to hold. If you're adding a signal to this query, it does
+ * not belong here unless it is public.
+ *
+ * Photo privacy is enforced here, not trusted to the client: a post whose
+ * photos_public is false has its media stripped from the payload entirely
+ * (in the SQL itself), so a private photo's URL never reaches a Discover
+ * response in the first place.
+ *
+ * Only the last `FEED_WINDOW_DAYS` of posts are eligible — see lib/feedWindow.
+ * The cutoff is a filter on this read, never a delete: the post stays in the
+ * table and keeps counting toward the restaurant's rating forever.
+ */
 export async function getDiscoverFeed(
   viewerId: string | null,
   limit = FEED_PAGE_SIZE,

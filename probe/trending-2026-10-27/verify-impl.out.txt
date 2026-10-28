@@ -1,0 +1,50 @@
+constants: window 24 edge 6 gravity 2.25 commentWeight 0 feedWindowDays 60
+SQL under test (from db.ts, constants substituted):
+    ((CASE WHEN (COALESCE(uv.count, 0) - COALESCE(dv.count, 0))::float8 >= 0
+             THEN (COALESCE(uv.count, 0) - COALESCE(dv.count, 0))::float8 + 1
+             ELSE 1.0 / POWER(1 - (COALESCE(uv.count, 0) - COALESCE(dv.count, 0))::float8, 2) END)
+        * POWER(1 + POWER((GREATEST(EXTRACT(EPOCH FROM ($1::timestamptz - p.created_at)), 0) / 3600.0)::float8 / 24, 6), -2.25 / 6))::float8
+
+A. live eligible posts (SQL TRENDING_SCORE vs trendingScore)
+ clock now: 45 posts, age 25.41h..1221.6h, net -1..4
+  ok   per-row: n=45  max rel diff=0.00e+0  mean=0.00e+0  (tol 0.000001)
+  ok   order: ordering of 45 posts, SQL vs JS IDENTICAL
+ clock now-10d (posts newer than the clock => negative age, clamped to 0): 47 posts, age -214.59h..1394.2h, net -1..4
+  ok   per-row: n=47  max rel diff=0.00e+0  mean=0.00e+0  (tol 0.000001)
+  ok   order: ordering of 47 posts, SQL vs JS IDENTICAL
+ clock now-30d: 47 posts, age -694.59h..914.2h, net -1..4
+  ok   per-row: n=47  max rel diff=0.00e+0  mean=0.00e+0  (tol 0.000001)
+  ok   order: ordering of 47 posts, SQL vs JS IDENTICAL
+ clock now+3d: 45 posts, age 97.41h..1293.6h, net -1..4
+  ok   per-row: n=45  max rel diff=0.00e+0  mean=0.00e+0  (tol 0.000001)
+  ok   order: ordering of 45 posts, SQL vs JS IDENTICAL
+ clock now+20d (oldest posts age out of the window): 27 posts, age 505.41h..1420.8h, net 1..4
+  ok   per-row: n=27  max rel diff=0.00e+0  mean=0.00e+0  (tol 0.000001)
+  ok   order: ordering of 27 posts, SQL vs JS IDENTICAL
+ clock now+45d: 11 posts, age 1105.41h..1408.8h, net 1..3
+  ok   per-row: n=11  max rel diff=0.00e+0  mean=0.00e+0  (tol 0.000001)
+  ok   order: ordering of 11 posts, SQL vs JS IDENTICAL
+  summary: 222 row-scores across 6 clocks, worst rel diff 0.00e+0, negative-age rows exercised: true
+  ok   join counts vs independent count(*): up 86/86, down 8/8, comments 19/19
+  net-vote distribution at now: -1x1 +0x3 +1x19 +2x9 +3x10 +4x3
+
+B. boundary grid through the same aliases (p, uv, dv, cm)
+  ok   grid 17 nets x 21 ages: n=357  max rel diff=0.00e+0  mean=0.00e+0  (tol 0.000001)
+  score range in SQL: 9.961e-11 .. 1.001e+3 (all finite and > 0)
+
+Control: same live rows vs a deliberately wrong JS twin (gravity 2.0 instead of 2.25)
+  ok   wrong twin is detected: max rel diff 6.26e-1 (> tol 0.000001)
+  sample rows (sql | js, 17 sig digits):
+    net  3 age    25.41h  2.8766012230584246 | 2.8766012230584246
+    net  3 age    51.93h  0.70189773326352500 | 0.70189773326352500
+    net  3 age    75.02h  0.30775680139602696 | 0.30775680139602696
+    net  3 age    75.18h  0.30632174412475072 | 0.30632174412475072
+    net  0 age  1084.92h  0.00018872575387549143 | 0.00018872575387549143
+    net -1 age  1170.52h  0.000039770494962638144 | 0.000039770494962638144
+
+C. end to end: real getDiscoverFeed, real keyset cursor
+  trending: 9 pages of 5 at fixed clock 2026-10-27T23:38:11.476Z: 45 posts, duplicates 0, JS expects 45
+  ok   paged ids == JS trendingScore ordering
+  ok   sort=new unchanged: 45 posts == created_at DESC, id DESC (45 expected)
+
+verify-impl: ALL CHECKS PASS

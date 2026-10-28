@@ -1,0 +1,12 @@
+import { neon } from "@neondatabase/serverless";
+const sql = neon(process.env.DATABASE_URL);
+const q = (t,p)=>sql.query(t,p||[]);
+console.log("now", (await q("select now() as n"))[0].n);
+console.log("posts total/meal null/min/max", await q("select count(*)::int total, count(*) filter (where meal_id is null)::int nomeal, min(created_at) mn, max(created_at) mx from posts"));
+console.log("in 60d", await q("select count(*)::int n, count(*) filter (where restaurant_lat is null)::int nolat from posts where meal_id is null and created_at > now()-interval '60 days'"));
+console.log("per day", (await q("select date_trunc('day', created_at at time zone 'America/Los_Angeles')::date d, count(*)::int n from posts where meal_id is null and created_at > now()-interval '60 days' group by 1 order by 1")).map(r=>r.d.toISOString?.().slice(0,10)+":"+r.n).join(" "));
+console.log("upvote ts sanity", await q("select count(*)::int n, count(*) filter (where u.created_at < p.created_at)::int before_post, count(distinct u.created_at)::int distinct_ts, min(u.created_at) mn, max(u.created_at) mx from post_upvotes u join posts p on p.id=u.post_id"));
+console.log("downvote ts sanity", await q("select count(*)::int n, count(*) filter (where u.created_at < p.created_at)::int before_post, min(u.created_at) mn, max(u.created_at) mx from post_downvotes u join posts p on p.id=u.post_id"));
+console.log("upvotes by day", (await q("select u.created_at::date d, count(*)::int n from post_upvotes u group by 1 order by 1")).map(r=>r.d.toISOString().slice(0,10)+":"+r.n).join(" "));
+console.log("votes on posts w/ meal_id", await q("select count(*)::int n from post_upvotes u join posts p on p.id=u.post_id where p.meal_id is not null"));
+console.log("top by net", await q("select p.id, p.created_at, (select count(*)::int from post_upvotes where post_id=p.id) up, (select count(*)::int from post_downvotes where post_id=p.id) down from posts p where meal_id is null and created_at > now()-interval '60 days' order by 3 desc limit 8"));

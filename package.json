@@ -29,6 +29,7 @@
     "cuisines:normalize": "node --env-file=.env.local scripts/normalize-cuisines.mjs",
     "moderation:check": "tsx scripts/check-moderation.mjs",
     "tastematch:check": "tsx scripts/check-taste-match.mjs",
+    "feed:check": "tsx scripts/check-feed-order.mjs",
     "dishes:index": "node --env-file=.env.local scripts/index-dish-names.mjs",
     "dishes:review": "node --env-file=.env.local scripts/dish-review.mjs",
     "dishes:apply": "node --env-file=.env.local scripts/apply-dish-review.mjs",

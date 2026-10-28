@@ -1,0 +1,857 @@
+{
+ "generatedAt": "2026-10-27T23:08:48.693Z",
+ "feedWindowDays": 60,
+ "snapshotDays": 81,
+ "notes": [
+  "posts = every Discover-eligible post (meal_id IS NULL) created in the last snapshotDays days.",
+  "The live feed only shows the last feedWindowDays; the extra days exist so the 21-day hourly replay sees the same candidate pool the feed had at each past hour.",
+  "upTimes/downTimes/commentTimes are the created_at of rows that STILL EXIST. A vote that was later un-voted, a switched vote's old row, and a deleted comment are absent, so historical counts are lower bounds.",
+  "authorIdx is an opaque per-snapshot author number; selfUpTime is the timestamp of the author's own upvote on their own post (already counted in up/upTimes), or null.",
+  "No user ids, names or text are included."
+ ],
+ "posts": [
+  {
+   "id": "e83be424-912e-49d7-a22a-9dddbec543af",
+   "created_at": "2026-08-20T21:28:31.706Z",
+   "restaurant_lat": 32.7661,
+   "restaurant_lng": -117.0593,
+   "authorIdx": 1,
+   "selfUpTime": "2026-08-20T21:28:42.422Z",
+   "up": 2,
+   "down": 0,
+   "comments": 1,
+   "upTimes": [
+    "2026-08-20T21:28:42.422Z",
+    "2026-09-08T03:10:46.725Z"
+   ],
+   "downTimes": [],
+   "commentTimes": [
+    "2026-08-20T22:40:25.523Z"
+   ]
+  },
+  {
+   "id": "04c1a5ba-e0e8-46dc-9d22-608a364a407b",
+   "created_at": "2026-08-25T21:57:08.232Z",
+   "restaurant_lat": 32.7134,
+   "restaurant_lng": -117.1599,
+   "authorIdx": 2,
+   "selfUpTime": null,
+   "up": 2,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-09-06T04:21:42.646Z",
+    "2026-09-09T04:58:03.012Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "f6b1c030-c616-4180-9380-80ef5c4678ec",
+   "created_at": "2026-09-07T02:02:05.161Z",
+   "restaurant_lat": 32.7148,
+   "restaurant_lng": -117.16,
+   "authorIdx": 2,
+   "selfUpTime": "2026-09-14T21:35:19.554Z",
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-09-14T21:35:19.554Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "a1f85268-ff0e-4630-a8b3-fcca1e350165",
+   "created_at": "2026-09-07T04:54:15.894Z",
+   "restaurant_lat": 32.77,
+   "restaurant_lng": -117.2526,
+   "authorIdx": 2,
+   "selfUpTime": null,
+   "up": 3,
+   "down": 2,
+   "comments": 3,
+   "upTimes": [
+    "2026-09-12T08:26:01.355Z",
+    "2026-09-13T22:37:09.277Z",
+    "2026-09-19T23:03:26.882Z"
+   ],
+   "downTimes": [
+    "2026-09-15T02:51:53.731Z",
+    "2026-09-23T20:37:58.365Z"
+   ],
+   "commentTimes": [
+    "2026-09-14T00:58:31.931Z",
+    "2026-09-23T20:18:24.029Z",
+    "2026-09-23T20:18:35.364Z"
+   ]
+  },
+  {
+   "id": "ea0d803d-e5b8-4d52-afce-a40cc5312d93",
+   "created_at": "2026-09-08T18:39:56.168Z",
+   "restaurant_lat": 32.7847,
+   "restaurant_lng": -117.2527,
+   "authorIdx": 3,
+   "selfUpTime": null,
+   "up": 2,
+   "down": 1,
+   "comments": 2,
+   "upTimes": [
+    "2026-09-09T02:15:26.999Z",
+    "2026-09-09T04:57:59.770Z"
+   ],
+   "downTimes": [
+    "2026-09-24T08:43:31.072Z"
+   ],
+   "commentTimes": [
+    "2026-09-08T18:41:39.385Z",
+    "2026-09-09T02:15:38.038Z"
+   ]
+  },
+  {
+   "id": "9eef7e58-3004-4402-ace6-f72cfc0dc8c6",
+   "created_at": "2026-09-08T21:07:00.624Z",
+   "restaurant_lat": 32.79687,
+   "restaurant_lng": -117.255305,
+   "authorIdx": 4,
+   "selfUpTime": "2026-10-08T18:32:56.113Z",
+   "up": 3,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-09-09T02:16:08.244Z",
+    "2026-09-09T04:58:00.619Z",
+    "2026-10-08T18:32:56.113Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "ced865a1-16ae-4292-a79e-0826af9b6e69",
+   "created_at": "2026-09-09T05:06:49.387Z",
+   "restaurant_lat": 32.873199,
+   "restaurant_lng": -117.109313,
+   "authorIdx": 5,
+   "selfUpTime": null,
+   "up": 0,
+   "down": 1,
+   "comments": 0,
+   "upTimes": [],
+   "downTimes": [
+    "2026-09-15T02:52:04.393Z"
+   ],
+   "commentTimes": []
+  },
+  {
+   "id": "603e265c-330e-4dbd-a681-37db29777609",
+   "created_at": "2026-09-09T05:16:15.698Z",
+   "restaurant_lat": 32.776105,
+   "restaurant_lng": -117.071368,
+   "authorIdx": 6,
+   "selfUpTime": null,
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-09-15T03:30:54.982Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "52004709-f1ed-498b-aff2-d5ba323552e3",
+   "created_at": "2026-09-10T02:44:27.382Z",
+   "restaurant_lat": 32.764216,
+   "restaurant_lng": -117.062277,
+   "authorIdx": 5,
+   "selfUpTime": "2026-09-10T02:47:42.484Z",
+   "up": 3,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-09-10T02:47:42.484Z",
+    "2026-09-13T22:37:37.318Z",
+    "2026-09-15T03:04:44.288Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "ee33549b-c2aa-49d2-9ace-8ad264cdc979",
+   "created_at": "2026-09-12T18:43:00.600Z",
+   "restaurant_lat": 32.768432,
+   "restaurant_lng": -117.148887,
+   "authorIdx": 2,
+   "selfUpTime": null,
+   "up": 1,
+   "down": 1,
+   "comments": 1,
+   "upTimes": [
+    "2026-09-12T18:52:28.631Z"
+   ],
+   "downTimes": [
+    "2026-09-15T02:51:49.786Z"
+   ],
+   "commentTimes": [
+    "2026-09-12T18:52:55.619Z"
+   ]
+  },
+  {
+   "id": "6aa29e3d-3632-4c6a-b66f-c5134dbf5391",
+   "created_at": "2026-09-12T18:43:21.512Z",
+   "restaurant_lat": 32.768432,
+   "restaurant_lng": -117.148887,
+   "authorIdx": 3,
+   "selfUpTime": null,
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-09-12T18:52:35.268Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "2b7bde19-95cd-4da2-b912-0ed61749a811",
+   "created_at": "2026-09-12T19:35:06.710Z",
+   "restaurant_lat": 32.770716,
+   "restaurant_lng": -117.150169,
+   "authorIdx": 3,
+   "selfUpTime": null,
+   "up": 0,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "4fad46fb-4d9c-46cf-ba83-1ad7605f2165",
+   "created_at": "2026-09-12T19:36:41.591Z",
+   "restaurant_lat": 32.770716,
+   "restaurant_lng": -117.150169,
+   "authorIdx": 2,
+   "selfUpTime": "2026-09-16T00:38:29.954Z",
+   "up": 2,
+   "down": 0,
+   "comments": 2,
+   "upTimes": [
+    "2026-09-12T20:15:32.404Z",
+    "2026-09-16T00:38:29.954Z"
+   ],
+   "downTimes": [],
+   "commentTimes": [
+    "2026-09-12T20:16:20.416Z",
+    "2026-09-19T23:02:58.832Z"
+   ]
+  },
+  {
+   "id": "9e81c0db-7b19-44d9-bcfd-a599bd98e261",
+   "created_at": "2026-09-12T23:17:23.280Z",
+   "restaurant_lat": 32.8407,
+   "restaurant_lng": -116.9833,
+   "authorIdx": 2,
+   "selfUpTime": "2026-09-14T21:35:36.096Z",
+   "up": 2,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-09-13T02:06:20.252Z",
+    "2026-09-14T21:35:36.096Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "bd93afa1-bc60-4cff-ad28-87cdb6204254",
+   "created_at": "2026-09-13T18:41:19.328Z",
+   "restaurant_lat": 32.839502,
+   "restaurant_lng": -117.276224,
+   "authorIdx": 3,
+   "selfUpTime": null,
+   "up": 1,
+   "down": 1,
+   "comments": 1,
+   "upTimes": [
+    "2026-09-13T22:37:11.557Z"
+   ],
+   "downTimes": [
+    "2026-09-15T02:51:56.513Z"
+   ],
+   "commentTimes": [
+    "2026-09-13T18:44:46.755Z"
+   ]
+  },
+  {
+   "id": "ec9960fb-39b2-4ae6-89f3-1ba8ddd11918",
+   "created_at": "2026-09-14T19:07:04.712Z",
+   "restaurant_lat": 32.803387,
+   "restaurant_lng": -117.253524,
+   "authorIdx": 1,
+   "selfUpTime": "2026-09-14T19:07:04.724Z",
+   "up": 3,
+   "down": 1,
+   "comments": 2,
+   "upTimes": [
+    "2026-09-14T19:07:04.724Z",
+    "2026-09-14T23:51:15.220Z",
+    "2026-09-15T01:35:09.624Z"
+   ],
+   "downTimes": [
+    "2026-09-16T06:56:12.227Z"
+   ],
+   "commentTimes": [
+    "2026-09-14T23:51:28.713Z",
+    "2026-09-15T01:35:14.350Z"
+   ]
+  },
+  {
+   "id": "0089a285-8e22-4f64-9093-9051b94d472a",
+   "created_at": "2026-09-15T18:47:06.462Z",
+   "restaurant_lat": 32.776991,
+   "restaurant_lng": -117.070199,
+   "authorIdx": 3,
+   "selfUpTime": "2026-09-15T18:47:06.490Z",
+   "up": 2,
+   "down": 0,
+   "comments": 1,
+   "upTimes": [
+    "2026-09-15T18:47:06.490Z",
+    "2026-09-16T21:30:15.450Z"
+   ],
+   "downTimes": [],
+   "commentTimes": [
+    "2026-09-16T01:27:20.738Z"
+   ]
+  },
+  {
+   "id": "45bc5c5e-94fe-4db3-96ea-6d2011b4fd48",
+   "created_at": "2026-09-16T21:03:37.345Z",
+   "restaurant_lat": 32.795995,
+   "restaurant_lng": -117.255096,
+   "authorIdx": 1,
+   "selfUpTime": "2026-09-16T21:03:37.356Z",
+   "up": 3,
+   "down": 0,
+   "comments": 1,
+   "upTimes": [
+    "2026-09-16T21:03:37.356Z",
+    "2026-09-16T21:13:24.288Z",
+    "2026-09-16T21:37:37.687Z"
+   ],
+   "downTimes": [],
+   "commentTimes": [
+    "2026-09-16T21:53:57.035Z"
+   ]
+  },
+  {
+   "id": "32876635-f492-4bf6-8c8d-4086d7b6866b",
+   "created_at": "2026-09-16T21:05:49.690Z",
+   "restaurant_lat": 32.795995,
+   "restaurant_lng": -117.255096,
+   "authorIdx": 2,
+   "selfUpTime": "2026-09-16T21:05:49.709Z",
+   "up": 3,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-09-16T21:05:49.709Z",
+    "2026-09-16T21:37:41.227Z",
+    "2026-09-17T21:36:34.584Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "3a495755-cc53-4d05-a1bb-2c777eb944df",
+   "created_at": "2026-09-17T22:12:41.516Z",
+   "restaurant_lat": 32.7736,
+   "restaurant_lng": -117.0694,
+   "authorIdx": 1,
+   "selfUpTime": "2026-09-17T22:12:41.534Z",
+   "up": 4,
+   "down": 0,
+   "comments": 1,
+   "upTimes": [
+    "2026-09-17T22:12:41.534Z",
+    "2026-09-18T01:10:21.150Z",
+    "2026-09-18T18:47:01.013Z",
+    "2026-09-23T20:16:55.968Z"
+   ],
+   "downTimes": [],
+   "commentTimes": [
+    "2026-09-23T20:17:00.961Z"
+   ]
+  },
+  {
+   "id": "d54cf73c-745d-4015-bc4e-ebc1226b3704",
+   "created_at": "2026-09-18T18:49:05.242Z",
+   "restaurant_lat": 32.79864,
+   "restaurant_lng": -117.256281,
+   "authorIdx": 3,
+   "selfUpTime": "2026-09-18T18:49:05.262Z",
+   "up": 1,
+   "down": 0,
+   "comments": 1,
+   "upTimes": [
+    "2026-09-18T18:49:05.262Z"
+   ],
+   "downTimes": [],
+   "commentTimes": [
+    "2026-09-19T08:53:24.207Z"
+   ]
+  },
+  {
+   "id": "85513cd7-514f-4d05-87ed-dc3f71d22094",
+   "created_at": "2026-09-20T18:41:59.597Z",
+   "restaurant_lat": 32.7665,
+   "restaurant_lng": -117.1543,
+   "authorIdx": 3,
+   "selfUpTime": "2026-09-20T18:41:59.603Z",
+   "up": 4,
+   "down": 0,
+   "comments": 1,
+   "upTimes": [
+    "2026-09-20T18:41:59.603Z",
+    "2026-09-22T20:47:31.054Z",
+    "2026-09-23T17:18:06.300Z",
+    "2026-10-12T12:53:38.168Z"
+   ],
+   "downTimes": [],
+   "commentTimes": [
+    "2026-09-23T20:18:45.147Z"
+   ]
+  },
+  {
+   "id": "f8780dfb-ae23-45b8-b62f-93af5570446e",
+   "created_at": "2026-09-20T18:42:49.862Z",
+   "restaurant_lat": 32.708728,
+   "restaurant_lng": -117.159855,
+   "authorIdx": 3,
+   "selfUpTime": "2026-09-23T17:33:05.671Z",
+   "up": 2,
+   "down": 1,
+   "comments": 1,
+   "upTimes": [
+    "2026-09-23T17:33:05.671Z",
+    "2026-09-23T20:17:38.181Z"
+   ],
+   "downTimes": [
+    "2026-09-24T23:38:25.006Z"
+   ],
+   "commentTimes": [
+    "2026-09-22T06:54:02.420Z"
+   ]
+  },
+  {
+   "id": "51ce9c54-cf15-4eab-8a3b-0be278a5475f",
+   "created_at": "2026-09-24T02:02:39.202Z",
+   "restaurant_lat": 32.797749,
+   "restaurant_lng": -117.251233,
+   "authorIdx": 3,
+   "selfUpTime": "2026-09-24T02:02:39.221Z",
+   "up": 3,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-09-24T02:02:39.221Z",
+    "2026-09-25T03:34:50.751Z",
+    "2026-10-12T12:53:40.161Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "1c2a6fd1-b8fd-47cc-8e3a-3cb9e88db260",
+   "created_at": "2026-09-26T07:22:05.576Z",
+   "restaurant_lat": 32.79687,
+   "restaurant_lng": -117.255305,
+   "authorIdx": 2,
+   "selfUpTime": "2026-09-26T07:22:05.593Z",
+   "up": 4,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-09-26T07:22:05.593Z",
+    "2026-09-26T19:21:42.110Z",
+    "2026-10-08T18:32:10.249Z",
+    "2026-10-12T12:53:35.086Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "597101f5-c81c-4e70-84e8-ba1aa893fbba",
+   "created_at": "2026-09-26T22:59:22.009Z",
+   "restaurant_lat": 32.779904,
+   "restaurant_lng": -117.104142,
+   "authorIdx": 2,
+   "selfUpTime": "2026-09-26T22:59:22.029Z",
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-09-26T22:59:22.029Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "4abc59d1-2cc2-469e-ad9d-01c6b5cdff11",
+   "created_at": "2026-10-03T20:11:38.056Z",
+   "restaurant_lat": 32.783267,
+   "restaurant_lng": -117.252435,
+   "authorIdx": 3,
+   "selfUpTime": "2026-10-03T20:11:38.065Z",
+   "up": 3,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-03T20:11:38.065Z",
+    "2026-10-03T22:27:05.073Z",
+    "2026-10-12T12:53:32.219Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "641891be-cf08-4e1b-9b2b-45d1f4824c08",
+   "created_at": "2026-10-03T22:16:42.166Z",
+   "restaurant_lat": 32.87131,
+   "restaurant_lng": -117.251968,
+   "authorIdx": 7,
+   "selfUpTime": "2026-10-03T22:16:42.201Z",
+   "up": 2,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-03T22:16:42.201Z",
+    "2026-10-08T00:38:01.721Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "e24d7d6e-5966-4459-bbc9-77e0084371bf",
+   "created_at": "2026-10-03T22:20:04.243Z",
+   "restaurant_lat": 32.87131,
+   "restaurant_lng": -117.251968,
+   "authorIdx": 7,
+   "selfUpTime": "2026-10-03T22:20:04.248Z",
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-03T22:20:04.248Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "a3d3175c-f764-421d-85cf-cc86ff5dd710",
+   "created_at": "2026-10-03T22:21:09.922Z",
+   "restaurant_lat": 32.87131,
+   "restaurant_lng": -117.251968,
+   "authorIdx": 7,
+   "selfUpTime": "2026-10-03T22:21:09.928Z",
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-03T22:21:09.928Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "f2b692f1-4447-4c4d-a5db-64a43566ce29",
+   "created_at": "2026-10-03T22:22:11.383Z",
+   "restaurant_lat": 32.87131,
+   "restaurant_lng": -117.251968,
+   "authorIdx": 7,
+   "selfUpTime": "2026-10-03T22:22:11.390Z",
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-03T22:22:11.390Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "70b8789b-dd9c-454e-a226-0333c605c8b5",
+   "created_at": "2026-10-03T22:23:03.651Z",
+   "restaurant_lat": 32.87131,
+   "restaurant_lng": -117.251968,
+   "authorIdx": 7,
+   "selfUpTime": "2026-10-03T22:23:03.656Z",
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-03T22:23:03.656Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "c09d7aa8-3597-4def-929e-08b51c075d01",
+   "created_at": "2026-10-08T00:45:34.909Z",
+   "restaurant_lat": 32.748834,
+   "restaurant_lng": -117.130313,
+   "authorIdx": 7,
+   "selfUpTime": "2026-10-08T00:45:34.931Z",
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-08T00:45:34.931Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "a2233a44-603b-4a78-9ab8-05d72b9e20d1",
+   "created_at": "2026-10-11T19:47:41.501Z",
+   "restaurant_lat": 32.769746,
+   "restaurant_lng": -117.147066,
+   "authorIdx": 2,
+   "selfUpTime": "2026-10-11T19:47:41.522Z",
+   "up": 2,
+   "down": 0,
+   "comments": 1,
+   "upTimes": [
+    "2026-10-11T19:47:41.522Z",
+    "2026-10-12T12:53:29.166Z"
+   ],
+   "downTimes": [],
+   "commentTimes": [
+    "2026-10-11T19:53:38.271Z"
+   ]
+  },
+  {
+   "id": "bc2e1446-8889-423b-94ec-6cfe475853a3",
+   "created_at": "2026-10-11T19:55:46.762Z",
+   "restaurant_lat": 32.769746,
+   "restaurant_lng": -117.147066,
+   "authorIdx": 1,
+   "selfUpTime": "2026-10-11T19:55:46.770Z",
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-11T19:55:46.770Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "51f0ffd5-ff4f-41be-a4a6-e08ca24a9ecc",
+   "created_at": "2026-10-11T19:58:53.910Z",
+   "restaurant_lat": 32.769746,
+   "restaurant_lng": -117.147066,
+   "authorIdx": 1,
+   "selfUpTime": "2026-10-11T19:58:53.915Z",
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-11T19:58:53.915Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "6dc725ad-9342-4e75-b19b-74a7873692c2",
+   "created_at": "2026-10-14T06:50:03.618Z",
+   "restaurant_lat": 32.7725,
+   "restaurant_lng": -117.0703,
+   "authorIdx": 3,
+   "selfUpTime": "2026-10-14T06:50:03.628Z",
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-14T06:50:03.628Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "3a7b3fdb-3ff5-4b59-8d57-a573384942dc",
+   "created_at": "2026-10-18T03:44:25.453Z",
+   "restaurant_lat": 32.796624,
+   "restaurant_lng": -117.255863,
+   "authorIdx": 3,
+   "selfUpTime": "2026-10-18T03:44:25.462Z",
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-18T03:44:25.462Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "24d8989e-53a7-427d-b758-99d67f65189b",
+   "created_at": "2026-10-18T03:45:38.150Z",
+   "restaurant_lat": 32.796624,
+   "restaurant_lng": -117.255863,
+   "authorIdx": 3,
+   "selfUpTime": "2026-10-18T03:45:38.158Z",
+   "up": 2,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-18T03:45:38.158Z",
+    "2026-10-18T18:25:09.850Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "1f975975-a462-489d-bdbd-a225e7725d34",
+   "created_at": "2026-10-20T03:16:20.385Z",
+   "restaurant_lat": 32.7632,
+   "restaurant_lng": -117.1125,
+   "authorIdx": 1,
+   "selfUpTime": "2026-10-20T03:16:20.392Z",
+   "up": 2,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-20T03:16:20.392Z",
+    "2026-10-20T03:39:31.988Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "476e5b29-a906-4598-b399-ace6c390c77b",
+   "created_at": "2026-10-20T03:17:22.511Z",
+   "restaurant_lat": 32.7632,
+   "restaurant_lng": -117.1125,
+   "authorIdx": 1,
+   "selfUpTime": "2026-10-20T03:17:22.518Z",
+   "up": 2,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-20T03:17:22.518Z",
+    "2026-10-20T03:39:25.527Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "a6f238a5-724f-4d7f-8b99-07b664c5bb6d",
+   "created_at": "2026-10-24T18:18:10.757Z",
+   "restaurant_lat": 32.797749,
+   "restaurant_lng": -117.251233,
+   "authorIdx": 3,
+   "selfUpTime": "2026-10-24T18:18:10.776Z",
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-24T18:18:10.776Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "58d1e679-7e80-4ab0-a88e-9e7f402255c5",
+   "created_at": "2026-10-24T20:27:34.154Z",
+   "restaurant_lat": 32.7557,
+   "restaurant_lng": -117.0928,
+   "authorIdx": 2,
+   "selfUpTime": "2026-10-24T20:27:34.173Z",
+   "up": 3,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-24T20:27:34.173Z",
+    "2026-10-24T20:35:22.352Z",
+    "2026-10-27T18:05:09.812Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "bafc4992-d953-498c-8d3b-e70b0de5935e",
+   "created_at": "2026-10-24T20:36:56.352Z",
+   "restaurant_lat": 32.8434,
+   "restaurant_lng": -117.275,
+   "authorIdx": 3,
+   "selfUpTime": "2026-10-24T20:36:56.370Z",
+   "up": 3,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-24T20:36:56.370Z",
+    "2026-10-24T20:37:38.451Z",
+    "2026-10-27T18:05:08.371Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "4dcb5b19-ce5c-42bf-a9ef-6539829712b7",
+   "created_at": "2026-10-24T20:39:33.242Z",
+   "restaurant_lat": 32.8434,
+   "restaurant_lng": -117.275,
+   "authorIdx": 3,
+   "selfUpTime": "2026-10-24T20:39:33.247Z",
+   "up": 1,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-24T20:39:33.247Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "f614c85b-3aa2-4227-adde-960de7fe99ea",
+   "created_at": "2026-10-25T19:42:23.419Z",
+   "restaurant_lat": 32.767988,
+   "restaurant_lng": -117.152967,
+   "authorIdx": 2,
+   "selfUpTime": "2026-10-25T19:42:23.439Z",
+   "up": 3,
+   "down": 0,
+   "comments": 0,
+   "upTimes": [
+    "2026-10-25T19:42:23.439Z",
+    "2026-10-27T18:05:20.322Z",
+    "2026-10-27T20:32:12.822Z"
+   ],
+   "downTimes": [],
+   "commentTimes": []
+  },
+  {
+   "id": "435b701c-96be-4705-a0cf-f197f9674c2f",
+   "created_at": "2026-10-26T22:13:29.738Z",
+   "restaurant_lat": 32.8703,
+   "restaurant_lng": -117.210404,
+   "authorIdx": 1,
+   "selfUpTime": "2026-10-26T22:13:29.759Z",
+   "up": 3,
+   "down": 0,
+   "comments": 1,
+   "upTimes": [
+    "2026-10-26T22:13:29.759Z",
+    "2026-10-27T03:03:42.140Z",
+    "2026-10-27T22:44:08.586Z"
+   ],
+   "downTimes": [],
+   "commentTimes": [
+    "2026-10-27T03:03:56.522Z"
+   ]
+  }
+ ]
+}

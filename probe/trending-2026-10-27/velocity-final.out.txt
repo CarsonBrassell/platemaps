@@ -1,0 +1,102 @@
+##### CHOSEN velocity: Hv=24h, F=(age+2)^-1, b=0.3, author seed excluded #####
+=== velocity Hv24 pow1 b0.3 ===
+at 2026-10-27T23:08:48.693Z | window 60d | eligible now 45
+
+a) Trending top 10 now
+   rank  post      age(h)   up  down  cmts   score
+      1  435b701c     24.9    3     0     1  0.0686
+      2  f614c85b     51.4    3     0     0  0.0391
+      3  bafc4992     74.5    3     0     0  0.0167
+      4  58d1e679     74.7    3     0     0  0.0167
+      5  4dcb5b19     74.5    1     0     0  0.0039
+      6  a6f238a5     76.8    1     0     0  0.0038
+      7  476e5b29    187.9    2     0     0  0.0016
+      8  1f975975    187.9    2     0     0  0.0016
+      9  24d8989e    235.4    2     0     0  0.0013
+     10  3a7b3fdb    235.4    1     0     0  0.0013
+
+   New top 10 now (created_at DESC)
+   rank  post      age(h)   up  down
+      1  435b701c     24.9    3     0
+      2  f614c85b     51.4    3     0
+      3  4dcb5b19     74.5    1     0
+      4  bafc4992     74.5    3     0
+      5  58d1e679     74.7    3     0
+      6  a6f238a5     76.8    1     0
+      7  476e5b29    187.9    2     0
+      8  1f975975    187.9    2     0
+      9  24d8989e    235.4    2     0
+     10  3a7b3fdb    235.4    1     0
+
+b) Hourly replay, 505 hourly rankings (2026-10-06T23:00:00.000Z -> now), 505 with at least one post
+   longest #1 streak: 111h  post 476e5b29  net 2 -> 2 (+2/-0)  age 0.7h -> 110.7h
+   current #1 has held 1h (within replay)  post 435b701c  net 3  age 24.8h
+   #1 age (h): p50 35.2  p90 86  max 110.7  mean 41
+   % hours #1 older than 48h: 37.6   older than 7d: 0   younger than 24h: 37.8   #1 net<=1: 49.5
+   distinct #1 posts: 11   #1 changes/day: 0.57
+   top-3 dwell: 20 posts, avg 72.1h per stay, avg 75.8h total per post, p90 stay 152h, max stay 159h
+
+c) Trending vs New top-10 Jaccard: now 1   hourly mean 0.868 (min 0.538, max 1)   [1.0 = Trending is just New]
+
+d) Synthetic plates (votes uniform)
+    1. 14h, +35       1.8174
+    2. 8h, +18        1.6368
+    3. 2h, +2         0.5608
+    4. 2d, +40        0.4372
+    5. 1d, +5         0.1493
+    6. 3d, +22        0.1273
+    7. 7d, +100       0.1203
+    8. brand new, 0   0.12
+    9. 5d, +30        0.0693
+   10. 7d, +10        0.0122
+   11. 1h, -3         0.01
+   12. 15d, +7        0.0019
+   [PASS] (feedSort.ts) 2d,+40 beats brand new,0 (popular beats empty)
+   [PASS] (feedSort.ts) 5d,+30 loses to brand new,0 (recency matters)
+   [PASS] (owner) 7d,+10 is NOT in the top 3 (a week-old plate needs to be super popular)
+   [PASS] (owner) 7d,+100 beats 7d,+10 (super popular can stay up)
+   [PASS] (product) 1h,-3 ranks below brand new,0 (downvoted sinks)
+
+##### synthetic ranks under each vote-time shape #####
+uniform  1:14h, +35 | 2:8h, +18 | 3:2h, +2 | 4:2d, +40 | 5:1d, +5 | 6:3d, +22 | 7:7d, +100 | 8:brand new, 0 | 9:5d, +30 | 10:7d, +10 | 11:1h, -3 | 12:15d, +7
+early    1:14h, +35 | 2:8h, +18 | 3:2h, +2 | 4:2d, +40 | 5:brand new, 0 | 6:1d, +5 | 7:3d, +22 | 8:5d, +30 | 9:7d, +100 | 10:1h, -3 | 11:7d, +10 | 12:15d, +7
+late     1:14h, +35 | 2:8h, +18 | 3:2d, +40 | 4:2h, +2 | 5:7d, +100 | 6:3d, +22 | 7:1d, +5 | 8:5d, +30 | 9:brand new, 0 | 10:7d, +10 | 11:1h, -3 | 12:15d, +7
+
+custom checks:
+PASS [harness/feedSort.ts] 2d,+40 beats brand new,0 (popular beats empty)
+PASS [harness/feedSort.ts] 5d,+30 loses to brand new,0 (recency matters)
+PASS [harness/owner] 7d,+10 is NOT in the top 3 (a week-old plate needs to be super popular)
+PASS [harness/owner] 7d,+100 beats 7d,+10 (super popular can stay up)
+PASS [harness/product] 1h,-3 ranks below brand new,0 (downvoted sinks)
+PASS R3 brand new,0 ranks below 1d,+5 / 8h,+18 / 14h,+35 (top-decile from earlier today)
+PASS R2 7d,+100 votes still arriving (late shape) reaches top 5
+PASS R2 7d,+100 whose burst ended days ago (early shape) is NOT top 3
+PASS R2 7d,+10 never top 3 under any vote-time shape
+PASS R2 5d,+30 never top 3 under any vote-time shape
+PASS R6 1h,-3 below brand new,0 under every shape
+PASS 15d,+7 is last or second-to-last
+
+##### nearby (5 mi) top 10 now: velocity vs New vs baseline #####
+
+[sdsu] velocity vs New hourly Jaccard 1 | #1 age p50 45.7 max 265 | >48h 47.9% | eligible now ?
+  velocity top10: f614c8 58d1e6 476e5b 1f9759 6dc725 51f0ff bc2e14 a2233a c09d7a 597101
+  baseline top10: f614c8 58d1e6 476e5b 1f9759 a2233a 6dc725 85513c 3a4957 51f0ff bc2e14
+  new top10     : f614c8 58d1e6 476e5b 1f9759 6dc725 51f0ff bc2e14 a2233a c09d7a 597101
+
+[downtown] velocity vs New hourly Jaccard 1 | #1 age p50 59.2 max 413.3 | >48h 57.4% | eligible now ?
+  velocity top10: f614c8 58d1e6 476e5b 1f9759 51f0ff bc2e14 a2233a c09d7a 85513c f8780d
+  baseline top10: f614c8 58d1e6 476e5b 1f9759 a2233a 85513c 51f0ff bc2e14 c09d7a 4fad46
+  new top10     : f614c8 58d1e6 476e5b 1f9759 51f0ff bc2e14 a2233a c09d7a f8780d 85513c
+
+[densest] velocity vs New hourly Jaccard 1 | #1 age p50 123.7 max 342.8 | >48h 75.6% | eligible now ?
+  velocity top10: 435b70 bafc49 4dcb5b a6f238 24d898 3a7b3f 70b878 f2b692 a3d317 e24d7d
+  baseline top10: 435b70 bafc49 4dcb5b a6f238 24d898 3a7b3f 4abc59 1c2a6f 641891 51ce9c
+  new top10     : 435b70 4dcb5b bafc49 a6f238 24d898 3a7b3f 70b878 f2b692 a3d317 e24d7d
+
+##### sensitivity: b, Hv, withSelf #####
+Hv=24 b=0.25 noSelf | jac 0.857 | #1 p50 37.2 max 110.7 | checks 12/12 
+Hv=24 b=0.35 noSelf | jac 0.877 | #1 p50 35.2 max 110.7 | checks 12/12 
+Hv=18 b=0.25 noSelf | jac 0.91 | #1 p50 35.2 max 110.7 | checks 12/12 
+Hv=36 b=0.3 noSelf | jac 0.812 | #1 p50 37.7 max 110.7 | checks 12/12 
+Hv=24 b=0.3 withSelf | jac 0.852 | #1 p50 35.2 max 110.7 | checks 12/12 
+Hv=24 b=0.25 withSelf | jac 0.838 | #1 p50 35.2 max 110.7 | checks 12/12 

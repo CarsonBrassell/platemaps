@@ -1,0 +1,147 @@
+=== GRID (W hours, G tail gravity, P edge sharpness) ===
+W   G     P  chk  #1age p50/p90/max  %#1>48h  longest#1  notNewest%  exMean/Max  matchHardYY%  inv%  jacc(New)  R3viol/testable   +12: mean/max h@#1, mean/max h in top3   +40: same
+12  1.75  6  5/5  35.2/86/110.7       37.2      111h        18   0.1/2.2   84.4      0    0.807   1/3             111/131, 206/255        179/221, 265/374
+12  2     6  5/5  35.2/86/110.7       37.2      111h        18   0.1/2.2   84.4      0    0.847   1/3             99/124, 194/228         159/188, 252/342
+12  2.25  6  5/5  35.2/86/110.7       37.2      111h        18   0.1/2.2   84.4      0    0.868   1/3             91/118, 183/213         142/158, 239/311
+12  2.5   6  5/5  35.2/86/110.7       37.2      111h        18   0.1/2.2   84.4      0    0.877   1/3             86/116, 173/209         130/147, 227/288
+12  3     6  4/5  35.2/86/110.7       37.2      111h        18   0.1/2.2   84.4      0    0.877   1/3             77/116, 158/209         110/130, 207/256
+18  1.75  6  4/5  35.2/86/110.7       37.2      111h        18   0.1/2.2   85.7      0    0.807   1/3             114/139, 207/255        186/228, 267/375
+18  2     6  5/5  35.2/86/110.7       37.2      111h        18   0.1/2.2   85.7      0    0.847   1/3             102/128, 195/233        164/195, 253/348
+18  2.25  6  5/5  35.2/86/110.7       37.2      111h        18   0.1/2.2   85.7      0    0.868   1/3             94/128, 183/221         147/171, 240/321
+18  2.5   6  5/5  35.2/86/110.7       37.2      111h        18   0.1/2.2   85.7      0    0.877   1/3             89/128, 174/221         133/148, 228/297
+18  3     6  5/5  35.2/86/110.7       37.2      111h        18   0.1/2.2   85.7      0    0.877   1/3             80/118, 158/212         113/140, 208/259
+24  1.75  6  4/5  35.2/86/110.7       37.2      111h      19.2   0.4/23.1   86.9      0    0.807   0/3             118/140, 208/255        195/246, 272/400
+24  2     6  4/5  35.2/86/110.7       37.2      111h        19   0.4/23.1   87.1      0    0.847   0/3             106/139, 196/238        171/210, 256/363
+24  2.25  6  5/5  35.2/86/110.7       37.2      111h      18.8   0.3/23.1   87.3      0    0.868   0/3             98/132, 184/233         152/177, 242/327
+24  2.5   6  5/5  35.2/86/110.7       37.2      111h      18.6   0.3/23.1   87.5      0    0.877   0/3             92/128, 175/229         138/159, 230/303
+24  3     6  5/5  35.2/86/110.7       37.2      111h      18.4   0.2/23.1   87.7      0    0.877   0/3             83/128, 159/221         117/147, 209/262
+36  1.75  6  4/5  36.2/86/110.7       37.2      111h      22.4   1.1/23.1   88.5      0    0.807   0/3             130/173, 212/273        221/289, 279/400
+36  2     6  4/5  36.2/86/110.7       37.2      111h        22   1/23.1   88.9      0    0.847   0/3             116/152, 199/257        192/240, 264/376
+36  2.25  6  4/5  35.7/86/110.7       37.2      111h      21.6   0.9/23.1   89.3      0    0.868   0/3             108/152, 187/250        170/200, 250/347
+36  2.5   6  4/5  35.4/86/110.7       37.2      111h      21.4   0.9/23.1   89.5      0    0.877   0/3             100/139, 177/245        153/188, 235/319
+36  3     6  5/5  35.2/86/110.7       37.2      111h      21.2   0.8/23.1   89.7      0    0.877   0/3             92/139, 161/221         129/164, 212/269
+48  1.75  6  4/5  38.4/86/110.7         39      111h        25   2/49.6   90.7      0    0.807   0/3             146/197, 220/305        246/294, 290/401
+48  2     6  4/5  38.4/86/110.7         39      111h        25   2/49.6   90.7      0    0.847   0/3             131/173, 205/281        217/269, 272/376
+48  2.25  6  4/5  38.2/86/110.7       38.6      111h      24.6   1.8/49.6   91.1      0    0.868   0/3             120/164, 192/264        194/245, 258/354
+48  2.5   6  4/5  37.7/86/110.7         38      111h        24   1.6/49.6   91.7      0    0.877   0/3             112/152, 181/246        174/221, 244/330
+48  3     6  4/5  37.2/86/110.7       37.6      111h      23.6   1.4/23.1   92.1      0    0.877   0/3             102/139, 164/221        146/188, 220/293
+24  2.25  3  5/5  35.2/86/110.7       37.2      111h        18   0.1/2.2   87.7    1.7    0.868   1/3             100/139, 186/233        157/185, 244/334
+24  2.25  4  5/5  35.2/86/110.7       37.2      111h      18.2   0.2/23.1   87.9      0    0.868   0/3             99/139, 185/233         154/184, 243/327
+24  2.25  8  5/5  35.2/86/110.7       37.2      111h      19.2   0.4/23.1   86.9      0    0.868   0/3             97/128, 184/233         152/177, 242/327
+24  2.25  12  5/5  35.2/86/110.7       37.2      111h        20   0.4/23.1   86.1      0    0.868   0/3             97/128, 184/233         151/177, 242/327
+
+
+================ CHOSEN: yikyak-faithful W=24 P=6 G=2.25 ================
+=== yikyak-faithful W24 P6 G2.25 ===
+at 2026-10-27T23:08:48.693Z | window 60d | eligible now 45
+
+a) Trending top 10 now
+   rank  post      age(h)   up  down  cmts   score
+      1  435b701c     24.9    3     0     1  2.9493
+      2  f614c85b     51.4    3     0     0  0.7169
+      3  bafc4992     74.5    3     0     0  0.3123
+      4  58d1e679     74.7    3     0     0  0.3108
+      5  4dcb5b19     74.5    1     0     0  0.1564
+      6  a6f238a5     76.8    1     0     0  0.1458
+      7  476e5b29    187.9    2     0     0  0.0293
+      8  1f975975    187.9    2     0     0  0.0293
+      9  24d8989e    235.4    2     0     0  0.0176
+     10  3a7b3fdb    235.4    1     0     0  0.0117
+
+   New top 10 now (created_at DESC)
+   rank  post      age(h)   up  down
+      1  435b701c     24.9    3     0
+      2  f614c85b     51.4    3     0
+      3  4dcb5b19     74.5    1     0
+      4  bafc4992     74.5    3     0
+      5  58d1e679     74.7    3     0
+      6  a6f238a5     76.8    1     0
+      7  476e5b29    187.9    2     0
+      8  1f975975    187.9    2     0
+      9  24d8989e    235.4    2     0
+     10  3a7b3fdb    235.4    1     0
+
+b) Hourly replay, 505 hourly rankings (2026-10-06T23:00:00.000Z -> now), 505 with at least one post
+   longest #1 streak: 111h  post 476e5b29  net 2 -> 2 (+2/-0)  age 0.7h -> 110.7h
+   current #1 has held 25h (within replay)  post 435b701c  net 3  age 24.8h
+   #1 age (h): p50 35.2  p90 86  max 110.7  mean 41.1
+   % hours #1 older than 48h: 37.2   older than 7d: 0   younger than 24h: 37.6   #1 net<=1: 48.7
+   distinct #1 posts: 11   #1 changes/day: 0.48
+   top-3 dwell: 19 posts, avg 79.7h per stay, avg 79.7h total per post, p90 stay 152h, max stay 159h
+
+c) Trending vs New top-10 Jaccard: now 1   hourly mean 0.868 (min 0.538, max 1)   [1.0 = Trending is just New]
+
+d) Synthetic plates (votes uniform)
+    1. 14h, +35       35.4821
+    2. 8h, +18        18.9902
+    3. 2d, +40        8.5692
+    4. 1d, +5         4.6266
+    5. 2h, +2         3
+    6. 3d, +22        1.9408
+    7. 7d, +100       1.2672
+    8. brand new, 0   1
+    9. 5d, +30        0.8292
+   10. 7d, +10        0.138
+   11. 1h, -3         0.0625
+   12. 15d, +7        0.0181
+   [PASS] (feedSort.ts) 2d,+40 beats brand new,0 (popular beats empty)
+   [PASS] (feedSort.ts) 5d,+30 loses to brand new,0 (recency matters)
+   [PASS] (owner) 7d,+10 is NOT in the top 3 (a week-old plate needs to be super popular)
+   [PASS] (owner) 7d,+100 beats 7d,+10 (super popular can stay up)
+   [PASS] (product) 1h,-3 ranks below brand new,0 (downvoted sinks)
+
+extra metrics (candidate): {"hoursWithPosts":505,"pctNumberOneNotNewest":18.8,"excessAgeOverNewestMeanH":0.3,"excessAgeOverNewestMaxH":23.1,"pctNumberOneMatchesHardYikYak":87.3,"top3OverlapWithHardYikYak":76.8,"pctInWindowNetInversions":0,"r3":{"testableHours":3,"hoursNewLowOutranksFreshHigh":0}}
+extra metrics (baseline):  {"hoursWithPosts":505,"pctNumberOneNotNewest":18,"excessAgeOverNewestMeanH":0.1,"excessAgeOverNewestMaxH":2.2,"pctNumberOneMatchesHardYikYak":87.7,"top3OverlapWithHardYikYak":75,"pctInWindowNetInversions":1.7,"r3":{"testableHours":3,"hoursNewLowOutranksFreshHigh":1}}
+extra metrics (hard YY):   {"hoursWithPosts":505,"pctNumberOneNotNewest":6.1,"excessAgeOverNewestMeanH":0.1,"excessAgeOverNewestMaxH":23.1,"pctNumberOneMatchesHardYikYak":100,"top3OverlapWithHardYikYak":100,"pctInWindowNetInversions":0,"r3":{"testableHours":3,"hoursNewLowOutranksFreshHigh":0}}
+
+baseline replay summary: {"p50":35.2,"p90":86,"max":110.7,"mean":40.9} pct>48h 37.2 longest 111 h top3 max 159
+hard YY replay summary:  {"p50":35,"p90":85.5,"max":110.7,"mean":40.8} pct>48h 37.2 longest 111 h top3 max 159
+
+--- synthetic order under the other vote-time shapes (formula ignores vote times, so identical) ---
+early 14h, +35 > 8h, +18 > 2d, +40 > 1d, +5 > 2h, +2 > 3d, +22 > 7d, +100 > brand new, 0 > 5d, +30 > 7d, +10 > 1h, -3 > 15d, +7
+late 14h, +35 > 8h, +18 > 2d, +40 > 1d, +5 > 2h, +2 > 3d, +22 > 7d, +100 > brand new, 0 > 5d, +30 > 7d, +10 > 1h, -3 > 15d, +7
+
+--- survival: ONE hypothetical plate with N upvotes (all inside 2h) injected every 12h across the first 14 replay days into the REAL pool ---
+hours as #1 and hours in top 3, mean / max over the injections.   candidate vs [current baseline]
++1    @#1   34 /   89   top3   90 /  149     [@#1 33/89, top3 84/149]
++2    @#1   49 /  102   top3  104 /  153     [@#1 54/104, top3 118/185]
++4    @#1   66 /  116   top3  128 /  185     [@#1 87/113, top3 180/229]
++8    @#1   85 /  128   top3  163 /  221     [@#1 141/159, top3 236/311]
++12   @#1   98 /  132   top3  184 /  233     [@#1 180/221, top3 265/379]
++20   @#1  118 /  145   top3  209 /  261     [@#1 220/304, top3 294/419]
++40   @#1  152 /  177   top3  242 /  327     [@#1 268/384, top3 323/472]
++100  @#1  202 /  252   top3  276 /  407     [@#1 315/459, top3 334/497]
+
+--- how long a plate with net N stays above a fresh +1 plate (v=2) and a fresh +3 (v=4) ---
+net +1    outranks a brand-new +1 plate until age 0h (0d); a brand-new +3 plate until 0h
+net +2    outranks a brand-new +1 plate until age 26.8h (1.1d); a brand-new +3 plate until 0h
+net +3    outranks a brand-new +1 plate until age 31.7h (1.3d); a brand-new +3 plate until 0h
+net +4    outranks a brand-new +1 plate until age 35.5h (1.5d); a brand-new +3 plate until 23.2h
+net +8    outranks a brand-new +1 plate until age 46.7h (1.9d); a brand-new +3 plate until 33.7h
+net +12   outranks a brand-new +1 plate until age 55.1h (2.3d); a brand-new +3 plate until 40.2h
+net +20   outranks a brand-new +1 plate until age 68.2h (2.8d); a brand-new +3 plate until 50.1h
+net +40   outranks a brand-new +1 plate until age 91.9h (3.8d); a brand-new +3 plate until 67.5h
+net +100  outranks a brand-new +1 plate until age 137.2h (5.7d); a brand-new +3 plate until 100.8h
+
+--- Nearby (filter) on the chosen formula ---
+SDSU: candidate eligible 19  #1 age p50/p90/max 45.7/115.8/265  %#1>48h 47.9  longest#1 141h  jaccardVsNew mean 0.868
+      baseline  eligible 19  #1 age p50/p90/max 46.2/151.2/481.8  %#1>48h 48.3  longest#1 116h  jaccardVsNew mean 0.775
+Downtown: candidate eligible 15  #1 age p50/p90/max 59.2/174.8/413.3  %#1>48h 57.4  longest#1 183h  jaccardVsNew mean 0.827
+          baseline  eligible 15  #1 age p50/p90/max 59.7/174.8/413.3  %#1>48h 57.8  longest#1 183h  jaccardVsNew mean 0.809
+densest: candidate eligible 22  #1 age p50/p90/max 123.7/292.4/342.8  %#1>48h 75.6  longest#1 159h  jaccardVsNew mean 0.847
+         baseline  eligible 22  #1 age p50/p90/max 123.7/292.4/342.8  %#1>48h 75.6  longest#1 159h  jaccardVsNew mean 0.755
+
+--- live pool at snapshot time, top 12 with the candidate formula ---
+ 1. 435b701c age 24.9h +3/-0 score 2.9492927
+ 2. f614c85b age 51.4h +3/-0 score 0.71685315
+ 3. bafc4992 age 74.5h +3/-0 score 0.31231510
+ 4. 58d1e679 age 74.7h +3/-0 score 0.31084932
+ 5. 4dcb5b19 age 74.5h +1/-0 score 0.15636296
+ 6. a6f238a5 age 76.8h +1/-0 score 0.14579191
+ 7. 476e5b29 age 187.9h +2/-0 score 0.029274050
+ 8. 1f975975 age 187.9h +2/-0 score 0.029268000
+ 9. 24d8989e age 235.4h +2/-0 score 0.017623366
+10. 3a7b3fdb age 235.4h +1/-0 score 0.011746643
+11. a2233a44 age 387.4h +2/-0 score 0.0057459056
+12. 6dc725ad age 328.3h +1/-0 score 0.0055572318
+full score list (for SQL comparison): [["435b701c",2.949292656],["f614c85b",0.7168531534],["bafc4992",0.3123150982],["58d1e679",0.3108493225],["4dcb5b19",0.1563629621],["a6f238a5",0.1457919096],["476e5b29",0.02927405004],["1f975975",0.02926800023],["24d8989e",0.01762336611],["3a7b3fdb",0.01174664321],["a2233a44",0.00574590563],["6dc725ad",0.005557231795],["51f0ffd5",0.003834763006],["bc2e1446",0.003833604729],["4abc59d1",0.003101615199],["c09d7aa8",0.002382327009],["641891be",0.002345166739],["1c2a6fd1",0.002103291001],["70b8789b",0.00156409088],["f2b692f1",0.001564002294],["a3d3175c",0.001563898138],["e24d7d6e",0.001563786844],["85513cd7",0.001464316154],["51ce9c54",0.001444468929],["3a495755",0.001239890804],["32876635",0.0009359722016],["45bc5c5e",0.0009358936915],["597101f5",0.0008815753992],["52004709",0.0006642332086],["0089a285",0.0006615934232],["ec9960fb",0.0006280726123],["9eef7e58",0.0006272396167],["f8780dfb",0.0005857470805],["9e81c0db",0.0005721665142],["4fad46fb",0.000567805569],["d54cf73c",0.0005207460037],["6aa29e3d",0.0003778392518],["603e265c",0.0003185596819],["ea0d803d",0.0003121564575],["a1f85268",0.0002908066979],["f6b1c030",0.0002892712969],["bd93afa1",0.0001986620147],["2b7bde19",0.000189258165],["ee33549b",0.000188917349],["ced865a1",0.00003980791539]]
