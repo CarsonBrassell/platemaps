@@ -171,13 +171,15 @@ export const MAX_REACH = 0.85;
  * off two. The confidence term shrinks a deviation but then the fit scales it
  * back, so damping alone never restrained it.
  *
- * 12 is deliberately close to the plate score's own floor in spirit (3 plates, 8
- * ratings): enough that no single voter decides a category, and low enough that a
- * restaurant with genuine local interest clears it in a few weeks. Callers show
- * the vote counts below the floor — the votes are real, only the ranking of them
- * isn't yet.
+ * Lowered from 12 to 3 on 2026-10-27 at Calvin's call: at 12 no restaurant had
+ * cleared the floor (the most-reviewed had 5), so the ratings showed nowhere. 3
+ * matches the plate score's own 3-plate floor. The cost is the one described
+ * above — one or two taps can swing a category — accepted so the ratings are
+ * visible while review counts are small; raise it again as counts grow. Callers
+ * show the vote counts below the floor — the votes are real, only the ranking of
+ * them isn't yet.
  */
-export const MIN_REVIEWS = 12;
+export const MIN_REVIEWS = 3;
 
 export type AspectVotes = {
   /** Reviews naming this aspect the best thing about the place. */
@@ -234,15 +236,19 @@ export function aspectScores(
   });
 
   /* Not enough evidence to rank five categories against each other. The counts
-     still come back — see MIN_REVIEWS. */
+     still come back — see MIN_REVIEWS — and so do `net` and `unremarked`, which
+     are just the counts restated: the detail block sorts by `net` down here and
+     renders only when something is `unremarked: false`. Until 2026-10-27 this
+     branch zeroed both, so a restaurant with one or two tapped reviews showed no
+     block at all instead of its tap counts. */
   if (reviewCount < MIN_REVIEWS || rows.length === 0) {
     return rows.map((r) => ({
       ...r,
       score: null,
-      net: 0,
+      net: reviewCount > 0 ? clamp((r.praised - r.faulted) / reviewCount, -1, 1) : 0,
       deviation: 0,
       confidence: 0,
-      unremarked: true,
+      unremarked: r.praised === 0 && r.faulted === 0,
     }));
   }
 
