@@ -10,6 +10,7 @@ import type {
 } from "@/components/mobile/PhoneFilterSheet";
 import { PhoneStickyBar } from "@/components/mobile/PhoneStickyBar";
 import { PhoneDiscoverResults } from "@/components/mobile/PhoneDiscoverResults";
+import { PhoneTasteSection } from "@/components/mobile/PhoneTasteSection";
 import type { DiscoverPage } from "@/lib/discover";
 import {
   PAGE_SIZE,
@@ -252,6 +253,10 @@ export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
           <PhoneFilterBar model={model} />
         </div>
       </PhoneStickyBar>
+
+      {chips.length === 0 && !filters.q && (
+        <PhoneTasteSection cuisines={initial.options.cuisines.map((o) => o.value)} />
+      )}
 
       <PhoneDiscoverResults
         view={view}

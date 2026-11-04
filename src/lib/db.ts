@@ -34,6 +34,13 @@ import { milesBetween, NEARBY_RADIUS_MI, type Coords } from "@/lib/geo";
 
 /* Which driver this is depends on DATABASE_URL — see lib/sqlClient. */
 import { sql } from "@/lib/sqlClient";
+import {
+  applyOpToPrefs,
+  EMPTY_PREFS,
+  type FriendVisit,
+  type FullTastePrefs,
+  type TasteOp,
+} from "@/lib/taste";
 import type { FeedCursor } from "@/lib/feedCursor";
 
 /**
@@ -1167,13 +1174,28 @@ export async function getUserPublicPosts(
  */
 export async function getCuisineCounts(userIds: string[]): Promise<CuisineCountRow[]> {
   if (userIds.length === 0) return [];
+  /* Secondaries split the post (probe/retag-scope.md §4): a place with none
+     gives its main 1.0; otherwise main 0.7 and the secondaries share 0.3. Each
+     post still sums to 1, so totals and MIN_POSTS stay exact. */
   const rows = await sql`
-    SELECT p.user_id, r.cuisine, r.id AS restaurant_id, r.name AS restaurant_name,
-           r.listed, COUNT(*)::int AS n
-    FROM posts p
-    JOIN restaurants r ON r.id = p.restaurant_id
-    WHERE p.user_id = ANY(${userIds}) AND p.meal_id IS NULL AND r.cuisine IS NOT NULL
-    GROUP BY p.user_id, r.cuisine, r.id, r.name, r.listed
+    WITH pr AS (
+      SELECT p.user_id, r.id, r.name, r.listed, r.cuisine,
+             coalesce(r.cuisine_secondary, '{}') AS sec
+      FROM posts p
+      JOIN restaurants r ON r.id = p.restaurant_id
+      WHERE p.user_id = ANY(${userIds}) AND p.meal_id IS NULL AND r.cuisine IS NOT NULL
+    ), w AS (
+      SELECT user_id, id, name, listed, cuisine,
+             CASE WHEN cardinality(sec) = 0 THEN 1.0 ELSE 0.7 END AS w
+      FROM pr
+      UNION ALL
+      SELECT user_id, id, name, listed, s, 0.3 / cardinality(sec)
+      FROM pr, unnest(sec) AS s
+    )
+    SELECT user_id, cuisine, id AS restaurant_id, name AS restaurant_name, listed,
+           round(SUM(w), 4)::float8 AS n
+    FROM w
+    GROUP BY user_id, cuisine, id, name, listed
   `;
   return rows.map((r) => ({
     userId: r.user_id as string,
@@ -2282,6 +2304,113 @@ export async function getFriendIds(userId: string): Promise<string[]> {
   return rows.map((r) => r.friend_id as string);
 }
 
+/* ---------- Your taste (lib/taste.ts) ---------- */
+
+/** Thrown by applyTasteOp when taste_prefs has not been migrated yet. The route
+ *  turns it into "use the caller's local prefs". */
+export class TasteTableMissingError extends Error {
+  constructor() {
+    super("taste_prefs table does not exist");
+    this.name = "TasteTableMissingError";
+  }
+}
+
+function isUndefinedTable(err: unknown): boolean {
+  const e = err as { code?: unknown; message?: unknown } | null;
+  return (
+    e?.code === "42P01" ||
+    (typeof e?.message === "string" && /relation "?taste_prefs"? does not exist/i.test(e.message))
+  );
+}
+
+export type TastePrefsRead = {
+  prefs: FullTastePrefs;
+  /** A row exists for this user. */
+  exists: boolean;
+  /** False when the table itself is missing: callers fall back to local prefs. */
+  available: boolean;
+};
+
+function tasteRowToPrefs(row: Record<string, unknown>): FullTastePrefs {
+  const arr = (v: unknown) => (Array.isArray(v) ? v.map(String) : []);
+  return { loves: arr(row.loves), skips: arr(row.skips), been: arr(row.been), hidden: arr(row.hidden) };
+}
+
+/** The viewer's own stored taste. Missing table reads as empty prefs. */
+export async function getTastePrefs(userId: string): Promise<TastePrefsRead> {
+  try {
+    const rows = await sql`
+      SELECT loves, skips, been, hidden FROM taste_prefs WHERE user_id = ${userId}
+    `;
+    if (rows.length === 0) return { prefs: { ...EMPTY_PREFS }, exists: false, available: true };
+    return { prefs: tasteRowToPrefs(rows[0]), exists: true, available: true };
+  } catch (err) {
+    if (isUndefinedTable(err)) return { prefs: { ...EMPTY_PREFS }, exists: false, available: false };
+    throw err;
+  }
+}
+
+/**
+ * Writes a whole (already sanitized) prefs object for this user. Only the
+ * session's own row is ever touched: callers pass the session user id.
+ */
+export async function saveTastePrefs(userId: string, p: FullTastePrefs): Promise<void> {
+  try {
+    await sql`
+      INSERT INTO taste_prefs (user_id, loves, skips, been, hidden, updated_at)
+      VALUES (${userId}, ${p.loves}, ${p.skips}, ${p.been}, ${p.hidden}, now())
+      ON CONFLICT (user_id) DO UPDATE
+        SET loves = EXCLUDED.loves, skips = EXCLUDED.skips,
+            been = EXCLUDED.been, hidden = EXCLUDED.hidden, updated_at = now()
+    `;
+  } catch (err) {
+    if (isUndefinedTable(err)) throw new TasteTableMissingError();
+    throw err;
+  }
+}
+
+/**
+ * Applies one op to the viewer's stored prefs and returns the result. Read,
+ * pure transform (lib/taste.ts), write: no SQL arithmetic on the arrays.
+ */
+export async function applyTasteOp(
+  userId: string,
+  op: TasteOp,
+  cuisines: ReadonlySet<string>,
+  ids: ReadonlySet<string>,
+): Promise<FullTastePrefs> {
+  const read = await getTastePrefs(userId);
+  if (!read.available) throw new TasteTableMissingError();
+  const next = applyOpToPrefs(read.prefs, op, cuisines, ids);
+  await saveTastePrefs(userId, next);
+  return next;
+}
+
+/**
+ * Hero posts by the viewer's mutual friends, blocks removed in both
+ * directions: the only source of "Sam posted here". SELECT only.
+ */
+export async function getFriendRestaurantVisits(viewerId: string): Promise<FriendVisit[]> {
+  const [friendIds, blocked] = await Promise.all([
+    getFriendIds(viewerId),
+    getBlockedEitherWayIds(viewerId),
+  ]);
+  const blockedSet = new Set(blocked);
+  const ids = friendIds.filter((id) => !blockedSet.has(id));
+  if (ids.length === 0) return [];
+  const rows = await sql`
+    SELECT DISTINCT p.restaurant_id, p.user_id, u.name
+    FROM posts p
+    JOIN users u ON u.id = p.user_id
+    WHERE p.user_id = ANY(${ids}) AND p.meal_id IS NULL AND p.restaurant_id IS NOT NULL
+  `;
+  return rows.map((r) => ({
+    restaurantId: String(r.restaurant_id),
+    friendId: String(r.user_id),
+    name: String(r.name),
+  }));
+}
+
 export type FriendSummary = {
   id: string;
   name: string;
@@ -3330,6 +3459,7 @@ function rowToRestaurant(row: any): Restaurant {
     name: row.name,
     cuisine: row.cuisine ?? null,
     cuisineTags: row.cuisine_tags ?? undefined,
+    cuisineSecondary: row.cuisine_secondary?.length ? row.cuisine_secondary : undefined,
     cuisineRaw: row.cuisine_raw ?? undefined,
     neighborhood: row.neighborhood,
     distance: row.distance,
@@ -3407,7 +3537,7 @@ export async function getRestaurants(): Promise<RestaurantView[]> {
    * listing, it is an empty one. Never drop this predicate to "show more".
    */
   const restaurantRows = await sql`
-    SELECT id, name, cuisine, cuisine_tags, neighborhood, distance, hours,
+    SELECT id, name, cuisine, cuisine_tags, cuisine_secondary, neighborhood, distance, hours,
            lat, lng, rating, review_count, trending, photo, photo_alt,
            photo_w, photo_h, price_band
     FROM restaurants WHERE listed ORDER BY sort_order, id
@@ -3429,6 +3559,9 @@ function rowToRestaurantView(row: Record<string, unknown>): RestaurantView {
     name: row.name as string,
     cuisine: (row.cuisine as string | null) ?? null,
     cuisineTags: (row.cuisine_tags as string | null) ?? "",
+    ...((row.cuisine_secondary as string[] | null)?.length
+      ? { cuisineSecondary: row.cuisine_secondary as string[] }
+      : {}),
     // Present only on a search that joined the dish table; the grid's own
     // projection never selects these, so the field stays off browsing rows.
     ...(row.matched_dish
@@ -3656,7 +3789,7 @@ export async function searchRestaurants(term: string, limit = 60): Promise<Resta
       WHERE d.name ILIKE ${needle}
       ORDER BY d.restaurant_id, length(d.name), d.sort_order
     )
-    SELECT r.id, r.name, r.cuisine, r.cuisine_tags, r.neighborhood, r.distance,
+    SELECT r.id, r.name, r.cuisine, r.cuisine_tags, r.cuisine_secondary, r.neighborhood, r.distance,
            r.hours, r.lat, r.lng, r.rating, r.review_count, r.trending,
            r.photo, r.photo_alt, r.photo_w, r.photo_h, r.price_band,
            dm.id AS matched_dish_id, dm.name AS matched_dish,

@@ -31,6 +31,8 @@ export type Restaurant = {
   cuisine: string | null;
   /** The specific labels, joined, for search — see `RestaurantView`. */
   cuisineTags?: string;
+  /** Up to 3 more cuisines this place also files under — see `RestaurantView`. */
+  cuisineSecondary?: string[];
   /**
    * What this row arrived with, verbatim, before the vocabulary in
    * data/cuisines.ts collapsed it. Kept so the collapse stays reversible: the
@@ -193,6 +195,12 @@ export type RestaurantView = {
    * `text[]` for the trigram index's sake; see scripts/migrate.mjs.
    */
   cuisineTags: string;
+  /**
+   * Cuisines this place also files under besides `cuisine` (max 3, never the
+   * main), from reading its menu. The cuisine filter and taste match use them;
+   * cards show the main only. Absent when the menu read gave none.
+   */
+  cuisineSecondary?: string[];
   /**
    * The dish that made this restaurant a search result, when one did.
    *

@@ -149,5 +149,6 @@ export function signInPromptFor(rawNext: string | null | undefined): string | nu
   const is = (prefix: string) => path === prefix || path.startsWith(`${prefix}/`);
   if (is("/post") || is("/m/post")) return "Sign up to post a plate";
   if (is("/friends") || is("/m/friends")) return "Sign up to see your friends";
+  if (path === "/" || path === "/m") return "Sign up to keep your picks across devices";
   return "Sign up to continue";
 }

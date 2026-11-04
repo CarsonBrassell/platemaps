@@ -1337,6 +1337,40 @@ const statements = [
     last_used_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     PRIMARY KEY (cell, restaurant_id)
   )`,
+  // "Your taste" (lib/taste.ts, probe/your-taste/DESIGN.md). One private row per
+  // user: cuisines they love / are not into, and restaurants they marked "Been
+  // here" or "Not for me". Restaurant ids are TEXT with no FK on purpose: a
+  // later-held place is harmless and ids outside the corpus are ignored.
+  // Arrays are capped server-side (5 / 5 / 300 / 300). Read only through
+  // /api/account/taste, which takes no user id.
+  `CREATE TABLE IF NOT EXISTS taste_prefs (
+    user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    loves TEXT[] NOT NULL DEFAULT '{}',
+    skips TEXT[] NOT NULL DEFAULT '{}',
+    been TEXT[] NOT NULL DEFAULT '{}',
+    hidden TEXT[] NOT NULL DEFAULT '{}',
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`,
+  // Menu enrichment (probe/enrich-2026-10-27, probe/retag-scope.md). A place
+  // keeps one main `cuisine` and may also file under up to 3 more: the
+  // Discover cuisine filter and the taste match read main OR secondary
+  // (hasCuisine in lib/discoverFilters.ts). Null behaves exactly like before.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS cuisine_secondary TEXT[]`,
+  // Everything the menu read learned about a place (styles, dishes, meals,
+  // dietary, vibes, summary...), kept whole as jsonb for the planned
+  // "recommended for you". Nothing renders it yet. Soft reference, like posts.
+  `CREATE TABLE IF NOT EXISTS restaurant_profiles (
+    restaurant_id TEXT PRIMARY KEY,
+    status TEXT NOT NULL,
+    main_cuisine TEXT,
+    secondary_cuisines TEXT[] NOT NULL DEFAULT '{}',
+    styles TEXT[] NOT NULL DEFAULT '{}',
+    dish_types TEXT[] NOT NULL DEFAULT '{}',
+    confidence TEXT,
+    profile JSONB NOT NULL,
+    source TEXT NOT NULL,
+    enriched_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`,
 ];
 
 for (const statement of statements) {

@@ -113,7 +113,10 @@ export function PrivacyDocument({ termsHref }: { termsHref: string }) {
             <li>
               <span className="font-medium text-zinc-900">Information you provide:</span> your
               name, email address, and password when you create an account; your profile
-              photo if you upload one; any preferences you set (like a favorite cuisine); and
+              photo if you upload one; any preferences you set (like a favorite cuisine, or
+              the cuisines you pick or skip under &ldquo;Your taste&rdquo; on Discover); the places you mark
+              &ldquo;Been here&rdquo; or &ldquo;Not for me&rdquo;, which stay private to you and only shape your own
+              picks; and
               anything you type into the Service, including support requests.
             </li>
             <li>

@@ -143,6 +143,8 @@ function vocabularyFor(restaurants: readonly RestaurantView[]): Vocabulary {
 
     for (const r of restaurants) {
       bump(vocab.cuisine, r.cuisine);
+      // "Burgers (N)" links to ?cuisine=Burgers, which includes secondaries.
+      for (const c of r.cuisineSecondary ?? []) if (c !== r.cuisine) bump(vocab.cuisine, c);
       bump(vocab.neighborhood, r.neighborhood);
     }
     // Labels before tags, so a word that is both — "Mexican" — is kept as

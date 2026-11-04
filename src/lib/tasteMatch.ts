@@ -73,7 +73,9 @@ const MIN_DRAWN = 7;
 function total(counts: Record<string, number>): number {
   let n = 0;
   for (const c of Object.values(counts)) n += c;
-  return n;
+  // Counts are fractional once secondaries split a post (db.ts getCuisineCounts);
+  // round so 0.7 + 0.1 + 0.1 + 0.1 reads as the 1 post it is against MIN_POSTS.
+  return Math.round(n * 1e4) / 1e4;
 }
 
 /* Alphabetical tiebreak so equal shares can't reorder between renders. */

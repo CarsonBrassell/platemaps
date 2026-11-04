@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { FilterControls, FilterRail, QuickFilterChips } from "@/components/DiscoverFilters";
 import { RestaurantCard } from "@/components/RestaurantCard";
 import { OurPicks } from "@/components/OurPicks";
+import { TasteSection } from "@/components/TasteSection";
 import { Dialog } from "@/components/feed/Dialog";
 import {
   NO_FILTERS,
@@ -303,6 +304,7 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
         <main className="min-w-0 flex-1 lg:-mt-[25.2px]">
           {/* Picks are a curated strip, not a search result — they stay put
               while a filter is on rather than disappearing. */}
+          {active === 0 && <TasteSection cuisines={initial.options.cuisines.map((o) => o.value)} />}
           {active === 0 && <OurPicks picks={picks} />}
 
           <section aria-labelledby="all-restaurants">

@@ -513,6 +513,25 @@ export function scoreMatches(
   return scores;
 }
 
+/**
+ * Every cuisine a place files under: its main label first, then the up-to-3
+ * secondaries the menu read gave it (a taco-and-burger shop is Mexican and
+ * also Burgers). Display stays main-only; the filter, its counts and the
+ * suggestions all go through these two so they cannot disagree.
+ */
+export function cuisinesOf(r: Pick<RestaurantView, "cuisine" | "cuisineSecondary">): string[] {
+  const out = r.cuisine ? [r.cuisine] : [];
+  for (const c of r.cuisineSecondary ?? []) if (c && !out.includes(c)) out.push(c);
+  return out;
+}
+
+export function hasCuisine(
+  r: Pick<RestaurantView, "cuisine" | "cuisineSecondary">,
+  cuisine: string,
+): boolean {
+  return r.cuisine === cuisine || (r.cuisineSecondary?.includes(cuisine) ?? false);
+}
+
 export function matchesFilters(
   r: RestaurantView,
   f: DiscoverFilters,
@@ -522,7 +541,7 @@ export function matchesFilters(
   if (f.nearby && ctx.here) {
     if (milesBetween(ctx.here, { lat: r.lat, lng: r.lng }) > NEARBY_RADIUS_MI) return false;
   }
-  if (f.cuisine && r.cuisine !== f.cuisine) return false;
+  if (f.cuisine && !hasCuisine(r, f.cuisine)) return false;
   /* A named dish is a filter, not a search: the visitor picked it off the
      dropdown, so the only places that pass are the ones whose menu actually
      lists it. Tested before `q` because it is a map lookup and `q` is
@@ -632,7 +651,7 @@ export function matchMarksFor(
        which took the whole Discover page down with an error boundary rather
        than simply not matching. Any `?q=` at all hit it. */
     cuisine:
-      (f.cuisine !== null && r.cuisine === f.cuisine) ||
+      (f.cuisine !== null && hasCuisine(r, f.cuisine)) ||
       (q !== null && (r.cuisine ? foldSearchText(r.cuisine).includes(q) : false)),
     neighborhood:
       (f.neighborhood !== null && r.neighborhood === f.neighborhood) ||
@@ -673,8 +692,10 @@ function optionsFor(
 ): FacetOption[] {
   const totals = new Map<string, number>();
   for (const r of restaurants) {
-    const value = r[key];
-    if (value) totals.set(value, (totals.get(value) ?? 0) + 1);
+    // A place counts toward each cuisine it files under, as the filter does.
+    for (const value of key === "cuisine" ? cuisinesOf(r) : r[key] ? [r[key]] : []) {
+      totals.set(value, (totals.get(value) ?? 0) + 1);
+    }
   }
 
   return [...totals]
@@ -793,7 +814,8 @@ export function countFacets(
       // real result â but contributes to no option. It has nothing to say
       // about which bucket it belongs in, and inventing one is what the
       // vocabulary in data/cuisines.ts exists to stop.
-      if (r.cuisine) cuisine.set(r.cuisine, (cuisine.get(r.cuisine) ?? 0) + 1);
+      // Secondaries count too: ?cuisine=Burgers shows them, so the number must.
+      for (const c of cuisinesOf(r)) cuisine.set(c, (cuisine.get(c) ?? 0) + 1);
     }
     if (matchesFilters(r, exceptPrice, ctx)) {
       anyPrice += 1;
