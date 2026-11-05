@@ -634,6 +634,10 @@ function StepMark({
       if (e.timeStamp <= armedAt) return;
       const target = e.target as HTMLElement | null;
       if (target?.closest?.("[data-coach-caption]")) return;
+      // The nav is never locked. A brand-new account's first tap on Friends
+      // landed here and did nothing, which read as a broken tab. Leaving
+      // mid-dwell is safe: the next step's `home` mark walks them back.
+      if (target?.closest?.("nav")) return;
       e.preventDefault();
       e.stopPropagation();
     }

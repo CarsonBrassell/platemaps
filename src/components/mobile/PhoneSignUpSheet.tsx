@@ -39,6 +39,8 @@ const QUIET_PREFIXES = [
 ];
 /* Lets the splash finish before a sheet slides over it. */
 const SHOW_DELAY_MS = 1200;
+/* Presses this soon after the sheet appears are ignored. */
+const ARM_MS = 600;
 
 const FOCUSABLE =
   'a[href],button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])';
@@ -73,12 +75,21 @@ export function PhoneSignUpSheet() {
   const eligible = OPEN_BROWSING && !loading && !isSignedIn && !closed && !quiet;
 
   useEffect(() => {
-    if (!eligible || wasDismissed()) {
-      setOpen(false);
-      return;
+    if (!eligible || wasDismissed()) return;
+    /* Restarted on every press, so the sheet never slides in under a finger
+       that is already reaching for something - it used to land its "Not now"
+       exactly where the nav's Friends tab is, eating that first tap. */
+    let t = window.setTimeout(() => setOpen(true), SHOW_DELAY_MS);
+    function restart() {
+      window.clearTimeout(t);
+      t = window.setTimeout(() => setOpen(true), SHOW_DELAY_MS);
     }
-    const t = window.setTimeout(() => setOpen(true), SHOW_DELAY_MS);
-    return () => window.clearTimeout(t);
+    document.addEventListener("pointerdown", restart, true);
+    return () => {
+      window.clearTimeout(t);
+      document.removeEventListener("pointerdown", restart, true);
+      setOpen(false);
+    };
   }, [eligible]);
 
   const dismiss = useCallback(() => {
@@ -95,8 +106,16 @@ function Sheet({ onDismiss }: { onDismiss: () => void }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const headingId = useId();
   const [step, setStep] = useState<"intro" | "signup" | "login">("intro");
+  /* A tap already on its way when the sheet appears is not an answer to it. */
+  const shownAt = useRef(0);
+  const tooSoon = (e: React.SyntheticEvent) => {
+    if (performance.now() - shownAt.current >= ARM_MS) return;
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
   useEffect(() => {
+    shownAt.current = performance.now();
     const restore = document.activeElement as HTMLElement | null;
     const { overflow } = document.body.style;
     document.body.style.overflow = "hidden";
@@ -135,6 +154,8 @@ function Sheet({ onDismiss }: { onDismiss: () => void }) {
   return (
     <div
       className="animate-fade-in fixed inset-0 z-[60] flex items-end justify-center overflow-hidden bg-pm-charcoal/45 backdrop-blur-[2px]"
+      onMouseDownCapture={tooSoon}
+      onClickCapture={tooSoon}
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onDismiss();
       }}
