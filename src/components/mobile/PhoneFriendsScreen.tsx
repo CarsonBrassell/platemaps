@@ -13,6 +13,7 @@ import { PhoneFriendsLeaderboard, rankSeats } from "@/components/mobile/PhoneFri
 import { useAuth } from "@/lib/auth";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { askForPushInContext } from "@/lib/pushClient";
 
 /**
  * Friends, phone version.
@@ -188,7 +189,10 @@ export function PhoneFriendsScreen() {
       if (!res.ok) throw new Error("failed");
       setIncoming((prev) => prev.filter((r) => r.id !== requestId));
       // An accept adds someone to the list below, so it has to be re-read.
-      if (action === "accept") load();
+      if (action === "accept") {
+        load();
+        void askForPushInContext();
+      }
     } catch {
       setError("Couldn't answer that request.");
     } finally {

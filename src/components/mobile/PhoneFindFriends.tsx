@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { avatarPalette, initials } from "@/lib/format";
 import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { askForPushInContext } from "@/lib/pushClient";
 
 /** Mirrors lib/db.ts's PersonReason — that module is server-only. */
 type PersonReason =
@@ -223,6 +224,7 @@ export function PhoneFindFriends({
       setJustSent((prev) => new Set(prev).add(person.id));
       if (trimmed) remember(person);
       onSent();
+      void askForPushInContext();
     } catch {
       /* Button just stays as "Add" — nothing changed to roll back. */
     } finally {
