@@ -7,6 +7,7 @@ import { PointsBadge } from "@/components/feed/PointsBadge";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { FRIENDS_KEPT, ShowAllToggle, useFoldedList } from "@/components/ShowAllToggle";
 
 /** Mirrors lib/db.ts's FriendSummary — that module is server-only. */
 type Friend = {
@@ -143,6 +144,9 @@ export default function FriendsPage() {
     if (!trimmedQuery) return friends;
     return friends.filter((f) => f.name.toLowerCase().includes(trimmedQuery));
   }, [friends, trimmedQuery]);
+
+  /* A search has already narrowed the list, so it is never folded on top. */
+  const fold = useFoldedList(shown ?? [], FRIENDS_KEPT, trimmedQuery !== "");
 
   return (
     <div className="mx-auto w-full max-w-7xl pb-12">
@@ -350,8 +354,8 @@ export default function FriendsPage() {
                 </button>
               </div>
             ) : (
-              <ul className="flex flex-col gap-2">
-                {shown!.map((friend) => (
+              <ul id="friends-list" className="flex flex-col gap-2">
+                {fold.visible.map((friend) => (
                   <li
                     key={friend.id}
                     className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3"
@@ -388,6 +392,14 @@ export default function FriendsPage() {
                   </li>
                 ))}
               </ul>
+            )}
+
+            {fold.foldable && (
+              <ShowAllToggle
+                expanded={fold.expanded}
+                onChange={fold.setExpanded}
+                controls="friends-list"
+              />
             )}
 
             {account && (

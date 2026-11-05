@@ -8,6 +8,7 @@ import { PointsBadge } from "@/components/feed/PointsBadge";
 import { PhoneFindFriends } from "@/components/mobile/PhoneFindFriends";
 import { PhoneFriendsHero } from "@/components/mobile/PhoneFriendsHero";
 import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
+import { FRIENDS_KEPT, ShowAllToggle, useFoldedList } from "@/components/ShowAllToggle";
 import { PhoneFriendsLeaderboard, rankSeats } from "@/components/mobile/PhoneFriendsLeaderboard";
 import { useAuth } from "@/lib/auth";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
@@ -246,6 +247,9 @@ export function PhoneFriendsScreen() {
     return friends.filter((f) => f.name.toLowerCase().includes(trimmedQuery));
   }, [friends, trimmedQuery]);
 
+  /* A search has already narrowed the list, so it is never folded on top. */
+  const fold = useFoldedList(shown ?? [], FRIENDS_KEPT, trimmedQuery !== "");
+
   return (
     <div className="min-h-dvh">
       {/* Scrolls away rather than sticking — a 390px screen has ~640 usable
@@ -402,8 +406,8 @@ export function PhoneFriendsScreen() {
                 </button>
               </div>
             ) : (
-              <ul className="flex flex-col gap-2">
-                {shown!.map((friend) => (
+              <ul id="friends-list" className="flex flex-col gap-2">
+                {fold.visible.map((friend) => (
                   <li
                     key={friend.id}
                     className="flex items-center gap-3 rounded-2xl bg-white px-3.5 py-2.5"
@@ -453,6 +457,14 @@ export function PhoneFriendsScreen() {
                   </li>
                 ))}
               </ul>
+            )}
+
+            {fold.foldable && (
+              <ShowAllToggle
+                expanded={fold.expanded}
+                onChange={fold.setExpanded}
+                controls="friends-list"
+              />
             )}
 
             {account && (
