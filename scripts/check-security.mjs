@@ -231,11 +231,24 @@ requireContains(
   "DUMMY_HASH",
   "finding #15 (constant-time login — dummy bcrypt compare when no user exists) was undone.",
 );
+// Finding #6: restaurant photos must bypass /_next/image, which is why the
+// wildcard hostname was removed. They render through ShimmerImage, a plain
+// <img>, so what has to hold is that ShimmerImage stays off next/image.
 requireContains(
   "src/components/RestaurantPhoto.tsx",
-  "unoptimized",
+  "<ShimmerImage",
   "finding #6 (restaurant photos must bypass /_next/image, which is why the wildcard hostname was removed) was undone.",
 );
+requireContains(
+  "src/components/ShimmerImage.tsx",
+  "<img",
+  "finding #6 (restaurant photos must bypass /_next/image, which is why the wildcard hostname was removed) was undone.",
+);
+if (readNormalized("src/components/ShimmerImage.tsx").includes('from "next/image"')) {
+  violations.push(
+    "[invariant] src/components/ShimmerImage.tsx imports next/image — finding #6 (restaurant photos must bypass /_next/image) was undone.",
+  );
+}
 
 // WARN (don't fail) if some other <Image in src/ lacks `unoptimized` nearby.
 // This is a coarse per-file check, not a per-usage one: it flags a file that

@@ -7,6 +7,7 @@ import { ChatIcon } from "@/components/icons";
 import { postedDate } from "@/lib/format";
 import { packBy } from "@/lib/photoShape";
 import { orderForCollage, type CollagePlate } from "@/components/feed/MealCollage";
+import { ShimmerImage } from "@/components/ShimmerImage";
 import {
   PlateDetailSheet,
   type CommentVotePatch,
@@ -515,8 +516,9 @@ function CardPhoto({
   const photo = post.media?.find((m) => m.type === "image");
   if (photo) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src={photo.url} alt="" className={`${className} object-cover`} />
+      <span className={`relative overflow-hidden ${className}`}>
+        <ShimmerImage src={photo.url} className="object-cover" />
+      </span>
     );
   }
   return (
@@ -553,8 +555,7 @@ function MealThumb({ post, tone }: { post: ShelfPost; tone: number }) {
         return (
           <span key={p.id} className="relative block min-h-0 min-w-0" style={{ gridArea: areas[i] }}>
             {photo ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={photo.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              <ShimmerImage src={photo.url} className="object-cover" />
             ) : (
               <span className="absolute inset-0" style={{ background: `var(--pm-tone-${tone})` }} />
             )}

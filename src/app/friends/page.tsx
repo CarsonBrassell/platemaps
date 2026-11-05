@@ -7,7 +7,12 @@ import { PointsBadge } from "@/components/feed/PointsBadge";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
-import { FRIENDS_KEPT, ShowAllToggle, useFoldedList } from "@/components/ShowAllToggle";
+import {
+  FRIENDS_KEPT,
+  LONG_LIST_FOLD_AT,
+  ShowAllToggle,
+  useFoldedList,
+} from "@/components/ShowAllToggle";
 
 /** Mirrors lib/db.ts's FriendSummary — that module is server-only. */
 type Friend = {
@@ -148,6 +153,10 @@ export default function FriendsPage() {
   /* A search has already narrowed the list, so it is never folded on top. */
   const fold = useFoldedList(shown ?? [], FRIENDS_KEPT, trimmedQuery !== "");
 
+  /* Only what you sent folds. Incoming stays whole however long it gets: each
+     of those is someone waiting on an answer. */
+  const outgoingFold = useFoldedList(outgoing, FRIENDS_KEPT, false, LONG_LIST_FOLD_AT);
+
   return (
     <div className="mx-auto w-full max-w-7xl pb-12">
       <Header />
@@ -238,25 +247,37 @@ export default function FriendsPage() {
                     </div>
                   ))}
 
-                  {outgoing.map((r) => (
-                    <div
-                      key={r.id}
-                      className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3"
-                    >
-                      <Avatar name={r.name} avatarUrl={r.avatarUrl} />
-                      <Link
-                        href={`/u/${r.userId}`}
-                        className="flex min-w-0 flex-1 items-center gap-1 text-sm text-zinc-500 hover:underline"
-                      >
-                        <span className="truncate">{r.name}</span>
-                        <VerifiedBadge userId={r.userId} />
-                      </Link>
-                      {/* Machine state, so it's set in mono like every other
-                          non-prose value on the page. */}
-                      <span className="mono-label shrink-0 text-zinc-400">Request sent</span>
+                  {outgoing.length > 0 && (
+                    <div id="outgoing-requests-list" className="flex flex-col gap-2">
+                      {outgoingFold.visible.map((r) => (
+                        <div
+                          key={r.id}
+                          className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3"
+                        >
+                          <Avatar name={r.name} avatarUrl={r.avatarUrl} />
+                          <Link
+                            href={`/u/${r.userId}`}
+                            className="flex min-w-0 flex-1 items-center gap-1 text-sm text-zinc-500 hover:underline"
+                          >
+                            <span className="truncate">{r.name}</span>
+                            <VerifiedBadge userId={r.userId} />
+                          </Link>
+                          {/* Machine state, so it's set in mono like every other
+                              non-prose value on the page. */}
+                          <span className="mono-label shrink-0 text-zinc-400">Request sent</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
+
+                {outgoingFold.foldable && (
+                  <ShowAllToggle
+                    expanded={outgoingFold.expanded}
+                    onChange={outgoingFold.setExpanded}
+                    controls="outgoing-requests-list"
+                  />
+                )}
               </section>
             )}
 

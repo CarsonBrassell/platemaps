@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronIcon, PlayIcon } from "@/components/icons";
+import { ShimmerImage } from "@/components/ShimmerImage";
 import type { PostMedia } from "./types";
 
-/** Warm tone block standing in when a post has no media, or its image 404s —
- *  a deliberate field of warm neutral, not a gray box or an icon. */
+/** Warm tone block standing in when a post has no media — a deliberate field
+ *  of warm neutral, not a gray box or an icon. */
 function MediaFallback({ label }: { label?: string }) {
   return (
     <div className="flex h-full w-full items-end bg-[var(--pm-tone-1)] p-4">
@@ -86,7 +87,6 @@ export function PostMediaCarousel({
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
-  const [failed, setFailed] = useState<Record<number, boolean>>({});
 
   const onScroll = useCallback(() => {
     const el = trackRef.current;
@@ -151,25 +151,20 @@ export function PostMediaCarousel({
         aria-label={single ? undefined : `${media.length} photos, swipe to browse`}
       >
         {media.map((item, i) => (
-          <div key={`${item.url.slice(0, 32)}-${i}`} className="snap-item h-full w-full shrink-0">
+          <div key={`${item.url.slice(0, 32)}-${i}`} className="snap-item relative h-full w-full shrink-0">
             {item.type === "video" ? (
               <VideoSlide item={item} active={i === index} />
-            ) : failed[i] ? (
-              <MediaFallback label={restaurant ?? dishName} />
             ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <ShimmerImage
                 src={item.url}
                 alt={describe(item, i) || "Food photo"}
                 loading={i === 0 ? "eager" : "lazy"}
-                decoding="async"
-                onError={() => setFailed((prev) => ({ ...prev, [i]: true }))}
                 /* Belt to the stylesheet's braces: the `img` rule in
                    globals.css stops the iOS lift, and this stops the desktop
                    drag ghost for browsers that honour the attribute but not
                    the property. See that rule for why the photo moved. */
                 draggable={false}
-                className="h-full w-full object-cover"
+                className="object-cover"
               />
             )}
           </div>

@@ -6,6 +6,9 @@ import { ChevronIcon } from "@/components/icons";
 /** A list folds once it reaches this many items, and not before. */
 const FOLD_AT = 5;
 
+/** The later threshold for the leaderboard and requests sent: ten or more. */
+export const LONG_LIST_FOLD_AT = 10;
+
 /** How many plates a folded list keeps: two full rows of the collage. */
 export const PLATES_KEPT = 4;
 
@@ -21,9 +24,9 @@ export const FRIENDS_KEPT = 3;
  * disappearing (a removed friend) can drop the list back under `FOLD_AT`, at
  * which point the arrow goes away by itself.
  */
-export function useFoldedList<T>(items: T[], keep: number, paused = false) {
+export function useFoldedList<T>(items: T[], keep: number, paused = false, foldAt = FOLD_AT) {
   const [expanded, setExpanded] = useState(false);
-  const foldable = !paused && items.length >= FOLD_AT;
+  const foldable = !paused && items.length >= foldAt;
   return {
     visible: foldable && !expanded ? items.slice(0, keep) : items,
     foldable,
@@ -48,11 +51,14 @@ export function ShowAllToggle({
   expanded,
   onChange,
   controls,
+  background = "bg-white",
 }: {
   expanded: boolean;
   onChange: (expanded: boolean) => void;
   /** The id of the list this folds. */
   controls: string;
+  /** Inside a white card the default pill vanishes, so pass a tan one there. */
+  background?: string;
 }) {
   const ref = useRef<HTMLButtonElement>(null);
 
@@ -68,7 +74,7 @@ export function ShowAllToggle({
           requestAnimationFrame(() => ref.current?.scrollIntoView({ block: "center" }));
         }
       }}
-      className="mx-auto mt-3 flex min-h-11 items-center gap-1.5 rounded-full bg-white pl-5 pr-4 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-900 transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+      className={`mx-auto mt-3 flex min-h-11 items-center gap-1.5 rounded-full ${background} pl-5 pr-4 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-900 transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange`}
     >
       {expanded ? "Show less" : "Show all"}
       <ChevronIcon
