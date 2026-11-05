@@ -111,12 +111,7 @@ export function PhoneNav({ variant = DEFAULT_VARIANT }: { variant?: NavVariant }
      it is how they find out posting needs an account (the proxy sends
      /m/post to sign-in). Still hidden on the sign-in form itself. */
   const showCreate = isSignedIn || (OPEN_BROWSING && pathname !== "/m/account");
-  /* On the signed-out sign-in form the Friends tab would redirect straight
-     back to this page (/m/friends is sign-in only) - a dead tap - so it is
-     left off, the same way the "+" is. */
-  const slots =
-    !isSignedIn && pathname === "/m/account" ? SLOTS.filter((s) => s.href !== "/m/friends") : SLOTS;
-  const shared = { to, isCurrent, dotFor, showCreate, slots };
+  const shared = { to, isCurrent, dotFor, showCreate, slots: SLOTS };
 
   if (variant === "strip") return <StripNav {...shared} />;
   if (variant === "pill") return <PillNav {...shared} />;

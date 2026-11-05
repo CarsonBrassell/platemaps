@@ -51,16 +51,20 @@ const PUBLIC_PREFIXES: readonly string[] = ["/api/auth/"];
 export const OPEN_BROWSING = true;
 
 /** Still need a session in open-browsing mode: making posts, your own
- *  settings, friends, and user profiles (the profile pages need a viewer for
- *  the block check — see src/app/u/[id]/page.tsx). Matched as the exact path
- *  or the path followed by `/`. */
+ *  settings, and user profiles (the profile pages need a viewer for the block
+ *  check — see src/app/u/[id]/page.tsx). Matched as the exact path or the path
+ *  followed by `/`.
+ *
+ *  Friends is deliberately not here (Carson, 2026-11-04: "they should all be
+ *  able to get on it"). The tab is a nav slot, so a redirect made it a button
+ *  that seemed to do nothing for anyone signed out, and both screens already
+ *  have their own "Sign in to see your friends" card. Nothing private is lost:
+ *  the pages ship no data, and /api/friends* still answer by session. */
 const SIGNED_IN_ONLY_PREFIXES: readonly string[] = [
   "/post",
   "/m/post",
   "/account/settings",
   "/m/account/settings",
-  "/friends",
-  "/m/friends",
   "/u",
   "/m/u",
 ];
