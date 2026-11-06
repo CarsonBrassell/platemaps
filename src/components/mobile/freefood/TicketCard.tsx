@@ -1,7 +1,14 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { FREE_FOOD_DATE_LINE, FREE_FOOD_KICKER, FREE_FOOD_PLACE, doorsClock } from "@/lib/freeFoodEvent";
+import {
+  FREE_FOOD_DATE_LINE,
+  FREE_FOOD_INSTAGRAM_HANDLE,
+  FREE_FOOD_INSTAGRAM_URL,
+  FREE_FOOD_KICKER,
+  FREE_FOOD_PLACE,
+  doorsClock,
+} from "@/lib/freeFoodEvent";
 import "./freefood.css";
 
 /**
@@ -45,6 +52,20 @@ export function TicketCard({
         </p>
         <p className="mt-2 font-display text-2xl font-bold leading-tight">{FREE_FOOD_DATE_LINE}</p>
         <p className="mt-1 text-sm text-zinc-600">{FREE_FOOD_PLACE}</p>
+        <a
+          href={FREE_FOOD_INSTAGRAM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${FREE_FOOD_INSTAGRAM_HANDLE} on Instagram`}
+          className="-my-2 inline-flex min-h-11 items-center gap-1.5 font-mono text-xs font-semibold text-pm-orange-text underline decoration-pm-orange/40 underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+        >
+          <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+          </svg>
+          {FREE_FOOD_INSTAGRAM_HANDLE}
+        </a>
       </div>
 
       <div className="mx-4 border-t-2 border-dashed border-zinc-300" aria-hidden="true" />

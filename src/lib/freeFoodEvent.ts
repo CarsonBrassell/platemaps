@@ -32,6 +32,8 @@ export const FREE_FOOD_SHARE_URL = "https://platemaps.com/m/feed";
 export const FREE_FOOD_INVITE_TEXT = `Free slice at ${FREE_FOOD_PARTNER}, Thu Nov 19 5\u201310pm \u{1F355} Get PlateMaps and claim yours:`;
 export const FREE_FOOD_DATE_LINE = "Thu Nov 19 · 5–10pm";
 export const FREE_FOOD_PLACE = "Pizza on Pearl, Pearl St";
+export const FREE_FOOD_INSTAGRAM_HANDLE = "@pizzaonpearlsd";
+export const FREE_FOOD_INSTAGRAM_URL = "https://www.instagram.com/pizzaonpearlsd/";
 
 /** Set once the popup has been shown on a device, so it opens by itself once. */
 export const FREE_FOOD_SEEN_KEY = "pm-ticket-pearl-2026-11-19-seen";
