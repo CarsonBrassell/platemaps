@@ -45,9 +45,10 @@ export function PlatePointsPanel({
 }: {
   points: number;
   /**
-   * Renders the rank card (`RankRing`) instead of the tint panel: your
-   * crest in a progress ring, your title, the total counting up, the six
-   * rungs as pips and the distance to the next title. It animates —
+   * Renders the rank card (`RankRing`, redesigned 2026-11-05) instead of the
+   * tint panel: your crest big in a progress ring with the ranks either side
+   * faded, your title, the total counting up and the distance to the next
+   * title. It animates —
    * the ring follows the roll-call's count-up and a threshold crossing gets a
    * full rank-up sequence (see RankRing.tsx). It replaced a bare ring on the
    * cream (2026-09), which replaced a crest + 6px track row (2026-08).
