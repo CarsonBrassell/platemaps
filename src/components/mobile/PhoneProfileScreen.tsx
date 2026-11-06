@@ -17,6 +17,7 @@ import { ProfileShelves, useRollCallArrival } from "@/components/ProfileShelves"
 import { ShimmerImage } from "@/components/ShimmerImage";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { AccountFlavorProfile } from "@/components/AccountFlavorProfile";
+import { ProfileTicket } from "@/components/mobile/freefood/ProfileTicket";
 
 /**
  * Profile, phone version.
@@ -372,6 +373,9 @@ function ProfileOverview() {
               {avatarError}
             </p>
           )}
+
+          {/* Pizza on Pearl free ticket: only renders once one is claimed. */}
+          <ProfileTicket />
 
           {/* Replaces a grey card that spelled the same rules out in prose.
               The total was a muted chip up beside the name and the rules were

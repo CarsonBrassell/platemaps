@@ -1,13 +1,12 @@
-/* Free-food Plate-Off (ClaimFreeFoodButton + FreeFoodPopup). Every class is
-   `ff-` prefixed and only animates transform / opacity. `--ff-delay` staggers
-   the row cascade. Reduced motion collapses all of it at the bottom. */
+/* Free ticket (TicketButton + TicketPopup). Every class is `ff-` prefixed and
+   only animates transform / opacity. Reduced motion collapses it at the
+   bottom. */
 
 .ff-root {
-  --ff-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ff-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ---- The live dot, on the button and the popup's LIVE chip -------------- */
+/* ---- The live dot, on the ticket icon and the popup's chips ------------- */
 .ff-dot {
   position: relative;
 }
@@ -45,74 +44,53 @@
   100% { transform: rotateX(0); }
 }
 
-/* ---- The prize pill nudges every couple of seconds ---------------------- */
-.ff-nudge {
-  animation: ff-nudge 2.2s ease-in-out 1s infinite;
-}
-@keyframes ff-nudge {
-  0%, 80%, 100% { transform: scale(1); }
-  88% { transform: scale(1.05); }
-}
-
-/* ---- Rows cascade in on open; FREE tags pop after them ------------------ */
-.ff-row {
-  animation: ff-rise 0.5s var(--ff-out) var(--ff-delay, 0ms) both;
-}
-@keyframes ff-rise {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; }
-}
-.ff-tag {
-  animation: ff-pop 0.5s var(--ff-spring) calc(var(--ff-delay, 0ms) + 350ms) both;
-}
-@keyframes ff-pop {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
-}
-
-/* ---- Someone climbed: their row lights up for a moment ------------------ */
-.ff-climb {
-  animation: ff-climb 1.6s var(--ff-out);
-}
-@keyframes ff-climb {
-  0% { background-color: rgb(201 89 31 / 0.22); }
-  100% { background-color: transparent; }
-}
-
-/* ---- "@x just took #10" ------------------------------------------------- */
-.ff-toast {
-  animation: ff-toast 3.2s var(--ff-out) both;
-}
-@keyframes ff-toast {
-  0% { transform: translateY(-140%); }
-  12%, 85% { transform: none; }
-  100% { transform: translateY(-140%); }
-}
-
-/* ---- Progress toward the cut -------------------------------------------- */
-.ff-bar {
-  transform-origin: 0 50%;
-  animation: ff-grow 0.9s var(--ff-out) 0.4s both;
-}
-@keyframes ff-grow {
-  from { transform: scaleX(0); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .ff-dot::after,
-  .ff-digit,
-  .ff-nudge,
-  .ff-row,
-  .ff-tag,
-  .ff-climb,
-  .ff-bar {
+  .ff-digit {
     animation: none;
   }
-  .ff-toast {
-    animation: ff-fade 3.2s linear both;
+}
+
+/* ---- Live ticket (Profile): pulsing border + a slow shimmer ------------- */
+.ff-live {
+  border-color: var(--pm-orange);
+  border-width: 2px;
+  overflow: hidden;
+  animation: ff-border 1.4s ease-in-out infinite;
+}
+.ff-live::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.55) 50%, transparent 65%);
+  transform: translateX(-100%);
+  animation: ff-shimmer 2.4s ease-in-out infinite;
+}
+@keyframes ff-border {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(201 89 31 / 0.45); }
+  50% { box-shadow: 0 0 0 6px rgb(201 89 31 / 0); }
+}
+@keyframes ff-shimmer {
+  0% { transform: translateX(-100%); }
+  60%, 100% { transform: translateX(100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ff-live,
+  .ff-live::before {
+    animation: none;
   }
-  @keyframes ff-fade {
-    0%, 100% { opacity: 0; }
-    10%, 88% { opacity: 1; }
-  }
+}
+
+/* ---- Claimed counter: the number drops in when it changes --------------- */
+.ff-count {
+  display: inline-block;
+  animation: ff-drop 0.4s var(--ff-out, ease-out);
+}
+@keyframes ff-drop {
+  0% { transform: translateY(-40%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ff-count { animation: none; }
 }

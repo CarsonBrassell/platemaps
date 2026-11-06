@@ -1371,6 +1371,20 @@ const statements = [
     source TEXT NOT NULL,
     enriched_at TIMESTAMPTZ NOT NULL DEFAULT now()
   )`,
+  // Pizza on Pearl free tickets (lib/freeFoodEvent.ts). One per account and one
+  // per phone per event; activated_at is stamped when the user taps Activate
+  // at the counter (live for 5 minutes). Also in probe/ddl-event-tickets.sql.
+  `CREATE TABLE IF NOT EXISTS event_tickets (
+    id SERIAL PRIMARY KEY,
+    event_key TEXT NOT NULL,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    device_id TEXT NOT NULL,
+    ip TEXT,
+    claimed_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    activated_at TIMESTAMPTZ,
+    UNIQUE (event_key, user_id),
+    UNIQUE (event_key, device_id)
+  )`,
 ];
 
 for (const statement of statements) {
