@@ -14,6 +14,7 @@ import { AvatarCropper } from "@/components/AvatarCropper";
 import { uploadAvatar } from "@/lib/photos";
 import { PlatePointsPanel } from "@/components/PlatePointsPanel";
 import { ProfileShelves, useRollCallArrival } from "@/components/ProfileShelves";
+import { ShimmerImage } from "@/components/ShimmerImage";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { AccountFlavorProfile } from "@/components/AccountFlavorProfile";
 
@@ -150,12 +151,9 @@ function PostTile({
 
   if (photo) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={photo.url}
-        alt={photo.alt ?? ""}
-        className="aspect-square w-full rounded-[10px] object-cover"
-      />
+      <div className="relative aspect-square w-full overflow-hidden rounded-[10px]">
+        <ShimmerImage src={photo.url} alt={photo.alt ?? ""} className="object-cover" />
+      </div>
     );
   }
 

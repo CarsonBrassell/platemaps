@@ -69,9 +69,9 @@ export function DishSheet({
                   {dish.pct}%
                 </span>
                 <span className="font-mono text-xs leading-relaxed text-zinc-500">
-                  said good
+                  average score
                   <br />
-                  {dish.total.toLocaleString()} {dish.total === 1 ? "vote" : "votes"}
+                  from {dish.total.toLocaleString()} {dish.total === 1 ? "diner" : "diners"}
                 </span>
               </>
             ) : (

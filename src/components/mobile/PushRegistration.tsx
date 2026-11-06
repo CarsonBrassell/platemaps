@@ -13,8 +13,8 @@ import { onPushOpened, syncPushRegistration } from "@/lib/pushClient";
  *
  * 1. When the signed-in account is known, register this device for push —
  *    silently, and only if permission was already granted. The system prompt
- *    is never shown at launch; it comes after the user's first post or
- *    comment (askForPushInContext) or from the Settings toggle. Re-runs on sign-in so a new account gets a token bound to
+ *    is never shown at launch; it comes after the user's first post, comment or
+ *    friend request (askForPushInContext) or from the Settings toggle. Re-runs on sign-in so a new account gets a token bound to
  *    its own session (the previous session's row was cascaded away by the
  *    sign-out).
  *

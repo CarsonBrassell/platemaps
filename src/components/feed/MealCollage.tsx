@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import { chillRamp, heatFor, heatRamp, isPerfect } from "@/components/post/PercentMeter";
+import { ShimmerImage } from "@/components/ShimmerImage";
 import type { PostMedia } from "./types";
 
 /**
@@ -135,7 +136,6 @@ function PlateTile({
   restaurant?: string;
   href?: string;
 }) {
-  const [failed, setFailed] = useState(false);
   const photo = plate.media.find((m) => m.type === "image");
   const alt =
     photo?.alt ||
@@ -149,18 +149,15 @@ function PlateTile({
   const box = { left: cq(tile.x), top: cq(tile.y), width: cq(tile.w), height: cq(tile.ph) };
   const body = (
       <div className="relative h-full w-full overflow-hidden">
-        {photo && !failed ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+        {photo ? (
+          <ShimmerImage
             src={photo.url}
             alt={alt}
             // Every frame loads at once: the collage is one picture, and a
             // half-painted one reads as broken, not as loading.
             loading="eager"
-            decoding="async"
-            onError={() => setFailed(true)}
             draggable={false}
-            className="absolute inset-0 h-full w-full object-cover"
+            className="object-cover"
           />
         ) : (
           <div className="absolute inset-0 bg-[var(--pm-tone-1)]" />
