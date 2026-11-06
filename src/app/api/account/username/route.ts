@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { accountJson } from "@/lib/account";
 import { getUserByName, getUserById, updateUserName } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
-import { BLOCKED_MESSAGE, moderateUsername } from "@/lib/moderation";
+import { limitOrReject } from "@/lib/rateLimit";
+import { BLOCKED_MESSAGE, RESERVED_USERNAME_MESSAGE, isReservedUsername, moderateUsername } from "@/lib/moderation";
 import { userConflictMessage } from "@/lib/uniqueViolation";
 
 /** The signup rule, repeated deliberately rather than imported from that
@@ -31,6 +32,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
   }
 
+  const limited = await limitOrReject({
+    scope: "account-username:user",
+    key: user.id,
+    max: 10,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
+
   let name: unknown;
   try {
     ({ name } = await req.json());
@@ -50,6 +59,10 @@ export async function POST(req: Request) {
      inside one review is not fine as a name. See moderateUsername. */
   if (moderateUsername(name).action === "block") {
     return NextResponse.json({ error: BLOCKED_MESSAGE }, { status: 422 });
+  }
+
+  if (isReservedUsername(name)) {
+    return NextResponse.json({ error: RESERVED_USERNAME_MESSAGE }, { status: 422 });
   }
 
   if (name === user.name) {

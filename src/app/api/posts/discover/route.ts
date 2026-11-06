@@ -2,6 +2,8 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { getDiscoverFeed } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { clientIp } from "@/lib/loginThrottle";
+import { limitOrReject } from "@/lib/rateLimit";
 import { parseFeedSort } from "@/lib/feedSort";
 import { resolvePostRefs } from "@/lib/discover";
 import { decodeCursor, encodeCursor, parseFeedLimit } from "@/lib/feedCursor";
@@ -73,6 +75,14 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const limited = await limitOrReject({
+    scope: "feed-nearby:ip",
+    key: clientIp(req),
+    max: 240,
+    windowMinutes: 10,
+  });
+  if (limited) return limited;
+
   let body: unknown;
   try {
     body = await req.json();

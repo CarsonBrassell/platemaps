@@ -58,6 +58,14 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
   }
 
+  const limited = await limitOrReject({
+    scope: "blocks:user",
+    key: user.id,
+    max: 30,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
+
   let body: unknown;
   try {
     body = await req.json();

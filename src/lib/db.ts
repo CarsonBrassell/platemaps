@@ -429,24 +429,16 @@ export async function getUserRank(
 // dropped.
 
 /**
- * Legacy rows from before the hashing migration store the raw `randomUUID()`
- * token (36 chars); every row written since stores `hashToken(token)` (64
- * hex chars). The length test is how a lookup tells which kind it might be
- * looking at without a second column — see `getSessionUser` below for the
- * upgrade-in-place that retires a legacy row the first time it's used.
+ * Every session row stores `hashToken(token)`. The upgrade path for raw-token
+ * rows from before the hashing migration is gone: production held none by
+ * 2026-11-06, and it was the one lookup that skipped `expires_at`.
  */
 export async function getSessionUserId(token: string): Promise<string | null> {
   const hash = hashToken(token);
   const rows = await sql`
     SELECT user_id FROM sessions WHERE token = ${hash} AND expires_at > now()
   `;
-  if (rows[0]) return rows[0].user_id as string;
-
-  if (token.length !== 36) return null;
-  const legacy = await sql`SELECT user_id FROM sessions WHERE token = ${token}`;
-  if (!legacy[0]) return null;
-  await sql`UPDATE sessions SET token = ${hash} WHERE token = ${token}`;
-  return legacy[0].user_id as string;
+  return rows[0] ? (rows[0].user_id as string) : null;
 }
 
 /**
@@ -456,12 +448,6 @@ export async function getSessionUserId(token: string): Promise<string | null> {
  * HTTP calls to Neon, in series, before any authenticated route did its own
  * work. Every API route pays this on every request, so it was the floor under
  * the whole app's latency (probe/PERF-PLAN.md #4). Same rows, one join.
- *
- * Looks up by hash first. A miss on a 36-char token (a legacy raw
- * `randomUUID()` written before this table stored hashes) falls back to a
- * plaintext match and upgrades the row to its hash in place, so a session
- * that predates the migration keeps working instead of silently signing
- * that device out.
  */
 export async function getSessionUser(token: string): Promise<User | null> {
   const hash = hashToken(token);
@@ -470,17 +456,7 @@ export async function getSessionUser(token: string): Promise<User | null> {
     JOIN users u ON u.id = s.user_id
     WHERE s.token = ${hash} AND s.expires_at > now()
   `;
-  if (rows[0]) return rowToUser(rows[0]);
-
-  if (token.length !== 36) return null;
-  const legacyRows = await sql`
-    SELECT u.* FROM sessions s
-    JOIN users u ON u.id = s.user_id
-    WHERE s.token = ${token}
-  `;
-  if (!legacyRows[0]) return null;
-  await sql`UPDATE sessions SET token = ${hash} WHERE token = ${token}`;
-  return rowToUser(legacyRows[0]);
+  return rows[0] ? rowToUser(rows[0]) : null;
 }
 
 /**
@@ -504,8 +480,7 @@ export async function createSession(token: string, userId: string): Promise<void
 /**
  * Slides `expires_at` forward on cookie renewal (`/api/auth/me`) so the
  * server-side clock tracks the cookie clock instead of counting down from
- * sign-in. Hashed token only: by the time a route can call this,
- * `getSessionUser` has already upgraded any legacy plaintext row.
+ * sign-in.
  */
 export async function touchSession(token: string): Promise<void> {
   await sql`
@@ -517,24 +492,12 @@ export async function touchSession(token: string): Promise<void> {
 
 /**
  * Deletes the session for this raw token, hashing it the same way
- * `getSessionUser` does before matching.
- *
- * The legacy plaintext branch is gated by `token.length === 36`, exactly
- * like `getSessionUser`'s upgrade path — never a bare `IN (hash, token)`.
- * Without that gate, `token` here is caller-controlled (it comes straight
- * off the logout request's cookie), so a 64-hex value equal to *another
- * user's* stored hash would match the table's hashed column directly and
- * delete their session — turning a leaked hash into a working logout
- * credential. Only an actual 36-char legacy raw token can hit the second
- * form, and a 64-hex string can never be one.
+ * `getSessionUser` does before matching. Never matches the raw value: it comes
+ * straight off the request's cookie, so a raw match would turn a leaked stored
+ * hash into a working logout of someone else.
  */
 export async function deleteSession(token: string): Promise<void> {
-  const hash = hashToken(token);
-  if (token.length === 36) {
-    await sql`DELETE FROM sessions WHERE token IN (${hash}, ${token})`;
-  } else {
-    await sql`DELETE FROM sessions WHERE token = ${hash}`;
-  }
+  await sql`DELETE FROM sessions WHERE token = ${hashToken(token)}`;
 }
 
 /**
@@ -821,6 +784,7 @@ async function hydratePosts(
     myHeartRows,
     friendRows,
     courseRows,
+    blockedIds,
   ] = await Promise.all([
     // Scoped to the viewer's own row only — like myHeartRows below, never the
     // full list of who saved a post (probe/CLAUDE-SECURITY... F34: that list
@@ -915,7 +879,12 @@ async function hydratePosts(
       WHERE meal_id = ANY(${ids})
       ORDER BY course_index ASC
     `,
+    // A block hides people's comments as well as their posts: a blocked pair
+    // meeting under a third person's plate is still contact.
+    viewerId ? getBlockedEitherWayIds(viewerId) : Promise.resolve([] as string[]),
   ]);
+
+  const blockedCommenters = new Set(blockedIds);
 
   const coursesByMeal = new Map<string, typeof courseRows>();
   for (const c of courseRows) {
@@ -1000,7 +969,7 @@ async function hydratePosts(
       heartCount: row.heart_count ?? null,
       savedByMe: mySaves.has(postId),
       comments: commentRows
-        .filter((c) => c.post_id === postId)
+        .filter((c) => c.post_id === postId && !blockedCommenters.has(c.user_id as string))
         .map((c) => ({
           id: c.id as string,
           parentId: (c.parent_id as string | null) ?? null,
@@ -1028,14 +997,30 @@ const POST_SELECT = `
   JOIN users u ON u.id = p.user_id
 `;
 
-export async function getPosts(viewerId: string | null = null): Promise<Post[]> {
-  // Same block filter every sibling reader applies (getPostById, the
-  // discover/friends feeds, getDishPosts) — this was the one unfiltered path
-  // that handed a blocked pair each other's posts in bulk.
+/** Most plates one restaurant thread will carry, newest kept. */
+const RESTAURANT_THREAD_LIMIT = 200;
+
+/**
+ * The plates at one restaurant, oldest first, for its comment thread. Replaced
+ * `getPosts`, which handed every post in the table to any signed-out caller
+ * and left the page to filter them. Matches the id or the name, because older
+ * rows carry only the free-text name.
+ */
+export async function getRestaurantPosts(
+  restaurantId: string,
+  restaurantName: string,
+  viewerId: string | null = null,
+): Promise<Post[]> {
   const blockedIds = viewerId ? await getBlockedEitherWayIds(viewerId) : [];
   const rows = await sql.query(
-    `${POST_SELECT} WHERE p.user_id != ALL($1) AND p.meal_id IS NULL ORDER BY p.created_at ASC`,
-    [blockedIds],
+    `SELECT * FROM (
+       ${POST_SELECT}
+       WHERE p.user_id != ALL($1) AND p.meal_id IS NULL
+         AND (p.restaurant_id = $2 OR p.restaurant = $3)
+       ORDER BY p.created_at DESC
+       LIMIT ${RESTAURANT_THREAD_LIMIT}
+     ) recent ORDER BY created_at ASC`,
+    [blockedIds, restaurantId, restaurantName],
   );
   return hydratePosts(rows, viewerId);
 }
@@ -1759,6 +1744,68 @@ export async function createPost(data: {
 }
 
 /**
+ * Takes back what a post paid its author: the publish award, its upvotes, its
+ * milestones and its comments. Without this, posting and deleting in a loop
+ * paid 5 points a turn for nothing left on the site. Read before the post goes,
+ * because the comment ids die with it. The ledger row goes too, so the
+ * leaderboards, which sum the ledger, drop with the total.
+ */
+async function reversePostPoints(postId: string): Promise<void> {
+  const owner = await sql`SELECT user_id FROM posts WHERE id = ${postId}`;
+  const userId = owner[0]?.user_id as string | undefined;
+  if (!userId) return;
+
+  const reversed = (await sql`
+    DELETE FROM point_events
+    WHERE user_id = ${userId}
+      AND (
+        reason = ${`post:${postId}`}
+        OR reason LIKE ${`upvote:${postId}:%`}
+        OR reason LIKE ${`milestone:${postId}:%`}
+        OR reason IN (SELECT 'comment:' || c.id FROM comments c WHERE c.post_id = ${postId})
+      )
+    RETURNING amount, to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM') AS month
+  `) as { amount: number; month: string }[];
+  if (reversed.length === 0) return;
+
+  const total = reversed.reduce((sum, r) => sum + Number(r.amount), 0);
+  const monthKey = currentMonthKey();
+  const thisMonth = reversed
+    .filter((r) => r.month === monthKey)
+    .reduce((sum, r) => sum + Number(r.amount), 0);
+
+  await sql`
+    UPDATE users
+    SET points = GREATEST(points - ${total}, 0),
+        monthly_points = CASE WHEN monthly_points_month = ${monthKey}
+          THEN GREATEST(monthly_points - ${thisMonth}, 0) ELSE monthly_points END
+    WHERE id = ${userId}
+  `;
+}
+
+/**
+ * How many posts have paid this author in the last 24 hours. The composer's
+ * award stops at `MAX_PAID_POSTS_PER_DAY` (lib/points.ts); the post still goes
+ * up, so nobody loses a real plate to the cap.
+ */
+export async function countPaidPostsToday(userId: string): Promise<number> {
+  const rows = await sql`
+    SELECT count(*)::int AS n FROM point_events
+    WHERE user_id = ${userId} AND reason LIKE 'post:%'
+      AND created_at > now() - interval '24 hours'
+  `;
+  return Number(rows[0]?.n ?? 0);
+}
+
+/** True when this person has already commented on this post. */
+export async function hasCommentedOn(postId: string, userId: string): Promise<boolean> {
+  const rows = await sql`
+    SELECT 1 FROM comments WHERE post_id = ${postId} AND user_id = ${userId} LIMIT 1
+  `;
+  return rows.length > 0;
+}
+
+/**
  * Deletes a post and the photos on it.
  *
  * The photos are files in the blob store now and the row only holds their
@@ -1772,6 +1819,8 @@ export async function createPost(data: {
  * not a reason to tell someone their post is still there.
  */
 export async function deletePost(id: string): Promise<void> {
+  await reversePostPoints(id);
+
   // A meal's courses go with their hero (the FK cascades), so their photos
   // are read here too — otherwise the cascade would strand them exactly the
   // way dropping the row alone would strand the hero's.
@@ -3192,10 +3241,9 @@ export async function confirmEmail(userId: string, email: string): Promise<boole
  * session by matching neither form.
  */
 export async function deleteOtherSessions(userId: string, keepToken: string): Promise<number> {
-  const keepHash = hashToken(keepToken);
   const rows = await sql`
     DELETE FROM sessions
-    WHERE user_id = ${userId} AND token NOT IN (${keepHash}, ${keepToken})
+    WHERE user_id = ${userId} AND token <> ${hashToken(keepToken)}
     RETURNING token
   `;
   return rows.length;
@@ -4035,12 +4083,12 @@ export async function getRestaurantMapRows(): Promise<RestaurantMapRow[]> {
  * is that index. Change one, change both.
  */
 export async function searchRestaurants(term: string, limit = 60): Promise<RestaurantView[]> {
-  const needle = `%${term}%`;
+  const needle = `%${escapeLike(term)}%`;
   /* Apostrophe- and accent-blind twin of `needle` - see foldSearchText in
      lib/discoverFilters.ts. The query is folded here and the haystack is
      folded in SQL below; both sides have to lose the same characters or the
      comparison means nothing. */
-  const folded = `%${foldAccents(term).replace(/['’`´]/g, "")}%`;
+  const folded = `%${escapeLike(foldAccents(term).replace(/['’`´]/g, ""))}%`;
   const rows = await sql`
     WITH dish_match AS (
       SELECT DISTINCT ON (d.restaurant_id)
@@ -4100,7 +4148,7 @@ export async function dishMatchesFor(term: string): Promise<Map<string, MatchedD
     SELECT DISTINCT ON (d.restaurant_id)
            d.restaurant_id, d.id, d.name, d.price
     FROM dishes d
-    WHERE d.name ILIKE ${`%${trimmed}%`}
+    WHERE d.name ILIKE ${`%${escapeLike(trimmed)}%`}
     ORDER BY d.restaurant_id, length(d.name), d.sort_order
   `;
 

@@ -1,55 +1,57 @@
 import type { NextConfig } from "next";
 
 /*
- * Report-only CSP, built from what the app actually loads (see the audit in
- * probe/SECURITY-FINDINGS.md #5). It is report-only on purpose: a directive
- * that is one host short of correct silently breaks the map or an upload
- * instead of just logging, so this ships as `Content-Security-Policy-Report-Only`
- * first, gets watched in the browser console (and Vercel logs, once a
- * `report-to`/`report-uri` endpoint exists) for a real traffic cycle, and only
- * then does someone flip it to enforced and drop the duplicate `frame-ancestors`
- * below. Before enforcing: confirm no console violations across `/`, `/feed`,
- * `/post`, `/m/post`, a restaurant page, and sign-in/sign-up (password
- * manager extensions can trigger their own violations that are not the app's).
+ * The Content Security Policy, enforced since 2026-11-06. It ran report-only for
+ * two months first; on production the only thing it ever flagged was Next's own
+ * inline bootstrap scripts, across the feed, the map, restaurant pages and the
+ * phone screens.
  *
- * - `script-src`/`connect-src` allow `va.vercel-scripts.com` because
- *   `@vercel/analytics` and `@vercel/speed-insights` fall back to that host
- *   in dev; production serves both from `/_vercel/*` on this origin, which
- *   `'self'` already covers.
- * - `style-src` needs `'unsafe-inline'`: MapLibre GL sets element styles
- *   directly, `src/components/drafts/fieldShapes.tsx` and
- *   `draftSearchStyles.tsx` inject `<style>` tags via `dangerouslySetInnerHTML`,
- *   and the app uses plenty of inline `style={{...}}` props. None of that is
- *   nonce-able without a rewrite, so this is a deliberate, not overlooked, gap.
- * - `img-src` covers `blob:` for the camera-capture and avatar-cropper
- *   previews (`URL.createObjectURL`), `*.fl.yelpcdn.com` for Yelp photos, and
- *   the Vercel Blob host for user post/avatar photos.
- * - `connect-src` covers `tiles.openfreemap.org` (MapLibre vector tiles) —
- *   glyphs are same-origin (`GLYPHS_ORIGIN` in `src/lib/mapStyle.ts`).
- * - `worker-src`/`child-src` allow `blob:` for MapLibre's worker; the worker
- *   script itself is same-origin (`public/maplibre-gl-worker.mjs`, see
- *   `setWorkerUrl` in `RestaurantMap.tsx`), but some MapLibre builds wrap it
- *   in a blob URL under the hood, so this stays permissive rather than
- *   guessing wrong and silently killing the map.
- * - No `'unsafe-eval'` — nothing found that needs it (MapLibre and Tailwind's
- *   runtime do not eval). Leave it out unless something concrete requires it.
+ * - `script-src` needs `'unsafe-inline'` for those bootstrap scripts. The real
+ *   fix is a per-request nonce, which needs dynamic rendering on every page and
+ *   gives up the static shells and CDN caching in probe/PERF-PLAN.md. So this
+ *   policy does not stop an injected inline script. What it does stop is the
+ *   usual next step: loading a script from elsewhere, or sending stolen data
+ *   anywhere but this origin (`connect-src`, `form-action`, `base-uri`).
+ *   Escaping user text is still the first line (`escapeHtml` in RestaurantMap).
+ * - `va.vercel-scripts.com` is `@vercel/analytics`' development fallback;
+ *   production serves it from `/_vercel/*`, which `'self'` covers.
+ * - `style-src` needs `'unsafe-inline'`: MapLibre sets element styles directly,
+ *   and the app uses inline `style={{...}}` throughout.
+ * - `img-src https:` because restaurant photos load straight from thousands of
+ *   restaurant hosts. `blob:` is the camera and avatar-cropper previews.
+ * - `connect-src` has `tiles.openfreemap.org` for the map's vector tiles and
+ *   `blob:`/`data:` for reading a picked photo back. Glyphs are same-origin.
+ * - `worker-src`/`child-src` allow `blob:` because MapLibre can wrap its
+ *   same-origin worker in one.
+ * - Development adds what the dev server needs: `'unsafe-eval'` for React's
+ *   error overlay and websockets for hot reload. Neither reaches a build.
+ *
+ * `scripts/check-security.mjs` fails the deploy if this goes back to
+ * report-only or picks up `'unsafe-eval'` in production.
  */
-const REPORT_ONLY_CSP = [
+const isDev = process.env.NODE_ENV === "development";
+
+const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
-  "script-src 'self' https://va.vercel-scripts.com",
+  `script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  // https: because restaurant photos (RestaurantPhoto, unoptimized) load
-  // straight from thousands of restaurant hosts; user photos stay on Blob.
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
-  "connect-src 'self' https://tiles.openfreemap.org https://va.vercel-scripts.com",
+  `connect-src 'self' blob: data: https://tiles.openfreemap.org https://va.vercel-scripts.com${isDev ? " ws: wss:" : ""}`,
+  "media-src 'self' blob: https:",
   "worker-src 'self' blob:",
   "child-src blob:",
+  "frame-src 'none'",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
 ].join("; ");
+
+const blobStoreId = process.env.BLOB_READ_WRITE_TOKEN?.match(/^vercel_blob_rw_([A-Za-z0-9]+)_/)?.[1];
+const BLOB_IMAGE_HOST = blobStoreId
+  ? `${blobStoreId.toLowerCase()}.public.blob.vercel-storage.com`
+  : "*.public.blob.vercel-storage.com";
 
 const nextConfig: NextConfig = {
   /*
@@ -100,8 +102,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       // Yelp serves business photos from numbered s3-media hosts.
       { protocol: "https", hostname: "*.fl.yelpcdn.com" },
-      // Vercel Blob's per-store subdomain — user-uploaded post photos and avatars.
-      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
+      // Our own Blob store: post photos and avatars. Named exactly when the
+      // token is present, because the wildcard covers every Vercel customer's
+      // store and would let anyone run their images through this optimizer.
+      { protocol: "https", hostname: BLOB_IMAGE_HOST },
     ],
   },
 
@@ -119,9 +123,11 @@ const nextConfig: NextConfig = {
    * - `Permissions-Policy` allows camera and geolocation for this origin only
    *   (used on `/post`, `/m/post`, and the map) and turns off everything else
    *   this app has no use for.
-   * - The enforced CSP only pins down `frame-ancestors` for now; the full
-   *   policy ships report-only until it's been watched for violations (see
-   *   `REPORT_ONLY_CSP` above).
+   * - The CSP is above, with the reasoning for each directive.
+   * - `Cross-Origin-Opener-Policy` keeps a page this one opens, or that opened
+   *   it, from reaching back through `window.opener`.
+   * - `no-store` on auth and account routes keeps anything about a person out
+   *   of disk and proxy caches. Other private routes already say so themselves.
    */
   async headers() {
     return [
@@ -140,15 +146,17 @@ const nextConfig: NextConfig = {
             value:
               "camera=(self), geolocation=(self), microphone=(), payment=(), usb=()",
           },
-          {
-            key: "Content-Security-Policy",
-            value: "frame-ancestors 'none'",
-          },
-          {
-            key: "Content-Security-Policy-Report-Only",
-            value: REPORT_ONLY_CSP,
-          },
+          { key: "Content-Security-Policy", value: CONTENT_SECURITY_POLICY },
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
         ],
+      },
+      {
+        source: "/api/auth/:path*",
+        headers: [{ key: "Cache-Control", value: "no-store" }],
+      },
+      {
+        source: "/api/account/:path*",
+        headers: [{ key: "Cache-Control", value: "no-store" }],
       },
     ];
   },

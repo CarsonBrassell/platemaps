@@ -10,6 +10,7 @@ import {
   updatePrivacySettings,
 } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { limitOrReject } from "@/lib/rateLimit";
 import { cuisines } from "@/data/restaurantFacets";
 
 /**
@@ -25,6 +26,14 @@ export async function POST(req: Request) {
   if (!user) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
   }
+
+  const limited = await limitOrReject({
+    scope: "account-settings:user",
+    key: user.id,
+    max: 120,
+    windowMinutes: 15,
+  });
+  if (limited) return limited;
 
   let parsed: unknown;
   try {

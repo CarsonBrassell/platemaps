@@ -47,19 +47,8 @@ const warnings = [];
 // remove an entry when you add a limit, never add to this list without a
 // reason
 const RATE_LIMIT_ALLOWLIST = new Set([
-  "src/app/api/account/email/verify/route.ts",
-  "src/app/api/account/sessions/route.ts",
-  "src/app/api/account/settings/route.ts",
-  "src/app/api/account/username/route.ts",
+  // Ends the caller's own session and nothing else.
   "src/app/api/auth/logout/route.ts",
-  "src/app/api/auth/reset/route.ts",
-  "src/app/api/friends/respond/route.ts",
-  "src/app/api/friends/route.ts",
-  "src/app/api/posts/[id]/route.ts",
-  // Read-only: POST only to keep the Nearby coords out of the URL, same as
-  // restaurants/discover below.
-  "src/app/api/posts/discover/route.ts",
-  "src/app/api/restaurants/discover/route.ts",
 ]);
 
 const MUTATING_EXPORT_RE = /export (async )?function (POST|PUT|PATCH|DELETE)\b/g;
@@ -170,10 +159,25 @@ if (!existsSync(join(ROOT, NEXT_CONFIG_PATH))) {
       violations.push(`[next-config] ${NEXT_CONFIG_PATH} headers() is missing "${header}".`);
     }
   }
-  if (headersBlock.includes("Content-Security-Policy") && !headersBlock.includes("frame-ancestors 'none'")) {
-    violations.push(
-      `[next-config] ${NEXT_CONFIG_PATH} headers() Content-Security-Policy is missing "frame-ancestors 'none'".`,
-    );
+  // The policy lives in a constant above nextConfig, so these read the whole
+  // file. Each directive here is one a later edit could quietly drop.
+  for (const directive of [
+    "default-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+  ]) {
+    if (!config.includes(directive)) {
+      violations.push(`[next-config] ${NEXT_CONFIG_PATH} CSP is missing "${directive}".`);
+    }
+  }
+  if (/key:\s*"Content-Security-Policy-Report-Only"/.test(config)) {
+    violations.push(`[next-config] ${NEXT_CONFIG_PATH} CSP went back to report-only.`);
+  }
+  // 'unsafe-eval' may appear only behind the isDev ternary.
+  if (/"[^"]*'unsafe-eval'/.test(config.replace(/\$\{isDev[^}]*\}/g, ""))) {
+    violations.push(`[next-config] ${NEXT_CONFIG_PATH} CSP allows 'unsafe-eval' outside development.`);
   }
 }
 
@@ -248,6 +252,60 @@ if (readNormalized("src/components/ShimmerImage.tsx").includes('from "next/image
   violations.push(
     "[invariant] src/components/ShimmerImage.tsx imports next/image — finding #6 (restaurant photos must bypass /_next/image) was undone.",
   );
+}
+
+// 2026-11-06 audit: each of these held a real hole.
+requireContains(
+  "src/proxy.ts",
+  "isCrossSiteRequest(",
+  "the cross-site write check in front of /api was removed.",
+);
+requireContains(
+  "src/app/api/blob/upload/route.ts",
+  "looksLikeJpeg(",
+  "uploads must be checked by their bytes, not their declared type.",
+);
+requireContains(
+  "src/app/api/posts/route.ts",
+  "storedPhotoOwner(url) !== ownerId",
+  "a post may only carry the author's own uploads.",
+);
+requireContains(
+  "src/app/api/auth/avatar/route.ts",
+  "storedPhotoOwner(avatarUrl) !== user.id",
+  "an avatar must be the caller's own upload.",
+);
+requireContains(
+  "src/lib/db.ts",
+  "reversePostPoints(",
+  "deleting a post must take back what it paid, or post-and-delete prints points.",
+);
+requireContains(
+  "src/app/api/posts/route.ts",
+  "countPaidPostsToday(",
+  "the daily ceiling on paid posts was removed.",
+);
+requireContains(
+  "src/app/api/posts/[id]/comments/route.ts",
+  "hasCommentedOn(",
+  "a post's author is paid once per commenter, not per comment.",
+);
+if (readNormalized("src/lib/db.ts").includes("export async function getPosts(")) {
+  violations.push(
+    "[invariant] src/lib/db.ts exports getPosts again: an unbounded read of every post is what /api/posts stopped doing.",
+  );
+}
+if (!/requested\.length === 0/.test(readNormalized("src/app/api/restaurants/dishes/route.ts"))) {
+  violations.push("[invariant] /api/restaurants/dishes must refuse a request with no ids.");
+}
+
+// Nothing tracked may hold a password hash: the repo has been public.
+const hashHits = spawnSync(
+  "git grep -lE '\\$2[aby]\\$[0-9]{2}\\$[./A-Za-z0-9]{53}'",
+  { cwd: ROOT, shell: true, encoding: "utf8", timeout: 60_000 },
+);
+if (hashHits.stdout?.trim()) {
+  violations.push(`[secrets] tracked files hold bcrypt hashes: ${hashHits.stdout.trim().split("\n").join(", ")}`);
 }
 
 // WARN (don't fail) if some other <Image in src/ lacks `unoptimized` nearby.

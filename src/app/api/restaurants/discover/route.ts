@@ -3,6 +3,8 @@ import { getDiscoverPage } from "@/lib/discover";
 import { parseShown } from "@/lib/discoverFilters";
 import { toWire } from "@/lib/discoverWire";
 import { cachedJson } from "@/lib/httpCache";
+import { clientIp } from "@/lib/loginThrottle";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * Discover's query, answered as JSON.
@@ -33,6 +35,14 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  const limited = await limitOrReject({
+    scope: "discover:ip",
+    key: clientIp(req),
+    max: 240,
+    windowMinutes: 10,
+  });
+  if (limited) return limited;
+
   let body: unknown;
   try {
     body = await req.json();
@@ -46,7 +56,8 @@ export async function POST(req: Request) {
     coords?: unknown;
   };
 
-  if (typeof search !== "string") {
+  // Far longer than any filter string the page can build.
+  if (typeof search !== "string" || search.length > 2_000) {
     return NextResponse.json({ error: "Missing filters." }, { status: 400 });
   }
 

@@ -143,7 +143,7 @@ function FeedPageInner() {
      doesn't show would change what's on screen for no visible reason. */
   const endpoint =
     navKey === "saved"
-      ? "/api/posts"
+      ? "/api/posts?mine=1"
       : tab === "friends" || (tab === "map" && mapSource === "friends")
         ? "/api/posts/friends"
         : tab === "discover"

@@ -59,7 +59,7 @@ export async function POST(req: Request) {
   // The single response, built once and returned from every path below.
   const ok = NextResponse.json({ ok: true });
 
-  if (typeof email !== "string" || email.trim().length === 0) return ok;
+  if (typeof email !== "string" || email.trim().length === 0 || email.length > 254) return ok;
 
   const user = await getUserByEmail(email.trim());
   if (!user) return ok;

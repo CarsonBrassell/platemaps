@@ -1,18 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import {
-  getPosts,
+  countPaidPostsToday,
   getProfilePosts,
+  getRestaurantById,
+  getRestaurantPosts,
   createPost,
   awardPoints,
   type PostMedia,
 } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { clientIp } from "@/lib/loginThrottle";
 import { invalidateRestaurantPage } from "@/lib/restaurantPage";
-import { POINT_RULES } from "@/lib/points";
+import { MAX_PAID_POSTS_PER_DAY, POINT_RULES } from "@/lib/points";
 import { BEST_AT_LABELS } from "@/data/reviewScales";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
-import { isStoredPhotoUrl } from "@/lib/photos";
+import { storedPhotoOwner } from "@/lib/photos";
 import { resolvePostRefs } from "@/lib/discover";
 import { BLOCKED_MESSAGE, moderateText } from "@/lib/moderation";
 import { limitOrReject } from "@/lib/rateLimit";
@@ -25,35 +28,54 @@ const MAX_MEDIA = 4;
 const MAX_MEDIA_URL_LENGTH = 512;
 
 /**
- * Every post, newest first. Backs the Saved view, which needs posts regardless
- * of which feed surfaced them.
+ * Two bounded reads, and deliberately no "everything": a bare `GET /api/posts`
+ * used to return the whole table to any signed-out caller, and the feeds are
+ * the only ways to browse.
  *
- * `places` is the same per-restaurant map the two feed routes send, so the
- * filter rail works on Saved too — see `resolvePostRefs` in lib/discover.ts.
- */
-/**
- * `?mine=1` narrows the response to the signed-in person's own plates plus
- * the ones they saved — what a profile screen renders, and nothing else.
+ * - `?mine=1` is the signed-in person's own plates plus the ones they saved,
+ *   which backs the profile and the Saved view. It is a flag rather than
+ *   `?userId=` on purpose: the id comes off the session, so there is no
+ *   parameter anyone can point at somebody else's saved list.
+ * - `?restaurant=<id>` is one restaurant's thread.
  *
- * It is a flag rather than `?userId=`, deliberately: the id comes off the
- * session, so there is no parameter anyone can point at somebody else to read
- * their saved list. An unauthenticated `?mine=1` falls through to the normal
- * response instead of erroring, because the feed is public and a logged-out
- * profile has nothing to narrow to.
+ * Anything else, including `?mine=1` signed out, is an empty list. `places` is
+ * the same per-restaurant map the two feed routes send, so the filter rail
+ * works on Saved too — see `resolvePostRefs` in lib/discover.ts.
  */
 export async function GET(request: NextRequest) {
   const user = await getCurrentUser();
-  const mine = request.nextUrl.searchParams.get("mine") === "1";
-  const rows =
-    mine && user
-      ? await getProfilePosts(user.id, user.id)
-      : await getPosts(user?.id ?? null);
+  const params = request.nextUrl.searchParams;
+  const restaurantId = params.get("restaurant")?.slice(0, 200);
+
+  let rows: Awaited<ReturnType<typeof getProfilePosts>> = [];
+  if (restaurantId) {
+    const limited = await limitOrReject({
+      scope: "posts-thread:ip",
+      key: clientIp(request),
+      max: 300,
+      windowMinutes: 10,
+    });
+    if (limited) return limited;
+
+    const restaurant = await getRestaurantById(restaurantId);
+    if (restaurant) {
+      rows = await getRestaurantPosts(restaurant.id, restaurant.name, user?.id ?? null);
+    }
+  } else if (params.get("mine") === "1" && user) {
+    rows = await getProfilePosts(user.id, user.id);
+  }
+
   const { posts, places } = await resolvePostRefs(rows.slice().reverse());
   return NextResponse.json({ posts, places });
 }
 
-/** Keeps a client from writing arbitrary shapes into the media jsonb column. */
-function parseMedia(raw: unknown): PostMedia[] | { error: string } {
+/**
+ * Keeps a client from writing arbitrary shapes into the media jsonb column.
+ * Each photo has to be the author's own upload: a post is what publishes a
+ * photo, so someone else's address here would reshare a friends-only picture,
+ * and deleting this post would try to delete a file that isn't theirs.
+ */
+function parseMedia(raw: unknown, ownerId: string): PostMedia[] | { error: string } {
   if (raw === undefined || raw === null) return [];
   if (!Array.isArray(raw)) return { error: "Media must be a list." };
   if (raw.length > MAX_MEDIA) return { error: `Up to ${MAX_MEDIA} photos per post.` };
@@ -63,7 +85,7 @@ function parseMedia(raw: unknown): PostMedia[] | { error: string } {
     if (!item || typeof item !== "object") return { error: "Invalid media item." };
     const { url, type, alt } = item as Record<string, unknown>;
     if (typeof url !== "string" || !url) return { error: "Invalid media item." };
-    if (url.length > MAX_MEDIA_URL_LENGTH || !isStoredPhotoUrl(url)) {
+    if (url.length > MAX_MEDIA_URL_LENGTH || storedPhotoOwner(url) !== ownerId) {
       return { error: "Photos have to be uploaded before the post is published." };
     }
     if (type !== "image" && type !== "video") return { error: "Invalid media type." };
@@ -79,7 +101,7 @@ const MAX_COURSES = 5;
 type ParsedCourse = { dishName?: string; price?: string; rating: number; media: PostMedia[] };
 
 /** The extra plates of a meal, held to the same rules as the hero. */
-function parseCourses(raw: unknown): ParsedCourse[] | { error: string } {
+function parseCourses(raw: unknown, ownerId: string): ParsedCourse[] | { error: string } {
   if (raw === undefined || raw === null) return [];
   if (!Array.isArray(raw)) return { error: "Courses must be a list." };
   if (raw.length > MAX_COURSES) {
@@ -99,7 +121,7 @@ function parseCourses(raw: unknown): ParsedCourse[] | { error: string } {
     const name = dishName ? String(dishName).trim().slice(0, 120) : "";
     if (!name) return { error: "Every plate in a meal names its dish." };
     if (moderateText(name).action === "block") return { error: BLOCKED_MESSAGE };
-    const media = parseMedia((item as Record<string, unknown>).media);
+    const media = parseMedia((item as Record<string, unknown>).media, ownerId);
     if ("error" in media) return media;
     courses.push({
       dishName: name,
@@ -134,18 +156,29 @@ export async function POST(req: NextRequest) {
   if (!parsedBody || typeof parsedBody !== "object") {
     return NextResponse.json({ error: "Bad request." }, { status: 400 });
   }
+  // Postgres text cannot hold a NUL, so one would just be a 500 at the write.
+  const clean = (value: unknown) =>
+    typeof value === "string" ? value.replaceAll("\0", "") : value;
   const body = parsedBody as Record<string, unknown>;
-  const { text, restaurant, restaurantId, dishName, price, rating, locationLabel } = body;
+  const { rating } = body;
+  const text = clean(body.text);
+  const restaurant = clean(body.restaurant);
+  const restaurantId = clean(body.restaurantId);
+  const dishName = clean(body.dishName);
+  const price = clean(body.price);
+  const locationLabel = clean(body.locationLabel);
 
   let restaurantLat: number | undefined;
   let restaurantLng: number | undefined;
+  // Finite and on the planet: "Infinity" is a number to Number(), and one row
+  // holding it breaks every distance sum the Nearby filter runs over the feed.
   if (body.restaurantLat !== undefined && body.restaurantLat !== null) {
     const n = Number(body.restaurantLat);
-    if (!Number.isNaN(n)) restaurantLat = n;
+    if (Number.isFinite(n) && Math.abs(n) <= 90) restaurantLat = n;
   }
   if (body.restaurantLng !== undefined && body.restaurantLng !== null) {
     const n = Number(body.restaurantLng);
-    if (!Number.isNaN(n)) restaurantLng = n;
+    if (Number.isFinite(n) && Math.abs(n) <= 180) restaurantLng = n;
   }
 
   if (!text || !String(text).trim()) {
@@ -169,14 +202,22 @@ export async function POST(req: NextRequest) {
   /* dishName has no length check of its own before this point (only text
      does, above) — cap it here to the same 120 enforced at the write below,
      so an oversized dishName can't reach the moderation regexes. See F30. */
+  /* The other free-text fields print on the card too, so they go through the
+     same filter, each capped to what the write below stores. */
   const moderated = moderateText(
-    [String(text), dishName ? String(dishName).slice(0, 120) : ""].join(" "),
+    [
+      String(text),
+      dishName ? String(dishName).slice(0, 120) : "",
+      restaurant ? String(restaurant).slice(0, 200) : "",
+      price ? String(price).slice(0, 20) : "",
+      locationLabel ? String(locationLabel).slice(0, 120) : "",
+    ].join(" "),
   );
   if (moderated.action === "block") {
     return NextResponse.json({ error: BLOCKED_MESSAGE }, { status: 422 });
   }
 
-  const media = parseMedia(body.media);
+  const media = parseMedia(body.media, user.id);
   if ("error" in media) {
     return NextResponse.json({ error: media.error }, { status: 400 });
   }
@@ -254,10 +295,22 @@ export async function POST(req: NextRequest) {
      own blob store. Optional and empty for the ordinary single-plate post.
      Capped at MAX_COURSES beyond the hero so the collage stays a collage and
      one write cannot fan out into an unbounded number of rows. */
-  const courses = parseCourses(body.courses);
+  const courses = parseCourses(body.courses, user.id);
   if ("error" in courses) {
     return NextResponse.json({ error: courses.error }, { status: 400 });
   }
+
+  /* An id has to name a real restaurant, and that restaurant's own name and
+     position win over whatever came with it. A post with no id is still
+     allowed: older composers and free-typed places send only the name. */
+  const claimedRestaurantId = restaurantId ? String(restaurantId).trim().slice(0, 200) : undefined;
+  const place = claimedRestaurantId ? await getRestaurantById(claimedRestaurantId) : null;
+  if (claimedRestaurantId && !place) {
+    return NextResponse.json({ error: "That restaurant isn't on PlateMaps." }, { status: 400 });
+  }
+
+  const paysPoints = (await countPaidPostsToday(user.id)) < MAX_PAID_POSTS_PER_DAY;
+  const pointsEarned = paysPoints ? POINT_RULES.createPost : 0;
 
   const post = await createPost({
     id: randomUUID(),
@@ -267,12 +320,12 @@ export async function POST(req: NextRequest) {
     // The row's snapshot of the author's total, as it stands once the publish
     // award below has landed — otherwise a fresh plate would show its author
     // a few points behind their own chip. Amount lives in lib/points.ts.
-    authorPoints: user.points + POINT_RULES.createPost,
+    authorPoints: user.points + pointsEarned,
     text: String(text).trim(),
-    restaurant: restaurant ? String(restaurant).trim().slice(0, 200) : undefined,
-    restaurantId: restaurantId ? String(restaurantId).trim().slice(0, 200) : undefined,
-    restaurantLat,
-    restaurantLng,
+    restaurant: place?.name ?? (restaurant ? String(restaurant).trim().slice(0, 200) : undefined),
+    restaurantId: claimedRestaurantId,
+    restaurantLat: place?.lat ?? restaurantLat,
+    restaurantLng: place?.lng ?? restaurantLng,
     dishName: dishName ? String(dishName).trim().slice(0, 120) : undefined,
     price: price ? String(price).trim().slice(0, 20) : undefined,
     rating: parsedRating,
@@ -289,19 +342,17 @@ export async function POST(req: NextRequest) {
   });
   // The restaurant's page is served from cache until told otherwise
   // (lib/restaurantPage.ts); a new plate is exactly what changes it.
-  invalidateRestaurantPage(restaurantId ? String(restaurantId).trim() : null);
+  invalidateRestaurantPage(claimedRestaurantId ?? null);
 
   /* The publish award. "post:<id>" is unique by construction, so a retried
      create cannot pay it twice; the amount itself lives in lib/points.ts. */
-  const { user: freshUser } = await awardPoints(
-    user.id,
-    POINT_RULES.createPost,
-    `post:${post.id}`,
-  );
+  const { user: freshUser } = paysPoints
+    ? await awardPoints(user.id, POINT_RULES.createPost, `post:${post.id}`)
+    : { user: null };
 
   return NextResponse.json({
     post,
     points: freshUser?.points ?? user.points,
-    pointsEarned: POINT_RULES.createPost,
+    pointsEarned,
   });
 }

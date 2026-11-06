@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { put, del } from "@vercel/blob";
 import { randomUUID } from "node:crypto";
 import { getCurrentUser } from "@/lib/session";
-import { MAX_UPLOAD_BYTES, isStoredPhotoUrl, storedPhotoOwner } from "@/lib/photos";
+import { MAX_UPLOAD_BYTES, isStoredPhotoUrl, looksLikeJpeg, storedPhotoOwner } from "@/lib/photos";
 import { limitOrReject } from "@/lib/rateLimit";
 
 /**
@@ -36,6 +36,13 @@ export async function POST(req: Request) {
   });
   if (limited) return limited;
 
+  // Refused before the body is parsed: formData() buffers all of it. The extra
+  // 64KB is the multipart wrapping around the file.
+  const declared = Number(req.headers.get("content-length") ?? 0);
+  if (declared > MAX_UPLOAD_BYTES + 64 * 1024) {
+    return NextResponse.json({ error: "That image is too large." }, { status: 413 });
+  }
+
   const form = await req.formData().catch(() => null);
   const file = form?.get("file");
   if (!(file instanceof Blob)) {
@@ -48,6 +55,11 @@ export async function POST(req: Request) {
   }
   if (file.size > MAX_UPLOAD_BYTES) {
     return NextResponse.json({ error: "That image is too large." }, { status: 413 });
+  }
+
+  // file.type is the caller's word for it; the bytes are the evidence.
+  if (!looksLikeJpeg(new Uint8Array(await file.slice(0, 3).arrayBuffer()))) {
+    return NextResponse.json({ error: "Photos have to be JPEG." }, { status: 415 });
   }
 
   const folder = form?.get("kind") === "avatar" ? "avatars" : "posts";
@@ -95,6 +107,14 @@ export async function DELETE(req: Request) {
   if (!user) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
   }
+
+  const limited = await limitOrReject({
+    scope: "blob-delete:user",
+    key: user.id,
+    max: 60,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
 
   const { url } = (await req.json().catch(() => ({}))) as { url?: unknown };
   if (typeof url !== "string" || !isStoredPhotoUrl(url)) {
