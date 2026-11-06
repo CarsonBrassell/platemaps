@@ -9,9 +9,27 @@
  * or marked "Been here", and where mutual friends have posted. What never
  * counts: ratings, likes, hearts, upvotes, saves. The reason on each pick
  * names only those inputs (picked, been to, posted).
+ *
+ * Two consumers share one scan (`scoreAll`):
+ *  - `scoreTaste`: the small "Your taste" strip. Affinity from history is the
+ *    old cuisine share and needs MIN_POSTS places; unchanged.
+ *  - `rankTaste`: "For me", every candidate in one ordered list. Affinity from
+ *    history is item-to-item similarity over menu profiles (profileTraits.ts),
+ *    so one place is already enough to go on. Spec: probe/for-me/PLAN.md.
  */
 import type { RestaurantView } from "@/data/restaurantTypes";
 import type { PlateScore } from "@/lib/plateScore";
+import {
+  SECONDARY_CUISINE_WEIGHT,
+  dishSetKey,
+  similarity,
+  similarityParts,
+  termLabel,
+  traitsOf,
+  type PlaceTraits,
+  type TraitIndex,
+} from "@/lib/profileTraits";
+import type { ForMeInfo, ForMeReason } from "@/lib/discoverWire";
 import { MIN_POSTS } from "@/lib/tasteMatch";
 
 export const WEIGHTS = {
@@ -48,6 +66,31 @@ export const WEIGHTS = {
   maxLoves: 5,
   maxSkips: 5,
   maxMarks: 300,
+
+  /* For me (rankTaste). Starting values: there is no ground truth to tune on. */
+  /** Ahist = conf(k) * (maxInAhist * best similarity + top3InAhist * mean of the best 3). */
+  maxInAhist: 0.75,
+  top3InAhist: 0.25,
+  /** conf(k) = min(1, confBase + confStep * (k - 1)) for k seeds. */
+  confBase: 0.6,
+  confStep: 0.2,
+  /** History counts from this many seeds (Your taste keeps MIN_POSTS). */
+  minSeeds: 1,
+  /** Seeds are the most recent places the viewer has been, at most this many. */
+  maxSeeds: 30,
+  /** A candidate is a match (block 1) at A >= this, or with any friend. */
+  matchGate: 0.15,
+  /** The tail (block 2) sorts by 100 * (qualityInTail * Q + hoodInTail * N). */
+  qualityInTail: 0.2,
+  hoodInTail: 0.1,
+  /** In block 1 the cuisine cap starts at this position (1-based)... */
+  capFromPosition: 6,
+  /** ...and is waived when the best other-cuisine place scores under this share of the leader. */
+  capRelaxRatio: 0.5,
+  /** A tail reason says "well rated" at Q >= this. */
+  wellRatedQ: 0.6,
+  /** Longest reason line. */
+  reasonMaxChars: 48,
 } as const;
 
 export type TasteBasis = "history" | "starting" | "friends" | "none";
@@ -202,12 +245,25 @@ export function applyOpToPrefs(
 /* ---------- identity helpers ---------- */
 
 /**
- * Enrichment seam. v1: a restaurant is its one cuisine. When menu enrichment
- * lands this returns the main cuisine at 1.0 plus secondaries at 0.4 and
- * affinity becomes the max of weight * A(cuisine).
+ * The cuisines a restaurant counts as, with weights; affinity is the max of
+ * weight * A(cuisine). By default a restaurant is its one main cuisine (Your
+ * taste). `secondary: true` adds its secondary cuisines at 0.4 (For me), so a
+ * loved cuisine reaches the places that also file under it.
  */
-export function restaurantTraits(r: RestaurantView): { cuisine: string; weight: number }[] {
-  return r.cuisine ? [{ cuisine: r.cuisine, weight: 1 }] : [];
+export function restaurantTraits(
+  r: RestaurantView,
+  opts: { secondary?: boolean } = {},
+): { cuisine: string; weight: number }[] {
+  if (!r.cuisine) return [];
+  const out = [{ cuisine: r.cuisine, weight: 1 }];
+  if (opts.secondary) {
+    for (const c of r.cuisineSecondary ?? []) {
+      if (c && !out.some((t) => t.cuisine === c)) {
+        out.push({ cuisine: c, weight: SECONDARY_CUISINE_WEIGHT });
+      }
+    }
+  }
+  return out;
 }
 
 /**
@@ -263,28 +319,90 @@ function plural(n: number, one: string, many: string) {
   return `${n} ${n === 1 ? one : many}`;
 }
 
-/* ---------- the scorer ---------- */
+/* ---------- the scan ---------- */
 
-type Scored = {
+/** One candidate with every part of its score. */
+export type Scored = {
   r: RestaurantView;
+  /** Position in the candidates handed in. */
   index: number;
+  /** 100 * (0.5 A + 0.2 F + 0.2 Q + 0.1 N). */
   score: number;
+  /** 100 * (0.2 Q + 0.1 N): how the "also well rated" tail is ordered. */
+  tail: number;
   A: number;
+  /** The explicit-pick and history parts of A. For me only; 0 in the cuisine-share mode. */
+  Apick: number;
+  Ahist: number;
   F: number;
+  Q: number;
   N: number;
+  /** Plate percent when ready, else -1: a tiebreak that never invents a number. */
+  plate: number;
   friends: string[];
+  /** For me: index into `TasteScan.seeds` of the most similar seed, -1 for none. */
+  seed: number;
+  /** For me: similarity to that seed. */
+  sim: number;
+  /** For me: shares a chainKey with a place the viewer has been. */
+  sibling: boolean;
 };
 
-export function scoreTaste(input: TasteInput): TasteResult {
-  const { restaurants, plates, prefs } = input;
-  const limit = Math.max(
-    1,
-    Math.min(WEIGHTS.maxLimit, Math.floor(input.limit ?? WEIGHTS.defaultLimit)),
-  );
+export type ScanInput = TasteInput & {
+  /**
+   * The whole listed corpus, when `restaurants` is only the candidates (a
+   * filtered Discover result). Seeds, real cuisines and exclusions are read
+   * from here. Defaults to `restaurants`.
+   */
+  corpus?: readonly RestaurantView[];
+  /**
+   * Present: affinity from history is similarity to the viewer's seeds, from
+   * one place (For me). Absent: the cuisine share, from MIN_POSTS places
+   * (Your taste).
+   */
+  traits?: TraitIndex;
+};
 
+export type TasteScan = {
+  mode: "cuisine" | "similarity";
+  /** Every candidate that was not excluded, in input order. Nothing is gated or capped. */
+  scored: Scored[];
+  /** Ids in the corpus that never show: visited, hidden, skipped cuisine. */
+  exclude: Set<string>;
+  /** Similarity mode: the places history is read from, most recent first. */
+  seeds: RestaurantView[];
+  historyActive: boolean;
+  picksActive: boolean;
+  explicitLoves: ReadonlySet<string>;
+  favorite: string | null;
+  effectiveLoves: ReadonlySet<string>;
+  cuisineVisits: ReadonlyMap<string, number>;
+  /** Distinct places the viewer has posted at or marked been. */
+  visited: number;
+};
+
+type Signals = {
+  universe: readonly RestaurantView[];
+  byId: Map<string, RestaurantView>;
+  skips: Set<string>;
+  explicitLoves: Set<string>;
+  favorite: string | null;
+  effectiveLoves: Set<string>;
+  visitedIds: Set<string>;
+  hidden: Set<string>;
+};
+
+type SignalInput = Pick<
+  ScanInput,
+  "restaurants" | "corpus" | "prefs" | "postedIds" | "favoriteCuisine"
+>;
+
+function signalsOf(input: SignalInput): Signals {
+  const { prefs } = input;
+  const universe = input.corpus ?? input.restaurants;
   const byId = new Map<string, RestaurantView>();
   const cuisineSet = new Set<string>();
-  for (const r of restaurants) {
+  for (const r of universe) {
     byId.set(r.id, r);
     if (r.cuisine) cuisineSet.add(r.cuisine);
   }
@@ -303,24 +421,125 @@ export function scoreTaste(input: TasteInput): TasteResult {
   const visitedIds = new Set<string>();
   for (const id of input.postedIds) if (byId.has(id)) visitedIds.add(id);
   for (const id of prefs.been) if (byId.has(id)) visitedIds.add(id);
-  const hidden = new Set(prefs.hidden);
+  return {
+    universe,
+    byId,
+    skips,
+    explicitLoves,
+    favorite,
+    effectiveLoves,
+    visitedIds,
+    hidden: new Set(prefs.hidden),
+  };
+}
+
+function excludedIds(sig: Signals): Set<string> {
+  const out = new Set<string>();
+  for (const r of sig.universe) {
+    if (sig.visitedIds.has(r.id) || sig.hidden.has(r.id) || (r.cuisine && sig.skips.has(r.cuisine))) {
+      out.add(r.id);
+    }
+  }
+  return out;
+}
+
+/**
+ * Ids that never show for this viewer: places they have been or posted at,
+ * hidden places, and places of a skipped cuisine. Cheap (no scoring), so the
+ * Discover pipeline can drop them right after the filters, before totals and
+ * facets are counted.
+ */
+export function tasteExclusions(input: SignalInput): Set<string> {
+  return excludedIds(signalsOf(input));
+}
+
+/** How far to trust history from `k` seeds: 1 seed 0.6, 2 seeds 0.8, 3 or more 1. */
+export function historyConfidence(k: number): number {
+  return Math.min(1, WEIGHTS.confBase + WEIGHTS.confStep * (k - 1));
+}
+
+/**
+ * The seeds For me reads history from: places the viewer marked "been" (newest
+ * first; the list is oldest-first) and places they posted at (in the order
+ * given). Only places with something to compare on count, at most `maxSeeds`.
+ *
+ * While both fit, the been run comes first and the posts follow. Over the cap
+ * the two take turns, been first, so a long been list cannot push every post
+ * out of the seeds (nor the other way round): each source gets half the
+ * places, and whichever has fewer leaves its unused share to the other.
+ */
+function seedsOf(sig: Signals, input: ScanInput, index: TraitIndex) {
+  type Seed = { place: RestaurantView; traits: PlaceTraits };
+  const taken = new Set<string>();
+  const lane = (order: readonly string[]): Seed[] => {
+    const out: Seed[] = [];
+    for (const id of order) {
+      if (taken.has(id) || !sig.visitedIds.has(id)) continue;
+      const traits = traitsOf(index, id);
+      const place = sig.byId.get(id);
+      if (!traits || traits.empty || !place) continue;
+      taken.add(id);
+      out.push({ place, traits });
+    }
+    return out;
+  };
+  const been = lane(input.prefs.been.slice().reverse());
+  const posted = lane(input.postedIds);
+
+  const max = WEIGHTS.maxSeeds;
+  let picked: Seed[];
+  if (been.length + posted.length <= max) {
+    picked = [...been, ...posted];
+  } else {
+    picked = [];
+    for (let i = 0; picked.length < max; i++) {
+      if (i < been.length) picked.push(been[i]);
+      if (picked.length < max && i < posted.length) picked.push(posted[i]);
+    }
+  }
+  return { places: picked.map((s) => s.place), traits: picked.map((s) => s.traits) };
+}
+
+/**
+ * Scores every candidate, uncapped. Callers decide what to do with the result:
+ * `scoreTaste` gates, caps and interleaves it for the Your taste strip;
+ * `rankTaste` orders all of it for For me.
+ */
+export function scoreAll(input: ScanInput): TasteScan {
+  const { restaurants, plates } = input;
+  const sig = signalsOf(input);
+  const { visitedIds, hidden, skips, effectiveLoves } = sig;
+  const index = input.traits;
 
   // History: distinct places per cuisine / neighborhood, never per post.
   const cuisineVisits = new Map<string, number>();
   const hoodVisits = new Map<string, number>();
   let visitedWithCuisine = 0;
+  const visitedChains = new Set<string>();
   for (const id of visitedIds) {
-    const r = byId.get(id)!;
+    const r = sig.byId.get(id)!;
     if (r.cuisine) {
       visitedWithCuisine++;
       cuisineVisits.set(r.cuisine, (cuisineVisits.get(r.cuisine) ?? 0) + 1);
     }
     if (r.neighborhood) hoodVisits.set(r.neighborhood, (hoodVisits.get(r.neighborhood) ?? 0) + 1);
+    if (index) visitedChains.add(chainKey(r));
   }
   const maxCuisine = Math.max(0, ...cuisineVisits.values());
   const maxHood = Math.max(0, ...hoodVisits.values());
-  const historyActive = visitedWithCuisine >= MIN_POSTS;
   const picksActive = effectiveLoves.size > 0;
+
+  let seeds: RestaurantView[] = [];
+  let seedTraits: PlaceTraits[] = [];
+  let historyActive = visitedWithCuisine >= MIN_POSTS;
+  if (index) {
+    const s = seedsOf(sig, input, index);
+    seeds = s.places;
+    seedTraits = s.traits;
+    historyActive = seedTraits.length >= WEIGHTS.minSeeds;
+  }
+  const conf = historyConfidence(seedTraits.length);
+  const mixed = picksActive && historyActive;
 
   // Friends: distinct friends per restaurant.
   const friendsAt = new Map<string, Map<string, string>>();
@@ -331,36 +550,129 @@ export function scoreTaste(input: TasteInput): TasteResult {
   }
 
   const scored: Scored[] = [];
-  for (let index = 0; index < restaurants.length; index++) {
-    const r = restaurants[index];
+  for (let i = 0; i < restaurants.length; i++) {
+    const r = restaurants[i];
     if (visitedIds.has(r.id) || hidden.has(r.id)) continue;
     if (r.cuisine && skips.has(r.cuisine)) continue;
 
     let A = 0;
-    for (const t of restaurantTraits(r)) {
-      const pick = effectiveLoves.has(t.cuisine) ? 1 : 0;
-      const hist =
-        historyActive && maxCuisine > 0 ? (cuisineVisits.get(t.cuisine) ?? 0) / maxCuisine : 0;
-      let a = 0;
-      if (picksActive && historyActive) a = WEIGHTS.pickInA * pick + WEIGHTS.histInA * hist;
-      else if (picksActive) a = pick;
-      else if (historyActive) a = hist;
-      A = Math.max(A, a * t.weight);
+    let Apick = 0;
+    let Ahist = 0;
+    let seed = -1;
+    let sim = 0;
+    if (index) {
+      for (const t of restaurantTraits(r, { secondary: true })) {
+        if (effectiveLoves.has(t.cuisine)) Apick = Math.max(Apick, t.weight);
+      }
+      const traits = historyActive ? traitsOf(index, r.id) : undefined;
+      if (traits && !traits.empty) {
+        // The best 3 are summed in a fixed order, so the same candidate scores
+        // the same whatever order the seeds came in. The best seed (the one
+        // the reason names) is the same whatever the order too: seeds that tie
+        // on similarity are told apart by id, not by who came first.
+        let t1 = 0;
+        let t2 = 0;
+        let t3 = 0;
+        for (let k = 0; k < seedTraits.length; k++) {
+          const v = similarity(traits, seedTraits[k]);
+          if (v > t1) {
+            t3 = t2;
+            t2 = t1;
+            t1 = v;
+            seed = k;
+          } else {
+            if (v === t1 && seed >= 0 && seeds[k].id < seeds[seed].id) seed = k;
+            if (v > t2) {
+              t3 = t2;
+              t2 = v;
+            } else if (v > t3) {
+              t3 = v;
+            }
+          }
+        }
+        sim = t1;
+        const top = Math.min(3, seedTraits.length);
+        Ahist = clamp01(conf * (WEIGHTS.maxInAhist * t1 + (WEIGHTS.top3InAhist * (t1 + t2 + t3)) / top));
+      }
+      if (mixed) A = WEIGHTS.pickInA * Apick + WEIGHTS.histInA * Ahist;
+      else if (picksActive) A = Apick;
+      else if (historyActive) A = Ahist;
+    } else {
+      for (const t of restaurantTraits(r)) {
+        const pick = effectiveLoves.has(t.cuisine) ? 1 : 0;
+        const hist =
+          historyActive && maxCuisine > 0 ? (cuisineVisits.get(t.cuisine) ?? 0) / maxCuisine : 0;
+        let a = 0;
+        if (picksActive && historyActive) a = WEIGHTS.pickInA * pick + WEIGHTS.histInA * hist;
+        else if (picksActive) a = pick;
+        else if (historyActive) a = hist;
+        A = Math.max(A, a * t.weight);
+      }
     }
 
     const fm = friendsAt.get(r.id);
     const names = fm ? [...fm.values()].sort((a, b) => a.localeCompare(b)) : [];
     const F = Math.min(1, names.length / WEIGHTS.friendsForFull);
-    if (!(A > 0) && !(F > 0)) continue;
-
     const N = maxHood > 0 && r.neighborhood ? (hoodVisits.get(r.neighborhood) ?? 0) / maxHood : 0;
     const Q = qualityOf(r, plates[r.id]);
-    const score =
-      100 *
-      (WEIGHTS.affinity * A + WEIGHTS.friends * F + WEIGHTS.quality * Q + WEIGHTS.neighborhood * N);
-    scored.push({ r, index, score, A, F, N, friends: names });
+    const plate = plates[r.id];
+    scored.push({
+      r,
+      index: i,
+      score:
+        100 *
+        (WEIGHTS.affinity * A + WEIGHTS.friends * F + WEIGHTS.quality * Q + WEIGHTS.neighborhood * N),
+      tail: 100 * (WEIGHTS.qualityInTail * Q + WEIGHTS.hoodInTail * N),
+      A,
+      Apick,
+      Ahist,
+      F,
+      Q,
+      N,
+      plate: plate?.ready && plate.percent != null ? plate.percent : -1,
+      friends: names,
+      seed,
+      sim,
+      sibling: visitedChains.size > 0 && visitedChains.has(chainKey(r)),
+    });
   }
 
+  return {
+    mode: index ? "similarity" : "cuisine",
+    scored,
+    exclude: excludedIds(sig),
+    seeds,
+    historyActive,
+    picksActive,
+    explicitLoves: sig.explicitLoves,
+    favorite: sig.favorite,
+    effectiveLoves,
+    cuisineVisits,
+    visited: visitedIds.size,
+  };
+}
+
+/* ---------- Your taste ---------- */
+
+export function scoreTaste(input: TasteInput): TasteResult {
+  const { restaurants, plates, prefs } = input;
+  const limit = Math.max(
+    1,
+    Math.min(WEIGHTS.maxLimit, Math.floor(input.limit ?? WEIGHTS.defaultLimit)),
+  );
+
+  // No traits: the cuisine share, gated at MIN_POSTS places. Unchanged.
+  const scan = scoreAll({
+    restaurants,
+    plates,
+    prefs,
+    postedIds: input.postedIds,
+    favoriteCuisine: input.favoriteCuisine,
+    friendVisits: input.friendVisits,
+  });
+  const { explicitLoves, favorite, historyActive, cuisineVisits, effectiveLoves } = scan;
+
+  const scored = scan.scored.filter((s) => s.A > 0 || s.F > 0);
   scored.sort(
     (a, b) =>
       b.score - a.score || Number(!!b.r.photo) - Number(!!a.r.photo) || a.index - b.index,
@@ -410,8 +722,9 @@ export function scoreTaste(input: TasteInput): TasteResult {
   }));
 
   // Basis: what actually drove the list, never more.
-  const visited = visitedIds.size;
+  const visited = scan.visited;
   const pickCount = effectiveLoves.size;
+  const picksActive = scan.picksActive;
   let basis: TasteBasis = "none";
   if (picks.length > 0) {
     if (historyActive) basis = "history";
@@ -481,4 +794,376 @@ function buildReason(
     text: `In ${s.r.neighborhood}, where you eat`,
     short: `In ${s.r.neighborhood}`,
   };
+}
+
+/* ---------- For me ---------- */
+
+export type ForMeBasis = ForMeInfo["basis"];
+
+export type RankInput = ScanInput & { traits: TraitIndex };
+
+/**
+ * One arrangement of the For me list: the candidates it was built over, split
+ * into matches and tail, with the header and the reasons that go with that
+ * split. `rankTaste` builds one over every candidate; `rankAmong` builds one
+ * over the rows a filter left, so the split is the filtered list's own.
+ */
+export type ForMeArrangement = {
+  /** One line for the grid header. */
+  header: string;
+  /** Size of block 1, the matches. The rest of `order` is the "also well rated" tail. */
+  matched: number;
+  /** Every candidate in this arrangement: matches in diversity order, then the tail. */
+  order: string[];
+  /** Id to position in `order`: the map `orderResults` sorts by. */
+  rank: Map<string, number>;
+  /**
+   * The one-line reason for a card, built on first ask and kept. Null for an id
+   * that is not in `order`. Names the viewer's own places, so it belongs only in
+   * a private response.
+   */
+  reasonOf: (id: string) => ForMeReason | null;
+};
+
+export type ForMeRank = ForMeArrangement & {
+  /** What the list is read from. "none" can still carry matches: places friends have been. */
+  basis: ForMeBasis;
+  /** Places history is read from (those with something to compare on, at most 30). */
+  seeds: number;
+  /** Ids in the corpus that never show: visited, hidden, skipped cuisine. */
+  exclude: Set<string>;
+  /**
+   * The arrangement over just these ids (the rows a filter left). Sorting the
+   * full list and then filtering it is not the same thing: a chain's best
+   * branch, or a menu's twin, can sit outside the filter and have pushed the
+   * only one inside it down to the tail. Here the dedupe, the cuisine cap and
+   * the header are decided among the ids given. A set that covers every
+   * candidate returns the full arrangement as it stands. Ids that are not
+   * candidates are ignored. Siblings of a place the viewer has been stay out of
+   * the matches, and the seeds and exclusions stay the corpus's own: neither
+   * depends on the filter.
+   */
+  rankAmong: (ids: ReadonlySet<string>) => ForMeArrangement;
+};
+
+const byScore = (a: Scored, b: Scored) =>
+  b.score - a.score || b.plate - a.plate || (a.r.id < b.r.id ? -1 : a.r.id > b.r.id ? 1 : 0);
+const byTail = (a: Scored, b: Scored) =>
+  b.tail - a.tail || b.plate - a.plate || (a.r.id < b.r.id ? -1 : a.r.id > b.r.id ? 1 : 0);
+
+/**
+ * "For me": every candidate in one list, best fit first.
+ *
+ * Block 1 (matches) is the candidates with A >= matchGate or a friend, minus
+ * siblings of a place the viewer has been (same chain), one branch per chain,
+ * and one place per menu in a cuisine. It is ordered by score, with a cap so no
+ * cuisine holds more than 40% of the prefix (waived when the best alternative
+ * scores under half of the leader). Block 2 is everything else, including what
+ * the diversity rules set aside, ordered by quality: the grid is never blank.
+ *
+ * One pass over the whole list with a total order (ties break on plate score,
+ * then id), so the first 24 of a 48-result run are the 24-result run, and the
+ * order does not depend on the order candidates arrive in.
+ */
+export function rankTaste(input: RankInput): ForMeRank {
+  const scan = scoreAll(input);
+  const index = input.traits;
+  const basis: ForMeBasis = scan.historyActive ? "history" : scan.picksActive ? "picks" : "none";
+
+  // Sorted once. Every arrangement is built from a subsequence of this, so a
+  // filtered one is ordered exactly as the full one is.
+  const sorted = scan.scored.slice().sort(byScore);
+  const full = arrange(sorted, scan, index, basis);
+
+  return {
+    ...full,
+    basis,
+    seeds: scan.seeds.length,
+    exclude: scan.exclude,
+    rankAmong: (ids) => {
+      let all = true;
+      for (const s of sorted) {
+        if (!ids.has(s.r.id)) {
+          all = false;
+          break;
+        }
+      }
+      if (all) return full;
+      return arrange(
+        sorted.filter((s) => ids.has(s.r.id)),
+        scan,
+        index,
+        basis,
+      );
+    },
+  };
+}
+
+/** Splits `sorted` (in `byScore` order) into matches and tail, and words both. */
+function arrange(
+  sorted: readonly Scored[],
+  scan: TasteScan,
+  index: TraitIndex,
+  basis: ForMeBasis,
+): ForMeArrangement {
+  const matches: Scored[] = [];
+  const rest: Scored[] = [];
+  for (const s of sorted) {
+    if ((s.A >= WEIGHTS.matchGate || s.F > 0) && !s.sibling) matches.push(s);
+    else rest.push(s);
+  }
+
+  // One branch per chain, one place per menu in a cuisine; the best scores keep
+  // the slot and the others drop to the tail.
+  const chains = new Set<string>();
+  const menus = new Set<string>();
+  const kept: Scored[] = [];
+  for (const s of matches) {
+    const ck = chainKey(s.r);
+    const t = traitsOf(index, s.r.id);
+    const mk = t && !t.empty && !t.imputed ? `${dishSetKey(t)}|${s.r.cuisine ?? ""}` : null;
+    if (chains.has(ck) || (mk && menus.has(mk))) {
+      rest.push(s);
+      continue;
+    }
+    chains.add(ck);
+    if (mk) menus.add(mk);
+    kept.push(s);
+  }
+
+  const block1 = capCuisines(kept, scan.effectiveLoves);
+  rest.sort(byTail);
+  const order = [...block1, ...rest].map((s) => s.r.id);
+  const rank = new Map<string, number>();
+  order.forEach((id, i) => rank.set(id, i));
+
+  const header = forMeHeader(basis, scan.seeds.length, [...scan.effectiveLoves], block1.length);
+
+  const byId = new Map<string, Scored>();
+  for (const s of sorted) byId.set(s.r.id, s);
+  const made = new Map<string, ForMeReason>();
+  const reasonOf = (id: string): ForMeReason | null => {
+    const hit = made.get(id);
+    if (hit) return hit;
+    const s = byId.get(id);
+    if (!s) return null;
+    const reason = forMeReason(s, scan, index, (rank.get(id) ?? Infinity) < block1.length);
+    made.set(id, reason);
+    return reason;
+  };
+
+  return { header, matched: block1.length, order, rank, reasonOf };
+}
+
+/**
+ * Orders block 1 so no cuisine holds more than `cuisineCapShare` of the prefix
+ * from position `capFromPosition` on. `kept` arrives in score order. At each
+ * step the leader is the best remaining place; if its cuisine is over the cap
+ * the best place of a cuisine with room goes instead, unless that one scores
+ * under `capRelaxRatio` of the leader (then diversity is not worth a weak pick).
+ * With a single cuisine, or whenever nothing else has room, the leader goes.
+ *
+ * "Cuisine" here is `capGroupOf`, not always the main one: a place filed under a
+ * loved cuisine only as a secondary counts with that cuisine. Otherwise an
+ * American bar that lists Mexican would read as variety against the Mexican the
+ * viewer asked for, and the cap would hand it the slots a real taqueria earned.
+ */
+function capCuisines(kept: readonly Scored[], loves: ReadonlySet<string>): Scored[] {
+  const groups = new Map<string, { items: Scored[]; at: number; taken: number }>();
+  for (const s of kept) {
+    const c = capGroupOf(s.r, loves);
+    const g = groups.get(c);
+    if (g) g.items.push(s);
+    else groups.set(c, { items: [s], at: 0, taken: 0 });
+  }
+  if (groups.size < 2) return kept.slice();
+
+  const lists = [...groups.values()];
+  const out: Scored[] = [];
+  while (out.length < kept.length) {
+    const length = out.length + 1;
+    const room = (g: { taken: number }) =>
+      g.taken + 1 <= WEIGHTS.cuisineCapShare * length + 1e-9;
+    let lead: (typeof lists)[number] | null = null;
+    for (const g of lists) {
+      if (g.at < g.items.length && (!lead || byScore(g.items[g.at], lead.items[lead.at]) < 0)) {
+        lead = g;
+      }
+    }
+    let pick = lead!;
+    if (length >= WEIGHTS.capFromPosition && !room(pick)) {
+      let alt: (typeof lists)[number] | null = null;
+      for (const g of lists) {
+        if (g === pick || g.at >= g.items.length || !room(g)) continue;
+        if (!alt || byScore(g.items[g.at], alt.items[alt.at]) < 0) alt = g;
+      }
+      if (alt && alt.items[alt.at].score >= WEIGHTS.capRelaxRatio * pick.items[pick.at].score) {
+        pick = alt;
+      }
+    }
+    out.push(pick.items[pick.at++]);
+    pick.taken++;
+  }
+  return out;
+}
+
+/**
+ * The cuisine a place counts toward in the cap: its main cuisine, unless that is
+ * not a loved one and a secondary is (the first, in the order the place lists
+ * them), which is the cuisine its pick score rests on.
+ */
+function capGroupOf(r: RestaurantView, loves: ReadonlySet<string>): string {
+  const main = r.cuisine ?? "";
+  if (loves.has(main)) return main;
+  for (const c of r.cuisineSecondary ?? []) if (loves.has(c)) return c;
+  return main;
+}
+
+function joinNames(names: readonly string[]): string {
+  if (names.length <= 1) return names[0] ?? "";
+  if (names.length <= 3) return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+  return `${names.slice(0, 2).join(", ")} and ${names.length - 2} more`;
+}
+
+function forMeHeader(
+  basis: ForMeBasis,
+  seeds: number,
+  loves: readonly string[],
+  matched: number,
+): string {
+  const plus = loves.length ? `, plus ${joinNames(loves)}` : "";
+  if (basis === "history") {
+    if (seeds >= 3) return `From the ${plural(seeds, "place", "places")} you've been${plus}`;
+    return `Based on ${plural(seeds, "place", "places")} so far${plus}; post more to sharpen this`;
+  }
+  if (basis === "picks") return `Based on your picks: ${joinNames(loves)}`;
+  return matched > 0 ? "Where your friends eat" : "Pick what you like to tune this";
+}
+
+/* ---------- For me reasons ---------- */
+
+const clipReason = (text: string): string => {
+  const t = text.normalize("NFC");
+  const max = WEIGHTS.reasonMaxChars;
+  return t.length <= max ? t : `${t.slice(0, max - 1).trimEnd()}…`;
+};
+
+/** "Like {name}: {detail}", dropping the detail and then trimming the name to fit. */
+function likeText(name: string, details: readonly string[]): string {
+  const max = WEIGHTS.reasonMaxChars;
+  const n = name.normalize("NFC").trim();
+  for (const d of details) {
+    const text = `Like ${n}: ${d}`;
+    if (text.length <= max) return text;
+  }
+  return clipReason(`Like ${n}`);
+}
+
+/** `matched`: the place is in block 1. The tail never says why it fits, only that it is well rated. */
+function forMeReason(
+  s: Scored,
+  scan: TasteScan,
+  index: TraitIndex,
+  matched: boolean,
+): ForMeReason {
+  if (matched) {
+    // The biggest contributor to the score speaks first; plan order breaks ties.
+    const mixed = scan.picksActive && scan.historyActive;
+    const wHist = mixed ? WEIGHTS.histInA : scan.historyActive ? 1 : 0;
+    const wPick = mixed ? WEIGHTS.pickInA : scan.picksActive ? 1 : 0;
+    const kinds = [
+      { kind: "like" as const, pts: WEIGHTS.affinity * wHist * s.Ahist, rank: 0 },
+      { kind: "pick" as const, pts: WEIGHTS.affinity * wPick * s.Apick, rank: 1 },
+      { kind: "friends" as const, pts: WEIGHTS.friends * s.F, rank: 2 },
+    ]
+      .filter((k) => k.pts > 0)
+      .sort((a, b) => b.pts - a.pts || a.rank - b.rank);
+    for (const { kind } of kinds) {
+      const reason =
+        kind === "like"
+          ? likeReason(s, scan, index)
+          : kind === "pick"
+            ? pickReason(s, scan)
+            : friendsReason(s);
+      if (reason) return reason;
+    }
+    const more = cuisineReason(s, scan, index);
+    if (more) return more;
+  }
+  if (s.Q >= WEIGHTS.wellRatedQ) {
+    return {
+      kind: "rated",
+      text: s.r.neighborhood ? clipReason(`Well rated in ${s.r.neighborhood}`) : "Well rated",
+    };
+  }
+  // "Different from your usual" is a claim about this place, so it is made only
+  // for one that really is: nothing in its fit (below the match gate), no friend
+  // behind it, and not another branch of a chain the viewer has been to. A
+  // place that missed the matches for any other reason (a twin menu, a second
+  // branch, the cuisine cap) fits fine and is simply not claimed to be unusual.
+  const unusual =
+    (scan.historyActive || scan.picksActive) && !s.sibling && s.F === 0 && s.A < WEIGHTS.matchGate;
+  return { kind: "rated", text: unusual ? "Different from your usual" : "Worth a look" };
+}
+
+/** Needs a profile on both sides: a place without one never claims shared dishes. */
+function likeReason(s: Scored, scan: TasteScan, index: TraitIndex): ForMeReason | null {
+  if (s.seed < 0) return null;
+  const seed = scan.seeds[s.seed];
+  const a = traitsOf(index, s.r.id);
+  const b = traitsOf(index, seed.id);
+  if (!a || !b) return null;
+  const parts = similarityParts(index, a, b);
+  if (parts.imputed) return null;
+  if (parts.shared.length > 0) {
+    const terms = parts.shared.slice(0, 2).map((t) => termLabel(index, t));
+    const details = terms.length === 2 ? [terms.join(", "), terms[0]] : [terms[0]];
+    return { kind: "like", text: likeText(seed.name, details) };
+  }
+  if (parts.sharedCuisines.length > 0) {
+    return { kind: "like", text: likeText(seed.name, [`both ${parts.sharedCuisines[0]}`]) };
+  }
+  return null;
+}
+
+/**
+ * Says what the pick score rests on, strongest first: the main cuisine (picked,
+ * then favorite) at full strength, then a secondary at `SECONDARY_CUISINE_WEIGHT`.
+ * A place that is only filed under the cuisine as a secondary says "Also serves",
+ * never "You picked": the viewer did not pick a bar that happens to list tacos.
+ */
+function pickReason(s: Scored, scan: TasteScan): ForMeReason | null {
+  const main = s.r.cuisine;
+  if (main && scan.explicitLoves.has(main)) return { kind: "pick", text: clipReason(`You picked ${main}`) };
+  if (main && main === scan.favorite) return { kind: "pick", text: clipReason(`Your favorite: ${main}`) };
+  const others = (s.r.cuisineSecondary ?? []).filter((c) => c && c !== main);
+  const also = others.find((c) => scan.explicitLoves.has(c)) ?? others.find((c) => c === scan.favorite);
+  if (also) return { kind: "pick", text: clipReason(`Also serves ${also}`) };
+  return null;
+}
+
+function friendsReason(s: Scored): ForMeReason | null {
+  const n = s.friends.length;
+  if (n === 0) return null;
+  return { kind: "friends", text: n === 1 ? "1 friend has been" : `${n} friends have been` };
+}
+
+/**
+ * A match that rests on cuisine alone (an imputed profile on either side).
+ * "More X" is a claim that the viewer has been to X, so X is a cuisine the place
+ * shares with its best seed. A place with no seed (a match on a picked cuisine)
+ * is its own cuisine by definition. A place whose seed shares no cuisine with it
+ * has nothing to name, so it says only that it is similar.
+ */
+function cuisineReason(s: Scored, scan: TasteScan, index: TraitIndex): ForMeReason | null {
+  if (s.A <= 0) return null;
+  if (s.seed < 0) {
+    return s.r.cuisine ? { kind: "cuisine", text: clipReason(`More ${s.r.cuisine}`) } : null;
+  }
+  const a = traitsOf(index, s.r.id);
+  const b = traitsOf(index, scan.seeds[s.seed].id);
+  const shared = a && b ? similarityParts(index, a, b).sharedCuisines[0] : undefined;
+  return shared
+    ? { kind: "cuisine", text: clipReason(`More ${shared}`) }
+    : { kind: "cuisine", text: "Similar to places you've been" };
 }

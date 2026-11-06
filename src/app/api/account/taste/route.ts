@@ -1,24 +1,8 @@
 import { NextResponse } from "next/server";
-import { loadCorpus } from "@/lib/discover";
-import {
-  TasteTableMissingError,
-  applyTasteOp,
-  getFriendRestaurantVisits,
-  getTastePrefs,
-  restaurantIdsPostedBy,
-  saveTastePrefs,
-} from "@/lib/db";
 import { limitOrReject } from "@/lib/rateLimit";
 import { getCurrentUser } from "@/lib/session";
-import {
-  TASTE_OP_KINDS,
-  applyOpToPrefs,
-  isEmptyPrefs,
-  sanitizePrefs,
-  scoreTaste,
-  type FullTastePrefs,
-  type TasteOp,
-} from "@/lib/taste";
+import { TASTE_OP_KINDS, scoreTaste, type TasteOp } from "@/lib/taste";
+import { resolveTasteContext } from "@/lib/tasteContext";
 
 /**
  * "Your taste" picks for Discover, computed per viewer.
@@ -85,52 +69,23 @@ export async function POST(req: Request) {
     }
   }
 
-  const corpus = await loadCorpus();
-  const cuisines = new Set<string>();
-  const ids = new Set<string>();
-  for (const r of corpus.restaurants) {
-    ids.add(r.id);
-    if (r.cuisine) cuisines.add(r.cuisine);
-  }
-  const localPrefs = () => sanitizePrefs(b.prefs, cuisines, ids);
-
-  let storage: "server" | "local" = "local";
-  let prefs: FullTastePrefs = localPrefs();
-
-  if (user) {
-    try {
-      const read = await getTastePrefs(user.id);
-      if (read.available) {
-        storage = "server";
-        prefs = read.prefs;
-        if (!read.exists && b.import === true) {
-          const upload = localPrefs();
-          if (!isEmptyPrefs(upload)) {
-            await saveTastePrefs(user.id, upload);
-            prefs = upload;
-          }
-        }
-        if (op) prefs = await applyTasteOp(user.id, op, cuisines, ids);
-      }
-    } catch (err) {
-      if (!(err instanceof TasteTableMissingError)) throw err;
-      storage = "local";
-      prefs = localPrefs();
-    }
-  }
-  if (storage === "local" && op) prefs = applyOpToPrefs(prefs, op, cuisines, ids);
-
-  const [postedIds, friendVisits] = user
-    ? await Promise.all([restaurantIdsPostedBy(user.id), getFriendRestaurantVisits(user.id)])
-    : [[], []];
+  // Prefs (server row or the body's local copy), the op, history and friends are
+  // gathered by `lib/tasteContext.ts`, which the For me POST on Discover shares.
+  const ctx = await resolveTasteContext({
+    user,
+    prefs: b.prefs,
+    op,
+    importLocal: b.import === true,
+  });
+  const { storage, prefs } = ctx;
 
   const result = scoreTaste({
-    restaurants: corpus.restaurants,
-    plates: corpus.plates,
+    restaurants: ctx.corpus.restaurants,
+    plates: ctx.corpus.plates,
     prefs,
-    postedIds,
-    favoriteCuisine: user?.favoriteCuisine ?? null,
-    friendVisits,
+    postedIds: ctx.postedIds,
+    favoriteCuisine: ctx.favoriteCuisine,
+    friendVisits: ctx.friendVisits,
     limit,
   });
 

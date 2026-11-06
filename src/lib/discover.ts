@@ -70,11 +70,17 @@ import {
   getAllRestaurantAspectTallies,
   getAllRestaurantPlateScores,
   getDishesByRestaurant,
+  getProfileTraitRows,
   getRestaurants,
 } from "@/lib/db";
 import { after } from "next/server";
 import { EMPTY_PLATE_SCORE, type PlateScore } from "@/lib/plateScore";
+import { traitIndexFor, type ProfileTraitRow, type TraitIndex } from "@/lib/profileTraits";
 import { normalize, rungOf } from "@/lib/textMatch";
+import type { ForMeInfo, ForMeReason } from "@/lib/discoverWire";
+// The For me wire types live in discoverWire.ts so client components can import
+// them; they are re-exported here for server code that already has this module.
+export type { ForMeInfo, ForMeReason } from "@/lib/discoverWire";
 
 /**
  * A restaurant on the grid, plus its score in the filtered category.
@@ -110,6 +116,12 @@ export type DiscoverResult = RestaurantView & {
   /** True when `walkMeters` is a straight-line guess standing
       in for a routed answer — see lib/walking.ts's `estimateFor`. */
   walkEstimated?: boolean;
+  /**
+   * For me only: the one-line reason this place is on the list ("Like a place
+   * you've been to", "Friends have been"). Attached to the page slice from the
+   * viewer's own signals, so it exists only on the private POST's answer.
+   */
+  reason?: ForMeReason;
 };
 
 export type DiscoverPage = {
@@ -140,6 +152,60 @@ export type DiscoverPage = {
       corpus just to find the promoted ones. Carries plate scores for the same
       reason the results do — the strip prints them. */
   picks: DiscoverResult[];
+  /**
+   * Present only when the request asked for For me (the private POST). Says what
+   * the list was built from and where the matches end and the tail begins. The
+   * public GET never sets it.
+   */
+  forMe?: ForMeInfo;
+};
+
+/**
+ * The personal half of a For me request: how to order the rows and which to
+ * leave out. `rankTaste`'s result (lib/taste.ts) satisfies it as it stands and
+ * the For me POST hands it in whole, because this module reads the corpus and
+ * the viewer's taste is not its business. See probe/for-me/PLAN.md section 3.
+ */
+export type ForMeSetup = ForMeOrder & {
+  /**
+   * Visited, hidden and skipped-cuisine ids. Removed from the pool right after
+   * the filters run, so `total` and the facet counts both describe the list the
+   * viewer can actually see.
+   */
+  exclude: ReadonlySet<string>;
+  basis: ForMeInfo["basis"];
+  seeds: number;
+  /**
+   * The same order worked out over just these ids, which is what a filtered
+   * request asks for: the rows the filters left. Without it a chain's best
+   * branch, or one of two twin menus, outside the filter would still hold the
+   * slot in the full order and push the only one inside it down to the tail
+   * of a list that contains no better branch. Absent, the order above is used
+   * as it stands (it is then the full corpus's order, filtered).
+   */
+  rankAmong?: (ids: ReadonlySet<string>) => ForMeOrder;
+};
+
+/** One arrangement of the For me list; see `ForMeSetup.rankAmong`. */
+export type ForMeOrder = {
+  /**
+   * Place id to position in the For me order (0 is first), matches and then
+   * the tail in one list. It wins over distance; an id missing from it sorts
+   * after every id that is in it.
+   */
+  rank: ReadonlyMap<string, number>;
+  /**
+   * Size of the matches block: ranks below this are matches, the rest of `rank`
+   * is the "Also well rated" tail. Counted over the ids the order was built
+   * over; the page's own `forMe.matched` is the count among the rows shown.
+   */
+  matched: number;
+  /**
+   * The reason line for a place, or null. Asked only for the rows on the
+   * returned page, so the other few thousand are never worded.
+   */
+  reasonOf: (id: string) => ForMeReason | null;
+  header: string;
 };
 
 /**
@@ -243,6 +309,49 @@ export function loadCorpus(): Promise<Corpus> {
 }
 
 /**
+ * The menu profiles For me compares places with, behind their own cache.
+ *
+ * Kept apart from `loadCorpus` on purpose: the rows are ~0.5 MB and only the
+ * personal order wants them, so ordinary Discover requests pay nothing for them
+ * and the first For me request after the cache lapses is the one that reads.
+ * Ten minutes, because profiles change when an enrichment run lands, not when a
+ * visitor clicks.
+ *
+ * Never rejects. If the table is missing or the read fails, the answer is an
+ * empty list, which `buildTraitIndex` turns into "every place imputed from its
+ * cuisine" -- For me still works, on cuisine alone, and says nothing different
+ * to the visitor. A failure is cached for a minute rather than ten, so a blip
+ * heals and a missing table does not become one failed query per request.
+ *
+ * The array is the same object for the whole life of an entry, which is what
+ * lets `traitIndexFor` build the index once per (corpus, rows) pair.
+ */
+const TRAITS_TTL_MS = 10 * 60_000;
+const TRAITS_RETRY_MS = 60_000;
+let traitsCached: { at: number; value: Promise<ProfileTraitRow[]> } | null = null;
+
+export function loadProfileTraits(): Promise<ProfileTraitRow[]> {
+  const now = Date.now();
+  if (traitsCached && now - traitsCached.at < TRAITS_TTL_MS) return traitsCached.value;
+
+  const entry = { at: now, value: Promise.resolve<ProfileTraitRow[]>([]) };
+  entry.value = getProfileTraitRows().catch((): ProfileTraitRow[] => {
+    // Back-dated so this entry lapses TRAITS_RETRY_MS after the failure.
+    entry.at = Date.now() - (TRAITS_TTL_MS - TRAITS_RETRY_MS);
+    return [];
+  });
+  traitsCached = entry;
+  return entry.value;
+}
+
+/** The trait index over `restaurants` -- the corpus the ranking is run on. */
+export async function loadTraitIndex(
+  restaurants: readonly RestaurantView[],
+): Promise<TraitIndex> {
+  return traitIndexFor(restaurants, await loadProfileTraits());
+}
+
+/**
  * Runs the filters and returns one page of what matched.
  *
  * `here` is passed separately from the filters rather than read off the URL.
@@ -252,13 +361,41 @@ export function loadCorpus(): Promise<Corpus> {
  * body to /api/restaurants/discover. `filters.nearby` without `here` matches
  * everything, which is the same "can't evaluate that yet" rule the client used
  * while waiting for the permission prompt.
+ *
+ * ## For me
+ *
+ * `forMe` is the one personal input, and only the private POST ever passes it.
+ * `undefined` is an ordinary Discover query. A setup puts the page in the
+ * viewer's order (`forMe.rankAmong` over the rows the filters left, so the
+ * matches/tail split and the chain and menu dedupe are the filtered list's
+ * own): `forMe.rank` replaces distance as the sort, `forMe.exclude`
+ * leaves out what they have seen or ruled out, the photo-first partition of
+ * the bare grid is skipped (the personal order is the order), and each row on
+ * the page is given its reason. Every other filter composes with it exactly as
+ * it does with distance (decision D3), so "Thai" under For me is the best Thai
+ * for this viewer.
+ *
+ * Typed search is the exception: a name typed into the field is a question with
+ * its own answer (`orderResults`, below), and ranking it by taste would bury
+ * the place they named. Text wins -- the answer is plain relevance, nothing is
+ * excluded, and `forMe.paused` is set so the client does not wait for a
+ * personal order that is not coming. `forMe: null` is how a caller that has not
+ * built a setup (because it saw the text first and skipped the work) asks for
+ * the same thing; a setup arriving with text is treated alike, so the rule is
+ * decided here and not trusted to the caller.
  */
 export async function getDiscoverPage(
   search: string,
-  { shown = PAGE_SIZE, here = null }: { shown?: number; here?: Coords | null } = {},
+  {
+    shown = PAGE_SIZE,
+    here = null,
+    forMe,
+  }: { shown?: number; here?: Coords | null; forMe?: ForMeSetup | null } = {},
 ): Promise<DiscoverPage> {
   const { restaurants, aspects, plates } = await loadCorpus();
   const filters = filtersFromSearch(search, restaurants);
+  // The setup in force: absent for a plain query, and for a paused one.
+  const personal = forMe && !filters.q ? forMe : null;
 
   // Evaluated against the server's clock rather than the browser's. The client
   // could only supply a time it had already been told, and "open now" in a San
@@ -297,14 +434,32 @@ export async function getDiscoverPage(
     namedDish,
   };
 
-  const ordered = orderResults(applyFilters(restaurants, filters, ctx), filters, here, scores);
+  // What For me leaves out comes off the pool before anything counts it, so the
+  // grid, `total` and every facet are measured over the same rows. Filters were
+  // resolved above against the whole corpus (a neighbourhood the viewer has
+  // exhausted is still a real neighbourhood), and the option lists below stay
+  // whole too; only the numbers describe what is left.
+  const exclude = personal?.exclude;
+  const pool = exclude?.size ? restaurants.filter((r) => !exclude.has(r.id)) : restaurants;
+
+  const filtered = applyFilters(pool, filters, ctx);
+  // The personal order is worked out over the rows the filters left, not the
+  // whole corpus and then filtered: with a neighbourhood picked, the only
+  // branch of a chain inside it is that chain's best branch, whatever a branch
+  // elsewhere would have scored. The unfiltered case is the full order.
+  const order: ForMeOrder | null = personal
+    ? (personal.rankAmong?.(new Set(filtered.map((r) => r.id))) ?? personal)
+    : null;
+  const ordered = orderResults(filtered, filters, here, scores, order?.rank ?? null);
   // The bare grid (no search text, no filter of any kind) puts every restaurant
   // with a photo ahead of every one without. A stable partition: each half
   // keeps the order `orderResults` gave it. "Has a photo" is exactly what the
   // tile draws -- `RestaurantPhoto` shows its fallback when `photo` is falsy.
-  // Any query or filter leaves the order untouched.
+  // Any query or filter leaves the order untouched, and so does For me: the
+  // personal order is the point, and a photo is not a reason to lift a place
+  // over one the viewer would like better.
   const matched =
-    activeFilterCount(filters) === 0
+    activeFilterCount(filters) === 0 && !personal
       ? [...ordered.filter((r) => r.photo), ...ordered.filter((r) => !r.photo)]
       : ordered;
   const limit = Math.min(Math.max(shown, PAGE_SIZE), MAX_SHOWN);
@@ -341,13 +496,16 @@ export async function getDiscoverPage(
             walkEstimated: walk.estimated,
           }
         : base;
-      return score === undefined
-        ? { ...withWalk, plateScore: plate }
-        : { ...withWalk, plateScore: plate, aspectScore: score };
+      const row =
+        score === undefined
+          ? { ...withWalk, plateScore: plate }
+          : { ...withWalk, plateScore: plate, aspectScore: score };
+      const reason = order?.reasonOf(r.id);
+      return reason ? { ...row, reason } : row;
     }),
     total: matched.length,
     shown: Math.min(limit, matched.length),
-    counts: countFacets(restaurants, filters, ctx),
+    counts: countFacets(pool, filters, ctx),
     options: {
       neighborhoods: neighborhoodOptions(restaurants),
       cuisines: cuisineOptions(restaurants),
@@ -358,7 +516,29 @@ export async function getDiscoverPage(
       .filter((r) => r.trending)
       .slice(0, 2)
       .map((r) => ({ ...r, plateScore: plates[r.id] ?? EMPTY_PLATE_SCORE })),
+    ...(forMe !== undefined && { forMe: forMeInfo(personal, order, matched) }),
   };
+}
+
+/**
+ * The `forMe` block of an answer. Counts the matches over the rows that
+ * survived the filters and the exclusions, which is what the grid shows: the
+ * leading run is the matches, and the divider before the tail goes after them.
+ * A paused answer carries no matches and no header, so nothing personal can
+ * be printed above a list of search results.
+ */
+function forMeInfo(
+  personal: ForMeSetup | null,
+  order: ForMeOrder | null,
+  matched: readonly RestaurantView[],
+): ForMeInfo {
+  if (!personal || !order) return { basis: "none", header: "", seeds: 0, matched: 0, paused: true };
+  const end = order.matched;
+  let matches = 0;
+  for (const r of matched) {
+    if ((order.rank.get(r.id) ?? Infinity) < end) matches += 1;
+  }
+  return { basis: personal.basis, header: order.header, seeds: personal.seeds, matched: matches };
 }
 
 /**
@@ -421,7 +601,26 @@ function orderResults(
   f: DiscoverFilters,
   here: Coords | null,
   scores: Map<string, number> | null,
+  rank: ReadonlyMap<string, number> | null = null,
 ): RestaurantView[] {
+  // For me: the viewer's order replaces both of the below. `rank` is one
+  // position per place (ties are already broken in `rankTaste`), so distance
+  // is only the tiebreak for ids the ranking did not know -- which share the
+  // last position. `rank` and `scores` never arrive together: typed search
+  // pauses For me before this is called.
+  if (rank) {
+    const last = Number.MAX_SAFE_INTEGER;
+    const near =
+      here && !f.neighborhood
+        ? new Map(matched.map((r) => [r.id, milesBetween(here, r)]))
+        : null;
+    return [...matched].sort((a, b) => {
+      const byRank = (rank.get(a.id) ?? last) - (rank.get(b.id) ?? last);
+      if (byRank !== 0) return byRank;
+      return near ? (near.get(a.id) ?? 0) - (near.get(b.id) ?? 0) : 0;
+    });
+  }
+
   // A picked neighbourhood still turns this off outright — see above. Every
   // other case, including the bare grid, measures distance the moment there
   // is a position; `scores`, when present, is compared first below and this

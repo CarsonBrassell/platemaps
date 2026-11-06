@@ -69,6 +69,7 @@ export function RestaurantCard({
   score = EMPTY_PLATE_SCORE,
   match = NO_MATCHES,
   shape = "crop",
+  reason = null,
 }: {
   restaurant: RestaurantView;
   /**
@@ -89,6 +90,14 @@ export function RestaurantCard({
    * pack uneven columns should ask for `"natural"`.
    */
   shape?: "crop" | "natural";
+  /**
+   * Why this place is in a personal list, in one short line ("Like Tajima Ramen:
+   * ramen, gyoza"). Set only by the For me list and Your taste, whose callers
+   * hold the viewer's own signals; every other surface leaves it out and the
+   * card is exactly what it was. Server-built and capped at 48 characters, so
+   * it is one truncated line rather than something the card has to wrap.
+   */
+  reason?: string | null;
 }) {
   const highlight = match.aspect;
   const natural = shape === "natural";
@@ -199,7 +208,7 @@ export function RestaurantCard({
             Marking it here rather than adding a chip row keeps the answer where
             the reader is already looking, and keeps an unfiltered card exactly
             as it was. */}
-        <p className="mb-2.5 mt-0.5 truncate text-xs text-zinc-500">
+        <p className={`${reason ? "mb-1" : "mb-2.5"} mt-0.5 truncate text-xs text-zinc-500`}>
           {/* Both halves are conditional because cuisine is nullable — the ~400
               restaurants that never carried one would otherwise open this line
               with a stray separator. Same rule as `placeLine`, spelled out here
@@ -216,6 +225,15 @@ export function RestaurantCard({
             {restaurant.neighborhood}
           </span>
         </p>
+        {/* The personal reason sits straight under the meta, the same place the
+            matched dish answers a search: it is the answer to "why is this
+            here", and on a card of identical-looking neighbours it is the only
+            line that differs. Medium weight and a step darker than the meta
+            above it, so the two do not read as one grey paragraph; not orange,
+            because orange on a card means "this is what you filtered for". */}
+        {reason && (
+          <p className="mb-2.5 truncate text-xs font-medium text-zinc-600">{reason}</p>
+        )}
         {/* The filtered category rides beside the open/closed pill rather than
             on the photo: the photo already carries the overall score, and two
             percentages stacked in the same corner read as one contradictory

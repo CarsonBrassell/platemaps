@@ -1,10 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useAuth } from "@/lib/auth";
 import { useNearby } from "@/lib/nearby";
 import { publishQuery, useQueryString } from "@/lib/queryString";
 import { fromWire } from "@/lib/discoverWire";
-import { PAGE_SIZE, parseShown } from "@/lib/discoverFilters";
+import { FOR_ME_PARAM, PAGE_SIZE, parseShown } from "@/lib/discoverFilters";
+import { readLocalTaste, useTasteRev } from "@/lib/useTaste";
 import type { DiscoverPage } from "@/lib/discover";
 
 /**
@@ -28,6 +30,13 @@ import type { DiscoverPage } from "@/lib/discover";
  * the same query is POSTed with the coordinates instead of GET — the answer
  * carries distances and a nearby ordering, and it is not cacheable, which is
  * why the two are different requests.
+ *
+ * `?foryou=1` is a third thing: a mode, not a filter. The ranking is built
+ * from the reader's own history, so it is never asked of the cached GET, which
+ * must not carry anything personal. It is the same POST, with `forMe` and the
+ * device copy of the picks in the body, answered `private, no-store`. It waits
+ * for the session to resolve (a signed-out ranking must not flash before the
+ * personal one) and asks again when the picks change (`tasteRev`).
  */
 
 /* The URL, as the client sees it, comes from lib/queryString.ts — one
@@ -35,18 +44,18 @@ import type { DiscoverPage } from "@/lib/discover";
    because calling it here would opt the grid out of the static HTML. */
 
 /** Query keys the page carries that are not filters and must not reach the parser. */
-const NOT_FILTERS = new Set(["nav", "cols", "shown"]);
+const NOT_FILTERS = new Set(["nav", "cols", "shown", FOR_ME_PARAM]);
 
-/** The filter half of a query string, and the page size it asks for. */
-export function filterQueryOf(raw: string): { search: string; shown: number } {
+/** The filter half of a query string, the page size it asks for, and whether it asks for For me. */
+export function filterQueryOf(raw: string): { search: string; shown: number; forMe: boolean } {
   const params = new URLSearchParams(raw);
   const shown = parseShown(params.get("shown") ?? undefined);
   const filters = new URLSearchParams();
   for (const [key, value] of params) if (!NOT_FILTERS.has(key)) filters.append(key, value);
-  return { search: filters.toString(), shown };
+  return { search: filters.toString(), shown, forMe: params.get(FOR_ME_PARAM) === "1" };
 }
 
-type Answer = { key: string; search: string; shown: number; page: DiscoverPage };
+type Answer = { key: string; search: string; shown: number; forMe: boolean; page: DiscoverPage };
 
 export type DiscoverQuery = {
   /** The page on screen. */
@@ -55,11 +64,17 @@ export type DiscoverQuery = {
   pending: boolean;
   /** Changes when a different page lands — what the focus effect keys on. */
   viewKey: string;
-  /** The filters the URL currently asks for (without `shown`, `nav`, `cols`). */
+  /** The filters the URL currently asks for (without `shown`, `nav`, `cols`, `foryou`). */
   search: string;
   shown: number;
+  /** True when the URL asks for the For me ranking (`?foryou=1`) — what is asked, not what is on screen. */
+  forMe: boolean;
   /** The raw query string, for a caller that needs a key this hook strips. */
   raw: string;
+  /** True when the request for what the URL asks for has failed and nothing is in flight. */
+  failed: boolean;
+  /** Ask for it again after a failure. */
+  retry: () => void;
   nearby: ReturnType<typeof useNearby>;
   /**
    * Point the URL at a new query without a route render: `search` is the
@@ -72,49 +87,96 @@ export type DiscoverQuery = {
 export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): DiscoverQuery {
   const raw = useQueryString();
   const nearby = useNearby();
+  const { account, resolved } = useAuth();
+  const tasteRev = useTasteRev();
   const [answer, setAnswer] = useState<Answer | null>(null);
+  // The key of a request that failed, and a counter that asks again. A failure
+  // used to be silent: the old page stayed up (or, on a bare `?foryou=1`, a
+  // skeleton that only timed out) and nothing said the request had died.
+  const [failedKey, setFailedKey] = useState<string | null>(null);
+  const [attempt, setAttempt] = useState(0);
 
-  const { search, shown } = filterQueryOf(raw);
+  const { search, shown, forMe } = filterQueryOf(raw);
   const coords = nearby.coords;
   const bare = search === "" && shown === PAGE_SIZE;
+  // For me is also keyed on who is asking and on the picks, so signing in or
+  // out and a love / skip each ask again. Nothing else is in the key for that.
+  const forMeKey = forMe ? `::foryou:${account ? "in" : "out"}:${tasteRev}` : "";
   const wanted =
-    bare && !coords
+    bare && !coords && !forMe
       ? null
-      : `${search}::${shown}::${coords ? `${coords.lat},${coords.lng}` : ""}`;
+      : `${search}::${shown}::${coords ? `${coords.lat},${coords.lng}` : ""}${forMeKey}`;
   const answerKey = answer?.key ?? null;
+
+  // A bare URL shows the shell, not an answer, so whatever answer is held is
+  // dropped: kept, it would be shown again the moment the same key came back
+  // (For me turned off and on), with a pick made in between still in the list.
+  if (wanted === null && answer !== null) setAnswer(null);
+  // Likewise a failure belongs to the query it happened to; coming back to that
+  // query asks again and must not start out showing the old error.
+  if (failedKey !== null && failedKey !== wanted) setFailedKey(null);
 
   useEffect(() => {
     if (wanted === null || answerKey === wanted) return;
+    // Until the session has resolved a signed-in reader looks signed out, and
+    // that ranking would paint before the personal one.
+    if (forMe && !resolved) return;
     let cancelled = false;
     void (async () => {
       try {
-        const res = coords
-          ? await fetch("/api/restaurants/discover", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ search, shown, coords }),
-            })
-          : await fetch(
-              `/api/restaurants/discover?${[search, shown > PAGE_SIZE ? `shown=${shown}` : ""]
-                .filter(Boolean)
-                .join("&")}`,
-            );
-        if (!res.ok) return;
+        const res =
+          coords || forMe
+            ? await fetch("/api/restaurants/discover", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                cache: "no-store",
+                body: JSON.stringify({
+                  search,
+                  shown,
+                  ...(coords ? { coords } : {}),
+                  ...(forMe ? { forMe: true, prefs: readLocalTaste() } : {}),
+                }),
+              })
+            : await fetch(
+                `/api/restaurants/discover?${[search, shown > PAGE_SIZE ? `shown=${shown}` : ""]
+                  .filter(Boolean)
+                  .join("&")}`,
+              );
+        if (!res.ok) {
+          if (!cancelled) setFailedKey(wanted);
+          return;
+        }
         const page = fromWire(await res.json());
-        if (!cancelled) setAnswer({ key: wanted, search, shown, page });
+        if (!cancelled) {
+          setFailedKey(null);
+          setAnswer({ key: wanted, search, shown, forMe, page });
+        }
       } catch {
-        // Keep what is on screen; the next change of query asks again.
+        // Keep what is on screen and say so (`failed`); a change of query, or
+        // `retry`, asks again.
+        if (!cancelled) setFailedKey(wanted);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [wanted, answerKey, search, shown, coords]);
+  }, [wanted, answerKey, search, shown, coords, forMe, resolved, attempt]);
+
+  const failed = wanted !== null && failedKey === wanted;
+  const retry = useCallback(() => {
+    setFailedKey(null);
+    setAttempt((n) => n + 1);
+  }, []);
 
   const view = wanted === null || !answer ? initial : answer.page;
-  const onScreen = wanted === null || !answer ? { search: "", shown: PAGE_SIZE } : answer;
+  const onScreen =
+    wanted === null || !answer ? { search: "", shown: PAGE_SIZE, forMe: false } : answer;
+  // `forMe` is part of what is on screen: a bare `?foryou=1` would otherwise
+  // paint the static shell's default order as if it were the personal one.
   const pending =
-    wanted !== null && answerKey !== wanted && (onScreen.search !== search || onScreen.shown !== shown);
+    wanted !== null &&
+    answerKey !== wanted &&
+    (onScreen.search !== search || onScreen.shown !== shown || onScreen.forMe !== forMe);
 
   const navigate = useCallback(
     (nextSearch: string, nextShown: number | null) => {
@@ -134,10 +196,13 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
   return {
     view,
     pending,
-    viewKey: `${onScreen.search}::${onScreen.shown}`,
+    viewKey: `${onScreen.search}::${onScreen.shown}${onScreen.forMe ? "::foryou" : ""}`,
     search,
     shown,
+    forMe,
     raw,
+    failed,
+    retry,
     nearby,
     navigate,
   };

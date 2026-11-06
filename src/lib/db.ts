@@ -1557,11 +1557,18 @@ export async function refreshRestaurantCover(
   return changed;
 }
 
-/** Every restaurant a user has posted at, for invalidating their cached pages. */
+/**
+ * Every restaurant a user has posted at, most recent post first (ties on the
+ * id, so the order is stable). Invalidating their cached pages does not care
+ * about the order; For me reads its seeds from it, and its cap of 30 is only
+ * "the 30 most recent" if the list really starts with the latest.
+ */
 export async function restaurantIdsPostedBy(userId: string): Promise<string[]> {
   const rows = await sql`
-    SELECT DISTINCT restaurant_id FROM posts
+    SELECT restaurant_id FROM posts
     WHERE user_id = ${userId} AND restaurant_id IS NOT NULL
+    GROUP BY restaurant_id
+    ORDER BY max(created_at) DESC, restaurant_id
   `;
   return rows.map((r) => String(r.restaurant_id));
 }
@@ -2408,6 +2415,33 @@ export async function getFriendRestaurantVisits(viewerId: string): Promise<Frien
     restaurantId: String(r.restaurant_id),
     friendId: String(r.user_id),
     name: String(r.name),
+  }));
+}
+
+/**
+ * What every place with a usable menu profile serves: its dish terms and its
+ * service style. The raw material for the "For me" similarity
+ * (lib/profileTraits.ts builds the idf, the cuisine centroids and the per-place
+ * traits from it). About 6.6K rows and half a megabyte, the same for every
+ * viewer: it carries nothing personal, so it is safe behind the shared Discover
+ * cache, but the caller owns the cache (a separate, longer TTL than the corpus)
+ * because it changes only when an enrichment batch lands. SELECT only. Places
+ * with no row or a "hold" row are simply absent; the caller imputes those from
+ * their cuisine. Throws if the table is missing; the caller treats that as
+ * "everything imputed", never as a failed request.
+ */
+export async function getProfileTraitRows(): Promise<
+  { restaurantId: string; dishTypes: string[]; service: string | null }[]
+> {
+  const rows = await sql`
+    SELECT restaurant_id, dish_types, profile->>'service' AS service
+    FROM restaurant_profiles
+    WHERE status = 'ok'
+  `;
+  return rows.map((r) => ({
+    restaurantId: String(r.restaurant_id),
+    dishTypes: Array.isArray(r.dish_types) ? r.dish_types.map(String) : [],
+    service: (r.service as string | null) ?? null,
   }));
 }
 

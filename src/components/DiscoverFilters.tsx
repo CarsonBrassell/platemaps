@@ -670,6 +670,44 @@ export function QuickFilterChips({
 }
 
 /**
+ * "For me": the switch that turns the whole grid into the viewer's own list
+ * (`?foryou=1`, see lib/useDiscoverQuery.ts). A mode, not a filter — it is not
+ * counted in `active`, Clear does not touch it, and it composes with whatever
+ * the other controls say — so it is drawn apart from them: first in the strip
+ * below `lg`, and `wide` as the top row of the rail at `lg+`.
+ *
+ * Same clothes as the quick-filter pills it sits beside (orange fill when on,
+ * `aria-pressed`), because it is the same kind of control: a toggle that stays
+ * where you put it.
+ */
+export function ForMePill({
+  on,
+  onToggle,
+  wide = false,
+}: {
+  on: boolean;
+  onToggle: () => void;
+  wide?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-pressed={on}
+      className={`inline-flex min-h-9 shrink-0 items-center justify-center rounded-full px-3 text-[12px] transition-colors pointer-coarse:min-h-11 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+        wide ? "w-full text-[13px]" : ""
+      } ${
+        on
+          ? "bg-pm-orange font-medium text-[#F7F4EC]"
+          : "bg-pm-grey-tint text-pm-grey-text hover:text-zinc-900"
+      }`}
+    >
+      For me
+    </button>
+  );
+}
+
+/**
  * The controls themselves, with no container of their own — the desktop rail
  * and the mobile sheet each supply their own.
  */
@@ -784,6 +822,8 @@ export function FilterRail({
   onAspect,
   onQuick,
   onClear,
+  forMe,
+  onForMe,
 }: {
   filters: Filters;
   counts: FacetCounts;
@@ -792,6 +832,9 @@ export function FilterRail({
   prices: readonly FacetOption[];
   aspects: readonly FacetOption[];
   nearby: NearbyProps;
+  /** Whether the For me list is on, and the switch for it. */
+  forMe: boolean;
+  onForMe: () => void;
 } & FilterHandlers) {
   const active = activeFilterCount(filters);
 
@@ -809,6 +852,12 @@ export function FilterRail({
    * chaining to the results grid behind it. */
   return (
     <aside className="hidden w-[230px] shrink-0 rounded-2xl bg-white p-4 lg:sticky lg:top-6 lg:block lg:h-fit lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto lg:overscroll-contain">
+      {/* First in the rail, above the filters it is not one of: the mode comes
+          before the narrowing. */}
+      <div className="mb-4">
+        <ForMePill on={forMe} onToggle={onForMe} wide />
+      </div>
+
       <div className="mb-2.5 flex min-h-6 items-center justify-between gap-2">
         <p className="font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-zinc-500">
           Filters

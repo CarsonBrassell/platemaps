@@ -867,6 +867,15 @@ export const DISH_PARAM = "dish";
 /** Reads as `?q=cannonball&in=dish` — the scope is a preposition on the term,
  *  which is exactly what it is. */
 export const SCOPE_PARAM = "in";
+/**
+ * `?foryou=1` — the grid ranked for the viewer. A mode, not a filter: it is not
+ * a field of `DiscoverFilters`, `filtersFromSearch` never reads it, and
+ * `searchFromFilters` leaves it on the URL the way it leaves `nav` and `shown`.
+ * lib/useDiscoverQuery.ts strips it from the query it sends, because the
+ * ranking is personal and so can only be asked for by the private POST, never
+ * by the CDN-cached GET.
+ */
+export const FOR_ME_PARAM = "foryou";
 
 /**
  * The longest search term worth carrying. Past this it is not a search, it is

@@ -57,14 +57,26 @@ const TIME_ZONE = "America/Los_Angeles";
 const SOON_MINUTES = 60;
 const DAY = 24 * 60;
 
+/*
+ * Building an Intl.DateTimeFormat is the expensive part of reading the clock
+ * (it loads locale data), and these two run once per restaurant per scan, so
+ * they are built once at module scope rather than inside each call.
+ */
+const MINUTES_FORMAT = new Intl.DateTimeFormat("en-US", {
+  timeZone: TIME_ZONE,
+  hour: "numeric",
+  minute: "2-digit",
+  hour12: false,
+});
+const WEEKDAY_FORMAT = new Intl.DateTimeFormat("en-US", {
+  timeZone: TIME_ZONE,
+  weekday: "short",
+});
+const WEEKDAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
 /** Minutes since midnight in San Diego, for whatever instant is passed in. */
 export function localMinutes(now: Date): number {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: TIME_ZONE,
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: false,
-  }).formatToParts(now);
+  const parts = MINUTES_FORMAT.formatToParts(now);
 
   const hour = Number(parts.find((p) => p.type === "hour")?.value ?? "0");
   const minute = Number(parts.find((p) => p.type === "minute")?.value ?? "0");
@@ -74,11 +86,8 @@ export function localMinutes(now: Date): number {
 
 /** Day of week in San Diego, in Yelp's numbering: 0 = Monday. */
 export function localDay(now: Date): number {
-  const name = new Intl.DateTimeFormat("en-US", {
-    timeZone: TIME_ZONE,
-    weekday: "short",
-  }).format(now);
-  const index = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(name);
+  const name = WEEKDAY_FORMAT.format(now);
+  const index = WEEKDAY_NAMES.indexOf(name);
   return index === -1 ? 0 : index;
 }
 

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { clientIp } from "@/lib/loginThrottle";
 import { sql } from "@/lib/sqlClient";
 
 /**
@@ -133,4 +134,46 @@ export async function limitOrReject(opts: RateLimitOptions): Promise<NextRespons
   }
 
   return null;
+}
+
+/**
+ * The limit on Discover's "For me" POST, which ranks every place in the corpus
+ * against the viewer's history and so costs real CPU, unlike the plain query.
+ *
+ * Signed in, it is counted per user under its own `forme:user` scope (120 per
+ * 10 minutes). It is deliberately not the `taste:user` counter that
+ * `/api/account/taste` spends on writes: a tuning session is a run of
+ * love/skip/been taps, each one a write and then a For me re-read, so one
+ * shared allowance of 120 ran dry after about 60 taps, with a 429 on the very
+ * request that was meant to show the result. Separate counters give each route
+ * its own 120. Signed out there is no user to count, so it is counted per IP
+ * under `forme:ip`, with the same numbers -- a visitor clicking through filters
+ * makes a request per click, and the limit is there to stop a loop, not a
+ * person. `OPEN_BROWSING` makes the signed-out path public, which is why it
+ * needs a counter at all.
+ *
+ * With no IP to count (neither proxy header present, which is local dev and
+ * nothing Vercel serves) the call is let through: `clientIp` would answer
+ * `"unknown"` for all of them, and one shared bucket would lock everyone out
+ * the moment it filled.
+ *
+ * The 429 is private and uncacheable like every other answer from this path.
+ * Use as `limitOrReject` is used: `const limited = await limitForMe(req, user);
+ * if (limited) return limited;`.
+ */
+export async function limitForMe(
+  req: Request,
+  user: { id: string } | null,
+): Promise<NextResponse | null> {
+  let opts: RateLimitOptions;
+  if (user) {
+    opts = { scope: "forme:user", key: user.id, max: 120, windowMinutes: 10 };
+  } else {
+    const ip = clientIp(req);
+    if (ip === "unknown") return null;
+    opts = { scope: "forme:ip", key: ip, max: 120, windowMinutes: 10 };
+  }
+  const limited = await limitOrReject(opts);
+  limited?.headers.set("Cache-Control", "private, no-store");
+  return limited;
 }

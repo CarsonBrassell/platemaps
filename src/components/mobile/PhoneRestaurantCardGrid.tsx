@@ -32,10 +32,21 @@ export function PhoneRestaurantCardGrid({
   matchedCuisine = false,
   aspect = null,
   distance = null,
+  reason = null,
 }: {
   restaurant: RestaurantView;
   score?: PlateScore;
   priority?: boolean;
+  /**
+   * Why this card is in a "For me" list, already worded ("Because you loved
+   * Tacos Jalisco"), or null everywhere else.
+   *
+   * Two lines at most and then an ellipsis: the card is ~167px wide and the
+   * longest reason is a sentence, so an unclamped one would make a For me
+   * wall's cards run to wildly different heights for a reason that is not
+   * the photo.
+   */
+  reason?: string | null;
   /**
    * How far from the visitor, already formatted ("0.8 mi"), or null when the
    * position is not known. The card omits the seeded downtown-origin
@@ -175,6 +186,13 @@ export function PhoneRestaurantCardGrid({
               )}
             </p>
           )
+        )}
+        {/* The reason, under the name and the cuisine it qualifies. Plain grey
+            rather than the orange tint the dish and the category take: those
+            answer a question the visitor typed, this is the app's own
+            explanation, and the accent is spent on what they asked for. */}
+        {reason && (
+          <p className="mt-1 line-clamp-2 text-[11px] leading-snug text-zinc-600">{reason}</p>
         )}
         {/* The gap, in words, in the body — the pill on the photo is where a
             PlateMaps number goes, and the honest signal is leaving it without

@@ -194,6 +194,22 @@ ok("NULL cuisine is never ranked by cuisine", () => {
   assert.deepEqual(ids(fr), [nullCuisine.id]);
 });
 
+ok("a secondary cuisine is not a match in Your taste", () => {
+  // Your taste counts the main cuisine only. A place that lists a loved cuisine on
+  // the side (For me counts that at a discount, as "Also serves") never qualifies
+  // here, not even to pad a short list.
+  const side = { ...R("Corner Bar & Grill", "American"), cuisineSecondary: ["Burgers", "Thai"] };
+  const withSide = [...corpus, side];
+  const thai = run({ restaurants: withSide, prefs: prefs({ loves: ["Thai"] }) });
+  assert.ok(!ids(thai).includes(side.id), "a secondary Thai place was picked");
+  assert.deepEqual(ids(thai), ids(run({ prefs: prefs({ loves: ["Thai"] }) })), "its presence changes nothing");
+  const burgers = run({ restaurants: withSide, prefs: prefs({ loves: ["Burgers"] }) });
+  assert.ok(!ids(burgers).includes(side.id), "a secondary Burgers place padded the list");
+  assert.equal(burgers.picks.length, bg.length);
+  const hist = run({ restaurants: withSide, postedIds: [th[0].id, th[1].id, th[2].id] });
+  assert.ok(!ids(hist).includes(side.id), "history matched on a secondary cuisine");
+});
+
 ok("never pads under 6", () => {
   const res = run({ prefs: prefs({ loves: ["Burgers"] }) });
   assert.equal(res.picks.length, bg.length);

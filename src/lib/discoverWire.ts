@@ -1,5 +1,56 @@
 import type { DiscoverPage } from "@/lib/discover";
 import type { FacetCounts } from "@/lib/discoverFilters";
+import type { FullTastePrefs } from "@/lib/taste";
+
+/* --- "For me" ------------------------------------------------------------
+ *
+ * Discover's personal order (probe/for-me/PLAN.md). These types are the whole
+ * contract between the server and the two clients. They live here, not in
+ * lib/discover.ts, because a client component may import this file and may not
+ * import that one; lib/discover.ts re-exports them.
+ *
+ * Everything here is personal, so it only ever rides on the private POST
+ * (`Cache-Control: private, no-store`). The public GET is CDN-cached by URL and
+ * never carries any of it.
+ */
+
+/** Why a place is on the For me list, in one line. Built on the server from the
+    viewer's own signals and never longer than 48 characters. */
+export type ForMeReason = {
+  kind: "like" | "pick" | "friends" | "cuisine" | "rated";
+  text: string;
+};
+
+/** What the For me list was built from, and how much of it matched. */
+export type ForMeInfo = {
+  /** `history`: places the viewer has been; `picks`: only cuisines or places
+      they chose; `none`: no signal at all, so the list is the "Also well rated"
+      tail and nothing else. */
+  basis: "history" | "picks" | "none";
+  /** The line above the list, e.g. "Based on 3 places you've been". */
+  header: string;
+  /** How many places the history part was built from. */
+  seeds: number;
+  /** How many of the leading results are matches; every result after them is
+      the "Also well rated" tail. Counted over the filtered list, not the corpus,
+      so it can be 0 on a page whose total is not. */
+  matched: number;
+  /** True when the order is plain search relevance: text search wins over
+      For me (decision D3), and this tells the client not to wait for a personal
+      order that is not coming. */
+  paused?: boolean;
+};
+
+/** The body of `POST /api/restaurants/discover`. `forMe` and `prefs` are the
+    For me additions; `prefs` is the signed-out (localStorage) copy of the
+    viewer's taste and is ignored for a signed-in viewer whose row exists. */
+export type DiscoverRequestBody = {
+  search: string;
+  shown?: number;
+  coords?: { lat: number; lng: number };
+  forMe?: true;
+  prefs?: FullTastePrefs;
+};
 
 /**
  * `DiscoverPage` over JSON.
