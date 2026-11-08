@@ -153,6 +153,7 @@ export async function POST(req: Request) {
       platePrices: ctx.platePrices,
       traits,
       ratingMean: corpus.ratingMean,
+      here,
     }),
   });
 

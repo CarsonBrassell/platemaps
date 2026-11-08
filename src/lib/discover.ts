@@ -77,7 +77,7 @@ import { after } from "next/server";
 import { EMPTY_PLATE_SCORE, type PlateScore } from "@/lib/plateScore";
 import { traitIndexFor, type ProfileTraitRow, type TraitIndex } from "@/lib/profileTraits";
 import { normalize, rungOf } from "@/lib/textMatch";
-import type { ForMeInfo, ForMeReason } from "@/lib/discoverWire";
+import type { ForMeInfo, ForMeProfile, ForMeReason } from "@/lib/discoverWire";
 import { meanRating } from "@/lib/taste";
 // The For me wire types live in discoverWire.ts so client components can import
 // them; they are re-exported here for server code that already has this module.
@@ -177,6 +177,8 @@ export type ForMeSetup = ForMeOrder & {
   exclude: ReadonlySet<string>;
   basis: ForMeInfo["basis"];
   seeds: number;
+  /** What the "Tuned to you" line says; passed through to the answer as it is. */
+  profile?: ForMeProfile;
   /**
    * The same order worked out over just these ids, which is what a filtered
    * request asks for: the rows the filters left. Without it a chain's best
@@ -551,7 +553,13 @@ function forMeInfo(
   for (const r of matched) {
     if ((order.rank.get(r.id) ?? Infinity) < end) matches += 1;
   }
-  return { basis: personal.basis, header: order.header, seeds: personal.seeds, matched: matches };
+  return {
+    basis: personal.basis,
+    header: order.header,
+    seeds: personal.seeds,
+    matched: matches,
+    ...(personal.profile && { profile: personal.profile }),
+  };
 }
 
 /**

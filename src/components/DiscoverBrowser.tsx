@@ -8,6 +8,7 @@ import {
   QuickFilterChips,
 } from "@/components/DiscoverFilters";
 import { RestaurantCard, type MatchMarks } from "@/components/RestaurantCard";
+import { ForMeProfileLine } from "@/components/ForMeProfileLine";
 import { OurPicks } from "@/components/OurPicks";
 import { ShowDistanceButton } from "@/components/ShowDistanceButton";
 import { TasteChips, TasteInvite } from "@/components/TasteChips";
@@ -309,6 +310,10 @@ function ForMeSection({
           >
             Tune
           </button>
+          {/* One quiet line of what the list has learned, on a row of its own. */}
+          {info.profile && (
+            <ForMeProfileLine profile={info.profile} className="basis-full leading-snug" />
+          )}
         </div>
       )}
 

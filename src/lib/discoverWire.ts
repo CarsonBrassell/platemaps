@@ -17,12 +17,28 @@ import type { FullTastePrefs } from "@/lib/taste";
 /** Why a place is on the For me list, in one line. Built on the server from the
     viewer's own signals and never longer than 56 characters. */
 export type ForMeReason = {
-  kind: "like" | "pick" | "friends" | "cuisine" | "price" | "rated";
+  kind: "like" | "pick" | "friends" | "cuisine" | "price" | "near" | "rated";
   text: string;
   /** Friends' first names ("Ana and Ben have been"), present only when a friend
       has been and `text` is not already that line (kind other than "friends").
       Never a count; the key is absent when there are no friends. */
   friends?: string;
+};
+
+/**
+ * What For me has learned about the viewer, for the one quiet line above the
+ * list ("Tuned to you - $11-18 a plate - usually within 7 mi - pizza, coffee").
+ * Each part is null (or empty) when there is too little to say, and the line
+ * is left out when all of them are. Built from the viewer's own data and sent
+ * only on their own private POST.
+ */
+export type ForMeProfile = {
+  /** The usual plate range in whole dollars, as printed; null with no prices to go on. */
+  budget: { lo: number; hi: number } | null;
+  /** How far they usually go, in whole miles; null under three places with a location. */
+  radiusMi: number | null;
+  /** Their leading cuisines, the strongest first; empty with no history or picks. */
+  cuisines: string[];
 };
 
 /** What the For me list was built from, and how much of it matched. */
@@ -43,6 +59,8 @@ export type ForMeInfo = {
       For me (decision D3), and this tells the client not to wait for a personal
       order that is not coming. */
   paused?: boolean;
+  /** The "Tuned to you" line's parts; see `ForMeProfile`. Absent on a paused answer. */
+  profile?: ForMeProfile;
 };
 
 /** The body of `POST /api/restaurants/discover`. `forMe` and `prefs` are the

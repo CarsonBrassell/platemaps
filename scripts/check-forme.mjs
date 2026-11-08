@@ -29,16 +29,20 @@ import {
   FORME_BUDGET,
   FORME_CUISINE,
   FORME_QUALITY,
+  FORME_RADIUS,
   FORME_WEIGHTS,
   WEIGHTS,
   budgetOf,
   budgetPoints,
   chainKey,
+  distanceFactor,
   historyConfidence,
   meanRating,
+  medoidOf,
   placeWeight,
   priceFit,
   qualityFloor,
+  radiusOf,
   rankTaste,
   scoreAll,
   scoreTaste,
@@ -60,6 +64,7 @@ import {
   similarityParts,
   traitsOf,
 } from "../src/lib/profileTraits.ts";
+import { milesBetween } from "../src/lib/geo.ts";
 import { parsePrice } from "../src/data/priceBands.ts";
 import { FOR_ME_PARAM, hasCuisine, hasFilterParams } from "../src/lib/discoverFilters.ts";
 import {
@@ -110,7 +115,7 @@ const shuffled = (arr, rnd) => {
   return out;
 };
 
-const KINDS = new Set(["like", "pick", "friends", "cuisine", "price", "rated"]);
+const KINDS = new Set(["like", "pick", "friends", "cuisine", "price", "near", "rated"]);
 const idCmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 const cmpScore = (a, b) => b.score - a.score || b.plate - a.plate || idCmp(a.r.id, b.r.id);
 const cmpTail = (a, b) => b.tail - a.tail || b.plate - a.plate || idCmp(a.r.id, b.r.id);
@@ -183,9 +188,13 @@ function checkRank(label, input, res) {
     if (i < res.matched) {
       assert.notEqual(reason.kind, "rated", fail(`match ${id} reads as well rated`));
     } else {
-      // The tail never says why it fits, only how it is rated, or (when it is
-      // inside their usual price range) that it fits their plate.
-      assert.ok(reason.kind === "rated" || reason.kind === "price", fail(`tail ${id} claims ${reason.kind}`));
+      // The tail never says why it fits, only how it is rated, that it fits their
+      // plate (inside their usual price range), or that it is close (inside their
+      // usual distance, from where they are).
+      assert.ok(
+        reason.kind === "rated" || reason.kind === "price" || reason.kind === "near",
+        fail(`tail ${id} claims ${reason.kind}`),
+      );
     }
     // Pr, Pf and the points are one fact: no fit, no points; a fit needs a price.
     {
@@ -196,6 +205,26 @@ function checkRank(label, input, res) {
         assert.ok(scan.budget && scan.budget.conf >= FORME_BUDGET.reasonConf, fail("price reason without a trusted usual plate"));
         assert.ok(s.Pr != null && s.Pf != null && s.Pf >= FORME_BUDGET.reasonFit, fail(`price reason off a fit of ${s.Pf}`));
         assert.ok(/^Fits your usual \$\d+(\u2013\d+)? plate$/.test(reason.text), fail(`price wording: ${reason.text}`));
+      }
+    }
+    // Distance: D is 1 in range and for a place with no position, never under the
+    // floor, and always 1 without a radius (Your taste). "Near" needs a real
+    // position, a range read off three places, and a place inside it.
+    {
+      const s = scored.get(id);
+      assert.ok(Number.isFinite(s.D) && s.D > 0 && s.D <= 1, fail(`${id}: D ${s.D}`));
+      if (!scan.radius) {
+        assert.ok(s.D === 1 && s.dist == null, fail(`${id}: distance without a radius`));
+      } else {
+        assert.ok(s.D >= scan.radius.floor - 1e-12, fail(`${id}: D ${s.D} under the floor`));
+        if (s.dist == null || s.dist <= scan.radius.miles) assert.equal(s.D, 1, fail(`${id}: in range but D is ${s.D}`));
+        if (!scan.radius.anchor) assert.equal(s.dist, null, fail(`${id}: a distance from nowhere`));
+      }
+      if (reason.kind === "near") {
+        const r = scan.radius;
+        assert.ok(r && r.source === "here" && r.points >= FORME_RADIUS.minPoints, fail(`${id}: near without a position and a range`));
+        assert.ok(s.dist != null && s.dist <= r.miles, fail(`${id}: near but ${s.dist} mi past ${r.miles}`));
+        assert.equal(reason.text, `Within your usual ${Math.round(r.miles)} mi`, fail("near wording"));
       }
     }
     // Friends: first names beside a reason about something else, the line itself
@@ -1548,7 +1577,9 @@ ok("quality term: Q reads R' and g scales the score; missing data is neutral", (
 
   // The score is g times the sum, every term from the same scored row.
   for (const s of sc.scored) {
-    const sum = 100 * (FORME_WEIGHTS.affinity * s.A + FORME_WEIGHTS.friends * s.F + FORME_WEIGHTS.quality * s.Q + FORME_WEIGHTS.neighborhood * s.N);
+    const sum =
+      100 *
+      (FORME_WEIGHTS.affinity * s.A * s.D + FORME_WEIGHTS.friends * s.F + FORME_WEIGHTS.quality * s.Q + FORME_WEIGHTS.neighborhood * s.N * s.D);
     assert.ok(near(s.score, s.G * (sum + s.budgetPts), 1e-9), `${s.r.name}: score is g * (the weighted sum + the budget points)`);
     for (const v of [s.score, s.tail, s.Q, s.G, s.A]) assert.ok(Number.isFinite(v), `${s.r.name}: finite`);
     assert.ok(near(s.tail, 100 * (WEIGHTS.qualityInTail * s.Q + WEIGHTS.hoodInTail * s.N)), "the tail formula is unchanged");
@@ -2874,8 +2905,13 @@ ok("budget: it is private to the viewer's own POST, and Your taste never sees it
   assert.ok(!/\b(INSERT|UPDATE|DELETE|DROP|ALTER|TRUNCATE)\b/i.test(fn), "it only reads");
   // The wire carries no B and no menu price: a reason is its kind, its words and a friends line.
   const wire = stripComments(read("../src/lib/discoverWire.ts"));
-  assert.ok(!/budget|platePrice|usualPlate|\bPr\b|\bPf\b/.test(wire), "ForMeInfo and ForMeReason carry no budget");
-  assert.match(wire, /kind: "like" \| "pick" \| "friends" \| "cuisine" \| "price" \| "rated"/);
+  // ...except the profile line's own plate range, which is the viewer's, rounded, and on their private answer only.
+  const profileAt = wire.indexOf("export type ForMeProfile");
+  const profileEnd = wire.indexOf("};", profileAt) + 2;
+  assert.ok(profileAt > 0, "the profile type is on the wire");
+  const wireRest = wire.slice(0, profileAt) + wire.slice(profileEnd);
+  assert.ok(!/budget|platePrice|usualPlate|\bPr\b|\bPf\b/.test(wireRest), "ForMeInfo and ForMeReason carry no budget");
+  assert.match(wire, /kind: "like" \| "pick" \| "friends" \| "cuisine" \| "price" \| "near" \| "rated"/);
   const disc = stripComments(read("../src/lib/discover.ts"));
   const info = disc.slice(disc.indexOf("function forMeInfo"));
   assert.ok(!/budget/i.test(info.slice(0, info.indexOf("\n}\n"))), "forMeInfo does not read B");
@@ -2924,6 +2960,545 @@ await okAsync("budget: ReasonText sets dollars, distances and numerals in mono a
   for (const text of [`Fits your usual $11${DASH}13 plate`, "Because you went to Pho 79", "You have eaten at 3 places, 1.5 mi apart"]) {
     assert.equal(html(text).replace(/<\/?span[^>]*>/g, ""), text);
   }
+});
+
+/* ---------- travel radius and the profile line ---------- */
+
+const EARTH_MI = 3958.8;
+const MI_PER_DEG = (EARTH_MI * Math.PI) / 180;
+const ORIGIN = { lat: 32.7157, lng: -117.1611 };
+/** A point `miles` north of the origin, on its meridian, where the great-circle distance is the arc length. */
+const northOf = (miles) => ({ lat: ORIGIN.lat + miles / MI_PER_DEG, lng: ORIGIN.lng });
+const pt = (id, miles) => ({ id, ...northOf(miles) });
+
+/**
+ * A throwaway world: [id, miles north of the origin (null: no coordinates),
+ * cuisine, dishes, median price], each with its own menu row. Thai on the Thai
+ * menu unless it says otherwise, so a Thai history sees every Thai place alike.
+ */
+function geoWorld(list) {
+  const restaurants = [];
+  const rows = [];
+  list.forEach(([id, miles, cuisine, dishes, price], i) => {
+    const c = cuisine ?? "Thai";
+    restaurants.push({ ...R(`${THAI_NAMES[i % 10]} ${c} ${i}`, c, MID), id, ...(miles == null ? {} : northOf(miles)) });
+    rows.push({
+      restaurantId: id,
+      dishTypes: dishes ?? THAI_MENU,
+      service: "counter",
+      menuStats: price == null ? null : { median: price, priced: 8 },
+    });
+  });
+  return { restaurants, traits: buildTraitIndex(restaurants, rows) };
+}
+const PIZZA_MENU = ["margherita", "calzone", "tiramisu", "garlic knots"];
+const withoutCoords = (restaurants) =>
+  restaurants.map((r) => {
+    const bare = { ...r };
+    delete bare.lat;
+    delete bare.lng;
+    return bare;
+  });
+const expectedSum = (s) =>
+  s.G *
+  (100 * (FORME_WEIGHTS.affinity * s.A * s.D + FORME_WEIGHTS.friends * s.F + FORME_WEIGHTS.quality * s.Q + FORME_WEIGHTS.neighborhood * s.N * s.D) +
+    s.budgetPts);
+
+/** The radius recomputed on the side, by the spec and nothing shared with the module but the distance. */
+function refRadius(points) {
+  const n = points.length;
+  if (n < 3) return { miles: 7, floor: 0.75 };
+  const sorted = points.slice().sort((a, b) => (a.id < b.id ? -1 : 1));
+  let best = null;
+  let bestSum = Infinity;
+  for (const a of sorted) {
+    const sum = sorted.reduce((t, b) => t + milesBetween(a, b), 0);
+    if (sum < bestSum - 1e-9) {
+      best = a;
+      bestSum = sum;
+    }
+  }
+  const away = sorted.filter((p) => p !== best).map((p) => milesBetween(best, p)).sort((x, y) => x - y);
+  const at = (away.length - 1) * 0.75;
+  const p75 = away[Math.floor(at)] + (away[Math.ceil(at)] - away[Math.floor(at)]) * (at - Math.floor(at));
+  const mix = (n * p75 + 3 * 7) / (n + 3);
+  return { miles: Math.min(20, Math.max(3, mix)), floor: 0.55, medoid: best };
+}
+
+ok("radius: the constants are the spec's", () => {
+  assert.deepEqual(
+    { ...FORME_RADIUS },
+    { minPoints: 3, priorPlaces: 3, priorMiles: 7, minMiles: 3, maxMiles: 20, floor: 0.55, floorFew: 0.75 },
+  );
+});
+
+ok("radius: the medoid is the most central point, ties to the lower id, whatever the order", () => {
+  assert.equal(medoidOf([]), null);
+  assert.equal(medoidOf([pt("solo", 5)]).id, "solo", "one point is its own medoid");
+  // 0, 1, 2 mi: the middle one has the least summed distance (2, against 3 and 3).
+  const three = [pt("h1", 0), pt("h2", 1), pt("h3", 2)];
+  assert.equal(medoidOf(three).id, "h2");
+  assert.equal(medoidOf(three.slice().reverse()).id, "h2");
+  // Two points tie on summed distance: the lower id.
+  assert.equal(medoidOf([pt("b", 10), pt("a", 0)]).id, "a");
+  assert.equal(medoidOf([pt("a", 10), pt("b", 0)]).id, "a");
+  // One far trip does not drag it: a mean would sit near 100 mi.
+  const trip = [pt("a", 0), pt("b", 0.5), pt("c", 1), pt("far", 400)];
+  const m = medoidOf(trip);
+  assert.ok(m.id !== "far" && milesBetween(m, northOf(0.5)) <= 0.5 + 1e-9, "the outlier does not move the medoid");
+  // Coincident points: still the lowest id, never a crash.
+  assert.equal(medoidOf([pt("z", 3), pt("y", 3), pt("x", 3)]).id, "x");
+});
+
+ok("radius: R = (n * p75 + 21) / (n + 3), within 3 to 20 mi, and 7 under three points", () => {
+  const radius = (points, here) => radiusOf(points, here);
+  // No history, one place, two places: R is the prior and the floor is the soft one.
+  for (const points of [[], [pt("a", 0)], [pt("a", 0), pt("b", 30)]]) {
+    const r = radius(points);
+    assert.equal(r.miles, 7);
+    assert.equal(r.floor, 0.75);
+    assert.equal(r.points, points.length);
+  }
+  // Three places at 0, 2, 10 mi: medoid 2, the other two are 2 and 8 away, p75 = 6.5.
+  const three = radius([pt("h1", 0), pt("h2", 2), pt("h3", 10)]);
+  assert.ok(near(three.miles, (3 * 6.5 + 21) / 6, 1e-6), `R is 6.75, got ${three.miles}`);
+  assert.equal(three.floor, 0.55);
+  assert.equal(three.points, 3);
+  // Three at 0, 1, 2: p75 = 1, R = 4.
+  assert.ok(near(radius([pt("h1", 0), pt("h2", 1), pt("h3", 2)]).miles, 4, 1e-6));
+  // Nine on a line, 0 to 8: medoid 4, distances 1 1 2 2 3 3 4 4, p75 = 3.25, R = 50.25 / 12.
+  const nine = radius(Array.from({ length: 9 }, (_, i) => pt(`p${i}`, i)));
+  assert.ok(near(nine.miles, (9 * 3.25 + 21) / 12, 1e-6), `nine points: ${nine.miles}`);
+  // The clamps: a stay-at-home history is 3 mi, never less; a far-flung one is 20 mi, never more.
+  assert.equal(radius(Array.from({ length: 10 }, (_, i) => pt(`s${i}`, 0))).miles, 3);
+  assert.equal(radius(Array.from({ length: 6 }, (_, i) => pt(`f${i}`, i * 200))).miles, 20);
+  // Two points a world apart are still R = 7: the prior, not 20.
+  assert.equal(radius([pt("a", 0), pt("b", 2000)]).miles, 7);
+});
+
+ok("radius: the anchor is `here` when it is a real position, else the medoid, else nothing", () => {
+  const history = [pt("h1", 0), pt("h2", 1), pt("h3", 2)];
+  const here = northOf(9);
+  const withHere = radiusOf(history, here);
+  assert.equal(withHere.source, "here");
+  assert.deepEqual(withHere.anchor, here);
+  const medoidOnly = radiusOf(history);
+  assert.equal(medoidOnly.source, "medoid");
+  assert.ok(near(medoidOnly.anchor.lat, northOf(1).lat, 1e-12) && medoidOnly.anchor.lng === ORIGIN.lng);
+  for (const bad of [null, undefined, { lat: Number.NaN, lng: 1 }, { lat: 1, lng: Number.POSITIVE_INFINITY }]) {
+    const r = radiusOf(history, bad);
+    assert.equal(r.source, "medoid", "an unusable position falls back to the medoid");
+    assert.deepEqual(r.anchor, medoidOnly.anchor);
+  }
+  // here does not change R, only where it is measured from.
+  assert.equal(withHere.miles, medoidOnly.miles);
+  const none = radiusOf([]);
+  assert.equal(none.anchor, null);
+  assert.equal(none.source, null);
+  const standing = radiusOf([], here);
+  assert.equal(standing.source, "here");
+  assert.equal(standing.miles, 7);
+  assert.equal(standing.points, 0);
+});
+
+ok("radius: it matches an independent computation over random histories", () => {
+  const rnd = prng(20261107);
+  for (let t = 0; t < 250; t++) {
+    const k = Math.floor(rnd() * 31);
+    const spread = [0.2, 3, 12, 60][Math.floor(rnd() * 4)];
+    const points = Array.from({ length: k }, (_, i) => ({
+      id: `id${String(Math.floor(rnd() * 1e6)).padStart(7, "0")}-${i}`,
+      lat: ORIGIN.lat + (rnd() - 0.5) * spread * 0.03,
+      lng: ORIGIN.lng + (rnd() - 0.5) * spread * 0.035,
+    }));
+    const want = refRadius(points);
+    const got = radiusOf(points);
+    assert.ok(near(got.miles, want.miles, 1e-9), `n=${k}: R ${got.miles} against ${want.miles}`);
+    assert.equal(got.floor, want.floor);
+    assert.ok(got.miles >= (k >= 3 ? 3 : 7) && got.miles <= (k >= 3 ? 20 : 7));
+    // The order the points arrive in cannot change it.
+    const shuffledPoints = shuffled(points, rnd);
+    assert.deepEqual(radiusOf(shuffledPoints), got);
+    if (k >= 3) assert.deepEqual(got.anchor, { lat: want.medoid.lat, lng: want.medoid.lng });
+  }
+});
+
+ok("radius: D is 1 up to R, then 1 / (1 + ((d - R) / R)^2), never under the floor", () => {
+  for (const floor of [0.55, 0.75]) {
+    for (const R_ of [3, 4, 7, 20]) {
+      assert.equal(distanceFactor(0, R_, floor), 1);
+      assert.equal(distanceFactor(R_ / 2, R_, floor), 1);
+      assert.equal(distanceFactor(R_, R_, floor), 1);
+      let last = 1;
+      for (let d = R_; d <= R_ * 8; d += R_ / 10) {
+        const v = distanceFactor(d, R_, floor);
+        assert.ok(v >= floor - 1e-12 && v <= 1 && v <= last + 1e-12, `D(${d}) for R ${R_}: ${v}`);
+        last = v;
+      }
+      assert.equal(distanceFactor(R_ * 1000, R_, floor), floor, "far out it rests on the floor");
+    }
+  }
+  // Spot values, written out: R = 4.
+  assert.ok(near(distanceFactor(6, 4, 0.55), 0.8, 1e-12), "half an R past: 1 / 1.25");
+  assert.ok(near(distanceFactor(5, 4, 0.55), 1 / (1 + 0.0625), 1e-12));
+  assert.equal(distanceFactor(8, 4, 0.55), 0.55, "an R past: 0.5, held at the floor");
+  assert.equal(distanceFactor(8, 4, 0.75), 0.75);
+  assert.equal(distanceFactor(Number.NaN, 4, 0.55), 1, "not a number is no penalty");
+});
+
+ok("radius: it softens A and N by D and leaves every other term alone", () => {
+  // History at 0, 1, 2 mi: medoid 1 mi, R = 4. Candidates 3, 4, 6, 8 mi (and the south side, and none) from the medoid.
+  const places = [
+    ["h1", 0],
+    ["h2", 1],
+    ["h3", 2],
+    ["n1", 4], // 3 mi out: inside
+    ["n2", 5], // 4 mi out: on the edge
+    ["n3", 7], // 6 mi out: D = 0.8
+    ["n4", 9], // 8 mi out: 0.5, held at 0.55
+    ["n5", null], // no coordinates
+    ["n6", -5], // 6 mi out, the other way: D = 0.8
+  ];
+  const world = geoWorld(places);
+  const input = { ...base, ...world, prefs: prefs({}), postedIds: ["h1", "h2", "h3"], ratingMean: 4.4 };
+  const sc = scoreAll(input);
+  const at = (id) => scoredId(sc, id);
+  assert.equal(sc.mode, "similarity");
+  assert.ok(sc.radius && near(sc.radius.miles, 4, 1e-6) && sc.radius.source === "medoid" && sc.radius.points === 3);
+  const want = { n1: [3, 1], n2: [4, 1], n3: [6, 0.8], n4: [8, 0.55], n5: [null, 1], n6: [6, 0.8] };
+  for (const [id, [d, D]] of Object.entries(want)) {
+    const s = at(id);
+    if (d == null) assert.equal(s.dist, null, `${id} has no distance`);
+    else assert.ok(near(s.dist, d, 1e-6), `${id}: ${s.dist} mi, expected ${d}`);
+    assert.ok(near(s.D, D, 1e-6), `${id}: D ${s.D}, expected ${D}`);
+  }
+  for (const s of sc.scored) {
+    assert.ok(near(s.score, expectedSum(s), 1e-9), `${s.r.name}: score is g * (100 * (a A D + f F + q Q + n N D) + budget points)`);
+    assert.ok(Number.isFinite(s.score) && Number.isFinite(s.D) && s.D >= 0.55 && s.D <= 1);
+  }
+  // The same world with no coordinates anywhere: D is 1 everywhere, and nothing but the score differs.
+  const flat = scoreAll({ ...input, restaurants: withoutCoords(world.restaurants) });
+  assert.equal(flat.radius.anchor, null, "no points, no anchor");
+  assert.equal(flat.radius.miles, 7);
+  for (const s of flat.scored) {
+    assert.equal(s.D, 1);
+    assert.equal(s.dist, null);
+    const t = at(s.r.id);
+    for (const key of ["A", "F", "Q", "N", "G", "tail", "budgetPts", "Ahist", "sim"]) assert.equal(t[key], s[key], `${s.r.name}: ${key} moves with distance`);
+    assert.ok(near(s.score, expectedSum(s), 1e-9));
+    assert.ok(t.score <= s.score + 1e-9, "distance only ever lowers a score");
+    if (t.D === 1) assert.ok(near(t.score, s.score, 1e-9), `${s.r.name}: in range, nothing changes`);
+    else assert.ok(t.score < s.score, `${s.r.name}: out of range, the score drops`);
+  }
+  // Alike in everything but distance, the nearer place scores more.
+  assert.ok(at("n1").score > at("n3").score && at("n3").score > at("n4").score);
+  assert.ok(near(at("n3").score, at("n6").score, 1e-9), "north or south, the same distance is the same factor");
+  assert.ok(at("n5").score === at("n1").score, "no coordinates: not penalised, not helped");
+  // Membership is decided on the raw A: the same places are matches either way.
+  const ids_ = (s) => s.filter(isMatch).map((x) => x.r.id).sort();
+  assert.deepEqual(ids_(sc.scored), ids_(flat.scored));
+  const near1 = rankTaste(input);
+  const flat1 = rankTaste({ ...input, restaurants: withoutCoords(world.restaurants) });
+  assert.equal(near1.matched, flat1.matched, "distance never removes a match");
+  assert.deepEqual([...near1.exclude].sort(), [...flat1.exclude].sort());
+  assert.equal(near1.order.length, flat1.order.length);
+  assert.equal(new Set(near1.order).size, flat1.order.length);
+  // Deterministic, and blind to the order things arrive in.
+  const reordered = rankTaste({ ...input, restaurants: world.restaurants.slice().reverse(), postedIds: ["h3", "h1", "h2"] });
+  assert.deepEqual(reordered.order, near1.order);
+  assert.deepEqual(rankTaste(input).order, near1.order);
+});
+
+ok("radius: `here` moves the anchor, not R; an unusable one changes nothing", () => {
+  const world = geoWorld([
+    ["h1", 0],
+    ["h2", 1],
+    ["h3", 2],
+    ["n1", 4],
+    ["n3", 7],
+    ["n5", null],
+    ["n7", 21],
+  ]);
+  const input = { ...base, ...world, prefs: prefs({}), postedIds: ["h1", "h2", "h3"], ratingMean: 4.4 };
+  const plain = scoreAll(input);
+  const scores = (sc) => sc.scored.map((s) => [s.r.id, s.score, s.D, s.dist]);
+  // Standing on the medoid is the medoid.
+  assert.deepEqual(scores(scoreAll({ ...input, here: northOf(1) })), scores(plain));
+  // No here, a null one, a NaN one: all the same as none.
+  for (const bad of [null, { lat: Number.NaN, lng: 0 }, { lat: 0, lng: Number.NaN }]) {
+    assert.deepEqual(scores(scoreAll({ ...input, here: bad })), scores(plain));
+  }
+  // Standing 20 mi north, everything near the history is far from you.
+  const far = scoreAll({ ...input, here: northOf(20) });
+  assert.equal(far.radius.source, "here");
+  assert.ok(near(far.radius.miles, plain.radius.miles, 1e-12), "R is read from where they have been, not where they are");
+  const dist = (id) => scoredId(far, id).dist;
+  assert.ok(near(dist("n1"), 16, 1e-6) && near(dist("n3"), 13, 1e-6) && near(dist("n7"), 1, 1e-6));
+  assert.equal(scoredId(far, "n1").D, 0.55, "16 mi past a 4 mi range: the floor");
+  assert.equal(scoredId(far, "n7").D, 1, "across the street from you");
+  assert.equal(scoredId(far, "n5").D, 1);
+  assert.ok(scoredId(far, "n7").score > scoredId(far, "n1").score, "near you outscores near your history");
+  // No history at all: here alone sets the anchor and R is the prior.
+  const cold = scoreAll({ ...input, postedIds: [], prefs: prefs({ loves: ["Thai"] }), here: northOf(0) });
+  assert.equal(cold.radius.source, "here");
+  assert.equal(cold.radius.miles, 7);
+  assert.equal(cold.radius.points, 0);
+  assert.equal(scoredId(cold, "n1").D, 1, "4 mi is inside 7");
+  assert.equal(scoredId(cold, "n7").D, 0.75, "21 mi, 14 past: the soft floor");
+});
+
+ok("radius: history without coordinates, repeats and strangers are not points", () => {
+  const world = geoWorld([
+    ["h1", 0],
+    ["h2", 1],
+    ["h3", 2],
+    ["h4", null],
+    ["n1", 4],
+  ]);
+  const input = { ...base, ...world, prefs: prefs({}), postedIds: ["h1", "h2", "h3"], ratingMean: 4.4 };
+  const plain = scoreAll(input).radius;
+  assert.equal(plain.points, 3);
+  // A fourth place with no coordinates, a repeat, an id the corpus does not have: still three points.
+  const noisy = scoreAll({ ...input, postedIds: ["h1", "h2", "h3", "h4", "nowhere"], prefs: prefs({ been: ["h1", "h2"] }) }).radius;
+  assert.deepEqual(noisy, plain);
+  // Two with coordinates and one without is two points: R is the prior.
+  const two = scoreAll({ ...input, postedIds: ["h1", "h2", "h4"] }).radius;
+  assert.equal(two.points, 2);
+  assert.equal(two.miles, 7);
+});
+
+ok("radius: Your taste never reads it", () => {
+  const world = geoWorld([
+    ["h1", 0],
+    ["h2", 1],
+    ["h3", 2],
+    ["n1", 4],
+    ["n4", 9],
+    ["n5", null],
+  ]);
+  // The cuisine-share mode is Your taste's: no traits, no radius, no distance.
+  const cuisineMode = (o) => scoreAll({ ...base, restaurants: world.restaurants, traits: undefined, prefs: prefs({ loves: ["Thai"] }), postedIds: ["h1", "h2", "h3"], ...o });
+  const a = cuisineMode({});
+  const b = cuisineMode({ here: northOf(20) });
+  assert.equal(a.mode, "cuisine");
+  assert.equal(b.radius, null);
+  assert.deepEqual(b.scored.map((s) => s.score), a.scored.map((s) => s.score));
+  for (const s of b.scored) {
+    assert.equal(s.D, 1);
+    assert.equal(s.dist, null);
+  }
+  const takes = (extra) => scoreTaste({ restaurants: world.restaurants, plates: {}, prefs: prefs({ loves: ["Thai"] }), postedIds: ["h1", "h2", "h3"], friendVisits: [], ...extra });
+  assert.deepEqual(takes({ here: northOf(20) }), takes({}), "scoreTaste ignores a position");
+  const src = stripComments(read("../src/lib/taste.ts"));
+  const start = src.indexOf("export function scoreTaste");
+  const yourTaste = src.slice(start, src.indexOf("\nexport ", start + 1));
+  assert.ok(start > 0 && !/radius|distanceFactor|medoid|\.here\b|FORME_RADIUS|\.dist\b/.test(yourTaste), "scoreTaste does not reach the radius");
+  // And the strip's source has no reason line and no profile line.
+  for (const file of ["TasteSection", "TasteChips"]) {
+    const s = stripComments(read(`../src/components/${file}.tsx`));
+    assert.ok(!/ForMeProfileLine|\.profile\b/.test(s), `${file} shows no profile line`);
+  }
+});
+
+ok("radius: 'Within your usual N mi' needs `here`, a range read off three places, and nothing stronger to say", () => {
+  const places = [
+    ["h1", 0],
+    ["h2", 1],
+    ["h3", 2],
+    ["m1", 2], // a Thai match, 1 mi from the medoid: says why it was picked, not where it is
+    ["t1", 3, "Italian", PIZZA_MENU], // tail, 2 mi out
+    ["t2", 12, "Italian", PIZZA_MENU], // tail, 11 mi out
+    ["t3", null, "Italian", PIZZA_MENU], // tail, nowhere
+    ["t4", 3, "Italian", PIZZA_MENU, 12], // tail, 2 mi out, fits a $12 plate
+    ["fr", 2, "Italian", PIZZA_MENU], // tail place a friend has been to
+    ["t5", 4.9, "Italian", PIZZA_MENU], // tail, 3.9 mi from `here`: just inside
+    ["t6", 5.5, "Italian", PIZZA_MENU], // tail, 4.5 mi from `here`: just past
+  ];
+  const world = geoWorld(places);
+  const friendAt = friend(byRestaurant(world, "fr"), "f1", "Ana");
+  const history = { postedIds: ["h1", "h2", "h3"], prefs: prefs({}), ratingMean: 4.4 };
+  const go = (label, o = {}) => {
+    const input = { ...base, ...world, ...history, ...o };
+    const res = rankTaste(input);
+    checkRank(label, input, res);
+    return res;
+  };
+  const here = northOf(1);
+  const withHere = go("near with here", { here });
+  const kind = (res, id) => res.reasonOf(id).kind;
+  assert.equal(kind(withHere, "t1"), "near");
+  assert.equal(withHere.reasonOf("t1").text, "Within your usual 4 mi");
+  assert.equal(kind(withHere, "t5"), "near", "just inside is inside");
+  assert.equal(kind(withHere, "t6"), "rated", "just past it is not");
+  assert.equal(kind(withHere, "t2"), "rated", "beyond R");
+  assert.equal(kind(withHere, "t3"), "rated", "no coordinates: nothing to be near");
+  assert.ok(withHere.reasonOf("t1").text.length <= WEIGHTS.reasonMaxChars);
+  assert.ok(!("friends" in withHere.reasonOf("t1")), "no friends, no friends line");
+  // The match keeps the reason it had.
+  assert.ok(["like", "pick", "friends", "cuisine"].includes(kind(withHere, "m1")), `a match says why: ${kind(withHere, "m1")}`);
+  // Without `here`, or with an unusable one: never off the medoid.
+  for (const [label, extra] of [["no here", {}], ["null here", { here: null }], ["NaN here", { here: { lat: Number.NaN, lng: 1 } }]]) {
+    const res = go(label, extra);
+    assert.ok(res.order.every((id) => kind(res, id) !== "near"), `${label}: nothing is near`);
+    assert.equal(kind(res, "t1"), "rated");
+  }
+  // Under three places the range is a prior, not something they did.
+  const two = go("near with two places", { here, postedIds: ["h1", "h2"] });
+  assert.ok(two.order.every((id) => kind(two, id) !== "near"), "two places: no claim of 'usual'");
+  assert.equal(two.profile.radiusMi, null);
+  // A price that fits, a friend there, a like: each is kept over it.
+  const priced = go("near and price", { here, platePrices: USUAL });
+  assert.equal(kind(priced, "t4"), "price", "a fit is the stronger line");
+  assert.equal(kind(priced, "t1"), "near", "and the unpriced neighbour still gets near");
+  const social = go("near and friends", { here, friendVisits: [friendAt] });
+  assert.equal(kind(social, "fr"), "friends");
+  const liked = go("near and like", { here, postedIds: ["h1", "h2", "h3"] });
+  assert.ok(liked.order.slice(0, liked.matched).every((id) => kind(liked, id) !== "near"), "a match never reads as near");
+  // The rated line it replaced is still there for everything else.
+  assert.ok(withHere.order.some((id) => kind(withHere, id) === "rated"));
+  // The wording has one number, a whole mile count, and nothing negative.
+  const lines = withHere.order.map((id) => withHere.reasonOf(id).text).filter((t) => t.startsWith("Within"));
+  assert.ok(lines.length > 0 && lines.every((t) => /^Within your usual \d+ mi$/.test(t)));
+});
+
+ok("profile: the For me answer carries the line's parts from the viewer's own data", () => {
+  const places = [
+    ["h1", 0],
+    ["h2", 1],
+    ["h3", 2],
+    ["t1", 3, "Italian", PIZZA_MENU],
+    ["t2", 12, "Italian", PIZZA_MENU],
+  ];
+  const world = geoWorld(places);
+  const input = { ...base, ...world, prefs: prefs({}), postedIds: ["h1", "h2", "h3"], platePrices: USUAL, ratingMean: 4.4 };
+  const res = rankTaste(input);
+  checkRank("profile", input, res);
+  const sc = scoreAll(input);
+  assert.deepEqual(Object.keys(res.profile).sort(), ["budget", "cuisines", "radiusMi"]);
+  assert.deepEqual(res.profile.budget, { lo: 11, hi: 13 });
+  assert.equal(res.profile.radiusMi, Math.round(sc.radius.miles));
+  assert.equal(res.profile.radiusMi, 4);
+  assert.deepEqual(res.profile.cuisines, sc.topCuisines.map((c) => c.cuisine));
+  assert.deepEqual(res.profile.cuisines, ["Thai"]);
+  // The range is the usual plate as the reason prints it, in whole dollars, lo first.
+  assert.ok(Number.isInteger(res.profile.budget.lo) && Number.isInteger(res.profile.budget.hi) && res.profile.budget.lo <= res.profile.budget.hi);
+  assert.deepEqual(res.profile.budget, { lo: res.budget.lo, hi: res.budget.hi });
+  // Where they are, who their friends are, what they would see on the list: none of it enters.
+  assert.deepEqual(rankTaste({ ...input, here: northOf(15) }).profile, res.profile);
+  assert.deepEqual(rankTaste({ ...input, friendVisits: [friend(byRestaurant(world, "t1"), "f1", "Ana")] }).profile, res.profile);
+  // It is the viewer's own and carries no id, no name, no coordinates.
+  const json = JSON.stringify(res.profile);
+  assert.ok(!/h1|h2|h3|t1|t2|f1|Ana|lat|lng|\d\d\.\d/.test(json), `nothing identifying: ${json}`);
+  // Too little to say: each part is null or empty on its own, never made up.
+  const cold = rankTaste({ ...base, ...world, prefs: prefs({ loves: ["Thai"] }), ratingMean: 4.4 });
+  assert.deepEqual(cold.profile, { budget: null, radiusMi: null, cuisines: [] });
+  const noPrices = rankTaste({ ...input, platePrices: [] });
+  assert.equal(noPrices.profile.budget, null);
+  assert.equal(noPrices.profile.radiusMi, 4);
+  const tooFew = rankTaste({ ...input, postedIds: ["h1", "h2"] });
+  assert.equal(tooFew.profile.radiusMi, null, "two places is not a pattern");
+  assert.deepEqual(tooFew.profile.cuisines, [], "and the cuisines wait for three too");
+  const noCoords = rankTaste({ ...input, restaurants: withoutCoords(world.restaurants) });
+  assert.equal(noCoords.profile.radiusMi, null, "no coordinates, no radius to claim");
+  assert.deepEqual(noCoords.profile.budget, { lo: 11, hi: 13 });
+});
+
+ok("profile: it rides the private answer only, built in one place", () => {
+  const wire = stripComments(read("../src/lib/discoverWire.ts"));
+  const block = wire.slice(wire.indexOf("export type ForMeProfile"), wire.indexOf("};", wire.indexOf("export type ForMeProfile")) + 2);
+  assert.match(block, /budget: \{ lo: number; hi: number \} \| null;/);
+  assert.match(block, /radiusMi: number \| null;/);
+  assert.match(block, /cuisines: string\[\];/);
+  assert.equal((block.match(/^\s+\w+:/gm) ?? []).length, 3, "the profile has three parts and no more");
+  assert.match(wire, /profile\?: ForMeProfile;/);
+  assert.match(wire, /kind: "like" \| "pick" \| "friends" \| "cuisine" \| "price" \| "near" \| "rated"/);
+  // forMeInfo passes it through on an answer, and a paused answer has none.
+  const disc = stripComments(read("../src/lib/discover.ts")).replace(/\r\n/g, "\n");
+  const fn = disc.slice(disc.indexOf("function forMeInfo"));
+  const body = fn.slice(0, fn.indexOf("\n}\n"));
+  assert.match(body, /\.\.\.\(personal\.profile && \{ profile: personal\.profile \}\)/);
+  assert.ok(/paused: true \}/.test(body) && !/paused: true[^\n]*profile/.test(body), "a paused answer carries no profile");
+  assert.match(disc, /profile\?: ForMeProfile;/);
+  // The route: `here` reaches the ranker (it was already validated for the page), and only the POST ranks.
+  assert.match(postFn, /rankTaste\(\{[\s\S]*?\bhere,\s*\}\)/);
+  assert.ok(!getFn.includes("rankTaste") && !getFn.includes("profile"), "the public GET has neither");
+  assert.ok(!stripComments(read("../src/app/api/account/taste/route.ts")).match(/\bprofile\b|\bhere\b/), "Your taste's route has neither");
+  // The ranker returns it; Your taste's result has no such key.
+  const taste = stripComments(read("../src/lib/taste.ts"));
+  assert.match(taste, /profile: profileOf\(scan\)/);
+  assert.ok(!/profile/.test(taste.slice(taste.indexOf("export function scoreTaste"), taste.indexOf("\nexport ", taste.indexOf("export function scoreTaste") + 1))));
+});
+
+await okAsync("profile: the line is one sentence, numbers in mono, parts left out, nothing when empty", async () => {
+  let ForMeProfileLine;
+  let profileParts;
+  let renderToStaticMarkup;
+  let createElement;
+  try {
+    ({ renderToStaticMarkup } = await import("react-dom/server"));
+    ({ createElement } = await import("react"));
+    ({ ForMeProfileLine, profileParts } = await import("../src/components/ForMeProfileLine.tsx"));
+  } catch {
+    ForMeProfileLine = null;
+  }
+  assert.ok(ForMeProfileLine, "the line component loads");
+  const html = (profile, className) => renderToStaticMarkup(createElement(ForMeProfileLine, { profile, className }));
+  const text = (markup) => markup.replace(/<[^>]*>/g, "");
+  const mono = (s) => `<span class="font-mono tabular-nums">${s}</span>`;
+  const full = { budget: { lo: 11, hi: 18 }, radiusMi: 7, cuisines: ["Pizza", "Coffee", "Breakfast"] };
+  const sentence = `Tuned to you · $11${DASH}18 a plate · usually within 7 mi · pizza, coffee, breakfast`;
+  const markup = html(full, "x-line");
+  assert.equal(text(markup), sentence);
+  assert.equal(markup, `<p class="x-line">Tuned to you · ${mono(`$11${DASH}18`)} a plate · usually within ${mono("7 mi")} · pizza, coffee, breakfast</p>`);
+  // Each part is left out on its own, in order, with no stray separator.
+  assert.equal(text(html({ ...full, budget: null })), "Tuned to you · usually within 7 mi · pizza, coffee, breakfast");
+  assert.equal(text(html({ ...full, radiusMi: null })), `Tuned to you · $11${DASH}18 a plate · pizza, coffee, breakfast`);
+  assert.equal(text(html({ ...full, cuisines: [] })), `Tuned to you · $11${DASH}18 a plate · usually within 7 mi`);
+  assert.equal(text(html({ budget: null, radiusMi: 12, cuisines: [] })), "Tuned to you · usually within 12 mi");
+  assert.equal(text(html({ budget: { lo: 12, hi: 12 }, radiusMi: null, cuisines: [] })), "Tuned to you · $12 a plate");
+  assert.equal(text(html({ budget: null, radiusMi: null, cuisines: ["BBQ", "Thai"] })), "Tuned to you · BBQ, thai");
+  // Nothing to say, nothing printed: no "Tuned to you" on its own.
+  assert.equal(html({ budget: null, radiusMi: null, cuisines: [] }, "x-line"), "");
+  assert.deepEqual(profileParts({ budget: null, radiusMi: null, cuisines: [] }), []);
+  // Every number is set in mono and the words are not swallowed.
+  const digits = text(markup).match(/\d+/g).length;
+  assert.equal((markup.match(/font-mono tabular-nums/g) ?? []).length, 2, "the range and the distance");
+  assert.equal(digits, 3, "11, 18 and 7");
+  assert.ok(!/\bmi\b/.test(markup.replace(mono("7 mi"), "")), "the unit stays inside the mono span");
+  assert.ok(!/friend|follower/i.test(markup));
+
+  // Both surfaces: the same component, mounted in the header, quiet and in the colours already there.
+  const phone = stripComments(read("../src/components/mobile/PhoneTasteSection.tsx")).replace(/\r\n/g, "\n");
+  const web = stripComments(read("../src/components/DiscoverBrowser.tsx"));
+  for (const [name, src] of [["phone", phone], ["web", web]]) {
+    assert.match(src, /import \{ ForMeProfileLine \} from "@\/components\/ForMeProfileLine"/, `${name} imports it`);
+    assert.equal((src.match(/<ForMeProfileLine/g) ?? []).length, 1, `${name} mounts it once`);
+    assert.match(src, /\{info\.profile && \(\s*<ForMeProfileLine\s+profile=\{info\.profile\}/, `${name} mounts it only with a profile`);
+  }
+  const phoneUse = /<ForMeProfileLine\s+profile=\{info\.profile\}\s+className="([^"]+)"/.exec(phone);
+  assert.ok(phoneUse, "the phone passes a class");
+  for (const cls of ["text-[13px]", "leading-snug", "text-pm-grey-text"]) assert.ok(phoneUse[1].split(" ").includes(cls), `phone line is ${cls}`);
+  assert.ok(!/orange|zinc|bg-|border|shadow|uppercase|mono-label/.test(phoneUse[1]), "no new colours, no chrome");
+  assert.ok(
+    phone.indexOf("{info.header}") < phone.indexOf("<ForMeProfileLine") && phone.indexOf("<ForMeProfileLine") < phone.search(/Tune\s*<\/button>/),
+    "phone: under the header sentence, ahead of the Tune button",
+  );
+  const webRow = 'className="mb-3 flex flex-wrap items-center gap-x-2 px-1 text-[13px] text-pm-grey-text"';
+  const rowAt = web.indexOf(webRow);
+  const webAt = web.indexOf("<ForMeProfileLine");
+  assert.ok(rowAt > 0 && webAt > rowAt && !web.slice(rowAt, webAt).includes("</div>"), "web: inside the header row, which is already the quiet colour");
+  const webUse = /<ForMeProfileLine\s+profile=\{info\.profile\}\s+className="([^"]+)"/.exec(web);
+  assert.ok(webUse && webUse[1].split(" ").includes("basis-full"), "web: on a line of its own");
+  assert.ok(!/orange|zinc|bg-|border|shadow|uppercase|mono-label/.test(webUse[1]));
+  // Rendered with each surface's own class: the line is there, and it is the same sentence.
+  assert.equal(text(html(full, phoneUse[1])), sentence);
+  assert.equal(text(html(full, webUse[1])), sentence);
+  assert.equal(html({ budget: null, radiusMi: null, cuisines: [] }, phoneUse[1]), "");
+  assert.equal(html({ budget: null, radiusMi: null, cuisines: [] }, webUse[1]), "");
+  // The component itself carries no colour, no star, no blend number.
+  const comp = stripComments(read("../src/components/ForMeProfileLine.tsx"));
+  assert.ok(!/orange|zinc|text-pm|star|blend|rating/i.test(comp));
+  assert.match(comp, /import \{ ReasonText \} from "@\/components\/ReasonText"/);
 });
 
 console.log(`forme:check  ${n} fixture and route cases ok`);

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
+import { ForMeProfileLine } from "@/components/ForMeProfileLine";
 import { CloseIcon } from "@/components/icons";
 import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
 import type { DiscoverPage, DiscoverResult } from "@/lib/discover";
@@ -730,6 +731,14 @@ export function PhoneForMeResults({
               on 3 places you've been" — and absent when it has nothing to say. */}
           {info.header && (
             <p className="mt-1 text-[13px] leading-snug text-pm-grey-text">{info.header}</p>
+          )}
+          {/* What the list has learned — usual plate, usual distance, top
+              cuisines — as one quiet line; absent when it has learned nothing. */}
+          {info.profile && (
+            <ForMeProfileLine
+              profile={info.profile}
+              className="mt-1 text-[13px] leading-snug text-pm-grey-text"
+            />
           )}
         </div>
         {info.basis !== "none" && (

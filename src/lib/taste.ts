@@ -60,6 +60,20 @@
  *    trust of half or more, earns "Fits your usual $11–18 plate" when no like,
  *    pick, friend or cuisine line applies. Prices on the viewer's posts are
  *    history, as dates are; the posts' ratings, votes and the rest feed nothing.
+ *  - A travel radius. The viewer's history points are the places they have been
+ *    or posted at (listed, with coordinates). R is how far they usually go: the
+ *    75th percentile of the distances from the medoid (the point nearest all the
+ *    others) pulled toward 7 mi by three places' worth of prior, R = (n*p75 +
+ *    3*7) / (n+3), kept within 3 to 20 mi. Under 3 points R is 7 outright. The
+ *    anchor is where the viewer stands (`here`) when they share it, else the
+ *    medoid. A place within R of the anchor has D = 1; farther out D falls as
+ *    1 / (1 + ((d-R)/R)^2), never under 0.55 (0.75 under 3 points). D scales
+ *    the affinity and neighborhood terms only, so quality and friends stay as
+ *    they were, and the matches are still picked on A alone: distance reorders
+ *    them, it never removes one. No anchor, or a place with no coordinates, is
+ *    D = 1. With `here` and from 3 points, a place within R with nothing
+ *    stronger to say reads "Within your usual 7 mi". The scan also hands the
+ *    profile line (budget range, radius, top cuisines) to the private POST.
  * The viewer's own ratings, likes, hearts, upvotes and saves feed none of it.
  */
 import type { RestaurantView } from "@/data/restaurantTypes";
@@ -73,7 +87,8 @@ import {
   type PlaceTraits,
   type TraitIndex,
 } from "@/lib/profileTraits";
-import type { ForMeInfo, ForMeReason } from "@/lib/discoverWire";
+import type { ForMeInfo, ForMeProfile, ForMeReason } from "@/lib/discoverWire";
+import { milesBetween, type Coords } from "@/lib/geo";
 import { MIN_POSTS } from "@/lib/tasteMatch";
 
 /** Your taste. For me reads FORME_WEIGHTS for the four terms below and the same rest. */
@@ -137,10 +152,11 @@ export const WEIGHTS = {
 } as const;
 
 /**
- * SCORE for For me = g * (100 * (a*A + f*F + q*Q + n*N) + budget points), the
+ * SCORE for For me = g * (100 * (a*A*D + f*F + q*Q + n*N*D) + budget points), the
  * weights of `WEIGHTS` for Your taste left alone. Dials: the four sum to 1, so a
  * perfect place scores 100 before the budget term, which moves it by at most
- * 100 * `budget` points either way (see FORME_BUDGET).
+ * 100 * `budget` points either way (see FORME_BUDGET). D is the distance factor
+ * (see FORME_RADIUS), 1 for a place in the viewer's range.
  */
 export const FORME_WEIGHTS = {
   affinity: 0.4,
@@ -225,6 +241,21 @@ export const FORME_BUDGET = {
   /** The reason line needs a fit of at least this, at a trust of at least reasonConf. */
   reasonFit: 0.9,
   reasonConf: 0.5,
+} as const;
+
+/** The travel radius For me reads: how far the viewer usually goes, and how a farther place is softened. */
+export const FORME_RADIUS = {
+  /** R is read off the history from this many points; under it R is priorMiles. */
+  minPoints: 3,
+  /** R = (n * p75 + priorPlaces * priorMiles) / (n + priorPlaces): a prior of this many places at priorMiles. */
+  priorPlaces: 3,
+  priorMiles: 7,
+  /** R stays inside this range, in miles. */
+  minMiles: 3,
+  maxMiles: 20,
+  /** Past R, D = 1 / (1 + ((d - R) / R)^2), and never under this (under minPoints points: floorFew). */
+  floor: 0.55,
+  floorFew: 0.75,
 } as const;
 
 /**
@@ -559,7 +590,7 @@ export type Scored = {
   index: number;
   /**
    * Your taste: 100 * (0.5 A + 0.2 F + 0.2 Q + 0.1 N).
-   * For me: G * (100 * (0.4 A + 0.2 F + 0.3 Q + 0.1 N) + budgetPts).
+   * For me: G * (100 * (0.4 A*D + 0.2 F + 0.3 Q + 0.1 N*D) + budgetPts).
    */
   score: number;
   /** 100 * (0.2 Q + 0.1 N): how the "also well rated" tail is ordered. */
@@ -593,6 +624,10 @@ export type Scored = {
   Pf: number | null;
   /** For me: the budget term in score points, exactly 0 when Pf is null. Always 0 in the cuisine-share mode. */
   budgetPts: number;
+  /** For me: miles from the radius anchor, null when there is no anchor or the place has no coordinates. */
+  dist: number | null;
+  /** For me: the distance factor on A and N, 0.55 to 1; exactly 1 when `dist` is null. Always 1 in the cuisine-share mode. */
+  D: number;
 };
 
 export type ScanInput = TasteInput & {
@@ -626,6 +661,12 @@ export type ScanInput = TasteInput & {
    * from plates.
    */
   platePrices?: readonly number[];
+  /**
+   * For me: where the viewer stands, for the travel radius. The anchor is this
+   * when set, else the medoid of their history. Absent, null or not a finite
+   * pair: no `here`, and the medoid anchors (or nothing, with no history).
+   */
+  here?: Coords | null;
   /** For me: the clock the recency decay reads, in epoch milliseconds. Defaults to now. */
   now?: number;
 };
@@ -652,6 +693,8 @@ export type TasteScan = {
   topCuisines: CuisineShare[];
   /** Similarity mode: the viewer's usual plate in whole dollars, null when there is not enough to say. */
   budget: UsualPlate | null;
+  /** Similarity mode: how far the viewer goes and from where; null in the cuisine-share mode. */
+  radius: Radius | null;
 };
 
 type Signals = {
@@ -881,6 +924,80 @@ function topCuisinesOf(
     .map(([cuisine, v]) => ({ cuisine, share: v, places: visits.get(cuisine) ?? 0 }));
 }
 
+/** A place in the viewer's history, as a point: an id to break ties on, and where it is. */
+export type HistoryPoint = Coords & { id: string };
+
+/** How far the viewer goes, and from where we measure it. */
+export type Radius = {
+  /** R, in miles, before any rounding. */
+  miles: number;
+  /** The least D falls to. */
+  floor: number;
+  /** History points R was read from. Under FORME_RADIUS.minPoints, R is the prior. */
+  points: number;
+  /** Where distance is measured from; null when there is neither `here` nor a history. */
+  anchor: Coords | null;
+  /** `here`: the viewer's position; `medoid`: the middle of their history. */
+  source: "here" | "medoid" | null;
+};
+
+/**
+ * The point with the smallest summed distance to the others, ties to the lower id
+ * so the same history gives the same medoid however it was ordered. One far-off
+ * trip cannot drag it, which a mean would let it. Null for none; one point is
+ * its own.
+ */
+export function medoidOf<P extends HistoryPoint>(points: readonly P[]): P | null {
+  const ordered = points.slice().sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  let best: P | null = null;
+  let bestSum = Infinity;
+  for (const a of ordered) {
+    let sum = 0;
+    for (const b of ordered) if (b !== a) sum += milesBetween(a, b);
+    if (sum < bestSum - 1e-9) {
+      best = a;
+      bestSum = sum;
+    }
+  }
+  return best;
+}
+
+/**
+ * R and the anchor. From minPoints points, R = (n * p75 + 3 * 7) / (n + 3), p75
+ * being the 75th percentile of the distances from the medoid to the other
+ * points, kept within 3 to 20 mi; fewer points leave R at 7 with the softer
+ * floor. The anchor is `here` when it is a real position, else the medoid.
+ */
+export function radiusOf(points: readonly HistoryPoint[], here?: Coords | null): Radius {
+  const c = FORME_RADIUS;
+  const medoid = medoidOf(points);
+  let miles: number = c.priorMiles;
+  let floor: number = c.floorFew;
+  if (medoid && points.length >= c.minPoints) {
+    const away = points.filter((p) => p !== medoid).map((p) => milesBetween(medoid, p)).sort(ascending);
+    const n = points.length;
+    const mix = (n * quantile(away, 0.75) + c.priorPlaces * c.priorMiles) / (n + c.priorPlaces);
+    miles = Math.min(c.maxMiles, Math.max(c.minMiles, mix));
+    floor = c.floor;
+  }
+  const standing = here && Number.isFinite(here.lat) && Number.isFinite(here.lng) ? here : null;
+  const anchor = standing ?? medoid;
+  return {
+    miles,
+    floor,
+    points: points.length,
+    anchor: anchor ? { lat: anchor.lat, lng: anchor.lng } : null,
+    source: standing ? "here" : medoid ? "medoid" : null,
+  };
+}
+
+/** D: 1 up to R, then 1 / (1 + ((d - R) / R)^2), never under the floor. Not a number: 1. */
+export function distanceFactor(miles: number, radius: number, floor: number): number {
+  if (!(miles > radius)) return 1;
+  const x = (miles - radius) / radius;
+  return Math.max(floor, 1 / (1 + x * x));
+}
+
 /**
  * The seeds For me reads history from: places the viewer marked "been" (newest
  * first; the list is oldest-first) and places they posted at (in the order
@@ -982,6 +1099,18 @@ export function scoreAll(input: ScanInput): TasteScan {
     }
     budget = budgetOf(input.platePrices ?? [], places);
   }
+  // The radius: R from the places they have been (those with coordinates, by id
+  // so the order they arrived in cannot matter), measured from `here`, else the
+  // medoid. Absent in Your taste, so D is 1 and nothing moves.
+  let radius: Radius | null = null;
+  if (index) {
+    const points: HistoryPoint[] = [];
+    for (const id of [...visitedIds].sort()) {
+      const p = sig.byId.get(id)!;
+      if (Number.isFinite(p.lat) && Number.isFinite(p.lng)) points.push({ id, lat: p.lat, lng: p.lng });
+    }
+    radius = radiusOf(points, input.here);
+  }
   // The cuisine profile reads the whole of the viewer's history, not just the
   // seeds, and only once there are enough of them to say what they eat a lot of.
   const cuisineShare: ReadonlyMap<string, number> =
@@ -1076,7 +1205,14 @@ export function scoreAll(input: ScanInput): TasteScan {
     const G = index ? qualityFloor(Rs, r.rating, r.reviewCount) : 1;
     const Q = qualityOf(r, plates[r.id], index ? Rs : undefined);
     const plate = plates[r.id];
-    const sum = 100 * (W.affinity * A + W.friends * F + W.quality * Q + W.neighborhood * N);
+    // Distance softens affinity and neighborhood, nothing else. No anchor or no
+    // coordinates: D is exactly 1 and the sum is what it was.
+    const dist =
+      radius?.anchor && Number.isFinite(r.lat) && Number.isFinite(r.lng)
+        ? milesBetween(radius.anchor, r)
+        : null;
+    const D = radius && dist != null ? distanceFactor(dist, radius.miles, radius.floor) : 1;
+    const sum = 100 * (W.affinity * A * D + W.friends * F + W.quality * Q + W.neighborhood * N * D);
     // No price or no B: no fit and exactly 0 points, so the score is what it was.
     const Pr = index ? (index.prices.get(r.id) ?? null) : null;
     const Pf = budget && Pr != null ? priceFit(Pr, budget) : null;
@@ -1103,6 +1239,8 @@ export function scoreAll(input: ScanInput): TasteScan {
       Pr,
       Pf,
       budgetPts,
+      dist,
+      D,
     });
   }
 
@@ -1128,6 +1266,7 @@ export function scoreAll(input: ScanInput): TasteScan {
           conf: budget.conf,
         }
       : null,
+    radius,
   };
 }
 
@@ -1323,6 +1462,13 @@ export type ForMeRank = ForMeArrangement & {
    * viewer: it is never sent for anyone else, and only on the private POST.
    */
   budget: UsualPlate | null;
+  /** How far the viewer goes and from where; see `Radius`. Server side only: the wire carries the rounded R. */
+  radius: Radius | null;
+  /**
+   * What For me has learned about the viewer, for the one quiet line above the
+   * list. Private to the viewer, like `budget`, and from their own data only.
+   */
+  profile: ForMeProfile;
   /**
    * The arrangement over just these ids (the rows a filter left). Sorting the
    * full list and then filtering it is not the same thing: a chain's best
@@ -1373,6 +1519,8 @@ export function rankTaste(input: RankInput): ForMeRank {
     exclude: scan.exclude,
     topCuisines: scan.topCuisines,
     budget: scan.budget,
+    radius: scan.radius,
+    profile: profileOf(scan),
     rankAmong: (ids) => {
       let all = true;
       for (const s of sorted) {
@@ -1389,6 +1537,21 @@ export function rankTaste(input: RankInput): ForMeRank {
         basis,
       );
     },
+  };
+}
+
+/**
+ * The profile line's parts: the usual plate range, the usual radius and the top
+ * cuisines, each null or empty when there is not enough to say. The radius is
+ * only claimed from FORME_RADIUS.minPoints points: below it R is a prior, not
+ * something the viewer did.
+ */
+function profileOf(scan: TasteScan): ForMeProfile {
+  const r = scan.radius;
+  return {
+    budget: scan.budget ? { lo: scan.budget.lo, hi: scan.budget.hi } : null,
+    radiusMi: r && r.points >= FORME_RADIUS.minPoints ? Math.round(r.miles) : null,
+    cuisines: scan.topCuisines.map((c) => c.cuisine),
   };
 }
 
@@ -1641,6 +1804,8 @@ function chooseReason(
   // this viewer, the rating line only about the place.
   const usual = priceReason(s, scan);
   if (usual) return usual;
+  const close = nearReason(s, scan);
+  if (close) return close;
   // A claim about the rating is made off R', the number the score reads: a thin
   // rating has been pulled toward the mean and a place with none says nothing.
   // The card's quality line drops its own tier word whenever this one speaks
@@ -1674,6 +1839,19 @@ function priceReason(s: Scored, scan: TasteScan): ForMeReason | null {
   if (u.conf < FORME_BUDGET.reasonConf || s.Pf < FORME_BUDGET.reasonFit) return null;
   const range = u.lo === u.hi ? `$${u.lo}` : `$${u.lo}\u2013${u.hi}`;
   return { kind: "price", text: clipReason(`Fits your usual ${range} plate`) };
+}
+
+/**
+ * "Within your usual 7 mi": the viewer shared where they are, the place is
+ * inside the radius their history gives (read off at least minPoints places, so
+ * "usual" is true), and nothing stronger spoke. Without `here` there is no
+ * position to be near, so it never speaks off the medoid.
+ */
+function nearReason(s: Scored, scan: TasteScan): ForMeReason | null {
+  const r = scan.radius;
+  if (!r || r.source !== "here" || r.points < FORME_RADIUS.minPoints) return null;
+  if (s.dist == null || s.dist > r.miles) return null;
+  return { kind: "near", text: clipReason(`Within your usual ${Math.round(r.miles)} mi`) };
 }
 
 /** Needs a profile on both sides: a place without one never claims shared dishes. */
