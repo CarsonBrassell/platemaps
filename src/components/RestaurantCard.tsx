@@ -98,8 +98,8 @@ export function RestaurantCard({
    * Why this place is in a personal list, in one short line ("Because you went
    * to Tajima Ramen"). Set only by Your taste, whose callers
    * hold the viewer's own signals; every other surface leaves it out and the
-   * card is exactly what it was. Server-built and capped at 56 characters, so it
-   * fits in at most two lines.
+   * card is exactly what it was. Server-built and capped at 72 characters, so it
+   * fits in at most three lines.
    */
   reason?: string | null;
   /**
@@ -255,7 +255,7 @@ export function RestaurantCard({
         {why && (
           <div className="mb-2.5 space-y-0.5">
             {reason && (
-              <p className="line-clamp-2 text-xs font-medium text-zinc-600">
+              <p className="line-clamp-3 text-xs font-medium text-zinc-600">
                 <ReasonText text={reason} />
               </p>
             )}

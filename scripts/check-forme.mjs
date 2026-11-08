@@ -20,7 +20,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { DISH_TASTE, buildDishIndex, rankDishes, termsOf } from "../src/lib/dishTaste.ts";
+import { DISH_TASTE, buildDishIndex, postWeights, rankDishes, termsOf } from "../src/lib/dishTaste.ts";
 import { EMPTY_PREFS } from "../src/lib/taste.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
@@ -167,7 +167,7 @@ ok("reason truthfulness: every line names a real dish and a real post", () => {
     assert.ok(!/[★☆]|\d\.\d\/|\bstars?\b/i.test(text), "no star or score in a reason");
     if (kind === "dish") {
       const item = text.split(" — ")[0];
-      assert.ok(menus.get(p.restaurant.id).some((m) => m.startsWith(item)), `"${item}" is not on ${p.restaurant.name}'s menu`);
+      assert.ok(menus.get(p.restaurant.id).some((m) => m.startsWith(item.replace(/…$/, ""))), `"${item}" is not on ${p.restaurant.name}'s menu`);
       const seed = /your (.+) at (.+)$/.exec(text);
       assert.ok(seed, text);
       assert.ok(POSTS.some((q) => q.dishName === seed[1] && byId.get(q.restaurantId).name === seed[2]), `no post for "${seed[1]}"`);
@@ -183,6 +183,148 @@ ok("repeatable, and the viewer's other signals are not inputs", () => {
   assert.deepEqual(ids(rank(extra)), ids(rank()), "unknown inputs change nothing");
   const code = src("src/lib/dishTaste.ts").split("\n").filter((l) => !/^\s*(\*|\/\/|\/\*)/.test(l)).join("\n");
   assert.ok(!/\b(votes?|hearts?|upvotes?|likers?|liked|saves?|saved)\b/i.test(code), "dishTaste reads only posts, prefs and the corpus");
+});
+
+/* ---------- 1b. seeds weighted by the viewer's own rating ---------- */
+
+const W = (spec, profiles = []) => {
+  const rs = [];
+  const ds = [];
+  for (const [id, name, cuisine, rating, menu, lat = 32.72, lng = -117.16] of spec) {
+    rs.push({
+      id, name, cuisine, cuisineTags: "", neighborhood: "North Park", distance: "1.0 mi", hours: null,
+      lat, lng, rating, reviewCount: 600, priceBand: null,
+    });
+    for (const m of menu) ds.push({ rid: id, name: m[0], description: m[1] ?? null, price: null, section: m[2] ?? null });
+  }
+  // Each menu line also on a far-away place: terms need a few places behind them to count, and these are never picks.
+  spec.forEach(([, , , , menu], k) => {
+    menu.forEach((m, j) => {
+      rs.push({
+        id: `pad${k}_${j}`, name: `Pad ${k} ${j}`, cuisine: "Fusion", cuisineTags: "", neighborhood: "X", distance: "1.0 mi", hours: null,
+        lat: 33.9, lng: -118.4, rating: 4.0, reviewCount: 200, priceBand: null,
+      });
+      ds.push({ rid: `pad${k}_${j}`, name: m[0], description: m[1] ?? null, price: null, section: m[2] ?? null });
+    });
+  });
+  for (let i = 0; i < 160; i++) {
+    const id = `z${i}`;
+    rs.push({
+      id, name: `Zed ${i}`, cuisine: i % 2 ? "Thai" : "Mexican", cuisineTags: "", neighborhood: "North Park",
+      distance: "1.0 mi", hours: null, lat: 32.72, lng: -117.16, rating: 4.0, reviewCount: 200, priceBand: null,
+    });
+    ds.push({ rid: id, name: `Dish${i}zz` });
+  }
+  const idx = buildDishIndex(rs.map((r) => r.id), ds, profiles);
+  return (posts, over = {}) =>
+    rankDishes({ index: idx, restaurants: rs, plates: {}, ratingMean: 4.3, posts, prefs: EMPTY_PREFS, now: NOW, ...over });
+};
+const rated = (rid, dish, rating, extra = {}) => post(rid, dish, 10, { rating, ...extra });
+
+const SEEDS3 = [
+  ["hA", "Honey Hut", "American", 4.5, [["Hot Honey Chicken"]]],
+  ["hB", "Noodle Tomo", "Japanese", 4.4, [["Mushroom Kimchi Ramen"]]],
+  ["hC", "Better Beans", "Coffee & Tea", 4.6, [["Banana Matcha", null, "Drinks"]]],
+  ["hD", "Taco Stop", "Mexican", 4.5, [["Brisket Tacos"]]],
+];
+const RATED = [
+  rated("hA", "Hot Honey Chicken", 95),
+  rated("hB", "Mushroom Kimchi Ramen", 60),
+  rated("hC", "Banana Matcha", 80),
+  rated("hD", "Brisket Tacos", 40),
+];
+
+ok("weights: smooth, monotone, floored, top about 2.5x the lowest; under 50 weighs nothing; unrated is the median", () => {
+  const w = postWeights([{ rating: 95 }, { rating: 60 }, { rating: 80 }, { rating: 40 }, { rating: null }, { rating: 70 }]);
+  assert.equal(w[3], 0, "under 50 is dropped");
+  assert.equal(w[0], 1, "the highest-rated weighs most");
+  assert.ok(Math.abs(w[1] - DISH_TASTE.ratingFloor) < 1e-9, "the lowest kept sits on the floor");
+  assert.ok(w[0] / w[1] >= 2 && w[0] / w[1] <= 3, "top is 2-3x the lowest");
+  assert.ok(w[1] < w[5] && w[5] < w[2] && w[2] < w[0], "monotone");
+  const kept = [w[0], w[1], w[2], w[5]].sort((a, b) => a - b);
+  assert.equal(w[4], (kept[1] + kept[2]) / 2, "unrated gets the median");
+  assert.deepEqual(postWeights([{ rating: 70 }, { rating: 70 }]), [1, 1], "no spread, no preference");
+  assert.deepEqual(postWeights([{}, { rating: null }]), [1, 1], "nothing rated, all neutral");
+});
+
+ok("a high-rated seed outranks an equal match from a low-rated one", () => {
+  const rank2 = W([...SEEDS3,
+    ["c1", "Nashville Stand", "American", 4.5, [["Hot Honey Chicken Sandwich"]]],
+    ["c2", "Tonkotsu Lab", "Japanese", 4.5, [["Kimchi Ramen Bowl"]]],
+  ]);
+  const got = ids(rank2(RATED));
+  assert.ok(got.includes("c1") && got.includes("c2"), "both found");
+  assert.ok(got.indexOf("c1") < got.indexOf("c2"), "the 95 leads the 60");
+});
+
+ok("a low-rated seed still yields a pick when nothing else contests it", () => {
+  const rank2 = W([...SEEDS3, ["c2", "Tonkotsu Lab", "Japanese", 4.5, [["Kimchi Ramen Bowl"]]]]);
+  const c2 = rank2(RATED).find((p) => p.restaurant.id === "c2");
+  assert.ok(c2, "the 60-rated ramen still seeds a pick");
+  assert.match(c2.reason.text, /your Mushroom Kimchi Ramen at Noodle Tomo/);
+});
+
+ok("a dish rated under 50 seeds nothing; an unrated one still does", () => {
+  const rank2 = W([...SEEDS3,
+    ["c3", "Smoke House", "Mexican", 4.7, [["Brisket Tacos Plate"]]],
+    ["c1", "Nashville Stand", "American", 4.5, [["Hot Honey Chicken Sandwich"]]],
+  ]);
+  const picks = rank2(RATED);
+  assert.ok(!picks.some((p) => /Brisket/.test(p.reason.text) && p.reason.kind === "dish"), "the 40-rated brisket seeds no dish pick");
+  const unrated = RATED.map((p) => (p.dishName === "Hot Honey Chicken" ? { ...p, rating: null } : p));
+  assert.ok(ids(rank2(unrated)).includes("c1"), "an unrated post still seeds");
+});
+
+ok("a match needs the dish's head noun, not a modifier alone", () => {
+  const rank2 = W([
+    ["hA", "Mkutano", "African", 4.5, [["Koji-Marinated Chicken Wings"]]],
+    ["hB", "Noodle Tomo", "Japanese", 4.4, [["Mushroom Kimchi Ramen"]]],
+    ["hC", "Better Beans", "Coffee & Tea", 4.6, [["Banana Matcha", null, "Drinks"]]],
+    ["bad", "Koji Table", "Japanese", 4.7, [["Koji Harami"]]],
+    ["good", "Koji Wing Bar", "American", 4.6, [["Koji Chicken Wings"]]],
+  ]);
+  const posts = [rated("hA", "Koji-Marinated Chicken Wings", 90), rated("hB", "Mushroom Kimchi Ramen", 70), rated("hC", "Banana Matcha", 80)];
+  const picks = rank2(posts);
+  const bad = picks.find((p) => p.restaurant.id === "bad");
+  assert.ok(!bad || bad.reason.kind !== "dish", "Koji Harami is not a chicken wing");
+  assert.equal(picks.find((p) => p.restaurant.id === "good")?.reason.kind, "dish", "Koji Chicken Wings is");
+});
+
+ok("one seed fills at most one of the first six and two of the first twelve, and never two in a row", () => {
+  const spec = [...SEEDS3];
+  for (let i = 0; i < 14; i++) spec.push([`h${i}`, `Honey Place ${i}`, i % 3 ? "American" : i % 2 ? "Southern" : "Fusion", 4.7, [[`Hot Honey Chicken Style${i}`]]]);
+  spec.push(["r1", "Ramen Ichi", "Japanese", 4.4, [["Kimchi Ramen Bowl"]]], ["r2", "Matcha Mori", "Coffee & Tea", 4.5, [["Matcha Banana Latte", null, "Drinks"]]]);
+  const picks = W(spec)(RATED);
+  const seedOf = (p) => /your (.+?) at /.exec(p.reason.text)?.[1] ?? "";
+  const count = (list, s) => list.filter((p) => seedOf(p) === s).length;
+  for (const s of new Set(picks.map(seedOf).filter(Boolean))) {
+    assert.ok(count(picks.slice(0, DISH_TASTE.top), s) <= DISH_TASTE.perSeedTop, `${s} twice in the first ${DISH_TASTE.top}`);
+    assert.ok(count(picks.slice(0, 12), s) <= DISH_TASTE.perSeed, `${s} more than ${DISH_TASTE.perSeed} in the first 12`);
+  }
+  for (let i = 1; i < picks.length; i++) {
+    const [a, b] = [seedOf(picks[i - 1]), seedOf(picks[i])];
+    assert.ok(!a || a !== b, `${a} twice in a row`);
+  }
+});
+
+ok("a dish nobody else serves falls back to what its place is known for", () => {
+  const profiles = [{ rid: "hP", styles: [], dishTypes: ["ribs", "bbq"], median: null }, { rid: "p1", styles: [], dishTypes: ["ribs", "bbq"], median: null }];
+  const rank2 = W([...SEEDS3,
+    ["hP", "Phil's BBQ", "American", 4.6, [["Baby Back Rib Tickler"]]],
+    ["p1", "Smokey Joe", "American", 4.7, [["Smoked Ribs Plate"]]],
+  ], profiles);
+  const p1 = rank2([...RATED, rated("hP", "Baby Back Rib Tickler", 85)]).find((p) => p.restaurant.id === "p1");
+  assert.ok(p1 && p1.reason.kind !== "cuisine", "the ribs place is found through the BBQ place's types");
+  assert.match(p1.reason.text, /Phil's BBQ/);
+});
+
+ok("a reason is a whole sentence: the place is never cut, only the item gives way", () => {
+  const rank2 = W([...SEEDS3,
+    ["c1", "Nashville Stand", "American", 4.5, [["Hot Honey Chicken Sandwich With Pickled Slaw And Extra Sauce On Brioche"]]],
+  ]);
+  const c1 = rank2([rated("hA", "Hot Honey Chicken", 95, { restaurantName: "sweetgreen" }), ...RATED.slice(1)]).find((p) => p.restaurant.id === "c1");
+  assert.ok(c1.reason.short.length <= DISH_TASTE.shortChars);
+  assert.match(c1.reason.short, /like your Hot Honey Chicken at Honey Hut$/, c1.reason.short);
 });
 
 /* ---------- 2. the source ---------- */

@@ -1560,7 +1560,7 @@ export async function restaurantIdsPostedBy(userId: string): Promise<string[]> {
  */
 export async function postsForDishTaste(userId: string): Promise<ViewerPost[]> {
   const rows = await sql`
-    SELECT p.restaurant_id, p.restaurant, p.dish_name, p.created_at, p.price,
+    SELECT p.restaurant_id, p.restaurant, p.dish_name, p.created_at, p.price, p.rating,
            d.description AS dish_description, d.section AS dish_section
     FROM posts p
     LEFT JOIN LATERAL (
@@ -1579,6 +1579,7 @@ export async function postsForDishTaste(userId: string): Promise<ViewerPost[]> {
     price: r.price == null ? null : String(r.price),
     dishDescription: r.dish_description ? String(r.dish_description) : null,
     dishSection: r.dish_section ? String(r.dish_section) : null,
+    rating: r.rating == null ? null : Number(r.rating),
   }));
 }
 

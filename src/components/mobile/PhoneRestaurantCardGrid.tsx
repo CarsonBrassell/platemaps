@@ -48,7 +48,7 @@ export function PhoneRestaurantCardGrid({
    * Why this card is one of Your taste picks, already worded ("Like your
    * Pad Thai at Siam"), or null everywhere else.
    *
-   * Two lines at most and then an ellipsis: the card is ~167px wide and the
+   * Three lines at most and then an ellipsis: the card is ~167px wide and the
    * longest reason is a sentence, so an unclamped one would make the
    * cards run to wildly different heights for a reason that is not
    * the photo.
@@ -204,7 +204,7 @@ export function PhoneRestaurantCardGrid({
             answer a question the visitor typed, this is the app's own
             explanation, and the accent is spent on what they asked for. */}
         {reason && (
-          <p className="mt-1 line-clamp-2 text-[11px] leading-snug text-zinc-600">
+          <p className="mt-1 line-clamp-3 text-[11px] leading-snug text-zinc-600">
             <ReasonText text={reason} />
           </p>
         )}

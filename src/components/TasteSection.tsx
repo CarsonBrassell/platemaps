@@ -145,7 +145,7 @@ export function TasteSection({
 
   return (
     <section aria-labelledby="your-taste" className="mb-7">
-      <div className="mb-3 flex items-baseline justify-between gap-3 px-1">
+      <div className={access ? "mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-1" : "mb-3 flex items-baseline justify-between gap-3 px-1"}>
         <h2 id="your-taste" className="mono-label text-zinc-500">
           Your taste
         </h2>

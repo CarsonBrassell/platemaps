@@ -331,7 +331,7 @@ export function PhoneTasteSection({
           </button>
         )}
       </div>
-      <p className="-mt-2 mb-2 px-4 text-[12px] text-zinc-400">{taste.shortHeader}</p>
+      <p className={access ? "mb-3 mt-1 px-4 text-[12px] text-zinc-500" : "-mt-2 mb-2 px-4 text-[12px] text-zinc-400"}>{taste.shortHeader}</p>
 
       {taste.undo && (
         <div
