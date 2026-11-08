@@ -1215,6 +1215,33 @@ ok("flavor is pure and has no switch of its own: no imports, no env var, no data
   }
 });
 
+ok("Discover has no Show distance button, and distance reaches every card for the gated accounts only", () => {
+  assert.throws(() => src("src/components/ShowDistanceButton.tsx"), "the button file is gone");
+  for (const f of ["src/components/DiscoverBrowser.tsx", "src/components/mobile/PhoneDiscoverResults.tsx"]) {
+    const s = src(f);
+    assert.ok(!/ShowDistanceButton|Show distance from you/.test(s), `${f} still has the button`);
+    assert.match(s, /useForMeAccess\(\)/, `${f} gates the distance on the account`);
+  }
+  // Our picks gets the reader's position only through the gate; null prints nothing.
+  assert.match(src("src/components/DiscoverBrowser.tsx"), /<OurPicks picks=\{picks\} coords=\{access \? nearby\.coords : null\} \/>/);
+  // The one automatic ask: opt-in, only by the Discover query, and only when the account is gated.
+  const near = src("src/lib/nearby.ts");
+  assert.match(near, /askOnLoad\s*&&\s*access/, "the ask on load is gated on the account");
+  assert.match(near, /claimAutoAsk\(\)/, "and spent once per tab session");
+  assert.match(src("src/lib/useDiscoverQuery.ts"), /useNearby\(\{ askOnLoad: true \}\)/);
+  const callers = [];
+  const walk = (dir) => {
+    for (const e of readdirSync(root + dir, { withFileTypes: true })) {
+      if (e.isDirectory()) walk(`${dir}/${e.name}`);
+      else if (/\.(ts|tsx|mts)$/.test(e.name) && /askOnLoad:\s*true/.test(src(`${dir}/${e.name}`))) callers.push(`${dir}/${e.name}`);
+    }
+  };
+  walk("src");
+  assert.deepEqual(callers, ["src/lib/useDiscoverQuery.ts"], "no other page asks for a position on load");
+  // Coordinates travel in the POST body, never in a URL.
+  assert.ok(!/coords[^\n]*(?:\?|&)(?:lat|lng)=/.test(src("src/lib/useDiscoverQuery.ts")), "no coordinates in a URL");
+});
+
 /* ---------- 3. render parity ---------- */
 
 const tsx = fileURLToPath(new URL("../node_modules/tsx/dist/cli.mjs", import.meta.url));

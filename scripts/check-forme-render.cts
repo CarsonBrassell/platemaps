@@ -159,3 +159,25 @@ for (const [label, Component] of [["web", TasteSection], ["phone", PhoneTasteSec
   }
 }
 console.log(`forme:check  render parity ok (${n - 8} section renders match origin/main's button classes; the dish-pick accounts have no pill, chips or Edit)`);
+
+// Our picks: a distance on each promoted place when the caller hands it the reader's position, and
+// the markup it always was when it does not (the caller passes null for every account but the gated ones).
+{
+  const { OurPicks } = require(path.join(ROOT, "src/components/OurPicks.tsx"));
+  const promoted = [0, 1].map((i) => ({ ...restaurant(i), trending: true, plateScore: undefined }));
+  const reader = { lat: 32.72, lng: -117.16 };
+  const html = (props: any) => renderToStaticMarkup(React.createElement(OurPicks, { picks: promoted, ...props }));
+  const DISTANCE = /<span class="ml-auto[^"]*text-zinc-500[^"]*">\d+(?:\.\d)? mi<\/span>/g;
+
+  const bare = html({});
+  assert.equal(bare, html({ coords: null }), "Our picks: a null position renders exactly what no prop renders");
+  assert.ok(!/ml-auto/.test(bare), "Our picks: no distance without a position");
+  assert.ok(!/1\.0 mi/.test(bare), "Our picks: the seeded downtown-origin distance is never shown as the reader's");
+
+  const located = html({ coords: reader });
+  assert.equal((located.match(DISTANCE) ?? []).length, promoted.length, "Our picks: one distance per promoted place once there is a position");
+  assert.ok(!/1\.0 mi/.test(located), "Our picks: the seeded distance is not shown beside a measured one");
+  // Same markup apart from the distance span.
+  assert.equal(located.replace(DISTANCE, ""), bare, "Our picks: the distance is the only difference");
+  console.log("forme:check  Our picks distance ok (none without a position, one per pick with one, seeded string never shown)");
+}

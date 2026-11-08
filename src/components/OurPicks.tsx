@@ -6,9 +6,26 @@ import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plate
 import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
 import { photoCreditFor } from "@/lib/photoCredit";
 import { placeLine } from "@/lib/placeLine";
+import { distanceLabel, type Coords } from "@/lib/geo";
 
 /** A pick's plate score, or the unrated one when the caller didn't attach it. */
 const score = (r: { plateScore?: PlateScore }) => r.plateScore ?? EMPTY_PLATE_SCORE;
+
+/**
+ * How far this pick is from the reader, at the right edge of the score row. Prints
+ * nothing without a position, so the row is the same markup it always was.
+ */
+function PickDistance({
+  restaurant,
+  coords,
+}: {
+  restaurant: RestaurantView;
+  coords: Coords | null;
+}) {
+  const label = distanceLabel(restaurant, coords);
+  if (label === null) return null;
+  return <span className="ml-auto max-w-[8.5rem] shrink-0 truncate text-zinc-500">{label}</span>;
+}
 
 /**
  * Takes its picks as a prop rather than filtering the restaurant array itself.
@@ -16,11 +33,20 @@ const score = (r: { plateScore?: PlateScore }) => r.plateScore ?? EMPTY_PLATE_SC
  * It renders inside `DiscoverBrowser`, which is a client component, so anything
  * this file imports is downloaded by every visitor — and it only ever needs two
  * rows. The caller already holds the list and does the filtering.
+ *
+ * `coords` is where the reader is, or null. The caller passes it only for the
+ * accounts on lib/forMeGate.ts, and a null prints no distance at all, so this
+ * renders exactly as it always did for everyone else. It is measured here from
+ * each pick's own position (`distanceLabel`): picks carry no server-computed
+ * distance, and the seeded `distance` on the row is from a fixed downtown
+ * origin, which is not the reader.
  */
 export function OurPicks({
   picks,
+  coords = null,
 }: {
   picks: readonly (RestaurantView & { plateScore?: PlateScore })[];
+  coords?: Coords | null;
 }) {
   if (picks.length === 0) return null;
 
@@ -95,6 +121,7 @@ export function OurPicks({
                     </span>
                   </>
                 )}
+                <PickDistance restaurant={r} coords={coords} />
               </div>
               <p className="text-xs text-zinc-500">
                 {placeLine(r.cuisine, r.neighborhood)}

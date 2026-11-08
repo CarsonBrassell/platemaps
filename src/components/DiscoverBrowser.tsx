@@ -8,7 +8,6 @@ import {
 } from "@/components/DiscoverFilters";
 import { RestaurantCard, type MatchMarks } from "@/components/RestaurantCard";
 import { OurPicks } from "@/components/OurPicks";
-import { ShowDistanceButton } from "@/components/ShowDistanceButton";
 import { TasteSection } from "@/components/TasteSection";
 import { Dialog } from "@/components/feed/Dialog";
 import {
@@ -159,8 +158,8 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
   } = useDiscoverQuery(initial, "/");
   const { filters, results, counts, options, picks, total, shown } = view;
   const active = activeFilterCount(filters);
-  /* The distances and the button that asks for a position are for the accounts
-     on lib/forMeGate.ts. For everyone else this is the page it was. */
+  /* A distance from the reader on every card, Our picks included, is for the
+     accounts on lib/forMeGate.ts. For everyone else this is the page it was. */
   const access = useForMeAccess();
 
   /**
@@ -189,8 +188,8 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
    * impression. The prompt itself goes up in lib/nearby.ts.
    *
    * For the accounts on lib/forMeGate.ts the ask is made in useDiscoverQuery
-   * instead (a filter asks; a bare landing never does), and the
-   * offer to ask on purpose is the button above the plain grid.
+   * instead (once on load, and again for a filter), so every card has a
+   * distance without anything to tap.
    */
   const requestLocation = nearby.request;
   useEffect(() => {
@@ -375,7 +374,9 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
               coords={nearby.coords}
             />
           )}
-          {active === 0 && <OurPicks picks={picks} />}
+          {/* The reader's distance on the two promoted places, for the accounts
+              on lib/forMeGate.ts; null prints nothing for everyone else. */}
+          {active === 0 && <OurPicks picks={picks} coords={access ? nearby.coords : null} />}
 
           <section aria-labelledby="all-restaurants">
             <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-1">
@@ -476,13 +477,6 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
               </div>
             ) : (
               <>
-                {/* Only while no position is known and one could still be
-                    given; gone once it is asked for, answered or refused. */}
-                {access && (
-                  <div className="px-1">
-                    <ShowDistanceButton nearby={nearby} />
-                  </div>
-                )}
                 {/* Dimmed, not replaced. The previous answer staying legible
                     under a pending one is the whole reason a filter click still
                     feels immediate now that it costs a request. */}

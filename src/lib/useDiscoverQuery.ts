@@ -30,10 +30,10 @@ import type { DiscoverPage } from "@/lib/discover";
  * carries distances and a nearby ordering, and it is not cacheable, which is
  * why the two are different requests.
  *
- * The accounts on lib/forMeGate.ts also get a position asked for once a filter
- * is on (a bare landing never asks), so the cards can say how far away they
- * are. For everyone else none of that runs: nothing here asks for a position
- * and a failed request stays silent.
+ * The accounts on lib/forMeGate.ts get a position asked for on load (once per
+ * tab session, see `askOnLoad` in lib/nearby.ts) and again whenever a filter is
+ * on, so every card can say how far away it is. For everyone else none of that
+ * runs: nothing here asks for a position and a failed request stays silent.
  */
 
 /* The URL, as the client sees it, comes from lib/queryString.ts — one
@@ -50,21 +50,6 @@ export function filterQueryOf(raw: string): { search: string; shown: number } {
   const filters = new URLSearchParams();
   for (const [key, value] of params) if (!NOT_FILTERS.has(key)) filters.append(key, value);
   return { search: filters.toString(), shown };
-}
-
-/**
- * Whether this URL asks for a position: the query carries a real filter.
- *
- * "Real" is `hasFilterParams` (lib/discoverFilters.ts): our own filter keys
- * holding a value the parser would read. `filterQueryOf`'s `search` is every
- * key that is not paging, so it also holds whatever a link brought along
- * (`utm_source`, `fbclid`, `gclid`), and a landing from an ad must stay a
- * bare landing that never prompts. Exported so the "Show distance from you"
- * button can stand down in the one frame between a filter tap and the request
- * this asks for.
- */
-export function wantsPositionOf(raw: string): boolean {
-  return hasFilterParams(filterQueryOf(raw).search);
 }
 
 type Answer = { key: string; search: string; shown: number; page: DiscoverPage };
@@ -92,7 +77,10 @@ export type DiscoverQuery = {
 
 export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): DiscoverQuery {
   const raw = useQueryString();
-  const nearby = useNearby();
+  // Only this hook asks on load: the other pages that read a position
+  // (feed, restaurant pages, the post picker) keep their tap. It does nothing
+  // for an account that is not on lib/forMeGate.ts.
+  const nearby = useNearby({ askOnLoad: true });
   const access = useForMeAccess();
   const [answer, setAnswer] = useState<Answer | null>(null);
 
@@ -106,13 +94,15 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
   const answerKey = answer?.key ?? null;
 
   /*
-   * The one place a position is asked for. Narrowing the grid is the act
-   * that explains the permission prompt: the cards are about to carry how far
-   * away each one is. A bare landing never asks (a prompt before the visitor has
-   * done anything gets denied by reflex, and a denial is sticky), so Discover
-   * offers "Show distance from you" there instead, which is a tap on the same
-   * nearby.request. Every surface reads this hook's `nearby`, so there is one
-   * rule and one fix, not one per component.
+   * Where a position is asked for besides the one automatic ask on load
+   * (`askOnLoad` above): narrowing the grid is an act that explains the
+   * permission prompt, since the cards are about to carry how far away each one
+   * is. That covers a filtered URL opened cold, or after the ask on load was
+   * already spent in this tab. Every surface reads this hook's `nearby`, so
+   * there is one rule and one fix, not one per component.
+   *
+   * `hasFilterParams` rather than any query key: a landing from an ad carries
+   * `utm_source` or `fbclid` and is still a bare landing.
    */
   const wantsPosition = access && hasFilterParams(search);
   const requestPosition = nearby.request;

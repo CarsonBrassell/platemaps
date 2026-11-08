@@ -11,6 +11,11 @@
  * permission prompt that appears before anyone asked for it gets denied out of
  * reflex, and a denial is sticky per origin — so the one chance at the prompt
  * is spent on the tap that explains why it's being asked.
+ *
+ * The one exception is the accounts on lib/forMeGate.ts, whose Discover cards
+ * all say how far away they are: a caller that passes `askOnLoad`
+ * (useDiscoverQuery) lets them be asked once on load, see `claimAutoAsk`.
+ * Everyone else keeps the tap, and so does every other caller.
  */
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
@@ -46,20 +51,6 @@ export type Nearby = {
   coords: Coords | null;
   /** Raises the permission prompt. A no-op once coordinates are in hand. */
   request: () => void;
-  /**
-   * True when a button offering to ask would be honest: the Permissions API has
-   * answered "prompt" (or does not exist), so nothing will take a fix without
-   * the visitor's say-so, or a fix the browser was allowed to take has failed
-   * and a tap can try again.
-   *
-   * False until the answer is in -- always on the server and for the first
-   * client frame -- so an offer is never printed into the static HTML and then
-   * taken back by a fix that was already on its way (a returning visitor whose
-   * permission is granted gets one a moment after mount). False under a saved
-   * address, which has already answered, and when the permission is blocked,
-   * which a button cannot change.
-   */
-  offerable: boolean;
   /** The saved address, if one is set — see `SavedLocation` below. */
   saved: { label: string } | null;
   /** Saves an address as this device's location, taking over from GPS. */
@@ -195,15 +186,32 @@ const geolocationSupported = () =>
   typeof navigator !== "undefined" && "geolocation" in navigator;
 const geolocationSupportedOnServer = () => true;
 
-export function useNearby(): Nearby {
+/*
+ * The ask on load (`askOnLoad` below) is made once per tab session, so a
+ * client navigation back to Discover, or a prompt the visitor dismissed, never
+ * puts it up again in a loop. The module flag covers this page's life; the
+ * sessionStorage mark covers a reload of the same tab. Storage can throw
+ * (private windows, blocked site data), and then the module flag alone holds.
+ */
+const AUTO_ASK_KEY = "platemaps:asked-position";
+let autoAsked = false;
+
+function claimAutoAsk(): boolean {
+  if (autoAsked) return false;
+  autoAsked = true;
+  try {
+    if (sessionStorage.getItem(AUTO_ASK_KEY)) return false;
+    sessionStorage.setItem(AUTO_ASK_KEY, "1");
+  } catch {
+    // Unreadable or unwritable: this page load still asks once.
+  }
+  return true;
+}
+
+export function useNearby({ askOnLoad = false }: { askOnLoad?: boolean } = {}): Nearby {
   const access = useForMeAccess();
   const [state, setState] = useState<Exclude<NearbyState, "unsupported">>("idle");
   const [coords, setCoords] = useState<Coords | null>(null);
-  // What the Permissions API said, once it has said it. "unknown" is the server
-  // and the first client frame: see `Nearby.offerable`.
-  const [permission, setPermission] = useState<"unknown" | "granted" | "prompt" | "denied">(
-    "unknown",
-  );
 
   const supported = useSyncExternalStore(
     subscribeToNothing,
@@ -258,6 +266,13 @@ export function useNearby(): Nearby {
    * first render. The doctrine above is about the *prompt*: while the browser
    * would still ask, nothing here asks — that stays on the tap (or the search)
    * that explains why.
+   *
+   * The exception is a caller that passes `askOnLoad`, for the accounts on
+   * lib/forMeGate.ts only: their Discover cards all carry a distance, so there
+   * is no tap to wait for. Once the account is known, and the Permissions API
+   * says "prompt" (or says nothing), the prompt goes up once for the tab
+   * session (`claimAutoAsk`). A blocked permission is never asked about, and a
+   * saved address never reaches this far.
    */
   useEffect(() => {
     // A saved location already answers "where" — taking a GPS fix nobody
@@ -267,7 +282,8 @@ export function useNearby(): Nearby {
     if (!supported || saved) return;
     const permissions = typeof navigator !== "undefined" ? navigator.permissions : undefined;
     // Without the permissions API there is nothing to ask; only the accounts on
-    // lib/forMeGate.ts have a use for the answer "prompt" it would give.
+    // lib/forMeGate.ts, asked on load, have a use for the answer "prompt" it
+    // would give.
     if (!access && (!permissions || typeof permissions.query !== "function")) return;
     let cancelled = false;
     void (async () => {
@@ -281,11 +297,17 @@ export function useNearby(): Nearby {
         // works exactly as before, so it reads as "would ask".
       }
       if (cancelled) return;
-      // Only the accounts on lib/forMeGate.ts have anything that reads it (the
-      // offer in ShowDistanceButton), so for everyone else this stays a state
-      // nobody sets and the hook renders exactly as often as it always did.
-      if (access) setPermission(answer);
-      if (answer === "granted") {
+      // Read from the store, as `request` does: the hydration pass still sees
+      // `saved` as none, and an address set to avoid a prompt must not spend
+      // the one automatic ask.
+      const asks =
+        answer === "granted" ||
+        (answer === "prompt" &&
+          askOnLoad &&
+          access &&
+          !getSavedLocationSnapshot() &&
+          claimAutoAsk());
+      if (asks) {
         try {
           request();
         } catch {
@@ -296,7 +318,7 @@ export function useNearby(): Nearby {
     return () => {
       cancelled = true;
     };
-  }, [supported, saved, request, access]);
+  }, [supported, saved, request, access, askOnLoad]);
 
   // A saved location takes precedence over GPS: it answers `coords` directly,
   // in the `"ready"` state, without ever touching the geolocation API or its
@@ -308,7 +330,6 @@ export function useNearby(): Nearby {
         state: "ready",
         coords: { lat: saved.lat, lng: saved.lng },
         request,
-        offerable: false,
         saved: { label: saved.label },
         setSavedLocation,
         clearSavedLocation,
@@ -317,7 +338,6 @@ export function useNearby(): Nearby {
         state: supported ? state : "unsupported",
         coords,
         request,
-        offerable: permission === "prompt" || (permission === "granted" && state === "failed"),
         saved: null,
         setSavedLocation,
         clearSavedLocation,

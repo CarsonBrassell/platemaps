@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
-import { ShowDistanceButton } from "@/components/ShowDistanceButton";
 import { useForMeAccess } from "@/lib/auth";
 import { matchMarksFor } from "@/lib/discoverFilters";
 import { distanceLabel } from "@/lib/geo";
@@ -44,8 +43,8 @@ export function PhoneDiscoverResults({
   nearby: Nearby;
 }) {
   const { filters } = view;
-  /* The distance on a card and the button that offers a position are for the
-     accounts on lib/forMeGate.ts; everyone else gets the grid it was. */
+  /* The distance on a card is for the accounts on lib/forMeGate.ts; everyone
+     else gets the grid it was. */
   const access = useForMeAccess();
 
   /* Ask for a position once the reader has narrowed the grid at all: a
@@ -53,8 +52,8 @@ export function PhoneDiscoverResults({
      are choosing, which is when a distance on each card earns its place. Not
      on a bare landing — a permission prompt before the visitor has done
      anything is the wrong first impression. (For the accounts on
-     lib/forMeGate.ts the ask is made in useDiscoverQuery; the offer to ask on
-     purpose is the button above the grid.) */
+     lib/forMeGate.ts the ask is made in useDiscoverQuery, on load and again
+     for a filter, so every card can say how far away it is.) */
   const active = Object.values(filters).filter((v) => (Array.isArray(v) ? v.length : v)).length;
   const requestLocation = nearby.request;
   useEffect(() => {
@@ -109,11 +108,6 @@ export function PhoneDiscoverResults({
 
   return (
     <>
-      {access && (
-        <div className="px-4">
-          <ShowDistanceButton nearby={nearby} />
-        </div>
-      )}
       {/* Two across, and uneven — each photo keeps its own proportions and the
           columns are packed shortest-first (lib/photoShape.ts). Three across
           fit more and made all of them small and identical, which on a screen
