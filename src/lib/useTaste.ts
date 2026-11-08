@@ -112,9 +112,17 @@ function subscribeTasteRev(listener: () => void): () => void {
   };
 }
 
-/** The revision counter, as a hook. 0 until the first love / unlove / skip / unskip / reset lands. */
-export function useTasteRev(): number {
-  return useSyncExternalStore(subscribeTasteRev, () => tasteRevision, () => 0);
+function subscribeToNothing(): () => void {
+  return () => {};
+}
+
+/**
+ * The revision counter, as a hook. 0 until the first love / unlove / skip /
+ * unskip / reset lands. `enabled` is For me access: everyone else does not
+ * subscribe, so a tap re-renders nothing for them that it did not before.
+ */
+export function useTasteRev(enabled: boolean): number {
+  return useSyncExternalStore(enabled ? subscribeTasteRev : subscribeToNothing, () => tasteRevision, () => 0);
 }
 
 /** Cheap client-side mirror of lib/taste.ts applyOpToPrefs, for instant chips. */
@@ -159,6 +167,7 @@ export function useTaste(): {
 } {
   const { account, resolved } = useAuth();
   const signedIn = !!account;
+  const forMe = account?.forMe === true;
   const userKey = account ? "in" : "out";
 
   const [status, setStatus] = useState<Status>("loading");
@@ -254,13 +263,14 @@ export function useTaste(): {
       const myGen = gen.current;
       // Ops are serialized so a local-storage viewer's second tap is built on
       // the first one's result rather than on a stale copy.
-      chain.current = chain.current
-        .then(() => post(op, myGen))
-        .then(() => {
-          if (RETUNES.has(op.kind)) bumpTasteRev();
-        });
+      chain.current = chain.current.then(() => post(op, myGen));
+      // Only For me reads the revision; for everyone else the chain is exactly
+      // the one post, with no extra hop after it.
+      if (forMe && RETUNES.has(op.kind)) {
+        chain.current = chain.current.then(() => bumpTasteRev());
+      }
     },
-    [post],
+    [post, forMe],
   );
 
   const apply = useCallback(

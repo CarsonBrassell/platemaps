@@ -22,6 +22,11 @@ import { useTaste, type TastePick } from "@/lib/useTaste";
  * as it was: "See all" unfolds 24 cards in a grid, the reason sits under the
  * card, and the distance is the seeded one.
  */
+// The buttons as they were, for everyone without For me (TASTE_BTN is the roomier
+// For me version, in TastePickCard).
+const BTN =
+  "text-[13px] font-medium text-zinc-500 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
+
 const PICKS_SHOWN = 12;
 const PICKS_UNFOLDED = 24;
 
@@ -107,14 +112,14 @@ export function TasteSection({
           <button
             type="button"
             onClick={() => taste.apply({ kind: "been", value: p.restaurant.id })}
-            className={TASTE_BTN}
+            className={BTN}
           >
             Been here
           </button>
           <button
             type="button"
             onClick={() => taste.apply({ kind: "hide", value: p.restaurant.id })}
-            className={TASTE_BTN}
+            className={BTN}
           >
             Not for me
           </button>
@@ -173,7 +178,7 @@ export function TasteSection({
           <button
             type="button"
             onClick={() => taste.apply({ kind: "reset" })}
-            className={TASTE_BTN}
+            className={access ? TASTE_BTN : BTN}
           >
             Reset my taste
           </button>

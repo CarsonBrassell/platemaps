@@ -28,7 +28,7 @@ import assert from "node:assert/strict";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   EMPTY_PREFS,
   FORME_BUDGET,
@@ -2128,7 +2128,7 @@ ok("the gate: every branch-only surface asks useForMeAccess, and the else side i
   }
   // The position hook: a saved address and the Permissions answer behave as on main for everyone else.
   assert.match(nearby, /if \(access && getSavedLocationSnapshot\(\)\) return;/);
-  assert.match(nearby, /if \(access\) setPermission\(answer\);\s*if \(answer === "granted"\) request\(\);/);
+  assert.match(nearby, /if \(access\) setPermission\(answer\);\s*if \(answer === "granted"\) \{\s*try \{\s*request\(\);/);
   // Nothing outside the lists names the gate's ids: it lives in one file.
   const gateFile = read("../src/lib/forMeGate.ts");
   for (const id of FOR_ME_USER_IDS) {
@@ -4113,6 +4113,14 @@ async function live() {
   }
 
   console.log(`forme:check  ${m} live-corpus cases ok (${restaurants.length} restaurants, ${traits.profiled} profiles, ${imputed.length} imputed)`);
+}
+
+// Render parity: everyone without For me gets origin/main's Your taste buttons, web and phone.
+{
+  const { execFileSync } = await import("node:child_process");
+  const tsx = fileURLToPath(new URL("../node_modules/tsx/dist/cli.mjs", import.meta.url));
+  const script = fileURLToPath(new URL("./check-forme-render.cts", import.meta.url));
+  process.stdout.write(execFileSync(process.execPath, [tsx, script], { encoding: "utf8", cwd: fileURLToPath(new URL("..", import.meta.url)) }));
 }
 
 await live();

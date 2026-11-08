@@ -266,6 +266,9 @@ export function useNearby(): Nearby {
     // that was never blocked.
     if (!supported || saved) return;
     const permissions = typeof navigator !== "undefined" ? navigator.permissions : undefined;
+    // Without the permissions API there is nothing to ask; only the accounts on
+    // lib/forMeGate.ts have a use for the answer "prompt" it would give.
+    if (!access && (!permissions || typeof permissions.query !== "function")) return;
     let cancelled = false;
     void (async () => {
       let answer: "granted" | "prompt" | "denied" = "prompt";
@@ -282,7 +285,13 @@ export function useNearby(): Nearby {
       // offer in ShowDistanceButton), so for everyone else this stays a state
       // nobody sets and the hook renders exactly as often as it always did.
       if (access) setPermission(answer);
-      if (answer === "granted") request();
+      if (answer === "granted") {
+        try {
+          request();
+        } catch {
+          // As it always was: a fix that throws on mount is swallowed.
+        }
+      }
     })();
     return () => {
       cancelled = true;

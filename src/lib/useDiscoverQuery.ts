@@ -122,7 +122,7 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
   const nearby = useNearby();
   const { account, resolved } = useAuth();
   const access = useForMeAccess();
-  const tasteRev = useTasteRev();
+  const tasteRev = useTasteRev(access);
   const [answer, setAnswer] = useState<Answer | null>(null);
   // The key of a request that failed, and a counter that asks again. A failure
   // used to be silent: the old page stayed up (or, on a bare `?foryou=1`, a
