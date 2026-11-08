@@ -1561,6 +1561,7 @@ export async function restaurantIdsPostedBy(userId: string): Promise<string[]> {
 export async function postsForDishTaste(userId: string): Promise<ViewerPost[]> {
   const rows = await sql`
     SELECT p.restaurant_id, p.restaurant, p.dish_name, p.created_at, p.price, p.rating,
+           p.text AS caption, p.vibe,
            d.description AS dish_description, d.section AS dish_section
     FROM posts p
     LEFT JOIN LATERAL (
@@ -1580,6 +1581,8 @@ export async function postsForDishTaste(userId: string): Promise<ViewerPost[]> {
     dishDescription: r.dish_description ? String(r.dish_description) : null,
     dishSection: r.dish_section ? String(r.dish_section) : null,
     rating: r.rating == null ? null : Number(r.rating),
+    caption: typeof r.caption === "string" ? r.caption : null,
+    vibe: typeof r.vibe === "string" ? r.vibe : null,
   }));
 }
 
@@ -1610,7 +1613,9 @@ export async function profileRowsForDishTaste(): Promise<ProfileRow[]> {
     SELECT restaurant_id, styles, dish_types, main_cuisine,
            profile->'menu_stats'->>'median' AS median,
            profile->'signature_dishes' AS sig,
-           profile->>'service' AS service
+           profile->>'service' AS service,
+           profile->>'summary' AS summary,
+           profile->>'spice' AS spice
     FROM restaurant_profiles
     WHERE status = 'ok'
   `;
@@ -1623,6 +1628,8 @@ export async function profileRowsForDishTaste(): Promise<ProfileRow[]> {
       signatures: Array.isArray(r.sig) ? r.sig.filter((x: unknown) => typeof x === "string") : [],
       service: typeof r.service === "string" ? r.service : null,
       mainCuisine: typeof r.main_cuisine === "string" ? r.main_cuisine : null,
+      summary: typeof r.summary === "string" ? r.summary : null,
+      spice: typeof r.spice === "string" ? r.spice : null,
       median: Number.isFinite(median) ? median : null,
     };
   });

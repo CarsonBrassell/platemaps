@@ -1,5 +1,22 @@
 import { parsePrice } from "@/data/priceBands";
 import type { RestaurantView } from "@/data/restaurantTypes";
+import {
+  FA,
+  N_FLAVOR,
+  anchorAttr,
+  buildFlavorProfile,
+  claimsOf,
+  flavorFit,
+  gradeOf,
+  maybeClaimable,
+  mergeMasks,
+  pickClaim,
+  tagCaption,
+  tagDish,
+  tagText,
+  type FlavorClaim,
+  type FlavorSeed,
+} from "@/lib/flavor";
 import { milesBetween } from "@/lib/geo";
 import type { PlateScore } from "@/lib/plateScore";
 import {
@@ -129,7 +146,37 @@ export const DISH_TASTE = {
   pickRatingAbove: 4.0,
   /** ...on at least this many reviews. Deliberately low, so small underground places stay findable. */
   pickMinReviews: 5,
+  /**
+   * Flavor (lib/flavor.ts): what the viewer liked about their rated dishes. A user's lift per flavor is
+   * shrunk by `flavorK` pseudo-posts toward the corpus; an anchor needs a lift of `flavorAnchorBeta`, two
+   * explicit posts, and rarity. A dish's fit F maps to a match through `flavorF0`/`flavorFSpan`
+   * (v = `flavorV` x clamp((F - F0) / Span)), so the 0.4 gate opens at F of about 0.61.
+   */
+  flavorK: 5,
+  flavorAnchorBeta: 0.4,
+  flavorAnchorMinPosts: 2,
+  flavorF0: 0.45,
+  flavorFSpan: 0.35,
+  flavorV: 0.85,
+  /** A flavor weight's recency never falls below this (the dish ranking itself floors at `weightFloor`). */
+  flavorRecencyFloor: 0.6,
+  /** A family match moves by up to this share with how well its item fits the flavor profile. */
+  flavorMod: 0.2,
+  /** At most this many of the first `top` picks may stand on flavor alone. */
+  flavorOnlyTop: 3,
+  /** Ratings that spread less than this are flattened to `flavorFlat`. */
+  flavorSpreadMin: 8,
+  flavorFlat: 0.7,
+  /** A rating about value, service or ambiance is half a rating about the food. */
+  flavorVibeFactor: 0.5,
+  /** A menu-less place judged on its profile text alone counts this much of a menu match. */
+  flavorPlace: 0.7,
 } as const;
+
+/** The hard quality floor every pick must clear: rated above `pickRatingAbove` on at least `pickMinReviews` reviews. */
+export function passesFloor(r: { rating?: number | null; reviewCount?: number | null }): boolean {
+  return r.rating != null && r.rating > DISH_TASTE.pickRatingAbove && (r.reviewCount ?? 0) >= DISH_TASTE.pickMinReviews;
+}
 
 /** One menu item as the loader reads it. */
 export type DishRow = {
@@ -150,7 +197,14 @@ export type ProfileRow = {
   signatures?: readonly string[];
   service?: string | null;
   mainCuisine?: string | null;
+  /** The profile's one-line summary and spice level ("none" | "some" | "lots"): for a place with no menu lines. */
+  summary?: string | null;
+  spice?: string | null;
 };
+
+/** The main cuisines whose "BBQ" is not smoke (Korean BBQ): the flavor tagger skips its plain-BBQ rule there. */
+const ASIAN_MAIN = /^(Chinese|Vietnamese|Korean|Japanese|Hawaiian|Thai|Asian)$/;
+export const isAsianMain = (mainCuisine: string | null | undefined): boolean => ASIAN_MAIN.test(mainCuisine ?? "");
 
 /** One of the viewer's posts, with the menu's own line for the dish when the loader found it. */
 export type ViewerPost = {
@@ -165,6 +219,9 @@ export type ViewerPost = {
   dishSection: string | null;
   /** The viewer's own rating of the dish, out of 100; null or missing when they left none. */
   rating?: number | null;
+  /** The viewer's own words on the post, and the vibe they rated (Value, Service, Ambiance ... ). */
+  caption?: string | null;
+  vibe?: string | null;
 };
 
 /* ---------- text ---------- */
@@ -365,6 +422,24 @@ export type DishIndex = {
   famSpec: ReadonlyMap<number, ReadonlyMap<string, number>>;
   tags: ReadonlyMap<number, ReadonlySet<string>>;
   service: ReadonlyMap<number, string>;
+  /** Items of place r are `order[first[r] .. first[r + 1])`. */
+  first: Int32Array;
+  order: Int32Array;
+  /** Each item's packed flavor (lib/flavor.ts), and the claims a reason may make about it (only items that have any). */
+  itemFlavor: Int32Array;
+  itemClaims: ReadonlyMap<number, readonly FlavorClaim[]>;
+  /** The corpus rate of each flavor attribute (mean grade / 2 over food items), the profile's baseline. */
+  flavorBase: readonly number[];
+  /** Places whose main cuisine is Asian (the flavor tagger reads "BBQ" differently there). */
+  asian: ReadonlySet<number>;
+  /** Places with a profile and no menu lines: what the profile says about their flavor. */
+  menuless: ReadonlyMap<number, MenulessPlace>;
+};
+
+/** A place with no menu lines: its signature dishes tagged by name alone, and its profile text as one flavor mask. */
+export type MenulessPlace = {
+  mask: number;
+  sigs: readonly { name: string; mask: number; claims: readonly FlavorClaim[] }[];
 };
 
 export type DishIndexBuilder = {
@@ -377,7 +452,11 @@ export type DishIndexBuilder = {
  * the whole menu). Sides and add-ons are left out. A term is kept when 3 or
  * more places serve it and under `maxDfShare` of places do.
  */
-export function createDishIndexBuilder(restaurantIds: readonly string[]): DishIndexBuilder {
+export function createDishIndexBuilder(
+  restaurantIds: readonly string[],
+  /** Ids of the places whose main cuisine is Asian: the flavor tagger needs it per item, before the profiles arrive. */
+  asianIds?: ReadonlySet<string>,
+): DishIndexBuilder {
   const c = DISH_TASTE;
   const ridIndex = new Map<string, number>();
   restaurantIds.forEach((id, i) => ridIndex.set(id, i));
@@ -386,6 +465,8 @@ export function createDishIndexBuilder(restaurantIds: readonly string[]): DishIn
   const itemKind: number[] = [];
   const itemPrice: number[] = [];
   const itemName: string[] = [];
+  const itemFlavor: number[] = [];
+  const itemClaims = new Map<number, FlavorClaim[]>();
   // Per item: (term << 1) | inName. Dropped once the postings are built.
   let itemTerms: Int32Array[] = [];
 
@@ -396,6 +477,14 @@ export function createDishIndexBuilder(restaurantIds: readonly string[]): DishIn
         const name = fold(d.name ?? "");
         const section = fold(d.section ?? "");
         if (rid === undefined || !name || SIDE_SECTION.test(section) || SIDE_NAME.test(name)) continue;
+        // Flavor: tagged here, in the same pass, so the per-item cost is paid once per index build and never per request.
+        const asian = asianIds?.has(d.rid) ?? false;
+        const mask = tagDish(d.name, d.description, d.section, asian);
+        if (maybeClaimable(mask)) {
+          const claims = claimsOf(d.name, d.description, d.section, asian);
+          if (claims.length > 0) itemClaims.set(itemRid.length, claims);
+        }
+        itemFlavor.push(mask);
         const t = new Map<number, number>();
         for (const x of termsOf(d.description ?? "")) t.set(termId(x), 0);
         for (const x of termsOf(d.name)) t.set(termId(x), 1);
@@ -519,6 +608,38 @@ export function createDishIndexBuilder(restaurantIds: readonly string[]): DishIn
       const cursor = first.slice(0, restaurantIds.length);
       for (let i = 0; i < n; i++) order[cursor[itemRid[i]]++] = i;
 
+      // Flavor: the corpus rate of each attribute (the baseline a user's lift is measured against), the
+      // Asian places, and for a place with a profile but no menu lines what its profile says.
+      const flavorBase = new Array<number>(N_FLAVOR).fill(0);
+      let foodItems = 0;
+      for (let i = 0; i < n; i++) {
+        if (itemKind[i] !== FOOD) continue;
+        foodItems++;
+        const m = itemFlavor[i];
+        for (let a = 0; a < N_FLAVOR; a++) flavorBase[a] += gradeOf(m, a) / 2;
+      }
+      for (let a = 0; a < N_FLAVOR; a++) flavorBase[a] = Math.max(foodItems > 0 ? flavorBase[a] / foodItems : 0, 0.002);
+      const asian = new Set<number>();
+      const menuless = new Map<number, MenulessPlace>();
+      for (const p of profiles) {
+        const rid = ridIndex.get(p.rid);
+        if (rid === undefined) continue;
+        const isAsian = isAsianMain(p.mainCuisine);
+        if (isAsian) asian.add(rid);
+        if (first[rid + 1] > first[rid]) continue;
+        const text = [p.summary ?? "", ...p.dishTypes, ...p.styles].join(". ");
+        let mask = tagText(text, isAsian);
+        // The profile's spice level is a hint at most: "lots" reads as grade 1 spicy, never more, and never a claim.
+        if (p.spice === "lots" && gradeOf(mask, FA.spicy) < 1) mask |= 1 << (2 * FA.spicy);
+        const sigs = (p.signatures ?? []).map((name) => ({
+          name,
+          // A signature dish is only a name: whatever it shows, it shows in the name.
+          mask: tagDish(name, null, null, isAsian),
+          claims: claimsOf(name, null, null, isAsian),
+        }));
+        if (mask !== 0 || sigs.some((s) => s.mask !== 0)) menuless.set(rid, { mask, sigs });
+      }
+
       const df = new Map<number, number>();
       let places = 0;
       for (let r = 0; r < restaurantIds.length; r++) {
@@ -584,6 +705,13 @@ export function createDishIndexBuilder(restaurantIds: readonly string[]): DishIn
         styles,
         types,
         median,
+        first,
+        order,
+        itemFlavor: Int32Array.from(itemFlavor),
+        itemClaims,
+        flavorBase,
+        asian,
+        menuless,
         ...familyIndex(profiles),
       };
     },
@@ -731,6 +859,12 @@ type Hit = {
   /** Set on a family match: the family, and the style it shares with the seed's place. */
   fam?: string;
   tag?: string | null;
+  /**
+   * Set when the item also fits the viewer's flavor profile. `claim` is what the item's own text lets a reason
+   * say (null: it fits, but nothing it says can be quoted); `seed` is the posted dish the reason compares it to;
+   * `only` marks a pick that stands on flavor alone, with no dish or family match behind it.
+   */
+  flav?: { attr: number; claim: FlavorClaim | null; seed: number; only: boolean };
 };
 
 const DRINKY = /coffee|tea|bakery|dessert|juice|smoothie|boba/i;
@@ -810,6 +944,23 @@ function famLine(item: string, phrase: string | null, dish: string | null, place
   return clip(`Like ${dish ? `your ${dish} at ${place}` : place}`, max);
 }
 
+/**
+ * "Mike's Hot Honey Hot Mozz — sweet heat, like your Hot Honey Chicken". What it says of the pick is what the
+ * pick's own menu text shows (`claim`); the posted dish is one whose own text shows the same.
+ */
+function flavLine(item: string, claim: FlavorClaim, dish: string | null, place: string, max: number): string {
+  const quoted = claim.quote && !claim.inName ? `${claim.label}: "${claim.quote}"` : claim.label;
+  for (const q of quoted === claim.label ? [quoted] : [quoted, claim.label]) {
+    for (const t of dish ? [`, like your ${dish} at ${place}`, `, like your ${dish}`] : [""]) {
+      const full = `${item} — ${q}${t}`;
+      if (full.length <= max) return full;
+    }
+  }
+  const tail = ` — ${claim.label}${dish ? `, like your ${dish}` : ""}`;
+  const room = max - tail.length;
+  return room >= 12 ? `${clipWords(item, room)}${tail}` : clip(`${item}${tail}`, max);
+}
+
 function reasonOf(hit: Hit | null, seeds: readonly Seed[], cuisine: string | null, candidate: string): TastePick["reason"] {
   const c = DISH_TASTE;
   if (!hit) {
@@ -818,6 +969,21 @@ function reasonOf(hit: Hit | null, seeds: readonly Seed[], cuisine: string | nul
   }
   const s = seeds[hit.seed];
   const place = shortPlaceName(s.place);
+  if (hit.flav?.claim) {
+    // The flavor is the reason, and only what the candidate's own text shows may be said about it.
+    const fs = seeds[hit.flav.seed];
+    const whole = displayDish(cleanItem(hit.item).replace(/^\d{3,}\s+/, "").replace(/^[^:]{1,24}#\d+:\s*/, ""));
+    const item = whole && !fold(candidate).includes(fold(whole)) ? whole : (hit.fam ? (FAMILY_BY_ID.get(hit.fam)?.noun ?? "") : "") || whole;
+    if (item && fs) {
+      const dish = fs.dish ? displayDish(fs.dish) : null;
+      const at = shortPlaceName(fs.place);
+      return {
+        kind: "dish",
+        text: flavLine(item, hit.flav.claim, dish, at, c.textChars),
+        short: flavLine(item, hit.flav.claim, dish, at, c.shortChars),
+      };
+    }
+  }
   if (hit.fam) {
     const phrase = hit.tag ? TAGS[hit.tag].phrase : null;
     const whole = hit.item ? displayDish(cleanItem(hit.item).replace(/^\d{3,}\s+/, "").replace(/^[^:]{1,24}#\d+:\s*/, "").replace(/^\d\s+(?=\w+s\b)/, "").replace(/\s+w\/\s*\w+$/i, "")) : "";
@@ -959,6 +1125,87 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     return out;
   };
 
+  // ---- flavor (lib/flavor.ts): what the viewer liked about the dishes they rated ----
+  const clamp = (x: number, lo: number, hi: number): number => Math.max(lo, Math.min(hi, x));
+  const chainRidsMap = new Map<string, number[]>();
+  const ridsOfChain = (key: string): readonly number[] => {
+    if (chainRidsMap.size === 0) {
+      for (let i = 0; i < index.rids.length; i++) {
+        const k = chainOf(i);
+        if (!k) continue;
+        const list = chainRidsMap.get(k);
+        if (list) list.push(i);
+        else chainRidsMap.set(k, [i]);
+      }
+    }
+    return chainRidsMap.get(key) ?? [];
+  };
+  /** The packed flavor of the line called `name` in place `rid` (merged over duplicate lines); null when the place has none. */
+  const itemMaskIn = (rid: number, name: string): number | null => {
+    const want = fold(name);
+    let m: number | null = null;
+    for (let k = index.first[rid]; k < index.first[rid + 1]; k++) {
+      const it = index.order[k];
+      if (fold(index.itemName[it]) !== want) continue;
+      m = m === null ? index.itemFlavor[it] : mergeMasks(m, index.itemFlavor[it]);
+    }
+    return m;
+  };
+  /** The same dish at the viewer's place, or failing that at another branch of its chain. */
+  const siblingMask = (rid: number, name: string): number | null => {
+    const own = itemMaskIn(rid, name);
+    if (own !== null) return own;
+    const ck = chainOf(rid);
+    if (!ck) return null;
+    for (const other of ridsOfChain(ck)) {
+      if (other === rid) continue;
+      const m = itemMaskIn(other, name);
+      if (m !== null) return m;
+    }
+    return null;
+  };
+  /** The dish family a menu line is in, if any. */
+  const famIdOf = (name: string): string | undefined => {
+    const nm = fold(name);
+    if (BUILDER.test(nm)) return undefined;
+    return (FAMILIES.find((f) => f.dish.test(nm)) ?? FAMILIES.find((f) => f.item.test(nm)))?.id;
+  };
+  const fSeeds: FlavorSeed[] = [];
+  /**
+   * One rated food dish as a flavor seed, or null when nothing was said about it (no menu text, no sibling
+   * line, no flavor in its name, no caption that tags): absence of text is never read as dislike.
+   */
+  const flavorSeedOf = (p: ViewerPost, pi: number, id: number, seed: Seed): FlavorSeed | null => {
+    const rating = p.rating;
+    if (!p.dishName || typeof rating !== "number" || !Number.isFinite(rating) || rating < c.dropBelow || seed.kind === DRINK) return null;
+    const asian = seed.rid !== undefined && index.asian.has(seed.rid);
+    let mask = tagDish(p.dishName, p.dishDescription, p.dishSection, asian);
+    let said = !!p.dishDescription?.trim();
+    if (!said && seed.rid !== undefined) {
+      const sib = siblingMask(seed.rid, p.dishName);
+      if (sib !== null) {
+        mask = mergeMasks(mask, sib);
+        said = true;
+      }
+    }
+    // The viewer's own words nudge the profile (grade 1 at most, praise slang removed) and never back a claim.
+    const cap = tagCaption(p.caption, asian);
+    if (cap !== 0) {
+      mask = mergeMasks(mask, cap);
+      said = true;
+    }
+    if (!said && mask === 0) return null;
+    return {
+      id,
+      mask,
+      pw: pw[pi],
+      // A rating about value, service or ambiance is not a rating of the food.
+      c: /^(value|service|ambian)/i.test(p.vibe ?? "") ? c.flavorVibeFactor : 1,
+      r: Math.max(c.flavorRecencyFloor, recency(p.at, now)),
+      rating,
+    };
+  };
+
   const seeds: Seed[] = [];
   posts.forEach((p, pi) => {
     // Rated under `dropBelow`: nothing to seed from (the place still counts below).
@@ -1025,8 +1272,24 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     // The dish says little (a house special, a plain "burger"): borrow what the place is known for.
     if (strength < c.weakSeedIdf) borrowStyles(seed, c.weakSeedIdf, false);
     seeds.push(seed);
+    const fs = flavorSeedOf(p, pi, seeds.length - 1, seed);
+    if (fs) fSeeds.push(fs);
   });
   if (seeds.filter((s) => !s.famOnly).length < c.minSeeds) return null;
+
+  // The flavor profile. Quiet (no effect at all) unless something they like is both evidenced and rare.
+  const prof = buildFlavorProfile(fSeeds, index.flavorBase, {
+    K: c.flavorK,
+    anchorBeta: c.flavorAnchorBeta,
+    anchorMinPosts: c.flavorAnchorMinPosts,
+    spreadMin: c.flavorSpreadMin,
+    flatWeight: c.flavorFlat,
+  });
+  const layer = prof.anchors.length > 0;
+  // Sweet heat is the flavor to name first when they like it; the rest go by how much more they like it than most.
+  const anchorOrder = prof.anchors
+    .slice()
+    .sort((a, b) => (b === FA.sweetheat ? 1 : 0) - (a === FA.sweetheat ? 1 : 0) || prof.beta[b] - prof.beta[a]);
 
   // A term the viewer keeps ordering counts for more, up to +80%.
   const shared = new Map<string, number>();
@@ -1225,16 +1488,17 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
             pick = x;
           }
         });
-        if (!pick) continue;
+        // A specialist with no menu lines at all stays eligible on its profile alone (named by the family, a little less sure).
+        if (!pick && index.first[fp.rid + 1] > index.first[fp.rid]) continue;
         // A counter is a weaker match for a seat-down seed, and a place that does several things for a specialist.
         const gap = Math.max(0, seedTier - svcTier(fp.rid));
         const v = Math.min(
           1,
-          fp.spec * (0.55 + 0.45 * s.w) * (sf.tag != null && !tagged ? c.famUntagged : 1) * (contra ? c.famContra : 1) * c.svcGap ** gap * c.hybridShade ** fp.hybrid * (fp.sig ? c.sigBonus : 1),
+          fp.spec * (0.55 + 0.45 * s.w) * (sf.tag != null && !tagged ? c.famUntagged : 1) * (contra ? c.famContra : 1) * c.svcGap ** gap * c.hybridShade ** fp.hybrid * (fp.sig ? c.sigBonus : 1) * (pick ? 1 : c.flavorPlace),
         );
         const list = best.get(fp.rid) ?? [];
         const at = list.findIndex((h) => h.seed === si);
-        const hit: Hit = { seed: si, v, vw: v * s.rw, item: pick.name, price: pick.price, term: `fam:${sf.id}`, style: false, fam: sf.id, tag: tagged ? sf.tag : null };
+        const hit: Hit = { seed: si, v, vw: v * s.rw, item: pick ? pick.name : "", price: pick ? pick.price : null, term: `fam:${sf.id}`, style: false, fam: sf.id, tag: tagged ? sf.tag : null };
         if (at < 0) list.push(hit);
         else if (v > list[at].v || !list[at].fam) list[at] = hit;
         best.set(fp.rid, list);
@@ -1243,6 +1507,91 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   });
 
   const seedFams = new Set(seeds.flatMap((s) => s.fams.map((f) => f.id)));
+
+  // What the flavor profile adds at one place. A place's lines are its food items, or (no menu at all) its signature dishes.
+  type FLine = { name: string; mask: number; claims: readonly FlavorClaim[]; price: number | null };
+  const linesOf = (rid: number): FLine[] => {
+    const out: FLine[] = [];
+    for (let k = index.first[rid]; k < index.first[rid + 1]; k++) {
+      const it = index.order[k];
+      if (index.itemKind[it] !== FOOD) continue;
+      out.push({ name: index.itemName[it], mask: index.itemFlavor[it], claims: index.itemClaims.get(it) ?? [], price: index.itemPrice[it] > 0 ? index.itemPrice[it] : null });
+    }
+    if (index.first[rid + 1] === index.first[rid]) {
+      for (const sg of index.menuless.get(rid)?.sigs ?? []) {
+        if (kindOf(fold(sg.name), "") === FOOD) out.push({ name: sg.name, mask: sg.mask, claims: sg.claims, price: null });
+      }
+    }
+    return out;
+  };
+  const fitV = (F: number): number => c.flavorV * clamp((F - c.flavorF0) / c.flavorFSpan, 0, 1);
+  /** Gives a hit the claim its line's own text supports, if the line is on a flavor the viewer likes. */
+  const attach = (h: Hit, l: FLine): void => {
+    if (anchorAttr(prof, l.mask) < 0) return;
+    const claim = pickClaim(l.claims, anchorOrder);
+    if (claim) h.flav = { attr: claim.attr, claim, seed: prof.seedsByAttr[claim.attr][0], only: false };
+  };
+  const flavorHits = (rid: number, hits: readonly Hit[]): Hit[] => {
+    const lines = linesOf(rid);
+    const bare = index.menuless.get(rid)?.mask ?? 0;
+    const out = hits.map((h) => ({ ...h }));
+    const lineOf = (item: string): FLine | undefined => {
+      const want = fold(item);
+      return lines.find((l) => fold(l.name) === want);
+    };
+    // A family match is nudged by how its line fits (a bare specialist, by what its profile says).
+    for (const h of out) {
+      if (!h.fam) continue;
+      const l = h.item ? lineOf(h.item) : undefined;
+      const mask = l ? l.mask : h.item ? 0 : bare;
+      if (mask === 0) continue;
+      h.v = clamp(h.v * (1 + c.flavorMod * clamp(flavorFit(prof, mask), -0.5, 0.8)), 0, 1);
+      h.vw = h.v * seeds[h.seed].rw;
+      if (l) attach(h, l);
+    }
+    let only: Hit | null = null;
+    let onlyKey = -1;
+    for (const l of lines) {
+      if (anchorAttr(prof, l.mask) < 0) continue;
+      const v = fitV(flavorFit(prof, l.mask));
+      if (v <= 0) continue;
+      const want = fold(l.name);
+      const same = out.filter((h) => !h.style && h.item !== "" && fold(h.item) === want);
+      if (same.length > 0) {
+        // The same line already matched a posted dish: the two kinds of evidence add.
+        for (const h of same) {
+          if (!h.fam) {
+            h.v = 1 - (1 - h.v) * (1 - v);
+            h.vw = h.v * seeds[h.seed].rw;
+          }
+          if (!h.flav) attach(h, l);
+        }
+        continue;
+      }
+      // Standing on flavor alone takes a claim the line's own text supports, and a fit that clears the gate.
+      const claim = pickClaim(l.claims, anchorOrder);
+      if (!claim || v < c.gate) continue;
+      const key = v + (claim.inName ? 0.02 : 0);
+      if (key <= onlyKey) continue;
+      const seed = prof.seedsByAttr[claim.attr][0];
+      onlyKey = key;
+      only = {
+        seed,
+        v,
+        vw: v * seeds[seed].rw,
+        item: l.name,
+        price: l.price,
+        term: "flav:only",
+        style: false,
+        fam: famIdOf(l.name),
+        tag: null,
+        flav: { attr: claim.attr, claim, seed, only: true },
+      };
+    }
+    if (only) out.push(only);
+    return out;
+  };
+
   const byV = (a: Hit, b: Hit) => b.v - a.v;
   const byVw = (a: Hit, b: Hit) => b.vw - a.vw;
   const cands: { cand: Cand; M: number; Q: number; D: number; Cc: number; raw: number }[] = [];
@@ -1250,9 +1599,10 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     if (seen.has(r.id) || seenChains.has(chainKey(r)) || (r.cuisine && skipped.has(r.cuisine))) continue;
     // The hard quality floor, for every kind of pick: no rating or too few reviews never qualifies, and nothing
     // below it is backfilled to fill the row.
-    if (!(r.rating != null && r.rating > c.pickRatingAbove && (r.reviewCount ?? 0) >= c.pickMinReviews)) continue;
+    if (!passesFloor(r)) continue;
     const rid = index.ridIndex.get(r.id);
     let hits = rid === undefined ? [] : (best.get(rid) ?? []);
+    if (layer && rid !== undefined) hits = flavorHits(rid, hits);
     // A place whose profile says it specialises in one of their families is judged on that family alone
     // (a pizzeria is not picked for its bucatini), and a style with no shared dish family says nothing.
     const spec = rid === undefined ? undefined : index.famSpec.get(rid);
@@ -1276,7 +1626,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     const tierOf = (h: Hit): number =>
       seeds[h.seed].kind === DRINK && !h.fam ? 2 : (h.fam && (svc === "bar" || svc === "brewery_winery")) || (h.item && barish && BAR_BITE.test(fold(h.item))) ? 1 : 0;
     // A family match that shares the seed place's style names it best; then the dish they rated highest.
-    const nameRank = (h: Hit) => seeds[h.seed].rw + (h.tag ? 0.15 : 0);
+    const nameRank = (h: Hit) => seeds[h.seed].rw + (h.tag ? 0.15 : 0) + (h.flav?.claim ? 0.1 : 0);
     const real = hits.filter((h) => h.v >= c.gate);
     const named = real.sort((a, b) => tierOf(a) - tierOf(b) || nameRank(b) - nameRank(a) || b.vw - a.vw)[0] ?? h1;
     const shrunk = shrunkRating(r.rating, r.reviewCount, input.ratingMean);
@@ -1293,8 +1643,10 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     cands.push({ cand: { r, hit: named, score, tier: named ? tierOf(named) : 0 }, M, Q, D, Cc, raw });
   }
 
-  const seedOf = (x: Cand) => (x.hit ? x.hit.seed : -1);
-  const famOf = (x: Cand): string => (x.hit ? (x.hit.fam ?? seeds[x.hit.seed].fams[0]?.id ?? "") : "");
+  // A pick that stands on flavor alone belongs to no one posted dish: the per-dish caps do not apply to it.
+  const seedOf = (x: Cand) => (x.hit && !x.hit.flav?.only ? x.hit.seed : -1);
+  const famOf = (x: Cand): string =>
+    x.hit ? (x.hit.fam ?? (x.hit.flav?.only ? "" : (seeds[x.hit.seed].fams[0]?.id ?? ""))) : "";
   // The viewer's own ratings lead the order: a pick from a dish they rated highly outranks a slightly better
   // match from one they rated low, and a bar bite or a drink counts for less than a meal.
   const shade = [1, c.barShade, c.drinkShade];
@@ -1330,7 +1682,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
         const hit = cand.hit;
         if (hit?.fam) {
           if (count((o) => o.hit?.fam === hit.fam) >= c.poolPerFam) continue;
-        } else if (hit) {
+        } else if (hit && !hit.flav?.only) {
           if (count((o) => o.hit?.seed === hit.seed) >= (pass === 1 ? 1 : c.perSeed)) continue;
           const words = hit.term.split(" ");
           if (count((o) => o.hit != null && o.hit.term.split(" ").some((w) => words.includes(w))) >= c.perSeed) continue;
@@ -1369,8 +1721,10 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     };
     const notPrev = (x: Cand) => !prev || seedOf(x) === -1 || seedOf(x) !== seedOf(prev);
     const apart = (x: Cand) => !top || seedOf(x) === -1 || !ordered.some((o) => kin(o, x));
+    // Flavor alone does not fill the first row: the rest stand on a dish or a family they posted.
+    const flavorCap = (x: Cand) => !top || !x.hit?.flav?.only || ordered.filter((o) => o.hit?.flav?.only).length < c.flavorOnlyTop;
     // Most to least worth keeping: drop the last rule first.
-    const rules = [meal, oneFamily, free, cuisineOk, notPrev, apart];
+    const rules = [meal, flavorCap, oneFamily, free, cuisineOk, notPrev, apart];
     let k = -1;
     for (let n = rules.length; n >= 0 && k < 0; n--) {
       let top1 = -1;
@@ -1390,9 +1744,22 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     ordered.push(...rest.splice(k < 0 ? 0 : k, 1));
   }
 
-  return ordered.slice(0, limit).map((x) => ({
-    restaurant: x.r,
-    plateScore: input.plates[x.r.id] ?? null,
-    reason: reasonOf(x.hit, seeds, x.r.cuisine, x.r.name),
-  }));
+  // A flavor reason compares the pick to a posted dish that shows the same flavor; spread across the best few
+  // of them rather than repeating the one the viewer rated highest.
+  const compared = new Map<number, number>();
+  return ordered.slice(0, limit).map((x) => {
+    let hit = x.hit;
+    if (hit?.flav?.claim) {
+      const pool = prof.seedsByAttr[hit.flav.attr].slice(0, 4);
+      let seed = pool[0];
+      for (const s of pool) if ((compared.get(s) ?? 0) < (compared.get(seed) ?? 0)) seed = s;
+      compared.set(seed, (compared.get(seed) ?? 0) + 1);
+      hit = { ...hit, flav: { ...hit.flav, seed } };
+    }
+    return {
+      restaurant: x.r,
+      plateScore: input.plates[x.r.id] ?? null,
+      reason: reasonOf(hit, seeds, x.r.cuisine, x.r.name),
+    };
+  });
 }

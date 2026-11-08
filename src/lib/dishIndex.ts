@@ -1,6 +1,6 @@
 import type { Corpus } from "@/lib/discover";
 import { dishRowsFor, profileRowsForDishTaste } from "@/lib/db";
-import { createDishIndexBuilder, type DishIndex } from "@/lib/dishTaste";
+import { createDishIndexBuilder, isAsianMain, type DishIndex } from "@/lib/dishTaste";
 
 /**
  * The dish index (lib/dishTaste.ts), read once and kept: about 400K menu lines
@@ -19,11 +19,15 @@ let cached: { at: number; value: DishIndex; ids: string } | null = null;
 let building: Promise<DishIndex> | null = null;
 
 async function build(restaurantIds: readonly string[]): Promise<DishIndex> {
-  const builder = createDishIndexBuilder(restaurantIds);
+  // Profiles first: the flavor tagger reads a place's main cuisine while it tags
+  // that place's menu lines (an Asian main cuisine skips the generic bbq rule).
+  const profiles = await profileRowsForDishTaste();
+  const asianIds = new Set(profiles.filter((p) => isAsianMain(p.mainCuisine)).map((p) => p.rid));
+  const builder = createDishIndexBuilder(restaurantIds, asianIds);
   for (let i = 0; i < restaurantIds.length; i += PAGE_PLACES) {
     builder.add(await dishRowsFor(restaurantIds.slice(i, i + PAGE_PLACES)));
   }
-  return builder.finish(await profileRowsForDishTaste());
+  return builder.finish(profiles);
 }
 
 /**

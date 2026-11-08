@@ -18,9 +18,13 @@
  */
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { DISH_TASTE, buildDishIndex, clipWords, displayDish, postWeights, rankDishes, termsOf } from "../src/lib/dishTaste.ts";
+import { DISH_TASTE, buildDishIndex, clipWords, displayDish, passesFloor, postWeights, rankDishes, termsOf } from "../src/lib/dishTaste.ts";
+import {
+  BIT_DEMOTED, BIT_DESSERT, FA, FLAVOR_ATTRS, N_FLAVOR, anchorAttr, buildFlavorProfile, claimsOf, flavorFit, gradeOf, mergeMasks,
+  nameEvidence, tagCaption, tagDish,
+} from "../src/lib/flavor.ts";
 import { EMPTY_PREFS } from "../src/lib/taste.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
@@ -479,6 +483,353 @@ ok("(e) a family specialist is never picked for an off-family item", () => {
   assert.ok(!/Marisi/.test(pz.reason.text), "and not through the bucatini seed");
 });
 
+/* ---------- 1d. flavor: the tagger, the profile, the claims, and the picks that stand on them ---------- */
+
+const fm = (name, desc = null, section = null, asian = false) => tagDish(name, desc, section, asian);
+const fg = (mask, a) => gradeOf(mask, FA[a]);
+const fclaims = (name, desc = null, section = null) => claimsOf(name, desc, section, false);
+const flabels = (cs) => cs.map((c) => c.label);
+
+ok("tagger: a flavor in the dish's own name is graded 2, is name evidence, and may be claimed", () => {
+  for (const [name, section] of [
+    ["Honey Buffalo Wings", "Wings"],
+    ["Pop's Hot Honey", "Sandwiches"],
+    ["Sweet & Spicy Brussels Sprouts", "Starters"],
+    ["Mike's Hot Honey Pie", "Pizza"],
+  ]) {
+    const m = fm(name, null, section);
+    assert.equal(fg(m, "sweetheat"), 2, `${name} is sweet heat`);
+    assert.ok(nameEvidence(m, FA.sweetheat), `${name}: the name says so`);
+    assert.ok(flabels(fclaims(name, null, section)).includes("sweet heat"), `${name} may claim sweet heat`);
+  }
+  assert.ok(flabels(fclaims("Carolina Brisket", "smoked brisket", "Mains")).includes("smoky"));
+  assert.ok(flabels(fclaims("Crispy Chicken Bowl", "fried chicken over rice", "Bowls")).includes("crispy"), "crispy from the name");
+  assert.ok(!flabels(fclaims("Pop's Hot Honey", "fried chicken sandwich", "Sandwiches")).includes("crispy"), "crispy from a description is never claimed");
+});
+
+ok("tagger: a choice list, a condiment or a side is one option, never the dish's own flavor", () => {
+  for (const [name, desc, section] of [
+    ["Dipper Fries", "choose your sauce: gochujang bbq, ranch, or honey mustard", "Sides"],
+    ["Wings", "your choice of sauce (buffalo, bbq, sweet chili or garlic parmesan)", "Wings"],
+    ["Turkey Club", "turkey, bacon, lettuce, tomato, sweet-hot mustard", "Sandwiches"],
+    ["Thai Salad", "crisp greens, cucumber, peanuts, tossed with your choice of sweet chili or peanut dressing", "Salads"],
+  ]) {
+    const m = fm(name, desc, section);
+    for (const a of ["spicy", "sweet", "sweetheat"]) assert.ok(fg(m, a) <= 1, `${name}: ${a} at most 1`);
+    const bad = flabels(fclaims(name, desc, section)).filter((l) => l === "sweet heat" || l === "spicy" || l === "sweet");
+    assert.deepEqual(bad, [], `${name} claims nothing it only offers`);
+  }
+  assert.ok(!flabels(fclaims("Wings", "comes with hot honey dip", "Wings")).includes("sweet heat"), "a dip on the side is not the dish");
+  assert.ok(fg(fm("Wings", "comes with hot honey dip", "Wings"), "sweetheat") <= 1);
+  assert.ok(fg(fm("Chicken Tenders", "served with a side of hot honey for dipping", "Kids"), "sweetheat") <= 1);
+});
+
+ok("tagger: a topping is the dish; a negation or an add-on says nothing; a slight kick is 1, a real one 2", () => {
+  const desc = "Pepperoni pizza turned up with Mike's Hot Honey.";
+  assert.equal(fg(fm("The Hot Shot", desc, "Pizza"), "sweetheat"), 2);
+  const c = fclaims("The Hot Shot", desc, "Pizza");
+  assert.equal(c[0].label, "sweet heat");
+  assert.equal(c[0].quote, "mike's hot honey", "the claim quotes the dish's own words");
+  assert.equal(fg(fm("Crispy Chicken Bowl", "fried chicken over rice, not spicy", "Bowls"), "spicy"), 0, "not spicy");
+  assert.equal(fg(fm("Mild Wings", "add jalapenos for $1", "Wings"), "spicy"), 0, "an add-on");
+  assert.deepEqual(flabels(fclaims("Mild Wings", "add jalapenos for $1", "Wings")), []);
+  assert.equal(fg(fm("GOAST Toast", "A thick slice, tomato jelly, balsamic to give it a little kick.", "Food"), "spicy"), 1);
+  assert.equal(fg(fm("Kick Bowl", "rice, chicken, a real kick of heat", "Bowls"), "spicy"), 2);
+});
+
+ok("tagger: a dessert and a drink make no claim", () => {
+  assert.ok(fm("Ice cream sundae", "hot fudge, honey", "Desserts") & BIT_DESSERT);
+  assert.deepEqual(fclaims("Ice cream sundae", "hot fudge, honey", "Desserts"), []);
+  assert.deepEqual(fclaims("Hot Honey Brownie", null, "Desserts"), []);
+  assert.deepEqual(fclaims("Banana Matcha", "banana, matcha, oat milk", "Drinks"), []);
+});
+
+ok("captions: praise slang is never a taste, and a caption is a nudge: grade 1 at most, no name evidence", () => {
+  assert.equal(tagCaption("this was fire, gas, slay!"), 0);
+  assert.equal(tagCaption("sooo fire, absolute banger, insane"), 0);
+  assert.equal(tagCaption(null), 0);
+  assert.equal(tagCaption("   "), 0);
+  for (const cap of ["loved the smoky sweet heat", "hot honey chicken is spicy", "so spicy and crispy, so good"]) {
+    const m = tagCaption(cap);
+    assert.ok(m !== 0, `${cap} says something`);
+    for (let a = 0; a < N_FLAVOR; a++) {
+      assert.ok(gradeOf(m, a) <= 1, `${cap}: ${FLAVOR_ATTRS[a]} stays at 1`);
+      assert.ok(!nameEvidence(m, a), `${cap}: a caption is never name evidence`);
+    }
+    assert.ok(!(m & BIT_DEMOTED));
+  }
+});
+
+ok("masks: ten 2-bit grades and the flags fit a positive 32-bit int, and merging keeps the strongest grade", () => {
+  const all = [
+    ["Spicy Miso Ramen"],
+    ["Carolina Brisket", "smoked brisket", "Mains"],
+    ["Naughty Pie", "pepperoni, hot honey, mozzarella", "Pizza"],
+    ["Ice cream sundae", "hot fudge, honey", "Desserts"],
+    ["Dipper Fries", "choose your sauce: gochujang bbq, ranch", "Sides"],
+    ["Banana Matcha", null, "Drinks"],
+  ];
+  for (const [name, desc, section] of all) {
+    const m = fm(name, desc ?? null, section ?? null);
+    assert.ok(Number.isInteger(m) && m >= 0 && m < 2 ** 31, `${name} packs to ${m}`);
+    for (let a = 0; a < N_FLAVOR; a++) assert.ok(gradeOf(m, a) <= 2);
+  }
+  const a = fm("Spicy Miso Ramen");
+  const b = fm("Carolina Brisket", "smoked brisket", "Mains");
+  const mm = mergeMasks(a, b);
+  for (let i = 0; i < N_FLAVOR; i++) assert.equal(gradeOf(mm, i), Math.max(gradeOf(a, i), gradeOf(b, i)));
+  assert.ok(nameEvidence(mm, FA.spicy), "name evidence survives a merge");
+  assert.ok(mergeMasks(fm("Ice cream sundae", "hot fudge, honey", "Desserts"), a) & BIT_DESSERT, "the dessert flag survives a merge");
+});
+
+// Profiles from hand-built masks, so the maths is tested on its own.
+const mk = (o) => Object.entries(o).reduce((m, [k, g]) => m | (g << (2 * FA[k])), 0);
+const FBASE = FLAVOR_ATTRS.map(() => 0.1);
+FBASE[FA.sweetheat] = 0.01;
+FBASE[FA.spicy] = 0.08;
+FBASE[FA.creamy] = 0.15;
+const FCFG = {
+  K: DISH_TASTE.flavorK,
+  anchorBeta: DISH_TASTE.flavorAnchorBeta,
+  anchorMinPosts: DISH_TASTE.flavorAnchorMinPosts,
+  spreadMin: DISH_TASTE.flavorSpreadMin,
+  flatWeight: DISH_TASTE.flavorFlat,
+};
+const fseed = (id, mask, rating, pw = 1) => ({ id, mask, pw, c: 1, r: 1, rating });
+const HOT = mk({ spicy: 2, sweet: 2, sweetheat: 2 });
+const CALVINISH = (ratings = [95, 90, 85, 70, 60]) => [
+  fseed(0, HOT, ratings[0], 1),
+  fseed(1, HOT, ratings[1], 0.9),
+  fseed(2, mk({ spicy: 2, umami: 2 }), ratings[2], 0.7),
+  fseed(3, mk({ sweet: 1, fruity: 2 }), ratings[3], 0.5),
+  fseed(4, mk({ smoky: 1 }), ratings[4], 0.4),
+];
+
+ok("profile: sweet heat and spicy anchor; plain sweet does not when every sweet seed is sweet heat", () => {
+  const p = buildFlavorProfile(CALVINISH(), FBASE, FCFG);
+  assert.ok(p.anchors.includes(FA.sweetheat) && p.anchors.includes(FA.spicy));
+  assert.ok(!p.anchors.includes(FA.sweet), "the independence rule");
+  assert.deepEqual(p.seedsByAttr[FA.sweetheat], [0, 1], "the seeds behind sweet heat, strongest first");
+  assert.equal(anchorAttr(p, HOT), FA.sweetheat, "sweet heat wins the tie");
+  assert.equal(anchorAttr(p, mk({ spicy: 2 })), FA.spicy);
+  assert.equal(anchorAttr(p, mk({ sweet: 2 })), -1, "sweet alone is no anchor");
+  assert.equal(anchorAttr(p, HOT | BIT_DESSERT), -1, "a dessert never anchors");
+  assert.equal(anchorAttr(p, mk({ spicy: 1 })), -1, "grade 1 is only a hint");
+  assert.ok(flavorFit(p, HOT) > flavorFit(p, mk({ sweet: 1, fruity: 2 })), "a sweet heat dish fits better than a fruity one");
+  const sweetOnly = buildFlavorProfile(
+    [fseed(0, mk({ sweet: 2 }), 95), fseed(1, mk({ sweet: 2 }), 90, 0.9), fseed(2, mk({ sweet: 2 }), 85, 0.7), fseed(3, mk({ smoky: 2 }), 60, 0.4)],
+    FBASE,
+    FCFG,
+  );
+  assert.ok(sweetOnly.anchors.includes(FA.sweet), "three plain sweet seeds do anchor sweet");
+});
+
+ok("profile: a ceiling rater and a harsh rater read the same taste; ratings that barely differ weigh the same", () => {
+  const ceiling = buildFlavorProfile(CALVINISH([100, 100, 100, 100, 100]), FBASE, FCFG);
+  assert.equal(ceiling.weight.get(0), FCFG.flatWeight, "flat ratings get the flat weight");
+  assert.equal(ceiling.weight.get(4), FCFG.flatWeight);
+  const harsh = buildFlavorProfile(CALVINISH([64, 60, 56, 52, 50]), FBASE, FCFG);
+  assert.equal(harsh.weight.get(0), 1, "a real spread keeps the user's own weights");
+  assert.equal(harsh.weight.get(4), 0.4);
+  const wide = buildFlavorProfile(CALVINISH(), FBASE, FCFG);
+  for (const p of [ceiling, harsh]) assert.deepEqual([...p.anchors].sort(), [...wide.anchors].sort(), "the same anchors");
+});
+
+ok("profile: no flavor in the text, a single post, or a salty and creamy palate never anchors sweet heat", () => {
+  const none = buildFlavorProfile([0, 1, 2, 3].map((i) => fseed(i, 0, 95 - i * 5, 1 - i * 0.1)), FBASE, FCFG);
+  assert.deepEqual(none.anchors, []);
+  assert.equal(none.anchorBits, 0);
+  assert.equal(anchorAttr(none, HOT), -1, "no anchor, no flavor pick");
+  const one = buildFlavorProfile([fseed(0, HOT, 95)], FBASE, FCFG);
+  assert.deepEqual(one.anchors, [], "one post is not a pattern");
+  const salty = buildFlavorProfile([0, 1, 2, 3].map((i) => fseed(i, mk({ umami: 2, creamy: 2 }), 95 - i * 3, 1 - i * 0.1)), FBASE, FCFG);
+  assert.ok(salty.anchors.includes(FA.umami));
+  assert.ok(!salty.anchors.includes(FA.sweetheat) && !salty.anchors.includes(FA.spicy));
+  assert.ok(flavorFit(salty, HOT) <= 0, "a sweet heat dish does not fit a salty palate");
+  assert.deepEqual(
+    fclaims("Truffle Mac and Cheese", "cream sauce, parmesan, truffle", "Mains").filter((c) => c.label === "creamy" || c.label === "umami"),
+    [],
+    "nothing about creamy or umami is ever claimed",
+  );
+});
+
+ok("the gate: a fit of 0.62 opens it, 0.60 does not; the floor is above 4.0 on 5 reviews", () => {
+  const v = (F) => DISH_TASTE.flavorV * Math.min(1, Math.max(0, (F - DISH_TASTE.flavorF0) / DISH_TASTE.flavorFSpan));
+  assert.ok(v(0.62) >= DISH_TASTE.gate && v(0.6) < DISH_TASTE.gate);
+  assert.equal(passesFloor({ rating: 4.0, reviewCount: 600 }), false, "4.0 itself fails");
+  assert.equal(passesFloor({ rating: 4.1, reviewCount: 5 }), true);
+  assert.equal(passesFloor({ rating: 4.1, reviewCount: 4 }), false);
+  assert.equal(passesFloor({ rating: null, reviewCount: 600 }), false);
+  assert.equal(passesFloor({ rating: 4.6, reviewCount: null }), false);
+});
+
+// A corpus built for flavor: the viewer's rated dishes, sweet heat dishes nobody posted at places of every kind.
+const FW = (spec, profiles = [], fillers = 160) => {
+  const rs = [];
+  const ds = [];
+  for (const [id, name, cuisine, rating, menu, reviews = 600] of spec) {
+    rs.push({
+      id, name, cuisine, cuisineTags: "", neighborhood: "North Park", distance: "1.0 mi", hours: null,
+      lat: 32.72, lng: -117.16, rating, reviewCount: reviews, priceBand: null,
+    });
+    for (const m of menu) ds.push({ rid: id, name: m[0], description: m[1] ?? null, price: null, section: m[2] ?? null });
+  }
+  spec.forEach(([, , , , menu], k) => {
+    menu.forEach((m, j) => {
+      rs.push({
+        id: `pad${k}_${j}`, name: `Pad ${k} ${j}`, cuisine: "Fusion", cuisineTags: "", neighborhood: "X", distance: "1.0 mi", hours: null,
+        lat: 33.9, lng: -118.4, rating: 4.0, reviewCount: 200, priceBand: null,
+      });
+      ds.push({ rid: `pad${k}_${j}`, name: m[0], description: m[1] ?? null, price: null, section: m[2] ?? null });
+    });
+  });
+  for (let i = 0; i < fillers; i++) {
+    rs.push({
+      id: `z${i}`, name: `Zed ${i}`, cuisine: i % 2 ? "Thai" : "Mexican", cuisineTags: "", neighborhood: "North Park",
+      distance: "1.0 mi", hours: null, lat: 32.72, lng: -117.16, rating: 4.0, reviewCount: 200, priceBand: null,
+    });
+    ds.push({ rid: `z${i}`, name: `Dish${i}zz` });
+  }
+  const idx = buildDishIndex(rs.map((r) => r.id), ds, profiles);
+  return (posts, over = {}) =>
+    rankDishes({ index: idx, restaurants: rs, plates: {}, ratingMean: 4.3, posts, prefs: EMPTY_PREFS, now: NOW, ...over });
+};
+const FSPEC = [
+  ["hA", "Honey Hut", "American", 4.5, [["Hot Honey Chicken", "fried thigh, hot honey, pickles"]]],
+  ["hB", "Noodle Tomo", "Japanese", 4.4, [["Spicy Miso Ramen"]]],
+  ["hC", "Sprout Social", "Vegan", 4.4, [["Sweet & Spicy Brussels Sprouts"]]],
+  ["hD", "Better Beans", "Coffee & Tea", 4.6, [["Banana Matcha", null, "Drinks"]]],
+  ["hE", "Taco Stop", "Mexican", 4.5, [["Brisket Tacos"]]],
+  ["u1", "Plain Place", "Deli", 4.4, [["Plain Rice Bowl"]]],
+  ["u2", "Leaf House", "Salads", 4.4, [["Garden Salad"]]],
+  ["m1", "Nashville Stand", "Southern", 4.7, [["Hot Honey Chicken Sandwich"]]],
+  ["f1", "Fire Pit", "Seafood", 4.6, [["Ghost Pepper Shrimp"]]],
+  ["f3", "Cauli Co", "Mediterranean", 4.4, [["Honey Sriracha Cauliflower"]], 200],
+  ["f4", "Hot Hand", "Thai", 4.0, [["Honey Sriracha Shrimp"]]],
+  ["f4b", "Warm Hand", "Cuban", 4.0, [["Honey Sriracha Squid"]], 900],
+  ["f5", "Tiny Heat", "Peruvian", 4.6, [["Honey Sriracha Tofu"]], 4],
+  ["f5c", "Sixty Alarm", "Ethiopian", 4.6, [["Honey Sriracha Lentils"]], 60],
+  ["f6", "Sweet Tooth", "Bakery", 4.7, [["Hot Honey Brownie", null, "Desserts"]]],
+  ["f7", "Mild Mile", "Japanese", 4.7, [["Teriyaki Bowl", "not spicy, mild sauce"]]],
+  ["f8", "No Menu Gyro", "Greek", 4.6, []],
+  ["f9", "No Menu Wings", "Korean", 4.6, []],
+];
+const FPROF = [
+  { rid: "f8", styles: [], dishTypes: [], median: null, signatures: ["Honey Sriracha Gyro", "Plain Rice"] },
+  { rid: "f9", styles: [], dishTypes: ["wings"], median: null, summary: "Known for fiery sweet-and-spicy wings.", spice: "lots" },
+];
+const hotPosts = (r = [95, 85, 90, 70, 60]) => [
+  rated("hA", "Hot Honey Chicken", r[0], { dishDescription: "fried thigh, hot honey, pickles" }),
+  rated("hB", "Spicy Miso Ramen", r[1]),
+  rated("hC", "Sweet & Spicy Brussels Sprouts", r[2]),
+  rated("hD", "Banana Matcha", r[3], { dishSection: "Drinks" }),
+  rated("hE", "Brisket Tacos", r[4]),
+];
+const flavorWorld = FW(FSPEC, FPROF);
+const fpicks = flavorWorld(hotPosts());
+const fby = (picks, id) => picks.find((p) => p.restaurant.id === id);
+const FLINES = (rid) => [...(FSPEC.find((s) => s[0] === rid)?.[4] ?? []), ...(FPROF.find((p) => p.rid === rid)?.signatures ?? []).map((n) => [n])];
+
+ok("a sweet heat palate finds sweet heat dishes nobody posted, at menu places and by signature at menu-less ones", () => {
+  assert.ok(fpicks, "enough seeds to rank");
+  const f3 = fby(fpicks, "f3");
+  assert.equal(f3?.reason.kind, "dish");
+  assert.match(f3.reason.text, /^Honey Sriracha Cauliflower — sweet heat, like your (Hot Honey Chicken|Sweet & Spicy Brussels Sprouts)/);
+  const f8 = fby(fpicks, "f8");
+  assert.equal(f8?.reason.kind, "dish", "a place with no menu is eligible through its signature dish");
+  assert.match(f8.reason.text, /^Honey Sriracha Gyro — sweet heat, like your /);
+  assert.ok(fby(fpicks, "f5c"), "5 or more reviews is enough");
+});
+
+ok("a reason claims a flavor only when the candidate's own text supports it", () => {
+  let claimed = 0;
+  for (const p of fpicks) {
+    const m = /^(.+?) — (sweet heat|spicy|smoky|crispy|sweet)\b/.exec(p.reason.text);
+    if (!m) continue;
+    claimed++;
+    const item = m[1].replace(/…$/, "").toLowerCase();
+    const line = FLINES(p.restaurant.id).find(([n]) => n.toLowerCase().startsWith(item));
+    assert.ok(line, `${p.restaurant.id}: ${m[1]} is on its menu`);
+    assert.ok(flabels(claimsOf(line[0], line[1] ?? null, line[2] ?? null, false)).includes(m[2]), `${p.restaurant.id}: ${m[1]} supports "${m[2]}"`);
+  }
+  assert.ok(claimed >= 3, "and the fixture does make claims");
+});
+
+ok("the quality floor holds on every flavor pick, and the same place with enough reviews is found", () => {
+  const got = ids(fpicks);
+  for (const bad of ["f4", "f4b", "f5"]) assert.ok(!got.includes(bad), `${bad} is under the floor`);
+  for (const p of fpicks) assert.ok(passesFloor(p.restaurant), `${p.restaurant.id} clears the floor`);
+});
+
+ok("a dessert, a negated dish and a place known only by its profile text are never a flavor pick", () => {
+  for (const id of ["f6", "f7", "f9"]) assert.ok(fby(fpicks, id)?.reason.kind !== "dish", `${id} is no dish pick`);
+  assert.ok(!fpicks.some((p) => p.restaurant.id === "f9" && /sweet heat|spicy/.test(p.reason.text)));
+});
+
+ok("without a flavor to stand on there is no flavor pick: unflavored posts, praise slang and captions cannot anchor", () => {
+  const plain = [
+    rated("u1", "Plain Rice Bowl", 90),
+    rated("u2", "Garden Salad", 85),
+    rated("hD", "Banana Matcha", 80, { dishSection: "Drinks" }),
+    rated("hE", "Brisket Tacos", 70),
+  ];
+  const noFlavor = (posts) => {
+    const out = flavorWorld(posts);
+    assert.ok(!out || !out.some((p) => /— (sweet heat|spicy|smoky|crispy|sweet)\b/.test(p.reason.text)), "no flavor claim");
+    assert.ok(!out || !out.some((p) => ["f3", "f8", "f5c"].includes(p.restaurant.id)), "no flavor-only pick");
+  };
+  noFlavor(plain);
+  noFlavor(plain.map((p) => ({ ...p, caption: "so fire, gas, slay, absolute banger" })));
+  noFlavor(plain.map((p) => ({ ...p, caption: "loving the sweet heat, so spicy and smoky" })));
+});
+
+ok("ratings under 50 teach no flavor, and fewer than three seeds keep the ordinary picks", () => {
+  const low = [
+    rated("hA", "Hot Honey Chicken", 40, { dishDescription: "fried thigh, hot honey, pickles" }),
+    rated("hB", "Spicy Miso Ramen", 45),
+    rated("hC", "Sweet & Spicy Brussels Sprouts", 49),
+    rated("u1", "Plain Rice Bowl", 90),
+    rated("u2", "Garden Salad", 85),
+    rated("hD", "Banana Matcha", 80, { dishSection: "Drinks" }),
+  ];
+  const out = flavorWorld(low);
+  assert.ok(!out || !out.some((p) => /— (sweet heat|spicy)\b/.test(p.reason.text)), "a dish rated under 50 anchors nothing");
+  assert.equal(flavorWorld(hotPosts().slice(0, 2)), null, "two posts: the caller keeps its ordinary picks");
+});
+
+ok("a ceiling rater and a harsh rater both find the sweet heat dishes", () => {
+  for (const r of [[100, 100, 100, 100, 100], [64, 60, 58, 54, 50]]) {
+    const out = flavorWorld(hotPosts(r));
+    assert.ok(out && ids(out).includes("f3"), `ratings ${r.join("/")} still find the sweet heat cauliflower`);
+  }
+});
+
+ok("flavor-only picks fill at most flavorOnlyTop of the first six, and the rest of them follow", () => {
+  // Ten places that share nothing with the posts but a sweet chili dish, beside four that match a dish the viewer posted.
+  const spec = FSPEC.filter((s) => /^h/.test(s[0]) && s[0] !== "hC");
+  spec.push(["hC", "Wing Wiz", "Wings", 4.4, [["Sriracha Honey Wings"]]]);
+  const kinds = ["Salmon", "Shrimp", "Tofu", "Lentils", "Squid", "Eggplant", "Cauliflower", "Mushrooms", "Carrots", "Beans"];
+  const cuisines = ["Greek", "Thai", "Peruvian", "Cuban", "Ethiopian", "Indian", "Korean", "Turkish", "Lebanese", "Persian"];
+  kinds.forEach((k, i) => spec.push([`x${i}`, `Heat Place ${i}`, cuisines[i], 4.6, [[`Sweet Chili ${k}`]], 300]));
+  spec.push(["p1", "Ramen Ya", "Japanese", 4.6, [["Miso Ramen Bowl"]], 300]);
+  spec.push(["p2", "Tacos Dos", "Mexican", 4.6, [["Brisket Tacos Plate"]], 300]);
+  spec.push(["p3", "Chicken Shack", "Southern", 4.6, [["Hot Honey Chicken Tenders"]], 300]);
+  spec.push(["p4", "Wing Spot", "American", 4.6, [["Sriracha Honey Wings Basket"]], 300]);
+  const posts = [
+    rated("hA", "Hot Honey Chicken", 95, { dishDescription: "fried thigh, hot honey, pickles" }),
+    rated("hB", "Spicy Miso Ramen", 85),
+    rated("hC", "Sriracha Honey Wings", 90),
+    rated("hD", "Banana Matcha", 70, { dishSection: "Drinks" }),
+    rated("hE", "Brisket Tacos", 60),
+  ];
+  const out = FW(spec, [], 1200)(posts);
+  const isX = (p) => p.restaurant.id.startsWith("x");
+  const first = out.slice(0, DISH_TASTE.top);
+  assert.ok(first.filter(isX).length <= DISH_TASTE.flavorOnlyTop, `${first.filter(isX).length} flavor-only picks in the first ${DISH_TASTE.top}`);
+  assert.ok(first.filter((p) => !isX(p)).length >= DISH_TASTE.top - DISH_TASTE.flavorOnlyTop, "the rest of the first row stands on posted dishes");
+  assert.ok(out.filter(isX).length > DISH_TASTE.flavorOnlyTop, "and more of them follow once the row is full");
+});
+
 /* ---------- 2. the source ---------- */
 
 ok("no For me route, pill, link or chip row is left", () => {
@@ -512,6 +863,35 @@ ok("the taste route is private and the dish picks stay behind the gate", () => {
   assert.match(s, /isForMeUser\(user\.id\)/);
   assert.match(s, /rankDishes/);
   assert.match(s, /scoreTaste/, "everyone else, and a null or failed ranking, keeps the cuisine picks");
+});
+
+ok("the floor holds on the fallback inside the gate, and nothing outside the gate can reach the flavor ranking", () => {
+  const s = src("src/app/api/account/taste/route.ts");
+  const gate = s.indexOf("isForMeUser(user.id)");
+  const floor = s.indexOf("result.picks.filter((p) => passesFloor(p.restaurant))");
+  assert.ok(gate > 0 && floor > gate, "the cuisine fallback is floored only for the gated viewer, so everyone else keeps origin/main's picks");
+  assert.match(s, /import \{ passesFloor, rankDishes \} from "@\/lib\/dishTaste"/);
+  // rankDishes is called from exactly one place: the gated block of this route.
+  const callers = [];
+  const walk = (dir) => {
+    for (const e of readdirSync(root + dir, { withFileTypes: true })) {
+      if (e.isDirectory()) walk(`${dir}/${e.name}`);
+      else if (/\.(ts|tsx|mts)$/.test(e.name) && /\brankDishes\(/.test(src(`${dir}/${e.name}`))) callers.push(`${dir}/${e.name}`);
+    }
+  };
+  walk("src");
+  assert.deepEqual(callers.sort(), ["src/app/api/account/taste/route.ts", "src/lib/dishTaste.ts"]);
+  assert.ok(s.indexOf("rankDishes({") > gate, "and only after the gate");
+});
+
+ok("flavor is pure and has no switch of its own: no imports, no env var, no database write", () => {
+  const f = src("src/lib/flavor.ts");
+  assert.ok(!/^\s*import\s/m.test(f), "flavor.ts imports nothing");
+  for (const file of ["src/lib/flavor.ts", "src/lib/dishTaste.ts", "src/lib/dishIndex.ts"]) {
+    const s = src(file);
+    assert.ok(!/PM_FLAVOR|process\.env/.test(s), `${file} reads no env var`);
+    assert.ok(!/\b(?:INSERT|UPDATE|DELETE|ALTER|CREATE)\s+(?:INTO|TABLE|FROM|\w+\s+SET)/i.test(s.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "")), `${file} writes nothing`);
+  }
 });
 
 /* ---------- 3. render parity ---------- */

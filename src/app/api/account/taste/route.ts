@@ -4,7 +4,7 @@ import { limitOrReject } from "@/lib/rateLimit";
 import { getCurrentUser } from "@/lib/session";
 import { postsForDishTaste } from "@/lib/db";
 import { loadDishIndex } from "@/lib/dishIndex";
-import { rankDishes } from "@/lib/dishTaste";
+import { passesFloor, rankDishes } from "@/lib/dishTaste";
 import { isForMeUser } from "@/lib/forMeGate";
 import { TASTE_OP_KINDS, meanRating, scoreTaste, type TasteOp, type TastePick } from "@/lib/taste";
 import { resolveTasteContext } from "@/lib/tasteContext";
@@ -102,6 +102,8 @@ export async function POST(req: Request) {
   // a failed read, the ordinary picks stand.
   let picks: TastePick[] = result.picks;
   if (user && isForMeUser(user.id)) {
+    // The quality floor (over 4.0 stars, 5+ reviews) holds on the fallback too.
+    picks = result.picks.filter((p) => passesFloor(p.restaurant));
     try {
       const [index, posts] = await Promise.all([loadDishIndex(ctx.corpus), postsForDishTaste(user.id)]);
       const dish = rankDishes({
