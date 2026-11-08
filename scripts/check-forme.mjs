@@ -8,7 +8,8 @@
  * Three layers, no test framework (same shape as taste:check):
  *  1. A small deterministic corpus with menu profiles covers the plan's cases:
  *     the one-post gate, cold start, exclusions, chains and shared menus,
- *     reasons, imputed profiles, the cuisine cap, determinism.
+ *     reasons, imputed profiles, the cuisine cap, determinism, the quality
+ *     term and the cuisine profile.
  *  2. The route and the client, without a server: the GET refuses `foryou`
  *     (400, no-store) before it touches anything, and the source is pinned so
  *     the personal path cannot drift onto a cacheable response.
@@ -25,12 +26,14 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   EMPTY_PREFS,
+  FORME_CUISINE,
   FORME_QUALITY,
   FORME_WEIGHTS,
   WEIGHTS,
   chainKey,
   historyConfidence,
   meanRating,
+  placeWeight,
   qualityFloor,
   rankTaste,
   scoreAll,
@@ -43,6 +46,7 @@ import {
   CENTROID_TERMS,
   IMPUTED_FACTOR,
   MIN_CENTROID_PROFILES,
+  SECONDARY_CUISINE_WEIGHT,
   SIM_WEIGHTS,
   buildTraitIndex,
   dishSetKey,
@@ -249,9 +253,69 @@ function checkRank(label, input, res) {
   return scan;
 }
 
-/** Ahist and sim recomputed from `similarity` alone, for a sample of candidates. */
+/**
+ * The cuisine profile recomputed on the side, from the constants alone: every
+ * place the viewer has posted at or marked been weighs recency (halved per
+ * half-life since the latest post, down to the floor) times repeat (a step per
+ * further posting day, up to the cap); a been with no post weighs 1 and a
+ * secondary cuisine counts at its weight. Null while there are under 3 seeds,
+ * or when nothing visited has a cuisine.
+ */
+function expectedShares(input, scan) {
+  if (scan.seeds.length < 3) return null;
+  const universe = input.corpus ?? input.restaurants;
+  const byId = new Map(universe.map((r) => [r.id, r]));
+  const visited = new Set([...input.postedIds, ...input.prefs.been].filter((id) => byId.has(id)));
+  const posted = new Map((input.postedSignals ?? []).map((x) => [x.restaurantId, x]));
+  const now = input.now ?? Date.now();
+  const sum = new Map();
+  let total = 0;
+  for (const id of visited) {
+    const x = posted.get(id);
+    let w = 1;
+    if (x) {
+      const age = Math.max(0, (now - x.lastAt) / 86400000);
+      w =
+        Math.max(FORME_CUISINE.recencyFloor, Math.pow(0.5, age / FORME_CUISINE.halfLifeDays)) *
+        Math.min(FORME_CUISINE.repeatCap, 1 + FORME_CUISINE.repeatStep * (x.days - 1));
+    }
+    const r = byId.get(id);
+    if (!r.cuisine) continue;
+    const parts = [[r.cuisine, 1], ...(r.cuisineSecondary ?? []).filter((c) => c && c !== r.cuisine).map((c) => [c, SECONDARY_CUISINE_WEIGHT])];
+    for (const [c, k] of parts) {
+      sum.set(c, (sum.get(c) ?? 0) + w * k);
+      total += w * k;
+    }
+  }
+  const out = new Map();
+  if (total > 0) for (const [c, v] of sum) out.set(c, v / total);
+  // No cuisine anywhere in the history is no profile at all, not a profile that scores everyone zero.
+  return out.size > 0 ? out : null;
+}
+
+/** The candidate's Acuis from those shares; null for a place with no cuisine. */
+function expectedAcuis(r, shares) {
+  if (!r.cuisine) return null;
+  const parts = [[r.cuisine, 1], ...(r.cuisineSecondary ?? []).filter((c) => c && c !== r.cuisine).map((c) => [c, SECONDARY_CUISINE_WEIGHT])];
+  return Math.min(1, Math.max(...parts.map(([c, k]) => k * (shares.get(c) ?? 0))) / FORME_CUISINE.fullShare);
+}
+
+/**
+ * Ahist and sim recomputed from `similarity` alone, for a sample of candidates,
+ * and, from 3 seeds, blended with the cuisine profile as the spec says.
+ */
 function checkAhist(label, input, scan, step = 1) {
   const idx = input.traits;
+  const shares = expectedShares(input, scan);
+  if (shares) {
+    assert.equal(scan.cuisineShare.size, shares.size, `${label}: cuisine profile size`);
+    for (const [c, v] of shares) {
+      assert.ok(Math.abs((scan.cuisineShare.get(c) ?? -1) - v) < 1e-9, `${label}: share of ${c}`);
+    }
+  } else {
+    assert.equal(scan.cuisineShare.size, 0, `${label}: a profile under 3 seeds`);
+    assert.deepEqual(scan.topCuisines, [], `${label}: top cuisines under 3 seeds`);
+  }
   const seedTraits = scan.seeds.map((r) => traitsOf(idx, r.id));
   const k = seedTraits.length;
   const conf = Math.min(1, WEIGHTS.confBase + WEIGHTS.confStep * (k - 1));
@@ -268,6 +332,13 @@ function checkAhist(label, input, scan, step = 1) {
       const raw = conf * (WEIGHTS.maxInAhist * t1 + (WEIGHTS.top3InAhist * (t1 + t2 + t3)) / Math.min(3, k));
       wantAhist = Math.min(1, Math.max(0, raw));
     }
+    let wantAcuis = null;
+    if (shares && s.r.cuisine) {
+      wantAcuis = expectedAcuis(s.r, shares);
+      wantAhist = (1 - FORME_CUISINE.cuisineInAhist) * wantAhist + FORME_CUISINE.cuisineInAhist * wantAcuis;
+    }
+    if (wantAcuis == null) assert.equal(s.Acuis, null, `${label}: Acuis of ${s.r.name} should be absent`);
+    else assert.ok(Math.abs(s.Acuis - wantAcuis) < 1e-9, `${label}: Acuis of ${s.r.name} is ${s.Acuis}, expected ${wantAcuis}`);
     assert.ok(Math.abs(s.Ahist - wantAhist) < 1e-9, `${label}: Ahist of ${s.r.name} is ${s.Ahist}, expected ${wantAhist}`);
     assert.ok(Math.abs(s.sim - wantSim) < 1e-9, `${label}: sim of ${s.r.name}`);
   }
@@ -1822,6 +1893,442 @@ ok("hasFilterParams counts only real filters, not whatever a link brought along"
   const hook = stripComments(read("../src/lib/useDiscoverQuery.ts"));
   assert.match(hook, /const wantsPosition = forMe \|\| hasFilterParams\(search\)/);
   assert.ok(!/function narrows/.test(hook), "the loose any-key rule is gone");
+});
+
+/* ---------- the cuisine profile: what the viewer eats a lot of ---------- */
+
+const DAY = 86_400_000;
+const NOW = Date.UTC(2026, 10, 7, 12);
+/** A posting signal: last posted `daysAgo` before NOW, on `days` distinct days. */
+const sig = (restaurantId, daysAgo, days = 1) => ({ restaurantId, lastAt: NOW - daysAgo * DAY, days });
+const isNum = (x) => typeof x === "number" && Number.isFinite(x);
+/** Every number a scan hands the ranking, for comparing two scans exactly. */
+const numbers = (sc) => sc.scored.map((s) => [s.r.id, s.score, s.A, s.Ahist, s.Acuis, s.F, s.Q, s.N]);
+
+// Mexican x3, a Thai and an Italian the viewer can have been to. The "cx" candidates
+// have no menu rows, so what their Ahist gains from the cuisine is the cuisine's doing.
+const cw = miniWorld([
+  ["cm1", "Taco Uno", "Mexican", ["taco", "burrito", "salsa"]],
+  ["cm2", "Taco Dos", "Mexican", ["taco", "quesadilla", "salsa"]],
+  ["cm3", "Taco Tres", "Mexican", ["taco", "enchilada", "salsa"]],
+  ["ct1", "Thai Uno", "Thai", ["pad thai", "curry", "satay"]],
+  ["ci1", "Pasta Uno", "Italian", ["pasta", "pizza", "tiramisu"]],
+  ["cxm", "Cantina Nueva", "Mexican", null],
+  ["cxt", "Bangkok Nuevo", "Thai", null],
+  ["cxi", "Trattoria Nuova", "Italian", null],
+  ["cxg", "Zorba Nuevo", "Greek", null],
+  ["cxn", "Nameless Nook", null, null],
+  ["cxd", "Dishes Only", null, ["taco", "burrito", "salsa"]],
+  ["cxb", "Bar With Tacos", "Greek", null, { ...MID, secondary: ["Mexican"] }],
+  ["cym", "Taco Cuatro", "Mexican", ["taco", "burrito", "salsa"]],
+]);
+const cwRun = (label, o = {}) => {
+  const out = run(label, { ...cw, now: NOW, ...o });
+  checkAhist(label, out.input, out.sc);
+  return out;
+};
+const cwScan = (o = {}) => scoreAll({ ...base, ...cw, now: NOW, ...o });
+
+// Eight cuisines of one place each, so every share is an eighth and below full affinity.
+const G_CUISINES = ["Mexican", "Thai", "Italian", "Greek", "Korean", "Indian", "French", "Vietnamese"];
+const G_MENUS = [
+  ["taco", "burrito", "salsa"],
+  ["pad thai", "curry", "satay"],
+  ["pasta", "pizza", "tiramisu"],
+  ["gyro", "souvlaki", "baklava"],
+  ["bibimbap", "kimchi", "bulgogi"],
+  ["tikka", "naan", "samosa"],
+  ["croissant", "baguette", "crepe"],
+  ["pho", "banh mi", "spring roll"],
+];
+const gw = miniWorld([
+  ...G_CUISINES.map((c, i) => [`g${i}`, `${c} Seed`, c, G_MENUS[i]]),
+  ["gx", "Mexican Candidate", "Mexican", null],
+  ["gt", "Thai Candidate", "Thai", null],
+  ["gi", "Italian Candidate", "Italian", null],
+  ["gy", "Bar With Tacos", "Bar", null, { ...MID, secondary: ["Mexican"] }],
+  ["gz", "Bar Without", "Bar", null],
+]);
+const gSeeds = G_CUISINES.map((_, i) => `g${i}`);
+const gScan = (o = {}) => scoreAll({ ...base, ...gw, now: NOW, postedIds: gSeeds, ...o });
+
+ok("cuisine profile: the constants", () => {
+  assert.deepEqual(
+    { ...FORME_CUISINE },
+    {
+      halfLifeDays: 120,
+      recencyFloor: 0.4,
+      repeatStep: 0.5,
+      repeatCap: 2,
+      fullShare: 0.25,
+      cuisineInAhist: 0.3,
+      minSeeds: 3,
+      topCount: 3,
+      topMinShare: 0.1,
+      reasonShare: 0.2,
+      reasonPlaces: 3,
+    },
+  );
+});
+
+ok("cuisine profile: a place weighs recency x repeat, and a missing date weighs one", () => {
+  const hl = FORME_CUISINE.halfLifeDays;
+  assert.equal(placeWeight(undefined, NOW), 1, "a been with no post");
+  assert.equal(placeWeight(sig("x", 0, 1), NOW), 1, "posted today, once");
+  assert.ok(near(placeWeight(sig("x", hl, 1), NOW), 0.5), "one half-life ago is half");
+  assert.ok(near(placeWeight(sig("x", hl / 2, 1), NOW), Math.SQRT1_2), "half a half-life");
+  assert.equal(placeWeight(sig("x", 2 * hl, 1), NOW), FORME_CUISINE.recencyFloor, "two half-lives is under the floor, so the floor");
+  assert.equal(placeWeight(sig("x", 3650, 1), NOW), FORME_CUISINE.recencyFloor, "a decade is the floor too");
+  assert.ok(near(placeWeight(sig("x", 0, 2), NOW), 1.5), "a second day adds half");
+  assert.equal(placeWeight(sig("x", 0, 3), NOW), 2, "a third day reaches the cap");
+  assert.equal(placeWeight(sig("x", 0, 9), NOW), 2, "and the cap holds");
+  assert.ok(near(placeWeight(sig("x", hl, 3), NOW), 1), "the two multiply");
+  assert.ok(near(placeWeight(sig("x", 2 * hl, 3), NOW), 0.8), "a floored recency times a capped repeat");
+  // Older never weighs more, and more days never weigh less.
+  for (let d = 1; d <= 4; d++) {
+    let last = Infinity;
+    for (const ago of [0, 10, 60, 120, 240, 600, 3000]) {
+      const w = placeWeight(sig("x", ago, d), NOW);
+      assert.ok(w <= last + 1e-12, "older never weighs more");
+      last = w;
+    }
+  }
+  for (const ago of [0, 90, 400]) {
+    let last = 0;
+    for (let d = 1; d <= 5; d++) {
+      const w = placeWeight(sig("x", ago, d), NOW);
+      assert.ok(w >= last - 1e-12, "more days never weigh less");
+      last = w;
+    }
+  }
+  // Rubbish in is a plain weight out: finite and inside [floor, cap], never NaN.
+  const junk = [NaN, Infinity, -Infinity, 1e18, -1e18, 0, -3, undefined, null];
+  for (const lastAt of junk) {
+    for (const days of junk) {
+      const w = placeWeight({ restaurantId: "x", lastAt, days }, NOW);
+      assert.ok(isNum(w) && w >= FORME_CUISINE.recencyFloor && w <= FORME_CUISINE.repeatCap, `weight ${w} for ${lastAt}/${days}`);
+    }
+  }
+  for (const now of [NaN, Infinity, undefined]) assert.equal(placeWeight(sig("x", 500, 1), now), 1, "no clock, no decay");
+  assert.equal(placeWeight({ restaurantId: "x", lastAt: NaN, days: 1 }, NOW), 1);
+  assert.equal(placeWeight({ restaurantId: "x", lastAt: NOW + 5 * DAY, days: 1 }, NOW), 1, "a post from the future is today");
+});
+
+ok("cuisine profile: a hand-worked profile, shares that sum to one, and Acuis", () => {
+  // cm1 today once (1), cm2 a half-life ago on 2 days (0.5 x 1.5), ct1 today on 3 days (2), cm3 been (1).
+  const { sc, res } = cwRun("hand-worked", {
+    postedIds: ["cm1", "cm2", "ct1"],
+    prefs: prefs({ been: ["cm3"] }),
+    postedSignals: [sig("cm1", 0, 1), sig("cm2", FORME_CUISINE.halfLifeDays, 2), sig("ct1", 0, 3)],
+  });
+  assert.equal(sc.seeds.length, 4);
+  const mex = 1 + 0.75 + 1;
+  const thai = 2;
+  assert.ok(near(sc.cuisineShare.get("Mexican"), mex / (mex + thai)));
+  assert.ok(near(sc.cuisineShare.get("Thai"), thai / (mex + thai)));
+  assert.equal(sc.cuisineShare.size, 2);
+  assert.ok(near([...sc.cuisineShare.values()].reduce((a, b) => a + b, 0), 1), "shares sum to one");
+  assert.deepEqual(
+    sc.topCuisines.map((c) => [c.cuisine, c.places]),
+    [
+      ["Mexican", 3],
+      ["Thai", 1],
+    ],
+  );
+  assert.ok(near(sc.topCuisines[0].share, mex / (mex + thai)));
+  assert.deepEqual(res.topCuisines, sc.topCuisines, "rankTaste hands the same list on");
+  // Over a quarter of the history is full affinity; a cuisine never eaten is none; no cuisine is null.
+  assert.equal(scoredId(sc, "cxm").Acuis, 1);
+  assert.equal(scoredId(sc, "cxt").Acuis, 1);
+  assert.equal(scoredId(sc, "cxi").Acuis, 0);
+  assert.equal(scoredId(sc, "cxg").Acuis, 0);
+  assert.equal(scoredId(sc, "cxn").Acuis, null);
+  assert.ok(scoredId(sc, "cxi").Ahist < scoredId(sc, "cxm").Ahist, "the cuisine lifts a place the viewer eats");
+});
+
+ok("cuisine profile: graded affinity, and a secondary cuisine counts at its weight", () => {
+  const sc = gScan();
+  assert.equal(sc.seeds.length, 8);
+  for (const c of G_CUISINES) assert.ok(near(sc.cuisineShare.get(c), 1 / 8), `${c} is an eighth`);
+  assert.ok(near(scoredId(sc, "gx").Acuis, 0.5), "an eighth is half of full");
+  assert.ok(near(scoredId(sc, "gy").Acuis, 0.2), "a bar that also files under Mexican: 0.4 of that half");
+  assert.equal(scoredId(sc, "gz").Acuis, 0);
+  checkAhist("graded", { ...base, ...gw, now: NOW, postedIds: gSeeds }, sc);
+  assert.deepEqual(
+    sc.topCuisines.map((c) => c.cuisine),
+    ["French", "Greek", "Indian"],
+    "ties settle on the name",
+  );
+  assert.ok(sc.topCuisines.every((c) => near(c.share, 1 / 8)));
+});
+
+ok("cuisine profile: under three seeds it does nothing, at three it starts", () => {
+  const plain = cwScan({ postedIds: ["cm1", "ct1"] });
+  assert.equal(plain.seeds.length, 2);
+  assert.equal(plain.cuisineShare.size, 0);
+  assert.deepEqual(plain.topCuisines, []);
+  for (const s of plain.scored) assert.equal(s.Acuis, null, `${s.r.name} has an Acuis under two seeds`);
+  // Signals change nothing there, whatever they say.
+  const withSignals = cwScan({ postedIds: ["cm1", "ct1"], postedSignals: [sig("cm1", 0, 9), sig("ct1", 900, 1)] });
+  assert.deepEqual(numbers(withSignals), numbers(plain));
+  cwRun("two seeds", { postedIds: ["cm1", "ct1"] });
+  cwRun("no seeds");
+  const none = cwScan();
+  assert.equal(none.cuisineShare.size, 0);
+  const three = cwScan({ postedIds: ["cm1", "ct1", "ci1"] });
+  assert.equal(three.seeds.length, 3);
+  assert.equal(three.cuisineShare.size, 3, "three seeds is enough");
+  assert.equal(scoredId(three, "cxm").Acuis, 1);
+  cwRun("three seeds", { postedIds: ["cm1", "ct1", "ci1"] });
+});
+
+ok("cuisine profile: missing or bad data is exactly neutral", () => {
+  const seeds = { postedIds: ["cm1", "cm2", "ct1"], prefs: prefs({ been: ["cm3"] }) };
+  const none = cwScan(seeds);
+  const empty = cwScan({ ...seeds, postedSignals: [] });
+  const stranger = cwScan({ ...seeds, postedSignals: [sig("cxm", 0, 9), sig("nobody", 3, 3)] });
+  const junk = cwScan({
+    ...seeds,
+    postedSignals: [
+      { restaurantId: "cm1", lastAt: NaN, days: NaN },
+      { restaurantId: "cm2", lastAt: Infinity, days: -4 },
+      { restaurantId: "ct1", lastAt: undefined, days: null },
+    ],
+  });
+  assert.deepEqual(numbers(empty), numbers(none), "an empty list is no list");
+  assert.deepEqual(numbers(stranger), numbers(none), "signals for places not visited are not read");
+  assert.deepEqual(numbers(junk), numbers(none), "a signal with nothing usable is a plain been");
+  assert.ok(near(none.cuisineShare.get("Mexican"), 3 / 4), "with no dates every place weighs one");
+  for (const sc of [none, empty, stranger, junk]) {
+    for (const s of sc.scored) {
+      for (const v of [s.score, s.A, s.Ahist, s.F, s.Q, s.N, s.tail]) assert.ok(isNum(v), `${s.r.name}: a number is not finite`);
+      assert.ok(s.Acuis == null || (isNum(s.Acuis) && s.Acuis >= 0 && s.Acuis <= 1));
+      assert.ok(s.Ahist >= 0 && s.Ahist <= 1 && s.A >= 0 && s.A <= 1);
+    }
+  }
+  // A place with no cuisine has nothing to compare: Ahist is its menu's alone, untouched by the blend.
+  const { sc } = cwRun("no cuisine on the candidate", seeds);
+  assert.equal(scoredId(sc, "cxn").Acuis, null);
+  assert.equal(scoredId(sc, "cxd").Acuis, null);
+  assert.ok(scoredId(sc, "cxd").Ahist > 0, "its menu still counts");
+  assert.equal(scoredOf(scan({ postedIds: [ramen[0].id, thai[0].id, italian[0].id] }), noCuisine).Acuis, null);
+
+  // History with no cuisine in it at all: no profile, no top cuisines, nothing moves.
+  const blank = miniWorld([
+    ["n1", "Nowhere One", null, ["taco", "burrito", "salsa"]],
+    ["n2", "Nowhere Two", null, ["pasta", "pizza", "tiramisu"]],
+    ["n3", "Nowhere Three", null, ["pho", "banh mi", "spring roll"]],
+    ["n4", "Candidate Taco", "Mexican", null],
+    ["n5", "Candidate Pasta", "Italian", ["pasta", "pizza", "bread"]],
+  ]);
+  const blankInput = { ...base, ...blank, now: NOW, postedIds: ["n1", "n2", "n3"] };
+  const b = scoreAll(blankInput);
+  assert.equal(b.seeds.length, 3);
+  assert.equal(b.cuisineShare.size, 0);
+  assert.deepEqual(b.topCuisines, []);
+  for (const s of b.scored) assert.equal(s.Acuis, null);
+  checkAhist("blank", blankInput, b);
+
+  // No candidates at all is not an error.
+  const nothing = rankTaste({ ...base, ...cw, restaurants: [], now: NOW, ...seeds });
+  assert.deepEqual(nothing.order, []);
+});
+
+ok("cuisine profile: recency and repeat move the shares, and the score with them", () => {
+  const fresh = gScan({ postedSignals: gSeeds.map((id) => sig(id, 0)) });
+  for (const c of G_CUISINES) assert.ok(near(fresh.cuisineShare.get(c), 1 / 8));
+  // The Thai place was last posted nearly three years ago: it still counts, at the floor.
+  const stale = gScan({ postedSignals: gSeeds.map((id) => sig(id, id === "g1" ? 1000 : 0)) });
+  assert.ok(near(stale.cuisineShare.get("Thai"), 0.4 / 7.4));
+  assert.ok(near(stale.cuisineShare.get("Mexican"), 1 / 7.4));
+  const ancient = gScan({ postedSignals: gSeeds.map((id) => sig(id, id === "g1" ? 4000 : 0)) });
+  assert.equal(ancient.cuisineShare.get("Thai"), stale.cuisineShare.get("Thai"), "the floor is the floor");
+  // Three days at the Italian place doubles it.
+  const loyal = gScan({ postedSignals: gSeeds.map((id) => sig(id, 0, id === "g2" ? 3 : 1)) });
+  assert.ok(near(loyal.cuisineShare.get("Italian"), 2 / 9));
+  assert.ok(near(loyal.cuisineShare.get("Mexican"), 1 / 9));
+  // A place with no post weighs one, more than the same place posted long ago; one both marked been
+  // and posted takes the post's weight, once.
+  const beenOnly = gScan({
+    postedIds: gSeeds.filter((id) => id !== "g0"),
+    prefs: prefs({ been: ["g0"] }),
+    postedSignals: gSeeds.map((id) => sig(id, 0)),
+  });
+  assert.ok(near(beenOnly.cuisineShare.get("Mexican"), 1 / 8));
+  const both = gScan({ prefs: prefs({ been: ["g0"] }), postedSignals: gSeeds.map((id) => sig(id, id === "g0" ? 1000 : 0)) });
+  assert.ok(near(both.cuisineShare.get("Mexican"), 0.4 / 7.4), "the post's weight, not a been's one");
+
+  // The menu part of a candidate's Ahist is the same for all of these viewers (same seeds), so it
+  // moves by exactly the cuisine's part of the change; its score follows the direction.
+  const k = FORME_CUISINE.cuisineInAhist;
+  for (const [id, a, b] of [
+    ["gx", fresh, loyal],
+    ["gt", fresh, stale],
+    ["gi", fresh, loyal],
+    ["gi", fresh, stale],
+  ]) {
+    const x = scoredId(a, id);
+    const y = scoredId(b, id);
+    assert.ok(near(y.Ahist - x.Ahist, k * (y.Acuis - x.Acuis)), `${id}: Ahist moves by the cuisine's part only`);
+    assert.equal(Math.sign(y.score - x.score), Math.sign(y.Acuis - x.Acuis), `${id}: the score follows the affinity`);
+  }
+  assert.ok(scoredId(loyal, "gi").Acuis > scoredId(fresh, "gi").Acuis, "more Italian eaten, more affinity for an Italian place");
+  assert.ok(scoredId(loyal, "gx").Acuis < scoredId(fresh, "gx").Acuis, "and less for a Mexican one");
+  assert.ok(scoredId(stale, "gt").Acuis < scoredId(fresh, "gt").Acuis, "a stale Thai visit counts for less");
+  assert.ok(scoredId(loyal, "gi").score > scoredId(fresh, "gi").score);
+});
+
+ok("cuisine profile: the order of the input does not move it", () => {
+  const visits = ["cm1", "cm2", "cm3", "ct1", "ci1"];
+  const signals = [sig("cm1", 12, 2), sig("cm2", 130, 1), sig("ct1", 400, 4), sig("ci1", 0, 1)];
+  const a = cwScan({ postedIds: visits.slice(0, 3), prefs: prefs({ been: visits.slice(3) }), postedSignals: signals });
+  for (let seed = 1; seed <= 5; seed++) {
+    const rnd = prng(seed);
+    const all = shuffled(visits, rnd);
+    const cut = 1 + Math.floor(rnd() * 3);
+    const b = cwScan({ postedIds: all.slice(0, cut), prefs: prefs({ been: all.slice(cut) }), postedSignals: shuffled(signals, rnd) });
+    assert.deepEqual([...b.cuisineShare].sort(), [...a.cuisineShare].sort(), "the profile, to the last bit");
+    assert.deepEqual(b.topCuisines, a.topCuisines);
+  }
+});
+
+ok("cuisine profile: the top cuisines, at most three and each at a tenth or more", () => {
+  const counted = (counts) => {
+    const specs = [];
+    for (const [c, k] of Object.entries(counts)) {
+      for (let i = 0; i < k; i++) specs.push([`${c}${i}`, `${c} Place ${i}`, c, ["taco", "burrito", "salsa"]]);
+    }
+    const world = miniWorld(specs);
+    return scoreAll({ ...base, ...world, now: NOW, postedIds: world.restaurants.map((r) => r.id) });
+  };
+  const names = (sc) => sc.topCuisines.map((c) => c.cuisine);
+  const four = counted({ Alpha: 4, Bravo: 3, Charlie: 2, Delta: 1 });
+  assert.deepEqual(names(four), ["Alpha", "Bravo", "Charlie"], "three at most; Delta is a tenth but fourth");
+  assert.deepEqual(
+    four.topCuisines.map((c) => c.places),
+    [4, 3, 2],
+  );
+  assert.ok(four.topCuisines.every((c, i, all) => i === 0 || c.share <= all[i - 1].share));
+  const tied = counted({ Alpha: 5, Bravo: 2, Echo: 1, Charlie: 1, Delta: 1 });
+  assert.deepEqual(names(tied), ["Alpha", "Bravo", "Charlie"], "a tie settles on the name; a tenth exactly counts");
+  const one = counted({ Alpha: 5 });
+  assert.deepEqual(one.topCuisines, [{ cuisine: "Alpha", share: 1, places: 5 }]);
+  const spread = counted(Object.fromEntries(Array.from({ length: 12 }, (_, i) => [`C${String(i).padStart(2, "0")}`, 1])));
+  assert.deepEqual(spread.topCuisines, [], "twelve cuisines of a twelfth each: nothing is a tenth");
+  assert.deepEqual(names(counted({ Alpha: 8, Bravo: 1, Charlie: 1 })), ["Alpha", "Bravo", "Charlie"]);
+  assert.deepEqual(names(counted({ Alpha: 10, Bravo: 1, Charlie: 1 })), ["Alpha"], "a twelfth is under a tenth");
+});
+
+ok("cuisine profile: the whole history counts, not just the thirty seeds", () => {
+  const over = fillers.map((r) => r.id);
+  assert.ok(over.length > WEIGHTS.maxSeeds);
+  const { sc } = run("over the cap", {
+    prefs: prefs({ been: over.slice(0, 20) }),
+    postedIds: [...over.slice(20), thai[0].id],
+    now: NOW,
+  });
+  assert.equal(sc.seeds.length, WEIGHTS.maxSeeds);
+  assert.ok(near(sc.cuisineShare.get("American"), over.length / (over.length + 1)), "all of the American places, not thirty");
+  assert.ok(near(sc.cuisineShare.get("Thai"), 1 / (over.length + 1)));
+});
+
+ok("cuisine profile: the reason says it only when nothing stronger can", () => {
+  const seeds = { postedIds: ["cm1", "cm2", "cm3", "ct1"] };
+  const { res, sc } = cwRun("eat a lot", seeds);
+  // Mexican is 3 of 4 places. Nothing shared with a seed to name, so the cuisine speaks.
+  assert.deepEqual(res.reasonOf("cxm"), { kind: "cuisine", text: "You eat a lot of Mexican" });
+  assert.ok(matchesOf(res).includes("cxm"));
+  // Thai is a quarter of the history but one place: not enough to say "a lot".
+  assert.ok(!res.reasonOf("cxt").text.startsWith("You eat"), res.reasonOf("cxt").text);
+  assert.equal(scoredId(sc, "cxt").Acuis, 1);
+  // A real shared dish with a seed names that seed; the cuisine does not push it out.
+  assert.equal(res.reasonOf("cym").kind, "like");
+  assert.match(res.reasonOf("cym").text, /^Because you went to /);
+  // A place whose main cuisine is something else is not claimed for Mexican, whatever its secondary.
+  assert.ok(matchesOf(res).includes("cxb"), "a bar that also files under Mexican still earns its place");
+  assert.ok(!res.reasonOf("cxb").text.startsWith("You eat"), res.reasonOf("cxb").text);
+  // A pick and a friend come first.
+  const picked = cwRun("pick first", { ...seeds, prefs: prefs({ loves: ["Mexican"] }) });
+  assert.deepEqual(picked.res.reasonOf("cxm"), { kind: "pick", text: "You picked Mexican" });
+  const withFriend = cwRun("friend first", { ...seeds, friendVisits: [friend({ id: "cxm" }, "f1", "Maya")] });
+  assert.equal(withFriend.res.reasonOf("cxm").kind, "friends");
+  // The tail never claims it: every tail card reads as rated (checkRank holds that too).
+  for (const id of res.order.slice(res.matched)) assert.equal(res.reasonOf(id).kind, "rated");
+
+  // The share has to be a fifth of the history: three Mexican places among twenty are not.
+  const crowd = Array.from({ length: 17 }, (_, i) => [`x${i}`, `Crowd ${i}`, `Cuisine${i}`, ["taco", "burrito", "salsa"]]);
+  const wide = miniWorld([
+    ["cm1", "Taco Uno", "Mexican", ["taco", "burrito", "salsa"]],
+    ["cm2", "Taco Dos", "Mexican", ["taco", "quesadilla", "salsa"]],
+    ["cm3", "Taco Tres", "Mexican", ["taco", "enchilada", "salsa"]],
+    ...crowd,
+    ["cxm", "Cantina Nueva", "Mexican", null],
+  ]);
+  const diluted = run("diluted", { ...wide, now: NOW, postedIds: wide.restaurants.filter((r) => r.id !== "cxm").map((r) => r.id) });
+  assert.ok(near(diluted.sc.cuisineShare.get("Mexican"), 3 / 20));
+  assert.ok(!diluted.res.reasonOf("cxm").text.startsWith("You eat"), diluted.res.reasonOf("cxm").text);
+  assert.ok(near(scoredId(diluted.sc, "cxm").Acuis, 0.6));
+
+  // Two places visited on many days are a big share of two places: still not "a lot".
+  const few = cwRun("two places", {
+    postedIds: ["cm1", "cm2", "ct1", "ci1"],
+    postedSignals: [sig("cm1", 0, 3), sig("cm2", 0, 3), sig("ct1", 0, 1), sig("ci1", 0, 1)],
+  });
+  assert.ok(few.sc.cuisineShare.get("Mexican") >= FORME_CUISINE.reasonShare);
+  assert.ok(!few.res.reasonOf("cxm").text.startsWith("You eat"), few.res.reasonOf("cxm").text);
+
+  // A long label is clipped like every other reason.
+  const longs = miniWorld([
+    ["l1", "Wok Wagon", LONG_CUISINE, ["taco", "burrito", "salsa"]],
+    ["l2", "Noodle Nomad", LONG_CUISINE, ["pasta", "pizza", "tiramisu"]],
+    ["l3", "Street Orchid", LONG_CUISINE, ["pho", "banh mi", "spring roll"]],
+    ["l4", "Fourth Wok", LONG_CUISINE, null],
+  ]);
+  const long = run("long label", { ...longs, now: NOW, postedIds: ["l1", "l2", "l3"] });
+  const text = long.res.reasonOf("l4").text;
+  assert.ok(text.startsWith("You eat a lot of Contemporary") && text.endsWith("…"), text);
+  assert.ok(text.length <= WEIGHTS.reasonMaxChars);
+});
+
+ok("cuisine profile: Your taste never sees it", () => {
+  const input = { ...base, postedIds: [ramen[0].id, thai[0].id, italian[0].id, burgers[0].id], now: NOW };
+  const signals = [sig(ramen[0].id, 0, 5), sig(thai[0].id, 900, 1)];
+  const without = scoreAll({ ...input, traits: undefined });
+  const withSignals = scoreAll({ ...input, traits: undefined, postedSignals: signals });
+  assert.equal(without.mode, "cuisine");
+  assert.deepEqual(numbers(withSignals), numbers(without));
+  for (const sc of [without, withSignals]) {
+    assert.equal(sc.cuisineShare.size, 0);
+    assert.deepEqual(sc.topCuisines, []);
+    for (const s of sc.scored) assert.equal(s.Acuis, null);
+  }
+  const takes = (extra) =>
+    scoreTaste({ restaurants: corpus, plates: {}, prefs: EMPTY_PREFS, postedIds: input.postedIds, friendVisits: [], ...extra });
+  assert.deepEqual(takes({ postedSignals: signals, now: NOW }), takes({}));
+  const src = stripComments(read("../src/lib/taste.ts"));
+  const start = src.indexOf("export function scoreTaste");
+  const yourTaste = src.slice(start, src.indexOf("\nexport ", start + 1));
+  assert.ok(start > 0 && !/postedSignals|cuisineShare|FORME_CUISINE|Acuis/.test(yourTaste), "scoreTaste does not reach the profile");
+});
+
+ok("cuisine profile: the posting dates are read only for For me, and only to read", () => {
+  assert.match(postFn, /resolveTasteContext\(\{[^}]*postedSignals:\s*true/);
+  assert.match(postFn, /postedSignals:\s*ctx\.postedSignals/);
+  assert.ok(!getFn.includes("postedSignals"), "the public GET never asks for the viewer's dates");
+  const taste = stripComments(read("../src/app/api/account/taste/route.ts"));
+  assert.ok(!taste.includes("postedSignals"), "Your taste's route does not ask either");
+  const ctxSrc = stripComments(read("../src/lib/tasteContext.ts"));
+  assert.match(ctxSrc, /opts\.postedSignals === true \? postedSignalsBy\(user\.id\)/);
+  const dbSrc = stripComments(read("../src/lib/db.ts")).replace(/\r\n/g, "\n");
+  const from = dbSrc.indexOf("export async function postedSignalsBy");
+  const fn = dbSrc.slice(from, dbSrc.indexOf("\nexport ", from + 1));
+  assert.match(fn, /SELECT restaurant_id,/);
+  assert.match(fn, /WHERE user_id = \$\{userId\} AND restaurant_id IS NOT NULL/);
+  assert.ok(!/\b(INSERT|UPDATE|DELETE|DROP|ALTER|TRUNCATE)\b/i.test(fn), "it only reads");
+  // The existing reader keeps its query, its order and its caller's contract.
+  const old = dbSrc.indexOf("export async function restaurantIdsPostedBy");
+  const same = dbSrc.slice(old, dbSrc.indexOf("\nexport ", old + 1));
+  assert.match(same, /SELECT restaurant_id FROM posts\s+WHERE user_id = \$\{userId\} AND restaurant_id IS NOT NULL\s+GROUP BY restaurant_id\s+ORDER BY max\(created_at\) DESC, restaurant_id/);
 });
 
 console.log(`forme:check  ${n} fixture and route cases ok`);

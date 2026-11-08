@@ -33,6 +33,19 @@
  *    well-reviewed place that is simply not good.
  *  - The tail's reason reads R': "Well rated in {hood}" from 4.2, "Highly rated"
  *    from 4.5. The grid's quality line drops its tier word on those cards.
+ *  - A cuisine profile, from 3 seeds, over everything the viewer has posted at
+ *    or marked been (not only the 30 seeds). Each place weighs recency x repeat:
+ *    0.5 per 120 days since their latest post there (floored at 0.4), times 1 +
+ *    0.5 per further day they posted there (capped at 2); a "been" with no post
+ *    is 1. A cuisine's share s(c) is its weight over the total, secondary
+ *    cuisines at SECONDARY_CUISINE_WEIGHT. A candidate's Acuis is its best
+ *    weighted s(c) over 0.25, at most 1, and Ahist' = 0.7 Ahist + 0.3 Acuis,
+ *    so what the viewer eats a lot of counts beside what a menu resembles.
+ *    Fewer seeds, or a place with no cuisine, leave Ahist as it was. The scan
+ *    lists the top cuisines (up to 3 at a 0.10 share or more), and a match with
+ *    nothing stronger to say reads "You eat a lot of {cuisine}" from a 0.20
+ *    share over 3 places. Dates are of the viewer's own posts, as history; the
+ *    posts' ratings, votes and the rest still feed none of it.
  * The viewer's own ratings, likes, hearts, upvotes and saves feed none of it.
  */
 import type { RestaurantView } from "@/data/restaurantTypes";
@@ -143,6 +156,41 @@ export const FORME_QUALITY = {
   /** ..."Highly rated" from this one. */
   highlyRatedFrom: 4.5,
 } as const;
+
+/** The cuisine profile For me reads: how a place weighs, and how it joins Ahist. */
+export const FORME_CUISINE = {
+  /** A place's weight halves every this many days since the viewer's latest post there... */
+  halfLifeDays: 120,
+  /** ...and never falls below this. A `been` with no post date weighs 1. */
+  recencyFloor: 0.4,
+  /** Each further day the viewer posted at the same place adds this to its weight... */
+  repeatStep: 0.5,
+  /** ...up to this. */
+  repeatCap: 2,
+  /** A cuisine at this share of the viewer's history is full affinity for a candidate. */
+  fullShare: 0.25,
+  /** Ahist' = (1 - cuisineInAhist) * Ahist + cuisineInAhist * Acuis. */
+  cuisineInAhist: 0.3,
+  /** The profile counts from this many seeds; fewer and Ahist is left as it was. */
+  minSeeds: 3,
+  /** `topCuisines` lists at most this many, each with at least this share. */
+  topCount: 3,
+  topMinShare: 0.1,
+  /** "You eat a lot of X" needs X at this share, over at least this many distinct places. */
+  reasonShare: 0.2,
+  reasonPlaces: 3,
+} as const;
+
+/**
+ * When, and how often, the viewer posted at one restaurant: the latest post
+ * (epoch milliseconds) and the number of distinct days they posted there.
+ * `postedSignalsBy` in lib/db.ts reads it; a place missing from the list, or
+ * with no usable date, weighs as a plain `been` does.
+ */
+export type PostedSignal = { restaurantId: string; lastAt: number; days: number };
+
+/** A cuisine the viewer eats a lot of: its share of their weighted history. */
+export type CuisineShare = { cuisine: string; share: number; places: number };
 
 export type TasteBasis = "history" | "starting" | "friends" | "none";
 export type TasteReason = {
@@ -473,7 +521,10 @@ export type Scored = {
   A: number;
   /** The explicit-pick and history parts of A. For me only; 0 in the cuisine-share mode. */
   Apick: number;
+  /** With the cuisine profile in, from 3 seeds: 0.7 * menu similarity + 0.3 * Acuis. */
   Ahist: number;
+  /** For me: the candidate's affinity to the viewer's cuisine profile; null when it does not apply. */
+  Acuis: number | null;
   F: number;
   Q: number;
   N: number;
@@ -512,6 +563,13 @@ export type ScanInput = TasteInput & {
    * corpus never needs, because it passes the one computed with it.
    */
   ratingMean?: number | null;
+  /**
+   * For me: when and how often the viewer posted at each place, for the cuisine
+   * profile's weights. Absent or empty: every visited place weighs 1.
+   */
+  postedSignals?: readonly PostedSignal[];
+  /** For me: the clock the recency decay reads, in epoch milliseconds. Defaults to now. */
+  now?: number;
 };
 
 export type TasteScan = {
@@ -530,6 +588,10 @@ export type TasteScan = {
   cuisineVisits: ReadonlyMap<string, number>;
   /** Distinct places the viewer has posted at or marked been. */
   visited: number;
+  /** Similarity mode: each cuisine's share of the viewer's history. Empty under 3 seeds. */
+  cuisineShare: ReadonlyMap<string, number>;
+  /** Similarity mode: the viewer's biggest cuisines, largest first. Empty under 3 seeds. */
+  topCuisines: CuisineShare[];
 };
 
 type Signals = {
@@ -607,6 +669,77 @@ export function tasteExclusions(input: SignalInput): Set<string> {
 /** How far to trust history from `k` seeds: 1 seed 0.6, 2 seeds 0.8, 3 or more 1. */
 export function historyConfidence(k: number): number {
   return Math.min(1, WEIGHTS.confBase + WEIGHTS.confStep * (k - 1));
+}
+
+const DAY_MS = 86_400_000;
+
+/**
+ * How much one visited place counts in the cuisine profile: recency x repeat,
+ * read off the viewer's own posts there. A place with no post to read (a
+ * `been`, or a post without a usable date) weighs 1, so missing data adds
+ * nothing and takes nothing away.
+ */
+export function placeWeight(p: PostedSignal | undefined, now: number): number {
+  if (!p) return 1;
+  const c = FORME_CUISINE;
+  const ageDays = Number.isFinite(p.lastAt) && Number.isFinite(now) ? Math.max(0, (now - p.lastAt) / DAY_MS) : 0;
+  const recency = Math.max(c.recencyFloor, 0.5 ** (ageDays / c.halfLifeDays));
+  const days = Number.isFinite(p.days) ? Math.max(1, p.days) : 1;
+  return recency * Math.min(c.repeatCap, 1 + c.repeatStep * (days - 1));
+}
+
+/**
+ * Each cuisine's share of the viewer's history, summing to 1: every visited
+ * place adds its weight to its main cuisine and `SECONDARY_CUISINE_WEIGHT` of it
+ * to each secondary one. Empty when nothing visited has a cuisine.
+ */
+function cuisineShares(
+  sig: Signals,
+  signals: readonly PostedSignal[],
+  now: number,
+): Map<string, number> {
+  const posted = new Map<string, PostedSignal>();
+  for (const p of signals) posted.set(p.restaurantId, p);
+  const sum = new Map<string, number>();
+  let total = 0;
+  // Sorted, because a float sum depends on its order and the profile must not
+  // depend on the order the places arrived in.
+  for (const id of [...sig.visitedIds].sort()) {
+    const w = placeWeight(posted.get(id), now);
+    for (const t of restaurantTraits(sig.byId.get(id)!, { secondary: true })) {
+      sum.set(t.cuisine, (sum.get(t.cuisine) ?? 0) + w * t.weight);
+      total += w * t.weight;
+    }
+  }
+  const out = new Map<string, number>();
+  if (total > 0) for (const [cuisine, v] of sum) out.set(cuisine, v / total);
+  return out;
+}
+
+/**
+ * Acuis: the candidate's best cuisine against the share that earns full
+ * affinity. A secondary cuisine counts at its weight, as it does for a pick. A
+ * place with no cuisine has nothing to compare, so it gets null, not 0.
+ */
+function cuisineAffinity(r: RestaurantView, share: ReadonlyMap<string, number>): number | null {
+  const traits = restaurantTraits(r, { secondary: true });
+  if (traits.length === 0) return null;
+  let best = 0;
+  for (const t of traits) best = Math.max(best, t.weight * (share.get(t.cuisine) ?? 0));
+  return Math.min(1, best / FORME_CUISINE.fullShare);
+}
+
+/** The biggest cuisines, largest first (ties by name), each with the places behind it. */
+function topCuisinesOf(
+  share: ReadonlyMap<string, number>,
+  visits: ReadonlyMap<string, number>,
+): CuisineShare[] {
+  const c = FORME_CUISINE;
+  return [...share]
+    .filter(([, v]) => v >= c.topMinShare)
+    .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))
+    .slice(0, c.topCount)
+    .map(([cuisine, v]) => ({ cuisine, share: v, places: visits.get(cuisine) ?? 0 }));
 }
 
 /**
@@ -699,6 +832,12 @@ export function scoreAll(input: ScanInput): TasteScan {
   }
   const conf = historyConfidence(seedTraits.length);
   const mixed = picksActive && historyActive;
+  // The cuisine profile reads the whole of the viewer's history, not just the
+  // seeds, and only once there are enough of them to say what they eat a lot of.
+  const cuisineShare: ReadonlyMap<string, number> =
+    index && seedTraits.length >= FORME_CUISINE.minSeeds
+      ? cuisineShares(sig, input.postedSignals ?? [], input.now ?? Date.now())
+      : new Map();
 
   // Friends: distinct friends per restaurant.
   const friendsAt = new Map<string, Map<string, string>>();
@@ -717,6 +856,7 @@ export function scoreAll(input: ScanInput): TasteScan {
     let A = 0;
     let Apick = 0;
     let Ahist = 0;
+    let Acuis: number | null = null;
     let seed = -1;
     let sim = 0;
     if (index) {
@@ -753,6 +893,14 @@ export function scoreAll(input: ScanInput): TasteScan {
         const top = Math.min(3, seedTraits.length);
         Ahist = clamp01(conf * (WEIGHTS.maxInAhist * t1 + (WEIGHTS.top3InAhist * (t1 + t2 + t3)) / top));
       }
+      // A place with no cuisine, or a viewer with too little history, leaves
+      // Ahist exactly as the menu comparison made it.
+      if (cuisineShare.size > 0) {
+        Acuis = cuisineAffinity(r, cuisineShare);
+        if (Acuis != null) {
+          Ahist = (1 - FORME_CUISINE.cuisineInAhist) * Ahist + FORME_CUISINE.cuisineInAhist * Acuis;
+        }
+      }
       if (mixed) A = WEIGHTS.pickInA * Apick + WEIGHTS.histInA * Ahist;
       else if (picksActive) A = Apick;
       else if (historyActive) A = Ahist;
@@ -787,6 +935,7 @@ export function scoreAll(input: ScanInput): TasteScan {
       A,
       Apick,
       Ahist,
+      Acuis,
       F,
       Q,
       N,
@@ -812,6 +961,8 @@ export function scoreAll(input: ScanInput): TasteScan {
     effectiveLoves,
     cuisineVisits,
     visited: visitedIds.size,
+    cuisineShare,
+    topCuisines: topCuisinesOf(cuisineShare, cuisineVisits),
   };
 }
 
@@ -996,6 +1147,12 @@ export type ForMeRank = ForMeArrangement & {
   /** Ids in the corpus that never show: visited, hidden, skipped cuisine. */
   exclude: Set<string>;
   /**
+   * What the viewer eats a lot of: up to FORME_CUISINE.topCount cuisines at a
+   * share of FORME_CUISINE.topMinShare or more, largest first. Empty under
+   * FORME_CUISINE.minSeeds seeds.
+   */
+  topCuisines: CuisineShare[];
+  /**
    * The arrangement over just these ids (the rows a filter left). Sorting the
    * full list and then filtering it is not the same thing: a chain's best
    * branch, or a menu's twin, can sit outside the filter and have pushed the
@@ -1043,6 +1200,7 @@ export function rankTaste(input: RankInput): ForMeRank {
     basis,
     seeds: scan.seeds.length,
     exclude: scan.exclude,
+    topCuisines: scan.topCuisines,
     rankAmong: (ids) => {
       let all = true;
       for (const s of sorted) {
@@ -1302,6 +1460,8 @@ function chooseReason(
             : friendsReason(s);
       if (reason) return reason;
     }
+    const eats = cuisineShareReason(s, scan);
+    if (eats) return eats;
     const more = cuisineReason(s, scan, index);
     if (more) return more;
   }
@@ -1362,6 +1522,21 @@ function pickReason(s: Scored, scan: TasteScan): ForMeReason | null {
 function friendsReason(s: Scored): ForMeReason | null {
   const text = friendsLine(s);
   return text ? { kind: "friends", text } : null;
+}
+
+/**
+ * A match whose own cuisine is a big part of what the viewer eats: at least
+ * FORME_CUISINE.reasonShare of their history, over at least reasonPlaces places
+ * they have been. Spoken only when nothing stronger (a like, a pick, a friend)
+ * could be, and it claims the place's main cuisine, never a secondary one.
+ */
+function cuisineShareReason(s: Scored, scan: TasteScan): ForMeReason | null {
+  const cuisine = s.r.cuisine;
+  if (!cuisine) return null;
+  const c = FORME_CUISINE;
+  if ((scan.cuisineShare.get(cuisine) ?? 0) < c.reasonShare) return null;
+  if ((scan.cuisineVisits.get(cuisine) ?? 0) < c.reasonPlaces) return null;
+  return { kind: "cuisine", text: clipReason(`You eat a lot of ${cuisine}`) };
 }
 
 /**

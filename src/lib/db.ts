@@ -39,6 +39,7 @@ import {
   EMPTY_PREFS,
   type FriendVisit,
   type FullTastePrefs,
+  type PostedSignal,
   type TasteOp,
 } from "@/lib/taste";
 import type { FeedCursor } from "@/lib/feedCursor";
@@ -1556,6 +1557,30 @@ export async function restaurantIdsPostedBy(userId: string): Promise<string[]> {
     ORDER BY max(created_at) DESC, restaurant_id
   `;
   return rows.map((r) => String(r.restaurant_id));
+}
+
+/**
+ * When, and how often, a user has posted at each restaurant: the date of the
+ * latest post (epoch milliseconds) and the number of distinct days they posted
+ * there, a day being Los Angeles' own, the clock the rest of the app keeps. One
+ * row per restaurant, in no particular order. A read only For me asks for, to
+ * weigh a recent or repeated place more in the cuisine profile; plain
+ * `restaurantIdsPostedBy` stays what the other callers read.
+ */
+export async function postedSignalsBy(userId: string): Promise<PostedSignal[]> {
+  const rows = await sql`
+    SELECT restaurant_id,
+           max(created_at) AS last_at,
+           count(DISTINCT (created_at AT TIME ZONE 'America/Los_Angeles')::date)::int AS days
+    FROM posts
+    WHERE user_id = ${userId} AND restaurant_id IS NOT NULL
+    GROUP BY restaurant_id
+  `;
+  return rows.map((r) => ({
+    restaurantId: String(r.restaurant_id),
+    lastAt: new Date(r.last_at).getTime(),
+    days: Number(r.days),
+  }));
 }
 
 export async function createPost(data: {

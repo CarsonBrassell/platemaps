@@ -4,6 +4,7 @@ import {
   applyTasteOp,
   getFriendRestaurantVisits,
   getTastePrefs,
+  postedSignalsBy,
   restaurantIdsPostedBy,
   saveTastePrefs,
   type User,
@@ -15,6 +16,7 @@ import {
   sanitizePrefs,
   type FriendVisit,
   type FullTastePrefs,
+  type PostedSignal,
   type TasteOp,
 } from "@/lib/taste";
 
@@ -34,6 +36,9 @@ import {
  * Writes happen only when the caller asks: an `op` mutates the signed-in
  * viewer's stored prefs, and `importLocal` uploads a first-time local copy.
  * A read-only caller (the For me POST) passes neither and nothing is stored.
+ *
+ * The posting dates and repeat counts (`postedSignals`) are one more query on
+ * the posts table that only For me reads, so they come only when asked for.
  */
 export type TasteContextOptions = {
   /** The session user. Omit to resolve it here; `null` means already known signed out. */
@@ -46,6 +51,8 @@ export type TasteContextOptions = {
   op?: TasteOp | null;
   /** Signed in with no server row yet: store the body's prefs once. Never set by a read. */
   importLocal?: boolean;
+  /** Also read when, and on how many days, the viewer posted at each place. For me only. */
+  postedSignals?: boolean;
 };
 
 export type TasteContext = {
@@ -65,6 +72,8 @@ export type TasteContext = {
   postedIds: string[];
   /** Hero posts by mutual friends. Empty when signed out. */
   friendVisits: FriendVisit[];
+  /** The latest post and the distinct posting days per place. Empty unless asked for, or signed out. */
+  postedSignals: PostedSignal[];
   /** Straight from the user row; the scorer checks it is a real corpus cuisine. */
   favoriteCuisine: string | null;
 };
@@ -108,9 +117,13 @@ export async function resolveTasteContext(opts: TasteContextOptions = {}): Promi
   }
   if (storage === "local" && op) prefs = applyOpToPrefs(prefs, op, cuisines, ids);
 
-  const [postedIds, friendVisits]: [string[], FriendVisit[]] = user
-    ? await Promise.all([restaurantIdsPostedBy(user.id), getFriendRestaurantVisits(user.id)])
-    : [[], []];
+  const [postedIds, friendVisits, postedSignals]: [string[], FriendVisit[], PostedSignal[]] = user
+    ? await Promise.all([
+        restaurantIdsPostedBy(user.id),
+        getFriendRestaurantVisits(user.id),
+        opts.postedSignals === true ? postedSignalsBy(user.id) : Promise.resolve([]),
+      ])
+    : [[], [], []];
 
   return {
     user,
@@ -121,6 +134,7 @@ export async function resolveTasteContext(opts: TasteContextOptions = {}): Promi
     prefs,
     postedIds,
     friendVisits,
+    postedSignals,
     favoriteCuisine: user?.favoriteCuisine ?? null,
   };
 }
