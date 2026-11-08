@@ -41,14 +41,25 @@ export function TasteChips({
   loves,
   skips,
   apply,
+  more: sharedMore,
+  onMore,
 }: {
   mode: TasteChipsMode;
   cuisines: string[];
   loves: string[];
   skips: string[];
   apply: (op: TasteOp) => void;
+  /**
+   * Whether "More" has been tapped, when the caller keeps that itself so the
+   * invite and the row after it share it (Your taste always has). Left out, the
+   * chips keep their own.
+   */
+  more?: boolean;
+  onMore?: () => void;
 }) {
-  const [more, setMore] = useState(false);
+  const [ownMore, setOwnMore] = useState(false);
+  const more = sharedMore ?? ownMore;
+  const showMore = () => (onMore ? onMore() : setOwnMore(true));
   const loveFull = loves.length >= MAX_PREFS;
   const skipFull = skips.length >= MAX_PREFS;
   const toggleLove = (c: string) =>
@@ -75,7 +86,7 @@ export function TasteChips({
           </button>
         ))}
         {!more && rest.length > INVITE_COUNT && (
-          <button type="button" onClick={() => setMore(true)} className={CHIP_PLAIN}>
+          <button type="button" onClick={showMore} className={CHIP_PLAIN}>
             More
           </button>
         )}
@@ -113,7 +124,7 @@ export function TasteChips({
           </button>
         ))}
         {!more && cuisines.length > SUGGEST_COUNT && (
-          <button type="button" onClick={() => setMore(true)} className={CHIP_PLAIN}>
+          <button type="button" onClick={showMore} className={CHIP_PLAIN}>
             More
           </button>
         )}
@@ -182,19 +193,32 @@ export function TasteInvite({
   skips,
   apply,
   signedIn,
+  more,
+  onMore,
 }: {
   cuisines: string[];
   loves: string[];
   skips: string[];
   apply: (op: TasteOp) => void;
   signedIn: boolean;
+  /** See `TasteChips`: the caller's own "More" state, when it keeps one. */
+  more?: boolean;
+  onMore?: () => void;
 }) {
   return (
     <>
       <p className="mb-3 px-1 text-[14px] text-pm-grey-text">
         What do you like? Pick up to 3 and we&apos;ll start finding places.
       </p>
-      <TasteChips mode="invite" cuisines={cuisines} loves={loves} skips={skips} apply={apply} />
+      <TasteChips
+        mode="invite"
+        cuisines={cuisines}
+        loves={loves}
+        skips={skips}
+        apply={apply}
+        more={more}
+        onMore={onMore}
+      />
       <Link href="/post" className="px-1 text-[13px] text-zinc-500 underline underline-offset-2">
         Post a plate and we&apos;ll learn where you eat
       </Link>

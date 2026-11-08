@@ -1543,13 +1543,23 @@ export async function refreshRestaurantCover(
   return changed;
 }
 
+/** Every restaurant a user has posted at, for invalidating their cached pages. */
+export async function restaurantIdsPostedBy(userId: string): Promise<string[]> {
+  const rows = await sql`
+    SELECT DISTINCT restaurant_id FROM posts
+    WHERE user_id = ${userId} AND restaurant_id IS NOT NULL
+  `;
+  return rows.map((r) => String(r.restaurant_id));
+}
+
 /**
  * Every restaurant a user has posted at, most recent post first (ties on the
- * id, so the order is stable). Invalidating their cached pages does not care
- * about the order; For me reads its seeds from it, and its cap of 30 is only
- * "the 30 most recent" if the list really starts with the latest.
+ * id, so the order is stable). For me reads its seeds from it, and its cap of 30
+ * is only "the 30 most recent" if the list really starts with the latest. Kept
+ * apart from `restaurantIdsPostedBy`, whose callers (Your taste, account
+ * deletion) never look at the order and stay exactly as they were.
  */
-export async function restaurantIdsPostedBy(userId: string): Promise<string[]> {
+export async function restaurantIdsPostedByRecent(userId: string): Promise<string[]> {
   const rows = await sql`
     SELECT restaurant_id FROM posts
     WHERE user_id = ${userId} AND restaurant_id IS NOT NULL
@@ -1564,8 +1574,7 @@ export async function restaurantIdsPostedBy(userId: string): Promise<string[]> {
  * latest post (epoch milliseconds) and the number of distinct days they posted
  * there, a day being Los Angeles' own, the clock the rest of the app keeps. One
  * row per restaurant, in no particular order. A read only For me asks for, to
- * weigh a recent or repeated place more in the cuisine profile; plain
- * `restaurantIdsPostedBy` stays what the other callers read.
+ * weigh a recent or repeated place more in the cuisine profile.
  */
 export async function postedSignalsBy(userId: string): Promise<PostedSignal[]> {
   const rows = await sql`

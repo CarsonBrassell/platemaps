@@ -74,7 +74,7 @@ export function RestaurantCard({
   reason = null,
   friends = null,
   quality = null,
-  distance = null,
+  distance,
 }: {
   restaurant: RestaurantView;
   /**
@@ -115,9 +115,11 @@ export function RestaurantCard({
   quality?: QualityNote | null;
   /**
    * How far from the visitor, already formatted ("0.8 mi"), from
-   * lib/geo.ts's `distanceLabel`. Null or left out prints nothing: the card
-   * never reads the seeded `restaurant.distance`, which is measured from a
-   * fixed downtown origin and would pass for a distance from you.
+   * lib/geo.ts's `distanceLabel`. Left out, the card prints the seeded
+   * `restaurant.distance` as it always has. Set by the For me accounts only
+   * (lib/forMeGate.ts), whose callers know where the visitor is: a string
+   * replaces the seeded figure, which is measured from a fixed downtown origin
+   * and would pass for a distance from you, and `null` prints nothing at all.
    */
   distance?: string | null;
 }) {
@@ -223,9 +225,9 @@ export function RestaurantCard({
               sized for. The card itself is overflow-hidden, so without a cap
               a too-long string would be hard-clipped mid-character with no
               ellipsis instead of degrading visibly. */}
-          {distance && (
+          {distance !== null && (
             <span className="max-w-[8.5rem] shrink-0 truncate pt-0.5 font-mono text-xs tabular-nums text-zinc-500">
-              {distance}
+              {distance ?? restaurant.distance}
             </span>
           )}
         </div>

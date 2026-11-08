@@ -1,4 +1,5 @@
 import type { User } from "@/lib/db";
+import { isForMeUser } from "@/lib/forMeGate";
 
 /**
  * The account object the client is allowed to see.
@@ -43,6 +44,12 @@ export type AccountJson = {
   photoNoticeSeen: boolean;
   /** Whether the first-run coach tour has run. The feeds are the only readers. */
   tourSeen: boolean;
+  /**
+   * Present, and `true`, only for the accounts on lib/forMeGate.ts' list: the
+   * client turns For me on from it. Left out entirely for everyone else, so
+   * their account JSON is what it was before the feature.
+   */
+  forMe?: true;
 };
 
 export function accountJson(user: User): AccountJson {
@@ -62,5 +69,6 @@ export function accountJson(user: User): AccountJson {
     pendingEmail: user.pendingEmail,
     photoNoticeSeen: user.photoNoticeSeen,
     tourSeen: user.tourSeen,
+    ...(isForMeUser(user.id) ? { forMe: true as const } : {}),
   };
 }

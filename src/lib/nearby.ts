@@ -14,6 +14,7 @@
  */
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { useForMeAccess } from "@/lib/auth";
 
 /**
  * The geometry moved to lib/geo.ts so the server can filter on distance without
@@ -195,6 +196,7 @@ const geolocationSupported = () =>
 const geolocationSupportedOnServer = () => true;
 
 export function useNearby(): Nearby {
+  const access = useForMeAccess();
   const [state, setState] = useState<Exclude<NearbyState, "unsupported">>("idle");
   const [coords, setCoords] = useState<Coords | null>(null);
   // What the Permissions API said, once it has said it. "unknown" is the server
@@ -222,8 +224,10 @@ export function useNearby(): Nearby {
     // that asks on mount (useDiscoverQuery, for a For me link) runs in the
     // hydration pass, where the hook still reads the server's "none" and the
     // saved address has not been picked up yet — without this it would raise
-    // a permission prompt under an address that was set to avoid one.
-    if (getSavedLocationSnapshot()) return;
+    // a permission prompt under an address that was set to avoid one. Only for
+    // the accounts on lib/forMeGate.ts, like the callers that need it; for
+    // everyone else a request is asked of the browser as it always was.
+    if (access && getSavedLocationSnapshot()) return;
 
     setState("locating");
     navigator.geolocation.getCurrentPosition(
@@ -246,7 +250,7 @@ export function useNearby(): Nearby {
         maximumAge: 300_000,
       },
     );
-  }, []);
+  }, [access]);
 
   /*
    * A permission already granted raises no prompt, so taking a fix on mount
@@ -274,13 +278,16 @@ export function useNearby(): Nearby {
         // works exactly as before, so it reads as "would ask".
       }
       if (cancelled) return;
-      setPermission(answer);
+      // Only the accounts on lib/forMeGate.ts have anything that reads it (the
+      // offer in ShowDistanceButton), so for everyone else this stays a state
+      // nobody sets and the hook renders exactly as often as it always did.
+      if (access) setPermission(answer);
       if (answer === "granted") request();
     })();
     return () => {
       cancelled = true;
     };
-  }, [supported, saved, request]);
+  }, [supported, saved, request, access]);
 
   // A saved location takes precedence over GPS: it answers `coords` directly,
   // in the `"ready"` state, without ever touching the geolocation API or its

@@ -109,11 +109,12 @@ export function PhoneRestaurantCard({
             {restaurant.distance}
           </span>
         </div>
-        <p className="mt-1 truncate text-[13px] text-zinc-500">
+        <p className={`${reason ? "" : "mb-3 "}mt-1 truncate text-[13px] text-zinc-500`}>
           {placeLine(restaurant.cuisine, restaurant.neighborhood)}
         </p>
-        {/* The reason sits between the place line and the pills. The gap above
-            the pills lives on their row, so it holds with or without one. */}
+        {/* The reason sits between the place line and the pills. With one, the
+            gap above the pills moves to their row; without, the place line keeps
+            it, exactly as the card has always been. */}
         {reason && (
           <p className="mt-1 line-clamp-2 text-[13px] leading-snug text-zinc-600">{reason}</p>
         )}
@@ -121,7 +122,7 @@ export function PhoneRestaurantCard({
             here — see the note on the web card. It matters more on a phone,
             not less: the screen shows two or three results at a time, so a
             wall of identical subtitles costs more scrolling to see through. */}
-        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+        <div className={`${reason ? "mt-3 " : ""}flex flex-wrap items-center gap-1.5`}>
           <OpenStatePill hours={restaurant.hours} />
           {restaurant.matchedDish && (
             <span className="inline-flex min-w-0 max-w-full items-center gap-1.5 rounded-full bg-pm-orange-tint px-3 py-1.5 text-[12px] font-medium text-pm-orange-text">

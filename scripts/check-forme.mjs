@@ -10,9 +10,11 @@
  *     the one-post gate, cold start, exclusions, chains and shared menus,
  *     reasons, imputed profiles, the cuisine cap, determinism, the quality
  *     term and the cuisine profile.
- *  2. The route and the client, without a server: the GET refuses `foryou`
- *     (400, no-store) before it touches anything, and the source is pinned so
- *     the personal path cannot drift onto a cacheable response.
+ *  2. The route and the client, without a server: the GET knows nothing of
+ *     `foryou` (it is an unknown param there, as it is on main), the POST
+ *     serves the plain page to everyone but the accounts in lib/forMeGate.ts,
+ *     and the source is pinned so the personal path cannot drift onto a
+ *     cacheable response.
  *  3. The live corpus and profiles (read-only, the same SELECTs Discover runs).
  *     Viewers are synthesised from real places with a seeded generator, among
  *     them people who have been to one or two places. No user data is read.
@@ -23,7 +25,10 @@
  * written out here: tuning WEIGHTS or SIM_WEIGHTS should not break this file.
  */
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import {
   EMPTY_PREFS,
   FORME_BUDGET,
@@ -67,6 +72,8 @@ import {
 import { milesBetween } from "../src/lib/geo.ts";
 import { parsePrice } from "../src/data/priceBands.ts";
 import { FOR_ME_PARAM, hasCuisine, hasFilterParams } from "../src/lib/discoverFilters.ts";
+import { FOR_ME_USER_IDS, isForMeUser } from "../src/lib/forMeGate.ts";
+import { accountJson } from "../src/lib/account.ts";
 import {
   QUALITY_HIGH_RATING,
   QUALITY_LABEL_MIN_REVIEWS,
@@ -1448,13 +1455,15 @@ const postFn = routeCode.slice(routeCode.indexOf("export async function POST"));
 
 ok("the route source keeps For me off the cacheable path", () => {
   assert.equal(FOR_ME_PARAM, "foryou");
-  // GET: the refusal is the first thing it does, and nothing personal is in it.
-  assert.ok(getFn.indexOf("has(FOR_ME_PARAM)") > 0 && getFn.indexOf("has(FOR_ME_PARAM)") < getFn.indexOf("getDiscoverPage"));
-  assert.match(getFn, /status:\s*400/);
-  assert.match(getFn, /"Cache-Control":\s*"no-store"/);
-  for (const word of ["getCurrentUser", "rankTaste", "resolveTasteContext", "limitForMe", "prefs", "forMe", "PRIVATE_HEADERS"]) {
+  // GET: the public, CDN-cached read. It is main's: it never names the mode (a
+  // `foryou` there is an unknown param, answered like any other), there is no
+  // 400, and nothing personal is in it.
+  assert.ok(!getFn.includes("FOR_ME_PARAM") && !/status:\s*400/.test(getFn), "GET has no For me refusal any more");
+  assert.match(getFn, /return cachedJson\(req, toWire\(page\)\);/);
+  for (const word of ["getCurrentUser", "rankTaste", "resolveTasteContext", "limitForMe", "isForMeUser", "prefs", "forMe", "PRIVATE_HEADERS"]) {
     assert.ok(!getFn.includes(word), `GET mentions ${word}`);
   }
+  assert.ok(!/FOR_ME_PARAM/.test(routeCode), "the route does not import the mode's name at all");
   assert.ok(!/getDiscoverPage\([^)]*forMe/.test(getFn));
   // POST: the headers, the order of the guards, and a public branch that stays public.
   assert.match(routeCode, /const PRIVATE_HEADERS = \{ "Cache-Control": "private, no-store", Vary: "Cookie" \};/);
@@ -1466,6 +1475,21 @@ ok("the route source keeps For me off the cacheable path", () => {
   assert.ok(postFn.indexOf("limitForMe(") > 0 && postFn.indexOf("limitForMe(") < postFn.indexOf("rankTaste("), "rate limit before ranking");
   assert.ok(postFn.indexOf("limitForMe(") < postFn.indexOf("resolveTasteContext("), "rate limit before reading the viewer");
   assert.ok(postFn.indexOf("getCurrentUser(") < postFn.indexOf("limitForMe("));
+  // The account gate: right after the session is read and before anything is
+  // spent on the viewer -- the For me rate limit, the corpus read, the profile
+  // traits, the taste context -- and the branch it takes is the public one.
+  const gate = postFn.indexOf("!isForMeUser(");
+  assert.ok(postFn.indexOf("getCurrentUser(") < gate, "the gate follows the session read");
+  for (const later of ["limitForMe(", "loadCorpus(", "loadProfileTraits(", "resolveTasteContext(", "rankTaste("]) {
+    assert.ok(gate < postFn.indexOf(later), `the gate comes before ${later}`);
+  }
+  assert.ok(postFn.indexOf("limitOrReject(") < postFn.indexOf("req.json()"), "the shared limit runs first, for everyone");
+  const gated = postFn.slice(gate, postFn.indexOf("limitForMe("));
+  assert.match(gated, /!isForMeUser\(user\?\.id\)/, "an anonymous caller is outside the list too");
+  for (const word of ["PRIVATE_HEADERS", "rankTaste", "forMe:", "status: 403", "status:403"]) {
+    assert.ok(!gated.includes(word), `the gated branch mentions ${word}`);
+  }
+  assert.match(gated, /getDiscoverPage\(search, \{ shown: limit, here \}\)/, "and it serves what the unpersonalised branch serves");
 });
 
 /* ---------- the quality term: shrunk rating, soft floor, tail wording ---------- */
@@ -1769,12 +1793,14 @@ ok("the client keeps the list honest: stale answers, undo, failure, reset", () =
   // useDiscoverQuery: a held answer is dropped when the URL goes back to the
   // shell, and a failure is surfaced with a way to ask again.
   const hook = stripComments(read("../src/lib/useDiscoverQuery.ts"));
-  assert.match(hook, /if \(wanted === null && answer !== null\) setAnswer\(null\)/);
+  assert.match(hook, /if \(access && wanted === null && answer !== null\) setAnswer\(null\)/);
   assert.match(hook, /const failed = wanted !== null && failedKey === wanted/);
   assert.match(hook, /setFailedKey\(wanted\)/);
   assert.equal((hook.match(/setFailedKey\(wanted\)/g) ?? []).length, 2, "a bad status and a thrown error both fail");
   assert.match(hook, /setAttempt\(\(n\) => n \+ 1\)/);
-  assert.match(hook, /\[wanted, answerKey, search, shown, coords, forMe, resolved, attempt\]/, "retry re-runs the effect");
+  assert.match(hook, /\[wanted, answerKey, search, shown, coords, forMe, waitingForSession, access, attempt\]/, "retry re-runs the effect");
+  assert.match(hook, /const waitingForSession = forMe && !resolved;/, "only For me waits on the session");
+  assert.equal((hook.match(/if \(access && !cancelled\) setFailedKey\(wanted\)/g) ?? []).length, 2, "and a failure is only said to the accounts that see For me");
   assert.match(hook, /failed,\s*retry,/, "both are returned");
 
   // useTaste: every op that changes what the ranking is built from refetches the
@@ -1841,29 +1867,266 @@ ok("both For me cards print why it is for them and why it is good", () => {
   assert.match(card, /SHOW_BLEND_STARS && restaurant\.rating != null/);
 });
 
-await okAsync("the route refuses foryou on GET, unit-level", async () => {
+/*
+ * The discover route, run for real with its collaborators swapped for
+ * recorders. A temporary copy of route.ts has each `@/lib/...` import pointed at
+ * either the real module or a stand-in (the session, the rate limiter, the
+ * corpus and the ranker are stand-ins), so the handler's own branching is what
+ * runs: no database, no cookies, no server, and nothing written anywhere.
+ */
+function loadRouteWithStandIns() {
+  const dir = mkdtempSync(join(tmpdir(), "forme-route-"));
+  const recorder = () => globalThis.__formeRoute;
+  const standIns = {
+    "@/lib/loginThrottle": `export const clientIp = () => "203.0.113.7";`,
+    "@/lib/session": `export const getCurrentUser = async () => { const s = globalThis.__formeRoute; s.calls.push("getCurrentUser"); return s.user; };`,
+    "@/lib/rateLimit": `
+      export const limitOrReject = async (o) => { globalThis.__formeRoute.calls.push("limitOrReject:" + o.scope); return null; };
+      export const limitForMe = async () => { globalThis.__formeRoute.calls.push("limitForMe"); return null; };`,
+    "@/lib/discover": `
+      export const getDiscoverPage = async (search, opts) => { const s = globalThis.__formeRoute; s.calls.push("getDiscoverPage"); s.pages.push({ search, opts }); return { page: true }; };
+      export const loadCorpus = async () => { globalThis.__formeRoute.calls.push("loadCorpus"); return { restaurants: [], plates: [], ratingMean: null }; };
+      export const loadProfileTraits = async () => { globalThis.__formeRoute.calls.push("loadProfileTraits"); return []; };`,
+    "@/lib/discoverWire": `export const toWire = (page) => ({ wire: page });`,
+    "@/lib/profileTraits": `export const traitIndexFor = () => { globalThis.__formeRoute.calls.push("traitIndexFor"); return {}; };`,
+    "@/lib/taste": `export const rankTaste = () => { globalThis.__formeRoute.calls.push("rankTaste"); return { ranked: true }; };`,
+    "@/lib/tasteContext": `export const resolveTasteContext = async () => { globalThis.__formeRoute.calls.push("resolveTasteContext"); return { prefs: {}, postedIds: [], favoriteCuisine: null, friendVisits: [], postedSignals: [], platePrices: [] }; };`,
+  };
+  const dataUrl = (code) => `data:text/javascript,${encodeURIComponent(code)}`;
+  const source = routeSrc
+    .replace(/from "(@\/lib\/[^"]+)"/g, (_m, spec) =>
+      spec in standIns
+        ? `from "${dataUrl(standIns[spec])}"`
+        : `from "${new URL(`../src/lib/${spec.slice("@/lib/".length)}.ts`, import.meta.url).href}"`,
+    )
+    .replace('from "next/server"', `from "${import.meta.resolve("next/server")}"`);
+  assert.ok(!source.includes('"@/'), "every alias import was rewritten");
+  const file = join(dir, "route.mts");
+  writeFileSync(file, source);
+  return { dir, file, recorder };
+}
+
+await okAsync("the discover route, with a mocked session: only the listed accounts get For me", async () => {
   const hadDb = !!process.env.DATABASE_URL;
-  // The client is built at import and never connects; a stand-in only keeps that import quiet offline.
+  // loginThrottle builds its client at import and never connects; a stand-in
+  // only keeps that import quiet when there is no .env.local.
   if (!hadDb) process.env.DATABASE_URL = "postgresql://forme:check@dummy.invalid/forme";
-  const route = await import("../src/app/api/restaurants/discover/route.ts");
-  assert.equal(typeof route.GET, "function");
-  assert.equal(typeof route.POST, "function");
-  for (const q of ["foryou=1", "foryou=0", "foryou", "cuisine=Thai&foryou=1&shown=48", "q=ramen&foryou=true&nav=x", "shown=999&foryou=1"]) {
-    const res = await route.GET(new Request(`http://localhost/api/restaurants/discover?${q}`));
-    assert.equal(res.status, 400, `GET ?${q}`);
-    const cc = res.headers.get("cache-control") ?? "";
-    assert.equal(cc, "no-store", `GET ?${q} cache-control`);
-    assert.equal(res.headers.get("etag"), null);
-    assert.ok(!/public|s-maxage|max-age/.test(cc));
-    const body = await res.json();
-    assert.equal(typeof body.error, "string");
-    assert.ok(!("results" in body) && !("forMe" in body));
+  globalThis.__formeRoute = { calls: [], pages: [], user: null };
+  const state = globalThis.__formeRoute;
+  const loaded = loadRouteWithStandIns();
+  try {
+    const route = await import(pathToFileURL(loaded.file).href);
+    assert.equal(typeof route.GET, "function");
+    assert.equal(typeof route.POST, "function");
+
+    const post = async (body, user) => {
+      state.calls.length = 0;
+      state.pages.length = 0;
+      state.user = user;
+      const res = await route.POST(
+        new Request("http://localhost/api/restaurants/discover", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: typeof body === "string" ? body : JSON.stringify(body),
+        }),
+      );
+      return {
+        status: res.status,
+        headers: [...res.headers].sort(),
+        body: await res.json(),
+        calls: [...state.calls],
+        pages: structuredClone(state.pages),
+      };
+    };
+
+    // The guards that run before any read, and the shared limit that is first.
+    const bad = await post("{nope", null);
+    assert.equal(bad.status, 400);
+    assert.deepEqual(bad.calls, ["limitOrReject:discover:ip"]);
+    const missing = await post({ forMe: true }, null);
+    assert.equal(missing.status, 400);
+    assert.deepEqual(missing.calls, ["limitOrReject:discover:ip"], "nothing about the viewer is read for a malformed body");
+
+    // What main serves: the same request without the flag. Nothing reads the
+    // session, there is no private header, and the page is the unpersonalised one.
+    const here = { lat: 32.7157, lng: -117.1611 };
+    const request = { search: "cuisine=Thai", shown: 48, coords: here };
+    const plain = await post(request, null);
+    assert.equal(plain.status, 200);
+    assert.deepEqual(plain.calls, ["limitOrReject:discover:ip", "getDiscoverPage"]);
+    assert.deepEqual(plain.pages, [{ search: "cuisine=Thai", opts: { shown: 48, here } }]);
+    assert.deepEqual(plain.body, { wire: { page: true } });
+    assert.ok(!plain.headers.some(([k]) => k === "cache-control" || k === "vary"), "main sets no cache headers on this answer");
+
+    // Everyone outside the list, signed in or out, asking for For me with prefs
+    // in hand, gets that answer byte for byte: same status, same headers, same
+    // body, same arguments, and none of the work For me costs is done. Never a 403.
+    const strangers = [null, { id: "00000000-0000-4000-8000-000000000000" }, { id: "not-a-uuid" }, { id: "" }, {}];
+    for (const user of strangers) {
+      const asked = await post({ ...request, forMe: true, prefs: { loves: ["Thai"], skips: [], been: [], hidden: [] } }, user);
+      assert.equal(asked.status, 200, `a non-allowlisted ${JSON.stringify(user)} is not refused`);
+      assert.deepEqual(asked.headers, plain.headers, "same headers as main");
+      assert.deepEqual(asked.body, plain.body, "same body as main");
+      assert.deepEqual(asked.pages, plain.pages, "getDiscoverPage is asked exactly what main asks");
+      assert.ok(!("forMe" in asked.pages[0].opts), "and never to rank");
+      assert.deepEqual(
+        asked.calls,
+        ["limitOrReject:discover:ip", "getCurrentUser", "getDiscoverPage"],
+        "the shared limit, the session, the plain page -- no For me limit, corpus, profiles, taste or ranking",
+      );
+    }
+
+    // The listed accounts get the personal list, privately, in the order the
+    // guards promise.
+    assert.ok(FOR_ME_USER_IDS.size >= 1);
+    for (const id of FOR_ME_USER_IDS) {
+      const mine = await post({ ...request, forMe: true, prefs: {} }, { id });
+      assert.equal(mine.status, 200);
+      assert.deepEqual(mine.calls, [
+        "limitOrReject:discover:ip",
+        "getCurrentUser",
+        "limitForMe",
+        "loadCorpus",
+        "loadProfileTraits",
+        "resolveTasteContext",
+        "traitIndexFor",
+        "rankTaste",
+        "getDiscoverPage",
+      ]);
+      assert.deepEqual(mine.pages[0].opts.forMe, { ranked: true });
+      const header = (k) => mine.headers.find(([name]) => name === k)?.[1];
+      assert.equal(header("cache-control"), "private, no-store");
+      assert.equal(header("vary"), "Cookie");
+
+      // Without a literal `forMe: true` even they get the plain page and no session read.
+      for (const flag of [undefined, false, "true", 1, null]) {
+        const notAsked = await post({ ...request, forMe: flag }, { id });
+        assert.deepEqual(notAsked.calls, ["limitOrReject:discover:ip", "getDiscoverPage"]);
+        assert.deepEqual(notAsked.headers, plain.headers);
+      }
+    }
+
+    // The public GET: `foryou` is just another param, as on main -- served, not
+    // refused, and handed to the page builder untouched.
+    for (const q of ["foryou=1", "foryou=0", "foryou", "cuisine=Thai&foryou=1&shown=48", "q=ramen&foryou=true&nav=x"]) {
+      state.calls.length = 0;
+      state.pages.length = 0;
+      const res = await route.GET(new Request(`http://localhost/api/restaurants/discover?${q}`));
+      assert.equal(res.status, 200, `GET ?${q}`);
+      assert.deepEqual(state.calls, ["getDiscoverPage"], "the GET reads no session and no limiter");
+      assert.equal(state.pages[0].opts.here, null);
+      assert.ok(!("forMe" in state.pages[0].opts));
+      const expected = new URLSearchParams(q);
+      expected.delete("shown");
+      assert.equal(state.pages[0].search, expected.toString());
+      assert.notEqual(res.headers.get("cache-control"), "no-store", "still the public, cacheable answer");
+    }
+  } finally {
+    rmSync(loaded.dir, { recursive: true, force: true });
+    delete globalThis.__formeRoute;
+    if (!hadDb) delete process.env.DATABASE_URL;
   }
-  // The POST guards that run before any read.
-  const bad = await route.POST(new Request("http://localhost/api/restaurants/discover", { method: "POST", body: "{nope" }));
-  assert.equal(bad.status, 400);
-  const missing = await route.POST(new Request("http://localhost/api/restaurants/discover", { method: "POST", body: JSON.stringify({ forMe: true }) }));
-  assert.equal(missing.status, 400);
+});
+
+ok("the gate: isForMeUser lists exactly the accounts in FOR_ME_USER_IDS, and accountJson says so", () => {
+  for (const id of FOR_ME_USER_IDS) {
+    assert.match(id, /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/, "ids are uuids");
+    assert.equal(isForMeUser(id), true);
+    assert.equal(isForMeUser(id.toUpperCase()), false, "an id is matched exactly, not loosely");
+    assert.equal(isForMeUser(` ${id}`), false);
+    assert.equal(isForMeUser(`${id}0`), false);
+    assert.equal(isForMeUser(id.slice(0, -1)), false);
+  }
+  for (const other of [undefined, null, "", " ", "0", "undefined", "null", "00000000-0000-4000-8000-000000000000"]) {
+    assert.equal(isForMeUser(other), false, `${JSON.stringify(other)} is outside`);
+  }
+  assert.equal(isForMeUser(), false);
+
+  const user = (id) => ({
+    id,
+    name: "Name",
+    email: "n@example.com",
+    points: 3,
+    avatarUrl: undefined,
+    sharePhotosPublicly: false,
+    favoriteCuisine: undefined,
+    favoriteRestaurantId: undefined,
+    hideFromLeaderboard: false,
+    discoverableByUsername: false,
+    friendRequestsOpen: true,
+    emailVerifiedAt: undefined,
+    pendingEmail: undefined,
+    photoNoticeSeen: false,
+    tourSeen: false,
+  });
+  // main's account JSON, key for key: the flag is not present at all for anyone else
+  const mainKeys = [
+    "id", "name", "email", "points", "avatarUrl", "sharePhotosPublicly", "favoriteCuisine",
+    "favoriteRestaurantId", "hideFromLeaderboard", "discoverableByUsername", "friendRequestsOpen",
+    "emailVerified", "pendingEmail", "photoNoticeSeen", "tourSeen",
+  ];
+  const other = accountJson(user("00000000-0000-4000-8000-000000000000"));
+  assert.deepEqual(Object.keys(other), mainKeys, "an outsider's account is exactly main's");
+  assert.ok(!JSON.stringify(other).includes("forMe"));
+  for (const id of FOR_ME_USER_IDS) {
+    const mine = accountJson(user(id));
+    assert.deepEqual(Object.keys(mine), [...mainKeys, "forMe"]);
+    assert.equal(mine.forMe, true);
+    const rest = { ...mine };
+    delete rest.forMe;
+    assert.deepEqual(rest, { ...other, id }, "nothing else differs");
+  }
+  const authSrc = stripComments(read("../src/lib/auth.tsx"));
+  assert.match(authSrc, /export function useForMeAccess\(\): boolean \{\s*return useAuth\(\)\.account\?\.forMe === true;/);
+});
+
+ok("the gate: every branch-only surface asks useForMeAccess, and the else side is the one main had", () => {
+  const src = (rel) => stripComments(read(rel)).replace(/\r\n/g, "\n");
+  const web = src("../src/components/DiscoverBrowser.tsx");
+  const phoneScreen = src("../src/components/mobile/PhoneDiscoverScreen.tsx");
+  const phoneResults = src("../src/components/mobile/PhoneDiscoverResults.tsx");
+  const rail = src("../src/components/DiscoverFilters.tsx");
+  const nearby = src("../src/lib/nearby.ts");
+
+  // The pill, the rail's pill and the For me section exist only with access.
+  assert.match(web, /\{access && <ForMePill on=\{forMeOn\} onToggle=\{toggleForMe\} \/>\}/, "web: the pill");
+  assert.match(web, /forMe=\{access \? forMeOn : undefined\}\s*onForMe=\{access \? toggleForMe : undefined\}/, "web: the rail's pill");
+  assert.match(rail, /\{onForMe && \(/, "the rail draws the pill only when handed one");
+  assert.match(phoneScreen, /forMe=\{access \? \{ on: forMeOn, href: forMeHref \} : undefined\}/, "phone: the pill and its link");
+  // Typing a search drops the mode only where the mode exists.
+  assert.match(web, /navigate\(access && next\.q \? withoutForMe\(search\) : search, null\)/);
+  // A card's distance is the old seeded label for everyone else, the live one for the list.
+  assert.match(web, /distance=\{access \? distanceLabel\(restaurant, nearby\.coords\) : undefined\}/);
+  assert.match(src("../src/components/RestaurantCard.tsx"), /\{distance !== null && \(\s*<span[^>]*>\s*\{distance \?\? restaurant\.distance\}\s*<\/span>\s*\)\}/);
+  // Main's "ask for a position when a filter is on" effect still runs for them, and only them.
+  for (const [name, code] of [["web", web], ["phone", phoneResults]]) {
+    assert.match(code, /if \(!access && active > 0 && !nearby\.coords && nearby\.state === "idle"\) requestLocation\(\);/, `${name}: main's location prompt`);
+  }
+  assert.match(phoneResults, /\{access && \(/, "phone: the Show distance button");
+  // The taste strips: the See-all link, the distance and the For me wording.
+  for (const rel of ["../src/components/TasteSection.tsx", "../src/components/mobile/PhoneTasteSection.tsx"]) {
+    const code = src(rel);
+    assert.match(code, /useForMeAccess\(\)/, `${rel} asks`);
+    if (rel.includes("mobile")) {
+      assert.match(code, /distance=\{access \? distanceLabel\(p\.restaurant, coords\) : null\}/, "phone: no distance on a card for everyone else");
+      assert.match(code, /\{access \? \(\s*<PickButtons/, "phone: the compact buttons are the For me accounts'");
+    } else {
+      assert.match(code, /\{access \? \(\s*<Link\s+href=\{`\/\?\$\{FOR_ME_PARAM\}=1`\}/, "web: See all is a link only for the For me accounts");
+      assert.match(code, /\{all \? "Show fewer" : "See all"\}/, "and the old toggle is what everyone else has");
+      assert.match(code, /access \? \(\s*<TastePickCard/, "web: the For me card (distance, reason) is theirs alone");
+    }
+  }
+  // The position hook: a saved address and the Permissions answer behave as on main for everyone else.
+  assert.match(nearby, /if \(access && getSavedLocationSnapshot\(\)\) return;/);
+  assert.match(nearby, /if \(access\) setPermission\(answer\);\s*if \(answer === "granted"\) request\(\);/);
+  // Nothing outside the lists names the gate's ids: it lives in one file.
+  const gateFile = read("../src/lib/forMeGate.ts");
+  for (const id of FOR_ME_USER_IDS) {
+    for (const rel of ["../src/lib/account.ts", "../src/lib/auth.tsx", "../src/app/api/restaurants/discover/route.ts", "../src/components/DiscoverBrowser.tsx"]) {
+      assert.ok(!read(rel).includes(id), `${rel} does not repeat the id`);
+    }
+    assert.ok(gateFile.includes(id));
+  }
 });
 
 await okAsync("the client turns the URL into a POST body, not a GET", async () => {
@@ -1878,18 +2141,28 @@ await okAsync("the client turns the URL into a POST body, not a GET", async () =
   // A bare landing never asks for a position, whatever a link brought along; a
   // filter or the For me mode does.
   for (const bare of ["", "utm_source=ig", "fbclid=abc&gclid=x", "shown=48&nav=x&cols=2", "in=dish", "cuisine=", "q=%20"]) {
-    assert.equal(wantsPositionOf(bare), false, `"${bare}" is a bare landing`);
+    assert.equal(wantsPositionOf(bare, true), false, `"${bare}" is a bare landing`);
   }
   for (const asks of ["foryou=1", "foryou=1&utm_source=ig", "cuisine=Thai", "utm_source=ig&cuisine=Thai&shown=48"]) {
-    assert.equal(wantsPositionOf(asks), true, `"${asks}" asks for a position`);
+    assert.equal(wantsPositionOf(asks, true), true, `"${asks}" asks for a position`);
   }
-  const a = filterQueryOf("foryou=1&cuisine=Thai&shown=48&nav=x&cols=2");
+  const a = filterQueryOf("foryou=1&cuisine=Thai&shown=48&nav=x&cols=2", true);
   assert.deepEqual(a, { search: "cuisine=Thai", shown: 48, forMe: true });
   assert.ok(!a.search.includes("foryou"));
-  const b = filterQueryOf("cuisine=Thai");
+  const b = filterQueryOf("cuisine=Thai", true);
   assert.equal(b.forMe, false);
-  assert.equal(filterQueryOf("foryou=0").forMe, false, "only foryou=1 asks for it");
-  assert.equal(filterQueryOf("foryou=1&q=ramen").search, "q=ramen");
+  assert.equal(filterQueryOf("foryou=0", true).forMe, false, "only foryou=1 asks for it");
+  assert.equal(filterQueryOf("foryou=1&q=ramen", true).search, "q=ramen");
+
+  // Everyone else: `foryou` is an unknown key like any other, left in `search`
+  // for the cached GET to ignore, and it never turns the mode on or asks for a
+  // position. `shown`, `nav` and `cols` are split off exactly as before.
+  const o = filterQueryOf("foryou=1&cuisine=Thai&shown=48&nav=x&cols=2", false);
+  assert.deepEqual(o, { search: "foryou=1&cuisine=Thai", shown: 48, forMe: false });
+  assert.deepEqual(filterQueryOf("foryou=1", false), { search: "foryou=1", shown: 24, forMe: false });
+  assert.equal(wantsPositionOf("foryou=1", false), false, "a pasted foryou=1 asks for nothing");
+  assert.equal(wantsPositionOf("foryou=1&utm_source=ig", false), false);
+  assert.equal(wantsPositionOf("", false), false);
 });
 
 ok("hasFilterParams counts only real filters, not whatever a link brought along", () => {
@@ -1934,14 +2207,15 @@ ok("hasFilterParams counts only real filters, not whatever a link brought along"
   // address never offers.
   const button = stripComments(read("../src/components/ShowDistanceButton.tsx"));
   assert.match(button, /!nearby\.offerable/, "no offer until no silent fix is coming");
-  assert.match(button, /wantsPositionOf\(useQueryString\(\)\)/, "the offer stands down under a filter or For me");
+  assert.match(button, /wantsPositionOf\(useQueryString\(\), access\)/, "the offer stands down under a filter or For me");
+  assert.match(button, /if \(!access \|\| nearby\.coords \|\| !nearby\.offerable\) return null;/, "and it is not offered at all outside the list");
   assert.match(button, /asking && nearby\.state === "idle"/);
   const nearbySrc = stripComments(read("../src/lib/nearby.ts"));
   assert.match(nearbySrc, /offerable: false,\s*saved: \{ label: saved\.label \}/, "a saved address never offers");
   assert.match(nearbySrc, /offerable: permission === "prompt"/, "offered only once the permission is known to prompt");
   assert.match(nearbySrc, /useState<"unknown" \| "granted" \| "prompt" \| "denied">\(\s*"unknown"/, "unknown until the browser answers");
   const hook = stripComments(read("../src/lib/useDiscoverQuery.ts"));
-  assert.match(hook, /const wantsPosition = forMe \|\| hasFilterParams\(search\)/);
+  assert.match(hook, /const wantsPosition = access && \(forMe \|\| hasFilterParams\(search\)\)/);
   assert.ok(!/function narrows/.test(hook), "the loose any-key rule is gone");
 });
 
@@ -2375,10 +2649,18 @@ ok("cuisine profile: the posting dates are read only for For me, and only to rea
   assert.match(fn, /SELECT restaurant_id,/);
   assert.match(fn, /WHERE user_id = \$\{userId\} AND restaurant_id IS NOT NULL/);
   assert.ok(!/\b(INSERT|UPDATE|DELETE|DROP|ALTER|TRUNCATE)\b/i.test(fn), "it only reads");
-  // The existing reader keeps its query, its order and its caller's contract.
-  const old = dbSrc.indexOf("export async function restaurantIdsPostedBy");
+  // The existing reader is main's, query for query: Your taste and account
+  // deletion call it and never look at the order. The recency order For me
+  // needs is a second function that only the For me context asks for.
+  const old = dbSrc.indexOf("export async function restaurantIdsPostedBy(");
   const same = dbSrc.slice(old, dbSrc.indexOf("\nexport ", old + 1));
-  assert.match(same, /SELECT restaurant_id FROM posts\s+WHERE user_id = \$\{userId\} AND restaurant_id IS NOT NULL\s+GROUP BY restaurant_id\s+ORDER BY max\(created_at\) DESC, restaurant_id/);
+  assert.match(same, /SELECT DISTINCT restaurant_id FROM posts\s+WHERE user_id = \$\{userId\} AND restaurant_id IS NOT NULL\s+`/);
+  assert.ok(!/ORDER BY|GROUP BY/.test(same), "the original reader keeps its query");
+  const recentAt = dbSrc.indexOf("export async function restaurantIdsPostedByRecent");
+  const recent = dbSrc.slice(recentAt, dbSrc.indexOf("\nexport ", recentAt + 1));
+  assert.match(recent, /SELECT restaurant_id FROM posts\s+WHERE user_id = \$\{userId\} AND restaurant_id IS NOT NULL\s+GROUP BY restaurant_id\s+ORDER BY max\(created_at\) DESC, restaurant_id/);
+  assert.ok(!/\b(INSERT|UPDATE|DELETE|DROP|ALTER|TRUNCATE)\b/i.test(recent), "it only reads");
+  assert.match(ctxSrc, /opts\.recentFirst === true\s*\?\s*restaurantIdsPostedByRecent\(user\.id\)\s*:\s*restaurantIdsPostedBy\(user\.id\)/, "only the For me context asks for the recency order");
 });
 
 /* ---------- the budget term: B, the fit, the points, the wording ---------- */

@@ -8,6 +8,7 @@ import { CloseIcon } from "@/components/icons";
 import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
 import type { DiscoverPage, DiscoverResult } from "@/lib/discover";
 import { matchMarksFor } from "@/lib/discoverFilters";
+import { useForMeAccess } from "@/lib/auth";
 import { distanceLabel, type Coords } from "@/lib/geo";
 import type { Nearby } from "@/lib/nearby";
 import { packColumns } from "@/lib/photoShape";
@@ -25,6 +26,11 @@ import { useTaste } from "@/lib/useTaste";
  * the same controls over a longer list — the Been here / Not for me buttons,
  * the cuisine chips for a visitor with no history, the Edit sheet — and those
  * are private to this file. See probe/for-me/PLAN.md.
+ *
+ * The strip's For me touches (the "See all" link, the distance on a card, the
+ * button labels, the sheet's wording) are for the accounts on lib/forMeGate.ts
+ * only; for everyone else it is the strip it was, with "Edit" alone in its
+ * header and no distance on the cards.
  */
 const CHIP =
   "inline-flex min-h-11 shrink-0 items-center rounded-full px-4 text-[13px] font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange disabled:opacity-40";
@@ -60,6 +66,7 @@ function EditSheet({
   onReset: () => void;
   onClose: () => void;
 }) {
+  const access = useForMeAccess();
   const headingId = useId();
   useEffect(() => {
     const { overflow } = document.body.style;
@@ -138,7 +145,9 @@ function EditSheet({
             ))}
           </div>
           <p className="mb-2 text-[13px] text-zinc-500">
-            These only change Your taste and For me, not the rest of Discover.
+            {access
+              ? "These only change Your taste and For me, not the rest of Discover."
+              : "These only change Your taste, not the rest of Discover."}
           </p>
           <button type="button" onClick={onReset} className={BTN}>
             Reset my taste
@@ -200,12 +209,19 @@ function TastePrompt({
   cuisines,
   taste,
   pathname,
+  more: sharedMore,
+  onMore,
 }: {
   cuisines: string[];
   taste: ReturnType<typeof useTaste>;
   pathname: string;
+  /** The caller's own "More" state, when it keeps one (Your taste's strip does). */
+  more?: boolean;
+  onMore?: () => void;
 }) {
-  const [more, setMore] = useState(false);
+  const [ownMore, setOwnMore] = useState(false);
+  const more = sharedMore ?? ownMore;
+  const showMore = () => (onMore ? onMore() : setOwnMore(true));
   const { loves, skips } = taste.prefs;
   const loveFull = loves.length >= MAX_PREFS;
   const chosen = cuisines.filter((c) => loves.includes(c));
@@ -232,7 +248,7 @@ function TastePrompt({
             </button>
           ))}
           {!more && rest.length > INVITE_COUNT && (
-            <button type="button" onClick={() => setMore(true)} className={CHIP_PLAIN}>
+            <button type="button" onClick={showMore} className={CHIP_PLAIN}>
               More
             </button>
           )}
@@ -265,6 +281,7 @@ export function PhoneTasteSection({
   seeAllHref?: string;
 }) {
   const taste = useTaste();
+  const access = useForMeAccess();
   const pathname = usePathname() ?? "/m";
   const [editing, setEditing] = useState(false);
   const [more, setMore] = useState(false);
@@ -311,7 +328,13 @@ export function PhoneTasteSection({
         <h2 id="your-taste" className="mono-label mb-1.5 px-4 text-zinc-500">
           Your taste
         </h2>
-        <TastePrompt cuisines={cuisines} taste={taste} pathname={pathname} />
+        <TastePrompt
+          cuisines={cuisines}
+          taste={taste}
+          pathname={pathname}
+          more={more}
+          onMore={() => setMore(true)}
+        />
       </section>
     );
   }
@@ -326,16 +349,26 @@ export function PhoneTasteSection({
         <h2 id="your-taste" className="mono-label text-zinc-500">
           Your taste
         </h2>
-        <div className="flex items-center gap-4">
-          {/* Not an inline expand any more: the strip is the top of the For me
-              ranking, and the rest of it is one tap away on its own list. */}
-          <Link
-            href={seeAllHref}
-            prefetch={false}
-            className="mono-label flex min-h-11 items-center text-zinc-500 underline underline-offset-2"
-          >
-            See all
-          </Link>
+        {access ? (
+          <div className="flex items-center gap-4">
+            {/* Not an inline expand: the strip is the top of the For me ranking,
+                and the rest of it is one tap away on its own list. */}
+            <Link
+              href={seeAllHref}
+              prefetch={false}
+              className="mono-label flex min-h-11 items-center text-zinc-500 underline underline-offset-2"
+            >
+              See all
+            </Link>
+            <button
+              type="button"
+              onClick={() => setEditing(true)}
+              className="mono-label flex min-h-11 items-center text-zinc-500 underline underline-offset-2"
+            >
+              Edit
+            </button>
+          </div>
+        ) : (
           <button
             type="button"
             onClick={() => setEditing(true)}
@@ -343,7 +376,7 @@ export function PhoneTasteSection({
           >
             Edit
           </button>
-        </div>
+        )}
       </div>
       <p className="-mt-2 mb-2 px-4 text-[12px] text-zinc-400">{taste.shortHeader}</p>
 
@@ -406,16 +439,35 @@ export function PhoneTasteSection({
               <PhoneRestaurantCardGrid
                 restaurant={p.restaurant}
                 score={p.plateScore ?? undefined}
-                distance={distanceLabel(p.restaurant, coords)}
+                distance={access ? distanceLabel(p.restaurant, coords) : null}
               />
             </div>
             <div className="mt-auto px-2 pb-1">
               <p className="truncate text-[13px] text-zinc-500">{p.reason.short}</p>
-              <PickButtons
-                name={p.restaurant.name}
-                onBeen={() => taste.apply({ kind: "been", value: p.restaurant.id })}
-                onHide={() => taste.apply({ kind: "hide", value: p.restaurant.id })}
-              />
+              {access ? (
+                <PickButtons
+                  name={p.restaurant.name}
+                  onBeen={() => taste.apply({ kind: "been", value: p.restaurant.id })}
+                  onHide={() => taste.apply({ kind: "hide", value: p.restaurant.id })}
+                />
+              ) : (
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => taste.apply({ kind: "been", value: p.restaurant.id })}
+                    className={BTN}
+                  >
+                    Been here
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => taste.apply({ kind: "hide", value: p.restaurant.id })}
+                    className={BTN}
+                  >
+                    Not for me
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         ))}

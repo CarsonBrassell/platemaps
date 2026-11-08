@@ -26,6 +26,7 @@ import {
   type QueryScope,
   type QuickFilter,
 } from "@/lib/discoverFilters";
+import { useForMeAccess } from "@/lib/auth";
 import { distanceLabel, type Coords } from "@/lib/geo";
 import { useDiscoverQuery } from "@/lib/useDiscoverQuery";
 import { useTaste } from "@/lib/useTaste";
@@ -536,6 +537,11 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
   } = useDiscoverQuery(initial, "/");
   const { filters, results, counts, options, picks, total, shown } = view;
   const active = activeFilterCount(filters);
+  /* Everything For me on this page (the pill, the list, the distances, the
+     button that asks for a position) is for the accounts on lib/forMeGate.ts.
+     For everyone else this is the page it was: `forMeOn` is already false for
+     them, and each piece below falls back to what it drew before. */
+  const access = useForMeAccess();
 
   /*
    * For me is a mode of this same page (`?foryou=1`), and three states of it
@@ -564,9 +570,9 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
   const apply = useCallback(
     (next: DiscoverFilters) => {
       const search = searchFromFilters(window.location.search, next);
-      navigate(next.q ? withoutForMe(search) : search, null);
+      navigate(access && next.q ? withoutForMe(search) : search, null);
     },
-    [navigate],
+    [navigate, access],
   );
 
   // The pill, in the strip and in the rail. Edits the one key and leaves every
@@ -583,9 +589,20 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
     [navigate, shown],
   );
 
-  /* The position is asked for in useDiscoverQuery (a filter, or For me, asks;
-     a bare landing never does) and the prompt itself goes up in lib/nearby.ts.
-     The offer to ask on purpose is the button above the plain grid. */
+  /*
+   * Narrowing the grid is the act that explains the permission prompt: the
+   * results are about to carry how far away each one is. Not on a bare
+   * landing — a prompt before the visitor has done anything is the wrong first
+   * impression. The prompt itself goes up in lib/nearby.ts.
+   *
+   * For the accounts on lib/forMeGate.ts the ask is made in useDiscoverQuery
+   * instead (a filter, or For me, asks; a bare landing never does), and the
+   * offer to ask on purpose is the button above the plain grid.
+   */
+  const requestLocation = nearby.request;
+  useEffect(() => {
+    if (!access && active > 0 && !nearby.coords && nearby.state === "idle") requestLocation();
+  }, [access, active, nearby.coords, nearby.state, requestLocation]);
 
   /*
    * Move focus to the results heading once a navigation actually lands.
@@ -701,7 +718,7 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
           the first screen. This is what replaces it: one line holding the
           toggles people reach for most, with the rest a tap away. */}
       <div className="flex items-center gap-2 overflow-x-auto py-2 lg:hidden">
-        <ForMePill on={forMeOn} onToggle={toggleForMe} />
+        {access && <ForMePill on={forMeOn} onToggle={toggleForMe} />}
 
         <button
           type="button"
@@ -741,8 +758,8 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
           onAspect={setAspect}
           onQuick={toggleQuick}
           onClear={clearAll}
-          forMe={forMeOn}
-          onForMe={toggleForMe}
+          forMe={access ? forMeOn : undefined}
+          onForMe={access ? toggleForMe : undefined}
         />
 
         {/* Lifted so the top of the first row of restaurant cards is level with
@@ -898,9 +915,11 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
               <>
                 {/* Only while no position is known and one could still be
                     given; gone once it is asked for, answered or refused. */}
-                <div className="px-1">
-                  <ShowDistanceButton nearby={nearby} />
-                </div>
+                {access && (
+                  <div className="px-1">
+                    <ShowDistanceButton nearby={nearby} />
+                  </div>
+                )}
                 {/* Dimmed, not replaced. The previous answer staying legible
                     under a pending one is the whole reason a filter click still
                     feels immediate now that it costs a request. */}
@@ -923,7 +942,7 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
                       shape="natural"
                       score={restaurant.plateScore}
                       match={marksFor(restaurant, filters)}
-                      distance={distanceLabel(restaurant, nearby.coords)}
+                      distance={access ? distanceLabel(restaurant, nearby.coords) : undefined}
                     />
                       ))}
                     </div>

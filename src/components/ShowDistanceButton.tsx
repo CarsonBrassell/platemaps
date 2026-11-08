@@ -1,5 +1,6 @@
 "use client";
 
+import { useForMeAccess } from "@/lib/auth";
 import type { Nearby } from "@/lib/nearby";
 import { useQueryString } from "@/lib/queryString";
 import { wantsPositionOf } from "@/lib/useDiscoverQuery";
@@ -26,6 +27,9 @@ import { wantsPositionOf } from "@/lib/useDiscoverQuery";
  * tap (permission already granted, a saved address), and it stands down while
  * the URL itself asks for a position (a filter or For me is on): the request
  * that ask makes is one effect away, and `idle` is still what this render sees.
+ *
+ * Only for the accounts on lib/forMeGate.ts: it draws nothing for anyone else,
+ * and the callers do not draw its wrapper either.
  */
 export function ShowDistanceButton({
   nearby,
@@ -34,8 +38,9 @@ export function ShowDistanceButton({
   nearby: Nearby;
   className?: string;
 }) {
-  const asking = wantsPositionOf(useQueryString());
-  if (nearby.coords || !nearby.offerable) return null;
+  const access = useForMeAccess();
+  const asking = wantsPositionOf(useQueryString(), access);
+  if (!access || nearby.coords || !nearby.offerable) return null;
   if (nearby.state !== "idle" && nearby.state !== "failed") return null;
   // A filter or For me is on and nothing has been asked yet: the hook's effect
   // asks next. A *failed* ask is the reader's to retry, so that still shows.

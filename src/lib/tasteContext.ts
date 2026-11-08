@@ -7,6 +7,7 @@ import {
   platePricesBy,
   postedSignalsBy,
   restaurantIdsPostedBy,
+  restaurantIdsPostedByRecent,
   saveTastePrefs,
   type User,
 } from "@/lib/db";
@@ -38,9 +39,11 @@ import {
  * viewer's stored prefs, and `importLocal` uploads a first-time local copy.
  * A read-only caller (the For me POST) passes neither and nothing is stored.
  *
- * The posting dates and repeat counts (`postedSignals`) and the prices of the
- * plates the viewer posted (`platePrices`) are two more queries on the posts
- * table that only For me reads, so they come only when asked for.
+ * The posting dates and repeat counts (`postedSignals`), the prices of the
+ * plates the viewer posted (`platePrices`) and the places ordered newest first
+ * (`recentFirst`) are queries on the posts table that only For me reads, so
+ * they come only when asked for. Without them the answer is exactly what the
+ * taste route has always read.
  */
 export type TasteContextOptions = {
   /** The session user. Omit to resolve it here; `null` means already known signed out. */
@@ -57,6 +60,8 @@ export type TasteContextOptions = {
   postedSignals?: boolean;
   /** Also read the price on each of the viewer's posts, for the budget term. For me only. */
   platePrices?: boolean;
+  /** Order `postedIds` newest post first, for the seed cap. For me only. */
+  recentFirst?: boolean;
 };
 
 export type TasteContext = {
@@ -130,7 +135,7 @@ export async function resolveTasteContext(opts: TasteContextOptions = {}): Promi
     number[],
   ] = user
     ? await Promise.all([
-        restaurantIdsPostedBy(user.id),
+        opts.recentFirst === true ? restaurantIdsPostedByRecent(user.id) : restaurantIdsPostedBy(user.id),
         getFriendRestaurantVisits(user.id),
         opts.postedSignals === true ? postedSignalsBy(user.id) : Promise.resolve([]),
         opts.platePrices === true ? platePricesBy(user.id) : Promise.resolve([]),

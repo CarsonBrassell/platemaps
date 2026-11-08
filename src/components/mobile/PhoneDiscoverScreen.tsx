@@ -12,6 +12,7 @@ import type {
 import { PhoneStickyBar } from "@/components/mobile/PhoneStickyBar";
 import { PhoneDiscoverResults } from "@/components/mobile/PhoneDiscoverResults";
 import { PhoneForMeResults, PhoneTasteSection } from "@/components/mobile/PhoneTasteSection";
+import { useForMeAccess } from "@/lib/auth";
 import type { DiscoverPage } from "@/lib/discover";
 import {
   FOR_ME_PARAM,
@@ -38,6 +39,11 @@ export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
     "/m",
   );
   const { filters, counts, options } = view;
+  /* The For me chip, the list behind it and the distances are for the accounts
+     on lib/forMeGate.ts. `forMe` above is already false for everyone else (the
+     hook ignores `?foryou=1` without access), so the rest of this screen needs
+     no gate of its own: it is the screen it was. */
+  const access = useForMeAccess();
 
   /* `?nav=` selects a nav variant on the phone; it rides along on every link
      the page builds but must never reach the filter parser, so the hook
@@ -280,7 +286,10 @@ export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
       <PhoneStickyBar className="pt-1">
         <div className="flex flex-col gap-2.5 px-4 pb-4">
           <PhoneDiscoverSearch value={filters.q ?? ""} />
-          <PhoneFilterBar model={model} forMe={{ on: forMeOn, href: forMeHref }} />
+          <PhoneFilterBar
+            model={model}
+            forMe={access ? { on: forMeOn, href: forMeHref } : undefined}
+          />
         </div>
       </PhoneStickyBar>
 

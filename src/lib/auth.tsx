@@ -22,6 +22,8 @@ type Account = {
   photoNoticeSeen: boolean;
   /** Whether the first-run coach tour has run. Mirrors AccountJson. */
   tourSeen: boolean;
+  /** Set only for the accounts that can see For me. Mirrors AccountJson. */
+  forMe?: true;
 };
 
 type AuthContextValue = {
@@ -344,4 +346,15 @@ export function useAuth() {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error("useAuth must be used within AuthProvider");
   return ctx;
+}
+
+/**
+ * Whether this viewer can see For me (lib/forMeGate.ts). False while the
+ * account is still loading, so the server render and the first client frame are
+ * what every other visitor gets, and for everyone whose account does not carry
+ * the flag. Every For me surface asks this and, on false, renders what the page
+ * did before the feature.
+ */
+export function useForMeAccess(): boolean {
+  return useAuth().account?.forMe === true;
 }

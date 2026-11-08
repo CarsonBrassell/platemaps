@@ -832,9 +832,10 @@ export function FilterRail({
   prices: readonly FacetOption[];
   aspects: readonly FacetOption[];
   nearby: NearbyProps;
-  /** Whether the For me list is on, and the switch for it. */
-  forMe: boolean;
-  onForMe: () => void;
+  /** Whether the For me list is on, and the switch for it. Both or neither: the
+   * rail draws no For me row for the accounts that are not given the switch. */
+  forMe?: boolean;
+  onForMe?: () => void;
 } & FilterHandlers) {
   const active = activeFilterCount(filters);
 
@@ -854,9 +855,11 @@ export function FilterRail({
     <aside className="hidden w-[230px] shrink-0 rounded-2xl bg-white p-4 lg:sticky lg:top-6 lg:block lg:h-fit lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto lg:overscroll-contain">
       {/* First in the rail, above the filters it is not one of: the mode comes
           before the narrowing. */}
-      <div className="mb-4">
-        <ForMePill on={forMe} onToggle={onForMe} wide />
-      </div>
+      {onForMe && (
+        <div className="mb-4">
+          <ForMePill on={forMe === true} onToggle={onForMe} wide />
+        </div>
+      )}
 
       <div className="mb-2.5 flex min-h-6 items-center justify-between gap-2">
         <p className="font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-zinc-500">

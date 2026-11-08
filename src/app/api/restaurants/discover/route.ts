@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { getDiscoverPage, loadCorpus, loadProfileTraits } from "@/lib/discover";
-import { FOR_ME_PARAM, filtersFromSearch, parseShown } from "@/lib/discoverFilters";
+import { filtersFromSearch, parseShown } from "@/lib/discoverFilters";
 import { toWire } from "@/lib/discoverWire";
+import { isForMeUser } from "@/lib/forMeGate";
 import { cachedJson } from "@/lib/httpCache";
 import { clientIp } from "@/lib/loginThrottle";
 import { traitIndexFor } from "@/lib/profileTraits";
@@ -38,10 +39,15 @@ import { resolveTasteContext } from "@/lib/tasteContext";
  *
  *  - it reads the session cookie, and the response is `private, no-store` with
  *    `Vary: Cookie`, so neither the CDN nor a shared proxy can hold a copy;
- *  - the GET refuses `foryou` outright, so a For me flavored URL can never be
- *    answered, and therefore never cached, by the public path;
- *  - signed in or out it is rate limited (lib/rateLimit.ts `limitForMe`),
- *    because ranking the corpus against someone's history is real CPU.
+ *  - the GET never reads `foryou`: it is an unknown key there, as any other,
+ *    so the public path has nothing personal to answer or to cache;
+ *  - it is rate limited (lib/rateLimit.ts `limitForMe`), because ranking the
+ *    corpus against someone's history is real CPU.
+ *
+ * While For me is being tried out it is only for the accounts on
+ * lib/forMeGate.ts. For anyone else a `forMe` body is answered as if it had
+ * not been sent: the plain page, same status, same headers, before the limiter
+ * or any history is touched. There is no 403 to tell them the feature exists.
  *
  * Identity comes from the session only. There is no user id in the body, as in
  * `/api/account/taste`, and `prefs` is validated against the corpus before it is
@@ -49,13 +55,6 @@ import { resolveTasteContext } from "@/lib/tasteContext";
  */
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  if (url.searchParams.has(FOR_ME_PARAM)) {
-    // Not `cachedJson`: even an error for a personal URL must not be kept.
-    return NextResponse.json(
-      { error: "For me is personal and is requested with POST." },
-      { status: 400, headers: { "Cache-Control": "no-store" } },
-    );
-  }
   const shown = parseShown(url.searchParams.get("shown"));
   // `shown` is not a filter; `getDiscoverPage` takes it as an option and the
   // parser would otherwise see it as an unknown key.
@@ -120,6 +119,12 @@ export async function POST(req: Request) {
   }
 
   const user = await getCurrentUser();
+  if (!isForMeUser(user?.id)) {
+    // Not on the list: what the route answers without a `forMe` in the body.
+    // Nothing below this line runs for them, so there is nothing to tell apart.
+    const page = await getDiscoverPage(search, { shown: limit, here });
+    return NextResponse.json(toWire(page));
+  }
   const forMeLimited = await limitForMe(req, user);
   if (forMeLimited) return forMeLimited;
 
@@ -137,7 +142,14 @@ export async function POST(req: Request) {
   // rejects (a failed read is an empty list), so there is nothing to catch if
   // `resolveTasteContext` throws first.
   const traitRows = loadProfileTraits();
-  const ctx = await resolveTasteContext({ user, corpus, prefs, postedSignals: true, platePrices: true });
+  const ctx = await resolveTasteContext({
+    user,
+    corpus,
+    prefs,
+    postedSignals: true,
+    platePrices: true,
+    recentFirst: true,
+  });
   const traits = traitIndexFor(corpus.restaurants, await traitRows);
   const page = await getDiscoverPage(search, {
     shown: limit,
