@@ -124,3 +124,58 @@ export const BLEND_DISCLOSURE =
  * Below `MIN_REVIEWS` it shows the vote counts and no ratings at all.
  */
 
+
+/**
+ * The blend, said in words, for a card that has to answer "why is this good".
+ *
+ * The blend number is retired from display (`SHOW_BLEND_STARS` is false), so
+ * this is the same signal with the number taken out: a tier word and how many
+ * reviews stand behind it. It never returns, and a caller must never print,
+ * the rating itself or a star. The review count is the one figure that is
+ * shown, because "Highly rated · 1,017 reviews" is checkable and "Highly rated"
+ * alone is an assertion.
+ *
+ * Under `QUALITY_MIN_REVIEWS` there is nothing to say and the answer is null.
+ * Between that and `QUALITY_LABEL_MIN_REVIEWS` the count is shown without a tier,
+ * since a 4.8 off twelve reviews is not "highly rated". `label` is null for
+ * a rating under 4.0 too: the count alone is honest, a word would not be.
+ */
+export const QUALITY_MIN_REVIEWS = 10;
+export const QUALITY_LABEL_MIN_REVIEWS = 20;
+export const QUALITY_HIGH_RATING = 4.5;
+export const QUALITY_WELL_RATING = 4.0;
+
+export type QualityNote = {
+  label: "Highly rated" | "Well rated" | null;
+  reviews: number;
+};
+
+export function qualityNote(
+  rating: number | null | undefined,
+  reviewCount: number | null | undefined,
+): QualityNote | null {
+  if (reviewCount == null || reviewCount < QUALITY_MIN_REVIEWS) return null;
+  let label: QualityNote["label"] = null;
+  if (rating != null && reviewCount >= QUALITY_LABEL_MIN_REVIEWS) {
+    if (rating >= QUALITY_HIGH_RATING) label = "Highly rated";
+    else if (rating >= QUALITY_WELL_RATING) label = "Well rated";
+  }
+  return { label, reviews: reviewCount };
+}
+
+/**
+ * The quality line of a For me card, from the result row alone.
+ *
+ * A card with no reason is not a For me card, so it gets no line. A tail card's
+ * reason is already "Well rated in {hood}", so its note drops the tier word and
+ * keeps the review count: it must never say "well rated" twice.
+ */
+export function forMeQualityNote(r: {
+  rating: number | null;
+  reviewCount: number | null;
+  reason?: { kind: string } | null;
+}): QualityNote | null {
+  if (!r.reason) return null;
+  const note = qualityNote(r.rating, r.reviewCount);
+  return note && r.reason.kind === "rated" ? { ...note, label: null } : note;
+}

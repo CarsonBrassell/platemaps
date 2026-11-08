@@ -4,7 +4,8 @@ import { RestaurantPhoto, PostFirstPlate } from "@/components/RestaurantPhoto";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import { photoRatio } from "@/lib/photoShape";
 import { StarIcon } from "@/components/icons";
-import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
+import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel, type QualityNote } from "@/lib/ratingDisplay";
+import { QualityLine } from "@/components/QualityLine";
 import type { AspectHighlight } from "@/components/RestaurantCard";
 import { restaurantHref } from "@/lib/restaurantHref";
 
@@ -12,11 +13,15 @@ import { restaurantHref } from "@/lib/restaurantHref";
  * The card in Discover's two-across wall.
  *
  * Not the web grid's `RestaurantCard` reused at a smaller size — that one is
- * tuned for a desktop grid column and prints distance, hours and a wrapping row
- * of chips under a single-line name. This card drops all of that: a two-line
- * clamp on the name rather than a truncated one, and no distance or hours,
- * because on a screen this size they crowd the name and both are one tap away
- * on the restaurant page.
+ * tuned for a desktop grid column and prints hours and a wrapping row of chips
+ * under a single-line name. This card drops all of that: a two-line clamp on
+ * the name rather than a truncated one, and no hours, because on a screen this
+ * size they crowd the name and are one tap away on the restaurant page.
+ *
+ * Distance stays, as the one number worth the room, and only when the caller
+ * has a real one: `distance` is a label measured from the reader
+ * (lib/geo.ts's `distanceLabel`), never the seeded downtown-origin string on
+ * the restaurant, and a card without one prints nothing in its place.
  *
  * It was three across with a square photo until the wall went uneven. Three fit
  * more places on screen at the cost of making every photo small and identically
@@ -33,6 +38,8 @@ export function PhoneRestaurantCardGrid({
   aspect = null,
   distance = null,
   reason = null,
+  friends = null,
+  quality = null,
 }: {
   restaurant: RestaurantView;
   score?: PlateScore;
@@ -48,10 +55,21 @@ export function PhoneRestaurantCardGrid({
    */
   reason?: string | null;
   /**
+   * For me only: friends' first names when one has been and the reason is about
+   * something else ("Ana and Ben have been"). A second short line under the
+   * reason; null everywhere else.
+   */
+  friends?: string | null;
+  /**
+   * For me only: why the place is good, in words and a review count
+   * ("Highly rated · 1,017 reviews"). Never the blend number or a star.
+   */
+  quality?: QualityNote | null;
+  /**
    * How far from the visitor, already formatted ("0.8 mi"), or null when the
-   * position is not known. The card omits the seeded downtown-origin
-   * `distance` on purpose (see above); this is the one number worth the
-   * room, because it is measured from the reader.
+   * position is not known (the card then prints nothing). Pass
+   * `distanceLabel(restaurant, coords)`; the card never reads the seeded
+   * downtown-origin `restaurant.distance` itself.
    */
   distance?: string | null;
   /**
@@ -193,6 +211,19 @@ export function PhoneRestaurantCardGrid({
             explanation, and the accent is spent on what they asked for. */}
         {reason && (
           <p className="mt-1 line-clamp-2 text-[11px] leading-snug text-zinc-600">{reason}</p>
+        )}
+        {/* For me: the second half of the answer. A friend who has been (when
+            the reason is about something else), then why the place is good. The
+            quality line is a step lighter than the reasons so the two grey
+            lines above it stay the lead. */}
+        {friends && (
+          <p className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-zinc-600">{friends}</p>
+        )}
+        {quality && (
+          <QualityLine
+            quality={quality}
+            className="mt-1 line-clamp-2 text-[11px] leading-snug text-zinc-500"
+          />
         )}
         {/* The gap, in words, in the body — the pill on the photo is where a
             PlateMaps number goes, and the honest signal is leaving it without

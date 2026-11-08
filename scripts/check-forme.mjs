@@ -31,6 +31,7 @@ import {
   rankTaste,
   scoreAll,
   scoreTaste,
+  shortPlaceName,
   tasteExclusions,
 } from "../src/lib/taste.ts";
 import {
@@ -43,10 +44,17 @@ import {
   normalizeDishes,
   similarity,
   similarityParts,
-  termLabel,
   traitsOf,
 } from "../src/lib/profileTraits.ts";
-import { FOR_ME_PARAM, hasCuisine } from "../src/lib/discoverFilters.ts";
+import { FOR_ME_PARAM, hasCuisine, hasFilterParams } from "../src/lib/discoverFilters.ts";
+import {
+  QUALITY_HIGH_RATING,
+  QUALITY_LABEL_MIN_REVIEWS,
+  QUALITY_MIN_REVIEWS,
+  QUALITY_WELL_RATING,
+  forMeQualityNote,
+  qualityNote,
+} from "../src/lib/ratingDisplay.ts";
 
 let n = 0;
 const ok = (name, fn) => {
@@ -145,6 +153,7 @@ function checkRank(label, input, res) {
   assert.equal(scored.size, res.order.length, fail("scan and list disagree on size"));
 
   // Reasons: present, short, normalized, kinds that match the block.
+  const seedNames = new Map(restaurants.map((r) => [r.id, r.name]));
   for (let i = 0; i < res.order.length; i++) {
     const id = res.order[i];
     const reason = res.reasonOf(id);
@@ -161,13 +170,38 @@ function checkRank(label, input, res) {
     } else {
       assert.equal(reason.kind, "rated", fail(`tail ${id} claims ${reason.kind}`));
     }
+    // Friends: first names beside a reason about something else, the line itself
+    // when the reason is about friends; never a count, and no key when there are none.
+    {
+      const fr = scored.get(id).friends;
+      assert.ok(!/\b\d+ friends?\b/.test(reason.text), fail(`a friend count in the reason: ${reason.text}`));
+      if (reason.kind === "friends") {
+        assert.ok(fr.length > 0, fail(`friends reason without friends: ${reason.text}`));
+        assert.ok(!("friends" in reason), fail("friends line repeated beside itself"));
+        assert.ok(/ (has|have) been$/.test(reason.text) || reason.text.endsWith("…"), fail(reason.text));
+      } else if (fr.length > 0) {
+        assert.equal(typeof reason.friends, "string", fail(`friends missing beside ${reason.kind}`));
+        assert.ok(reason.friends.length > 0 && reason.friends.length <= WEIGHTS.reasonMaxChars, fail(reason.friends));
+        assert.equal(reason.friends, reason.friends.normalize("NFC"), fail("friends line is not NFC"));
+        assert.ok(!/\d/.test(reason.friends), fail(`a count in the friends line: ${reason.friends}`));
+        assert.ok(/ (has|have) been$/.test(reason.friends) || reason.friends.endsWith("…"), fail(reason.friends));
+      } else {
+        assert.ok(!("friends" in reason), fail("friends key without friends"));
+      }
+    }
     if (reason.kind === "like") {
-      // A "Like X: dish" line needs a real profile on both sides.
+      // Names the seed place the viewer went to, and nothing about dishes. The
+      // seed still needs a real profile on both sides to have been chosen.
       const s = scored.get(id);
+      const seed = scan.seeds[s.seed];
       const a = traitsOf(traits, id);
-      const b = traitsOf(traits, scan.seeds[s.seed].id);
+      const b = traitsOf(traits, seed.id);
       assert.ok(a && b && !a.imputed && !b.imputed, fail(`like reason from an imputed profile: ${reason.text}`));
-      assert.ok(reason.text.startsWith("Like "), fail(reason.text));
+      const want = `Because you went to ${shortPlaceName(seedNames.get(seed.id))}`;
+      assert.ok(
+        reason.text === want || (reason.text.endsWith("…") && want.startsWith(reason.text.slice(0, -1))),
+        fail(`${reason.text} is not ${want}`),
+      );
     }
   }
 
@@ -348,7 +382,7 @@ const fusionP = place("Fusion Lab", "Japanese", ["ramen", "pad thai", "curry"], 
 const fusionI = place("Fusion Cafe", "Japanese", null, null, { ...MID, secondary: ["Thai"] });
 const empty = place("Mystery Kitchen", null, null, null, { rating: 5 });
 const noCuisine = place("Nameless Pantry", null, ["soup", "bread", "stew"], "cafe", MID);
-const LONG_CUISINE = "Contemporary Pan-Asian Street Food And Noodles";
+const LONG_CUISINE = "Contemporary Pan-Asian Street Food And Noodles From Many Regions";
 const longCuisine = ["Wok Wagon", "Noodle Nomad", "Street Orchid"].map((nm) => place(nm, LONG_CUISINE, null, null, MID));
 const fillers = Array.from({ length: 40 }, (_, i) => place(`Filler${i} Diner`, "American", null, null, MID));
 
@@ -382,8 +416,9 @@ ok("one post is history", () => {
   assert.equal(res.order[0], twin.id);
   const lead = scoredOf(sc, twin);
   assert.ok(Math.abs(lead.Ahist - historyConfidence(1)) < 1e-9, "a perfect twin scores the confidence of one seed");
-  assert.match(res.reasonOf(twin.id).text, /^Like Ichiban Ramen House: /);
+  assert.equal(res.reasonOf(twin.id).text, "Because you went to Ichiban Ramen House");
   assert.equal(res.reasonOf(twin.id).kind, "like");
+  assert.ok(!("friends" in res.reasonOf(twin.id)), "no friends, no friends key");
   checkAhist("1 post", input, sc);
 });
 
@@ -519,10 +554,12 @@ ok("cold start with friends", () => {
   assert.equal(res.matched, 3);
   assert.deepEqual(new Set(matchesOf(res)), new Set([thai[2].id, italian[1].id, burgers[3].id]));
   // Two friends fill the friend term; a third adds nothing, so it falls to quality.
-  assert.equal(res.reasonOf(thai[2].id).text, "2 friends have been");
-  assert.equal(res.reasonOf(burgers[3].id).text, "3 friends have been");
-  assert.equal(res.reasonOf(italian[1].id).text, "1 friend has been");
+  // By first name, never a count: one, two, and three or more.
+  assert.equal(res.reasonOf(thai[2].id).text, "Ana and Ben have been");
+  assert.equal(res.reasonOf(burgers[3].id).text, "Ana, Ben and others have been");
+  assert.equal(res.reasonOf(italian[1].id).text, "Ana has been");
   assert.equal(res.reasonOf(thai[2].id).kind, "friends");
+  assert.ok(!("friends" in res.reasonOf(thai[2].id)), "the friends reason does not repeat itself");
   assert.ok(res.rank.get(thai[2].id) < res.rank.get(italian[1].id), "two friends beat one");
   assert.ok(res.rank.get(burgers[3].id) < res.rank.get(italian[1].id), "three friends beat one");
 });
@@ -658,15 +695,14 @@ ok("one place per menu in a cuisine", () => {
 
 /* ---------- reasons ---------- */
 
-ok("a like reason names the seed and the dishes they share", () => {
-  const { res, input } = run("like", { postedIds: [ramen[0].id] });
+ok("a like reason names the place they went to, not the dishes they share", () => {
+  const { res } = run("like", { postedIds: [ramen[0].id] });
   const a = traitsOf(idx, ramen[1].id);
   const b = traitsOf(idx, ramen[0].id);
   const parts = similarityParts(idx, a, b);
-  assert.ok(parts.shared.length >= 2 && !parts.imputed);
-  const [t1, t2] = parts.shared.map((t) => termLabel(idx, t));
-  assert.equal(res.reasonOf(ramen[1].id).text, `Like Ichiban Ramen House: ${t1}, ${t2}`);
-  void input;
+  assert.ok(parts.shared.length >= 2 && !parts.imputed, "this pair does share dishes, and the line still leaves them out");
+  assert.equal(res.reasonOf(ramen[1].id).text, "Because you went to Ichiban Ramen House");
+  assert.equal(res.reasonOf(ramen[1].id).kind, "like");
 });
 
 ok("with no dish in common it falls back to the cuisine", () => {
@@ -675,14 +711,16 @@ ok("with no dish in common it falls back to the cuisine", () => {
   assert.equal(parts.shared.length, 0);
   assert.deepEqual(parts.sharedCuisines, ["Japanese"]);
   assert.ok(res.rank.get(sushi[0].id) < res.matched);
-  assert.equal(res.reasonOf(sushi[0].id).text, "Like Ichiban Ramen House: both Japanese");
+  assert.equal(res.reasonOf(sushi[0].id).text, "Because you went to Ichiban Ramen House");
 });
 
 ok("friends outweigh a weak fit, a strong fit outweighs friends", () => {
   const friendVisits = [friend(burgers[0], "f1", "Ana"), friend(burgers[0], "f2", "Ben"), friend(ramen[1], "f1", "Ana")];
   const { res } = run("who speaks first", { postedIds: [ramen[0].id], friendVisits });
-  assert.equal(res.reasonOf(burgers[0].id).text, "2 friends have been");
+  assert.equal(res.reasonOf(burgers[0].id).text, "Ana and Ben have been");
   assert.equal(res.reasonOf(ramen[1].id).kind, "like");
+  // The friend who has been to the strong fit is not lost: she rides beside the reason.
+  assert.equal(res.reasonOf(ramen[1].id).friends, "Ana has been");
 });
 
 ok("reasons fit the card", () => {
@@ -690,7 +728,7 @@ ok("reasons fit the card", () => {
   const long = run("long seed", { postedIds: [longName.id] });
   const like = long.res.reasonOf(italian[0].id);
   assert.equal(like.kind, "like");
-  assert.ok(like.text.startsWith("Like The Extraordinarily"));
+  assert.ok(like.text.startsWith("Because you went to The Extraordinarily"));
   assert.ok(like.text.length <= WEIGHTS.reasonMaxChars && like.text.endsWith("…"), like.text);
 
   // A cuisine whose name alone is longer than the line, on a pair with no dishes.
@@ -834,7 +872,83 @@ ok("a place with nothing to compare on is a tail place", () => {
   assert.equal(res.reasonOf(empty.id).kind, "rated");
   const withFriend = run("empty with friend", { friendVisits: [friend(empty, "f1", "Ana")] });
   assert.ok(withFriend.res.rank.get(empty.id) < withFriend.res.matched, "friends alone make a match");
-  assert.equal(withFriend.res.reasonOf(empty.id).text, "1 friend has been");
+  assert.equal(withFriend.res.reasonOf(empty.id).text, "Ana has been");
+});
+
+/* ---------- reasons: names, friends, quality ---------- */
+
+ok("shortPlaceName cuts a listing tagline and nothing else", () => {
+  assert.equal(shortPlaceName("Ichiban Ramen House"), "Ichiban Ramen House");
+  assert.equal(shortPlaceName("sweetgreen - Healthy Salads, Wraps, and Bowls"), "sweetgreen");
+  assert.equal(shortPlaceName("Em Coffee House \u2013 Mission Valley"), "Em Coffee House");
+  assert.equal(shortPlaceName("Taco Hall \u2014 Downtown"), "Taco Hall");
+  assert.equal(shortPlaceName("Bar | Kitchen & Co"), "Bar");
+  assert.equal(shortPlaceName("Tacos: El Rey"), "Tacos");
+  assert.equal(shortPlaceName("Oak: Grill - Patio"), "Oak", "the earliest separator wins");
+  assert.equal(shortPlaceName("A - Z Diner"), "A - Z Diner", "a head under 3 characters keeps the full name");
+  assert.equal(shortPlaceName("Jack-in-the-Box"), "Jack-in-the-Box", "a hyphen inside a name is not a separator");
+  assert.equal(shortPlaceName("  Caf\u00e9 Roma  "), "Caf\u00e9 Roma", "trimmed");
+  assert.equal(shortPlaceName("Cafe\u0301 Roma - Downtown"), "Caf\u00e9 Roma", "composed");
+  assert.ok(WEIGHTS.reasonMaxChars >= 56, "a 20-character lead-in still leaves a seed name 36 characters");
+});
+
+ok("friends ride beside the reason, by first name and never a count", () => {
+  const friendVisits = [
+    friend(ramen[1], "f1", "Ana Lopez"), friend(ramen[1], "f2", "Ben Ray"), friend(ramen[1], "f3", "Cam Diaz"),
+    friend(ramen[2], "f2", "Ben Ray"), friend(ramen[2], "f1", "Ana Lopez"),
+    friend(twin, "f3", "Cam Diaz"),
+    friend(ramen[3], "f1", "Ana Lopez"), friend(ramen[3], "f4", "Ana Kim"),
+  ];
+  const { res } = run("friends beside", { postedIds: [ramen[0].id], friendVisits });
+  const line = (r) => (r.kind === "friends" ? r.text : r.friends);
+  assert.equal(line(res.reasonOf(ramen[1].id)), "Ana, Ben and others have been");
+  assert.equal(line(res.reasonOf(ramen[2].id)), "Ana and Ben have been");
+  assert.equal(line(res.reasonOf(twin.id)), "Cam has been");
+  assert.equal(line(res.reasonOf(ramen[3].id)), "Ana has been", "two friends called Ana are one name");
+  for (const r of [ramen[1], ramen[2], ramen[3], twin]) {
+    const reason = res.reasonOf(r.id);
+    assert.ok(!/Lopez|Ray|Diaz|Kim/.test(reason.text + " " + (reason.friends ?? "")), "first names only");
+  }
+  assert.ok(!("friends" in res.reasonOf(ramen[4].id)), "no friend has been: no key");
+  // The friends reason is the line itself, so it does not carry a second copy.
+  const cold = run("friends cold", { friendVisits: [friend(thai[2], "f1", "Ana Lopez")] });
+  assert.equal(cold.res.reasonOf(thai[2].id).kind, "friends");
+  assert.ok(!("friends" in cold.res.reasonOf(thai[2].id)));
+});
+
+ok("qualityNote says why a place is good in words, never the rating", () => {
+  assert.equal(qualityNote(null, null), null);
+  assert.equal(qualityNote(4.8, null), null);
+  assert.equal(qualityNote(4.8, undefined), null);
+  assert.equal(qualityNote(4.8, QUALITY_MIN_REVIEWS - 1), null, "too few reviews to say anything");
+  assert.deepEqual(qualityNote(4.8, QUALITY_MIN_REVIEWS), { label: null, reviews: QUALITY_MIN_REVIEWS }, "a count, no tier word, on a thin sample");
+  assert.deepEqual(
+    qualityNote(4.9, QUALITY_LABEL_MIN_REVIEWS - 1),
+    { label: null, reviews: QUALITY_LABEL_MIN_REVIEWS - 1 },
+  );
+  assert.deepEqual(qualityNote(QUALITY_HIGH_RATING, QUALITY_LABEL_MIN_REVIEWS), { label: "Highly rated", reviews: QUALITY_LABEL_MIN_REVIEWS });
+  assert.deepEqual(qualityNote(4.6, 1017), { label: "Highly rated", reviews: 1017 });
+  assert.equal(qualityNote(QUALITY_HIGH_RATING - 0.01, 500).label, "Well rated");
+  assert.equal(qualityNote(QUALITY_WELL_RATING, 500).label, "Well rated");
+  assert.equal(qualityNote(QUALITY_WELL_RATING - 0.01, 500).label, null, "under 4.0 gets the count and no word");
+  assert.equal(qualityNote(null, 500).label, null);
+  assert.deepEqual(qualityNote(null, 500), { label: null, reviews: 500 });
+  for (const rating of [3.2, 4.0, 4.4, 4.5, 5]) {
+    assert.deepEqual(Object.keys(qualityNote(rating, 300)).sort(), ["label", "reviews"], "the rating is never in the note");
+  }
+});
+
+ok("forMeQualityNote: no reason, no line; a tail card never says well rated twice", () => {
+  const row = { rating: 4.7, reviewCount: 800 };
+  assert.equal(forMeQualityNote(row), null, "not a For me row");
+  assert.equal(forMeQualityNote({ ...row, reason: null }), null);
+  for (const kind of ["like", "pick", "friends", "cuisine"]) {
+    assert.deepEqual(forMeQualityNote({ ...row, reason: { kind } }), { label: "Highly rated", reviews: 800 }, kind);
+  }
+  assert.deepEqual(forMeQualityNote({ ...row, reason: { kind: "rated" } }), { label: null, reviews: 800 });
+  assert.equal(forMeQualityNote({ rating: 4.7, reviewCount: 5, reason: { kind: "rated" } }), null);
+  assert.equal(forMeQualityNote({ rating: 4.7, reviewCount: null, reason: { kind: "like" } }), null);
+  assert.equal(forMeQualityNote({ rating: null, reviewCount: 400, reason: { kind: "like" } })?.label, null);
 });
 
 /* ---------- the cuisine cap ---------- */
@@ -1055,6 +1169,17 @@ ok("the place a reason names is the same whatever order the seeds came in", () =
   assert.ok(forward.text.includes("Zulu Cafe"), `the two tie on similarity, so the smaller id (t1) is named: ${forward.text}`);
 });
 
+ok("a seed's listing tagline is cut from the like reason", () => {
+  const world = miniWorld([
+    ["s1", "Seed Ramen Bar - Mission Valley", "Japanese", BOWL],
+    ["s2", "Candidate Kitchen", "Japanese", ["ramen", "gyoza", "tonkotsu", "chashu"]],
+  ]);
+  const reason = miniRank(world, { postedIds: ["s1"] }).reasonOf("s2");
+  assert.equal(reason.kind, "like");
+  assert.equal(reason.text, "Because you went to Seed Ramen Bar");
+  assert.ok(!reason.text.includes(" - ") && !("friends" in reason));
+});
+
 ok("'Different from your usual' is said only of a place that is", () => {
   const world = miniWorld([
     ["w0", "Seed Ramen Bar", "Japanese", BOWL],
@@ -1272,6 +1397,45 @@ ok("the client keeps the list honest: stale answers, undo, failure, reset", () =
   assert.match(screen, /failed=\{failed\}\s*onRetry=\{retry\}/);
 });
 
+ok("both For me cards print why it is for them and why it is good", () => {
+  const grid = stripComments(read("../src/components/mobile/PhoneRestaurantCardGrid.tsx"));
+  const card = stripComments(read("../src/components/RestaurantCard.tsx"));
+  const pick = stripComments(read("../src/components/TastePickCard.tsx"));
+  const web = stripComments(read("../src/components/DiscoverBrowser.tsx"));
+  const phone = stripComments(read("../src/components/mobile/PhoneTasteSection.tsx"));
+  const qline = stripComments(read("../src/components/QualityLine.tsx"));
+  const taste = stripComments(read("../src/components/TasteSection.tsx"));
+
+  // Call sites: the For me lists pass all three; Your taste passes none of the new two.
+  assert.match(
+    phone,
+    /reason=\{restaurant\.reason\?\.text \?\? null\}\s*friends=\{restaurant\.reason\?\.friends \?\? null\}\s*quality=\{forMeQualityNote\(restaurant\)\}/,
+  );
+  assert.match(
+    web,
+    /reason=\{restaurant\.reason\?\.text\}\s*friends=\{restaurant\.reason\?\.friends\}\s*quality=\{forMeQualityNote\(restaurant\)\}/,
+  );
+  assert.match(pick, /reason=\{reason\}\s*friends=\{friends\}\s*quality=\{quality\}/);
+  assert.ok(!/friends=|quality=/.test(taste), "Your taste strips keep their own line");
+
+  // The phone grid: 11px, wrapping to two lines, friends then quality.
+  assert.match(grid, /\{friends && \(\s*<p className="mt-0\.5 line-clamp-2 text-\[11px\]/);
+  assert.match(grid, /\{quality && \(\s*<QualityLine[^>]*line-clamp-2 text-\[11px\]/);
+  assert.match(grid, /\{reason && \(\s*<p className="mt-1 line-clamp-2 text-\[11px\]/);
+
+  // The web card: the reason wraps to two lines instead of truncating; text-xs.
+  assert.match(card, /line-clamp-2 text-xs font-medium text-zinc-600">\{reason\}/);
+  assert.ok(!/truncate text-xs font-medium text-zinc-600">\{reason\}/.test(card), "the reason no longer truncates");
+  assert.match(card, /\{friends && <p className="line-clamp-2 text-xs text-zinc-600">\{friends\}<\/p>\}/);
+  assert.match(card, /\{quality && <QualityLine quality=\{quality\} className="text-xs text-zinc-500" \/>\}/);
+
+  // The number stays retired: the line is words and a review count, the star is still gated.
+  assert.ok(!/StarIcon|blendLabel|\.rating\b|SHOW_BLEND_STARS/.test(qline), "the quality line never reads the rating");
+  assert.match(qline, /font-mono tabular-nums/, "the review count is a number");
+  assert.match(grid, /SHOW_BLEND_STARS && restaurant\.rating != null/);
+  assert.match(card, /SHOW_BLEND_STARS && restaurant\.rating != null/);
+});
+
 await okAsync("the route refuses foryou on GET, unit-level", async () => {
   const hadDb = !!process.env.DATABASE_URL;
   // The client is built at import and never connects; a stand-in only keeps that import quiet offline.
@@ -1299,12 +1463,21 @@ await okAsync("the route refuses foryou on GET, unit-level", async () => {
 
 await okAsync("the client turns the URL into a POST body, not a GET", async () => {
   let filterQueryOf;
+  let wantsPositionOf;
   try {
-    ({ filterQueryOf } = await import("../src/lib/useDiscoverQuery.ts"));
+    ({ filterQueryOf, wantsPositionOf } = await import("../src/lib/useDiscoverQuery.ts"));
   } catch {
     filterQueryOf = null;
   }
   if (!filterQueryOf) return; // a "use client" module that will not load here; the source checks above cover it
+  // A bare landing never asks for a position, whatever a link brought along; a
+  // filter or the For me mode does.
+  for (const bare of ["", "utm_source=ig", "fbclid=abc&gclid=x", "shown=48&nav=x&cols=2", "in=dish", "cuisine=", "q=%20"]) {
+    assert.equal(wantsPositionOf(bare), false, `"${bare}" is a bare landing`);
+  }
+  for (const asks of ["foryou=1", "foryou=1&utm_source=ig", "cuisine=Thai", "utm_source=ig&cuisine=Thai&shown=48"]) {
+    assert.equal(wantsPositionOf(asks), true, `"${asks}" asks for a position`);
+  }
   const a = filterQueryOf("foryou=1&cuisine=Thai&shown=48&nav=x&cols=2");
   assert.deepEqual(a, { search: "cuisine=Thai", shown: 48, forMe: true });
   assert.ok(!a.search.includes("foryou"));
@@ -1312,6 +1485,59 @@ await okAsync("the client turns the URL into a POST body, not a GET", async () =
   assert.equal(b.forMe, false);
   assert.equal(filterQueryOf("foryou=0").forMe, false, "only foryou=1 asks for it");
   assert.equal(filterQueryOf("foryou=1&q=ramen").search, "q=ramen");
+});
+
+ok("hasFilterParams counts only real filters, not whatever a link brought along", () => {
+  // Tracking and unknown keys, empty or blank values, and a scope with no term.
+  for (const search of [
+    "",
+    "utm_source=ig&fbclid=abc",
+    "gclid=abc123",
+    "ref=newsletter",
+    "in=dish",
+    "cuisine=",
+    "neighborhood=%20",
+    "q=%20",
+    "dish=",
+    "nearby=0",
+    "price=free",
+    "aspect=nothing",
+    "quick=bogus",
+    "quick=",
+  ]) {
+    assert.equal(hasFilterParams(search), false, `"${search}" has no filter`);
+  }
+  // Each real key, alone and under a tracking param.
+  for (const search of [
+    "cuisine=Thai",
+    "neighborhood=North+Park",
+    "nearby=1",
+    "price=%24%24",
+    "aspect=Service",
+    "quick=open-now",
+    "quick=bogus,top-rated",
+    "q=ramen",
+    "dish=ramen",
+    "utm_source=ig&cuisine=Thai",
+    "fbclid=abc&q=ramen&in=dish",
+  ]) {
+    assert.equal(hasFilterParams(search), true, `"${search}" has a filter`);
+  }
+
+  // The button and the hook agree on the rule: it waits for the Permissions
+  // answer, stands down while a filter or For me is about to ask, and a saved
+  // address never offers.
+  const button = stripComments(read("../src/components/ShowDistanceButton.tsx"));
+  assert.match(button, /!nearby\.offerable/, "no offer until no silent fix is coming");
+  assert.match(button, /wantsPositionOf\(useQueryString\(\)\)/, "the offer stands down under a filter or For me");
+  assert.match(button, /asking && nearby\.state === "idle"/);
+  const nearbySrc = stripComments(read("../src/lib/nearby.ts"));
+  assert.match(nearbySrc, /offerable: false,\s*saved: \{ label: saved\.label \}/, "a saved address never offers");
+  assert.match(nearbySrc, /offerable: permission === "prompt"/, "offered only once the permission is known to prompt");
+  assert.match(nearbySrc, /useState<"unknown" \| "granted" \| "prompt" \| "denied">\(\s*"unknown"/, "unknown until the browser answers");
+  const hook = stripComments(read("../src/lib/useDiscoverQuery.ts"));
+  assert.match(hook, /const wantsPosition = forMe \|\| hasFilterParams\(search\)/);
+  assert.ok(!/function narrows/.test(hook), "the loose any-key rule is gone");
 });
 
 console.log(`forme:check  ${n} fixture and route cases ok`);
@@ -1481,7 +1707,7 @@ async function live() {
     assert.equal(v.res.basis, "none");
     assert.equal(v.res.header, "Where your friends eat");
     assert.ok(v.res.matched >= 1 && v.res.matched <= 3);
-    assert.equal(v.res.reasonOf(spots[0].id)?.text, "2 friends have been");
+    assert.equal(v.res.reasonOf(spots[0].id)?.text, "Ana and Ben have been");
   }
 
   // Determinism on the real thing: repeat, shuffled arrival, and a longer page being the same prefix.
@@ -1522,7 +1748,8 @@ async function live() {
   const publicPage = await discover.getDiscoverPage("", { shown: 24 });
   assert.ok(!("forMe" in publicPage), "the public page has no forMe block");
   assert.ok(publicPage.results.every((r) => !("reason" in r)), "the public page has no reasons");
-  assert.ok(!JSON.stringify(publicPage).includes("\"Like "), "nothing personal in the public page");
+  assert.ok(!JSON.stringify(publicPage).includes("Because you went to"), "nothing personal in the public page");
+  assert.ok(!JSON.stringify(publicPage).includes("have been\""), "no friends line in the public page");
   {
     const page = await discover.getDiscoverPage("", { shown: 24, forMe: v.res });
     assert.equal(page.results.length, 24);

@@ -3,7 +3,9 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
+import { ShowDistanceButton } from "@/components/ShowDistanceButton";
 import { matchMarksFor } from "@/lib/discoverFilters";
+import { distanceLabel } from "@/lib/geo";
 import type { DiscoverPage } from "@/lib/discover";
 import { packColumns } from "@/lib/photoShape";
 import type { Nearby } from "@/lib/nearby";
@@ -42,16 +44,9 @@ export function PhoneDiscoverResults({
 }) {
   const { filters } = view;
 
-  /* Ask for a position once the reader has narrowed the grid at all: a
-     "Nearby" filter needs it outright, and any other filter is a sign they
-     are choosing, which is when a distance on each card earns its place. Not
-     on a bare landing — a permission prompt before the visitor has done
-     anything is the wrong first impression. */
-  const active = Object.values(filters).filter((v) => (Array.isArray(v) ? v.length : v)).length;
-  const requestLocation = nearby.request;
-  useEffect(() => {
-    if (active > 0 && !nearby.coords && nearby.state === "idle") requestLocation();
-  }, [active, nearby.coords, nearby.state, requestLocation]);
+  /* The position is asked for in useDiscoverQuery (a filter, or For me, asks;
+     a bare landing never does). The offer to ask on purpose is the button
+     above the grid. */
 
   /* Move focus to the results once a navigation lands (not on mount), so a
      screen reader announces the new grid rather than staying on the chip. */
@@ -101,6 +96,9 @@ export function PhoneDiscoverResults({
 
   return (
     <>
+      <div className="px-4">
+        <ShowDistanceButton nearby={nearby} />
+      </div>
       {/* Two across, and uneven — each photo keeps its own proportions and the
           columns are packed shortest-first (lib/photoShape.ts). Three across
           fit more and made all of them small and identical, which on a screen
@@ -124,10 +122,10 @@ export function PhoneDiscoverResults({
                 score={restaurant.plateScore}
                 priority={index < 2}
                 matchedCuisine={matchMarksFor(restaurant, filters).cuisine}
-                /* `distance` is the downtown-origin string on an unlocated
-                   page, and this card has never printed that — `milesAway` is
-                   only ever set beside a distance measured from the reader. */
-                distance={restaurant.milesAway !== undefined ? restaurant.distance : null}
+                /* Never the seeded downtown-origin string: the server's figure
+                   when the page was built for a position, else measured here
+                   from the reader's coordinates, else nothing. */
+                distance={distanceLabel(restaurant, nearby.coords)}
                 /* Only a restaurant that actually scored in the filtered
                    category — `getDiscoverPage` attaches `aspectScore` under
                    exactly those conditions. */

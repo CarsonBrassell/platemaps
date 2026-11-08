@@ -117,9 +117,10 @@ export type DiscoverResult = RestaurantView & {
       in for a routed answer — see lib/walking.ts's `estimateFor`. */
   walkEstimated?: boolean;
   /**
-   * For me only: the one-line reason this place is on the list ("Like a place
-   * you've been to", "Friends have been"). Attached to the page slice from the
-   * viewer's own signals, so it exists only on the private POST's answer.
+   * For me only: the one-line reason this place is on the list ("Because you
+   * went to Tajima Ramen", "Ana and Ben have been"), plus the friends who have
+   * been when the reason is about something else. Attached to the page slice
+   * from the viewer's own signals, so it exists only on the private POST's answer.
    */
   reason?: ForMeReason;
 };

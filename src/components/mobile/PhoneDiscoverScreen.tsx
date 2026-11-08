@@ -289,6 +289,7 @@ export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
       {chips.length === 0 && !filters.q && !forMe && (
         <PhoneTasteSection
           cuisines={initial.options.cuisines.map((o) => o.value)}
+          coords={nearby.coords}
           seeAllHref={hrefWith({ [FOR_ME_PARAM]: "1", shown: null })}
         />
       )}

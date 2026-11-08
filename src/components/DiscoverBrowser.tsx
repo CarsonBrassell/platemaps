@@ -9,6 +9,7 @@ import {
 } from "@/components/DiscoverFilters";
 import { RestaurantCard, type MatchMarks } from "@/components/RestaurantCard";
 import { OurPicks } from "@/components/OurPicks";
+import { ShowDistanceButton } from "@/components/ShowDistanceButton";
 import { TasteChips, TasteInvite } from "@/components/TasteChips";
 import { TASTE_BTN, TastePickCard } from "@/components/TastePickCard";
 import { TasteSection } from "@/components/TasteSection";
@@ -24,10 +25,12 @@ import {
   type QueryScope,
   type QuickFilter,
 } from "@/lib/discoverFilters";
+import { distanceLabel, type Coords } from "@/lib/geo";
 import { useDiscoverQuery } from "@/lib/useDiscoverQuery";
 import { useTaste } from "@/lib/useTaste";
 import type { DiscoverPage, DiscoverResult } from "@/lib/discover";
 import { packColumns } from "@/lib/photoShape";
+import { forMeQualityNote } from "@/lib/ratingDisplay";
 import type { PriceBand } from "@/data/priceBands";
 
 /**
@@ -174,6 +177,7 @@ function ForMeSection({
   pending,
   columns,
   cuisines,
+  coords,
   headingRef,
   failed,
   onRetry,
@@ -189,6 +193,8 @@ function ForMeSection({
   columns: number;
   /** Every cuisine, for the Tune chips — from the unfiltered shell, not the facet counts. */
   cuisines: string[];
+  /** Where the reader is, for the distance on each card; null when unknown. */
+  coords: Coords | null;
   headingRef: RefObject<HTMLHeadingElement | null>;
   onShowMore: () => void;
   onClearFilters: () => void;
@@ -258,6 +264,9 @@ function ForMeSection({
               restaurant={restaurant}
               score={restaurant.plateScore}
               reason={restaurant.reason?.text}
+              friends={restaurant.reason?.friends}
+              quality={forMeQualityNote(restaurant)}
+              distance={distanceLabel(restaurant, coords)}
               shape="natural"
               match={marksFor(restaurant, filters)}
               onBeen={() => mark("been", restaurant)}
@@ -569,16 +578,9 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
     [navigate, shown],
   );
 
-  /*
-   * Narrowing the grid is the act that explains the permission prompt: the
-   * results are about to carry how far away each one is. Not on a bare
-   * landing — a prompt before the visitor has done anything is the wrong first
-   * impression. The prompt itself goes up in lib/nearby.ts.
-   */
-  const requestLocation = nearby.request;
-  useEffect(() => {
-    if (active > 0 && !nearby.coords && nearby.state === "idle") requestLocation();
-  }, [active, nearby.coords, nearby.state, requestLocation]);
+  /* The position is asked for in useDiscoverQuery (a filter, or For me, asks;
+     a bare landing never does) and the prompt itself goes up in lib/nearby.ts.
+     The offer to ask on purpose is the button above the plain grid. */
 
   /*
    * Move focus to the results heading once a navigation actually lands.
@@ -759,7 +761,10 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
               aside: that list is the full version of Your taste, and showing
               both would put the same cards on the page twice. */}
           {active === 0 && !forMeOn && (
-            <TasteSection cuisines={initial.options.cuisines.map((o) => o.value)} />
+            <TasteSection
+              cuisines={initial.options.cuisines.map((o) => o.value)}
+              coords={nearby.coords}
+            />
           )}
           {active === 0 && !forMeOn && <OurPicks picks={picks} />}
 
@@ -771,6 +776,7 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
               onRetry={retry}
               columns={columns}
               cuisines={initial.options.cuisines.map((o) => o.value)}
+              coords={nearby.coords}
               headingRef={resultsHeadingRef}
               onShowMore={showMore}
               onClearFilters={clearAll}
@@ -885,6 +891,11 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
               </div>
             ) : (
               <>
+                {/* Only while no position is known and one could still be
+                    given; gone once it is asked for, answered or refused. */}
+                <div className="px-1">
+                  <ShowDistanceButton nearby={nearby} />
+                </div>
                 {/* Dimmed, not replaced. The previous answer staying legible
                     under a pending one is the whole reason a filter click still
                     feels immediate now that it costs a request. */}
@@ -907,6 +918,7 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
                       shape="natural"
                       score={restaurant.plateScore}
                       match={marksFor(restaurant, filters)}
+                      distance={distanceLabel(restaurant, nearby.coords)}
                     />
                       ))}
                     </div>

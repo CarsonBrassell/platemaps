@@ -68,3 +68,33 @@ const METERS_PER_MILE = 1609.34;
 export function formatWalk(meters: number, estimated: boolean): string {
   return `${estimated ? "~" : ""}${milesDigits(meters / METERS_PER_MILE)} mi`;
 }
+
+/**
+ * The distance a card prints, or null when there is no honest one.
+ *
+ * Every restaurant carries a seeded `distance` string, but it is measured from
+ * a fixed downtown origin, exists on only a tenth of the rows, and has nothing
+ * to do with the person looking. It is never the answer here. Two sources are:
+ *
+ * - The server's, when the response was built for a position: `milesAway` is
+ *   set on exactly those rows, and `distance` is then the straight-line figure
+ *   or the routed walk (`formatWalk`) it chose. It wins, so a card reads the
+ *   same whichever surface drew it.
+ * - Otherwise the browser's own, from the reader's coordinates and the row's
+ *   `lat` / `lng` — for the lists that never went through the server's
+ *   `withDistance` (the Your taste strip, which is its own request).
+ *
+ * A row without a usable position (0,0 is the unset value, not a place off the
+ * coast of Africa) gets null rather than a number that would be wrong.
+ */
+export function distanceLabel(
+  r: { milesAway?: number; distance?: string | null; lat?: number | null; lng?: number | null },
+  coords: Coords | null,
+): string | null {
+  if (r.milesAway !== undefined) return r.distance || null;
+  if (!coords) return null;
+  const { lat, lng } = r;
+  if (typeof lat !== "number" || typeof lng !== "number") return null;
+  if (!Number.isFinite(lat) || !Number.isFinite(lng) || (lat === 0 && lng === 0)) return null;
+  return formatMiles(milesBetween(coords, { lat, lng }));
+}

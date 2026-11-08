@@ -15,10 +15,14 @@ import type { FullTastePrefs } from "@/lib/taste";
  */
 
 /** Why a place is on the For me list, in one line. Built on the server from the
-    viewer's own signals and never longer than 48 characters. */
+    viewer's own signals and never longer than 56 characters. */
 export type ForMeReason = {
   kind: "like" | "pick" | "friends" | "cuisine" | "rated";
   text: string;
+  /** Friends' first names ("Ana and Ben have been"), present only when a friend
+      has been and `text` is not already that line (kind other than "friends").
+      Never a count; the key is absent when there are no friends. */
+  friends?: string;
 };
 
 /** What the For me list was built from, and how much of it matched. */

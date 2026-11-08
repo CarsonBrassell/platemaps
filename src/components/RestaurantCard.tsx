@@ -4,7 +4,8 @@ import { StarIcon } from "@/components/icons";
 import { RestaurantPhoto, PostFirstPlate } from "@/components/RestaurantPhoto";
 import { OpenStatePill } from "@/components/OpenStatePill";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
-import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
+import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel, type QualityNote } from "@/lib/ratingDisplay";
+import { QualityLine } from "@/components/QualityLine";
 import { photoCreditFor } from "@/lib/photoCredit";
 import { photoRatio } from "@/lib/photoShape";
 import { restaurantHref } from "@/lib/restaurantHref";
@@ -70,6 +71,9 @@ export function RestaurantCard({
   match = NO_MATCHES,
   shape = "crop",
   reason = null,
+  friends = null,
+  quality = null,
+  distance = null,
 }: {
   restaurant: RestaurantView;
   /**
@@ -91,15 +95,33 @@ export function RestaurantCard({
    */
   shape?: "crop" | "natural";
   /**
-   * Why this place is in a personal list, in one short line ("Like Tajima Ramen:
-   * ramen, gyoza"). Set only by the For me list and Your taste, whose callers
+   * Why this place is in a personal list, in one short line ("Because you went
+   * to Tajima Ramen"). Set only by the For me list and Your taste, whose callers
    * hold the viewer's own signals; every other surface leaves it out and the
-   * card is exactly what it was. Server-built and capped at 48 characters, so
-   * it is one truncated line rather than something the card has to wrap.
+   * card is exactly what it was. Server-built and capped at 56 characters, so it
+   * fits in at most two lines.
    */
   reason?: string | null;
+  /**
+   * For me only: friends' first names when one has been and the reason is about
+   * something else ("Ana and Ben have been"). A second line under the reason.
+   */
+  friends?: string | null;
+  /**
+   * For me only: why the place is good, in words and a review count
+   * ("Highly rated · 1,017 reviews"). Never the blend number or a star.
+   */
+  quality?: QualityNote | null;
+  /**
+   * How far from the visitor, already formatted ("0.8 mi"), from
+   * lib/geo.ts's `distanceLabel`. Null or left out prints nothing: the card
+   * never reads the seeded `restaurant.distance`, which is measured from a
+   * fixed downtown origin and would pass for a distance from you.
+   */
+  distance?: string | null;
 }) {
   const highlight = match.aspect;
+  const why = !!(reason || friends || quality);
   const natural = shape === "natural";
   return (
     <Link
@@ -200,15 +222,17 @@ export function RestaurantCard({
               sized for. The card itself is overflow-hidden, so without a cap
               a too-long string would be hard-clipped mid-character with no
               ellipsis instead of degrading visibly. */}
-          <span className="max-w-[8.5rem] shrink-0 truncate pt-0.5 font-mono text-xs tabular-nums text-zinc-500">
-            {restaurant.distance}
-          </span>
+          {distance && (
+            <span className="max-w-[8.5rem] shrink-0 truncate pt-0.5 font-mono text-xs tabular-nums text-zinc-500">
+              {distance}
+            </span>
+          )}
         </div>
         {/* The same line either way — the matched half just lights up in place.
             Marking it here rather than adding a chip row keeps the answer where
             the reader is already looking, and keeps an unfiltered card exactly
             as it was. */}
-        <p className={`${reason ? "mb-1" : "mb-2.5"} mt-0.5 truncate text-xs text-zinc-500`}>
+        <p className={`${why ? "mb-1" : "mb-2.5"} mt-0.5 truncate text-xs text-zinc-500`}>
           {/* Both halves are conditional because cuisine is nullable — the ~400
               restaurants that never carried one would otherwise open this line
               with a stray separator. Same rule as `placeLine`, spelled out here
@@ -231,8 +255,14 @@ export function RestaurantCard({
             line that differs. Medium weight and a step darker than the meta
             above it, so the two do not read as one grey paragraph; not orange,
             because orange on a card means "this is what you filtered for". */}
-        {reason && (
-          <p className="mb-2.5 truncate text-xs font-medium text-zinc-600">{reason}</p>
+        {why && (
+          <div className="mb-2.5 space-y-0.5">
+            {reason && <p className="line-clamp-2 text-xs font-medium text-zinc-600">{reason}</p>}
+            {/* For me: who has been, then why the place is good. Regular weight
+                so the reason stays the lead line of the three. */}
+            {friends && <p className="line-clamp-2 text-xs text-zinc-600">{friends}</p>}
+            {quality && <QualityLine quality={quality} className="text-xs text-zinc-500" />}
+          </div>
         )}
         {/* The filtered category rides beside the open/closed pill rather than
             on the photo: the photo already carries the overall score, and two

@@ -5,7 +5,7 @@ import { useAuth } from "@/lib/auth";
 import { useNearby } from "@/lib/nearby";
 import { publishQuery, useQueryString } from "@/lib/queryString";
 import { fromWire } from "@/lib/discoverWire";
-import { FOR_ME_PARAM, PAGE_SIZE, parseShown } from "@/lib/discoverFilters";
+import { FOR_ME_PARAM, PAGE_SIZE, hasFilterParams, parseShown } from "@/lib/discoverFilters";
 import { readLocalTaste, useTasteRev } from "@/lib/useTaste";
 import type { DiscoverPage } from "@/lib/discover";
 
@@ -53,6 +53,23 @@ export function filterQueryOf(raw: string): { search: string; shown: number; for
   const filters = new URLSearchParams();
   for (const [key, value] of params) if (!NOT_FILTERS.has(key)) filters.append(key, value);
   return { search: filters.toString(), shown, forMe: params.get(FOR_ME_PARAM) === "1" };
+}
+
+/**
+ * Whether this URL asks for a position: the For me mode is on, or the query
+ * carries a real filter.
+ *
+ * "Real" is `hasFilterParams` (lib/discoverFilters.ts): our own filter keys
+ * holding a value the parser would read. `filterQueryOf`'s `search` is every
+ * key that is not paging or a mode, so it also holds whatever a link brought
+ * along (`utm_source`, `fbclid`, `gclid`), and a landing from an ad must stay a
+ * bare landing that never prompts. Exported so the "Show distance from you"
+ * button can stand down in the one frame between a filter tap and the request
+ * this asks for.
+ */
+export function wantsPositionOf(raw: string): boolean {
+  const { search, forMe } = filterQueryOf(raw);
+  return forMe || hasFilterParams(search);
 }
 
 type Answer = { key: string; search: string; shown: number; forMe: boolean; page: DiscoverPage };
@@ -107,6 +124,22 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
       ? null
       : `${search}::${shown}::${coords ? `${coords.lat},${coords.lng}` : ""}${forMeKey}`;
   const answerKey = answer?.key ?? null;
+
+  /*
+   * The one place a position is asked for. Narrowing the grid, or turning on
+   * For me, is the act that explains the permission prompt: the cards are about
+   * to carry how far away each one is, and For me is something the reader has
+   * just chosen. A bare landing never asks (a prompt before the visitor has
+   * done anything gets denied by reflex, and a denial is sticky), so Discover
+   * offers "Show distance from you" there instead, which is a tap on the same
+   * nearby.request. Every surface reads this hook's `nearby`, so there is one
+   * rule and one fix, not one per component.
+   */
+  const wantsPosition = forMe || hasFilterParams(search);
+  const requestPosition = nearby.request;
+  useEffect(() => {
+    if (wantsPosition && !nearby.coords && nearby.state === "idle") requestPosition();
+  }, [wantsPosition, nearby.coords, nearby.state, requestPosition]);
 
   // A bare URL shows the shell, not an answer, so whatever answer is held is
   // dropped: kept, it would be shown again the moment the same key came back

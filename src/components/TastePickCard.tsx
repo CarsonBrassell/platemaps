@@ -3,6 +3,7 @@
 import { RestaurantCard, type MatchMarks } from "@/components/RestaurantCard";
 import type { RestaurantView } from "@/data/restaurantTypes";
 import type { PlateScore } from "@/lib/plateScore";
+import type { QualityNote } from "@/lib/ratingDisplay";
 
 /**
  * A restaurant card with the two feedback buttons under it: the card every
@@ -25,6 +26,9 @@ export function TastePickCard({
   restaurant,
   score,
   reason,
+  friends,
+  quality,
+  distance,
   shape = "crop",
   match,
   onBeen,
@@ -35,6 +39,12 @@ export function TastePickCard({
   score?: PlateScore | null;
   /** The one line that says why this place is here. */
   reason?: string | null;
+  /** For me only: friends' first names, when one has been ("Ana and Ben have been"). */
+  friends?: string | null;
+  /** For me only: why the place is good, in words ("Highly rated · 1,017 reviews"). */
+  quality?: QualityNote | null;
+  /** How far from the visitor, from `distanceLabel`; null or omitted prints nothing. */
+  distance?: string | null;
   shape?: "crop" | "natural";
   /** What the active filters matched, for the lit-up cuisine / price marks. */
   match?: MatchMarks;
@@ -52,6 +62,9 @@ export function TastePickCard({
           shape={shape}
           match={match}
           reason={reason}
+          friends={friends}
+          quality={quality}
+          distance={distance}
         />
       </div>
       <div className="mt-auto px-3.5 pb-3">

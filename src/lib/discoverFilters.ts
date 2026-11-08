@@ -1063,6 +1063,37 @@ export function searchFromFilters(search: string, f: DiscoverFilters): string {
 }
 
 /**
+ * True when `search` names at least one filter the parser would read.
+ *
+ * `filtersFromSearch` needs the corpus to resolve a URL (an unknown
+ * neighbourhood degrades to "no filter"), and the client hook that asks for a
+ * position (lib/useDiscoverQuery.ts) has to decide before an answer exists, so
+ * this is the same question asked of the URL alone: only our own keys count, a
+ * key with nothing but whitespace in it does not, and the enumerated ones
+ * (`price`, `aspect`, `quick`, `nearby=1`) must hold a value the parser would
+ * accept. Anything else on the URL -- `utm_source`, `fbclid`, `gclid`, a
+ * stray `?in=` with no term -- is not a filter and must not read as one.
+ *
+ * The two free-text-ish keys it cannot check against data (`neighborhood`,
+ * `cuisine`) count when non-empty, so a hand-edited value naming nothing still
+ * reads as a filter here and is dropped by the real parser a moment later.
+ */
+export function hasFilterParams(search: string): boolean {
+  const params = new URLSearchParams(search);
+  const filled = (key: string) => (params.get(key) ?? "").trim() !== "";
+  return (
+    filled(NEIGHBORHOOD_PARAM) ||
+    params.get(NEARBY_PARAM) === "1" ||
+    filled(CUISINE_PARAM) ||
+    PRICE_VALUES.some((v) => v === params.get(PRICE_PARAM)) ||
+    BEST_AT_LABELS.some((v) => v === params.get(ASPECT_PARAM)) ||
+    (params.get(QUICK_PARAM) ?? "").split(",").some((v) => QUICK_VALUES.some((q) => q === v)) ||
+    filled(QUERY_PARAM) ||
+    filled(DISH_PARAM)
+  );
+}
+
+/**
  * How many cards a page of results holds.
  *
  * Here rather than in lib/discover.ts because the client reads it too — the

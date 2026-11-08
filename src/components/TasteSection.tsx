@@ -5,6 +5,7 @@ import { useState } from "react";
 import { TASTE_BTN, TastePickCard } from "@/components/TastePickCard";
 import { TasteChips, TasteInvite, TasteSignUp } from "@/components/TasteChips";
 import { FOR_ME_PARAM } from "@/lib/discoverFilters";
+import { distanceLabel, type Coords } from "@/lib/geo";
 import { useTaste } from "@/lib/useTaste";
 
 /**
@@ -19,7 +20,14 @@ import { useTaste } from "@/lib/useTaste";
  */
 const PICKS_SHOWN = 12;
 
-export function TasteSection({ cuisines }: { cuisines: string[] }) {
+export function TasteSection({
+  cuisines,
+  coords = null,
+}: {
+  cuisines: string[];
+  /** Where the reader is, for the distance on each pick; null when unknown. */
+  coords?: Coords | null;
+}) {
   const taste = useTaste();
   const [editing, setEditing] = useState(false);
 
@@ -159,6 +167,7 @@ export function TasteSection({ cuisines }: { cuisines: string[] }) {
               restaurant={p.restaurant}
               score={p.plateScore}
               reason={p.reason.text}
+              distance={distanceLabel(p.restaurant, coords)}
               shape="crop"
               className="w-[240px] shrink-0"
               onBeen={() => taste.apply({ kind: "been", value: p.restaurant.id })}

@@ -24,7 +24,6 @@ import {
   dishSetKey,
   similarity,
   similarityParts,
-  termLabel,
   traitsOf,
   type PlaceTraits,
   type TraitIndex,
@@ -89,8 +88,8 @@ export const WEIGHTS = {
   capRelaxRatio: 0.5,
   /** A tail reason says "well rated" at Q >= this. */
   wellRatedQ: 0.6,
-  /** Longest reason line. */
-  reasonMaxChars: 48,
+  /** Longest reason line. "Because you went to " is 20 of these, so a seed name keeps 36. */
+  reasonMaxChars: 56,
 } as const;
 
 export type TasteBasis = "history" | "starting" | "friends" | "none";
@@ -1048,19 +1047,71 @@ const clipReason = (text: string): string => {
   return t.length <= max ? t : `${t.slice(0, max - 1).trimEnd()}…`;
 };
 
-/** "Like {name}: {detail}", dropping the detail and then trimming the name to fit. */
-function likeText(name: string, details: readonly string[]): string {
-  const max = WEIGHTS.reasonMaxChars;
-  const n = name.normalize("NFC").trim();
-  for (const d of details) {
-    const text = `Like ${n}: ${d}`;
-    if (text.length <= max) return text;
+/** Where a listing name stops being the name: "sweetgreen - Healthy Salads, Wraps, and Bowls". */
+const NAME_SEPARATORS = [" - ", " – ", " — ", " | ", ": "] as const;
+
+/**
+ * The part of a place's name a person would say out loud. Business listings
+ * carry a tagline or a location after the name ("Em Coffee House - Mission
+ * Valley"); cut at the first separator and keep what is before it, unless that
+ * leaves under 3 characters, when the full name is the safer thing to print.
+ */
+export function shortPlaceName(name: string): string {
+  const full = name.normalize("NFC").trim();
+  let cut = -1;
+  for (const sep of NAME_SEPARATORS) {
+    const at = full.indexOf(sep);
+    if (at >= 0 && (cut < 0 || at < cut)) cut = at;
   }
-  return clipReason(`Like ${n}`);
+  if (cut < 0) return full;
+  const head = full.slice(0, cut).trim();
+  return head.length >= 3 ? head : full;
+}
+
+/**
+ * "Because you went to {name}", trimmed to fit. The dishes the two places share
+ * used to ride along ("slices, pizzas"); they were generic, so the line now names
+ * only the place the viewer has actually been.
+ */
+function likeText(name: string): string {
+  return clipReason(`Because you went to ${shortPlaceName(name)}`);
+}
+
+/**
+ * Friends by first name, in `Scored.friends` order, each once. The same first
+ * names Your taste already prints ("Sam posted here"); never a count of friends.
+ */
+function friendsLine(s: Scored): string | null {
+  const names: string[] = [];
+  for (const full of s.friends) {
+    const first = firstName(full).normalize("NFC");
+    if (!names.includes(first)) names.push(first);
+  }
+  if (names.length === 0) return null;
+  if (names.length === 1) return clipReason(`${names[0]} has been`);
+  if (names.length === 2) return clipReason(`${names[0]} and ${names[1]} have been`);
+  return clipReason(`${names[0]}, ${names[1]} and others have been`);
+}
+
+/**
+ * The line that says why a place is on the list, plus, when the line is not
+ * about friends but a friend has been, who. Without friends the key is absent
+ * rather than undefined, so the object stays exactly what it was.
+ */
+function forMeReason(
+  s: Scored,
+  scan: TasteScan,
+  index: TraitIndex,
+  matched: boolean,
+): ForMeReason {
+  const reason = chooseReason(s, scan, index, matched);
+  if (reason.kind === "friends") return reason;
+  const friends = friendsLine(s);
+  return friends ? { ...reason, friends } : reason;
 }
 
 /** `matched`: the place is in block 1. The tail never says why it fits, only that it is well rated. */
-function forMeReason(
+function chooseReason(
   s: Scored,
   scan: TasteScan,
   index: TraitIndex,
@@ -1115,13 +1166,10 @@ function likeReason(s: Scored, scan: TasteScan, index: TraitIndex): ForMeReason 
   if (!a || !b) return null;
   const parts = similarityParts(index, a, b);
   if (parts.imputed) return null;
-  if (parts.shared.length > 0) {
-    const terms = parts.shared.slice(0, 2).map((t) => termLabel(index, t));
-    const details = terms.length === 2 ? [terms.join(", "), terms[0]] : [terms[0]];
-    return { kind: "like", text: likeText(seed.name, details) };
-  }
-  if (parts.sharedCuisines.length > 0) {
-    return { kind: "like", text: likeText(seed.name, [`both ${parts.sharedCuisines[0]}`]) };
+  // Something real in common (a dish, or failing that a cuisine) is what earns
+  // the line; what it is no longer gets printed.
+  if (parts.shared.length > 0 || parts.sharedCuisines.length > 0) {
+    return { kind: "like", text: likeText(seed.name) };
   }
   return null;
 }
@@ -1143,9 +1191,8 @@ function pickReason(s: Scored, scan: TasteScan): ForMeReason | null {
 }
 
 function friendsReason(s: Scored): ForMeReason | null {
-  const n = s.friends.length;
-  if (n === 0) return null;
-  return { kind: "friends", text: n === 1 ? "1 friend has been" : `${n} friends have been` };
+  const text = friendsLine(s);
+  return text ? { kind: "friends", text } : null;
 }
 
 /**

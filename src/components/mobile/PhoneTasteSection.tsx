@@ -7,8 +7,10 @@ import { CloseIcon } from "@/components/icons";
 import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
 import type { DiscoverPage, DiscoverResult } from "@/lib/discover";
 import { matchMarksFor } from "@/lib/discoverFilters";
+import { distanceLabel, type Coords } from "@/lib/geo";
 import type { Nearby } from "@/lib/nearby";
 import { packColumns } from "@/lib/photoShape";
+import { forMeQualityNote } from "@/lib/ratingDisplay";
 import { signInHrefFor } from "@/lib/signInGate";
 import { useTaste } from "@/lib/useTaste";
 
@@ -248,9 +250,12 @@ function TastePrompt({
 
 export function PhoneTasteSection({
   cuisines,
+  coords = null,
   seeAllHref = "/m?foryou=1",
 }: {
   cuisines: string[];
+  /** Where the reader is, for the distance on each pick; null when unknown. */
+  coords?: Coords | null;
   /**
    * Where "See all" goes: the For me list, which is this strip's picks and the
    * rest of the ranking behind them. The screen passes a link built by its own
@@ -400,6 +405,7 @@ export function PhoneTasteSection({
               <PhoneRestaurantCardGrid
                 restaurant={p.restaurant}
                 score={p.plateScore ?? undefined}
+                distance={distanceLabel(p.restaurant, coords)}
               />
             </div>
             <div className="mt-auto px-2 pb-1">
@@ -538,11 +544,14 @@ function ForMeSkeleton({
 function ForMeGrid({
   items,
   filters,
+  coords,
   priority,
   onMark,
 }: {
   items: DiscoverResult[];
   filters: DiscoverPage["filters"];
+  /** Where the reader is, for the distance on each card; null when unknown. */
+  coords: Coords | null;
   /** The first two cards of the first block, so the fold isn't lazy-loaded. */
   priority: boolean;
   onMark: (kind: "been" | "hide", restaurant: DiscoverResult) => void;
@@ -558,10 +567,10 @@ function ForMeGrid({
                 score={restaurant.plateScore}
                 priority={priority && index < 2}
                 matchedCuisine={matchMarksFor(restaurant, filters).cuisine}
-                /* `milesAway` is only ever set beside a distance measured from
-                   the reader; the rest is the downtown-origin string, which
-                   this card has never printed. */
-                distance={restaurant.milesAway !== undefined ? restaurant.distance : null}
+                /* Never the seeded downtown-origin string: the server's figure
+                   when the page was built for a position, else measured here
+                   from the reader's coordinates, else nothing. */
+                distance={distanceLabel(restaurant, coords)}
                 aspect={
                   filters.aspect && restaurant.aspectScore !== undefined
                     ? {
@@ -572,6 +581,8 @@ function ForMeGrid({
                     : null
                 }
                 reason={restaurant.reason?.text ?? null}
+                friends={restaurant.reason?.friends ?? null}
+                quality={forMeQualityNote(restaurant)}
               />
               <div className="px-2 pb-1">
                 <PickButtons
@@ -643,18 +654,9 @@ export function PhoneForMeResults({
   const headingId = useId();
   const [editing, setEditing] = useState(false);
 
-  /* Same two effects as PhoneDiscoverResults, for the same reasons — it is not
-     mounted while For me is on. A position once the reader has narrowed the
-     list at all (a distance on each card earns its place when they are
-     choosing, and a permission prompt on a bare landing is the wrong first
-     impression); and focus to the list once a new answer lands, not on mount,
-     so a screen reader announces it instead of staying on the chip. */
-  const active = Object.values(filters).filter((v) => (Array.isArray(v) ? v.length : v)).length;
-  const requestLocation = nearby.request;
-  useEffect(() => {
-    if (active > 0 && !nearby.coords && nearby.state === "idle") requestLocation();
-  }, [active, nearby.coords, nearby.state, requestLocation]);
-
+  /* Focus to the list once a new answer lands, not on mount, so a screen reader
+     announces it instead of staying on the chip. The position is asked for in
+     useDiscoverQuery (For me asks, as does any filter). */
   const listRef = useRef<HTMLDivElement | null>(null);
   const skipNextFocus = useRef(true);
   useEffect(() => {
@@ -791,7 +793,13 @@ export function PhoneForMeResults({
           )}
 
           {matches.length > 0 && (
-            <ForMeGrid items={matches} filters={filters} priority onMark={mark} />
+            <ForMeGrid
+              items={matches}
+              filters={filters}
+              coords={nearby.coords}
+              priority
+              onMark={mark}
+            />
           )}
 
           {/* Filters can leave nothing that fits and still leave places: say so
@@ -811,6 +819,7 @@ export function PhoneForMeResults({
               <ForMeGrid
                 items={tail}
                 filters={filters}
+                coords={nearby.coords}
                 priority={matches.length === 0}
                 onMark={mark}
               />

@@ -45,6 +45,20 @@ export type Nearby = {
   coords: Coords | null;
   /** Raises the permission prompt. A no-op once coordinates are in hand. */
   request: () => void;
+  /**
+   * True when a button offering to ask would be honest: the Permissions API has
+   * answered "prompt" (or does not exist), so nothing will take a fix without
+   * the visitor's say-so, or a fix the browser was allowed to take has failed
+   * and a tap can try again.
+   *
+   * False until the answer is in -- always on the server and for the first
+   * client frame -- so an offer is never printed into the static HTML and then
+   * taken back by a fix that was already on its way (a returning visitor whose
+   * permission is granted gets one a moment after mount). False under a saved
+   * address, which has already answered, and when the permission is blocked,
+   * which a button cannot change.
+   */
+  offerable: boolean;
   /** The saved address, if one is set — see `SavedLocation` below. */
   saved: { label: string } | null;
   /** Saves an address as this device's location, taking over from GPS. */
@@ -183,6 +197,11 @@ const geolocationSupportedOnServer = () => true;
 export function useNearby(): Nearby {
   const [state, setState] = useState<Exclude<NearbyState, "unsupported">>("idle");
   const [coords, setCoords] = useState<Coords | null>(null);
+  // What the Permissions API said, once it has said it. "unknown" is the server
+  // and the first client frame: see `Nearby.offerable`.
+  const [permission, setPermission] = useState<"unknown" | "granted" | "prompt" | "denied">(
+    "unknown",
+  );
 
   const supported = useSyncExternalStore(
     subscribeToNothing,
@@ -198,6 +217,13 @@ export function useNearby(): Nearby {
 
   const request = useCallback(() => {
     if (typeof navigator === "undefined" || !navigator.geolocation) return;
+    // A saved address already answers "where", so there is nothing to ask the
+    // browser. Read from the store rather than from `saved` below: a caller
+    // that asks on mount (useDiscoverQuery, for a For me link) runs in the
+    // hydration pass, where the hook still reads the server's "none" and the
+    // saved address has not been picked up yet — without this it would raise
+    // a permission prompt under an address that was set to avoid one.
+    if (getSavedLocationSnapshot()) return;
 
     setState("locating");
     navigator.geolocation.getCurrentPosition(
@@ -236,17 +262,21 @@ export function useNearby(): Nearby {
     // that was never blocked.
     if (!supported || saved) return;
     const permissions = typeof navigator !== "undefined" ? navigator.permissions : undefined;
-    if (!permissions || typeof permissions.query !== "function") return;
     let cancelled = false;
-    permissions
-      .query({ name: "geolocation" })
-      .then((status) => {
-        if (!cancelled && status.state === "granted") request();
-      })
-      .catch(() => {
+    void (async () => {
+      let answer: "granted" | "prompt" | "denied" = "prompt";
+      try {
+        if (permissions && typeof permissions.query === "function") {
+          answer = (await permissions.query({ name: "geolocation" })).state;
+        }
+      } catch {
         // No permissions API, or a browser that will not say — the tap still
-        // works exactly as before.
-      });
+        // works exactly as before, so it reads as "would ask".
+      }
+      if (cancelled) return;
+      setPermission(answer);
+      if (answer === "granted") request();
+    })();
     return () => {
       cancelled = true;
     };
@@ -262,6 +292,7 @@ export function useNearby(): Nearby {
         state: "ready",
         coords: { lat: saved.lat, lng: saved.lng },
         request,
+        offerable: false,
         saved: { label: saved.label },
         setSavedLocation,
         clearSavedLocation,
@@ -270,6 +301,7 @@ export function useNearby(): Nearby {
         state: supported ? state : "unsupported",
         coords,
         request,
+        offerable: permission === "prompt" || (permission === "granted" && state === "failed"),
         saved: null,
         setSavedLocation,
         clearSavedLocation,
