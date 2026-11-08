@@ -234,7 +234,7 @@ const NODW =
   /^(?:teriyaki|jam|jelly|marmalade|chutney|compote|candied|brown sugar|cranberry sauce|sweet soy|kecap manis|sugar|sweetened|sweet|glaze|glazed|glazes|katsu sauce|char siu|bbq sauce|waffle|waffles|orange sauce|spice level|heat level|spice levels|crepe|crepes|cajun|creole|szechuan|sichuan|szechwan|schezwan|madras)$/;
 const CHOICE_BETWEEN = /(?:^|\s)(?:or|choice|choose|select|pick)(?:\s|$)/;
 const CHOICE_PRE = /(?:^|[\s(,])(?:choice of|choose|select|pick|options?|your choice|or)(?:\s|$)[^.;]{0,40}$/;
-const MILD = /(?:mildly|slightly|lightly|a little|a bit|little|touch of|hint of|medium)\s*$/;
+const MILD = /(?:mildly|mild|slightly|lightly|a little|a bit|little|touch of|hint of|medium)\s*$/;
 // v2.4: a list of options on offer, so a flavor inside it is one choice among several.
 const CHOICE =
   /\b(choice of|choose|your favou?rite|pick your|select|options?|your pick|available in|flavors?:|sauces?:)\b|\b(?:or)\s+\w+[\w\s-]{0,18}\)|,\s*(?:or)\s/i;
@@ -249,6 +249,8 @@ export interface FlavorEv {
   text: string;
   inName: boolean;
   demoted: boolean;
+  /** True for the sweet-heat evidence `tag` derives from a sweet word next to a heat word (grade 1). */
+  derived?: boolean;
 }
 
 interface SpanHit {
@@ -341,6 +343,18 @@ function tag(
             !CHOICE_PRE.test(text.slice(Math.max(0, Math.min(a.pos, b.pos) - 45), Math.min(a.pos, b.pos)))
           ) {
             acc[FA.sweetheat] = 1;
+            if (ev) {
+              const lo2 = Math.min(a.pos, b.pos);
+              const hi2 = Math.max(a.end, b.end);
+              ev.push({
+                attr: FA.sweetheat,
+                g: 1,
+                text: text.slice(lo2, hi2),
+                inName: hi2 <= n.length,
+                demoted: false,
+                derived: true,
+              });
+            }
             break outer;
           }
         }
@@ -405,6 +419,16 @@ export function tagCaption(caption: string | null | undefined, asian = false): n
   if (!c) return 0;
   const m = tag("", c.replace(SLANG, " "), "", asian, null, true);
   return m & ~(BIT_DEMOTED | NAME_BITS);
+}
+
+// A caption that says the dish let the poster down. Such a post is a weak model of "what they like".
+const SOUR =
+  /\b(?:nothing (?:special|worth|to (?:write|rave|brag))|not worth|meh|bland|disappoint\w*|underwhelm\w*|mediocre|overpriced|forgettable|tasteless|soggy|stale|too (?:dry|greasy|salty|sweet|bland)|overcooked|undercooked|skip (?:it|this)|pass on|wouldn'?t (?:order|get|recommend|go back)|won'?t (?:order|get|be back|go back)|not (?:great|good|impressed|my (?:thing|favou?rite))|didn'?t (?:love|like|enjoy)|average|ok at best|okay at best|waste of)\b/i;
+
+/** True when the poster's caption is a complaint ("Nothing worth raving over", "bland", "wouldn't order again"). */
+export function captionSours(caption: string | null | undefined): boolean {
+  const c = (caption ?? "").trim();
+  return c.length > 0 && SOUR.test(c.replace(/[‘’]/g, "'"));
 }
 
 /** Per-attribute max of two masks' grades; the dessert flag is kept if either has it. */
@@ -619,6 +643,21 @@ export function claimsOf(
   const out: FlavorClaim[] = [];
   for (const a of CLAIM_ORDER) {
     const label = LABEL[a];
+    if (a === FA.sweetheat && gradeOf(mask, a) === 1) {
+      // Derived sweet heat ("habanero maple", "gochujang bbq"): a sweet word and a heat word side by side in the
+      // dish's own text. The span is quoted when it is short enough to read as a name.
+      const d = ev.find((e) => e.derived && e.attr === a);
+      if (d) {
+        const shown = d.text.trim();
+        out.push({
+          attr: a,
+          label,
+          quote: d.inName || shown.length > 28 || ECHO.test(shown) ? null : shown,
+          inName: d.inName,
+        });
+      }
+      continue;
+    }
     if (gradeOf(mask, a) !== 2 && !(a === FA.crispy && nameEvidence(mask, a))) continue;
     const good = ev.filter((e) => e.attr === a && e.g === 2 && !e.demoted);
     if (!good.length) continue;

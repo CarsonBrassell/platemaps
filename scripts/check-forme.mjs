@@ -23,7 +23,7 @@ import { fileURLToPath } from "node:url";
 import { DISH_TASTE, buildDishIndex, clipWords, displayDish, passesFloor, postWeights, rankDishes, termsOf } from "../src/lib/dishTaste.ts";
 import {
   BIT_DEMOTED, BIT_DESSERT, FA, FLAVOR_ATTRS, N_FLAVOR, anchorAttr, buildFlavorProfile, claimsOf, flavorFit, gradeOf, mergeMasks,
-  nameEvidence, tagCaption, tagDish,
+  captionSours, nameEvidence, tagCaption, tagDish,
 } from "../src/lib/flavor.ts";
 import { EMPTY_PREFS } from "../src/lib/taste.ts";
 
@@ -732,10 +732,8 @@ const FLINES = (rid) => [...(FSPEC.find((s) => s[0] === rid)?.[4] ?? []), ...(FP
 
 ok("a sweet heat palate finds sweet heat dishes nobody posted, at menu places and by signature at menu-less ones", () => {
   assert.ok(fpicks, "enough seeds to rank");
-  const f3 = fby(fpicks, "f3");
-  assert.equal(f3?.reason.kind, "dish");
-  // Cauliflower is a new kind of dish for them (and a Mediterranean place a new cuisine): the reason says it is new.
-  assert.match(f3.reason.text, /^New for you — Honey Sriracha Cauliflower, same sweet heat as your (Hot Honey Chicken|Sweet & Spicy)/);
+  // A vegetable small plate carries the flavor but is no dish to be sent for on flavor alone (the form guard).
+  assert.ok(fby(fpicks, "f3")?.reason.kind !== "dish", "a cauliflower small plate is no flavor pick");
   const f8 = fby(fpicks, "f8");
   assert.equal(f8?.reason.kind, "dish", "a place with no menu is eligible through its signature dish");
   assert.match(f8.reason.text, /^New for you — Honey Sriracha Gyro, same sweet heat as your /);
@@ -803,7 +801,7 @@ ok("ratings under 50 teach no flavor, and fewer than three seeds keep the ordina
 ok("a ceiling rater and a harsh rater both find the sweet heat dishes", () => {
   for (const r of [[100, 100, 100, 100, 100], [64, 60, 58, 54, 50]]) {
     const out = flavorWorld(hotPosts(r));
-    assert.ok(out && ids(out).includes("f3"), `ratings ${r.join("/")} still find the sweet heat cauliflower`);
+    assert.ok(out && ids(out).includes("f5c"), `ratings ${r.join("/")} still find the sweet heat lentils`);
   }
 });
 
@@ -835,7 +833,8 @@ ok("flavor-only picks fill at most flavorOnlyTop of the first six, and the rest 
 
 /* ---- a few adventurous picks: the same flavor, somewhere new ---- */
 // Eight places in cuisines the viewer never posted, each with a honey sriracha dish; seven that match a dish they posted.
-const ADV_KINDS = ["Salmon", "Shrimp", "Tofu", "Lentils", "Squid", "Eggplant", "Cauliflower", "Mushrooms"];
+// The viewer posts chicken: an adventurous pick keeps the form (chicken) and changes the cuisine.
+const ADV_KINDS = ["Karaage", "Drumettes", "Nuggets", "Drumsticks", "Karaage Bites", "Nugget Bites", "Drumette Bites", "Drumstick Bites"];
 const ADV_CUISINES = ["Greek", "Peruvian", "Cuban", "Ethiopian", "Indian", "Turkish", "Lebanese", "Persian"];
 // Filler lines so a place is not a one-dish specialist (a specialist is only sent to for its own dish family).
 const ADV_PAD = [["Vegetable Soup"], ["Rice Pilaf"], ["Seasonal Special"]];
@@ -989,6 +988,9 @@ const KW_POSTS = () => [
   rated("hD", "Banana Matcha", 70, { dishSection: "Drinks" }),
   rated("hE", "Brisket Tacos", 60),
 ];
+// Two sweet heat dishes make the palate proven: one hot dish does not send anyone to a noodle shop.
+const KW_WINGS = ["hF", "Wing Stop", "American", 4.4, [["Honey Sriracha Wings"]]];
+const KW_PROVEN = () => [...KW_POSTS(), rated("hF", "Honey Sriracha Wings", 90)];
 const KW_SWEET = ["Honey Sriracha Chicken Plate", "glazed with sriracha honey"];
 const kwPlace = (id, cuisine, line = KW_SWEET, rating = 4.6, reviews = 400) => [id, `${id} Place`, cuisine, rating, [line, ...ADV_PAD], reviews];
 
@@ -1026,10 +1028,9 @@ ok("a meat-free house says so when the dish it is compared to is not meat-free",
   assert.match(v1.reason.text, /Epic Chicken Sandwich \(plant-based\)/, "the vegetarian house says what the sandwich is");
   assert.match(v1.reason.short, /\(plant-based\)/, "and the short line too");
   assert.doesNotMatch(v2.reason.text, /plant-based/, "a meat house says nothing of the kind");
-  // Compared to a plant-based dish of their own, nothing needs saying.
-  const veg = [...KW_BASE.filter((s) => s[0] !== "hA"), ["hA", "Sprout Social", "Vegan", 4.5, [["Hot Honey Brussels Sprouts", "crispy, hot honey"]]], kwPlace("v1", "Vegetarian", line, 4.7)];
-  const posts = KW_POSTS().map((p) => (p.restaurantId === "hA" ? rated("hA", "Hot Honey Brussels Sprouts", 95, { dishDescription: "crispy, hot honey" }) : p));
-  const out2 = FW(veg, [], 400)(posts);
+  // Compared to a dish of their own from a meat-free house, nothing needs saying.
+  const veg = [...KW_BASE.filter((s) => s[0] !== "hA"), ["hA", "Sprout Social", "Vegan", 4.5, [["Hot Honey Chicken", "fried thigh, hot honey, pickles"]]], kwPlace("v1", "Vegetarian", line, 4.7)];
+  const out2 = FW(veg, [], 400)(KW_POSTS());
   const w = fby(out2, "v1");
   assert.ok(w, "still eligible");
   assert.doesNotMatch(w.reason.text, /plant-based/, "a plant-based dish compared to a plant-based dish needs no disclosure");
@@ -1038,19 +1039,23 @@ ok("a meat-free house says so when the dish it is compared to is not meat-free",
 ok("a drink shop is not sent to on a flavor line, a bar's waits behind the meals, and a place they name in a caption counts for less", () => {
   // A bakery or a coffee shop holds a savory line, but it is not what anyone goes there for.
   const noodle = ["Honey Sriracha Noodles", null];
-  const out = FW([...KW_BASE, kwPlace("d1", "Bakery", noodle, 4.7), kwPlace("d2", "Thai", noodle, 4.5), kwPlace("d3", "Coffee & Tea", noodle, 4.7)], [], 400)(KW_POSTS());
+  const out = FW([...KW_BASE, KW_WINGS, kwPlace("d1", "Bakery", noodle, 4.7), kwPlace("d2", "Thai", noodle, 4.5), kwPlace("d3", "Coffee & Tea", noodle, 4.7)], [], 400)(KW_PROVEN());
   assert.ok(fby(out, "d2"), "the same line at a Thai place is found");
   assert.ok(!fby(out, "d1"), "a bakery is not");
   assert.notEqual(fby(out, "d3")?.reason.kind, "dish", "nor is a coffee shop (it can only be named for the cuisine they eat)");
-  // Four meal places and a bar, the bar the best rated: it follows the first three.
-  const places = ["m1", "m2", "m3", "m4"].map((id, i) => kwPlace(id, "American", ["Honey Sriracha Chicken Plate", "glazed with sriracha honey"], 4.4 - i * 0.01, 400));
-  const spec = [...KW_BASE, ...places, kwPlace("bar", "American", ["Honey Sriracha Chicken Plate", "glazed with sriracha honey"], 4.8, 900)];
+  // Four meal places, each matching a different dish they posted, and a bar standing on its flavor line alone, the bar
+  // the best rated: it follows the first three.
+  const sauce = "glazed in honey sriracha sauce";
+  const meals = [["Hot Honey Chicken Plate", "fried chicken, hot honey"], ["Spicy Miso Ramen Bowl", null], ["Brisket Taco Plate", null], ["Honey Sriracha Wings Plate", sauce]];
+  const places = ["m1", "m2", "m3", "m4"].map((id, i) => kwPlace(id, i % 2 ? "Japanese" : "American", meals[i], 4.4 - i * 0.01, 400));
+  const spec = [...KW_BASE, KW_WINGS, ...places, kwPlace("bar", "American", ["Sticky Turkey Plate", sauce], 4.8, 900)];
   const bar = { rid: "bar", styles: [], dishTypes: [], median: null, signatures: [], service: "bar" };
-  const withBar = FW(spec, [bar], 400)(KW_POSTS());
+  const withBar = FW(spec, [bar], 400)(KW_PROVEN());
   const at = withBar.findIndex((p) => p.restaurant.id === "bar");
   assert.ok(at === -1 || at >= 3, `the bar is not in the first three (${at})`);
-  const noBar = FW(spec, [], 400)(KW_POSTS());
-  assert.ok(noBar.findIndex((p) => p.restaurant.id === "bar") < 3, "without the bar profile, the best-rated place leads");
+  const noBar = FW(spec, [], 400)(KW_PROVEN());
+  const noBarAt = noBar.findIndex((p) => p.restaurant.id === "bar");
+  assert.ok(noBarAt !== -1 && (at === -1 || noBarAt < at), "without the bar profile it sits higher");
   // "better than Dave's": a place they named in a caption is one they already have a view of.
   const dave = [...KW_BASE, kwPlace("c1", "American", ["Hot Honey Chicken Plate", "fried chicken, hot honey"], 4.6, 400), kwPlace("c2", "American", ["Hot Honey Chicken Plate", "fried chicken, hot honey"], 4.5, 400)];
   dave[dave.length - 2][1] = "Daves Hot Chicken";
@@ -1071,13 +1076,82 @@ ok("a shared-plate line is never the dish a place is named for; a flavor-led cro
   const alone = FW([...KW_BASE, share], [], 400)(KW_POSTS());
   assert.equal(fby(alone, "st1")?.reason.kind, "cuisine", "alone, it can still come up, for the cuisine they eat");
   // Nothing posted in this cuisine and a different kind of dish: still a pick on its flavor, in the first slot of a short row.
-  const cross = FW([...KW_BASE, kwPlace("k3", "Mediterranean", ["Honey Sriracha Cauliflower", "roasted, tossed in honey sriracha"], 4.5, 300)], [], 400)(KW_POSTS());
+  const cross = FW([...KW_BASE, KW_WINGS, kwPlace("k3", "Mediterranean", ["Chili Glazed Salmon Plate", "roasted, tossed in honey sriracha"], 4.5, 300)], [], 400)(KW_PROVEN());
   const k3 = cross && fby(cross, "k3");
   assert.ok(k3, "a flavor-led pick of another kind fills a short row");
-  assert.match(k3.reason.text, /^New for you — Honey Sriracha Cauliflower, same (?:sweet )?heat as your /);
+  assert.match(k3.reason.text, /^New for you — Chili Glazed Salmon Plate, same (?:sweet )?heat as your /);
 });
 
 /* ---------- 2. the source ---------- */
+
+ok("a caption that complains is a sour one, and praise or a taste is not", () => {
+  for (const c of ["Nothing special, honestly", "bland and overpriced", "would not be back... won't order again", "meh", "not my favorite", "a bit disappointing"]) {
+    assert.equal(captionSours(c), true, `${c} complains`);
+  }
+  for (const c of ["so good, would order again", "loving the sweet heat", "this was fire", "", null, undefined]) {
+    assert.equal(captionSours(c), false, `${String(c)} does not`);
+  }
+});
+
+ok("the dish a flavor pick is compared to states the flavor itself, is rated well, and was not complained about", () => {
+  const cand = kwPlace("q1", "American", ["Honey Sriracha Chicken Plate", "glazed with sriracha honey"]);
+  const spec = [...KW_BASE, KW_WINGS, cand];
+  const rest = [rated("hB", "Spicy Miso Ramen", 85), rated("hD", "Banana Matcha", 70, { dishSection: "Drinks" }), rated("hE", "Brisket Tacos", 60)];
+  const hot = (rating, extra = {}) => rated("hA", "Hot Honey Chicken", rating, { dishDescription: "fried thigh, hot honey, pickles", ...extra });
+  const wing = rated("hF", "Honey Sriracha Wings", 90);
+  const said = (posts) => fby(FW(spec, [], 400)(posts) ?? [], "q1")?.reason.text ?? "";
+  assert.match(said([hot(95), wing, ...rest]), /your Hot Honey Chicken/, "a well-rated dish that states the flavor is the one named");
+  // The poster complained: the dish still teaches the palate, but it is not the one a reason names.
+  const sour = said([hot(95, { caption: "bland and overpriced, would not order again" }), wing, ...rest]);
+  assert.doesNotMatch(sour, /your Hot Honey Chicken/, "a dish its poster complained about is never cited");
+  // Rated far below a dish that states the same flavor: not the one named either.
+  const low = said([hot(60), wing, ...rest]);
+  assert.doesNotMatch(low, /your Hot Honey Chicken/, "a dish rated well under their best is not cited");
+  // A well-rated dish that says nothing of the flavor cannot be cited for it.
+  const plain = said([rated("hG", "Plain Chicken Plate", 99), hot(95), wing, ...rest]);
+  assert.doesNotMatch(plain, /your Plain Chicken/, "a dish with no flavor in its text is never the comparison");
+});
+
+ok("one hot dish is not a palate: a single sweet heat post sends no one to another dish on flavor alone", () => {
+  const cand = kwPlace("s1", "Thai", ["Honey Sriracha Shrimp Bowl", "tossed in a honey sriracha glaze"]);
+  const one = fby(FW([...KW_BASE, cand], [], 400)(KW_POSTS()) ?? [], "s1");
+  assert.doesNotMatch(one?.reason.text ?? "", /same (?:sweet )?heat as/, "one sweet heat post does not carry a flavor claim to a new dish");
+  const two = fby(FW([...KW_BASE, KW_WINGS, cand], [], 400)(KW_PROVEN()) ?? [], "s1");
+  assert.match(two?.reason.text ?? "", /sweet heat/, "two of them do");
+});
+
+ok("a flavor-led pick is one per kind of dish: three hot honey pizzas are one idea", () => {
+  const spec = [
+    ...KW_BASE, KW_WINGS,
+    kwPlace("p1", "Pizza", ["Hot Honey Pepperoni Pizza", "hot honey, pepperoni, mozzarella"]),
+    kwPlace("p2", "Italian", ["Hot Honey Margherita Pizza", "hot honey, basil, mozzarella"]),
+    kwPlace("p3", "American", ["Hot Honey Sausage Pizza", "hot honey, sausage, mozzarella"]),
+    // Enough other ideas to fill the row, so a second pizza has somewhere better to go.
+    ...[
+      ["Thai", "Honey Sriracha Shrimp Bowl"], ["Japanese", "Honey Sriracha Salmon Plate"], ["Korean", "Honey Sriracha Beef Bowl"],
+      ["Chinese", "Honey Sriracha Pork Stir Fry"], ["Vietnamese", "Honey Sriracha Duck Banh Mi"], ["Filipino", "Honey Sriracha Squid Plate"],
+      ["French", "Honey Sriracha Cod Plate"], ["Turkish", "Honey Sriracha Lamb Kebab"], ["Cuban", "Honey Sriracha Tofu Plate"],
+      ["Greek", "Honey Sriracha Prawn Plate"], ["Indian", "Honey Sriracha Paneer Plate"], ["Peruvian", "Honey Sriracha Scallop Plate"],
+    ].map(([cu, nm], i) => kwPlace("o" + i, cu, [nm, "tossed in honey sriracha"])),
+  ];
+  const out = FW(spec, [], 400)(KW_PROVEN());
+  assert.ok(out && out.length >= 10, "a full row");
+  const led = out.filter((p) => ["p1", "p2", "p3"].includes(p.restaurant.id) && /sweet heat/.test(p.reason.text));
+  assert.ok(led.length <= 1, `at most one flavor-led pizza, got ${led.length}`);
+  assert.ok(out.some((p) => ["p1", "p2", "p3"].includes(p.restaurant.id)), "a pizza is still found");
+});
+
+ok("a row with no description says nothing of flavor: its reason comes from what the place is known for", () => {
+  const spec = [
+    ...KW_BASE, KW_WINGS,
+    ["w1", "Wing House", "American", 4.6, [["Wings (5 pcs)"], ["Fries"]], 400],
+  ];
+  const profiles = [{ rid: "w1", styles: ["wings"], dishTypes: ["wings"], median: null, signatures: [], summary: "Known for crispy wings.", spice: null }];
+  const out = FW(spec, profiles, 400)(KW_PROVEN());
+  const w = fby(out ?? [], "w1");
+  assert.ok(w, "the wing house is eligible on its dish family");
+  assert.doesNotMatch(w.reason.text, /sweet heat|same (?:sweet )?heat|spicy|smoky/, "no flavor is claimed for a bare row");
+});
 
 ok("no For me route, pill, link or chip row is left", () => {
   for (const f of ["src/components/ForMeProfileLine.tsx", "src/lib/profileTraits.ts"]) assert.throws(() => src(f), f);
