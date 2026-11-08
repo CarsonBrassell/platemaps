@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { useHydrated } from "@/lib/useHydrated";
 
 type Account = {
   id: string;
@@ -354,7 +355,13 @@ export function useAuth() {
  * what every other visitor gets, and for everyone whose account does not carry
  * the flag. Every dish-pick surface asks this and, on false, renders what the page
  * did before the feature.
+ *
+ * Also false while a subtree is hydrating. The server always renders with no
+ * account, and a subtree can hydrate after the account fetch has landed; reading
+ * the flag there made the client disagree with the server HTML and React threw a
+ * hydration error.
  */
 export function useForMeAccess(): boolean {
-  return useAuth().account?.forMe === true;
+  const flagged = useAuth().account?.forMe === true;
+  return useHydrated() && flagged;
 }

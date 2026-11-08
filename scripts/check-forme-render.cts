@@ -27,10 +27,14 @@ const MAIN_WEB_BTN =
 const MAIN_PHONE_BTN =
   "min-h-11 text-[13px] font-medium text-zinc-500 underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 
-const S: any = { taste: null };
+// renderToStaticMarkup is the server frame, where useHydrated is false and so the
+// gate is closed for every viewer. Most checks here are about the frame after
+// hydration; the hydration check below flips this off.
+const S: any = { taste: null, hydrated: true };
 const origLoad = Module._load;
 Module._load = function (request: string) {
   if (request === "@/lib/useTaste") return { useTaste: () => S.taste };
+  if (request === "@/lib/useHydrated") return { useHydrated: () => S.hydrated };
   if (request === "next/navigation")
     return { usePathname: () => "/", useRouter: () => ({ push() {}, replace() {}, back() {}, prefetch() {} }), useSearchParams: () => new URLSearchParams("") };
   return origLoad.apply(this, arguments);
@@ -130,6 +134,16 @@ if (process.env.FORME_DUMP) require("node:fs").writeFileSync(process.env.FORME_D
 const forMeWeb = render(FOR_ME, TasteSection, { cuisines: ["Thai"] }, false);
 const forMeBtns = classesOf(forMeWeb, /^(Been here|Not for me)$/);
 assert.ok(forMeBtns.length > 0 && forMeBtns.some((c) => c !== MAIN_WEB_BTN), "control: the dish-pick accounts should render the roomier buttons");
+
+// Hydration: while a subtree hydrates, a dish-pick account must render exactly the
+// server's frame (everyone else's), or React throws a hydration error on it.
+S.hydrated = false;
+for (const [label, Component, BTN] of [["web", TasteSection, MAIN_WEB_BTN], ["phone", PhoneTasteSection, MAIN_PHONE_BTN]] as const) {
+  const btns = classesOf(render(FOR_ME, Component, { cuisines: ["Thai", "Mexican"] }, false), /^(Been here|Not for me|Reset my taste)$/);
+  assert.ok(btns.length >= 6, `${label} hydrating: buttons rendered`);
+  for (const c of btns) assert.equal(c, BTN, `${label} hydrating: a dish-pick account's frame differs from the server's, which is a hydration error`);
+}
+S.hydrated = true;
 
 // The dish-pick accounts get no For me pill or link, no cuisine chips and no Edit panel, and a text reset.
 for (const [label, Component] of [["web", TasteSection], ["phone", PhoneTasteSection]] as const) {
