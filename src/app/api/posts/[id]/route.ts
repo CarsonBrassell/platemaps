@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getPostById, deletePost } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { limitOrReject } from "@/lib/rateLimit";
 import { cachedJson } from "@/lib/httpCache";
 import { invalidateRestaurantPage } from "@/lib/restaurantPage";
 
@@ -33,6 +34,14 @@ export async function DELETE(
   if (!user) {
     return NextResponse.json({ error: "Sign in to delete posts." }, { status: 401 });
   }
+
+  const limited = await limitOrReject({
+    scope: "post-delete:user",
+    key: user.id,
+    max: 60,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
 
   const { id } = await params;
   const post = await getPostById(id);

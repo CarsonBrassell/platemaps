@@ -2,10 +2,12 @@
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { UPVOTE_MILESTONES } from "@/lib/points";
+import { PLATES_KEPT, ShowAllToggle, useFoldedList } from "@/components/ShowAllToggle";
 import { ChatIcon } from "@/components/icons";
 import { postedDate } from "@/lib/format";
 import { packBy } from "@/lib/photoShape";
 import { orderForCollage, type CollagePlate } from "@/components/feed/MealCollage";
+import { ShimmerImage } from "@/components/ShimmerImage";
 import {
   PlateDetailSheet,
   type CommentVotePatch,
@@ -514,8 +516,9 @@ function CardPhoto({
   const photo = post.media?.find((m) => m.type === "image");
   if (photo) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src={photo.url} alt="" className={`${className} object-cover`} />
+      <span className={`relative overflow-hidden ${className}`}>
+        <ShimmerImage src={photo.url} className="object-cover" />
+      </span>
     );
   }
   return (
@@ -552,8 +555,7 @@ function MealThumb({ post, tone }: { post: ShelfPost; tone: number }) {
         return (
           <span key={p.id} className="relative block min-h-0 min-w-0" style={{ gridArea: areas[i] }}>
             {photo ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={photo.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              <ShimmerImage src={photo.url} className="object-cover" />
             ) : (
               <span className="absolute inset-0" style={{ background: `var(--pm-tone-${tone})` }} />
             )}
@@ -899,16 +901,18 @@ function PlateTile({
  * decides what each cell carries.
  */
 function Collage({
+  id,
   posts,
   className,
   tile,
 }: {
+  id?: string;
   posts: ShelfPost[];
   className?: string;
   tile: (post: ShelfPost, tone: number) => ReactNode;
 }) {
   return (
-    <div className={`grid grid-cols-2 items-start gap-1.5 ${className ?? ""}`}>
+    <div id={id} className={`grid grid-cols-2 items-start gap-1.5 ${className ?? ""}`}>
       {packBy(
         posts.map((post, i) => ({ post, i })),
         2,
@@ -993,6 +997,8 @@ export function ProfileShelves({
      is showing stays the one in `posts` as that array refreshes. */
   const [openId, setOpenId] = useState<string | null>(null);
   const openPost = openId ? posts.find((p) => p.id === openId) ?? null : null;
+
+  const archive = useFoldedList(all, PLATES_KEPT);
 
   const open = (post: ShelfPost) => {
     setOpenId(post.id);
@@ -1096,11 +1102,19 @@ export function ProfileShelves({
               disc. `cardMeta` is the single source for that string, so the
               percent stays dish-only here exactly as it is up there. */}
           <Collage
-            posts={all}
+            id="profile-archive"
+            posts={archive.visible}
             tile={(post, tone) => (
               <PlateTile key={post.id} post={post} tone={tone} onOpen={() => open(post)} />
             )}
           />
+          {archive.foldable && (
+            <ShowAllToggle
+              expanded={archive.expanded}
+              onChange={archive.setExpanded}
+              controls="profile-archive"
+            />
+          )}
         </>
       )}
 
@@ -1142,6 +1156,7 @@ export function PublicProfilePlates({ posts: initialPosts }: { posts: ShelfPost[
   const [posts, setPosts] = useState(initialPosts);
   const [openId, setOpenId] = useState<string | null>(null);
   const openPost = openId ? (posts.find((p) => p.id === openId) ?? null) : null;
+  const plates = useFoldedList(posts, PLATES_KEPT);
 
   if (posts.length === 0) {
     return (
@@ -1158,11 +1173,19 @@ export function PublicProfilePlates({ posts: initialPosts }: { posts: ShelfPost[
     <section aria-label="Plates" className="mb-6">
       <p className="mono-label mb-2.5 text-zinc-900">{`Plates · ${posts.length}`}</p>
       <Collage
-        posts={posts}
+        id="profile-plates"
+        posts={plates.visible}
         tile={(post, tone) => (
           <PlateTile key={post.id} post={post} tone={tone} onOpen={() => setOpenId(post.id)} />
         )}
       />
+      {plates.foldable && (
+        <ShowAllToggle
+          expanded={plates.expanded}
+          onChange={plates.setExpanded}
+          controls="profile-plates"
+        />
+      )}
       {openPost && (
         <PlateDetailSheet
           post={openPost}

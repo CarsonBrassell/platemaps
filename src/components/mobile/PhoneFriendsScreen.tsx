@@ -8,10 +8,17 @@ import { PointsBadge } from "@/components/feed/PointsBadge";
 import { PhoneFindFriends } from "@/components/mobile/PhoneFindFriends";
 import { PhoneFriendsHero } from "@/components/mobile/PhoneFriendsHero";
 import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
+import {
+  FRIENDS_KEPT,
+  LONG_LIST_FOLD_AT,
+  ShowAllToggle,
+  useFoldedList,
+} from "@/components/ShowAllToggle";
 import { PhoneFriendsLeaderboard, rankSeats } from "@/components/mobile/PhoneFriendsLeaderboard";
 import { useAuth } from "@/lib/auth";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { askForPushInContext } from "@/lib/pushClient";
 
 /**
  * Friends, phone version.
@@ -187,7 +194,10 @@ export function PhoneFriendsScreen() {
       if (!res.ok) throw new Error("failed");
       setIncoming((prev) => prev.filter((r) => r.id !== requestId));
       // An accept adds someone to the list below, so it has to be re-read.
-      if (action === "accept") load();
+      if (action === "accept") {
+        load();
+        void askForPushInContext();
+      }
     } catch {
       setError("Couldn't answer that request.");
     } finally {
@@ -245,6 +255,13 @@ export function PhoneFriendsScreen() {
     if (!trimmedQuery) return friends;
     return friends.filter((f) => f.name.toLowerCase().includes(trimmedQuery));
   }, [friends, trimmedQuery]);
+
+  /* A search has already narrowed the list, so it is never folded on top. */
+  const fold = useFoldedList(shown ?? [], FRIENDS_KEPT, trimmedQuery !== "");
+
+  /* Only what you sent folds. Incoming stays whole however long it gets: each
+     of those is someone waiting on an answer. */
+  const outgoingFold = useFoldedList(outgoing, FRIENDS_KEPT, false, LONG_LIST_FOLD_AT);
 
   return (
     <div className="min-h-dvh">
@@ -307,6 +324,8 @@ export function PhoneFriendsScreen() {
       ) : (
         <>
           <PhoneFindFriends
+            viewerId={account?.id ?? ""}
+            friends={friends ?? []}
             friendIds={friends?.map((f) => f.id) ?? []}
             incomingIds={incoming.map((r) => r.userId)}
             outgoingIds={outgoing.map((r) => r.userId)}
@@ -400,8 +419,8 @@ export function PhoneFriendsScreen() {
                 </button>
               </div>
             ) : (
-              <ul className="flex flex-col gap-2">
-                {shown!.map((friend) => (
+              <ul id="friends-list" className="flex flex-col gap-2">
+                {fold.visible.map((friend) => (
                   <li
                     key={friend.id}
                     className="flex items-center gap-3 rounded-2xl bg-white px-3.5 py-2.5"
@@ -451,6 +470,14 @@ export function PhoneFriendsScreen() {
                   </li>
                 ))}
               </ul>
+            )}
+
+            {fold.foldable && (
+              <ShowAllToggle
+                expanded={fold.expanded}
+                onChange={fold.setExpanded}
+                controls="friends-list"
+              />
             )}
 
             {account && (
@@ -524,24 +551,36 @@ export function PhoneFriendsScreen() {
                   </div>
                 ))}
 
-                {outgoing.map((r) => (
-                  <div
-                    key={r.id}
-                    className="flex items-center gap-3 rounded-2xl bg-white px-3.5 py-3"
-                  >
-                    <Avatar name={r.name} avatarUrl={r.avatarUrl} />
-                    <Link
-                      href={profileHref(r.userId)}
-                      className={`font-display min-w-0 flex-1 truncate rounded-lg text-[16px] font-semibold leading-tight text-zinc-500 ${FOCUS}`}
-                    >
-                      {r.name}
-                    </Link>
-                    {/* Machine state, so it's set in the label voice like every
-                        other non-prose value on the screen. */}
-                    <span className="mono-label shrink-0 text-zinc-500">Request sent</span>
+                {outgoing.length > 0 && (
+                  <div id="outgoing-requests-list" className="flex flex-col gap-2">
+                    {outgoingFold.visible.map((r) => (
+                      <div
+                        key={r.id}
+                        className="flex items-center gap-3 rounded-2xl bg-white px-3.5 py-3"
+                      >
+                        <Avatar name={r.name} avatarUrl={r.avatarUrl} />
+                        <Link
+                          href={profileHref(r.userId)}
+                          className={`font-display min-w-0 flex-1 truncate rounded-lg text-[16px] font-semibold leading-tight text-zinc-500 ${FOCUS}`}
+                        >
+                          {r.name}
+                        </Link>
+                        {/* Machine state, so it's set in the label voice like every
+                            other non-prose value on the screen. */}
+                        <span className="mono-label shrink-0 text-zinc-500">Request sent</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
+
+              {outgoingFold.foldable && (
+                <ShowAllToggle
+                  expanded={outgoingFold.expanded}
+                  onChange={outgoingFold.setExpanded}
+                  controls="outgoing-requests-list"
+                />
+              )}
             </section>
           )}
         </>

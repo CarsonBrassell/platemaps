@@ -176,7 +176,9 @@ function sendOne(
       status = Number(res[h2.HTTP2_HEADER_STATUS] ?? 0);
     });
     req.on("data", (chunk: Buffer) => chunks.push(chunk));
-    req.on("end", () => {
+    // "close", not "end": a stream cancelled by the timeout below never emits
+    // "end", and the send would then hold the function open until Vercel kills it.
+    req.on("close", () => {
       let reason: string | undefined;
       if (chunks.length > 0) {
         try {

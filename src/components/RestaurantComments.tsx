@@ -67,18 +67,9 @@ export function RestaurantComments({
   const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
-    fetch("/api/posts")
+    fetch(`/api/posts?restaurant=${encodeURIComponent(restaurant.id)}`)
       .then((res) => res.json())
-      .then((data) =>
-        setPosts(
-          (data.posts as Post[]).filter(
-            (p) =>
-              p.restaurant === restaurant.name ||
-              p.placeId === restaurant.id ||
-              p.restaurantId === restaurant.id,
-          ),
-        ),
-      )
+      .then((data) => setPosts(data.posts as Post[]))
       .catch(() => {
         // Leaves the empty state up. Nothing here is worth an error banner.
       });

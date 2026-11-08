@@ -1,5 +1,5 @@
-import Image from "next/image";
 import type { ReactNode } from "react";
+import { ShimmerImage } from "@/components/ShimmerImage";
 
 type RestaurantPhotoProps = {
   photo?: string;
@@ -22,14 +22,17 @@ type RestaurantPhotoProps = {
  * Uses `fill`, so every call site must position its container `relative` and
  * give it a height (or aspect ratio). All three currently do.
  *
- * `unoptimized`: `photo` can be a URL from any of five thousand restaurant
+ * A photo that exists but will not load is a different case from no photo: it
+ * gets the shimmer rather than `fallback`, see `ShimmerImage`.
+ *
+ * Unoptimized: `photo` can be a URL from any of five thousand restaurant
  * hosts (see the comment on `images.remotePatterns` in `next.config.ts`), not
  * just the allowlisted ones. Optimizing it would mean either allowlisting
  * every one of those hosts or reopening the `**` wildcard that made
  * `/_next/image` a free open proxy (probe/SECURITY-FINDINGS.md #6).
- * `unoptimized` makes the browser fetch `photo` directly, same as a plain
- * `<img>`, so `sharp` never touches attacker-reachable bytes and no host list
- * is needed for this call site. `sizes` is kept only as a layout hint.
+ * `ShimmerImage` has the browser fetch `photo` directly with a plain `<img>`,
+ * so `sharp` never touches attacker-reachable bytes and no host list is needed
+ * for this call site. `sizes` is kept only as a layout hint.
  */
 export function RestaurantPhoto({
   photo,
@@ -42,17 +45,15 @@ export function RestaurantPhoto({
   if (!photo) return <>{fallback}</>;
 
   return (
-    <Image
+    <ShimmerImage
       src={photo}
       /* Defaults to decorative: every call site already renders the restaurant
          name as adjacent text, so a generic alt would just make a screen reader
          announce the name twice. Set `photoAlt` in the data when a photo shows
          something the surrounding text doesn't. */
       alt={photoAlt ?? ""}
-      fill
       sizes={sizes}
       priority={priority}
-      unoptimized
       className={`object-cover ${className}`}
     />
   );

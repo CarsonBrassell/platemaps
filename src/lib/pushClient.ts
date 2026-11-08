@@ -58,14 +58,23 @@ export async function isNativeApp(): Promise<boolean> {
   return Capacitor.isNativePlatform();
 }
 
+/**
+ * Boxed on purpose. A Capacitor plugin is a Proxy that answers every property
+ * with a native-method stub, including `then`, so an async function returning
+ * it directly makes the promise treat it as a thenable and reject with
+ * `"PushNotifications.then()" is not implemented on ios`. That shipped: every
+ * push call failed and the in-context ask swallowed the error, so no device
+ * ever registered.
+ */
 async function plugin() {
   const { PushNotifications } = await import("@capacitor/push-notifications");
-  return PushNotifications;
+  return { push: PushNotifications };
 }
 
 export async function getPushStatus(): Promise<PushStatus> {
   if (!(await isNativeApp())) return "unsupported";
-  const { receive } = await (await plugin()).checkPermissions();
+  const { push } = await plugin();
+  const { receive } = await push.checkPermissions();
   if (receive === "denied") return "denied";
   if (receive !== "granted") return "prompt";
   return read(OFF_KEY) ? "off" : "granted";
@@ -81,7 +90,7 @@ export async function getPushStatus(): Promise<PushStatus> {
  */
 export async function registerForPush(): Promise<PushStatus> {
   if (!(await isNativeApp())) return "unsupported";
-  const push = await plugin();
+  const { push } = await plugin();
 
   const { receive } = await push.requestPermissions();
   write(ASKED_KEY, "1");
@@ -130,12 +139,16 @@ export async function registerForPush(): Promise<PushStatus> {
  * or comment) or the Settings toggle.
  */
 export async function syncPushRegistration(): Promise<void> {
-  const status = await getPushStatus();
-  if (status === "granted") await registerForPush();
+  try {
+    if ((await getPushStatus()) === "granted") await registerForPush();
+  } catch {
+    // Offline at launch, usually. The next launch tries again.
+  }
 }
 
 /**
- * The in-context ask. Call it right after a post or comment succeeds: shows
+ * The in-context ask. Call it right after a post, a comment or a friend
+ * request succeeds, the moments someone is waiting on a reply: shows
  * the system permission prompt if it has never been shown, and does nothing
  * otherwise (already answered, switched off in Settings, or a browser tab).
  * Never throws, so a caller can fire it without awaiting.
@@ -179,7 +192,7 @@ export async function onPushOpened(
   handler: (url: string) => void,
 ): Promise<PluginListenerHandle | null> {
   if (!(await isNativeApp())) return null;
-  const push = await plugin();
+  const { push } = await plugin();
   return push.addListener("pushNotificationActionPerformed", ({ notification }) => {
     const url = (notification.data as { url?: unknown } | undefined)?.url;
     if (typeof url === "string" && url.startsWith("/m/")) handler(url);

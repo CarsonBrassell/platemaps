@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { isCrossSiteRequest } from "@/lib/originCheck";
 import { isPublicPath, signInHrefFor } from "@/lib/signInGate";
 
 /**
@@ -22,8 +23,8 @@ import { isPublicPath, signInHrefFor } from "@/lib/signInGate";
  * them unnecessary.
  *
  * Demo mode (2026-10-24): `OPEN_BROWSING` in src/lib/signInGate.ts opens
- * browsing to everyone; only posting, settings, friends and profiles still
- * redirect here. Flip it to false to restore the everywhere-gate.
+ * browsing to everyone; only posting, settings and profiles still redirect
+ * here. Flip it to false to restore the everywhere-gate.
  */
 
 /** Excludes `_next/*` at the matcher level; the dot-suffix rule below catches
@@ -78,8 +79,19 @@ function phoneTwinFor(request: NextRequest): string | null {
   return pathname === "/" ? "/m" : `/m${pathname}`;
 }
 
+const WRITE_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
+
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+
+  // Ahead of the static-asset rule, which waves through any path with a dot.
+  if (
+    pathname.startsWith("/api/") &&
+    WRITE_METHODS.has(request.method) &&
+    isCrossSiteRequest(request)
+  ) {
+    return NextResponse.json({ error: "Bad request." }, { status: 403 });
+  }
 
   if (isStaticAsset(pathname)) return NextResponse.next();
 

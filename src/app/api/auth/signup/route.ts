@@ -6,7 +6,7 @@ import { getUserByEmail, getUserByName, createUser, createSession } from "@/lib/
 import { setSessionCookie } from "@/lib/session";
 import { checkPassword } from "@/lib/password";
 import { checkEmail, normalizeEmail } from "@/lib/emailAddress";
-import { BLOCKED_MESSAGE, moderateUsername } from "@/lib/moderation";
+import { BLOCKED_MESSAGE, RESERVED_USERNAME_MESSAGE, isReservedUsername, moderateUsername } from "@/lib/moderation";
 import { userConflictMessage } from "@/lib/uniqueViolation";
 import { clientIp } from "@/lib/loginThrottle";
 import { limitOrReject } from "@/lib/rateLimit";
@@ -74,6 +74,10 @@ export async function POST(req: NextRequest) {
      everybody sees. See moderateUsername. */
   if (moderateUsername(String(name)).action === "block") {
     return NextResponse.json({ error: BLOCKED_MESSAGE }, { status: 422 });
+  }
+
+  if (isReservedUsername(String(name))) {
+    return NextResponse.json({ error: RESERVED_USERNAME_MESSAGE }, { status: 422 });
   }
 
   // Checked against the username and address being created, so a password

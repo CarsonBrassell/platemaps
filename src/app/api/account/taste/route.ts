@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { clientIp } from "@/lib/loginThrottle";
 import { limitOrReject } from "@/lib/rateLimit";
 import { getCurrentUser } from "@/lib/session";
 import { TASTE_OP_KINDS, scoreTaste, type TasteOp } from "@/lib/taste";
@@ -54,13 +55,13 @@ export async function POST(req: Request) {
 
   const user = await getCurrentUser();
 
-  // Only a signed-in write is metered: it is the one case that touches the
-  // database, and it keeps a plain read from costing a counter row.
-  if (user && op) {
+  // A signed-in write is metered per person. Everything else is metered per
+  // address, because it needs no account and scores the whole corpus.
+  if (user ? op : true) {
     const limited = await limitOrReject({
-      scope: "taste:user",
-      key: user.id,
-      max: 120,
+      scope: user ? "taste:user" : "taste:ip",
+      key: user ? user.id : clientIp(req),
+      max: user ? 120 : 240,
       windowMinutes: 10,
     });
     if (limited) {

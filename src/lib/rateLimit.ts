@@ -46,28 +46,22 @@ interface Verdict {
 }
 
 /**
- * Records this hit and counts the window in one statement (F41).
+ * Records this hit, then counts the window, as two statements. The order and
+ * the split are the whole design.
  *
- * The previous version awaited a `SELECT count(*)` and only then fired the
- * INSERT — and fired it without awaiting, so the *next* request's SELECT
- * could easily run before this one's INSERT had even been sent, let alone
- * committed. Any number of requests issued concurrently by the same caller
- * would all read the pre-insert count and all pass, so the cap was only ever
- * enforced against traffic slow enough to serialize on its own.
+ * Counting first lets every concurrent request read the same total and pass,
+ * so the cap only binds traffic slow enough to arrive one at a time. Putting
+ * both in one statement (a CTE) looks atomic and has the same hole: a statement
+ * cannot see its own insert, or anyone's that isn't committed when it starts,
+ * so a burst of a hundred all counted zero.
  *
- * Putting the INSERT in a CTE ahead of the SELECT means this call's own hit
- * is guaranteed to exist before its own count is taken — the two can no
- * longer land in the wrong order because they are the same round trip. A
- * request is blocked when the window's count, *including the row this call
- * just wrote*, exceeds `max` — equivalent to the old "previous count >= max"
- * check, just computed after recording instead of before.
+ * Committed first and counted after, the k-th insert to land always counts at
+ * least k, so at most `max` requests can pass however they are timed. It costs
+ * a second round trip, which is the price of the limit meaning anything.
  */
 async function checkAndRecord(opts: RateLimitOptions): Promise<Verdict> {
+  await sql`INSERT INTO rate_limit_hits (scope, key) VALUES (${opts.scope}, ${opts.key})`;
   const rows = await sql`
-    WITH ins AS (
-      INSERT INTO rate_limit_hits (scope, key) VALUES (${opts.scope}, ${opts.key})
-      RETURNING at
-    )
     SELECT count(*)::int AS hits, max(at) AS last_at
     FROM rate_limit_hits
     WHERE scope = ${opts.scope} AND key = ${opts.key}

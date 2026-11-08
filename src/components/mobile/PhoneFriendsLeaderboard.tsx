@@ -10,6 +10,7 @@ import {
   type CSSProperties,
 } from "react";
 import { POINT_RULES, formatPoints } from "@/lib/points";
+import { LONG_LIST_FOLD_AT, ShowAllToggle } from "@/components/ShowAllToggle";
 import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { ChangeMark } from "@/components/mobile/leaderboard/ChangeMark";
@@ -46,7 +47,9 @@ export type { Seat } from "@/components/mobile/leaderboard/types";
  * - **The line** — everyone else, each row a button that opens the gap to the
  *   seat above, the plates it takes, and their rank title with progress.
  *   Rows that moved since last visit slide in from their old seat; yours
- *   climbs past the people you overtook, then bursts.
+ *   climbs past the people you overtook, then bursts. A table of
+ *   `LONG_LIST_FOLD_AT` or more folds the line to №4, №5 and your own row, so
+ *   "You" is never behind the arrow; the `Show all` toggle carries no count.
  *
  * Every animation is transform/opacity (CSS keyframes, plus WAAPI for the
  * climb, measured off the offset chain so no layout is read mid-animation),
@@ -83,17 +86,25 @@ export function rankSeats(friends: Entry[], you: Entry): Seat[] {
 const CLIMB_DELAY = 900;
 const CLIMB_MS = 1000;
 
-function SeatRow({ seat, ctx, index }: { seat: Seat; ctx: BoardCtx; index: number }) {
+/** A folded table shows seats down to this rank, plus the viewer's own. */
+const SEATS_KEPT = 5;
+
+/** Where a row starts its entrance: staggered in behind the podium on arrival. */
+const rowDelay = (index: number) => 520 + index * 70;
+/** Rows revealed by Show all answer the tap, so they skip the podium's wait. */
+const revealDelay = (index: number) => Math.min(index, 6) * 40;
+
+function SeatRow({ seat, ctx, delay }: { seat: Seat; ctx: BoardCtx; delay: number }) {
   const { entry, rank, isYou } = seat;
   const open = ctx.openId === entry.id;
   const panelId = `lb-detail-${entry.id}`;
   const gained = ctx.movement?.gained.get(entry.id) ?? 0;
   const climbed = (ctx.movement?.change.get(entry.id) ?? 0) > 0;
-  const delay = 520 + index * 70;
 
   return (
     <li
       ref={ctx.slotRef(rank)}
+      value={rank}
       className="lb-row-in"
       style={{ "--lb-delay": `${delay}ms` } as CSSProperties}
     >
@@ -181,6 +192,7 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
   const [openId, setOpenId] = useState<string | null>(null);
   const [bannerOpen, setBannerOpen] = useState(true);
   const [landed, setLanded] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const slots = useRef(new Map<number, HTMLElement>());
   const movers = useRef(new Map<string, HTMLElement>());
@@ -220,10 +232,13 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
       const src = slots.current.get(Math.min(n, Math.max(1, seat.rank + d)));
       const dst = slots.current.get(seat.rank);
       const mover = movers.current.get(seat.entry.id);
-      if (!src || !dst || !mover || src === dst || typeof mover.animate !== "function") continue;
-      const a = layoutCenter(src);
-      const b = layoutCenter(dst);
       const lift = seat.isYou && d > 0;
+      if (!dst || !mover || src === dst || typeof mover.animate !== "function") continue;
+      /* A folded table has no row at a hidden old seat. Others just skip the
+         slide; yours lifts in place, so a climb still lands and bursts. */
+      if (!src && !lift) continue;
+      const b = layoutCenter(dst);
+      const a = src ? layoutCenter(src) : b;
       const anim = mover.animate(
         [
           { transform: `translate(${a.x - b.x}px, ${a.y - b.y}px) scale(${lift ? 1.08 : 1})` },
@@ -261,6 +276,17 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
   const top = seats.slice(0, 3);
   const rest = seats.slice(3);
 
+  /* Kept rows stay mounted across the fold with the delay they arrived on: a
+     new delay would restart their CountUp when the table opens. */
+  const foldable = seats.length >= LONG_LIST_FOLD_AT;
+  const kept = rest.filter((s) => !foldable || s.rank <= SEATS_KEPT || s.isYou);
+  const folded = rest.filter((s) => !kept.includes(s));
+  const onFoldChange = (next: boolean) => {
+    setExpanded(next);
+    /* The row goes away; its panel should not reappear with it on the next open. */
+    if (!next && folded.some((s) => s.entry.id === openId)) setOpenId(null);
+  };
+
   return (
     <section aria-labelledby="phone-leaderboard-heading" className="lb-root mb-7 px-4">
       <PhoneSectionLabel>Leaderboard</PhoneSectionLabel>
@@ -295,11 +321,22 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
         <Podium top={top} ctx={ctx} />
 
         {rest.length > 0 && (
-          <ol start={4} className="mt-1 flex flex-col gap-1 px-2">
-            {rest.map((seat, i) => (
-              <SeatRow key={seat.entry.id} seat={seat} ctx={ctx} index={i} />
-            ))}
+          <ol id="lb-line" start={4} className="mt-1 flex flex-col gap-1 px-2">
+            {(expanded ? rest : kept).map((seat) => {
+              const keptAt = kept.indexOf(seat);
+              const delay = keptAt >= 0 ? rowDelay(keptAt) : revealDelay(folded.indexOf(seat));
+              return <SeatRow key={seat.entry.id} seat={seat} ctx={ctx} delay={delay} />;
+            })}
           </ol>
+        )}
+
+        {foldable && (
+          <ShowAllToggle
+            expanded={expanded}
+            onChange={onFoldChange}
+            controls="lb-line"
+            background="bg-pm-grey-tint"
+          />
         )}
 
         <p className="mt-3 px-4 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-pm-grey-text">

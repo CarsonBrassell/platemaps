@@ -8,6 +8,7 @@ import { signInPathFor } from "@/lib/signInGate";
 import { Composer } from "@/components/feed/Composer";
 import { VotePair, type VoteDirection } from "@/components/feed/PostActions";
 import { VoteArrowUpIcon, VoteArrowDownIcon } from "@/components/icons";
+import { ShimmerImage } from "@/components/ShimmerImage";
 import { StarRating } from "@/components/StarRating";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
 import type { Comment } from "@/components/feed/types";
@@ -411,16 +412,14 @@ export function ShortPostRow({
         {photos.length > 0 && (
           <div className="mt-2 flex gap-1.5">
             {photos.map((photo) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <div
                 key={photo.url}
-                src={photo.url}
-                alt={photo.alt ?? ""}
-                loading="lazy"
-                className={`min-w-0 flex-1 rounded-xl bg-[var(--pm-tone-1)] object-cover ${
+                className={`relative min-w-0 flex-1 overflow-hidden rounded-xl ${
                   photos.length === 1 ? "aspect-[4/3]" : "aspect-square"
                 }`}
-              />
+              >
+                <ShimmerImage src={photo.url} alt={photo.alt ?? ""} className="object-cover" />
+              </div>
             ))}
           </div>
         )}

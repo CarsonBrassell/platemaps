@@ -13,6 +13,7 @@ import {
 } from "@/lib/loginThrottle";
 import { MAX_PASSWORD_BYTES } from "@/lib/password";
 import { isSameOriginRequest } from "@/lib/originCheck";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * A hash of a password nobody typed, generated once at module load rather
@@ -83,11 +84,38 @@ export async function POST(req: NextRequest) {
   }
   const { email, password } = parsed as Record<string, unknown>;
 
-  if (!email || !password || typeof password !== "string") {
+  if (!email || !password || typeof email !== "string" || typeof password !== "string") {
     return NextResponse.json({ error: "Fill in every field." }, { status: 400 });
   }
 
+  // 254 is the longest real address, and this string becomes a throttle row.
+  if (email.length > 254 || email.includes("\0")) {
+    return NextResponse.json(
+      { error: "That email and password don't match an account." },
+      { status: 401 },
+    );
+  }
+
   const ip = clientIp(req);
+
+  /* Counted before the password check, success or not. The failure throttle
+     below only learns about a guess after bcrypt has finished, so a burst sent
+     all at once clears it entirely; this counter is taken first, and it holds
+     under concurrency (lib/rateLimit.ts). */
+  for (const [scope, key, max] of [
+    ["login:email", email.trim().toLowerCase(), 20],
+    ["login:ip", ip, 60],
+  ] as const) {
+    const limited = await limitOrReject({
+      scope,
+      key,
+      max,
+      windowMinutes: 15,
+      message: "Too many sign-in attempts. Try again in a few minutes.",
+    });
+    if (limited) return limited;
+  }
+
   const verdict = await checkLoginAllowed(String(email), ip);
   if (verdict.blocked) {
     const minutes = Math.ceil(verdict.retryAfterSeconds / 60);

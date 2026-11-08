@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { exportUserData } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * Download everything this account has written, as one JSON file.
@@ -18,6 +19,14 @@ export async function GET() {
   if (!user) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
   }
+
+  const limited = await limitOrReject({
+    scope: "account-export:user",
+    key: user.id,
+    max: 10,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
 
   const data = await exportUserData(user.id);
   const stamp = new Date().toISOString().slice(0, 10);

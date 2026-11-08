@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Spline_Sans_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SiteAnalytics } from "@/components/SiteAnalytics";
 import { AuthProvider } from "@/lib/auth";
 import { CoachTourMount } from "@/components/tour/CoachTourMount";
 import { RequireSignIn } from "@/components/RequireSignIn";
@@ -154,8 +153,7 @@ export default function RootLayout({
             and inside the Capacitor shell, and neither sets a cookie. Outside
             AuthProvider because they do not depend on it and should not be
             remounted by it. */}
-        <SpeedInsights />
-        <Analytics />
+        <SiteAnalytics />
       </body>
     </html>
   );

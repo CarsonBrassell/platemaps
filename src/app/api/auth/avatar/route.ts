@@ -3,7 +3,7 @@ import { accountJson } from "@/lib/account";
 import { updateUserAvatar } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { limitOrReject } from "@/lib/rateLimit";
-import { isStoredPhotoUrl } from "@/lib/photos";
+import { storedPhotoOwner } from "@/lib/photos";
 
 /* An address, not a picture. Avatars used to arrive as base64 data URLs
    capped at two million characters and were stored that way, so every query
@@ -37,7 +37,9 @@ export async function POST(req: Request) {
   if (!avatarUrl || typeof avatarUrl !== "string") {
     return NextResponse.json({ error: "No image provided." }, { status: 400 });
   }
-  if (avatarUrl.length > MAX_AVATAR_URL_LENGTH || !isStoredPhotoUrl(avatarUrl)) {
+  // Your own upload only. A URL from someone else's folder could otherwise put
+  // a photo they keep to friends on a public profile.
+  if (avatarUrl.length > MAX_AVATAR_URL_LENGTH || storedPhotoOwner(avatarUrl) !== user.id) {
     return NextResponse.json(
       { error: "Photos have to be uploaded before they're saved." },
       { status: 400 },

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useQueryParams } from "@/lib/queryString";
 import type { FriendStatus } from "@/components/feed/FoodPostCard";
 import { useAuth } from "@/lib/auth";
+import { askForPushInContext } from "@/lib/pushClient";
 
 /**
  * The add/added control on a public profile, phone version.
@@ -65,6 +66,7 @@ export function PhoneProfileFriendButton({ userId }: { userId: string }) {
       if (!res.ok) throw new Error("failed");
       const data: { status: FriendStatus } = await res.json();
       setStatus(data.status);
+      void askForPushInContext();
     } catch {
       setStatus("none");
     }

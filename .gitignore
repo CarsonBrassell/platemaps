@@ -64,3 +64,8 @@ next-env.d.ts
 # menu-extraction agent logs: the extraction loop still appends to these on
 # disk, but ~545 of them tracked in git was repo-strays finding #18
 menus/wip/**/*.log
+
+# user-table rows: never commit (they carried password hashes once)
+/probe/snapshot-fake-users-*.json
+/probe/snapshot-fake-posts-*.json
+/probe/snapshot-points-grant-*.json

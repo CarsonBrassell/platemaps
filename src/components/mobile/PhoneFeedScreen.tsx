@@ -23,7 +23,7 @@ import { useQueryParams } from "@/lib/queryString";
 import { MAP_GROUND } from "@/lib/mapStyle";
 import { announceAward, closePostFlash, takeLanding, usePostFlash } from "@/lib/postCelebration";
 import { PhoneFeedHeader } from "./PhoneFeedHeader";
-import { ClaimFreeFoodButton } from "./freefood/ClaimFreeFoodButton";
+import { TicketButton } from "./freefood/TicketButton";
 import { PhoneFeedSearch } from "./PhoneFeedSearch";
 import { PhoneFeedTabs } from "./PhoneFeedTabs";
 import { PhoneStickyBar } from "./PhoneStickyBar";
@@ -589,14 +589,15 @@ export function PhoneFeedScreen() {
         }
       >
         <div className="px-4">
-          {/* The Pizza on Pearl Plate-Off, while it runs (lib/freeFoodEvent.ts).
-              Inside the pinned bar, not above it: the bar is `position: fixed`
-              over a spacer, so anything in the flow above it sits underneath
-              the bar and is never seen. The bar re-measures itself, so the row
-              appearing after mount pushes the feed down rather than covering
-              it. */}
-          <ClaimFreeFoodButton />
-          <PhoneFeedTabs active={tab} onChange={setTab} />
+          {/* The Pizza on Pearl free ticket, while the event is on
+              (lib/freeFoodEvent.ts). Right end of the tabs' row, inside the
+              pinned bar: the bar is `position: fixed` over a spacer, so
+              anything in the flow above it sits underneath it. The tabs need
+              202px of the 358px this row has; the 44px icon fits. */}
+          <div className="flex items-center justify-between">
+            <PhoneFeedTabs active={tab} onChange={setTab} />
+            <TicketButton />
+          </div>
         </div>
       </PhoneStickyBar>
 

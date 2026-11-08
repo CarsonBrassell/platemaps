@@ -18,11 +18,9 @@
  * a deploy per verified user, and it ships every verified id to every browser.
  */
 export const VERIFIED_USER_IDS: ReadonlySet<string> = new Set([
-  /* Carson Brassell — csbrassell@gmail.com */
+  /* Carson Brassell */
   "0c39f913-fa39-4fdf-b2d6-486c027cebdc",
-  /* Calvin Lensink — cjlensink.den@gmail.com, the account with the posts.
-     Not cal@email, cjlensink@gmail.com or clensink@platemaps.com, which are
-     the empty duplicates. */
+  /* Calvin Lensink, the account with the posts, not the empty duplicates. */
   "940561ca-05c8-4010-b8a9-f397235378b9",
 ]);
 

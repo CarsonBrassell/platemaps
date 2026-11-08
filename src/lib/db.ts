@@ -429,24 +429,16 @@ export async function getUserRank(
 // dropped.
 
 /**
- * Legacy rows from before the hashing migration store the raw `randomUUID()`
- * token (36 chars); every row written since stores `hashToken(token)` (64
- * hex chars). The length test is how a lookup tells which kind it might be
- * looking at without a second column — see `getSessionUser` below for the
- * upgrade-in-place that retires a legacy row the first time it's used.
+ * Every session row stores `hashToken(token)`. The upgrade path for raw-token
+ * rows from before the hashing migration is gone: production held none by
+ * 2026-11-06, and it was the one lookup that skipped `expires_at`.
  */
 export async function getSessionUserId(token: string): Promise<string | null> {
   const hash = hashToken(token);
   const rows = await sql`
     SELECT user_id FROM sessions WHERE token = ${hash} AND expires_at > now()
   `;
-  if (rows[0]) return rows[0].user_id as string;
-
-  if (token.length !== 36) return null;
-  const legacy = await sql`SELECT user_id FROM sessions WHERE token = ${token}`;
-  if (!legacy[0]) return null;
-  await sql`UPDATE sessions SET token = ${hash} WHERE token = ${token}`;
-  return legacy[0].user_id as string;
+  return rows[0] ? (rows[0].user_id as string) : null;
 }
 
 /**
@@ -456,12 +448,6 @@ export async function getSessionUserId(token: string): Promise<string | null> {
  * HTTP calls to Neon, in series, before any authenticated route did its own
  * work. Every API route pays this on every request, so it was the floor under
  * the whole app's latency (probe/PERF-PLAN.md #4). Same rows, one join.
- *
- * Looks up by hash first. A miss on a 36-char token (a legacy raw
- * `randomUUID()` written before this table stored hashes) falls back to a
- * plaintext match and upgrades the row to its hash in place, so a session
- * that predates the migration keeps working instead of silently signing
- * that device out.
  */
 export async function getSessionUser(token: string): Promise<User | null> {
   const hash = hashToken(token);
@@ -470,17 +456,7 @@ export async function getSessionUser(token: string): Promise<User | null> {
     JOIN users u ON u.id = s.user_id
     WHERE s.token = ${hash} AND s.expires_at > now()
   `;
-  if (rows[0]) return rowToUser(rows[0]);
-
-  if (token.length !== 36) return null;
-  const legacyRows = await sql`
-    SELECT u.* FROM sessions s
-    JOIN users u ON u.id = s.user_id
-    WHERE s.token = ${token}
-  `;
-  if (!legacyRows[0]) return null;
-  await sql`UPDATE sessions SET token = ${hash} WHERE token = ${token}`;
-  return rowToUser(legacyRows[0]);
+  return rows[0] ? rowToUser(rows[0]) : null;
 }
 
 /**
@@ -504,8 +480,7 @@ export async function createSession(token: string, userId: string): Promise<void
 /**
  * Slides `expires_at` forward on cookie renewal (`/api/auth/me`) so the
  * server-side clock tracks the cookie clock instead of counting down from
- * sign-in. Hashed token only: by the time a route can call this,
- * `getSessionUser` has already upgraded any legacy plaintext row.
+ * sign-in.
  */
 export async function touchSession(token: string): Promise<void> {
   await sql`
@@ -517,24 +492,12 @@ export async function touchSession(token: string): Promise<void> {
 
 /**
  * Deletes the session for this raw token, hashing it the same way
- * `getSessionUser` does before matching.
- *
- * The legacy plaintext branch is gated by `token.length === 36`, exactly
- * like `getSessionUser`'s upgrade path — never a bare `IN (hash, token)`.
- * Without that gate, `token` here is caller-controlled (it comes straight
- * off the logout request's cookie), so a 64-hex value equal to *another
- * user's* stored hash would match the table's hashed column directly and
- * delete their session — turning a leaked hash into a working logout
- * credential. Only an actual 36-char legacy raw token can hit the second
- * form, and a 64-hex string can never be one.
+ * `getSessionUser` does before matching. Never matches the raw value: it comes
+ * straight off the request's cookie, so a raw match would turn a leaked stored
+ * hash into a working logout of someone else.
  */
 export async function deleteSession(token: string): Promise<void> {
-  const hash = hashToken(token);
-  if (token.length === 36) {
-    await sql`DELETE FROM sessions WHERE token IN (${hash}, ${token})`;
-  } else {
-    await sql`DELETE FROM sessions WHERE token = ${hash}`;
-  }
+  await sql`DELETE FROM sessions WHERE token = ${hashToken(token)}`;
 }
 
 /**
@@ -821,6 +784,7 @@ async function hydratePosts(
     myHeartRows,
     friendRows,
     courseRows,
+    blockedIds,
   ] = await Promise.all([
     // Scoped to the viewer's own row only — like myHeartRows below, never the
     // full list of who saved a post (probe/CLAUDE-SECURITY... F34: that list
@@ -915,7 +879,12 @@ async function hydratePosts(
       WHERE meal_id = ANY(${ids})
       ORDER BY course_index ASC
     `,
+    // A block hides people's comments as well as their posts: a blocked pair
+    // meeting under a third person's plate is still contact.
+    viewerId ? getBlockedEitherWayIds(viewerId) : Promise.resolve([] as string[]),
   ]);
+
+  const blockedCommenters = new Set(blockedIds);
 
   const coursesByMeal = new Map<string, typeof courseRows>();
   for (const c of courseRows) {
@@ -1000,7 +969,7 @@ async function hydratePosts(
       heartCount: row.heart_count ?? null,
       savedByMe: mySaves.has(postId),
       comments: commentRows
-        .filter((c) => c.post_id === postId)
+        .filter((c) => c.post_id === postId && !blockedCommenters.has(c.user_id as string))
         .map((c) => ({
           id: c.id as string,
           parentId: (c.parent_id as string | null) ?? null,
@@ -1028,14 +997,30 @@ const POST_SELECT = `
   JOIN users u ON u.id = p.user_id
 `;
 
-export async function getPosts(viewerId: string | null = null): Promise<Post[]> {
-  // Same block filter every sibling reader applies (getPostById, the
-  // discover/friends feeds, getDishPosts) — this was the one unfiltered path
-  // that handed a blocked pair each other's posts in bulk.
+/** Most plates one restaurant thread will carry, newest kept. */
+const RESTAURANT_THREAD_LIMIT = 200;
+
+/**
+ * The plates at one restaurant, oldest first, for its comment thread. Replaced
+ * `getPosts`, which handed every post in the table to any signed-out caller
+ * and left the page to filter them. Matches the id or the name, because older
+ * rows carry only the free-text name.
+ */
+export async function getRestaurantPosts(
+  restaurantId: string,
+  restaurantName: string,
+  viewerId: string | null = null,
+): Promise<Post[]> {
   const blockedIds = viewerId ? await getBlockedEitherWayIds(viewerId) : [];
   const rows = await sql.query(
-    `${POST_SELECT} WHERE p.user_id != ALL($1) AND p.meal_id IS NULL ORDER BY p.created_at ASC`,
-    [blockedIds],
+    `SELECT * FROM (
+       ${POST_SELECT}
+       WHERE p.user_id != ALL($1) AND p.meal_id IS NULL
+         AND (p.restaurant_id = $2 OR p.restaurant = $3)
+       ORDER BY p.created_at DESC
+       LIMIT ${RESTAURANT_THREAD_LIMIT}
+     ) recent ORDER BY created_at ASC`,
+    [blockedIds, restaurantId, restaurantName],
   );
   return hydratePosts(rows, viewerId);
 }
@@ -1766,6 +1751,68 @@ export async function createPost(data: {
 }
 
 /**
+ * Takes back what a post paid its author: the publish award, its upvotes, its
+ * milestones and its comments. Without this, posting and deleting in a loop
+ * paid 5 points a turn for nothing left on the site. Read before the post goes,
+ * because the comment ids die with it. The ledger row goes too, so the
+ * leaderboards, which sum the ledger, drop with the total.
+ */
+async function reversePostPoints(postId: string): Promise<void> {
+  const owner = await sql`SELECT user_id FROM posts WHERE id = ${postId}`;
+  const userId = owner[0]?.user_id as string | undefined;
+  if (!userId) return;
+
+  const reversed = (await sql`
+    DELETE FROM point_events
+    WHERE user_id = ${userId}
+      AND (
+        reason = ${`post:${postId}`}
+        OR reason LIKE ${`upvote:${postId}:%`}
+        OR reason LIKE ${`milestone:${postId}:%`}
+        OR reason IN (SELECT 'comment:' || c.id FROM comments c WHERE c.post_id = ${postId})
+      )
+    RETURNING amount, to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM') AS month
+  `) as { amount: number; month: string }[];
+  if (reversed.length === 0) return;
+
+  const total = reversed.reduce((sum, r) => sum + Number(r.amount), 0);
+  const monthKey = currentMonthKey();
+  const thisMonth = reversed
+    .filter((r) => r.month === monthKey)
+    .reduce((sum, r) => sum + Number(r.amount), 0);
+
+  await sql`
+    UPDATE users
+    SET points = GREATEST(points - ${total}, 0),
+        monthly_points = CASE WHEN monthly_points_month = ${monthKey}
+          THEN GREATEST(monthly_points - ${thisMonth}, 0) ELSE monthly_points END
+    WHERE id = ${userId}
+  `;
+}
+
+/**
+ * How many posts have paid this author in the last 24 hours. The composer's
+ * award stops at `MAX_PAID_POSTS_PER_DAY` (lib/points.ts); the post still goes
+ * up, so nobody loses a real plate to the cap.
+ */
+export async function countPaidPostsToday(userId: string): Promise<number> {
+  const rows = await sql`
+    SELECT count(*)::int AS n FROM point_events
+    WHERE user_id = ${userId} AND reason LIKE 'post:%'
+      AND created_at > now() - interval '24 hours'
+  `;
+  return Number(rows[0]?.n ?? 0);
+}
+
+/** True when this person has already commented on this post. */
+export async function hasCommentedOn(postId: string, userId: string): Promise<boolean> {
+  const rows = await sql`
+    SELECT 1 FROM comments WHERE post_id = ${postId} AND user_id = ${userId} LIMIT 1
+  `;
+  return rows.length > 0;
+}
+
+/**
  * Deletes a post and the photos on it.
  *
  * The photos are files in the blob store now and the row only holds their
@@ -1779,6 +1826,8 @@ export async function createPost(data: {
  * not a reason to tell someone their post is still there.
  */
 export async function deletePost(id: string): Promise<void> {
+  await reversePostPoints(id);
+
   // A meal's courses go with their hero (the FK cascades), so their photos
   // are read here too — otherwise the cascade would strand them exactly the
   // way dropping the row alone would strand the hero's.
@@ -2674,44 +2723,304 @@ export async function getBlockedEitherWayIds(userId: string): Promise<string[]> 
   return rows.map((r) => r.other_id as string);
 }
 
-export type UserSearchResult = { id: string; name: string; avatarUrl?: string };
+/**
+ * Why someone is in a people list, as the row's second line says it. Kept to
+ * what the viewer could already see for themselves: their own friends' names,
+ * a request they're party to, and public plates. Nothing here names who
+ * upvoted what — upvoters are never named, and "upvoted your plate" as a
+ * suggestion reason would name them (see `getActivityForAuthor`).
+ */
+export type PersonReason =
+  | { kind: "friend" }
+  | { kind: "requested" }
+  | { kind: "incoming" }
+  | { kind: "mutual"; via: string[] }
+  | { kind: "sharedPlaces" }
+  | { kind: "none" };
+
+export type UserSearchResult = {
+  id: string;
+  name: string;
+  avatarUrl?: string;
+  reason: PersonReason;
+};
+
+/** Lowercased, accents folded — the same folding `unaccent(lower(...))` does in SQL. */
+function foldQuery(s: string): string {
+  return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+}
+
+/** The query is a LIKE pattern on the SQL side, so its own wildcards are literal. */
+function escapeLike(s: string): string {
+  return s.replace(/[\\%_]/g, (c) => `\\${c}`);
+}
 
 /**
- * Finds people to friend, by the same handle FoodPostCard already shows next
- * to their posts. There's no separate username column — `handleFor` in that
- * component derives one from `name` (lowercase, spaces stripped), so a search
- * normalizes both sides the identical way rather than introducing a second
- * notion of "username" that could drift from what's actually displayed.
+ * Finds people, by the same handle FoodPostCard shows next to their posts.
+ * There's no separate username column — `handleFor` in that component derives
+ * one from `name` (lowercase, spaces stripped), so the search normalizes both
+ * sides the identical way rather than introducing a second notion of
+ * "username" that could drift from what's actually displayed.
+ *
+ * It ranks like a typeahead, because that's what the box is: the person you
+ * mean should be first after one or two letters. A score is the sum of two
+ * parts, and the relationship part is deliberately the larger:
+ *
+ * - **Relationship** — a friend outranks a stranger whose handle matches
+ *   better, then people your friends are friends with (more shared friends,
+ *   higher), then people you've traded comments or hearts with, then people
+ *   who rate the same restaurants you do. Hearts are counted only in the
+ *   directions the viewer already knows about (sent, or received on their own
+ *   plates); upvotes only as the ones the viewer cast, for the reason in
+ *   `PersonReason`'s comment.
+ * - **Match** — exact handle, then handle prefix, then the start of any word
+ *   in the name ("ch" finds "Maya Chen"), then anywhere in the handle, then a
+ *   near-miss for typos ("crason" finds "Carson"). How loose a match may be
+ *   grows with the query: one letter only matches a prefix (a substring of one
+ *   letter is most of the table), two letters add substrings, four add typos.
+ *   A friend found only by a loose match gets a quarter of the relationship weight, so
+ *   it can't bury a stranger whose handle starts with what was typed.
  *
  * Excludes the searcher and anyone blocked in either direction: a block is
- * supposed to end contact, and turning up in the other person's search
- * results would be a way back in.
+ * supposed to end contact, and turning up in the other person's results would
+ * be a way back in. Also excludes anyone who opted out of being findable, in
+ * the WHERE rather than filtered after, so a hidden account never reaches a
+ * response at all — that includes your own friends, who are on the friends
+ * list below this box anyway.
+ *
+ * The users table is scanned rather than indexed: it is small, and the
+ * relationship joins are what make the ranking, which no index on `name` could
+ * serve. `getDiscoverPage` is the model for when that stops being true.
  */
 export async function searchUsers(
   query: string,
   viewerId: string,
   limit = 10,
 ): Promise<UserSearchResult[]> {
-  const normalized = query.trim().toLowerCase().replace(/\s+/g, "");
-  if (!normalized) return [];
+  const words = foldQuery(query).trim().replace(/\s+/g, " ");
+  const handle = words.replace(/ /g, "");
+  if (!handle) return [];
+  return rankPeople(viewerId, { handle, words }, limit);
+}
+
+/**
+ * People you may know: the empty-box state of the same search, ranked by the
+ * relationship part alone. Leaves out anyone you're already friends with or
+ * have a request open with either way (both are listed elsewhere on the
+ * screen), and anyone not taking requests, since the row's only action is Add.
+ *
+ * A brand-new account has no friends, comments or plates to go on, so it would
+ * get an empty list exactly when it needs one most. The tail is filled with
+ * the most active members who are on the public leaderboard — the same people
+ * that board already shows to everyone, so it reveals nothing new.
+ */
+export async function getPeopleYouMayKnow(
+  viewerId: string,
+  limit = 8,
+): Promise<UserSearchResult[]> {
+  return rankPeople(viewerId, null, limit);
+}
+
+async function rankPeople(
+  viewerId: string,
+  q: { handle: string; words: string } | null,
+  limit: number,
+): Promise<UserSearchResult[]> {
   const blockedIds = await getBlockedEitherWayIds(viewerId);
+  const searching = q !== null;
+  const h = q ? escapeLike(q.handle) : "";
+  const w = q ? escapeLike(q.words) : "";
+  const len = q ? q.handle.length : 0;
+  const first = q ? escapeLike(q.handle[0]) : "";
   const rows = await sql`
-    SELECT id, name, avatar_url
-    FROM users
-    WHERE id != ${viewerId}
-      AND id != ALL(${blockedIds})
-      -- Opted out of being findable. Enforced here rather than filtered after,
-      -- so a hidden account never reaches a response at all.
-      AND discoverable_by_username
-      AND lower(replace(name, ' ', '')) LIKE ${"%" + normalized + "%"}
-    ORDER BY name ASC
-    LIMIT ${limit}
+    WITH my_friends AS (
+      SELECT CASE WHEN user_a = ${viewerId} THEN user_b ELSE user_a END AS id
+      FROM friendships
+      WHERE user_a = ${viewerId} OR user_b = ${viewerId}
+    ),
+    mutual AS (
+      SELECT CASE WHEN f.user_a = mf.id THEN f.user_b ELSE f.user_a END AS id,
+             count(*)::int AS n,
+             (array_agg(via.name ORDER BY via.points DESC, via.name))[1:2] AS via_names
+      FROM my_friends mf
+      JOIN friendships f ON f.user_a = mf.id OR f.user_b = mf.id
+      JOIN users via ON via.id = mf.id
+      GROUP BY 1
+    ),
+    touched AS (
+      SELECT other AS id, count(*)::int AS n FROM (
+        SELECT c.user_id AS other FROM comments c JOIN posts p ON p.id = c.post_id
+          WHERE p.user_id = ${viewerId}
+        UNION ALL
+        SELECT p.user_id FROM comments c JOIN posts p ON p.id = c.post_id
+          WHERE c.user_id = ${viewerId}
+        UNION ALL
+        SELECT p.user_id FROM post_upvotes v JOIN posts p ON p.id = v.post_id
+          WHERE v.user_id = ${viewerId}
+        UNION ALL
+        SELECT h.user_id FROM post_hearts h JOIN posts p ON p.id = h.post_id
+          WHERE p.user_id = ${viewerId}
+        UNION ALL
+        SELECT p.user_id FROM post_hearts h JOIN posts p ON p.id = h.post_id
+          WHERE h.user_id = ${viewerId}
+      ) t
+      GROUP BY other
+    ),
+    shared_places AS (
+      SELECT theirs.user_id AS id, count(DISTINCT theirs.restaurant_id)::int AS n
+      FROM posts mine
+      JOIN posts theirs ON theirs.restaurant_id = mine.restaurant_id
+      WHERE mine.user_id = ${viewerId} AND mine.restaurant_id IS NOT NULL
+      GROUP BY theirs.user_id
+    ),
+    requests AS (
+      SELECT recipient_id AS id, 'requested' AS dir FROM friend_requests
+        WHERE requester_id = ${viewerId} AND status = 'pending'
+      UNION ALL
+      SELECT requester_id, 'incoming' FROM friend_requests
+        WHERE recipient_id = ${viewerId} AND status = 'pending'
+    ),
+    candidates AS (
+      SELECT u.id, u.name, u.avatar_url, u.points, u.hide_from_leaderboard,
+             u.friend_requests_open,
+             unaccent(lower(replace(u.name, ' ', ''))) AS handle,
+             ' ' || unaccent(lower(u.name)) AS spaced,
+             EXISTS (SELECT 1 FROM my_friends mf WHERE mf.id = u.id) AS is_friend,
+             (SELECT r.dir FROM requests r WHERE r.id = u.id LIMIT 1) AS request_dir,
+             coalesce(m.n, 0) AS mutuals, m.via_names,
+             coalesce(t.n, 0) AS touches,
+             coalesce(s.n, 0) AS places
+      FROM users u
+      LEFT JOIN mutual m ON m.id = u.id
+      LEFT JOIN touched t ON t.id = u.id
+      LEFT JOIN shared_places s ON s.id = u.id
+      WHERE u.id != ${viewerId}
+        AND u.id != ALL(${blockedIds})
+        AND u.discoverable_by_username
+    ),
+    scored AS (
+      SELECT c.*,
+        CASE WHEN c.is_friend THEN 200 ELSE 0 END
+        + CASE c.request_dir WHEN 'incoming' THEN 90 WHEN 'requested' THEN 60 ELSE 0 END
+        + CASE WHEN c.mutuals > 0 THEN 60 + 15 * least(c.mutuals, 5) ELSE 0 END
+        + CASE WHEN c.touches > 0 THEN 40 + 8 * least(c.touches, 5) ELSE 0 END
+        + CASE WHEN c.places > 0 THEN 15 + 5 * least(c.places, 5) ELSE 0 END
+          AS relation,
+        CASE
+          WHEN NOT ${searching} THEN 0
+          WHEN c.handle = ${q?.handle ?? ""} THEN 300
+          WHEN c.handle LIKE ${h + "%"} THEN 120
+          WHEN c.spaced LIKE ${"% " + w + "%"} THEN 100
+          WHEN ${len >= 2} AND c.handle LIKE ${"%" + h + "%"} THEN 40
+          -- Typo candidates: scored in TypeScript (\`typoScore\`), because the
+          -- typo people actually make is a swap — "crason" — and a swap
+          -- shares almost no trigrams with the word it meant. Narrowed here to
+          -- names with a word starting on the same letter, which a typo
+          -- almost never gets wrong, so this stays a slice of the table.
+          WHEN ${len >= 4} AND c.spaced LIKE ${"% " + first + "%"} THEN -2
+          ELSE -1
+        END AS match
+      FROM candidates c
+    )
+    SELECT id, name, avatar_url, is_friend, request_dir, mutuals, via_names, places,
+           relation, match, handle, spaced, points
+    FROM scored
+    WHERE CASE
+      WHEN ${searching} THEN match >= 0 OR match = -2
+      ELSE NOT is_friend AND request_dir IS NULL AND friend_requests_open
+           AND (relation > 0 OR NOT hide_from_leaderboard)
+    END
+    ORDER BY relation + match DESC, points DESC, name
+    LIMIT ${searching ? 500 : limit}
   `;
-  return rows.map((r) => ({
-    id: r.id as string,
-    name: r.name as string,
-    avatarUrl: (r.avatar_url as string | null) ?? undefined,
-  }));
+
+  type Row = (typeof rows)[number];
+  let ranked: Row[] = rows;
+  if (q) {
+    const total = (r: Row) => {
+      let match = r.match as number;
+      if (match === -2) match = typoScore(q.handle, r.spaced as string);
+      if (match < 0) return -1;
+      // A loose match on a friend still beats a stranger's loose match, but
+      // not by the whole friend margin — otherwise every friend whose name
+      // merely contains the letters outranks the stranger whose name *starts*
+      // with them, which is not who anyone typing "be" is looking for.
+      const relation = r.relation as number;
+      // Capped too, so a close friend you also comment on and share places
+      // with (all of which add up) still can't climb past a prefix match.
+      return match >= 100 ? relation + match : Math.min(relation, 240) / 4 + match;
+    };
+    ranked = rows
+      .map((r) => ({ r, score: total(r) }))
+      .filter((x) => x.score >= 0)
+      .sort(
+        (a, b) =>
+          b.score - a.score ||
+          (a.r.name as string).length - (b.r.name as string).length ||
+          (a.r.name as string).localeCompare(b.r.name as string),
+      )
+      .slice(0, limit)
+      .map((x) => x.r);
+  }
+
+  return ranked.map((r) => {
+    const via = (r.via_names as string[] | null) ?? [];
+    const reason: PersonReason = r.is_friend
+      ? { kind: "friend" }
+      : r.request_dir === "incoming"
+        ? { kind: "incoming" }
+        : r.request_dir === "requested"
+          ? { kind: "requested" }
+          : (r.mutuals as number) > 0 && via.length > 0
+            ? { kind: "mutual", via }
+            : (r.places as number) > 0
+              ? { kind: "sharedPlaces" }
+              : { kind: "none" };
+    return {
+      id: r.id as string,
+      name: r.name as string,
+      avatarUrl: (r.avatar_url as string | null) ?? undefined,
+      reason,
+    };
+  });
+}
+
+/**
+ * How well a typed query matches a name it doesn't literally match, as a
+ * match score below every literal tier (substring is 40), or -1.
+ *
+ * Compares the query to the same-length start of the whole handle and of each
+ * word — "crason" against "carson" in "carsonbrassell" — by optimal string
+ * alignment distance, which counts a swapped pair as one edit. One edit is
+ * allowed from four letters, two from seven; any looser and short queries
+ * match half the table.
+ */
+function typoScore(query: string, spaced: string): number {
+  const allowed = query.length >= 7 ? 2 : 1;
+  const words = spaced.trim().split(" ");
+  // One letter either side of the query's length, so a dropped or doubled
+  // letter ("jesica") is compared against the stretch it actually spans.
+  const starts = [words.join(""), ...words].flatMap((w) =>
+    [-1, 0, 1].map((dl) => w.slice(0, query.length + dl)),
+  );
+  const best = Math.min(...starts.map((w) => osaDistance(query, w)));
+  return best <= allowed ? 30 - 10 * best : -1;
+}
+
+function osaDistance(a: string, b: string): number {
+  const d: number[][] = Array.from({ length: a.length + 1 }, (_, i) =>
+    Array.from({ length: b.length + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0)),
+  );
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+        d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+      }
+    }
+  }
+  return d[a.length][b.length];
 }
 
 // --- Profile favorites -----------------------------------------------------
@@ -2966,10 +3275,9 @@ export async function confirmEmail(userId: string, email: string): Promise<boole
  * session by matching neither form.
  */
 export async function deleteOtherSessions(userId: string, keepToken: string): Promise<number> {
-  const keepHash = hashToken(keepToken);
   const rows = await sql`
     DELETE FROM sessions
-    WHERE user_id = ${userId} AND token NOT IN (${keepHash}, ${keepToken})
+    WHERE user_id = ${userId} AND token <> ${hashToken(keepToken)}
     RETURNING token
   `;
   return rows.length;
@@ -3809,12 +4117,12 @@ export async function getRestaurantMapRows(): Promise<RestaurantMapRow[]> {
  * is that index. Change one, change both.
  */
 export async function searchRestaurants(term: string, limit = 60): Promise<RestaurantView[]> {
-  const needle = `%${term}%`;
+  const needle = `%${escapeLike(term)}%`;
   /* Apostrophe- and accent-blind twin of `needle` - see foldSearchText in
      lib/discoverFilters.ts. The query is folded here and the haystack is
      folded in SQL below; both sides have to lose the same characters or the
      comparison means nothing. */
-  const folded = `%${foldAccents(term).replace(/['’`´]/g, "")}%`;
+  const folded = `%${escapeLike(foldAccents(term).replace(/['’`´]/g, ""))}%`;
   const rows = await sql`
     WITH dish_match AS (
       SELECT DISTINCT ON (d.restaurant_id)
@@ -3874,7 +4182,7 @@ export async function dishMatchesFor(term: string): Promise<Map<string, MatchedD
     SELECT DISTINCT ON (d.restaurant_id)
            d.restaurant_id, d.id, d.name, d.price
     FROM dishes d
-    WHERE d.name ILIKE ${`%${trimmed}%`}
+    WHERE d.name ILIKE ${`%${escapeLike(trimmed)}%`}
     ORDER BY d.restaurant_id, length(d.name), d.sort_order
   `;
 

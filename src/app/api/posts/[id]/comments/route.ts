@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
-import { getPostById, addComment, awardPoints, getCommentContext, getBlockStatus } from "@/lib/db";
+import {
+  getPostById,
+  addComment,
+  awardPoints,
+  getCommentContext,
+  getBlockStatus,
+  hasCommentedOn,
+} from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES } from "@/lib/points";
 import { BLOCKED_MESSAGE, moderateText } from "@/lib/moderation";
@@ -33,8 +40,9 @@ export async function POST(
   if (!body || typeof body !== "object") {
     return NextResponse.json({ error: "Bad request." }, { status: 400 });
   }
-  const { text, parentId } = body as { text?: unknown; parentId?: unknown };
-  if (!text || !String(text).trim()) {
+  const { text: rawText, parentId } = body as { text?: unknown; parentId?: unknown };
+  const text = rawText ? String(rawText).replaceAll("\0", "") : "";
+  if (!text.trim()) {
     return NextResponse.json({ error: "Write a comment first." }, { status: 400 });
   }
 
@@ -42,7 +50,7 @@ export async function POST(
      blocked comment should cost no queries. Capped to the same 1,000 the
      comment is stored at (below) before moderation runs, so an oversized
      body can't reach the moderation regexes. See lib/moderation.ts, F30. */
-  if (moderateText(String(text).slice(0, 1_000)).action === "block") {
+  if (moderateText(text.slice(0, 1_000)).action === "block") {
     return NextResponse.json({ error: BLOCKED_MESSAGE }, { status: 422 });
   }
 
@@ -75,19 +83,23 @@ export async function POST(
     return NextResponse.json({ error: "You can't reply to this comment." }, { status: 403 });
   }
 
+  // Read before the write, for the payout below.
+  const isSelfComment = post.userId === user.id;
+  const commentedBefore = isSelfComment ? true : await hasCommentedOn(id, user.id);
+
   const comment = await addComment(id, {
     id: randomUUID(),
     userId: user.id,
-    text: String(text).trim().slice(0, 1_000),
+    text: text.trim().slice(0, 1_000),
     parentId: parent,
   });
 
-  // The author earns for the discussion their post attracts; commenting on
-  // your own post pays nothing.
-  const isSelfComment = post.userId === user.id;
+  // The author earns for the discussion their post attracts: once per person
+  // per post, so one friend pasting thirty comments is not sixty points.
+  // Commenting on your own post pays nothing.
   notifyComment(post, user, comment.text, parentContext?.userId ?? null);
   let awarded = false;
-  if (!isSelfComment) {
+  if (!commentedBefore) {
     ({ awarded } = await awardPoints(
       post.userId,
       POINT_RULES.receiveComment,

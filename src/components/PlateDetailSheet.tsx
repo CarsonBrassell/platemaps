@@ -21,6 +21,7 @@ import { PostOptionsMenu } from "@/components/PostOptionsMenu";
 import { askForPushInContext } from "@/lib/pushClient";
 import type { ShelfPost } from "@/components/ProfileShelves";
 import { MealCollage, collagePlatesFor } from "@/components/feed/MealCollage";
+import { ShimmerImage } from "@/components/ShimmerImage";
 
 /**
  * One of your own plates, opened up: the photo, what it scored, who hearted
@@ -926,12 +927,12 @@ export function PlateDetailSheet({
                   restaurant={post.restaurant}
                 />
               ) : (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={photo.url}
-                  alt={photo.alt ?? ""}
-                  className="block max-h-[46dvh] w-full rounded-xl object-cover"
-                />
+                /* A set shape rather than the photo's own height, which does
+                   not exist until it loads and never does if it fails. 3:4 is
+                   what every photo is captured at. */
+                <div className="relative aspect-[3/4] max-h-[46dvh] w-full">
+                  <ShimmerImage src={photo.url} alt={photo.alt ?? ""} className="object-cover" />
+                </div>
               )}
               <HeartCluster
                 anchored

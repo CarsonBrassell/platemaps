@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { cachedJson } from "@/lib/httpCache";
 import { getDishPosts } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { clientIp } from "@/lib/loginThrottle";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * The posts about one plate — what `DishSheet` fills its "What people said"
@@ -26,10 +28,18 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  const dish = req.nextUrl.searchParams.get("dish");
+  const dish = req.nextUrl.searchParams.get("dish")?.replaceAll("\0", "").slice(0, 200);
   if (!dish || !dish.trim()) {
     return NextResponse.json({ error: "Name a dish." }, { status: 400 });
   }
+
+  const limited = await limitOrReject({
+    scope: "dish-posts:ip",
+    key: clientIp(req),
+    max: 300,
+    windowMinutes: 10,
+  });
+  if (limited) return limited;
 
   const user = await getCurrentUser();
   const posts = await getDishPosts(id, dish, user?.id ?? null);

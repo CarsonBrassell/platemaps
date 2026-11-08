@@ -3,8 +3,9 @@ import { getDiscoverPage, loadCorpus, loadProfileTraits } from "@/lib/discover";
 import { FOR_ME_PARAM, filtersFromSearch, parseShown } from "@/lib/discoverFilters";
 import { toWire } from "@/lib/discoverWire";
 import { cachedJson } from "@/lib/httpCache";
+import { clientIp } from "@/lib/loginThrottle";
 import { traitIndexFor } from "@/lib/profileTraits";
-import { limitForMe } from "@/lib/rateLimit";
+import { limitForMe, limitOrReject } from "@/lib/rateLimit";
 import { getCurrentUser } from "@/lib/session";
 import { rankTaste } from "@/lib/taste";
 import { resolveTasteContext } from "@/lib/tasteContext";
@@ -68,6 +69,14 @@ export async function GET(req: Request) {
 const PRIVATE_HEADERS = { "Cache-Control": "private, no-store", Vary: "Cookie" };
 
 export async function POST(req: Request) {
+  const limited = await limitOrReject({
+    scope: "discover:ip",
+    key: clientIp(req),
+    max: 240,
+    windowMinutes: 10,
+  });
+  if (limited) return limited;
+
   let body: unknown;
   try {
     body = await req.json();
@@ -83,7 +92,8 @@ export async function POST(req: Request) {
     prefs?: unknown;
   };
 
-  if (typeof search !== "string") {
+  // Far longer than any filter string the page can build.
+  if (typeof search !== "string" || search.length > 2_000) {
     return NextResponse.json({ error: "Missing filters." }, { status: 400 });
   }
 
@@ -110,8 +120,8 @@ export async function POST(req: Request) {
   }
 
   const user = await getCurrentUser();
-  const limited = await limitForMe(req, user);
-  if (limited) return limited;
+  const forMeLimited = await limitForMe(req, user);
+  if (forMeLimited) return forMeLimited;
 
   // Typed search wins over For me (decision D3): the answer is plain relevance
   // and the viewer's history is not needed, so skip reading it. `getDiscoverPage`

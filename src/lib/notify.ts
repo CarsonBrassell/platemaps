@@ -95,7 +95,7 @@ export function notifyHeart(post: PostLike, hearter: Actor): void {
   if (post.userId === hearter.id) return;
   queue(post.userId, hearter.id, {
     title: `${hearter.name} hearted ${plateLabel(post)}`,
-    body: "Tap to see who else has.",
+    body: "Tap to see your plate.",
     url: `/m/feed?post=${post.id}`,
     threadId: `post:${post.id}`,
     collapseId: `heart:${post.id}:${hearter.id}`,

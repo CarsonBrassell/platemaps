@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { deleteOtherSessions } from "@/lib/db";
 import { getCurrentUser, SESSION_COOKIE } from "@/lib/session";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * Sign out every other device, keeping this one.
@@ -21,6 +22,14 @@ export async function DELETE() {
   if (!user) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
   }
+
+  const limited = await limitOrReject({
+    scope: "account-sessions:user",
+    key: user.id,
+    max: 10,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
 
   const cookieStore = await cookies();
   // Empty string can't match a real token (they're UUIDs), so a missing cookie

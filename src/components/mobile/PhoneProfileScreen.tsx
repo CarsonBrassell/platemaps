@@ -14,8 +14,10 @@ import { AvatarCropper } from "@/components/AvatarCropper";
 import { uploadAvatar } from "@/lib/photos";
 import { PlatePointsPanel } from "@/components/PlatePointsPanel";
 import { ProfileShelves, useRollCallArrival } from "@/components/ProfileShelves";
+import { ShimmerImage } from "@/components/ShimmerImage";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { AccountFlavorProfile } from "@/components/AccountFlavorProfile";
+import { ProfileTicket } from "@/components/mobile/freefood/ProfileTicket";
 
 /**
  * Profile, phone version.
@@ -150,12 +152,9 @@ function PostTile({
 
   if (photo) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={photo.url}
-        alt={photo.alt ?? ""}
-        className="aspect-square w-full rounded-[10px] object-cover"
-      />
+      <div className="relative aspect-square w-full overflow-hidden rounded-[10px]">
+        <ShimmerImage src={photo.url} alt={photo.alt ?? ""} className="object-cover" />
+      </div>
     );
   }
 
@@ -374,6 +373,9 @@ function ProfileOverview() {
               {avatarError}
             </p>
           )}
+
+          {/* Pizza on Pearl free ticket: only renders once one is claimed. */}
+          <ProfileTicket />
 
           {/* Replaces a grey card that spelled the same rules out in prose.
               The total was a muted chip up beside the name and the rules were

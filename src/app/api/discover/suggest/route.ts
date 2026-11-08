@@ -1,4 +1,6 @@
 import { cachedJson } from "@/lib/httpCache";
+import { clientIp } from "@/lib/loginThrottle";
+import { limitOrReject } from "@/lib/rateLimit";
 import { suggest } from "@/lib/suggest";
 
 /**
@@ -21,6 +23,17 @@ import { suggest } from "@/lib/suggest";
  * distinguish "too short" from "nothing matched".
  */
 export async function GET(req: Request) {
+  /* Only misses get here; the edge answers repeat terms. The ceiling is well
+     above anyone typing and stops one caller walking fresh terms past the CDN
+     to run a query each. Shared with restaurant search below. */
+  const limited = await limitOrReject({
+    scope: "search:ip",
+    key: clientIp(req),
+    max: 1200,
+    windowMinutes: 10,
+  });
+  if (limited) return limited;
+
   const q = new URL(req.url).searchParams.get("q") ?? "";
   const answer = await suggest(q);
 
