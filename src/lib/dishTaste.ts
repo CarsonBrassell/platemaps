@@ -114,6 +114,15 @@ export const DISH_TASTE = {
   /** Drink matches and bar-bite matches count less in the order, and wait until after the first `top`. */
   barShade: 0.7,
   drinkShade: 0.45,
+  /** A family match shades by this per step a counter sits below the seed's sit-down place, and per other family the place is a specialist in. */
+  svcGap: 0.88,
+  hybridShade: 0.9,
+  sigBonus: 1.05,
+  /** A second pick from a seed counts this much of a first, so a third seed comes before it. */
+  seedRepeat: 0.65,
+  /** A rating on fewer reviews than this is trusted a little less (the score keeps `reviewFloor` of itself at none). */
+  reviewFull: 400,
+  reviewFloor: 0.88,
 } as const;
 
 /** One menu item as the loader reads it. */
@@ -261,15 +270,20 @@ type Family = {
   /** How many leading dish types count as "what the place does". */
   top: number;
   tags: readonly string[];
+  /** A sub-type of the dish: a seed that names it ("Caesar") is only matched by an item that names it too. */
+  sub?: { seed: RegExp; item: RegExp };
 };
+
+/** Menu lines that are a way of ordering, not a dish: never what a pick is named for. */
+const BUILDER = /\b(create|build|make|design|customi[sz]e)\b.*\bown\b|\bbyo\b|\bcustom\b|\bcombo\b|\bmeal deal\b/;
 
 const FAMILIES: readonly Family[] = [
   { id: "pizza", noun: "Pizza", dish: /\b(pizzas?|slices?)\b/, weak: /\b(pies?|calzones?)\b/, profile: /pizza|calzone|\bslices?\b|sicilian/, item: /\b(pizzas?|pies?|slices?|calzones?)\b/, cuisine: /pizza|italian/, top: 2, tags: ["slice", "ny", "sicilian"] },
   { id: "burrito", noun: "Burrito", dish: /\bburritos?\b/, profile: /burrito/, item: /\bburritos?\b/, cuisine: /mexican|tex|taco|latin|breakfast|brunch|southwest|burrito|californian/, top: 2, tags: ["breakfast"] },
   { id: "wings", noun: "Wings", dish: /\bwings?\b/, profile: /\bwings?\b/, item: /\bwings?\b/, cuisine: /chicken|wing|american|bar|pub|sport|bbq|barbecue|southern/, top: 2, tags: [] },
-  { id: "hotchicken", noun: "Hot chicken", dish: /hot (honey )?chick|chickz|nashville/, profile: /hot chicken|nashville|fried chicken|spicy chicken/, item: /(hot|nashville|fried|crispy|spicy) chick/, cuisine: /chicken|southern|soul|american|nashville|fast/, top: 2, tags: ["nashville"] },
+  { id: "hotchicken", noun: "Hot chicken", dish: /hot (honey )?chick|chickz|nashville/, profile: /hot chicken|nashville|fried chicken|spicy chicken/, item: /(hot|nashville|fried|crispy|spicy) chick|\btenders?\b|hot honey/, cuisine: /chicken|southern|soul|american|nashville|fast/, top: 2, tags: ["nashville"] },
   { id: "sushi", noun: "Sushi", dish: /\b(sushi|sashimi|nigiri|maki|poke)\b/, weak: /\brolls?\b/, profile: /sushi|sashimi|nigiri|maki|omakase|\bpoke\b|hand rolls?/, item: /sushi|sashimi|nigiri|maki|\brolls?\b|omakase|\bpoke\b/, cuisine: /japanese|sushi|asian|poke|hawaiian|fusion/, top: 2, tags: ["fusion", "sushibar"] },
-  { id: "salad", noun: "Salad", dish: /\b(caesar|salad)\b/, profile: /salad/, item: /caesar|salad/, cuisine: /salad|health|vegetarian|vegan|mediterranean|american|bistro|french|californian|italian|greek|bar|wine|lebanese|cafe/, top: 1, tags: [] },
+  { id: "salad", noun: "Salad", dish: /\b(caesar|salad)\b/, profile: /salad/, item: /caesar|salad/, cuisine: /salad|health|vegetarian|vegan|mediterranean|american|bistro|french|californian|italian|greek|bar|wine|lebanese|cafe/, top: 1, tags: [], sub: { seed: /caesar/, item: /caesar/ } },
   { id: "pho", noun: "Pho", dish: /\bpho\b/, profile: /\bpho\b/, item: /\bpho\b/, cuisine: /vietnamese|pho|noodle|asian|thai/, top: 2, tags: [] },
   { id: "bbq", noun: "BBQ", dish: /\b(ribs?|bbq|barbecue|brisket)\b/, profile: /bbq|barbecue|\bribs\b|brisket|smokehouse/, item: /\bribs?\b|brisket|bbq|pulled pork/, cuisine: /bbq|barbecue|southern|american|steak|smokehouse|grill|texas/, top: 2, tags: [] },
 ];
@@ -293,6 +307,11 @@ export type FamPlace = {
   item: string;
   price: number | null;
   tags: readonly string[];
+  /** The place's items in the family, signatures first, best name first; a pick is named by the one closest to the seed. */
+  items: readonly { name: string; price: number | null; sig: boolean }[];
+  /** How many other families the place is a specialist in: a pho-and-sushi counter is half a sushi bar. */
+  hybrid: number;
+  sig: boolean;
 };
 
 /** Bar snacks: a match on one of these at a bar is not a meal. */
@@ -381,19 +400,24 @@ export function createDishIndexBuilder(restaurantIds: readonly string[]): DishIn
       const n = itemRid.length;
       /** Families: what each place's profile and menu say about being a specialist. */
       const familyIndex = (rows: readonly ProfileRow[]) => {
-        const items = new Map<number, Map<string, { name: string; price: number | null; count: number; rank: number }>>();
+        type Own = { name: string; price: number | null; count: number; rank: number; all: { name: string; price: number | null; rank: number }[] };
+        const items = new Map<number, Map<string, Own>>();
         for (let i = 0; i < n; i++) {
           if (itemKind[i] !== FOOD) continue;
           const nm = fold(itemName[i]);
           for (const f of FAMILIES) {
             if (!f.item.test(nm)) continue;
-            const per = items.get(itemRid[i]) ?? new Map<string, { name: string; price: number | null; count: number; rank: number }>();
+            const per = items.get(itemRid[i]) ?? new Map<string, Own>();
             const own = per.get(f.id);
-            const rank = (f.dish.test(nm) ? 2 : 0) + (nm.length >= 6 && nm.length <= 30 ? 1 : 0);
-            if (!own) per.set(f.id, { name: itemName[i], price: itemPrice[i] > 0 ? itemPrice[i] : null, count: 1, rank });
+            const builder = BUILDER.test(nm);
+            const rank = (f.dish.test(nm) ? 2 : 0) + (nm.length >= 6 && nm.length <= 30 ? 1 : 0) - (builder ? 5 : 0);
+            const price = itemPrice[i] > 0 ? itemPrice[i] : null;
+            const entry = { name: itemName[i], price, rank };
+            if (!own) per.set(f.id, { name: itemName[i], price, count: 1, rank, all: builder ? [] : [entry] });
             else {
               own.count++;
-              if (rank > own.rank) Object.assign(own, { name: itemName[i], price: itemPrice[i] > 0 ? itemPrice[i] : null, rank });
+              if (rank > own.rank) Object.assign(own, { name: itemName[i], price, rank });
+              if (!builder && own.all.length < 40) own.all.push(entry);
             }
             items.set(itemRid[i], per);
           }
@@ -418,7 +442,7 @@ export function createDishIndexBuilder(restaurantIds: readonly string[]): DishIn
             const styleHit = styleText.some((x) => f.profile.test(x));
             const topType = typeText.slice(0, f.top).some((x) => f.profile.test(x));
             const anyType = typeText.some((x) => f.profile.test(x));
-            const sigHit = sig.find((x) => f.item.test(x.f));
+            const sigHit = sig.find((x) => f.item.test(x.f) && !BUILDER.test(x.f));
             const own = items.get(rid)?.get(f.id);
             let v = styleHit ? 1 : topType ? 0.9 : sigHit && anyType ? c.famSpecialist : anyType && (own?.count ?? 0) >= 2 ? c.famServes : 0;
             // Not a specialist when the place is plainly another kind of place (a coffee shop with one breakfast burrito).
@@ -426,16 +450,33 @@ export function createDishIndexBuilder(restaurantIds: readonly string[]): DishIn
             if (v <= 0) continue;
             spec.set(f.id, v);
             const list = fam.get(f.id) ?? [];
+            const mine: { name: string; price: number | null; sig: boolean }[] = [];
+            for (const x of sig) if (f.item.test(x.f) && !BUILDER.test(x.f)) mine.push({ name: x.raw, price: null, sig: true });
+            for (const x of (own?.all ?? []).slice().sort((a, b) => b.rank - a.rank)) {
+              if (!mine.some((m) => fold(m.name) === fold(x.name))) mine.push({ name: x.name, price: x.price, sig: false });
+            }
+            const first = mine[0];
             list.push({
               rid,
               spec: v,
-              item: sigHit && v >= c.famSpecialist ? sigHit.raw : (own?.name ?? sigHit?.raw ?? ""),
-              price: own?.price ?? null,
+              item: first?.name ?? "",
+              price: first?.price ?? own?.price ?? null,
               tags: [...t],
+              items: mine,
+              hybrid: 0,
+              sig: sig.some((x) => f.item.test(x.f)),
             });
             fam.set(f.id, list);
           }
           famSpec.set(rid, spec);
+        }
+        // A place that specialises in several families is a hybrid in each of them.
+        for (const list of fam.values()) {
+          for (const fp of list) {
+            let n = 0;
+            for (const v of famSpec.get(fp.rid)?.values() ?? []) if (v >= c.famSpecialist) n++;
+            (fp as { hybrid: number }).hybrid = Math.max(0, n - 1);
+          }
         }
         return { fam, famSpec, tags, service };
       };
@@ -762,7 +803,7 @@ function reasonOf(hit: Hit | null, seeds: readonly Seed[], cuisine: string | nul
   const place = shortPlaceName(s.place);
   if (hit.fam) {
     const phrase = hit.tag ? TAGS[hit.tag].phrase : null;
-    const whole = hit.item ? cleanItem(hit.item).replace(/^\d{3,}\s+/, "") : "";
+    const whole = hit.item ? displayDish(cleanItem(hit.item).replace(/^\d{3,}\s+/, "")) : "";
     // "Garlic Parmesan Wings with fries and a drink": the dish ends where the extras start.
     const item = whole
       ? whole.length > 22
@@ -1121,16 +1162,51 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     }
   });
 
+  /** How much of a sit-down place it is: 2 seats you and serves, 0 is a counter. */
+  const svcTier = (rid: number | undefined): number => {
+    const v = rid === undefined ? undefined : index.service.get(rid);
+    if (!v) return 1;
+    if (/full_service|fine_dining|bar|brewery/.test(v)) return 2;
+    if (/counter|fast|truck|market|bakery/.test(v)) return 0;
+    return 1;
+  };
+
   // Family matches: a place that specialises in the seed's family, with the style it shares (NY-style, breakfast ...).
   seeds.forEach((s, si) => {
     for (const sf of s.fams) {
+      const fam = FAMILY_BY_ID.get(sf.id);
+      const dishText = fold(s.dish);
+      const sub = fam?.sub && fam.sub.seed.test(dishText) ? fam.sub : null;
+      const seedTier = svcTier(s.rid);
       for (const fp of index.fam.get(sf.id) ?? []) {
         if (s.chain && chainOf(fp.rid) === s.chain) continue;
+        // Only a place whose profile says it is a specialist; one that merely lists the dish is not a match.
+        if (fp.spec < c.famSpecialist) continue;
         const tagged = sf.tag != null && fp.tags.includes(sf.tag);
-        const v = Math.min(1, fp.spec * (0.55 + 0.45 * s.w) * (sf.tag != null && !tagged ? c.famUntagged : 1));
+        // The item that names the pick: the sub-type the seed is (a Caesar needs a Caesar), then the one closest to the seed's dish and style.
+        const pool = sub ? fp.items.filter((x) => sub.item.test(fold(x.name))) : fp.items;
+        let pick: (typeof fp.items)[number] | undefined;
+        let pickScore = -1;
+        pool.forEach((x, i) => {
+          const nm = fold(x.name);
+          const toks = nm.split(" ").map(wordOf);
+          let sc = toks.filter((w) => s.words.has(w) && w.length >= 4).length * 2 + (x.sig ? 1 : 0) - i * 0.01;
+          if (tagged && sf.tag && TAGS[sf.tag].re.test(nm)) sc += 2;
+          if (sc > pickScore) {
+            pickScore = sc;
+            pick = x;
+          }
+        });
+        if (!pick) continue;
+        // A counter is a weaker match for a seat-down seed, and a place that does several things for a specialist.
+        const gap = Math.max(0, seedTier - svcTier(fp.rid));
+        const v = Math.min(
+          1,
+          fp.spec * (0.55 + 0.45 * s.w) * (sf.tag != null && !tagged ? c.famUntagged : 1) * c.svcGap ** gap * c.hybridShade ** fp.hybrid * (fp.sig ? c.sigBonus : 1),
+        );
         const list = best.get(fp.rid) ?? [];
         const at = list.findIndex((h) => h.seed === si);
-        const hit: Hit = { seed: si, v, vw: v * s.rw, item: fp.item, price: fp.price, term: `fam:${sf.id}`, style: false, fam: sf.id, tag: tagged ? sf.tag : null };
+        const hit: Hit = { seed: si, v, vw: v * s.rw, item: pick.name, price: pick.price, term: `fam:${sf.id}`, style: false, fam: sf.id, tag: tagged ? sf.tag : null };
         if (at < 0) list.push(hit);
         else if (v > list[at].v || !list[at].fam) list[at] = hit;
         best.set(fp.rid, list);
@@ -1178,7 +1254,8 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     const price = h1?.price ?? (rid === undefined ? null : (index.median.get(rid) ?? null));
     const bonus = budget && price ? budgetPoints(priceFit(price, budget), budget.conf) : 0;
     const Cc = cuisineAffinity(r.cuisine);
-    const score = g * (100 * (c.wM * M * D + c.wC * Cc * D + c.wQ * Q) + bonus);
+    const trust = c.reviewFloor + (1 - c.reviewFloor) * Math.min(1, (r.reviewCount ?? 0) / c.reviewFull);
+    const score = g * trust * (100 * (c.wM * M * D + c.wC * Cc * D + c.wQ * Q) + bonus);
     cands.push({ cand: { r, hit: named, score, tier: named ? tierOf(named) : 0 }, M, Q, D, Cc, raw });
   }
 
@@ -1266,7 +1343,10 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       rest.forEach((x, i) => {
         if (!rules.slice(0, n).every((rule) => rule(x))) return;
         // A family already in the row counts for less, so the next dish family comes before its second pick.
-        const v = keyOf(x) * (famOf(x) !== "" && ordered.some((o) => famOf(o) === famOf(x)) ? c.famRepeat : 1);
+        const v =
+          keyOf(x) *
+          (famOf(x) !== "" && ordered.some((o) => famOf(o) === famOf(x)) ? c.famRepeat : 1) *
+          (seedOf(x) !== -1 && ordered.some((o) => seedOf(o) === seedOf(x)) ? c.seedRepeat : 1);
         if (v > top1) {
           top1 = v;
           k = i;
