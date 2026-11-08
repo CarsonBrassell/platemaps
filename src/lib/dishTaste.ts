@@ -171,6 +171,16 @@ export const DISH_TASTE = {
   flavorVibeFactor: 0.5,
   /** A menu-less place judged on its profile text alone counts this much of a menu match. */
   flavorPlace: 0.7,
+  /**
+   * Adventurous picks: a few of the row are a flavor the viewer likes, in a cuisine or dish family none of their
+   * posts (or been places) is in. Worth `floor(limit / 4)` of the row, at most `advMax`; the first sits no earlier
+   * than index `advFirst` (so never in the first three), the rest are spread to the end. A pick needs the quality
+   * of the place (`advMinQ`, a shrunk rating of about 4.4 or better) and a fit of at least `advMinV`.
+   */
+  advMax: 3,
+  advFirst: 4,
+  advMinQ: 0.5,
+  advMinV: 0.5,
 } as const;
 
 /** The hard quality floor every pick must clear: rated above `pickRatingAbove` on at least `pickMinReviews` reviews. */
@@ -388,6 +398,8 @@ export type FamPlace = {
 
 /** Bar snacks: a match on one of these at a bar is not a meal. */
 const BAR_BITE = /\b(bites?|poppers?|tots?|nachos|sliders?|rings?|bao|wontons?|rangoon)\b/;
+/** A side, a bread or a condiment is not a dish to be sent somewhere new for. */
+const SIDE_LINE = /^side\b|\bside of\b|\b(?:breads?|rolls?|biscuits?|fries|chips|dips?|sauces?|spreads?|slaw|butter|dressing|pickles?)$/;
 const BAR_PLACE = /bar|pub|tavern|irish|sports/;
 
 /* ---------- the index ---------- */
@@ -961,7 +973,40 @@ function flavLine(item: string, claim: FlavorClaim, dish: string | null, place: 
   return room >= 12 ? `${clipWords(item, room)}${tail}` : clip(`${item}${tail}`, max);
 }
 
-function reasonOf(hit: Hit | null, seeds: readonly Seed[], cuisine: string | null, candidate: string): TastePick["reason"] {
+/** What a claim label is called after "same" ("same heat as your ..."): the label itself reads wrong for some. */
+const FLAVOR_NOUN: Readonly<Record<string, string>> = {
+  "sweet heat": "sweet heat",
+  spicy: "heat",
+  smoky: "smoke",
+  crispy: "crunch",
+  sweet: "sweetness",
+};
+
+/**
+ * "New for you — Kimchi Chicken Sandwich, same sweet heat as your Hot Honey Chicken". An adventurous pick says it
+ * is new, and what it shares with a posted dish; like `flavLine`, only what the pick's own text shows.
+ */
+function newLine(item: string, claim: FlavorClaim, dish: string | null, max: number): string {
+  const noun = FLAVOR_NOUN[claim.label] ?? claim.label;
+  const tail = (d: string | null) => `same ${noun}${d ? ` as your ${d}` : ""}`;
+  const head = "New for you — ";
+  for (const d of dish ? [dish, clipWords(dish, 22), clipWords(dish, 14)] : [null]) {
+    const full = `${head}${item}, ${tail(d)}`;
+    if (full.length <= max) return full;
+  }
+  // The dish's name gives way before the flavor does.
+  const t = tail(dish ? clipWords(dish, 22) : null);
+  const room = max - head.length - 2 - t.length;
+  return room >= 12 ? `${head}${clipWords(item, room)}, ${t}` : clip(`${head}${t}`, max);
+}
+
+function reasonOf(
+  hit: Hit | null,
+  seeds: readonly Seed[],
+  cuisine: string | null,
+  candidate: string,
+  fresh = false,
+): TastePick["reason"] {
   const c = DISH_TASTE;
   if (!hit) {
     const text = `${cuisine}, a cuisine you eat`;
@@ -975,8 +1020,16 @@ function reasonOf(hit: Hit | null, seeds: readonly Seed[], cuisine: string | nul
     const whole = displayDish(cleanItem(hit.item).replace(/^\d{3,}\s+/, "").replace(/^[^:]{1,24}#\d+:\s*/, ""));
     const item = whole && !fold(candidate).includes(fold(whole)) ? whole : (hit.fam ? (FAMILY_BY_ID.get(hit.fam)?.noun ?? "") : "") || whole;
     if (item && fs) {
-      const dish = fs.dish ? displayDish(fs.dish) : null;
+      // "like your The Naughty Pie" reads wrong: a leading article goes.
+      const dish = fs.dish ? displayDish(fs.dish).replace(/^(?:the|a|an)\s+(?=\S)/i, "") : null;
       const at = shortPlaceName(fs.place);
+      if (fresh) {
+        return {
+          kind: "dish",
+          text: newLine(item, hit.flav.claim, dish, c.textChars),
+          short: newLine(item, hit.flav.claim, dish, c.shortChars),
+        };
+      }
       return {
         kind: "dish",
         text: flavLine(item, hit.flav.claim, dish, at, c.textChars),
@@ -1038,6 +1091,12 @@ type Cand = {
   score: number;
   /** 0 a real meal match; 1 a bar bite at a bar; 2 a drink. Later tiers wait until after the first `top`. */
   tier: number;
+  /** Stands on flavor alone in a cuisine or dish family the viewer has not posted. Waits behind the familiar picks. */
+  novel?: boolean;
+  /** `novel`, and good enough to be one of the row's adventurous picks. */
+  advOk?: boolean;
+  /** Placed as one of the adventurous picks: its reason says it is new. */
+  adv?: boolean;
 };
 
 /**
@@ -1350,6 +1409,21 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     if (r) seenChains.add(chainKey(r));
   }
 
+  // What is new to them: a cuisine none of their posts (or been places) is in, or a dish family none of their posts
+  // is in. Every post counts here, whatever it was rated.
+  const postedCuisines = new Set<string>();
+  for (const id of new Set([...visits.keys(), ...prefs.been])) {
+    const r = byId.get(id);
+    if (r?.cuisine) postedCuisines.add(r.cuisine);
+    for (const s of r?.cuisineSecondary ?? []) postedCuisines.add(s);
+  }
+  const postedFams = new Set<string>();
+  for (const p of posts) {
+    for (const f of famsOf(p.dishName, index.ridIndex.get(p.restaurantId))) postedFams.add(f.id);
+    const own = p.dishName ? famIdOf(p.dishName) : undefined;
+    if (own) postedFams.add(own);
+  }
+
   // Match every seed against every item that shares one of its terms.
   const best = new Map<number, Hit[]>();
   const keep = (rid: number, hit: Hit) => {
@@ -1510,15 +1584,18 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
 
   // What the flavor profile adds at one place. A place's lines are its food items, or (no menu at all) its signature dishes.
   type FLine = { name: string; mask: number; claims: readonly FlavorClaim[]; price: number | null };
-  const linesOf = (rid: number): FLine[] => {
+  const linesOf = (rid: number, onFlavor = false): FLine[] => {
     const out: FLine[] = [];
     for (let k = index.first[rid]; k < index.first[rid + 1]; k++) {
       const it = index.order[k];
       if (index.itemKind[it] !== FOOD) continue;
+      // `onFlavor`: only the lines on a flavor the viewer likes (the rest are never read; this is the hot path).
+      if (onFlavor && anchorAttr(prof, index.itemFlavor[it]) < 0) continue;
       out.push({ name: index.itemName[it], mask: index.itemFlavor[it], claims: index.itemClaims.get(it) ?? [], price: index.itemPrice[it] > 0 ? index.itemPrice[it] : null });
     }
     if (index.first[rid + 1] === index.first[rid]) {
       for (const sg of index.menuless.get(rid)?.sigs ?? []) {
+        if (onFlavor && anchorAttr(prof, sg.mask) < 0) continue;
         if (kindOf(fold(sg.name), "") === FOOD) out.push({ name: sg.name, mask: sg.mask, claims: sg.claims, price: null });
       }
     }
@@ -1532,12 +1609,14 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     if (claim) h.flav = { attr: claim.attr, claim, seed: prof.seedsByAttr[claim.attr][0], only: false };
   };
   const flavorHits = (rid: number, hits: readonly Hit[]): Hit[] => {
-    const lines = linesOf(rid);
+    const lines = linesOf(rid, true);
     const bare = index.menuless.get(rid)?.mask ?? 0;
     const out = hits.map((h) => ({ ...h }));
+    // A family match's own line may be on any flavor, so all the lines are read, but only if there is one to find.
+    let every: FLine[] | undefined;
     const lineOf = (item: string): FLine | undefined => {
       const want = fold(item);
-      return lines.find((l) => fold(l.name) === want);
+      return (every ??= linesOf(rid)).find((l) => fold(l.name) === want);
     };
     // A family match is nudged by how its line fits (a bare specialist, by what its profile says).
     for (const h of out) {
@@ -1596,10 +1675,10 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   const byVw = (a: Hit, b: Hit) => b.vw - a.vw;
   const cands: { cand: Cand; M: number; Q: number; D: number; Cc: number; raw: number }[] = [];
   for (const r of restaurants) {
-    if (seen.has(r.id) || seenChains.has(chainKey(r)) || (r.cuisine && skipped.has(r.cuisine))) continue;
+    if (seen.has(r.id) || (r.cuisine && skipped.has(r.cuisine))) continue;
     // The hard quality floor, for every kind of pick: no rating or too few reviews never qualifies, and nothing
-    // below it is backfilled to fill the row.
-    if (!passesFloor(r)) continue;
+    // below it is backfilled to fill the row. (Before the chain check, which is the dearer of the two.)
+    if (!passesFloor(r) || seenChains.has(chainKey(r))) continue;
     const rid = index.ridIndex.get(r.id);
     let hits = rid === undefined ? [] : (best.get(rid) ?? []);
     if (layer && rid !== undefined) hits = flavorHits(rid, hits);
@@ -1640,7 +1719,18 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     const Cc = cuisineAffinity(r.cuisine);
     const trust = c.reviewFloor + (1 - c.reviewFloor) * Math.min(1, (r.reviewCount ?? 0) / c.reviewFull);
     const score = g * trust * (100 * (c.wM * M * D + c.wC * Cc * D + c.wQ * Q) + bonus);
-    cands.push({ cand: { r, hit: named, score, tier: named ? tierOf(named) : 0 }, M, Q, D, Cc, raw });
+    // A pick that stands on flavor alone is new to them when its cuisine or its dish family is one they have not
+    // posted. It is one of the adventurous picks when it is also a sit-down meal of real quality, at a place that
+    // does not specialise in something else (a sushi bar is not picked for its burger).
+    const cand: Cand = { r, hit: named, score, tier: named ? tierOf(named) : 0 };
+    if (named?.flav?.only) {
+      cand.novel = (r.cuisine != null && !postedCuisines.has(r.cuisine)) || (named.fam !== undefined && !postedFams.has(named.fam));
+      if (cand.novel && cand.tier === 0 && Q >= c.advMinQ && named.v >= c.advMinV && !SIDE_LINE.test(fold(named.item))) {
+        const specs = spec ? [...spec.keys()].filter(specOf) : [];
+        cand.advOk = specs.length === 0 || (named.fam !== undefined && specs.includes(named.fam));
+      }
+    }
+    cands.push({ cand, M, Q, D, Cc, raw });
   }
 
   // A pick that stands on flavor alone belongs to no one posted dish: the per-dish caps do not apply to it.
@@ -1694,8 +1784,15 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       }
     }
   };
-  take(matched);
+  // A flavor pick in a cuisine or family they have not posted is for the adventurous slots; it waits behind the
+  // familiar picks, and only fills the row where there are too few of those.
+  const familiar = matched.filter((x) => !x.novel);
+  const novel = matched.filter((x) => x.novel);
+  take(familiar);
   take(fallback);
+  const taken = out.length;
+  take(novel);
+  const late = out.splice(taken);
 
   // Best first, but spread out. In the first `top`: only real meal matches, one pick per dish family, no more
   // than `perCuisineTop` of a cuisine, none from a dish twice, none twice in a row. After them the caps relax
@@ -1703,8 +1800,20 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   const kin = (a: Cand, b: Cand) =>
     a.hit != null && b.hit != null && a.hit.term.split(" ").some((w) => b.hit!.term.split(" ").includes(w));
   const rest = out.slice().sort((a, b) => keyOf(b) - keyOf(a));
+  // The adventurous picks: the best of the novel ones, put where `advSlot` says (never in the first three).
+  const advN = limit > c.advFirst ? Math.min(c.advMax, Math.floor(limit / 4)) : 0;
+  const advGap = Math.max(2, Math.round((limit - c.advFirst) / Math.max(1, advN)));
+  // A slot the flavor cap held back is taken late, and the next one then waits a pick: never two in a row.
+  let advLast = -2;
+  const advSlot = (k: number) => Math.max(c.advFirst + k * advGap, advLast + 2);
+  const advs = novel.filter((x) => x.advOk).map((x): Cand => ({ ...x, adv: true }));
+  let advPlaced = 0;
+  const drop = (list: Cand[], id: string) => {
+    const at = list.findIndex((o) => o.r.id === id);
+    if (at >= 0) list.splice(at, 1);
+  };
   const ordered: Cand[] = [];
-  while (rest.length > 0) {
+  while (ordered.length < limit) {
     const pos = ordered.length;
     const top = pos < c.top;
     const prev = ordered[pos - 1];
@@ -1723,25 +1832,54 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     const apart = (x: Cand) => !top || seedOf(x) === -1 || !ordered.some((o) => kin(o, x));
     // Flavor alone does not fill the first row: the rest stand on a dish or a family they posted.
     const flavorCap = (x: Cand) => !top || !x.hit?.flav?.only || ordered.filter((o) => o.hit?.flav?.only).length < c.flavorOnlyTop;
+    // A family already in the row counts for less, so the next dish family comes before its second pick.
+    const worth = (x: Cand) =>
+      keyOf(x) *
+      (famOf(x) !== "" && ordered.some((o) => famOf(o) === famOf(x)) ? c.famRepeat : 1) *
+      (seedOf(x) !== -1 && ordered.some((o) => seedOf(o) === seedOf(x)) ? c.seedRepeat : 1);
+    /** The index in `list` of the best pick that passes the first `n` rules, or -1. */
+    const best1 = (list: readonly Cand[], rules: readonly ((x: Cand) => boolean)[], n: number, also: (x: Cand) => boolean): number => {
+      let top1 = -1;
+      let at = -1;
+      list.forEach((x, i) => {
+        if (!also(x) || !rules.slice(0, n).every((rule) => rule(x))) return;
+        const v = worth(x);
+        if (v > top1) {
+          top1 = v;
+          at = i;
+        }
+      });
+      return at;
+    };
+    // An adventurous slot is due once the row reaches it: the best novel pick that fits goes here. The flavor cap
+    // never yields (a later slot takes it instead); the family and cuisine spread do, a little, before it waits.
+    if (advPlaced < advN && pos >= advSlot(advPlaced) && advs.length > 0) {
+      const room = (x: Cand) =>
+        !ordered.some((o) => o.r.id === x.r.id || chainKey(o.r) === chainKey(x.r)) &&
+        ordered.filter((o) => o.r.cuisine === x.r.cuisine).length < c.perCuisine;
+      const advRules = [flavorCap, oneFamily, cuisineOk];
+      let a = -1;
+      for (let n = advRules.length; n >= 1 && a < 0; n--) a = best1(advs, advRules, n, room);
+      if (a >= 0) {
+        const [pick] = advs.splice(a, 1);
+        ordered.push(pick);
+        advPlaced++;
+        advLast = pos;
+        drop(rest, pick.r.id);
+        drop(late, pick.r.id);
+        continue;
+      }
+    }
+    // Too few familiar picks left: the novel ones fill the row as the ordinary flavor picks they are.
+    if (rest.length === 0 && late.length > 0) rest.push(...late.splice(0));
+    if (rest.length === 0) break;
     // Most to least worth keeping: drop the last rule first.
     const rules = [meal, flavorCap, oneFamily, free, cuisineOk, notPrev, apart];
     let k = -1;
-    for (let n = rules.length; n >= 0 && k < 0; n--) {
-      let top1 = -1;
-      rest.forEach((x, i) => {
-        if (!rules.slice(0, n).every((rule) => rule(x))) return;
-        // A family already in the row counts for less, so the next dish family comes before its second pick.
-        const v =
-          keyOf(x) *
-          (famOf(x) !== "" && ordered.some((o) => famOf(o) === famOf(x)) ? c.famRepeat : 1) *
-          (seedOf(x) !== -1 && ordered.some((o) => seedOf(o) === seedOf(x)) ? c.seedRepeat : 1);
-        if (v > top1) {
-          top1 = v;
-          k = i;
-        }
-      });
-    }
-    ordered.push(...rest.splice(k < 0 ? 0 : k, 1));
+    for (let n = rules.length; n >= 0 && k < 0; n--) k = best1(rest, rules, n, () => true);
+    const [pick] = rest.splice(k < 0 ? 0 : k, 1);
+    ordered.push(pick);
+    drop(advs, pick.r.id);
   }
 
   // A flavor reason compares the pick to a posted dish that shows the same flavor; spread across the best few
@@ -1759,7 +1897,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     return {
       restaurant: x.r,
       plateScore: input.plates[x.r.id] ?? null,
-      reason: reasonOf(hit, seeds, x.r.cuisine, x.r.name),
+      reason: reasonOf(hit, seeds, x.r.cuisine, x.r.name, x.adv === true),
     };
   });
 }

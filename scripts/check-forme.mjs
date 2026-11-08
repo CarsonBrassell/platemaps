@@ -830,6 +830,142 @@ ok("flavor-only picks fill at most flavorOnlyTop of the first six, and the rest 
   assert.ok(out.filter(isX).length > DISH_TASTE.flavorOnlyTop, "and more of them follow once the row is full");
 });
 
+/* ---- a few adventurous picks: the same flavor, somewhere new ---- */
+// Eight places in cuisines the viewer never posted, each with a sweet chili dish; seven that match a dish they posted.
+const ADV_KINDS = ["Salmon", "Shrimp", "Tofu", "Lentils", "Squid", "Eggplant", "Cauliflower", "Mushrooms"];
+const ADV_CUISINES = ["Greek", "Peruvian", "Cuban", "Ethiopian", "Indian", "Turkish", "Lebanese", "Persian"];
+// Filler lines so a place is not a one-dish specialist (a specialist is only sent to for its own dish family).
+const ADV_PAD = [["Vegetable Soup"], ["Rice Pilaf"], ["Seasonal Special"]];
+const ADV_POSTED = ["American", "Japanese", "Wings", "Coffee & Tea", "Mexican"];
+const advSpec = () => {
+  const spec = FSPEC.filter((s) => /^h/.test(s[0]) && s[0] !== "hC");
+  spec.push(["hC", "Wing Wiz", "Wings", 4.4, [["Sriracha Honey Wings"]]]);
+  ADV_KINDS.forEach((k, i) => spec.push([`x${i}`, `Heat Place ${i}`, ADV_CUISINES[i], 4.6, [[`Sweet Chili ${k}`, "crispy and spicy, tossed in sweet chili sauce with honey"], ...ADV_PAD], 300]));
+  spec.push(["p1", "Ramen Ya", "Japanese", 4.6, [["Miso Ramen Bowl"]], 300]);
+  spec.push(["p2", "Tacos Dos", "Mexican", 4.6, [["Brisket Tacos Plate"]], 300]);
+  spec.push(["p3", "Chicken Shack", "Southern", 4.6, [["Hot Honey Chicken Tenders"]], 300]);
+  spec.push(["p4", "Wing Spot", "American", 4.6, [["Sriracha Honey Wings Basket"]], 300]);
+  spec.push(["p5", "Noodle Lab", "Ramen", 4.6, [["Spicy Miso Ramen Shoyu"]], 300]);
+  spec.push(["p6", "Taco Truck", "Tex-Mex", 4.6, [["Brisket Tacos Combo"]], 300]);
+  spec.push(["p7", "Hen House", "Chicken", 4.6, [["Hot Honey Chicken Plate"]], 300]);
+  return spec;
+};
+const advPosts = (r = [95, 85, 90, 70, 60]) => [
+  rated("hA", "Hot Honey Chicken", r[0], { dishDescription: "fried thigh, hot honey, pickles" }),
+  rated("hB", "Spicy Miso Ramen", r[1]),
+  rated("hC", "Sriracha Honey Wings", r[2]),
+  rated("hD", "Banana Matcha", r[3], { dishSection: "Drinks" }),
+  rated("hE", "Brisket Tacos", r[4]),
+];
+const NEW_RE = /^New for you — (.+), same (sweet heat|heat|smoke|crunch|sweetness) as your (.+)$/;
+const NEW_LABEL = { "sweet heat": "sweet heat", heat: "spicy", smoke: "smoky", crunch: "crispy", sweetness: "sweet" };
+const isNew = (p) => p.reason.text.startsWith("New for you — ");
+/** Asserts what every adventurous pick owes: a flavor its own line shows, a posted dish to compare with, the floor. */
+const checkNew = (out, spec, posts, postedCuisines) => {
+  const names = posts.map((p) => p.dishName.toLowerCase());
+  for (const p of out.filter(isNew)) {
+    const m = NEW_RE.exec(p.reason.text);
+    assert.ok(m, `${p.restaurant.id}: reads "New for you — <dish>, same <flavor> as your <dish>": ${p.reason.text}`);
+    const item = m[1].replace(/…$/, "").toLowerCase();
+    const line = (spec.find((s) => s[0] === p.restaurant.id)?.[4] ?? []).find(([n]) => n.toLowerCase().startsWith(item));
+    assert.ok(line, `${p.restaurant.id}: ${m[1]} is on its menu`);
+    assert.ok(
+      flabels(claimsOf(line[0], line[1] ?? null, line[2] ?? null, false)).includes(NEW_LABEL[m[2]]),
+      `${p.restaurant.id}: its own text shows ${NEW_LABEL[m[2]]}`,
+    );
+    const mine = m[3].replace(/…$/, "").toLowerCase();
+    assert.ok(names.some((n) => n.includes(mine)), `${p.restaurant.id}: "${m[3]}" is a dish they posted`);
+    assert.ok(passesFloor(p.restaurant), `${p.restaurant.id} clears the floor`);
+    assert.ok(!postedCuisines.includes(p.restaurant.cuisine), `${p.restaurant.id}: ${p.restaurant.cuisine} is new to them`);
+    assert.equal(p.reason.kind, "dish");
+  }
+};
+
+ok("a few adventurous picks: 2-3 of the 12, spread, none in the first three, each on a flavor its own text shows", () => {
+  const spec = advSpec();
+  const posts = advPosts();
+  const out = FW(spec, [], 1200)(posts);
+  assert.equal(out.length, DISH_TASTE.limit);
+  const at = out.flatMap((p, i) => (isNew(p) ? [i] : []));
+  assert.ok(at.length >= 2 && at.length <= DISH_TASTE.advMax, `${at.length} adventurous picks`);
+  assert.ok(at[0] >= DISH_TASTE.advFirst && at[0] >= 3, `the first is at ${at[0]}, not in the first three`);
+  at.forEach((x, k) => k > 0 && assert.ok(x - at[k - 1] >= 2, `picks ${at[k - 1]} and ${x} are not side by side`));
+  checkNew(out, spec, posts, ADV_POSTED);
+  // The others are known territory: they stand on a dish they posted, not on flavor alone in a new cuisine.
+  for (const p of out.filter((q) => !isNew(q))) assert.ok(!NEW_RE.test(p.reason.text));
+  for (const p of out) assert.ok(p.reason.text.length <= DISH_TASTE.textChars && p.reason.short.length <= DISH_TASTE.shortChars, "the reason fits");
+});
+
+ok("the adventurous count scales with the row: none in a row of four, at most two in eight", () => {
+  const spec = advSpec();
+  const world = FW(spec, [], 1200);
+  assert.equal(world(advPosts(), { limit: 4 }).filter(isNew).length, 0, "a row of four is all known territory");
+  const eight = world(advPosts(), { limit: 8 });
+  const at = eight.flatMap((p, i) => (isNew(p) ? [i] : []));
+  assert.ok(at.length >= 1 && at.length <= 2, `${at.length} in eight`);
+  assert.ok(at.every((x) => x >= DISH_TASTE.advFirst), "none before the fifth");
+});
+
+ok("any palate gets them: a ceiling rater and a harsh rater keep 2-3, never in the first three", () => {
+  const spec = advSpec();
+  for (const r of [[100, 100, 100, 100, 100], [64, 60, 58, 54, 50]]) {
+    const posts = advPosts(r);
+    const out = FW(spec, [], 1200)(posts);
+    const at = out.flatMap((p, i) => (isNew(p) ? [i] : []));
+    assert.ok(at.length >= 2 && at.length <= DISH_TASTE.advMax, `ratings ${r.join("/")}: ${at.length} adventurous picks`);
+    assert.ok(at.every((x) => x >= DISH_TASTE.advFirst), `ratings ${r.join("/")}: none in the first three`);
+    checkNew(out, spec, posts, ADV_POSTED);
+  }
+});
+
+ok("a smoky palate gets smoky ones, and a bread or a dip is never the adventurous pick", () => {
+  const posts = [
+    rated("sA", "Hickory Smoked Brisket", 95),
+    rated("sB", "Smoked Pulled Pork Sandwich", 90),
+    rated("sC", "Mesquite Grilled Chicken", 85),
+    rated("sD", "Applewood Smoked Bacon Burger", 80),
+    rated("sE", "Pit Smoked Ribs", 75),
+  ];
+  const spec = [
+    ["sA", "Pit Boss", "BBQ", 4.5, [["Hickory Smoked Brisket"], ...ADV_PAD]],
+    ["sB", "Pig Stand", "Southern", 4.5, [["Smoked Pulled Pork Sandwich"], ...ADV_PAD]],
+    ["sC", "Mesquite Hut", "Mexican", 4.5, [["Mesquite Grilled Chicken"], ...ADV_PAD]],
+    ["sD", "Bacon Barn", "Burgers", 4.5, [["Applewood Smoked Bacon Burger"], ...ADV_PAD]],
+    ["sE", "Rib Shack", "Ribs", 4.5, [["Pit Smoked Ribs"], ...ADV_PAD]],
+    ["q1", "Smoke House Two", "BBQ", 4.6, [["Hickory Smoked Brisket Plate"]], 300],
+    ["q2", "Pig Stand Two", "Southern", 4.6, [["Smoked Pulled Pork Plate"]], 300],
+    ["q3", "Mesquite Too", "Mexican", 4.6, [["Mesquite Grilled Chicken Plate"]], 300],
+    ["q4", "Bacon Barn Two", "Burgers", 4.6, [["Applewood Smoked Bacon Burger Deluxe"]], 300],
+    ["y0", "Ember Greek", "Greek", 4.6, [["Cherrywood Salmon", "slow smoked over cherrywood with a smoky house rub"], ...ADV_PAD], 300],
+    ["y1", "Ember Peru", "Peruvian", 4.6, [["Burnt Ends Shrimp", "slow smoked over cherrywood with a smoky house rub"], ...ADV_PAD], 300],
+    ["y2", "Ember Cuba", "Cuban", 4.6, [["Cherrywood Tofu", "slow smoked over cherrywood with a smoky house rub"], ...ADV_PAD], 300],
+    ["y3", "Ember Ethiopia", "Ethiopian", 4.6, [["Burnt Ends Lentils", "slow smoked over cherrywood with a smoky house rub"], ...ADV_PAD], 300],
+    ["y4", "Ember India", "Indian", 4.6, [["Cherrywood Squid", "slow smoked over cherrywood with a smoky house rub"], ...ADV_PAD], 300],
+    ["b1", "Smoke Bakery", "Turkish", 4.8, [["Cherrywood Bread", "slow smoked over cherrywood with a smoky house rub"], ...ADV_PAD], 900],
+    ["b2", "Smoke Mezze", "Lebanese", 4.8, [["Cherrywood Eggplant Dip", "slow smoked over cherrywood with a smoky house rub"], ...ADV_PAD], 900],
+  ];
+  const out = FW(spec, [], 1200)(posts);
+  assert.ok(out, "enough seeds to rank");
+  const at = out.flatMap((p, i) => (isNew(p) ? [i] : []));
+  assert.ok(at.length >= 2 && at.length <= DISH_TASTE.advMax, `${at.length} adventurous picks`);
+  assert.ok(at.every((x) => x >= DISH_TASTE.advFirst), "none in the first three");
+  checkNew(out, spec, posts, ["BBQ", "Southern", "Mexican", "Burgers", "Ribs"]);
+  for (const id of ["b1", "b2"]) assert.ok(!isNew(fby(out, id) ?? { reason: { text: "" } }), `${id}: a bread or a dip is not what they are sent somewhere new for`);
+  assert.ok(out.filter(isNew).every((p) => /^New for you — .+, same smoke as your /.test(p.reason.text)), "and the flavor is the one they like");
+});
+
+ok("a place with no menu can be an adventurous pick, on its profile's signature dish", () => {
+  const spec = [...FSPEC.filter((s) => /^h/.test(s[0]) || s[0] === "f8"), ...advSpec().filter((s) => /^p/.test(s[0]))];
+  assert.deepEqual(spec.find((s) => s[0] === "f8")[4], [], "no menu lines at all");
+  const out = FW(spec, FPROF.filter((p) => p.rid === "f8"), 1200)(hotPosts());
+  const f8 = fby(out, "f8");
+  assert.ok(f8, "the menu-less place is eligible");
+  assert.ok(out.indexOf(f8) >= DISH_TASTE.advFirst, "and it is not in the first three");
+  assert.match(f8.reason.text, /^New for you — Honey Sriracha Gyro, same sweet heat as your /);
+  assert.equal(f8.reason.kind, "dish");
+  assert.ok(passesFloor(f8.restaurant));
+});
+
 /* ---------- 2. the source ---------- */
 
 ok("no For me route, pill, link or chip row is left", () => {
