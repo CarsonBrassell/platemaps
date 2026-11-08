@@ -1607,7 +1607,10 @@ export async function dishRowsFor(restaurantIds: readonly string[]): Promise<Dis
 /** The menu profile of every place with a usable one: styles, dish types and median price. SELECT only. */
 export async function profileRowsForDishTaste(): Promise<ProfileRow[]> {
   const rows = await sql`
-    SELECT restaurant_id, styles, dish_types, profile->'menu_stats'->>'median' AS median
+    SELECT restaurant_id, styles, dish_types, main_cuisine,
+           profile->'menu_stats'->>'median' AS median,
+           profile->'signature_dishes' AS sig,
+           profile->>'service' AS service
     FROM restaurant_profiles
     WHERE status = 'ok'
   `;
@@ -1617,6 +1620,9 @@ export async function profileRowsForDishTaste(): Promise<ProfileRow[]> {
       rid: String(r.restaurant_id),
       styles: Array.isArray(r.styles) ? r.styles.map(String) : [],
       dishTypes: Array.isArray(r.dish_types) ? r.dish_types.map(String) : [],
+      signatures: Array.isArray(r.sig) ? r.sig.filter((x: unknown) => typeof x === "string") : [],
+      service: typeof r.service === "string" ? r.service : null,
+      mainCuisine: typeof r.main_cuisine === "string" ? r.main_cuisine : null,
       median: Number.isFinite(median) ? median : null,
     };
   });

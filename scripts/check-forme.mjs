@@ -335,6 +335,120 @@ ok("a reason is a whole sentence: the place is never cut, only the item gives wa
   assert.match(c1.reason.short, /like your Hot Honey Chicken at Honey Hut$/, c1.reason.short);
 });
 
+/* ---------- 1c. dish families: a favourite pizza, burrito, wings ... seeds picks from places that specialise in it ---------- */
+
+const prof = (rid, mainCuisine, styles, dishTypes, signatures = [], service = null) => ({ rid, styles, dishTypes, median: null, signatures, service, mainCuisine });
+const FAM_SPEC = [
+  ["sP", "Prince Street", "Pizza", 4.6, [["The Naughty Pie"]]],
+  ["sB", "Eggies", "Breakfast & Brunch", 4.6, [["Burrito"]]],
+  ["sW", "Mkutano", "Chicken", 4.6, [["Koji-Marinated Chicken Wings"]]],
+  ["sH", "Hot Chickz", "Chicken", 4.6, [["Hot Honey Chickz Combo"]]],
+  ["sS", "Cannonball", "Japanese", 4.6, [["House Roll"]]],
+  ["sC", "Vin De Syrah", "American", 4.6, [["Syrah Caesar"]]],
+  ["sO", "Pho Hoa", "Vietnamese", 4.6, [["Number 1"]]],
+  ["sR", "Phils BBQ", "BBQ", 4.6, [["Baby Back Rib Tickler"]]],
+  ["sM", "Better Buzz", "Coffee & Tea", 4.6, [["Banana matcha", null, "Drinks"]]],
+  ["sU", "Marisi", "Italian", 4.6, [["Seafood Bucatini"]]],
+  // candidates
+  ["pz1", "Slice Shop", "Pizza", 4.8, [["Spicy Vodka Pie"], ["Bucatini Pomodoro"]]],
+  ["pz2", "Brick Oven Pizza", "Pizza", 4.7, [["Margherita Pizza"]]],
+  ["pz3", "Corner Pizzeria", "Pizza", 4.7, [["Pepperoni Pizza"]]],
+  ["su1", "Wave Sushi", "Japanese", 4.8, [["Dragon Roll"], ["Salmon Nigiri"]]],
+  ["su2", "Yasai", "Japanese", 4.9, [["Ramen Bowl"]]],
+  ["ph1", "Pho Pasteur", "Vietnamese", 4.8, [["Pho Dac Biet"]]],
+  ["ph2", "Pho Saigon", "Vietnamese", 4.7, [["Pho Tai"]]],
+  ["wg1", "Wing Lab", "Chicken", 4.7, [["Garlic Parmesan Wings"]]],
+  ["hc1", "Nash House", "Chicken", 4.7, [["Nashville Hot Chicken Sandwich"]]],
+  ["sa1", "Green Bowl", "Salad", 4.7, [["Kale Caesar Salad"]]],
+  ["bu1", "Burrito Barn", "Mexican", 4.6, [["Carne Asada Burrito"]]],
+  ["bq1", "Smoke Pit", "BBQ", 4.6, [["Baby Back Ribs"]]],
+  ["ma1", "Matcha Moon", "Coffee & Tea", 4.9, [["Banana Matcha Latte", null, "Drinks"]]],
+  ["tp1", "Tap Room", "Bar", 4.9, [["Pizza Bites"]]],
+];
+const FAM_PROFILES = [
+  prof("sP", "Pizza", ["ny-style", "slice shop"], ["pizza", "slices"], ["The Naughty Pie"]),
+  prof("sB", "Breakfast & Brunch", ["breakfast"], ["breakfast burrito", "burrito"], ["Burrito"]),
+  prof("sW", "Chicken", [], ["wings", "chicken"], ["Koji Wings"]),
+  prof("sH", "Chicken", ["nashville"], ["hot chicken"], ["Hot Chickz Combo"]),
+  prof("sS", "Japanese", ["sushi bar", "japanese fusion"], ["sushi", "rolls"], ["House Roll"]),
+  prof("sC", "American", ["wine bar"], ["salad", "wine"], ["Syrah Caesar"]),
+  prof("sO", "Vietnamese", [], ["pho", "noodle soup"], ["Pho Number 1"]),
+  prof("sR", "BBQ", ["bbq"], ["ribs", "bbq"], ["Rib Tickler"]),
+  prof("sM", "Coffee & Tea", [], ["matcha", "coffee"]),
+  prof("sU", "Italian", [], ["pasta"]),
+  prof("pz1", "Pizza", ["ny-style", "slice shop"], ["pizza", "slices"], ["Spicy Vodka Pie"]),
+  prof("pz2", "Pizza", ["wood-fired"], ["pizza"], ["Margherita Pizza"]),
+  prof("pz3", "Pizza", [], ["pizza"], ["Pepperoni Pizza"]),
+  prof("su1", "Japanese", ["sushi bar"], ["sushi", "rolls"], ["Dragon Roll"]),
+  prof("su2", "Japanese", ["japanese fusion"], ["ramen", "noodles"], ["Ramen Bowl"]),
+  prof("ph1", "Vietnamese", [], ["pho"], ["Pho Dac Biet"]),
+  prof("ph2", "Vietnamese", [], ["pho"], ["Pho Tai"]),
+  prof("wg1", "Chicken", [], ["wings", "chicken"], ["Garlic Parmesan Wings"]),
+  prof("hc1", "Chicken", ["nashville"], ["hot chicken"], ["Nashville Hot Chicken Sandwich"]),
+  prof("sa1", "Salad", [], ["salad", "bowls"], ["Kale Caesar Salad"]),
+  prof("bu1", "Mexican", [], ["burrito", "tacos"], ["Carne Asada Burrito"]),
+  prof("bq1", "BBQ", ["bbq"], ["ribs", "bbq"], ["Baby Back Ribs"]),
+  prof("ma1", "Coffee & Tea", [], ["matcha", "coffee"]),
+  prof("tp1", "Bar", [], ["pizza", "bites"], ["Pizza Bites"], "bar"),
+];
+const FAM_POSTS = [
+  rated("sP", "The Naughty Pie", 92),
+  rated("sS", null, 96),
+  rated("sC", "Syrah Caesar", 92),
+  rated("sO", "Number 1", 90),
+  rated("sW", "Koji-Marinated Chicken Wings", 90),
+  rated("sH", "Hot Honey Chickz Combo", 90),
+  rated("sB", "Burrito", 88),
+  rated("sR", "Baby Back Rib Tickler", 85),
+  rated("sM", "Banana matcha", 85),
+  rated("sU", "Seafood Bucatini", 79),
+];
+const famPicks = W(FAM_SPEC, FAM_PROFILES)(FAM_POSTS);
+const famIds = ids(famPicks);
+const famOf = (p) => p.reason.text;
+
+ok("(a) a favourite dish family seeds picks, named by the pick's own signature and the seed's style", () => {
+  const pz = famPicks.find((p) => p.restaurant.id === "pz1");
+  assert.ok(pz, "the NY-style pie place is picked");
+  assert.match(pz.reason.text, /Spicy Vodka Pie/, pz.reason.text);
+  assert.match(pz.reason.text, /NY-style like your (The )?Naughty Pie at Prince Street/, pz.reason.text);
+  const su = famPicks.find((p) => p.restaurant.id === "su1");
+  assert.ok(su && /like Cannonball|at Cannonball/.test(su.reason.text), "a dishless post seeds from its place's specialty");
+  for (const id of ["ph1", "wg1", "hc1", "sa1", "bu1", "bq1"]) assert.ok(famIds.includes(id), `${id} is a family pick`);
+});
+
+ok("(b) the viewer's 90+ seeds fill most of the first six", () => {
+  const six = famPicks.slice(0, 6).map(famOf).join(" | ");
+  const high = (six.match(/Naughty Pie|Cannonball|Syrah Caesar|Number 1|Koji|Hot Honey Chickz/g) ?? []).length;
+  assert.ok(high >= 5, `only ${high} of the first six come from a 90+ dish: ${six}`);
+  assert.ok(!/Bucatini|Banana/.test(six), "the 79 and the drink do not lead");
+});
+
+ok("(c) one pick per dish family in the first six, two in twelve, two per cuisine in the first six", () => {
+  const fam = (p) => (/Pie|Pizza/.test(p.reason.text) ? "pizza" : /Roll|Nigiri/.test(p.reason.text) ? "sushi" : /Pho/.test(p.reason.text) ? "pho" : /Wings/.test(p.reason.text) ? "wings" : /Hot Chicken|Nashville/.test(p.reason.text) ? "hot" : /Salad|Caesar/.test(p.reason.text) ? "salad" : /Burrito/.test(p.reason.text) ? "burrito" : /Ribs/.test(p.reason.text) ? "bbq" : "");
+  const six = famPicks.slice(0, 6);
+  for (const f of new Set(six.map(fam).filter(Boolean))) assert.equal(six.filter((p) => fam(p) === f).length, 1, `${f} twice in the first six`);
+  const twelve = famPicks.slice(0, 12);
+  for (const f of new Set(twelve.map(fam).filter(Boolean))) assert.ok(twelve.filter((p) => fam(p) === f).length <= 2, `${f} more than twice in twelve`);
+  const cu = {};
+  for (const p of six) cu[p.restaurant.cuisine] = (cu[p.restaurant.cuisine] ?? 0) + 1;
+  assert.ok(Math.max(...Object.values(cu)) <= 2, "no cuisine more than twice in the first six");
+});
+
+ok("(d) drinks and bar bites wait behind real meals; a style with no shared dish family says nothing", () => {
+  const at = (id) => famIds.indexOf(id);
+  if (at("ma1") >= 0) assert.ok(at("ma1") >= 6, "the matcha place is not among the first six");
+  if (at("tp1") >= 0) assert.ok(at("tp1") >= 6, "the bar bite is not among the first six");
+  const yasai = famPicks.find((p) => p.restaurant.id === "su2");
+  assert.ok(!yasai || !/Cannonball/.test(yasai.reason.text), "a fusion ramen shop is not picked as Cannonball's kin");
+});
+
+ok("(e) a family specialist is never picked for an off-family item", () => {
+  const pz = famPicks.find((p) => p.restaurant.id === "pz1");
+  assert.ok(pz && !/Bucatini/i.test(pz.reason.text), "the pizzeria is not recommended for its bucatini");
+  assert.ok(!/Marisi/.test(pz.reason.text), "and not through the bucatini seed");
+});
+
 /* ---------- 2. the source ---------- */
 
 ok("no For me route, pill, link or chip row is left", () => {
