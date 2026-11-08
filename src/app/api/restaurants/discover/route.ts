@@ -103,10 +103,17 @@ export async function POST(req: Request) {
     typeof coords === "object" && coords !== null
       ? (coords as { lat?: unknown; lng?: unknown })
       : null;
-  const lat = Number(position?.lat);
-  const lng = Number(position?.lng);
+  // Numbers only: `Number(null)` and `Number("")` are 0, which would put a
+  // request with empty coordinates at the equator rather than nowhere.
+  const lat = position?.lat;
+  const lng = position?.lng;
   const here =
-    Number.isFinite(lat) && Number.isFinite(lng) && Math.abs(lat) <= 90 && Math.abs(lng) <= 180
+    typeof lat === "number" &&
+    typeof lng === "number" &&
+    Number.isFinite(lat) &&
+    Number.isFinite(lng) &&
+    Math.abs(lat) <= 90 &&
+    Math.abs(lng) <= 180
       ? { lat, lng }
       : null;
 

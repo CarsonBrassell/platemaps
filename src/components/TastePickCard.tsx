@@ -20,7 +20,7 @@ import type { QualityNote } from "@/lib/ratingDisplay";
  * so a row of uneven cards still lines its buttons up.
  */
 export const TASTE_BTN =
-  "text-[13px] font-medium text-zinc-500 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
+  "inline-flex min-h-9 items-center text-[13px] font-medium text-zinc-500 underline-offset-2 hover:underline pointer-coarse:min-h-11 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 
 export function TastePickCard({
   restaurant,

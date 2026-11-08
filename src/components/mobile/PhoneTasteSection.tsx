@@ -6,6 +6,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { ForMeProfileLine } from "@/components/ForMeProfileLine";
 import { CloseIcon } from "@/components/icons";
 import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
+import { ReasonText } from "@/components/ReasonText";
 import type { DiscoverPage, DiscoverResult } from "@/lib/discover";
 import { matchMarksFor } from "@/lib/discoverFilters";
 import { useForMeAccess } from "@/lib/auth";
@@ -782,7 +783,9 @@ export function PhoneForMeResults({
           {/* The server's sentence about what the list was built from — "Based
               on 3 places you've been" — and absent when it has nothing to say. */}
           {info.header && (
-            <p className="mt-1 text-[13px] leading-snug text-pm-grey-text">{info.header}</p>
+            <p className="mt-1 text-[13px] leading-snug text-pm-grey-text">
+              <ReasonText text={info.header} />
+            </p>
           )}
           {/* What the list has learned — usual plate, usual distance, top
               cuisines — as one quiet line; absent when it has learned nothing. */}

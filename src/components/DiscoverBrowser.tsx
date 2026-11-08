@@ -10,6 +10,7 @@ import {
 import { RestaurantCard, type MatchMarks } from "@/components/RestaurantCard";
 import { ForMeProfileLine } from "@/components/ForMeProfileLine";
 import { OurPicks } from "@/components/OurPicks";
+import { ReasonText } from "@/components/ReasonText";
 import { ShowDistanceButton } from "@/components/ShowDistanceButton";
 import { TasteChips, TasteInvite } from "@/components/TasteChips";
 import { TASTE_BTN, TastePickCard } from "@/components/TastePickCard";
@@ -302,7 +303,11 @@ function ForMeSection({
           is nothing to build from: the prompt below is the same chips. */}
       {info && info.basis !== "none" && (
         <div className="mb-3 flex flex-wrap items-center gap-x-2 px-1 text-[13px] text-pm-grey-text">
-          {info.header && <p>{info.header}</p>}
+          {info.header && (
+            <p>
+              <ReasonText text={info.header} />
+            </p>
+          )}
           <button
             type="button"
             aria-expanded={tuning}

@@ -48,7 +48,7 @@
  *    share over 3 places. Dates are of the viewer's own posts, as history; the
  *    posts' ratings, votes and the rest still feed none of it.
  *  - A budget term. B is the viewer's usual plate: the median price on their own
- *    posts (under $3 dropped, then anything over 2.5x the median of the rest),
+ *    posts (under $3 dropped, then anything over 2.5x the median of those kept),
  *    with the quartiles as its range, trusted from 3 plates and in full at 6.
  *    With fewer than 3, B is the median menu price of the places they have been
  *    (from 3 known, trusted at half at most); with both it is 0.6 plates + 0.4
@@ -57,7 +57,8 @@
  *    the fit is 1, above it it falls off fast and below it slowly, and the
  *    score gains 100 * 0.06 * trust * (2 fit - 1), inside g. A place with no
  *    price, or a viewer with no B, gets exactly 0. A fit of 0.9 or more, at a
- *    trust of half or more, earns "Fits your usual $11–18 plate" when no like,
+ *    trust of half or more, and a price that rounds to a dollar inside the
+ *    printed range, earns "Fits your usual $11–18 plate" when no like,
  *    pick, friend or cuisine line applies. Prices on the viewer's posts are
  *    history, as dates are; the posts' ratings, votes and the rest feed nothing.
  *  - A travel radius. The viewer's history points are the places they have been
@@ -218,7 +219,7 @@ export const FORME_CUISINE = {
 export const FORME_BUDGET = {
   /** A plate price under this is a side or a typo and says nothing about what they spend. */
   minPlate: 3,
-  /** A price over this many times the median of the rest is a splurge, not their usual. */
+  /** A price over this many times the median of the kept prices is a splurge, not their usual. */
   outlierRatio: 2.5,
   /** B from plates needs this many kept prices (fewer: no B from plates)... */
   minPlates: 3,
@@ -857,7 +858,7 @@ function quartiles(sorted: readonly number[]): Pick<Budget, "median" | "lo" | "h
  * (`plates`) and the median menu prices of the places they have been (`places`).
  * Null when neither is enough: a missing B is neutral, never a guess. Plates
  * under minPlate are dropped, then any over outlierRatio times the median of
- * the rest; 3 or more left give B with trust min(1, kept / 6). Failing that,
+ * those kept; 3 or more left give B with trust min(1, kept / 6). Failing that,
  * 3 or more known places give B at a trust of half at most. With both, B is
  * plateInB plates and the rest places, at the plates' trust.
  */
@@ -1830,13 +1831,18 @@ function chooseReason(
 /**
  * "Fits your usual $11–18 plate": the place's price sits inside the range they
  * spend in (a fit of reasonFit or more), and that range is trusted at half or
- * more. The dollars are the scan's rounded quartiles. It never says a place is
- * too dear or too cheap: a poor fit is simply not claimed.
+ * more. The dollars are the scan's rounded quartiles, and the line is only said
+ * of a place whose own price rounds to a dollar inside them: the fit band the
+ * score reads is wider than the printed range, so a fit alone could print "$9–16"
+ * for a $18 place. It never says a place is too dear or too cheap: a poor fit is
+ * simply not claimed.
  */
 function priceReason(s: Scored, scan: TasteScan): ForMeReason | null {
   const u = scan.budget;
   if (!u || s.Pr == null || s.Pf == null) return null;
   if (u.conf < FORME_BUDGET.reasonConf || s.Pf < FORME_BUDGET.reasonFit) return null;
+  const shown = Math.round(s.Pr);
+  if (shown < u.lo || shown > u.hi) return null;
   const range = u.lo === u.hi ? `$${u.lo}` : `$${u.lo}\u2013${u.hi}`;
   return { kind: "price", text: clipReason(`Fits your usual ${range} plate`) };
 }

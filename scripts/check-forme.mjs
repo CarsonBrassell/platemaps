@@ -211,6 +211,8 @@ function checkRank(label, input, res) {
       if (reason.kind === "price") {
         assert.ok(scan.budget && scan.budget.conf >= FORME_BUDGET.reasonConf, fail("price reason without a trusted usual plate"));
         assert.ok(s.Pr != null && s.Pf != null && s.Pf >= FORME_BUDGET.reasonFit, fail(`price reason off a fit of ${s.Pf}`));
+        // The sentence prints the range, so the place's own price must sit inside what is printed.
+        assert.ok(Math.round(s.Pr) >= scan.budget.lo && Math.round(s.Pr) <= scan.budget.hi, fail(`price reason for $${s.Pr} outside the printed $${scan.budget.lo}-${scan.budget.hi}`));
         assert.ok(/^Fits your usual \$\d+(\u2013\d+)? plate$/.test(reason.text), fail(`price wording: ${reason.text}`));
       }
     }
@@ -1956,6 +1958,14 @@ await okAsync("the discover route, with a mocked session: only the listed accoun
     assert.deepEqual(plain.calls, ["limitOrReject:discover:ip", "getDiscoverPage"]);
     assert.deepEqual(plain.pages, [{ search: "cuisine=Thai", opts: { shown: 48, here } }]);
     assert.deepEqual(plain.body, { wire: { page: true } });
+    // Coordinates are numbers or nothing: null, an empty string or a list is not the equator.
+    for (const bogus of [{ lat: null, lng: null }, { lat: "", lng: "" }, { lat: [], lng: [] }, { lat: false, lng: true }, { lat: 91, lng: 0 }, { lat: 0 }, "32.7,-117.1", null]) {
+      const bogusPlain = await post({ search: "cuisine=Thai", shown: 48, coords: bogus }, null);
+      assert.equal(bogusPlain.status, 200);
+      assert.equal(bogusPlain.pages[0].opts.here, null, `coords ${JSON.stringify(bogus)} are no position`);
+    }
+    const origin = await post({ search: "cuisine=Thai", shown: 48, coords: { lat: 0, lng: 0 } }, null);
+    assert.deepEqual(origin.pages[0].opts.here, { lat: 0, lng: 0 }, "a real 0,0 is still a number");
     assert.ok(!plain.headers.some(([k]) => k === "cache-control" || k === "vary"), "main sets no cache headers on this answer");
 
     // Everyone outside the list, signed in or out, asking for For me with prefs
@@ -3090,13 +3100,19 @@ ok("budget: the reason is the price line only on a tail place that fits, and nev
   const matchId = res.order[0];
   assert.ok(["like", "pick", "friends", "cuisine"].includes(kindOf(matchId)), `the match says why it was picked: ${kindOf(matchId)}`);
   const wording = `Fits your usual $11${DASH}13 plate`;
-  const fits = ["u1", "u2", "u7", "u8"].filter((id) => id !== matchId);
+  const fits = ["u1", "u2"].filter((id) => id !== matchId);
   for (const id of fits) {
     assert.deepEqual(res.reasonOf(id).kind, "price", `${id} fits`);
     assert.equal(res.reasonOf(id).text, wording);
   }
   // A poor fit, a price nobody wrote down: the rating line it always had.
   for (const id of ["u3", "u4", "u5", "u6", "u9"]) assert.equal(kindOf(id), "rated", `${id} is not claimed to fit`);
+  // A fit of 0.9 or more is not enough: u7 ($17, fit 0.94) and u8 ($8, fit 1) score as fits
+  // but sit outside the printed $11-13, so the line is not said of them.
+  for (const id of ["u7", "u8"]) {
+    assert.ok(scoredId(scoreAll(input), id).Pf >= FORME_BUDGET.reasonFit, `${id} scores as a fit`);
+    if (id !== matchId) assert.equal(kindOf(id), "rated", `${id} is outside the printed range`);
+  }
   // The text is words and two numbers; the dash is an en dash.
   assert.ok(wording.includes(DASH) && !wording.includes("-") && wording.length <= WEIGHTS.reasonMaxChars);
   const all = res.order.map((id) => res.reasonOf(id).text).join("\n");
@@ -3138,7 +3154,8 @@ ok("budget: a like, a pick, a friend or a cuisine reason is kept over the price 
 });
 
 ok("budget: one price, said as one dollar", () => {
-  const world = priceWorld(THAI_PRICES);
+  // u10 prices $12.40, which rounds to the one dollar the line prints.
+  const world = priceWorld([...THAI_PRICES, ["u10", 12.4]]);
   const input = { ...base, ...world, prefs: prefs({ loves: ["Thai"] }), platePrices: [12, 12, 12, 12, 12, 12] };
   const res = rankTaste(input);
   checkRank("budget one price", input, res);
@@ -3147,6 +3164,9 @@ ok("budget: one price, said as one dollar", () => {
   const tailFit = res.order.slice(res.matched).find((id) => res.reasonOf(id).kind === "price");
   assert.ok(tailFit, "someone fits $12");
   assert.equal(res.reasonOf(tailFit).text, "Fits your usual $12 plate");
+  // $13 scores as a full fit too, but is not "$12": it gets no price line.
+  assert.equal(scoredId(scoreAll(input), "u2").Pf, 1);
+  if (res.order.indexOf("u2") >= res.matched) assert.equal(res.reasonOf("u2").kind, "rated");
 });
 
 ok("budget: it is private to the viewer's own POST, and Your taste never sees it", () => {
@@ -3728,17 +3748,19 @@ await okAsync("profile: the line is one sentence, numbers in mono, parts left ou
   const text = (markup) => markup.replace(/<[^>]*>/g, "");
   const mono = (s) => `<span class="font-mono tabular-nums">${s}</span>`;
   const full = { budget: { lo: 11, hi: 18 }, radiusMi: 7, cuisines: ["Pizza", "Coffee", "Breakfast"] };
-  const sentence = `Tuned to you · $11${DASH}18 a plate · usually within 7 mi · pizza, coffee, breakfast`;
+  const sentence = `Tuned to you · $11${DASH}18 a plate · usually within 7 mi · Pizza, Coffee, Breakfast`;
   const markup = html(full, "x-line");
   assert.equal(text(markup), sentence);
-  assert.equal(markup, `<p class="x-line">Tuned to you · ${mono(`$11${DASH}18`)} a plate · usually within ${mono("7 mi")} · pizza, coffee, breakfast</p>`);
+  assert.equal(markup, `<p class="x-line">Tuned to you · ${mono(`$11${DASH}18`)} a plate · usually within ${mono("7 mi")} · Pizza, Coffee, Breakfast</p>`);
   // Each part is left out on its own, in order, with no stray separator.
-  assert.equal(text(html({ ...full, budget: null })), "Tuned to you · usually within 7 mi · pizza, coffee, breakfast");
-  assert.equal(text(html({ ...full, radiusMi: null })), `Tuned to you · $11${DASH}18 a plate · pizza, coffee, breakfast`);
+  assert.equal(text(html({ ...full, budget: null })), "Tuned to you · usually within 7 mi · Pizza, Coffee, Breakfast");
+  assert.equal(text(html({ ...full, radiusMi: null })), `Tuned to you · $11${DASH}18 a plate · Pizza, Coffee, Breakfast`);
   assert.equal(text(html({ ...full, cuisines: [] })), `Tuned to you · $11${DASH}18 a plate · usually within 7 mi`);
   assert.equal(text(html({ budget: null, radiusMi: 12, cuisines: [] })), "Tuned to you · usually within 12 mi");
   assert.equal(text(html({ budget: { lo: 12, hi: 12 }, radiusMi: null, cuisines: [] })), "Tuned to you · $12 a plate");
-  assert.equal(text(html({ budget: null, radiusMi: null, cuisines: ["BBQ", "Thai"] })), "Tuned to you · BBQ, thai");
+  // The stored casing, as the cards below print it: acronyms, nationalities and dish names alike.
+  // (`text` only strips tags, so the markup's escaped ampersand stays escaped.)
+  assert.equal(text(html({ budget: null, radiusMi: null, cuisines: ["BBQ", "African", "Coffee & Tea"] })), "Tuned to you · BBQ, African, Coffee &amp; Tea");
   // Nothing to say, nothing printed: no "Tuned to you" on its own.
   assert.equal(html({ budget: null, radiusMi: null, cuisines: [] }, "x-line"), "");
   assert.deepEqual(profileParts({ budget: null, radiusMi: null, cuisines: [] }), []);
@@ -3756,6 +3778,15 @@ await okAsync("profile: the line is one sentence, numbers in mono, parts left ou
     assert.match(src, /import \{ ForMeProfileLine \} from "@\/components\/ForMeProfileLine"/, `${name} imports it`);
     assert.equal((src.match(/<ForMeProfileLine/g) ?? []).length, 1, `${name} mounts it once`);
     assert.match(src, /\{info\.profile && \(\s*<ForMeProfileLine\s+profile=\{info\.profile\}/, `${name} mounts it only with a profile`);
+    // The header sentence carries a number ("From the 14 places you've been"), so it is set in mono like every other.
+    assert.match(src, /import \{ ReasonText \} from "@\/components\/ReasonText"/, `${name} imports ReasonText`);
+    assert.match(src, /<p[^>]*>\s*<ReasonText text=\{info\.header\} \/>\s*<\/p>/, `${name}: the header goes through ReasonText`);
+    assert.ok(!/\{info\.header\}\s*<\/p>/.test(src), `${name}: no bare header text`);
+  }
+  {
+    const { ReasonText } = await import("../src/components/ReasonText.tsx");
+    const header = renderToStaticMarkup(createElement(ReasonText, { text: "From the 14 places you've been, plus Breakfast & Brunch" }));
+    assert.equal(header, `From the ${mono("14")} places you&#x27;ve been, plus Breakfast &amp; Brunch`);
   }
   const phoneUse = /<ForMeProfileLine\s+profile=\{info\.profile\}\s+className="([^"]+)"/.exec(phone);
   assert.ok(phoneUse, "the phone passes a class");
