@@ -37,7 +37,7 @@ export function TastePickCard({
   score?: PlateScore | null;
   /** The one line that says why this place is here. */
   reason?: string | null;
-  /** For me only: why the place is good, in words ("Highly rated · 1,017 reviews"). */
+  /** Dish-pick accounts only: why the place is good, in words ("Highly rated · 1,017 reviews"). */
   quality?: QualityNote | null;
   /** How far from the visitor, from `distanceLabel`; null or omitted prints nothing. */
   distance?: string | null;

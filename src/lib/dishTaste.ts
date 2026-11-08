@@ -538,6 +538,8 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     visits.set(p.restaurantId, v);
   }
   const cuisineWeight = new Map<string, number>();
+  // Cuisines of places he actually posted at; secondary tags only tint the score.
+  const eaten = new Set<string>();
   let cuisineTotal = 0;
   const bump = (cuisine: string, w: number) => {
     cuisineWeight.set(cuisine, (cuisineWeight.get(cuisine) ?? 0) + w);
@@ -548,6 +550,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     if (!r?.cuisine) continue;
     const w = recency(v.last, now) * Math.min(2, 1 + 0.5 * (v.days.size - 1));
     bump(r.cuisine, w);
+    eaten.add(r.cuisine);
     for (const s of r.cuisineSecondary ?? []) bump(s, w * 0.4);
   }
   const cuisineAffinity = (cuisine: string | null): number =>
@@ -569,6 +572,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
 
   // Never recommend what they have been to, or a branch of it.
   const seen = new Set<string>([...visits.keys(), ...prefs.been, ...prefs.hidden]);
+  const skipped = new Set(prefs.skips);
   const seenChains = new Set<string>();
   for (const id of seen) {
     const r = byId.get(id);
@@ -629,6 +633,8 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     for (const [item, e] of acc) {
       // A lone shared word needs company: "naughty" alone is a brand's adjective, not a taste.
       if (e.names === 0 || (e.names === 1 && e.top < c.loneIdf)) continue;
+      // "Bucatini or Rigatoni" is a choice line, not a dish he would recognise.
+      if (e.names === 1 && /\bor\b/i.test(index.itemName[item])) continue;
       const price = index.itemPrice[item] > 0 ? index.itemPrice[item] : null;
       const lone = e.names === 1 && e.shared < 2 ? c.loneHit : 1;
       const v = Math.min(1, e.v / total) * s.w * lone * (s.kind === DRINK ? c.drinkHit : 1);
@@ -642,7 +648,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
 
   const cands: { cand: Cand; M: number; Q: number; D: number; Cc: number }[] = [];
   for (const r of restaurants) {
-    if (seen.has(r.id) || seenChains.has(chainKey(r))) continue;
+    if (seen.has(r.id) || seenChains.has(chainKey(r)) || (r.cuisine && skipped.has(r.cuisine))) continue;
     const rid = index.ridIndex.get(r.id);
     const hits = (rid === undefined ? [] : (best.get(rid) ?? [])).slice().sort((a, b) => b.v - a.v);
     const h1 = hits[0] ?? null;
@@ -669,7 +675,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     .sort((a, b) => b.score - a.score);
   // Below the gate a match says nothing true, so these picks stand on cuisine alone.
   const fallback = cands
-    .filter((x) => x.M < c.gate && x.Cc > 0)
+    .filter((x) => x.M < c.gate && x.Cc > 0 && x.cand.r.cuisine && eaten.has(x.cand.r.cuisine))
     .map((x): Cand => ({ ...x.cand, hit: null }))
     .sort((a, b) => b.score - a.score);
 
