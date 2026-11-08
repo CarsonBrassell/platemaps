@@ -26,7 +26,7 @@ import {
   captionSours, nameEvidence, tagCaption, tagDish,
 } from "../src/lib/flavor.ts";
 import { EMPTY_PREFS } from "../src/lib/taste.ts";
-import { orderOrigin } from "../src/lib/discoverFilters.ts";
+import { orderOrigin, queryPosition } from "../src/lib/discoverFilters.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const src = (p) => readFileSync(root + p, "utf8");
@@ -1280,6 +1280,33 @@ ok("a gated account's position prices the page and does not reorder it, unless N
   };
   walkSrc("src");
   assert.deepEqual(senders, ["src/lib/useDiscoverQuery.ts"], "nothing else sends distanceOnly");
+});
+
+ok("no request is built from a position until the account has answered, and the position is untouched after", () => {
+  const here = { lat: 32.73, lng: -117.15 };
+  // While /api/auth/me is in flight a saved address or a granted permission can
+  // already have coordinates; a request built then is the wrong kind for the
+  // gated accounts (no `distanceOnly`, so nearest-first) and the grid reshuffles.
+  assert.equal(queryPosition(here, true), null, "held while the account is loading");
+  assert.equal(queryPosition(null, true), null);
+  // After the answer the same object passes through, so nothing keyed on it re-runs and
+  // a viewer who is not gated is asked with exactly the coordinates they always were.
+  assert.equal(queryPosition(here, false), here, "the position is passed through untouched");
+  assert.equal(queryPosition(null, false), null);
+
+  const q = src("src/lib/useDiscoverQuery.ts");
+  assert.match(q, /const \{ loading: accountLoading \} = useAuth\(\);/);
+  assert.match(q, /const coords = queryPosition\(nearby\.coords, accountLoading\);/, "the request reads the held position");
+  // `nearby.coords` is read in this file in two places only: that line, and the
+  // effect that asks for a position (which is about asking, not about a request).
+  const reads = q.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "").match(/nearby\.coords/g) ?? [];
+  assert.equal(reads.length, 3, "no request path reads nearby.coords directly");
+  assert.match(q, /if \(wantsPosition && !nearby\.coords && nearby\.state === "idle"\) requestPosition\(\);/);
+  // The account answers once per load; a client navigation finds it already answered,
+  // and a blip that never answers still sets `loading` false (lib/auth.tsx), so this
+  // is not a way to hold everyone's nearby results forever.
+  const auth = src("src/lib/auth.tsx");
+  assert.match(auth, /setLoading\(false\);/);
 });
 
 /* ---------- 3. render parity ---------- */

@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useForMeAccess } from "@/lib/auth";
+import { useAuth, useForMeAccess } from "@/lib/auth";
 import { useNearby } from "@/lib/nearby";
 import { publishQuery, useQueryString } from "@/lib/queryString";
 import { fromWire } from "@/lib/discoverWire";
-import { PAGE_SIZE, hasFilterParams, parseShown } from "@/lib/discoverFilters";
+import { PAGE_SIZE, hasFilterParams, parseShown, queryPosition } from "@/lib/discoverFilters";
 import type { DiscoverPage } from "@/lib/discover";
 
 /**
@@ -37,7 +37,11 @@ import type { DiscoverPage } from "@/lib/discover";
  * priced but keeps the order a request without a position gets (Nearby, the
  * filter, still sorts nearest-first). For everyone else none of that runs:
  * nothing here asks for a position, a failed request stays silent, and the
- * body and the answer are what they always were.
+ * body and the answer are what they always were. The one thing that does reach
+ * them is timing: on a hard load a position waits for the account's answer
+ * (`queryPosition`) so the request is the right kind for whoever it turns out
+ * to be, and a client navigation, where the account is already known, does not
+ * wait.
  */
 
 /* The URL, as the client sees it, comes from lib/queryString.ts — one
@@ -86,10 +90,17 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
   // for an account that is not on lib/forMeGate.ts.
   const nearby = useNearby({ askOnLoad: true });
   const access = useForMeAccess();
+  const { loading: accountLoading } = useAuth();
   const [answer, setAnswer] = useState<Answer | null>(null);
 
   const { search, shown } = filterQueryOf(raw);
-  const coords = nearby.coords;
+  // The request is built from this, not from `nearby.coords`: a saved address
+  // or a granted permission can hand over coordinates before the account has
+  // answered, and a request sent then is the wrong kind for the gated accounts
+  // (nearest-first, which reshuffles the grid when `priced` turns on and a
+  // second request replaces it). Held for the one account answer on a hard
+  // load, for everyone alike; see `queryPosition`.
+  const coords = queryPosition(nearby.coords, accountLoading);
   const bare = search === "" && shown === PAGE_SIZE;
   // A page asked for with a position is a different page for the gated
   // accounts (priced, not reordered: `distanceOnly` below), so the account is
