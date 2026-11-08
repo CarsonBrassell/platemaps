@@ -131,6 +131,36 @@ ok("a poorly rated place is not recommended on a dish alone", () => {
   assert.ok(!ids(rank()).includes("m2"));
 });
 
+ok("quality floor: rating above 4.0 on 5+ reviews, never backfilled below it", () => {
+  const rs = [];
+  const ds = [];
+  const add = (id, rating, reviews, cuisine, dish) => {
+    rs.push({
+      id, name: "Floor " + id, cuisine, cuisineTags: "", neighborhood: "North Park", distance: "1.0 mi", hours: null,
+      lat: 32.72, lng: -117.16, rating, reviewCount: reviews, priceBand: null,
+    });
+    ds.push({ rid: id, name: dish });
+  };
+  add("hA", 4.5, 600, "American", "Hot Honey Chicken");
+  add("hB", 4.4, 500, "Japanese", "Mushroom Kimchi Ramen");
+  add("hC", 4.6, 700, "Coffee & Tea", "Banana Matcha");
+  add("ok1", 4.8, 900, "American", "Hot Honey Chicken Sandwich");
+  add("small", 4.6, 6, "Japanese", "Kimchi Ramen Bowl");
+  add("few", 5.0, 4, "Coffee & Tea", "Matcha Banana Latte");
+  add("edge", 4.0, 800, "American", "Hot Honey Chicken Wrap");
+  add("low", 3.9, 800, "Japanese", "Spicy Kimchi Ramen");
+  add("none", null, null, "American", "Hot Honey Chicken Basket");
+  add("cuis", 4.0, 300, "American", "Dish9zz");
+  const idx = buildDishIndex(rs.map((r) => r.id), ds, []);
+  const got = ids(rankDishes({ index: idx, restaurants: rs, plates: {}, ratingMean: 4.3, posts: POSTS, prefs: EMPTY_PREFS, now: NOW }));
+  assert.ok(got.includes("ok1"), "a well-rated match stays");
+  assert.ok(got.includes("small"), "4.6 on 6 reviews is included");
+  for (const id of ["few", "edge", "low", "none", "cuis"]) assert.ok(!got.includes(id), id + " is under the floor");
+  assert.ok(got.length < 12, "the row is shorter rather than backfilled");
+  assert.equal(DISH_TASTE.pickRatingAbove, 4.0);
+  assert.equal(DISH_TASTE.pickMinReviews, 5);
+});
+
 ok("higher-rated ranks higher at equal match", () => {
   const got = ids(rank({ prefs: { ...EMPTY_PREFS, been: ["been"], hidden: ["hid"] } }));
   assert.ok(got.includes("m3") && got.indexOf("m1") < got.indexOf("m3"), "4.8 before 4.4");

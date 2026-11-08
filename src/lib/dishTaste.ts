@@ -125,6 +125,10 @@ export const DISH_TASTE = {
   /** A rating on fewer reviews than this is trusted a little less (the score keeps `reviewFloor` of itself at none). */
   reviewFull: 400,
   reviewFloor: 0.88,
+  /** Hard floor on every pick: the place's own rating must be strictly above this (4.0 itself fails, 4.1 passes). */
+  pickRatingAbove: 4.0,
+  /** ...on at least this many reviews. Deliberately low, so small underground places stay findable. */
+  pickMinReviews: 5,
 } as const;
 
 /** One menu item as the loader reads it. */
@@ -1244,6 +1248,9 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   const cands: { cand: Cand; M: number; Q: number; D: number; Cc: number; raw: number }[] = [];
   for (const r of restaurants) {
     if (seen.has(r.id) || seenChains.has(chainKey(r)) || (r.cuisine && skipped.has(r.cuisine))) continue;
+    // The hard quality floor, for every kind of pick: no rating or too few reviews never qualifies, and nothing
+    // below it is backfilled to fill the row.
+    if (!(r.rating != null && r.rating > c.pickRatingAbove && (r.reviewCount ?? 0) >= c.pickMinReviews)) continue;
     const rid = index.ridIndex.get(r.id);
     let hits = rid === undefined ? [] : (best.get(rid) ?? []);
     // A place whose profile says it specialises in one of their families is judged on that family alone
