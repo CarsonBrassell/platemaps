@@ -134,6 +134,7 @@ export function TasteSection({
       restaurant={p.restaurant}
       score={p.plateScore}
       reason={p.reason.text}
+      reasonLines={3}
       quality={qualityNote(p.restaurant.rating, p.restaurant.reviewCount)}
       distance={distanceLabel(p.restaurant, coords)}
       shape="crop"
@@ -149,7 +150,7 @@ export function TasteSection({
         <h2 id="your-taste" className="mono-label text-zinc-500">
           Your taste
         </h2>
-        <span className="mono-label text-zinc-400">
+        <span className={access ? "mono-label text-zinc-500" : "mono-label text-zinc-400"}>
           {taste.header}
           {!access && (
             <>

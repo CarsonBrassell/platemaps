@@ -20,7 +20,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { DISH_TASTE, buildDishIndex, postWeights, rankDishes, termsOf } from "../src/lib/dishTaste.ts";
+import { DISH_TASTE, buildDishIndex, clipWords, displayDish, postWeights, rankDishes, termsOf } from "../src/lib/dishTaste.ts";
 import { EMPTY_PREFS } from "../src/lib/taste.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
@@ -93,6 +93,14 @@ ok("terms: words and pairs, stemmed, no stop words", () => {
   const t = termsOf("Hot Honey Chicken Wings & the Fries");
   for (const want of ["hot", "honey", "hot honey", "honey chicken", "wing"]) assert.ok(t.includes(want), want);
   assert.ok(!t.includes("the"));
+});
+
+ok("a clipped item keeps whole words and loses only the tail", () => {
+  assert.equal(clipWords("Crispy Hot Honey Chicken Sandwich Combo", 30), "Crispy Hot Honey Chicken…");
+  assert.equal(clipWords("Koji-Marinated Chicken Wings Basket", 28), "Koji-Marinated Chicken…");
+  assert.equal(clipWords("Pad Thai", 20), "Pad Thai");
+  assert.equal(displayDish("BABY BACK RIB TICKLER®"), "Baby Back Rib Tickler");
+  assert.equal(displayDish("Seafood Bucatini"), "Seafood Bucatini");
 });
 
 ok("a dish the viewer posted finds the same dish elsewhere", () => {

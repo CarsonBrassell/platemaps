@@ -25,6 +25,7 @@ export function TastePickCard({
   restaurant,
   score,
   reason,
+  reasonLines,
   quality,
   distance,
   shape = "crop",
@@ -37,6 +38,7 @@ export function TastePickCard({
   score?: PlateScore | null;
   /** The one line that says why this place is here. */
   reason?: string | null;
+  reasonLines?: 2 | 3;
   /** Dish-pick accounts only: why the place is good, in words ("Highly rated · 1,017 reviews"). */
   quality?: QualityNote | null;
   /** How far from the visitor, from `distanceLabel`; null or omitted prints nothing. */
@@ -58,6 +60,7 @@ export function TastePickCard({
           shape={shape}
           match={match}
           reason={reason}
+          reasonLines={reasonLines}
           quality={quality}
           distance={distance}
         />

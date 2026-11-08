@@ -72,6 +72,7 @@ export function RestaurantCard({
   match = NO_MATCHES,
   shape = "crop",
   reason = null,
+  reasonLines = 2,
   quality = null,
   distance,
 }: {
@@ -102,6 +103,8 @@ export function RestaurantCard({
    * fits in at most three lines.
    */
   reason?: string | null;
+  /** Lines the reason may take; the dish picks (84 chars on web) pass 3. */
+  reasonLines?: 2 | 3;
   /**
    * Your taste picks only: why the place is good, in words and a review count
    * ("Highly rated · 1,017 reviews"). Never the blend number or a star.
@@ -255,7 +258,7 @@ export function RestaurantCard({
         {why && (
           <div className="mb-2.5 space-y-0.5">
             {reason && (
-              <p className="line-clamp-3 text-xs font-medium text-zinc-600">
+              <p className={`${reasonLines === 3 ? "line-clamp-3" : "line-clamp-2"} text-xs font-medium text-zinc-600`}>
                 <ReasonText text={reason} />
               </p>
             )}

@@ -39,6 +39,7 @@ export function PhoneRestaurantCardGrid({
   aspect = null,
   distance = null,
   reason = null,
+  reasonLines = 2,
   quality = null,
 }: {
   restaurant: RestaurantView;
@@ -54,6 +55,8 @@ export function PhoneRestaurantCardGrid({
    * the photo.
    */
   reason?: string | null;
+  /** Lines the reason may take; the dish picks (72 chars on phone) pass 3. */
+  reasonLines?: 2 | 3;
   /**
    * Your taste picks only: why the place is good, in words and a review count
    * ("Highly rated · 1,017 reviews"). Never the blend number or a star.
@@ -204,7 +207,7 @@ export function PhoneRestaurantCardGrid({
             answer a question the visitor typed, this is the app's own
             explanation, and the accent is spent on what they asked for. */}
         {reason && (
-          <p className="mt-1 line-clamp-3 text-[11px] leading-snug text-zinc-600">
+          <p className={`mt-1 ${reasonLines === 3 ? "line-clamp-3" : "line-clamp-2"} text-[11px] leading-snug text-zinc-600`}>
             <ReasonText text={reason} />
           </p>
         )}

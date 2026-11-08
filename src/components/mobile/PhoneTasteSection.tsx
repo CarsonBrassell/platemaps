@@ -397,6 +397,7 @@ export function PhoneTasteSection({
                   score={p.plateScore ?? undefined}
                   distance={distanceLabel(p.restaurant, coords)}
                   reason={p.reason.short}
+                  reasonLines={3}
                   quality={qualityNote(p.restaurant.rating, p.restaurant.reviewCount)}
                 />
               ) : (

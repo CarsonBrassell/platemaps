@@ -95,7 +95,7 @@ export const DISH_TASTE = {
   /** The weight of the viewer's lowest-rated dish; their highest weighs 1. */
   ratingFloor: 0.4,
   /** In the final order a pick weighs `score` x (this + the rest x its seed's rating weight). */
-  orderFloor: 0.6,
+  orderFloor: 0.3,
 } as const;
 
 /** One menu item as the loader reads it. */
@@ -537,13 +537,27 @@ function clip(text: string, max: number): string {
 }
 
 /** Shortens at a word, never inside one. */
-function clipWords(text: string, max: number): string {
+export function clipWords(text: string, max: number): string {
   const t = text.normalize("NFC");
   if (t.length <= max) return t;
   const cut = t.slice(0, max - 1);
   const at = cut.lastIndexOf(" ");
-  const body = (at >= 8 ? cut.slice(0, at) : cut).replace(/[s&,-–—]+$/, "").replace(/s+(and|with|or|in|on|of|the|a)$/i, "");
+  const body = (at >= 8 ? cut.slice(0, at) : cut).replace(/[\s&,\-–—]+$/, "").replace(/\s+(and|with|or|in|on|of|the|a)$/i, "");
   return `${body.trimEnd()}…`;
+}
+
+/** The viewer's dish as a label: no ®/™, and an all-caps post title is title-cased. */
+export function displayDish(dish: string): string {
+  const d = dish.replace(/[®™©]/g, "").replace(/\s+/g, " ").trim();
+  if (d !== d.toUpperCase()) return d;
+  return d.toLowerCase().replace(/(^|[\s-])([a-z])/g, (_m, a: string, b: string) => a + b.toUpperCase());
+}
+
+/** Clips the pick's item at a word, or null when what is left would no longer hold the matched term. */
+function clipItem(item: string, max: number, term: string): string | null {
+  const out = clipWords(item, max);
+  if (out === item.normalize("NFC") || out.toLowerCase().includes(term.toLowerCase())) return out;
+  return null;
 }
 
 /**
@@ -551,12 +565,14 @@ function clipWords(text: string, max: number): string {
  * When it is too long the pick's own item gives way, at a word; the viewer's
  * dish and its place are what make the line true, so they are not cut.
  */
-function dishLine(item: string, dish: string, place: string, max: number): string {
+function dishLine(item: string, rawDish: string, place: string, max: number, term: string): string {
+  const dish = displayDish(rawDish);
   const tail = `like your ${dish} at ${place}`;
   const full = `${item} — ${tail}`;
   if (full.length <= max) return full;
   const room = max - tail.length - 3;
-  if (room >= 12) return `${clipWords(item, room)} — ${tail}`;
+  const clipped = room >= 12 ? clipItem(item, room, term) : null;
+  if (clipped) return `${clipped} — ${tail}`;
   const fixed = `Like your  at ${place}`.length;
   return `Like your ${clipWords(dish, Math.max(10, max - fixed))} at ${place}`;
 }
@@ -577,14 +593,14 @@ function reasonOf(hit: Hit | null, seeds: readonly Seed[], cuisine: string | nul
   if (s.placeLevel) {
     return {
       kind: "dish",
-      text: `${clipWords(item, c.textChars - place.length - 8)} — like ${place}`,
-      short: `${clipWords(item, c.shortChars - place.length - 8)} — like ${place}`,
+      text: `${clipItem(item, c.textChars - place.length - 8, hit.term) ?? clipWords(item, c.textChars - place.length - 8)} — like ${place}`,
+      short: `${clipItem(item, c.shortChars - place.length - 8, hit.term) ?? clipWords(item, c.shortChars - place.length - 8)} — like ${place}`,
     };
   }
   return {
     kind: "dish",
-    text: dishLine(item, s.dish, place, c.textChars),
-    short: dishLine(item, s.dish, place, c.shortChars),
+    text: dishLine(item, s.dish, place, c.textChars, hit.term),
+    short: dishLine(item, s.dish, place, c.shortChars, hit.term),
   };
 }
 
