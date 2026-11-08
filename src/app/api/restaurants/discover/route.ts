@@ -137,7 +137,7 @@ export async function POST(req: Request) {
   // rejects (a failed read is an empty list), so there is nothing to catch if
   // `resolveTasteContext` throws first.
   const traitRows = loadProfileTraits();
-  const ctx = await resolveTasteContext({ user, corpus, prefs, postedSignals: true });
+  const ctx = await resolveTasteContext({ user, corpus, prefs, postedSignals: true, platePrices: true });
   const traits = traitIndexFor(corpus.restaurants, await traitRows);
   const page = await getDiscoverPage(search, {
     shown: limit,
@@ -150,6 +150,7 @@ export async function POST(req: Request) {
       favoriteCuisine: ctx.favoriteCuisine,
       friendVisits: ctx.friendVisits,
       postedSignals: ctx.postedSignals,
+      platePrices: ctx.platePrices,
       traits,
       ratingMean: corpus.ratingMean,
     }),

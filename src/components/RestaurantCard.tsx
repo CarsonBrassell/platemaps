@@ -6,6 +6,7 @@ import { OpenStatePill } from "@/components/OpenStatePill";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel, type QualityNote } from "@/lib/ratingDisplay";
 import { QualityLine } from "@/components/QualityLine";
+import { ReasonText } from "@/components/ReasonText";
 import { photoCreditFor } from "@/lib/photoCredit";
 import { photoRatio } from "@/lib/photoShape";
 import { restaurantHref } from "@/lib/restaurantHref";
@@ -257,7 +258,11 @@ export function RestaurantCard({
             because orange on a card means "this is what you filtered for". */}
         {why && (
           <div className="mb-2.5 space-y-0.5">
-            {reason && <p className="line-clamp-2 text-xs font-medium text-zinc-600">{reason}</p>}
+            {reason && (
+              <p className="line-clamp-2 text-xs font-medium text-zinc-600">
+                <ReasonText text={reason} />
+              </p>
+            )}
             {/* For me: who has been, then why the place is good. Regular weight
                 so the reason stays the lead line of the three. */}
             {friends && <p className="line-clamp-2 text-xs text-zinc-600">{friends}</p>}

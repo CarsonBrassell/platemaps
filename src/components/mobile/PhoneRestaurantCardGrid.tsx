@@ -6,6 +6,7 @@ import { photoRatio } from "@/lib/photoShape";
 import { StarIcon } from "@/components/icons";
 import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel, type QualityNote } from "@/lib/ratingDisplay";
 import { QualityLine } from "@/components/QualityLine";
+import { ReasonText } from "@/components/ReasonText";
 import type { AspectHighlight } from "@/components/RestaurantCard";
 import { restaurantHref } from "@/lib/restaurantHref";
 
@@ -210,7 +211,9 @@ export function PhoneRestaurantCardGrid({
             answer a question the visitor typed, this is the app's own
             explanation, and the accent is spent on what they asked for. */}
         {reason && (
-          <p className="mt-1 line-clamp-2 text-[11px] leading-snug text-zinc-600">{reason}</p>
+          <p className="mt-1 line-clamp-2 text-[11px] leading-snug text-zinc-600">
+            <ReasonText text={reason} />
+          </p>
         )}
         {/* For me: the second half of the answer. A friend who has been (when
             the reason is about something else), then why the place is good. The

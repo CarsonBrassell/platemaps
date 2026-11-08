@@ -177,8 +177,10 @@ function median(values: number[]): number {
  * corpus carry a range — `"$13.99 - $29.99"` — and stripping non-digits turned
  * that into `"13.9929.99"`, which `parseFloat` reads as 13.9929. It never threw,
  * and it landed near the low end, so it went unnoticed; it was still arbitrary.
+ * Exported for For me's budget, which reads the viewer's own plate prices the
+ * same way the price bands read a menu's.
  */
-function parsePrice(price: string): number | null {
+export function parsePrice(price: string): number | null {
   const match = /\d+(?:\.\d{1,2})?/.exec(price);
   if (!match) return null;
   const amount = Number.parseFloat(match[0]);

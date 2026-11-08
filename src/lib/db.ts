@@ -2,7 +2,7 @@ import { del } from "@vercel/blob";
 import { randomUUID } from "node:crypto";
 import type { MatchedDish, Restaurant, RestaurantView } from "@/data/restaurantTypes";
 import type { Dish } from "@/data/dishes";
-import type { PriceBand } from "@/data/priceBands";
+import { parsePrice, type PriceBand } from "@/data/priceBands";
 import type { Hours } from "@/lib/openState";
 import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
 import type { RatedPlate } from "@/lib/ratedPlates";
@@ -1583,6 +1583,25 @@ export async function postedSignalsBy(userId: string): Promise<PostedSignal[]> {
   }));
 }
 
+/**
+ * What a user has paid for the plates they posted, in dollars: one number per
+ * post that carries a price the app can read (`parsePrice`, the same reading the
+ * price bands use). Unsorted, and unfiltered: the budget term (lib/taste.ts)
+ * drops the junk and the outliers itself. A read only For me asks for. SELECT only.
+ */
+export async function platePricesBy(userId: string): Promise<number[]> {
+  const rows = await sql`
+    SELECT price FROM posts
+    WHERE user_id = ${userId} AND price IS NOT NULL AND price <> ''
+  `;
+  const out: number[] = [];
+  for (const r of rows) {
+    const amount = parsePrice(String(r.price));
+    if (amount != null) out.push(amount);
+  }
+  return out;
+}
+
 export async function createPost(data: {
   id: string;
   userId: string;
@@ -2505,18 +2524,33 @@ export async function getFriendRestaurantVisits(viewerId: string): Promise<Frien
  * "everything imputed", never as a failed request.
  */
 export async function getProfileTraitRows(): Promise<
-  { restaurantId: string; dishTypes: string[]; service: string | null }[]
+  {
+    restaurantId: string;
+    dishTypes: string[];
+    service: string | null;
+    menuStats: { median: number; priced: number } | null;
+  }[]
 > {
+  // The median price rides along (profile->'menu_stats'): For me's budget term
+  // reads it, and it is as shared as the dish terms are. A profile without one,
+  // or with a value that is not a number, comes back null.
   const rows = await sql`
-    SELECT restaurant_id, dish_types, profile->>'service' AS service
+    SELECT restaurant_id, dish_types, profile->>'service' AS service,
+           profile->'menu_stats'->>'median' AS price_median,
+           profile->'menu_stats'->>'priced' AS price_priced
     FROM restaurant_profiles
     WHERE status = 'ok'
   `;
-  return rows.map((r) => ({
-    restaurantId: String(r.restaurant_id),
-    dishTypes: Array.isArray(r.dish_types) ? r.dish_types.map(String) : [],
-    service: (r.service as string | null) ?? null,
-  }));
+  return rows.map((r) => {
+    const median = r.price_median == null ? NaN : Number(r.price_median);
+    const priced = r.price_priced == null ? NaN : Number(r.price_priced);
+    return {
+      restaurantId: String(r.restaurant_id),
+      dishTypes: Array.isArray(r.dish_types) ? r.dish_types.map(String) : [],
+      service: (r.service as string | null) ?? null,
+      menuStats: Number.isFinite(median) && Number.isFinite(priced) ? { median, priced } : null,
+    };
+  });
 }
 
 export type FriendSummary = {

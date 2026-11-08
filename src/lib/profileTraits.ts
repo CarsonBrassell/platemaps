@@ -47,6 +47,8 @@ export const SECONDARY_CUISINE_WEIGHT = 0.4;
 export const CENTROID_TERMS = 8;
 /** A cuisine needs this many profiled places before it gets a centroid. */
 export const MIN_CENTROID_PROFILES = 3;
+/** A menu's median price counts (`TraitIndex.prices`) from this many priced items. */
+export const MIN_PRICED_ITEMS = 4;
 /** V for services that are neighbours but not the same. */
 export const NEAR_SERVICE_SCORE = 0.5;
 
@@ -56,12 +58,15 @@ export const NEAR_SERVICE_SCORE = 0.5;
  * One usable (status = 'ok') row of restaurant_profiles, as
  * `getProfileTraitRows()` returns it. `dishTypes` is the raw, lowercase,
  * plural-noun list from the enrichment (most central first); `service` is the
- * profile's `service` field.
+ * profile's `service` field. `menuStats` is the profile's `menu_stats` as
+ * `{ median, priced }` (the median plate price over `priced` priced items), null
+ * when the profile carries none.
  */
 export type ProfileTraitRow = {
   restaurantId: string;
   dishTypes: string[];
   service: string | null;
+  menuStats?: { median: number; priced: number } | null;
 };
 
 /** The three RestaurantView fields the traits need. */
@@ -262,6 +267,12 @@ export type TraitIndex = {
   centroids: ReadonlyMap<string, readonly string[]>;
   /** Normalized key to the form a person sees ("sandwiches", "pho"). */
   labels: ReadonlyMap<string, string>;
+  /**
+   * Place to its median plate price in dollars (`menu_stats.median`), for the
+   * places whose menu has at least MIN_PRICED_ITEMS priced items. A place that is
+   * absent has no price to go on: it is unknown, never estimated.
+   */
+  prices: ReadonlyMap<string, number>;
 };
 
 /**
@@ -371,7 +382,17 @@ export function buildTraitIndex(
     labels.set(key, best);
   }
 
-  return { profiled: profiles.size, places: out, idf, centroids, labels };
+  // 5. Median plate prices, for every listed place whose menu priced enough items.
+  const prices = new Map<string, number>();
+  for (const row of rows) {
+    const stats = row.menuStats;
+    if (!stats || !byId.has(row.restaurantId) || prices.has(row.restaurantId)) continue;
+    if (stats.priced >= MIN_PRICED_ITEMS && Number.isFinite(stats.median) && stats.median > 0) {
+      prices.set(row.restaurantId, stats.median);
+    }
+  }
+
+  return { profiled: profiles.size, places: out, idf, centroids, labels, prices };
 }
 
 /*

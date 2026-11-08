@@ -26,14 +26,18 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   EMPTY_PREFS,
+  FORME_BUDGET,
   FORME_CUISINE,
   FORME_QUALITY,
   FORME_WEIGHTS,
   WEIGHTS,
+  budgetOf,
+  budgetPoints,
   chainKey,
   historyConfidence,
   meanRating,
   placeWeight,
+  priceFit,
   qualityFloor,
   rankTaste,
   scoreAll,
@@ -46,6 +50,7 @@ import {
   CENTROID_TERMS,
   IMPUTED_FACTOR,
   MIN_CENTROID_PROFILES,
+  MIN_PRICED_ITEMS,
   SECONDARY_CUISINE_WEIGHT,
   SIM_WEIGHTS,
   buildTraitIndex,
@@ -55,6 +60,7 @@ import {
   similarityParts,
   traitsOf,
 } from "../src/lib/profileTraits.ts";
+import { parsePrice } from "../src/data/priceBands.ts";
 import { FOR_ME_PARAM, hasCuisine, hasFilterParams } from "../src/lib/discoverFilters.ts";
 import {
   QUALITY_HIGH_RATING,
@@ -104,7 +110,7 @@ const shuffled = (arr, rnd) => {
   return out;
 };
 
-const KINDS = new Set(["like", "pick", "friends", "cuisine", "rated"]);
+const KINDS = new Set(["like", "pick", "friends", "cuisine", "price", "rated"]);
 const idCmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 const cmpScore = (a, b) => b.score - a.score || b.plate - a.plate || idCmp(a.r.id, b.r.id);
 const cmpTail = (a, b) => b.tail - a.tail || b.plate - a.plate || idCmp(a.r.id, b.r.id);
@@ -177,7 +183,20 @@ function checkRank(label, input, res) {
     if (i < res.matched) {
       assert.notEqual(reason.kind, "rated", fail(`match ${id} reads as well rated`));
     } else {
-      assert.equal(reason.kind, "rated", fail(`tail ${id} claims ${reason.kind}`));
+      // The tail never says why it fits, only how it is rated, or (when it is
+      // inside their usual price range) that it fits their plate.
+      assert.ok(reason.kind === "rated" || reason.kind === "price", fail(`tail ${id} claims ${reason.kind}`));
+    }
+    // Pr, Pf and the points are one fact: no fit, no points; a fit needs a price.
+    {
+      const s = scored.get(id);
+      if (s.Pf == null) assert.equal(s.budgetPts, 0, fail(`${id}: points without a fit`));
+      if (s.Pf != null) assert.ok(s.Pr != null && scan.budget, fail(`${id}: a fit without a price or a usual plate`));
+      if (reason.kind === "price") {
+        assert.ok(scan.budget && scan.budget.conf >= FORME_BUDGET.reasonConf, fail("price reason without a trusted usual plate"));
+        assert.ok(s.Pr != null && s.Pf != null && s.Pf >= FORME_BUDGET.reasonFit, fail(`price reason off a fit of ${s.Pf}`));
+        assert.ok(/^Fits your usual \$\d+(\u2013\d+)? plate$/.test(reason.text), fail(`price wording: ${reason.text}`));
+      }
     }
     // Friends: first names beside a reason about something else, the line itself
     // when the reason is about friends; never a count, and no key when there are none.
@@ -1428,9 +1447,9 @@ const byRestaurant = (world, id) => world.restaurants.find((r) => r.id === id);
 const scoredId = (sc, id) => sc.scored.find((s) => s.r.id === id);
 
 ok("quality term: For me has its own weights and constants; Your taste keeps its own", () => {
-  assert.deepEqual({ ...FORME_WEIGHTS }, { affinity: 0.4, friends: 0.2, quality: 0.3, neighborhood: 0.1 });
+  assert.deepEqual({ ...FORME_WEIGHTS }, { affinity: 0.4, friends: 0.2, quality: 0.3, neighborhood: 0.1, budget: 0.06 });
   const sum = FORME_WEIGHTS.affinity + FORME_WEIGHTS.friends + FORME_WEIGHTS.quality + FORME_WEIGHTS.neighborhood;
-  assert.ok(near(sum, 1, 1e-12), "the four weights sum to one, so a perfect place is 100");
+  assert.ok(near(sum, 1, 1e-12), "the four weights sum to one, so a perfect place is 100 before the budget term");
   assert.deepEqual([WEIGHTS.affinity, WEIGHTS.friends, WEIGHTS.quality, WEIGHTS.neighborhood], [0.5, 0.2, 0.2, 0.1]);
   assert.equal(FORME_QUALITY.minReviews, 10);
   assert.equal(FORME_QUALITY.priorReviews, 50);
@@ -1530,7 +1549,7 @@ ok("quality term: Q reads R' and g scales the score; missing data is neutral", (
   // The score is g times the sum, every term from the same scored row.
   for (const s of sc.scored) {
     const sum = 100 * (FORME_WEIGHTS.affinity * s.A + FORME_WEIGHTS.friends * s.F + FORME_WEIGHTS.quality * s.Q + FORME_WEIGHTS.neighborhood * s.N);
-    assert.ok(near(s.score, s.G * sum, 1e-9), `${s.r.name}: score is g * the weighted sum`);
+    assert.ok(near(s.score, s.G * (sum + s.budgetPts), 1e-9), `${s.r.name}: score is g * (the weighted sum + the budget points)`);
     for (const v of [s.score, s.tail, s.Q, s.G, s.A]) assert.ok(Number.isFinite(v), `${s.r.name}: finite`);
     assert.ok(near(s.tail, 100 * (WEIGHTS.qualityInTail * s.Q + WEIGHTS.hoodInTail * s.N)), "the tail formula is unchanged");
   }
@@ -1776,11 +1795,11 @@ ok("both For me cards print why it is for them and why it is good", () => {
   // The phone grid: 11px, wrapping to two lines, friends then quality.
   assert.match(grid, /\{friends && \(\s*<p className="mt-0\.5 line-clamp-2 text-\[11px\]/);
   assert.match(grid, /\{quality && \(\s*<QualityLine[^>]*line-clamp-2 text-\[11px\]/);
-  assert.match(grid, /\{reason && \(\s*<p className="mt-1 line-clamp-2 text-\[11px\]/);
+  assert.match(grid, /\{reason && \(\s*<p className="mt-1 line-clamp-2 text-\[11px\][^"]*">\s*<ReasonText text=\{reason\} \/>/);
 
   // The web card: the reason wraps to two lines instead of truncating; text-xs.
-  assert.match(card, /line-clamp-2 text-xs font-medium text-zinc-600">\{reason\}/);
-  assert.ok(!/truncate text-xs font-medium text-zinc-600">\{reason\}/.test(card), "the reason no longer truncates");
+  assert.match(card, /line-clamp-2 text-xs font-medium text-zinc-600">\s*<ReasonText text=\{reason\} \/>/);
+  assert.ok(!/truncate text-xs font-medium text-zinc-600">/.test(card), "the reason no longer truncates");
   assert.match(card, /\{friends && <p className="line-clamp-2 text-xs text-zinc-600">\{friends\}<\/p>\}/);
   assert.match(card, /\{quality && <QualityLine quality=\{quality\} className="text-xs text-zinc-500" \/>\}/);
 
@@ -2329,6 +2348,582 @@ ok("cuisine profile: the posting dates are read only for For me, and only to rea
   const old = dbSrc.indexOf("export async function restaurantIdsPostedBy");
   const same = dbSrc.slice(old, dbSrc.indexOf("\nexport ", old + 1));
   assert.match(same, /SELECT restaurant_id FROM posts\s+WHERE user_id = \$\{userId\} AND restaurant_id IS NOT NULL\s+GROUP BY restaurant_id\s+ORDER BY max\(created_at\) DESC, restaurant_id/);
+});
+
+/* ---------- the budget term: B, the fit, the points, the wording ---------- */
+
+// Calvin's ten priced posts (2026-11), the case the term was designed against.
+const CALVIN_PLATES = [5, 7, 9.99, 11.99, 13.95, 13.99, 14, 19.25, 38, 41];
+const DASH = "–";
+
+/** The spec written out a second time, with its numbers literal, so budgetOf is not checked against itself. */
+const refQuantile = (xs, p) => {
+  const s = xs.slice().sort((a, b) => a - b);
+  const at = p * (s.length - 1);
+  const i = Math.floor(at);
+  return s[i] + (at - i) * (s[Math.min(i + 1, s.length - 1)] - s[i]);
+};
+function refBudget(plates, places) {
+  const kept = plates.filter((v) => Number.isFinite(v) && v >= 3);
+  const m0 = kept.length ? refQuantile(kept, 0.5) : 0;
+  const rest = kept.filter((v) => v <= 2.5 * m0);
+  const known = places.filter((v) => Number.isFinite(v) && v > 0);
+  const fromPlates =
+    rest.length >= 3
+      ? { median: refQuantile(rest, 0.5), lo: refQuantile(rest, 0.25), hi: refQuantile(rest, 0.75), conf: Math.min(1, rest.length / 6) }
+      : null;
+  const fromPlaces =
+    known.length >= 3
+      ? { median: refQuantile(known, 0.5), lo: refQuantile(known, 0.25), hi: refQuantile(known, 0.75), conf: Math.min(0.5, known.length / 6) }
+      : null;
+  if (fromPlates && fromPlaces) {
+    const mix = (a, b) => 0.6 * a + 0.4 * b;
+    return {
+      median: mix(fromPlates.median, fromPlaces.median),
+      lo: mix(fromPlates.lo, fromPlaces.lo),
+      hi: mix(fromPlates.hi, fromPlaces.hi),
+      conf: Math.max(fromPlates.conf, fromPlaces.conf),
+    };
+  }
+  return fromPlates ?? fromPlaces;
+}
+function refFit(price, b) {
+  const x = Math.log(price / b.median);
+  const up = Math.max(Math.log(1.3), 0.5 * Math.log(b.hi / b.lo));
+  const down = Math.log(1.6);
+  if (x > up) return Math.exp(-(((x - up) / 0.35) ** 2));
+  if (x < -down) return Math.exp(-((-down - x) / 0.7));
+  return 1;
+}
+const sameBudget = (a, b, label) => {
+  if (b === null) return assert.equal(a, null, `${label}: no B`);
+  assert.ok(a, `${label}: B expected`);
+  for (const k of ["median", "lo", "hi", "conf"]) assert.ok(near(a[k], b[k], 1e-9), `${label}: ${k} ${a[k]} vs ${b[k]}`);
+};
+
+ok("budget: the constants are the spec's, and the weight is the sixth of a point", () => {
+  assert.deepEqual(
+    { ...FORME_BUDGET },
+    {
+      minPlate: 3,
+      outlierRatio: 2.5,
+      minPlates: 3,
+      platesForFull: 6,
+      minPlaces: 3,
+      placeConfCap: 0.5,
+      plateInB: 0.6,
+      upperFloor: Math.log(1.3),
+      lower: Math.log(1.6),
+      upperWidth: 0.35,
+      lowerWidth: 0.7,
+      reasonFit: 0.9,
+      reasonConf: 0.5,
+    },
+  );
+  assert.equal(FORME_WEIGHTS.budget, 0.06);
+  assert.equal(MIN_PRICED_ITEMS, 4, "a menu's median counts from four priced items");
+  // The four old weights still make one; the budget term sits beside them.
+  assert.ok(near(FORME_WEIGHTS.affinity + FORME_WEIGHTS.friends + FORME_WEIGHTS.quality + FORME_WEIGHTS.neighborhood, 1, 1e-12));
+});
+
+ok("budget: a plate's price is read the way the menu's are, and junk reads as none", () => {
+  assert.equal(parsePrice("$13.99 - $29.99"), 13.99, "a range reads as its low end");
+  assert.equal(parsePrice("$9.99"), 9.99);
+  assert.equal(parsePrice("12"), 12);
+  for (const none of ["", "free", "$0", "0.00", "n/a"]) assert.equal(parsePrice(none), null, `"${none}"`);
+  assert.deepEqual(
+    ["$5", "$7", "$9.99", "$11.99", "$13.95", "$13.99", "$14", "$19.25", "$38", "$41"].map(parsePrice),
+    CALVIN_PLATES,
+  );
+});
+
+ok("budget: Calvin's ten plates give B = $12.97, the two splurges dropped", () => {
+  const b = budgetOf(CALVIN_PLATES, []);
+  assert.ok(b, "B exists");
+  // median of all ten is 13.97, so the cut is 34.925: $38 and $41 go, $19.25 stays; the 8 left are
+  //   5, 7, 9.99, 11.99, 13.95, 13.99, 14, 19.25
+  assert.ok(near(b.median, (11.99 + 13.95) / 2, 1e-9), `median ${b.median}`);
+  assert.ok(near(b.lo, 7 + 0.75 * (9.99 - 7), 1e-9), `lo ${b.lo}`);
+  assert.ok(near(b.hi, 13.99 + 0.25 * (14 - 13.99), 1e-9), `hi ${b.hi}`);
+  assert.equal(b.conf, 1, "eight kept plates are full trust");
+  // The same however they arrive.
+  const rnd = prng(2026);
+  for (let i = 0; i < 25; i++) sameBudget(budgetOf(shuffled(CALVIN_PLATES, rnd), []), b, `shuffle ${i}`);
+  // And the line it would print.
+  assert.deepEqual([Math.round(b.lo), Math.round(b.hi)], [9, 14]);
+});
+
+ok("budget: junk is dropped, a splurge is a splurge only past two and a half times the median", () => {
+  const three = budgetOf([10, 11, 12], []);
+  assert.ok(three && three.conf === 0.5);
+  // Under $3 is a side or a typo; $3 itself is a plate.
+  sameBudget(budgetOf([2.99, 1, 0.5, 10, 11, 12], []), three, "under $3");
+  sameBudget(budgetOf([0, -5, 10, 11, 12], []), three, "zero and negative");
+  sameBudget(budgetOf([NaN, Infinity, -Infinity, 10, 11, 12], []), three, "not numbers");
+  assert.ok(near(budgetOf([3, 10, 11, 12], []).conf, 4 / 6), "$3 is kept");
+  // Median of the plates that pass $3, times 2.5: the line itself is kept.
+  assert.ok(near(budgetOf([10, 10, 10, 25], []).conf, 4 / 6), "exactly 2.5x the median stays");
+  assert.ok(near(budgetOf([10, 10, 10, 25.01], []).conf, 3 / 6), "a hair over goes");
+  sameBudget(budgetOf([10, 10, 10, 10, 100, 250], []), budgetOf([10, 10, 10, 10], []), "two splurges");
+  // A lone plate, or two, are not a budget.
+  for (const few of [[], [10], [10, 12], [2, 2, 2, 30]]) assert.equal(budgetOf(few, []), null, JSON.stringify(few));
+  // The cut is made off the median of what passed $3, so a majority of big plates is the budget.
+  const big = budgetOf([40, 45, 50, 55, 60], []);
+  assert.ok(big && big.conf === 5 / 6 && near(big.median, 50));
+});
+
+ok("budget: trust grows with the plates, to one at six", () => {
+  const run6 = [10, 11, 12, 13, 14, 15, 16, 17, 18];
+  assert.equal(budgetOf(run6.slice(0, 2), []), null);
+  for (let k = 3; k <= 9; k++) assert.ok(near(budgetOf(run6.slice(0, k), []).conf, Math.min(1, k / 6)), `k=${k}`);
+  assert.equal(budgetOf(run6, []).conf, 1);
+});
+
+ok("budget: without plates B is the median menu price of the places they have been, at half trust at most", () => {
+  assert.equal(budgetOf([], []), null);
+  assert.equal(budgetOf([], [10, 12]), null, "two places are not enough");
+  const three = budgetOf([], [10, 12, 14]);
+  assert.ok(three && near(three.median, 12) && three.conf === 0.5);
+  assert.equal(budgetOf([], [10, 12, 14, 16, 18, 20, 22]).conf, 0.5, "capped at half");
+  sameBudget(budgetOf([], [0, -3, NaN, 10, 12, 14]), three, "non-positive places do not count");
+  // Too few plates fall back to the places rather than blending with nothing.
+  sameBudget(budgetOf([10, 11], [10, 12, 14]), three, "two plates and three places");
+});
+
+ok("budget: with both, B is 0.6 of the plates and 0.4 of the places, and trust is the larger", () => {
+  const b = budgetOf([10, 10, 10, 10], [20, 20, 20]);
+  assert.ok(b && near(b.median, 14) && near(b.lo, 14) && near(b.hi, 14));
+  assert.ok(near(b.conf, 4 / 6), "the plates' 4/6 beats the places' 1/2");
+  assert.ok(near(budgetOf([10, 10, 10], [20, 20, 20, 20, 20, 20]).conf, 0.5));
+  assert.equal(budgetOf([10, 10, 10, 10, 10, 10], [20, 20, 20]).conf, 1);
+  const wide = budgetOf([8, 10, 12, 14], [20, 30, 40, 50]);
+  assert.ok(wide.lo <= wide.median && wide.median <= wide.hi, "the blend keeps its order");
+});
+
+ok("budget: budgetOf matches the spec written out again, on 400 seeded price lists", () => {
+  const rnd = prng(11);
+  const price = () => {
+    const roll = rnd();
+    if (roll < 0.08) return 0.5 + rnd() * 2.4; // under $3
+    if (roll < 0.1) return NaN;
+    if (roll < 0.2) return 40 + rnd() * 200; // a splurge
+    return Math.exp(1.8 + rnd() * 1.6);
+  };
+  let withB = 0;
+  for (let i = 0; i < 400; i++) {
+    const plates = Array.from({ length: Math.floor(rnd() * 14) }, price);
+    const places = Array.from({ length: Math.floor(rnd() * 9) }, () => Math.exp(1.8 + rnd() * 1.6));
+    const want = refBudget(plates, places);
+    const got = budgetOf(plates, places);
+    sameBudget(got, want, `list ${i}`);
+    if (got) {
+      withB++;
+      assert.ok(got.median > 0 && got.lo > 0 && got.lo <= got.median && got.median <= got.hi && got.conf > 0 && got.conf <= 1, `list ${i}: sane`);
+      for (let j = 0; j < 6; j++) {
+        const p = Math.exp(rnd() * 7 - 1);
+        const f = priceFit(p, got);
+        assert.ok(near(f, refFit(p, got), 1e-12), `list ${i}: fit of ${p}`);
+        assert.ok(Number.isFinite(f) && f >= 0 && f <= 1, `list ${i}: fit ${f} is a fraction`);
+      }
+    }
+  }
+  assert.ok(withB > 150 && withB < 400, `the lists should be a mix (${withB} had a B)`);
+});
+
+ok("budget: the fit is 1 inside the range, falls fast above it and slowly below it", () => {
+  const b = { median: 12, lo: 10, hi: 14, conf: 1 }; // half the spread is 0.168, so the floor of ln 1.3 rules
+  const up = Math.log(1.3);
+  const down = Math.log(1.6);
+  assert.equal(priceFit(12, b), 1);
+  assert.ok(near(priceFit(12 * 1.3, b), 1, 1e-9), "the top of the range");
+  assert.ok(near(priceFit(12 / 1.6, b), 1, 1e-9), "the bottom of the range");
+  assert.ok(near(priceFit(12 * Math.exp(up + 0.35), b), Math.exp(-1), 1e-9), "one width above");
+  assert.ok(near(priceFit(12 * Math.exp(-down - 0.7), b), Math.exp(-1), 1e-9), "one width below");
+  // Above falls faster than below, the same log distance out.
+  assert.ok(priceFit(12 * Math.exp(up + 0.3), b) < priceFit(12 * Math.exp(-down - 0.3), b));
+  // The range widens upward with a wide spread, never downward.
+  const wide = { median: 12, lo: 6, hi: 24, conf: 1 }; // half the spread is 0.693
+  const p = 12 * Math.exp(0.6);
+  assert.ok(near(priceFit(p, wide), 1, 1e-12) && priceFit(p, b) < 0.5, "a wide spread forgives a dearer plate");
+  assert.equal(priceFit(12 / 1.7, wide), priceFit(12 / 1.7, b), "the lower edge does not move");
+  // Continuous at both edges, monotone away from them, always a fraction.
+  for (const e of [1e-6, 1e-9]) {
+    assert.ok(Math.abs(priceFit(12 * Math.exp(up + e), b) - 1) < 1e-5);
+    assert.ok(Math.abs(priceFit(12 * Math.exp(-down - e), b) - 1) < 1e-5);
+  }
+  let last = 1;
+  for (let p2 = 16; p2 <= 400; p2 += 4) {
+    const f = priceFit(p2, b);
+    assert.ok(f <= last + 1e-15 && f >= 0, `falling above at ${p2}`);
+    last = f;
+  }
+  last = 1;
+  for (let p2 = 7.5; p2 >= 0.05; p2 -= 0.05) {
+    const f = priceFit(p2, b);
+    assert.ok(f <= last + 1e-15 && f > 0, `falling below at ${p2}`);
+    last = f;
+  }
+  for (const price of [0.01, 1, 3, 12, 400, 1e4, 1e9]) {
+    for (const bb of [b, wide, { median: 3, lo: 3, hi: 3, conf: 0.5 }, { median: 250, lo: 1, hi: 900, conf: 1 }]) {
+      const f = priceFit(price, bb);
+      assert.ok(Number.isFinite(f) && f >= 0 && f <= 1, `fit of ${price} against ${JSON.stringify(bb)} is ${f}`);
+    }
+  }
+});
+
+ok("budget: the points run from a penalty to a bonus, scaled by trust, and are exactly zero with none", () => {
+  assert.ok(near(budgetPoints(1, 1), 6));
+  assert.ok(near(budgetPoints(0.5, 1), 0));
+  assert.ok(near(budgetPoints(0, 1), -6));
+  assert.ok(near(budgetPoints(1, 0.5), 3));
+  assert.ok(near(budgetPoints(0, 0.5), -3));
+  assert.ok(near(budgetPoints(0.75, 2 / 3), 100 * FORME_WEIGHTS.budget * (2 / 3) * 0.5));
+  for (let f = 0; f <= 1; f += 0.05) for (let c = 0.5; c <= 1; c += 0.1) assert.ok(Math.abs(budgetPoints(f, c)) <= 6 + 1e-12);
+});
+
+/** A throwaway world of one Thai menu (or the entry's own), each place with the median plate price on the menu it was given. */
+const THAI_MENU = ["pad thai", "green curry", "tom yum", "satay"];
+const THAI_NAMES = ["Alder", "Birch", "Cedar", "Dune", "Elm", "Fir", "Gale", "Heath", "Iris", "Juniper"];
+function priceWorld(list) {
+  const restaurants = [];
+  const rows = [];
+  list.forEach(([id, price, cuisine, dishes], i) => {
+    restaurants.push({ ...R(`${THAI_NAMES[i % 10]} ${cuisine ?? "Thai"} ${i}`, cuisine ?? "Thai", MID), id });
+    rows.push({
+      restaurantId: id,
+      dishTypes: dishes ?? THAI_MENU,
+      service: "counter",
+      menuStats: price == null ? null : { median: price, priced: 8 },
+    });
+  });
+  return { restaurants, traits: buildTraitIndex(restaurants, rows) };
+}
+const USUAL = [10, 11, 12, 12, 13, 14]; // B: median 12, quartiles 11.25 and 12.75, full trust
+const THAI_PRICES = [
+  ["u1", 12],
+  ["u2", 13],
+  ["u3", 30],
+  ["u4", null],
+  ["u5", 5],
+  ["u6", 100],
+  ["u7", 17],
+  ["u8", 8],
+  ["u9", 18.5],
+];
+const unpriced = THAI_PRICES.map(([id]) => [id, null]);
+const forMeScan = (world, o = {}) => scoreAll({ ...base, ...world, prefs: prefs({ loves: ["Thai"] }), ...o });
+
+ok("budget: the traits index keeps a menu's median only from four priced items, and only if it is a real price", () => {
+  const places = [
+    { id: "a", name: "A", cuisine: "Thai", cuisineSecondary: undefined },
+    { id: "b", name: "B", cuisine: "Thai", cuisineSecondary: undefined },
+    { id: "c", name: "C", cuisine: "Thai", cuisineSecondary: undefined },
+    { id: "d", name: "D", cuisine: "Thai", cuisineSecondary: undefined },
+    { id: "e", name: "E", cuisine: "Thai", cuisineSecondary: undefined },
+    { id: "f", name: "F", cuisine: "Thai", cuisineSecondary: undefined },
+    { id: "g", name: "G", cuisine: "Thai", cuisineSecondary: undefined },
+    { id: "h", name: "H", cuisine: "Thai", cuisineSecondary: undefined },
+  ];
+  const row = (restaurantId, menuStats, dishTypes = THAI_MENU) => ({ restaurantId, dishTypes, service: "counter", menuStats });
+  const index = buildTraitIndex(places, [
+    row("a", { median: 12, priced: 8 }),
+    row("b", { median: 12, priced: 3 }), // under four
+    row("c", { median: 9.5, priced: MIN_PRICED_ITEMS }), // exactly four
+    row("d", { median: 0, priced: 10 }),
+    row("e", { median: Number.NaN, priced: 10 }),
+    row("f", { median: -4, priced: 10 }),
+    row("g", null),
+    row("h", undefined),
+    row("zz", { median: 20, priced: 9 }), // not a listed place
+    row("a", { median: 99, priced: 9 }), // a second row for a: the first stands
+  ]);
+  assert.deepEqual([...index.prices].sort(), [["a", 12], ["c", 9.5]]);
+  // Pricing does not need a profile.
+  const bare = buildTraitIndex(places, [row("a", { median: 14, priced: 5 }, [])]);
+  assert.equal(bare.prices.get("a"), 14);
+  // And the profile does not depend on pricing.
+  const plain = buildTraitIndex(places, [row("a", null), row("c", null)]);
+  assert.equal(plain.prices.size, 0);
+  assert.equal(plain.profiled, index.profiled === 0 ? 0 : plain.profiled);
+  assert.equal(buildTraitIndex(places, []).prices.size, 0);
+});
+
+ok("budget: a fitting price lifts a place, a far one sinks it, and the move is g times the points", () => {
+  const withPrices = priceWorld(THAI_PRICES);
+  const bare = priceWorld(unpriced);
+  const sc = forMeScan(withPrices, { platePrices: USUAL });
+  const flat = forMeScan(bare, { platePrices: USUAL });
+  assert.equal(sc.mode, "similarity");
+  const want = refBudget(USUAL, []);
+  const at = (s, id) => scoredId(s, id);
+  assert.deepEqual(
+    { median: sc.budget.median, lo: sc.budget.lo, hi: sc.budget.hi, conf: sc.budget.conf },
+    { median: 12, lo: 11, hi: 13, conf: 1 },
+    "B is exposed in whole dollars",
+  );
+  for (const [id, price] of THAI_PRICES) {
+    const s = at(sc, id);
+    const f = at(flat, id);
+    assert.ok(near(s.A, f.A) && near(s.N, f.N) && near(s.Q, f.Q) && near(s.G, f.G), `${id}: the same place but for its price`);
+    assert.equal(s.tail, f.tail, `${id}: the tail formula never reads the price`);
+    for (const v of [s.score, s.budgetPts]) assert.ok(Number.isFinite(v), `${id}: finite`);
+    assert.ok(Math.abs(s.budgetPts) <= 6 + 1e-12, `${id}: at most six points either way`);
+    if (price == null) {
+      assert.equal(s.Pr, null);
+      assert.equal(s.Pf, null);
+      assert.equal(s.budgetPts, 0, `${id}: no price, no points`);
+      assert.equal(s.score, f.score, `${id}: an unknown price leaves the score exactly where it was`);
+    } else {
+      assert.equal(s.Pr, price);
+      assert.ok(near(s.Pf, refFit(price, want), 1e-12), `${id}: fit`);
+      assert.ok(near(s.budgetPts, budgetPoints(refFit(price, want), want.conf), 1e-12), `${id}: points`);
+      assert.ok(near(s.score - f.score, s.G * s.budgetPts, 1e-9), `${id}: the score moved by g * the points`);
+    }
+    // The flat world has prices for nobody.
+    assert.equal(f.Pr, null);
+    assert.equal(f.budgetPts, 0);
+  }
+  const pts = (id) => at(sc, id).budgetPts;
+  assert.ok(near(pts("u1"), 6) && near(pts("u2"), 6), "inside the range: the full bonus");
+  assert.ok(pts("u8") > 5.9, "a cheaper plate inside the lower edge is still a full bonus");
+  assert.ok(pts("u7") > 4 && pts("u7") < 6, "just past the top of the range, a little less");
+  assert.ok(pts("u3") < -5.5 && pts("u6") < -5.99, "far above: nearly the full penalty");
+  assert.ok(pts("u5") > -1 && pts("u5") < 2, "well under: a light touch");
+  assert.ok(pts("u6") < pts("u3") && pts("u3") < pts("u9") && pts("u9") < pts("u7") && pts("u7") < pts("u1"), "dearer is worse once past the range");
+  // Same place, a dearer menu: lower on the score list.
+  const order = sc.scored.slice().sort(cmpScore).map((s) => s.r.id);
+  assert.ok(order.indexOf("u1") < order.indexOf("u3") && order.indexOf("u3") < order.indexOf("u6"));
+});
+
+ok("budget: every case with no B or no price is exactly neutral, not close", () => {
+  const withPrices = priceWorld(THAI_PRICES);
+  const bare = priceWorld(unpriced);
+  const flat = forMeScan(bare);
+  const flatScores = new Map(flat.scored.map((s) => [s.r.id, s.score]));
+  const sameAsFlat = (sc, label) => {
+    assert.equal(sc.scored.length, flat.scored.length, label);
+    for (const s of sc.scored) {
+      assert.equal(s.score, flatScores.get(s.r.id), `${label}: ${s.r.id}`);
+      assert.equal(s.budgetPts, 0, `${label}: ${s.r.id} points`);
+      assert.equal(s.Pf, null, `${label}: ${s.r.id} fit`);
+      assert.ok(Number.isFinite(s.score) && !Number.isNaN(s.budgetPts), label);
+    }
+  };
+  // Prices on every menu, but nothing to compare them with.
+  for (const [label, o] of [
+    ["no plate prices", {}],
+    ["empty plate prices", { platePrices: [] }],
+    ["two plates", { platePrices: [10, 12] }],
+    ["plates all under $3", { platePrices: [1, 2, 2.5, 1.5] }],
+    ["plates not numbers", { platePrices: [NaN, Infinity, 0, -4] }],
+  ]) {
+    const sc = forMeScan(withPrices, o);
+    assert.equal(sc.budget, null, `${label}: no B`);
+    sameAsFlat(sc, label);
+  }
+  // A B, and a world with no menu prices at all.
+  const noMenus = forMeScan(bare, { platePrices: USUAL });
+  assert.ok(noMenus.budget);
+  sameAsFlat(noMenus, "B but no menu prices");
+  // Prices below the four-item floor are no price.
+  const thin = priceWorld(THAI_PRICES.map(([id, p]) => [id, p]));
+  const thinRows = thin.restaurants.map((r) => ({ restaurantId: r.id, dishTypes: THAI_MENU, service: "counter", menuStats: { median: 12, priced: MIN_PRICED_ITEMS - 1 } }));
+  const sparse = forMeScan({ restaurants: thin.restaurants, traits: buildTraitIndex(thin.restaurants, thinRows) }, { platePrices: USUAL });
+  sameAsFlat(sparse, "menus with under four priced items");
+  // The unpriced place in a priced world, with a B, is the one that does not move.
+  const sc = forMeScan(withPrices, { platePrices: USUAL });
+  assert.equal(scoredId(sc, "u4").score, flatScores.get("u4"));
+  // The order they ask for the same thing in changes nothing.
+  const again = forMeScan(withPrices, { platePrices: shuffled(USUAL, prng(5)) });
+  for (const s of sc.scored) assert.equal(scoredId(again, s.r.id).score, s.score, `${s.r.id}: order of the plate prices`);
+});
+
+ok("budget: with no plates B comes from the places they have been, at half the weight", () => {
+  // Three places they have been, each pricing near $12, and the candidates beside them.
+  const list = [["v1", 10], ["v2", 12], ["v3", 14], ...THAI_PRICES];
+  const world = priceWorld(list);
+  const been = prefs({ loves: ["Thai"], been: ["v1", "v2", "v3"] });
+  const sc = scoreAll({ ...base, ...world, prefs: been });
+  assert.ok(sc.budget && sc.budget.conf === 0.5, "half trust");
+  assert.deepEqual([sc.budget.median, sc.budget.lo, sc.budget.hi], [12, 11, 13]);
+  const want = refBudget([], [10, 12, 14]);
+  for (const [id, price] of THAI_PRICES) {
+    const s = scoredId(sc, id);
+    if (price == null) assert.equal(s.budgetPts, 0);
+    else assert.ok(near(s.budgetPts, budgetPoints(refFit(price, want), 0.5), 1e-12), `${id}: points at half trust`);
+    assert.ok(Math.abs(s.budgetPts) <= 3 + 1e-12, `${id}: at most three points`);
+  }
+  assert.equal(scoredId(sc, "v1"), undefined, "the places they have been are not scored");
+  // Two places been is not enough to say.
+  const two = scoreAll({ ...base, ...world, prefs: prefs({ loves: ["Thai"], been: ["v1", "v2"] }) });
+  assert.equal(two.budget, null);
+  // Posted places count the same as been ones.
+  const posted = scoreAll({ ...base, ...world, prefs: prefs({ loves: ["Thai"] }), postedIds: ["v1", "v2", "v3"] });
+  assert.deepEqual(posted.budget, sc.budget);
+  // With plates as well, 0.6 plates and 0.4 places, and trust the larger.
+  const both = scoreAll({ ...base, ...world, prefs: been, platePrices: [20, 20, 20, 20, 20, 20] });
+  // median 0.6 * 20 + 0.4 * 12 = 16.8, quartiles 0.6 * 20 + 0.4 * 11 = 16.4 and 0.6 * 20 + 0.4 * 13 = 17.2
+  assert.deepEqual([both.budget.median, both.budget.lo, both.budget.hi, both.budget.conf], [17, 16, 17, 1]);
+});
+
+ok("budget: the reason is the price line only on a tail place that fits, and never says a price is wrong", () => {
+  const world = priceWorld(THAI_PRICES);
+  const input = { ...base, ...world, prefs: prefs({ loves: ["Thai"] }), platePrices: USUAL };
+  const res = rankTaste(input);
+  checkRank("budget reasons", input, res);
+  assert.equal(res.matched, 1, "one menu, one match");
+  assert.ok(res.budget && res.budget.lo === 11 && res.budget.hi === 13, "the rank carries B for the profile line");
+  const kindOf = (id) => res.reasonOf(id).kind;
+  const matchId = res.order[0];
+  assert.ok(["like", "pick", "friends", "cuisine"].includes(kindOf(matchId)), `the match says why it was picked: ${kindOf(matchId)}`);
+  const wording = `Fits your usual $11${DASH}13 plate`;
+  const fits = ["u1", "u2", "u7", "u8"].filter((id) => id !== matchId);
+  for (const id of fits) {
+    assert.deepEqual(res.reasonOf(id).kind, "price", `${id} fits`);
+    assert.equal(res.reasonOf(id).text, wording);
+  }
+  // A poor fit, a price nobody wrote down: the rating line it always had.
+  for (const id of ["u3", "u4", "u5", "u6", "u9"]) assert.equal(kindOf(id), "rated", `${id} is not claimed to fit`);
+  // The text is words and two numbers; the dash is an en dash.
+  assert.ok(wording.includes(DASH) && !wording.includes("-") && wording.length <= WEIGHTS.reasonMaxChars);
+  const all = res.order.map((id) => res.reasonOf(id).text).join("\n");
+  assert.ok(!/too (dear|expensive|pricey|cheap)|over budget|splurge|afford|above your|below your|outside your|pricier|cheaper/i.test(all), "never negative wording");
+  // The boundary: the fit that earns the line is 0.9.
+  assert.ok(scoredId(scoreAll(input), "u7").Pf >= FORME_BUDGET.reasonFit && scoredId(scoreAll(input), "u9").Pf < FORME_BUDGET.reasonFit);
+  // It speaks for a match too when nothing else could: a menu no one else shares and no history.
+  const quiet = priceWorld([["w1", 12, "Italian", ["pizza", "pasta", "tiramisu", "gnocchi"]]]);
+  const quietRes = rankTaste({ ...base, ...quiet, prefs: prefs({ loves: ["Thai"] }), platePrices: USUAL });
+  assert.equal(quietRes.matched, 0, "nothing matches a Thai pick");
+  assert.equal(quietRes.reasonOf("w1").kind, "price");
+  assert.equal(quietRes.reasonOf("w1").text, wording);
+});
+
+ok("budget: a like, a pick, a friend or a cuisine reason is kept over the price one", () => {
+  // Like: they went to s1, and the candidates share its menu.
+  const world = priceWorld([["s1", 12], ...THAI_PRICES]);
+  const liked = { ...base, ...world, prefs: prefs({ been: ["s1"] }), platePrices: USUAL };
+  const likedRes = rankTaste(liked);
+  checkRank("budget like", liked, likedRes);
+  assert.equal(likedRes.reasonOf(likedRes.order[0]).kind, "like", "the match keeps its like reason though its price fits");
+  assert.ok(likedRes.order.slice(likedRes.matched).some((id) => likedRes.reasonOf(id).kind === "price"), "and the tail says price");
+  // Friends: a place with a menu of its own that a friend has been to.
+  const mixed = priceWorld([
+    ["fr", 12, "Italian", ["pizza", "pasta", "tiramisu", "gnocchi"]],
+    ...THAI_PRICES,
+  ]);
+  const fr = byRestaurant(mixed, "fr");
+  const friendly = { ...base, ...mixed, prefs: prefs({ loves: ["Thai"] }), platePrices: USUAL, friendVisits: [friend(fr, "f1", "Ana")] };
+  const friendRes = rankTaste(friendly);
+  checkRank("budget friends", friendly, friendRes);
+  assert.equal(friendRes.reasonOf("fr").kind, "friends", "a friend there beats the price line");
+  // Cuisine share: posted at several Thai places, a Thai candidate says what they eat a lot of.
+  const eats = priceWorld([["x1", 12], ["x2", 12], ["x3", 12], ["x4", 12], ...THAI_PRICES]);
+  const eating = { ...base, ...eats, prefs: prefs({ loves: ["Thai"] }), postedIds: ["x1", "x2", "x3", "x4"], platePrices: USUAL };
+  const eatRes = rankTaste(eating);
+  checkRank("budget cuisine", eating, eatRes);
+  for (const id of eatRes.order.slice(0, eatRes.matched)) assert.notEqual(eatRes.reasonOf(id).kind, "price", `${id} is a match with a reason of its own`);
+});
+
+ok("budget: one price, said as one dollar", () => {
+  const world = priceWorld(THAI_PRICES);
+  const input = { ...base, ...world, prefs: prefs({ loves: ["Thai"] }), platePrices: [12, 12, 12, 12, 12, 12] };
+  const res = rankTaste(input);
+  checkRank("budget one price", input, res);
+  assert.equal(res.budget.lo, 12);
+  assert.equal(res.budget.hi, 12);
+  const tailFit = res.order.slice(res.matched).find((id) => res.reasonOf(id).kind === "price");
+  assert.ok(tailFit, "someone fits $12");
+  assert.equal(res.reasonOf(tailFit).text, "Fits your usual $12 plate");
+});
+
+ok("budget: it is private to the viewer's own POST, and Your taste never sees it", () => {
+  // The cuisine-share mode is Your taste's: no traits, no budget, nothing moves.
+  const world = priceWorld(THAI_PRICES);
+  const cuisineMode = (o) => scoreAll({ ...base, ...world, traits: undefined, prefs: prefs({ loves: ["Thai"] }), ...o });
+  const a = cuisineMode({});
+  const b = cuisineMode({ platePrices: USUAL });
+  assert.equal(a.mode, "cuisine");
+  assert.equal(b.budget, null);
+  assert.deepEqual(b.scored.map((s) => s.score), a.scored.map((s) => s.score));
+  for (const s of b.scored) {
+    assert.equal(s.Pr, null);
+    assert.equal(s.Pf, null);
+    assert.equal(s.budgetPts, 0);
+  }
+  const takes = (extra) => scoreTaste({ restaurants: world.restaurants, plates: {}, prefs: prefs({ loves: ["Thai"] }), postedIds: [], friendVisits: [], ...extra });
+  assert.deepEqual(takes({ platePrices: USUAL }), takes({}), "scoreTaste ignores what it was not built to read");
+  const src = stripComments(read("../src/lib/taste.ts"));
+  const start = src.indexOf("export function scoreTaste");
+  const yourTaste = src.slice(start, src.indexOf("\nexport ", start + 1));
+  assert.ok(start > 0 && !/budget|platePrices|priceFit|FORME_BUDGET|\bPr\b/.test(yourTaste), "scoreTaste does not reach the budget");
+
+  // The route: only the POST asks, only for the viewer, and nothing about it goes on the wire.
+  assert.match(postFn, /resolveTasteContext\(\{[^}]*platePrices:\s*true/);
+  assert.match(postFn, /platePrices:\s*ctx\.platePrices/);
+  assert.ok(!getFn.includes("platePrices"), "the public GET never asks for the viewer's prices");
+  assert.ok(!stripComments(read("../src/app/api/account/taste/route.ts")).includes("platePrices"), "Your taste's route does not ask either");
+  assert.ok(!/\.budget\b|usualPlate|\bPr\b|platePrices\s*[,}]\s*$/m.test(postFn.replace(/platePrices:\s*ctx\.platePrices/, "")), "the route does not send B back");
+  const ctxSrc = stripComments(read("../src/lib/tasteContext.ts"));
+  assert.match(ctxSrc, /opts\.platePrices === true \? platePricesBy\(user\.id\)/);
+  const dbSrc = stripComments(read("../src/lib/db.ts")).replace(/\r\n/g, "\n");
+  const from = dbSrc.indexOf("export async function platePricesBy");
+  const fn = dbSrc.slice(from, dbSrc.indexOf("\nexport ", from + 1));
+  assert.ok(from > 0);
+  assert.match(fn, /SELECT price FROM posts/);
+  assert.match(fn, /WHERE user_id = \$\{userId\}/);
+  assert.ok(!/\b(INSERT|UPDATE|DELETE|DROP|ALTER|TRUNCATE)\b/i.test(fn), "it only reads");
+  // The wire carries no B and no menu price: a reason is its kind, its words and a friends line.
+  const wire = stripComments(read("../src/lib/discoverWire.ts"));
+  assert.ok(!/budget|platePrice|usualPlate|\bPr\b|\bPf\b/.test(wire), "ForMeInfo and ForMeReason carry no budget");
+  assert.match(wire, /kind: "like" \| "pick" \| "friends" \| "cuisine" \| "price" \| "rated"/);
+  const disc = stripComments(read("../src/lib/discover.ts"));
+  const info = disc.slice(disc.indexOf("function forMeInfo"));
+  assert.ok(!/budget/i.test(info.slice(0, info.indexOf("\n}\n"))), "forMeInfo does not read B");
+  // The own-ratings line: nothing the viewer rated, liked, hearted, upvoted or saved reaches the prices.
+  assert.ok(!/rating|likes|hearts|upvotes|saves|comments/i.test(fn), "only the price column of their posts");
+});
+
+ok("budget: both cards set the reason's numbers in mono, and Your taste's own lines are untouched", () => {
+  const card = stripComments(read("../src/components/RestaurantCard.tsx"));
+  const grid = stripComments(read("../src/components/mobile/PhoneRestaurantCardGrid.tsx"));
+  for (const [name, src] of [["web card", card], ["phone grid", grid]]) {
+    assert.match(src, /import \{ ReasonText \} from "@\/components\/ReasonText"/, `${name} imports the helper`);
+    assert.match(src, /<ReasonText text=\{reason\} \/>/, `${name} renders the reason through it`);
+  }
+  const taste = stripComments(read("../src/components/TasteSection.tsx"));
+  assert.ok(!taste.includes("ReasonText"), "the Your taste strip has no reason line");
+  const helper = stripComments(read("../src/components/ReasonText.tsx"));
+  assert.match(helper, /font-mono tabular-nums/);
+});
+
+await okAsync("budget: ReasonText sets dollars, distances and numerals in mono and leaves the prose alone", async () => {
+  let ReasonText;
+  let renderToStaticMarkup;
+  let createElement;
+  try {
+    ({ renderToStaticMarkup } = await import("react-dom/server"));
+    ({ createElement } = await import("react"));
+    ({ ReasonText } = await import("../src/components/ReasonText.tsx"));
+  } catch {
+    ReasonText = null;
+  }
+  if (!ReasonText) return; // the source checks above cover it where the component will not load
+  const html = (text) => renderToStaticMarkup(createElement(ReasonText, { text }));
+  const mono = (s) => `<span class="font-mono tabular-nums">${s}</span>`;
+  assert.equal(html(`Fits your usual $11${DASH}13 plate`), `Fits your usual ${mono(`$11${DASH}13`)} plate`);
+  assert.equal(html("Fits your usual $12 plate"), `Fits your usual ${mono("$12")} plate`);
+  assert.equal(html("Fits your usual $9.99-$14.50 plate"), `Fits your usual ${mono("$9.99-$14.50")} plate`);
+  assert.equal(html("Fits your usual $1,200 plate"), `Fits your usual ${mono("$1,200")} plate`);
+  assert.equal(html("0.4 mi away"), `${mono("0.4 mi")} away`);
+  assert.equal(html("2 mi"), mono("2 mi"));
+  assert.equal(html("Because you went to Pho 79"), `Because you went to Pho ${mono("79")}`);
+  for (const plain of ["Highly rated in Downtown", "Worth a look", "Different from your usual", "Because you went to Siam Orchid", ""]) {
+    assert.equal(html(plain), plain, `"${plain}" has no number to set`);
+  }
+  // Words are never swallowed: strip the spans and the text comes back whole.
+  for (const text of [`Fits your usual $11${DASH}13 plate`, "Because you went to Pho 79", "You have eaten at 3 places, 1.5 mi apart"]) {
+    assert.equal(html(text).replace(/<\/?span[^>]*>/g, ""), text);
+  }
 });
 
 console.log(`forme:check  ${n} fixture and route cases ok`);
