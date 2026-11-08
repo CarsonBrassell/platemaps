@@ -164,6 +164,10 @@ export const DISH_TASTE = {
   flavorMod: 0.2,
   /** At most this many of the first `top` picks may stand on flavor alone. */
   flavorOnlyTop: 3,
+  /** A place the viewer names in their own captions ("better than Dave's") counts for this much of its score: it is not news. */
+  knownShade: 0.6,
+  /** A pick on flavor alone, on a line that neither its name nor its place's cuisine shows to be a meal, counts for this much. */
+  oddShade: 0.85,
   /** Ratings that spread less than this are flattened to `flavorFlat`. */
   flavorSpreadMin: 8,
   flavorFlat: 0.7,
@@ -260,6 +264,31 @@ const fold = (s: string): string =>
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
 
+/**
+ * Folds for the names a ranking reads over and over (item names, cuisines, the lines a hit cites): the same few
+ * thousand strings come back on every request, so a bounded memo turns the repeat into a lookup.
+ */
+const FOLD_MEMO = new Map<string, string>();
+const foldM = (s: string): string => {
+  let v = FOLD_MEMO.get(s);
+  if (v === undefined) {
+    if (FOLD_MEMO.size > 80_000) FOLD_MEMO.clear();
+    v = fold(s);
+    FOLD_MEMO.set(s, v);
+  }
+  return v;
+};
+/** The restaurant's chain key, worked out once per restaurant object (the corpus objects outlive a request). */
+const CHAIN_MEMO = new WeakMap<object, string>();
+const chainKeyM = (r: Parameters<typeof chainKey>[0]): string => {
+  let v = CHAIN_MEMO.get(r);
+  if (v === undefined) {
+    v = chainKey(r);
+    CHAIN_MEMO.set(r, v);
+  }
+  return v;
+};
+
 /** Light stemming: plurals only, so "wings" and "wing" meet and "glass" stays. */
 function stem(w: string): string {
   if (w.length > 4 && w.endsWith("ies")) return `${w.slice(0, -3)}y`;
@@ -304,6 +333,9 @@ function termId(term: string): number {
 
 const SIDE_SECTION = /\b(sides?|extras?|add ?ons?|toppings?|condiments?|kids?|dips?|sauces?)\b/;
 const SIDE_NAME = /^(side|extra|add|additional|sub|substitute|no |upgrade)\b|\bside of\b/;
+/** A menu section a table shares from rather than orders a meal from; its lines are kept, but never lead a pick. */
+const STARTER_SECTION =
+  /\b(?:appetizers?|apps|starters?|small plates?|boards?|shar(?:e|es|eables?|ing|ed)(?: plates?)?|snacks?|bar bites?|bar snacks?|tapas|antipasti|mezze|nibbles|for the table|to share|raw bar)\b/;
 const DRINK_SECTION =
   /drink|beverage|coffee|tea\b|espresso|smoothie|juice|refresher|latte|beer|wine|cocktail|soda|shake|bar menu/;
 const DRINK_NAME =
@@ -401,6 +433,77 @@ const BAR_BITE = /\b(bites?|poppers?|tots?|nachos|sliders?|rings?|bao|wontons?|r
 /** A side, a bread or a condiment is not a dish to be sent somewhere new for. */
 const SIDE_LINE = /^side\b|\bside of\b|\b(?:breads?|rolls?|biscuits?|fries|chips|dips?|sauces?|spreads?|slaw|butter|dressing|pickles?)$/;
 const BAR_PLACE = /bar|pub|tavern|irish|sports/;
+/** Words in a restaurant's name that say what it serves or how it feels, not which place it is. */
+const GENERIC_NAME = new Set(
+  "the and restaurant restaurants cafe grill grille kitchen house bar pizza pizzeria taco tacos taqueria sushi thai pho noodle noodles chicken burger burgers deli bbq barbecue coffee eatery cantina bistro tavern pub bakery bowl bowls hot big little old new original best good great better love tasty fresh spicy sweet honey crispy sauce cheese fried golden happy lucky royal grand family south north east west mission beach downtown park city express famous place food foods market shop station company brewing brewery diego".split(" "),
+);
+/** A shop that is known for its drinks or sweets: its flavor-only matches are a syrup or a glaze, not a meal. */
+const DRINK_LED = /\b(coffee|tea|bakery|bakeries|dessert|desserts|juice|smoothies?|boba|bubble|ice cream|gelato|donuts?|doughnuts?|crepes?|cupcakes?)\b/;
+
+/* ---------- what kind of dish a line is ---------- */
+
+/**
+ * Broad kinds of dish, as bits. A flavor reason compares a pick to a posted dish of the same kind: "like your Hot
+ * Honey Chicken" for a chicken sandwich, never for a mozzarella stick or a cold-cut sub.
+ */
+/** A place that says it is meat-free in its cuisine label or its name (the profile's styles may not). */
+const PLANT_PLACE = /\b(?:vegan|vegetarian|plant.?based)\b/;
+const KB = { pizza: 1, chicken: 2, sandwich: 4, taco: 8, noodle: 16, rice: 32, sushi: 64, pasta: 128, seafood: 256, meat: 512, salad: 1024, breakfast: 2048, plant: 4096, starter: 8192 } as const;
+const KIND_RE: readonly (readonly [number, RegExp])[] = [
+  [KB.pizza, /\b(?:pizzas?|pies?|slices?|calzones?|flatbreads?|stromboli)\b/],
+  [KB.chicken, /\b(?:chicken|wings?|tenders?|nuggets?|drumsticks?|chickz|karaage|drumettes?)\b/],
+  [KB.sandwich, /\b(?:sandwich(?:es)?|burgers?|subs?|hoagies?|banh mi|panini|melts?|wraps?|tortas?|po boys?|reubens?|hot dogs?|gyros?|cheesesteaks?|bao|croissants?|ciabatta|baguette|sliders?)\b/],
+  [KB.taco, /\b(?:tacos?|burritos?|quesadillas?|enchiladas?|tostadas?|fajitas?|carnitas|al pastor)\b/],
+  [KB.noodle, /\b(?:pho|ramen|udon|soba|noodles?|lo mein|chow mein|pad thai|pad see ew|laksa|vermicelli)\b/],
+  [KB.rice, /\b(?:rice|bowls?|biryani|risotto|congee|donburi|bibimbap|poke|curry|curries)\b/],
+  [KB.sushi, /\b(?:sushi|sashimi|nigiri|maki|temaki|rolls?)\b/],
+  [KB.pasta, /\b(?:pasta|spaghetti|bucatini|fettuccine|linguine|penne|rigatoni|lasagna|gnocchi|ravioli|mac|carbonara|alfredo)\b/],
+  [KB.seafood, /\b(?:shrimp|salmon|tuna|fish|crab|lobster|calamari|scallops?|oysters?|clams?|mussels?|prawns?|cod|halibut|octopus)\b/],
+  [KB.meat, /\b(?:steaks?|ribs?|brisket|pork|beef|lamb|sausage|bacon|ham|short rib|meatballs?|bbq|barbecue)\b/],
+  [KB.salad, /\b(?:salads?|caesar)\b/],
+  [KB.breakfast, /\b(?:breakfast|eggs?|omelet(?:te)?s?|pancakes?|waffles?|french toast|benedict|grits|hash|scrambles?)\b/],
+];
+/** A side or a starter, whatever it is made of. */
+const STARTER_HARD = /\b(?:sticks?|mozz|mozzarella|curds?|fries|tots?|onion rings?|poppers?|dips?|slaw|pickles?|bites?|dumplings?|gyoza|potstickers?|wontons?|rangoon|egg rolls?|spring rolls?|samosas?|hummus|guacamole|salsa|edamame|breadsticks?|garlic knots?|appetizers?|starters?|sides?)\b/;
+/** A starter unless the line is also a plain main (a calamari tempura is one, a chicken tempura bowl is not). */
+const STARTER_SOFT = /\b(?:calamari|tempura|soup|bread|fritters?|croquettes?|skewers?|satay|brussels? sprouts?|nachos?|charcuterie|cheese (?:board|plate)|olives)\b/;
+const MAIN_BITS = KB.pizza | KB.chicken | KB.sandwich | KB.taco | KB.noodle | KB.rice | KB.sushi | KB.pasta | KB.salad | KB.breakfast;
+/** The dish family a posted or specialised family is, as a kind. */
+const FAM_KIND: Readonly<Record<string, number>> = { pizza: KB.pizza, burrito: KB.taco, wings: KB.chicken, hotchicken: KB.chicken, sushi: KB.sushi, salad: KB.salad, pho: KB.noodle, bbq: KB.meat };
+/** What a cuisine label says its dishes are, for a line whose own name says nothing. */
+const CUISINE_KIND: readonly (readonly [RegExp, number])[] = [
+  [/pizza/, KB.pizza],
+  [/italian/, KB.pizza | KB.pasta],
+  [/sandwich|deli|burger/, KB.sandwich],
+  [/mexican|taco|tex|latin|burrito/, KB.taco],
+  [/japanese|sushi/, KB.sushi | KB.noodle],
+  [/vietnamese|ramen|noodle|pho/, KB.noodle],
+  [/chicken|wing/, KB.chicken],
+  [/seafood/, KB.seafood],
+  [/bbq|barbecue|steak|smokehouse/, KB.meat],
+  [/breakfast|brunch/, KB.breakfast],
+  [/salad/, KB.salad],
+];
+
+/** The kinds a line's own name shows (folded); 0 when it says nothing. Not a starter-aware read: see `lineKindsOf`. */
+const kindBits = (nm: string): number => {
+  let k = 0;
+  const t = nm.replace(/\b(?:egg|spring|cinnamon|dinner|summer|bread|crescent|sausage|pizza|fruit) rolls?\b/g, " ");
+  for (const [bit, re] of KIND_RE) if (re.test(t)) k |= bit;
+  return k;
+};
+/** `kindBits`, with a side or a starter marked as one (it is then never a main). */
+const kindsOfName = (nm: string): number => {
+  const k = kindBits(nm);
+  if (STARTER_HARD.test(nm)) return k | KB.starter;
+  return STARTER_SOFT.test(nm) && (k & MAIN_BITS) === 0 ? k | KB.starter : k;
+};
+/** Two kinds fit when they share one; a line or a seed whose kind is unknown fits anything. */
+const kindsFit = (a: number, b: number): boolean => {
+  const x = a & ~KB.starter;
+  const y = b & ~KB.starter;
+  return x === 0 || y === 0 || (x & y) !== 0;
+};
 
 /* ---------- the index ---------- */
 
@@ -416,6 +519,8 @@ export type DishIndex = {
   idf: ReadonlyMap<number, number>;
   itemRid: Int32Array;
   itemKind: Uint8Array;
+  /** 1 when the item sits in a starter or sharing section, or its own name is a side or a starter. */
+  itemStarter: Uint8Array;
   itemPrice: Float32Array;
   itemName: readonly string[];
   /** term -> [start, end) in `postings`; each posting is `(item << 1) | inName`. */
@@ -475,6 +580,7 @@ export function createDishIndexBuilder(
 
   const itemRid: number[] = [];
   const itemKind: number[] = [];
+  const itemStarter: number[] = [];
   const itemPrice: number[] = [];
   const itemName: string[] = [];
   const itemFlavor: number[] = [];
@@ -505,6 +611,7 @@ export function createDishIndexBuilder(
         for (const [id, inName] of t) packed[i++] = (id << 1) | inName;
         itemRid.push(rid);
         itemKind.push(kindOf(name, section));
+        itemStarter.push(STARTER_SECTION.test(section) || (kindsOfName(name) & KB.starter) !== 0 ? 1 : 0);
         const price = priceOf(d.price);
         itemPrice.push(price ?? 0);
         itemName.push(d.name);
@@ -708,6 +815,7 @@ export function createDishIndexBuilder(
         idf,
         itemRid: Int32Array.from(itemRid),
         itemKind: Uint8Array.from(itemKind),
+        itemStarter: Uint8Array.from(itemStarter),
         itemPrice: Float32Array.from(itemPrice),
         itemName,
         spans,
@@ -871,12 +979,16 @@ type Hit = {
   /** Set on a family match: the family, and the style it shares with the seed's place. */
   fam?: string;
   tag?: string | null;
+  /** Set when the line is a starter or a sharing plate: a place is not sent for it, unless it is a specialist's. */
+  starter?: boolean;
   /**
    * Set when the item also fits the viewer's flavor profile. `claim` is what the item's own text lets a reason
    * say (null: it fits, but nothing it says can be quoted); `seed` is the posted dish the reason compares it to;
-   * `only` marks a pick that stands on flavor alone, with no dish or family match behind it.
+   * `only` marks a pick that stands on flavor alone, with no dish or family match behind it. `kinds` is what kind
+   * of dish the line is, and `cross` that none of the viewer's dishes with this flavor is of that kind (the
+   * flavor travels to a new kind of dish: such a pick is only ever an adventurous one).
    */
-  flav?: { attr: number; claim: FlavorClaim | null; seed: number; only: boolean };
+  flav?: { attr: number; claim: FlavorClaim | null; seed: number; only: boolean; kinds: number; cross: boolean };
 };
 
 const DRINKY = /coffee|tea|bakery|dessert|juice|smoothie|boba/i;
@@ -899,10 +1011,14 @@ function clip(text: string, max: number): string {
   return t.length <= max ? t : `${t.slice(0, max - 1).trimEnd()}…`;
 }
 
+const PLANT_TAIL = " (plant-based)";
+
 /** Shortens at a word, never inside one. */
 export function clipWords(text: string, max: number): string {
   const t = text.normalize("NFC");
   if (t.length <= max) return t;
+  // A meat-free house's disclosure is the last thing to go: the dish name gives way to it.
+  if (t.endsWith(PLANT_TAIL) && max > PLANT_TAIL.length + 8) return `${clipWords(t.slice(0, -PLANT_TAIL.length), max - PLANT_TAIL.length)}${PLANT_TAIL}`;
   const cut = t.slice(0, max - 1);
   const at = cut.lastIndexOf(" ");
   const body = (at >= 8 ? cut.slice(0, at) : cut).replace(/[\s&,\-–—]+$/, "").replace(/\s+(and|with|or|in|on|of|the|a)$/i, "");
@@ -994,6 +1110,9 @@ function newLine(item: string, claim: FlavorClaim, dish: string | null, max: num
     const full = `${head}${item}, ${tail(d)}`;
     if (full.length <= max) return full;
   }
+  // The posted dish gives way before the pick's own name does (a clipped name tells them less than a missing comparison).
+  const bare = `${head}${item}, ${tail(null)}`;
+  if (dish && bare.length <= max) return bare;
   // The dish's name gives way before the flavor does.
   const t = tail(dish ? clipWords(dish, 22) : null);
   const room = max - head.length - 2 - t.length;
@@ -1006,8 +1125,11 @@ function reasonOf(
   cuisine: string | null,
   candidate: string,
   fresh = false,
+  plant = false,
 ): TastePick["reason"] {
   const c = DISH_TASTE;
+  /** A meat-free house says so when the dish it is compared to is not: "Chicken Sandwich (plant-based)". */
+  const said = (item: string): string => (plant && item && !/plant|vegan|vegetarian|meat.?less|meat.?free/i.test(item) ? `${item}${PLANT_TAIL}` : item);
   if (!hit) {
     const text = `${cuisine}, a cuisine you eat`;
     return { kind: "cuisine", text: clip(text, c.textChars), short: clip(text, c.shortChars) };
@@ -1018,7 +1140,7 @@ function reasonOf(
     // The flavor is the reason, and only what the candidate's own text shows may be said about it.
     const fs = seeds[hit.flav.seed];
     const whole = displayDish(cleanItem(hit.item).replace(/^\d{3,}\s+/, "").replace(/^[^:]{1,24}#\d+:\s*/, ""));
-    const item = whole && !fold(candidate).includes(fold(whole)) ? whole : (hit.fam ? (FAMILY_BY_ID.get(hit.fam)?.noun ?? "") : "") || whole;
+    const item = said(whole && !fold(candidate).includes(fold(whole)) ? whole : (hit.fam ? (FAMILY_BY_ID.get(hit.fam)?.noun ?? "") : "") || whole);
     if (item && fs) {
       // "like your The Naughty Pie" reads wrong: a leading article goes.
       const dish = fs.dish ? displayDish(fs.dish).replace(/^(?:the|a|an)\s+(?=\S)/i, "") : null;
@@ -1043,11 +1165,13 @@ function reasonOf(
     // "Garlic Parmesan Wings with fries and a drink": the dish ends where the extras start.
     const named = fold(whole);
     // A bowl that is the place's own name ("Pho Nom" at Pho Nom) tells nothing: name the dish family.
-    const item = whole && !fold(candidate).includes(named)
-      ? whole.length > 22
-        ? whole.split(/\s+(?:with|w\/|and|plus)\s+|,|\s[-–]\s|\s&\s|\s\+\s/i)[0] || whole
-        : whole
-      : (FAMILY_BY_ID.get(hit.fam)?.noun ?? "");
+    const item = said(
+      whole && !fold(candidate).includes(named)
+        ? whole.length > 22
+          ? whole.split(/\s+(?:with|w\/|and|plus)\s+|,|\s[-–]\s|\s&\s|\s\+\s/i)[0] || whole
+          : whole
+        : (FAMILY_BY_ID.get(hit.fam)?.noun ?? ""),
+    );
     const dish = s.dish ? displayDish(s.dish) : null;
     return { kind: "dish", text: famLine(item, phrase, dish, place, c.textChars), short: famLine(item, phrase, dish, place, c.shortChars) };
   }
@@ -1055,7 +1179,7 @@ function reasonOf(
     const text = `Known for ${hit.term} — like ${place}`;
     return { kind: "style", text: clip(text, c.textChars), short: clip(text, c.shortChars) };
   }
-  const item = cleanItem(hit.item);
+  const item = said(cleanItem(hit.item));
   if (s.placeLevel) {
     return {
       kind: "dish",
@@ -1093,10 +1217,38 @@ type Cand = {
   tier: number;
   /** Stands on flavor alone in a cuisine or dish family the viewer has not posted. Waits behind the familiar picks. */
   novel?: boolean;
+  /** Its flavor is one of theirs, but in a kind of dish none of theirs is: only ever an adventurous pick. */
+  cross?: boolean;
   /** `novel`, and good enough to be one of the row's adventurous picks. */
   advOk?: boolean;
   /** Placed as one of the adventurous picks: its reason says it is new. */
   adv?: boolean;
+};
+
+type FamItem = FamPlace["items"][number];
+/** The folded words of a family item's name, worked out once per item (the index outlives a request). */
+const ITEM_WORDS = new WeakMap<FamItem, readonly string[]>();
+const wordsOfItem = (x: FamItem): readonly string[] => {
+  let v = ITEM_WORDS.get(x);
+  if (v === undefined) {
+    v = foldM(x.name).split(" ").map(wordOf);
+    ITEM_WORDS.set(x, v);
+  }
+  return v;
+};
+/** A specialist's items that can name a pick for a seed (of a sub-type, if the seed has one): its mains, unless the family is all it has. */
+const POOL_MEMO = new WeakMap<FamPlace, Map<RegExp | null, readonly FamItem[]>>();
+const famPool = (fp: FamPlace, sub: RegExp | null): readonly FamItem[] => {
+  let byRe = POOL_MEMO.get(fp);
+  if (!byRe) POOL_MEMO.set(fp, (byRe = new Map()));
+  let pool = byRe.get(sub);
+  if (!pool) {
+    const typed = sub ? fp.items.filter((x) => sub.test(foldM(x.name))) : fp.items;
+    const mains = typed.filter((x) => !OFF_MAIN.test(foldM(x.name)));
+    pool = mains.length > 0 ? mains : typed;
+    byRe.set(sub, pool);
+  }
+  return pool;
 };
 
 /**
@@ -1147,7 +1299,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     let k = chainCache.get(rid);
     if (k === undefined) {
       const r = byId.get(index.rids[rid]);
-      k = r ? chainKey(r) : "";
+      k = r ? chainKeyM(r) : "";
       chainCache.set(rid, k);
     }
     return k;
@@ -1157,7 +1309,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   const famsOf = (dishName: string | null, rid: number | undefined): SeedFam[] => {
     const spec = rid === undefined ? undefined : index.famSpec.get(rid);
     const placeTags = rid === undefined ? undefined : index.tags.get(rid);
-    const dish = dishName ? fold(dishName) : "";
+    const dish = dishName ? foldM(dishName) : "";
     const out: SeedFam[] = [];
     const add = (f: Family) => {
       // "Slice" is the dish's to say; the place's own tags pass on how it makes it.
@@ -1201,11 +1353,11 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   };
   /** The packed flavor of the line called `name` in place `rid` (merged over duplicate lines); null when the place has none. */
   const itemMaskIn = (rid: number, name: string): number | null => {
-    const want = fold(name);
+    const want = foldM(name);
     let m: number | null = null;
     for (let k = index.first[rid]; k < index.first[rid + 1]; k++) {
       const it = index.order[k];
-      if (fold(index.itemName[it]) !== want) continue;
+      if (foldM(index.itemName[it]) !== want) continue;
       m = m === null ? index.itemFlavor[it] : mergeMasks(m, index.itemFlavor[it]);
     }
     return m;
@@ -1225,7 +1377,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   };
   /** The dish family a menu line is in, if any. */
   const famIdOf = (name: string): string | undefined => {
-    const nm = fold(name);
+    const nm = foldM(name);
     if (BUILDER.test(nm)) return undefined;
     return (FAMILIES.find((f) => f.dish.test(nm)) ?? FAMILIES.find((f) => f.item.test(nm)))?.id;
   };
@@ -1287,15 +1439,15 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
           placeLevel: false,
           head: [],
           words: new Set(),
-          chain: place ? chainKey(place) : "",
+          chain: place ? chainKeyM(place) : "",
           fams,
           famOnly: true,
         });
       }
       return;
     }
-    const name = fold(p.dishName);
-    const own = new Set(fold(place?.name ?? "").split(" ").map(stem));
+    const name = foldM(p.dishName);
+    const own = new Set(foldM(place?.name ?? "").split(" ").map(stem));
     // A term that is only the place's own name ("Pho Hoa" for a pho dish at Pho Hoa) says nothing about the dish.
     const usable = (x: string) => idfOf(x) > 0 && !x.split(" ").every((w) => own.has(w));
     const terms = new Map<string, number>();
@@ -1316,7 +1468,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       dish: p.dishName,
       place: place?.name ?? p.restaurantName ?? "",
       rid,
-      kind: kindOf(name, fold(p.dishSection ?? "")),
+      kind: kindOf(name, foldM(p.dishSection ?? "")),
       w: recency(p.at, now),
       rw: pw[pi],
       terms,
@@ -1324,7 +1476,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       placeLevel: false,
       head: ((h) => (h.length > 0 && idfOf(h[0]) >= c.loneIdf ? [] : h))(headOf(p.dishName)),
       words: new Set(name.split(" ").filter(Boolean).map(wordOf)),
-      chain: place ? chainKey(place) : "",
+      chain: place ? chainKeyM(place) : "",
       fams,
       famOnly: false,
     };
@@ -1349,6 +1501,61 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   const anchorOrder = prof.anchors
     .slice()
     .sort((a, b) => (b === FA.sweetheat ? 1 : 0) - (a === FA.sweetheat ? 1 : 0) || prof.beta[b] - prof.beta[a]);
+
+  // What kind of dish each posted dish and each menu line is: a flavor reason compares like with like.
+  const placeKindsMemo = new Map<number, number>();
+  /** What a place is known for, as kinds: the families it specialises in, else what its cuisine label says. */
+  const placeKinds = (rid: number | undefined): number => {
+    if (rid === undefined) return 0;
+    const memo = placeKindsMemo.get(rid);
+    if (memo !== undefined) return memo;
+    let k = 0;
+    for (const [id, v] of index.famSpec.get(rid) ?? []) if (v >= (FAMILY_BY_ID.get(id)?.min ?? c.famSpecialist)) k |= FAM_KIND[id] ?? 0;
+    if (k === 0) {
+      const cu = foldM(byId.get(index.rids[rid])?.cuisine ?? "");
+      for (const [re, bit] of CUISINE_KIND) if (re.test(cu)) k |= bit;
+    }
+    placeKindsMemo.set(rid, k);
+    return k;
+  };
+  /** A meat-free house: its profile says so, or its cuisine label or its own name does. */
+  const plantMemo = new Map<number, boolean>();
+  const isPlant = (rid: number | undefined): boolean => {
+    if (rid === undefined) return false;
+    let v = plantMemo.get(rid);
+    if (v === undefined) {
+      const r = byId.get(index.rids[rid]);
+      v = index.tags.get(rid)?.has("plant") === true || (r !== undefined && PLANT_PLACE.test(`${foldM(r.cuisine ?? "")} ${foldM(r.name)}`));
+      plantMemo.set(rid, v);
+    }
+    return v;
+  };
+  /** The kinds a menu line is: its own name's, or (a name that says nothing) the place's. A meat-free house serves no meat. */
+  const lineKinds = (rid: number, name: string): number => {
+    const own = kindsOfName(foldM(name));
+    let k = (own & ~KB.starter) !== 0 ? own : own | placeKinds(rid);
+    if (isPlant(rid)) k = (k & ~(KB.chicken | KB.meat | KB.seafood)) | KB.plant;
+    return k;
+  };
+  const seedKinds = seeds.map((s) => {
+    let k = s.dish ? kindBits(foldM(s.dish)) : 0;
+    for (const f of s.fams) k |= FAM_KIND[f.id] ?? 0;
+    return k || placeKinds(s.rid);
+  });
+  const seedsForMemo = new Map<number, number[]>();
+  /** The viewer's dishes with this flavor that are of the same kind as a pick's line, highest rated first. */
+  const seedsFor = (attr: number, kinds: number): number[] => {
+    const key = attr * 16384 + kinds;
+    let list = seedsForMemo.get(key);
+    if (!list) {
+      const all = prof.seedsByAttr[attr];
+      // A dish whose kind is known and shared comes first; one whose kind is not known only stands in for want of one.
+      const same = (s: number) => (seedKinds[s] & kinds & ~KB.starter) !== 0;
+      list = kinds === 0 ? all.slice() : [...all.filter(same), ...all.filter((s) => !same(s) && kindsFit(seedKinds[s], kinds))];
+      seedsForMemo.set(key, list);
+    }
+    return list;
+  };
 
   // A term the viewer keeps ordering counts for more, up to +80%.
   const shared = new Map<string, number>();
@@ -1406,7 +1613,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   const seenChains = new Set<string>();
   for (const id of seen) {
     const r = byId.get(id);
-    if (r) seenChains.add(chainKey(r));
+    if (r) seenChains.add(chainKeyM(r));
   }
 
   // What is new to them: a cuisine none of their posts (or been places) is in, or a dish family none of their posts
@@ -1497,7 +1704,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       const price = index.itemPrice[item] > 0 ? index.itemPrice[item] : null;
       const lone = e.names === 1 && e.shared < 2 ? c.loneHit : 1;
       const v = Math.min(1, e.v / total) * s.w * lone * (s.kind === DRINK ? c.drinkHit : 1);
-      keep(index.itemRid[item], { seed: si, v, vw: v * s.rw, item: index.itemName[item], price, term: e.term, style: false });
+      keep(index.itemRid[item], { seed: si, v, vw: v * s.rw, item: index.itemName[item], price, term: e.term, style: false, starter: index.itemStarter[item] === 1 });
       dishes++;
     }
     for (const [rid, e] of stylesAcc) {
@@ -1531,7 +1738,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   seeds.forEach((s, si) => {
     for (const sf of s.fams) {
       const fam = FAMILY_BY_ID.get(sf.id);
-      const dishText = fold(s.dish);
+      const dishText = foldM(s.dish);
       const sub = fam?.sub && fam.sub.seed.test(dishText) ? fam.sub : null;
       const seedTier = svcTier(s.rid);
       const seedTags = s.rid === undefined ? undefined : index.tags.get(s.rid);
@@ -1543,18 +1750,16 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
         // A meat-free house is a stretch for a seed whose own place is not.
         const contra = fp.tags.includes("plant") && !seedTags?.has("plant");
         // The item that names the pick: the sub-type the seed is (a Caesar needs a Caesar), then the one closest to the seed's dish and style.
-        const typed = sub ? fp.items.filter((x) => sub.item.test(fold(x.name))) : fp.items;
         // Its mains, not a stick or a share platter, unless that is all the place has in the family.
-        const mains = typed.filter((x) => !OFF_MAIN.test(fold(x.name)));
-        const pool = mains.length > 0 ? mains : typed;
+        const pool = famPool(fp, sub ? sub.item : null);
         let pick: (typeof fp.items)[number] | undefined;
         let pickScore = -1;
         pool.forEach((x, i) => {
-          const nm = fold(x.name);
-          const toks = nm.split(" ").map(wordOf);
-          let sc = toks.filter((w) => s.words.has(w) && w.length >= 4).length * 2 + (x.sig ? 1 : 0) - i * 0.01;
+          const nm = foldM(x.name);
+          let sc = wordsOfItem(x).filter((w) => s.words.has(w) && w.length >= 4).length * 2 + (x.sig ? 1 : 0) - i * 0.01;
           if (tagged && sf.tag && TAGS[sf.tag].re.test(nm)) sc += 2;
-          if (fam?.classic?.test(nm)) sc += 1.5;
+          // A classic roll is what a fusion seed is not: it does not name a fusion pick.
+          if (fam?.classic?.test(nm)) sc += sf.tag === "fusion" ? -1 : 1.5;
           // A shorter name is a plainer dish: it only breaks a tie.
           sc -= nm.length * 0.005;
           if (sc > pickScore) {
@@ -1583,7 +1788,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   const seedFams = new Set(seeds.flatMap((s) => s.fams.map((f) => f.id)));
 
   // What the flavor profile adds at one place. A place's lines are its food items, or (no menu at all) its signature dishes.
-  type FLine = { name: string; mask: number; claims: readonly FlavorClaim[]; price: number | null };
+  type FLine = { name: string; mask: number; claims: readonly FlavorClaim[]; price: number | null; starter: boolean };
   const linesOf = (rid: number, onFlavor = false): FLine[] => {
     const out: FLine[] = [];
     for (let k = index.first[rid]; k < index.first[rid + 1]; k++) {
@@ -1591,22 +1796,26 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       if (index.itemKind[it] !== FOOD) continue;
       // `onFlavor`: only the lines on a flavor the viewer likes (the rest are never read; this is the hot path).
       if (onFlavor && anchorAttr(prof, index.itemFlavor[it]) < 0) continue;
-      out.push({ name: index.itemName[it], mask: index.itemFlavor[it], claims: index.itemClaims.get(it) ?? [], price: index.itemPrice[it] > 0 ? index.itemPrice[it] : null });
+      out.push({ name: index.itemName[it], mask: index.itemFlavor[it], claims: index.itemClaims.get(it) ?? [], price: index.itemPrice[it] > 0 ? index.itemPrice[it] : null, starter: index.itemStarter[it] === 1 });
     }
     if (index.first[rid + 1] === index.first[rid]) {
       for (const sg of index.menuless.get(rid)?.sigs ?? []) {
         if (onFlavor && anchorAttr(prof, sg.mask) < 0) continue;
-        if (kindOf(fold(sg.name), "") === FOOD) out.push({ name: sg.name, mask: sg.mask, claims: sg.claims, price: null });
+        if (kindOf(foldM(sg.name), "") === FOOD) out.push({ name: sg.name, mask: sg.mask, claims: sg.claims, price: null, starter: (kindsOfName(foldM(sg.name)) & KB.starter) !== 0 });
       }
     }
     return out;
   };
   const fitV = (F: number): number => c.flavorV * clamp((F - c.flavorF0) / c.flavorFSpan, 0, 1);
   /** Gives a hit the claim its line's own text supports, if the line is on a flavor the viewer likes. */
-  const attach = (h: Hit, l: FLine): void => {
+  const attach = (h: Hit, l: FLine, rid: number): void => {
     if (anchorAttr(prof, l.mask) < 0) return;
     const claim = pickClaim(l.claims, anchorOrder);
-    if (claim) h.flav = { attr: claim.attr, claim, seed: prof.seedsByAttr[claim.attr][0], only: false };
+    if (!claim) return;
+    // Only a posted dish of the line's own kind can be named: with none, the line keeps its ordinary reason.
+    const kinds = lineKinds(rid, l.name);
+    const seed = seedsFor(claim.attr, kinds)[0];
+    if (seed !== undefined) h.flav = { attr: claim.attr, claim, seed, only: false, kinds, cross: false };
   };
   const flavorHits = (rid: number, hits: readonly Hit[]): Hit[] => {
     const lines = linesOf(rid, true);
@@ -1615,8 +1824,8 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     // A family match's own line may be on any flavor, so all the lines are read, but only if there is one to find.
     let every: FLine[] | undefined;
     const lineOf = (item: string): FLine | undefined => {
-      const want = fold(item);
-      return (every ??= linesOf(rid)).find((l) => fold(l.name) === want);
+      const want = foldM(item);
+      return (every ??= linesOf(rid)).find((l) => foldM(l.name) === want);
     };
     // A family match is nudged by how its line fits (a bare specialist, by what its profile says).
     for (const h of out) {
@@ -1626,7 +1835,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       if (mask === 0) continue;
       h.v = clamp(h.v * (1 + c.flavorMod * clamp(flavorFit(prof, mask), -0.5, 0.8)), 0, 1);
       h.vw = h.v * seeds[h.seed].rw;
-      if (l) attach(h, l);
+      if (l) attach(h, l, rid);
     }
     let only: Hit | null = null;
     let onlyKey = -1;
@@ -1634,8 +1843,8 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       if (anchorAttr(prof, l.mask) < 0) continue;
       const v = fitV(flavorFit(prof, l.mask));
       if (v <= 0) continue;
-      const want = fold(l.name);
-      const same = out.filter((h) => !h.style && h.item !== "" && fold(h.item) === want);
+      const want = foldM(l.name);
+      const same = out.filter((h) => !h.style && h.item !== "" && foldM(h.item) === want);
       if (same.length > 0) {
         // The same line already matched a posted dish: the two kinds of evidence add.
         for (const h of same) {
@@ -1643,16 +1852,21 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
             h.v = 1 - (1 - h.v) * (1 - v);
             h.vw = h.v * seeds[h.seed].rw;
           }
-          if (!h.flav) attach(h, l);
+          if (!h.flav) attach(h, l, rid);
         }
         continue;
       }
       // Standing on flavor alone takes a claim the line's own text supports, and a fit that clears the gate.
       const claim = pickClaim(l.claims, anchorOrder);
       if (!claim || v < c.gate) continue;
-      const key = v + (claim.inName ? 0.02 : 0);
+      // A side, a bread or a starter is not what a place is sent for.
+      const kinds = lineKinds(rid, l.name);
+      if (l.starter || (kinds & KB.starter) !== 0 || SIDE_LINE.test(want)) continue;
+      // The line a posted dish of its own kind backs beats a better-fitting one only another kind backs.
+      const own = seedsFor(claim.attr, kinds)[0];
+      const key = v + (claim.inName ? 0.02 : 0) + (own !== undefined ? 0.25 : 0) - ((kinds & ~KB.starter) === 0 ? 0.2 : 0);
       if (key <= onlyKey) continue;
-      const seed = prof.seedsByAttr[claim.attr][0];
+      const seed = own ?? prof.seedsByAttr[claim.attr][0];
       onlyKey = key;
       only = {
         seed,
@@ -1664,7 +1878,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
         style: false,
         fam: famIdOf(l.name),
         tag: null,
-        flav: { attr: claim.attr, claim, seed, only: true },
+        flav: { attr: claim.attr, claim, seed, only: true, kinds, cross: own === undefined },
       };
     }
     if (only) out.push(only);
@@ -1673,15 +1887,26 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
 
   const byV = (a: Hit, b: Hit) => b.v - a.v;
   const byVw = (a: Hit, b: Hit) => b.vw - a.vw;
+  // A place the viewer names in their own captions ("better than Dave's") is one they already have an opinion of:
+  // it is not news, so it counts for less.
+  const captionWords = new Set<string>();
+  for (const p of posts) for (const w of foldM(p.caption ?? "").split(" ")) if (w.length >= 4) captionWords.add(w);
+  const nameWords = (name: string): string[] => foldM(name).split(" ").filter((w) => w.length >= 4 && !GENERIC_NAME.has(w));
+  const namedInCaption = (name: string): boolean => {
+    const w = nameWords(name)[0];
+    return w !== undefined && captionWords.has(w);
+  };
   const cands: { cand: Cand; M: number; Q: number; D: number; Cc: number; raw: number }[] = [];
   for (const r of restaurants) {
     if (seen.has(r.id) || (r.cuisine && skipped.has(r.cuisine))) continue;
     // The hard quality floor, for every kind of pick: no rating or too few reviews never qualifies, and nothing
     // below it is backfilled to fill the row. (Before the chain check, which is the dearer of the two.)
-    if (!passesFloor(r) || seenChains.has(chainKey(r))) continue;
+    if (!passesFloor(r) || seenChains.has(chainKeyM(r))) continue;
     const rid = index.ridIndex.get(r.id);
     let hits = rid === undefined ? [] : (best.get(rid) ?? []);
     if (layer && rid !== undefined) hits = flavorHits(rid, hits);
+    // A shop known for its drinks or sweets is not sent to for a glaze: its flavor-only matches are dropped.
+    if (hits.some((h) => h.flav?.only) && DRINK_LED.test(foldM(r.cuisine ?? ""))) hits = hits.filter((h) => !h.flav?.only);
     // A place whose profile says it specialises in one of their families is judged on that family alone
     // (a pizzeria is not picked for its bucatini), and a style with no shared dish family says nothing.
     const spec = rid === undefined ? undefined : index.famSpec.get(rid);
@@ -1700,12 +1925,17 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     const M = Math.min(1, (h1?.vw ?? 0) + 0.25 * (h2?.vw ?? 0));
     // The reason names the highest-rated of the dishes that really match.
     const svc = rid === undefined ? "" : (index.service.get(rid) ?? "");
-    const barish = svc === "bar" || BAR_PLACE.test(fold(r.cuisine ?? ""));
+    const barish = svc === "bar" || BAR_PLACE.test(foldM(r.cuisine ?? ""));
     // A bar or a brewpub is not where a dish family is looked for: those matches wait after the first picks, like bar bites.
     const tierOf = (h: Hit): number =>
-      seeds[h.seed].kind === DRINK && !h.fam ? 2 : (h.fam && (svc === "bar" || svc === "brewery_winery")) || (h.item && barish && BAR_BITE.test(fold(h.item))) ? 1 : 0;
-    // A family match that shares the seed place's style names it best; then the dish they rated highest.
-    const nameRank = (h: Hit) => seeds[h.seed].rw + (h.tag ? 0.15 : 0) + (h.flav?.claim ? 0.1 : 0);
+      seeds[h.seed].kind === DRINK && !h.fam
+        ? 2
+        : (h.starter && !h.fam) || ((h.fam || h.flav?.only) && (svc === "bar" || svc === "brewery_winery")) || (h.item && barish && BAR_BITE.test(foldM(h.item)))
+          ? 1
+          : 0;
+    // A family match that shares the seed place's style names it best; then the dish they rated highest. A flavor
+    // that only travels to another kind of dish names the pick last.
+    const nameRank = (h: Hit) => seeds[h.seed].rw + (h.tag ? 0.15 : 0) + (h.flav?.claim ? 0.1 : 0) - (h.flav?.cross ? 1 : 0);
     const real = hits.filter((h) => h.v >= c.gate);
     const named = real.sort((a, b) => tierOf(a) - tierOf(b) || nameRank(b) - nameRank(a) || b.vw - a.vw)[0] ?? h1;
     const shrunk = shrunkRating(r.rating, r.reviewCount, input.ratingMean);
@@ -1718,14 +1948,15 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     const bonus = budget && price ? budgetPoints(priceFit(price, budget), budget.conf) : 0;
     const Cc = cuisineAffinity(r.cuisine);
     const trust = c.reviewFloor + (1 - c.reviewFloor) * Math.min(1, (r.reviewCount ?? 0) / c.reviewFull);
-    const score = g * trust * (100 * (c.wM * M * D + c.wC * Cc * D + c.wQ * Q) + bonus);
+    const score = g * trust * (100 * (c.wM * M * D + c.wC * Cc * D + c.wQ * Q) + bonus) * (namedInCaption(r.name) ? c.knownShade : 1) * (named?.flav?.only && (named.flav.kinds & ~KB.starter) === 0 ? c.oddShade : 1);
     // A pick that stands on flavor alone is new to them when its cuisine or its dish family is one they have not
     // posted. It is one of the adventurous picks when it is also a sit-down meal of real quality, at a place that
     // does not specialise in something else (a sushi bar is not picked for its burger).
     const cand: Cand = { r, hit: named, score, tier: named ? tierOf(named) : 0 };
     if (named?.flav?.only) {
-      cand.novel = (r.cuisine != null && !postedCuisines.has(r.cuisine)) || (named.fam !== undefined && !postedFams.has(named.fam));
-      if (cand.novel && cand.tier === 0 && Q >= c.advMinQ && named.v >= c.advMinV && !SIDE_LINE.test(fold(named.item))) {
+      cand.cross = named.flav.cross;
+      cand.novel = cand.cross || (r.cuisine != null && !postedCuisines.has(r.cuisine)) || (named.fam !== undefined && !postedFams.has(named.fam));
+      if (cand.novel && cand.tier === 0 && Q >= c.advMinQ && named.v >= c.advMinV && !SIDE_LINE.test(foldM(named.item))) {
         const specs = spec ? [...spec.keys()].filter(specOf) : [];
         cand.advOk = specs.length === 0 || (named.fam !== undefined && specs.includes(named.fam));
       }
@@ -1766,7 +1997,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       for (const cand of pool) {
         if (out.length >= poolSize) return;
         if (out.includes(cand)) continue;
-        const ck = chainKey(cand.r);
+        const ck = chainKeyM(cand.r);
         const cuisine = cand.r.cuisine ?? "";
         if (chains.has(ck) || (perCuisine.get(cuisine) ?? 0) >= c.perCuisine) continue;
         const hit = cand.hit;
@@ -1786,13 +2017,21 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   };
   // A flavor pick in a cuisine or family they have not posted is for the adventurous slots; it waits behind the
   // familiar picks, and only fills the row where there are too few of those.
-  const familiar = matched.filter((x) => !x.novel);
-  const novel = matched.filter((x) => x.novel);
+  // A starter or a sharing plate is not what a place is sent for: such a pick only fills a row nothing else fills.
+  const starterLed = (x: Cand) => x.hit?.starter === true && !x.hit.fam;
+  const familiar = matched.filter((x) => !x.novel && !starterLed(x));
+  const novel = matched.filter((x) => x.novel && !starterLed(x));
   take(familiar);
   take(fallback);
   const taken = out.length;
-  take(novel);
+  // A flavor that only travels to another kind of dish is for the adventurous slots alone.
+  take(novel.filter((x) => !x.cross));
   const late = out.splice(taken);
+  // Only when nothing else is left may such a pick fill a short row; it then says it is new for them.
+  take(novel.filter((x) => x.cross));
+  const lateCross = out.splice(taken);
+  take(matched.filter(starterLed));
+  const lateStarter = out.splice(taken);
 
   // Best first, but spread out. In the first `top`: only real meal matches, one pick per dish family, no more
   // than `perCuisineTop` of a cuisine, none from a dish twice, none twice in a row. After them the caps relax
@@ -1855,7 +2094,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     // never yields (a later slot takes it instead); the family and cuisine spread do, a little, before it waits.
     if (advPlaced < advN && pos >= advSlot(advPlaced) && advs.length > 0) {
       const room = (x: Cand) =>
-        !ordered.some((o) => o.r.id === x.r.id || chainKey(o.r) === chainKey(x.r)) &&
+        !ordered.some((o) => o.r.id === x.r.id || chainKeyM(o.r) === chainKeyM(x.r)) &&
         ordered.filter((o) => o.r.cuisine === x.r.cuisine).length < c.perCuisine;
       const advRules = [flavorCap, oneFamily, cuisineOk];
       let a = -1;
@@ -1867,11 +2106,15 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
         advLast = pos;
         drop(rest, pick.r.id);
         drop(late, pick.r.id);
+        drop(lateCross, pick.r.id);
+        drop(lateStarter, pick.r.id);
         continue;
       }
     }
     // Too few familiar picks left: the novel ones fill the row as the ordinary flavor picks they are.
     if (rest.length === 0 && late.length > 0) rest.push(...late.splice(0));
+    if (rest.length === 0 && lateCross.length > 0) rest.push(...lateCross.splice(0));
+    if (rest.length === 0 && lateStarter.length > 0) rest.push(...lateStarter.splice(0));
     if (rest.length === 0) break;
     // Most to least worth keeping: drop the last rule first.
     const rules = [meal, flavorCap, oneFamily, free, cuisineOk, notPrev, apart];
@@ -1887,17 +2130,23 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   const compared = new Map<number, number>();
   return ordered.slice(0, limit).map((x) => {
     let hit = x.hit;
+    const rid = index.ridIndex.get(x.r.id);
     if (hit?.flav?.claim) {
-      const pool = prof.seedsByAttr[hit.flav.attr].slice(0, 4);
-      let seed = pool[0];
+      // Only dishes of the pick's own kind are compared to it (a cross-kind pick may name any of their best).
+      const fit = hit.flav.cross ? [] : seedsFor(hit.flav.attr, hit.flav.kinds).slice(0, 4);
+      const pool = fit.length > 0 ? fit : prof.seedsByAttr[hit.flav.attr].slice(0, hit.flav.cross ? 4 : 1);
+      let seed = pool[0] ?? hit.flav.seed;
       for (const s of pool) if ((compared.get(s) ?? 0) < (compared.get(seed) ?? 0)) seed = s;
       compared.set(seed, (compared.get(seed) ?? 0) + 1);
       hit = { ...hit, flav: { ...hit.flav, seed } };
     }
+    // A meat-free house says so when the dish it is compared to is not one.
+    const shown = hit?.flav?.claim ? hit.flav.seed : hit?.seed;
+    const plant = isPlant(rid) && shown !== undefined && !isPlant(seeds[shown]?.rid);
     return {
       restaurant: x.r,
       plateScore: input.plates[x.r.id] ?? null,
-      reason: reasonOf(hit, seeds, x.r.cuisine, x.r.name, x.adv === true),
+      reason: reasonOf(hit, seeds, x.r.cuisine, x.r.name, x.adv === true || x.novel === true, plant),
     };
   });
 }
