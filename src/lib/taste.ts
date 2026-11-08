@@ -16,6 +16,24 @@
  *  - `rankTaste`: "For me", every candidate in one ordered list. Affinity from
  *    history is item-to-item similarity over menu profiles (profileTraits.ts),
  *    so one place is already enough to go on. Spec: probe/for-me/PLAN.md.
+ *
+ * Everything below that only For me does is switched on by `traits` (the menu
+ * index), so Your taste never sees it:
+ *  - Its own weights, FORME_WEIGHTS (A 0.40, F 0.20, Q 0.30, N 0.10).
+ *  - A shrunk rating. R' = (n*R + m*C) / (n+m) pulls a thin rating toward C, the
+ *    mean of the rated places in the corpus (`Corpus.ratingMean`, read once per
+ *    corpus load), with m = FORME_QUALITY.priorReviews. Fewer than minReviews
+ *    reviews is unrated. Q's source term is then the stars alone, with no
+ *    review-volume factor: R' already says how much to trust the number. Unrated
+ *    stays at unratedQ, so a missing rating is neither rewarded nor punished.
+ *  - A soft floor, g, on the score (the matches' order, not the tail's): 1 from
+ *    R' 4.2 up, 0.8 at 3.8, 0.65 at 3.5 and below, linear between, 0.92 for an
+ *    unrated place. A place with 15 or more reviews is judged on the lower of R'
+ *    and its raw rating, so shrinking can only help a thin sample, never a
+ *    well-reviewed place that is simply not good.
+ *  - The tail's reason reads R': "Well rated in {hood}" from 4.2, "Highly rated"
+ *    from 4.5. The grid's quality line drops its tier word on those cards.
+ * The viewer's own ratings, likes, hearts, upvotes and saves feed none of it.
  */
 import type { RestaurantView } from "@/data/restaurantTypes";
 import type { PlateScore } from "@/lib/plateScore";
@@ -31,6 +49,7 @@ import {
 import type { ForMeInfo, ForMeReason } from "@/lib/discoverWire";
 import { MIN_POSTS } from "@/lib/tasteMatch";
 
+/** Your taste. For me reads FORME_WEIGHTS for the four terms below and the same rest. */
 export const WEIGHTS = {
   /** SCORE = 100 * (a*A + f*F + q*Q + n*N). */
   affinity: 0.5,
@@ -55,7 +74,7 @@ export const WEIGHTS = {
   plateSpanPct: 40,
   ratingFloor: 3.8,
   ratingSpan: 1.2,
-  /** Review volume that earns the full sourceTerm: log10(1+n)/this. */
+  /** Your taste only: review volume that earns the full sourceTerm, log10(1+n)/this. For me reads R' instead. */
   reviewLogDivisor: 2.5,
   /** Share of the list one cuisine may take (when 2+ cuisines score). */
   cuisineCapShare: 0.4,
@@ -86,10 +105,43 @@ export const WEIGHTS = {
   capFromPosition: 6,
   /** ...and is waived when the best other-cuisine place scores under this share of the leader. */
   capRelaxRatio: 0.5,
-  /** A tail reason says "well rated" at Q >= this. */
-  wellRatedQ: 0.6,
   /** Longest reason line. "Because you went to " is 20 of these, so a seed name keeps 36. */
   reasonMaxChars: 56,
+} as const;
+
+/**
+ * SCORE for For me = g * 100 * (a*A + f*F + q*Q + n*N), the weights of `WEIGHTS`
+ * for Your taste left alone. Dials: they sum to 1, so a perfect place scores 100.
+ */
+export const FORME_WEIGHTS = {
+  affinity: 0.4,
+  friends: 0.2,
+  quality: 0.3,
+  neighborhood: 0.1,
+} as const;
+
+/** The quality model For me reads: the shrunk rating, the soft floor and the tail wording. */
+export const FORME_QUALITY = {
+  /** Fewer reviews than this and a place reads as unrated. */
+  minReviews: 10,
+  /** m in R' = (n*R + m*C) / (n+m): reviews' worth of pull toward the corpus mean. */
+  priorReviews: 50,
+  /** g is 1 from this R' up... */
+  floorFullFrom: 4.2,
+  /** ...falls linearly to floorMidFactor here... */
+  floorMidAt: 3.8,
+  floorMidFactor: 0.8,
+  /** ...and on to floorLowFactor here, where it stays for anything lower. */
+  floorLowAt: 3.5,
+  floorLowFactor: 0.65,
+  /** g for a place with no usable rating. */
+  floorUnrated: 0.92,
+  /** From this many reviews g reads min(R', R): a big sample's raw rating is not softened. */
+  rawGuardReviews: 15,
+  /** A tail reason says "Well rated" from this R'... */
+  wellRatedFrom: 4.2,
+  /** ..."Highly rated" from this one. */
+  highlyRatedFrom: 4.5,
 } as const;
 
 export type TasteBasis = "history" | "starting" | "friends" | "none";
@@ -287,25 +339,111 @@ export function chainKey(r: Pick<RestaurantView, "name" | "cuisine">): string {
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
 
-function sourceTerm(r: RestaurantView): number {
+/**
+ * The mean rating of the rated places in `places`: the C a thin rating is pulled
+ * toward. Rated means FORME_QUALITY.minReviews reviews or more, the same line
+ * `shrunkRating` draws. Null when nothing is rated, which `shrunkRating` reads
+ * as "nothing to shrink toward" and leaves a rating as it is.
+ *
+ * Read once per corpus load (`Corpus.ratingMean`), never per request.
+ */
+export function meanRating(places: readonly RestaurantView[]): number | null {
+  let sum = 0;
+  let count = 0;
+  for (const r of places) {
+    if (r.rating == null || !Number.isFinite(r.rating)) continue;
+    if (!((r.reviewCount ?? 0) >= FORME_QUALITY.minReviews)) continue;
+    sum += r.rating;
+    count++;
+  }
+  return count > 0 ? sum / count : null;
+}
+
+/**
+ * R' = (n*R + m*C) / (n+m): a rating, pulled toward the corpus mean in
+ * proportion to how few reviews it stands on. Null for an unrated place (no
+ * rating, or fewer than minReviews reviews). With no corpus mean there is
+ * nothing to pull toward and the rating is returned as it is.
+ */
+export function shrunkRating(
+  rating: number | null | undefined,
+  reviews: number | null | undefined,
+  mean: number | null,
+): number | null {
+  if (rating == null || !Number.isFinite(rating)) return null;
+  const n = reviews ?? 0;
+  if (!(n >= FORME_QUALITY.minReviews)) return null;
+  if (mean == null || !Number.isFinite(mean)) return rating;
+  const m = FORME_QUALITY.priorReviews;
+  return (n * rating + m * mean) / (n + m);
+}
+
+/**
+ * g, the soft floor on a For me score: 1 from R' 4.2, linear to 0.8 at 3.8 and
+ * on to 0.65 at 3.5, flat 0.65 below, 0.92 for an unrated place. From
+ * rawGuardReviews reviews it reads min(R', R), so a big sample's raw rating
+ * can only lower it. Continuous everywhere and never above 1, so a missing
+ * rating costs a little and a bad one costs more, and no input makes it NaN.
+ */
+export function qualityFloor(
+  shrunk: number | null,
+  rating: number | null | undefined,
+  reviews: number | null | undefined,
+): number {
+  const f = FORME_QUALITY;
+  if (shrunk == null) return f.floorUnrated;
+  const judged =
+    rating != null && Number.isFinite(rating) && (reviews ?? 0) >= f.rawGuardReviews
+      ? Math.min(shrunk, rating)
+      : shrunk;
+  if (judged >= f.floorFullFrom) return 1;
+  if (judged >= f.floorMidAt) {
+    const t = (judged - f.floorMidAt) / (f.floorFullFrom - f.floorMidAt);
+    return f.floorMidFactor + (1 - f.floorMidFactor) * t;
+  }
+  if (judged > f.floorLowAt) {
+    const t = (judged - f.floorLowAt) / (f.floorMidAt - f.floorLowAt);
+    return f.floorLowFactor + (f.floorMidFactor - f.floorLowFactor) * t;
+  }
+  return f.floorLowFactor;
+}
+
+/**
+ * The stars part of Q. `shrunk` is the For me switch: undefined is Your taste
+ * (raw rating, scaled by review volume), null is a For me place with no usable
+ * rating, a number is its R' (stars alone, the volume already inside R').
+ */
+function sourceTerm(r: RestaurantView, shrunk?: number | null): number {
+  if (shrunk !== undefined) {
+    if (shrunk === null) return WEIGHTS.unratedQ;
+    return clamp01((shrunk - WEIGHTS.ratingFloor) / WEIGHTS.ratingSpan);
+  }
   if (r.rating == null) return WEIGHTS.unratedQ;
   const stars = clamp01((r.rating - WEIGHTS.ratingFloor) / WEIGHTS.ratingSpan);
   const volume = Math.min(1, Math.log10(1 + (r.reviewCount ?? 0)) / WEIGHTS.reviewLogDivisor);
   return stars * volume;
 }
 
-function qualityOf(r: RestaurantView, plate: PlateScore | undefined): number {
-  const base = baseQuality(r, plate);
+function qualityOf(
+  r: RestaurantView,
+  plate: PlateScore | undefined,
+  shrunk?: number | null,
+): number {
+  const base = baseQuality(r, plate, shrunk);
   return r.photo ? Math.min(1, base + WEIGHTS.photoInQ) : base;
 }
 
-function baseQuality(r: RestaurantView, plate: PlateScore | undefined): number {
-  const src = sourceTerm(r);
+function baseQuality(
+  r: RestaurantView,
+  plate: PlateScore | undefined,
+  shrunk?: number | null,
+): number {
+  const src = sourceTerm(r, shrunk);
   if (plate?.ready && plate.percent != null) {
     const p = clamp01((plate.percent - WEIGHTS.plateFloorPct) / WEIGHTS.plateSpanPct);
     return WEIGHTS.plateInQ * p + WEIGHTS.sourceInQ * src;
   }
-  if (r.rating == null) return WEIGHTS.unratedQ;
+  if (shrunk !== undefined ? shrunk === null : r.rating == null) return WEIGHTS.unratedQ;
   return WEIGHTS.sourceOnlyInQ * src;
 }
 
@@ -325,7 +463,10 @@ export type Scored = {
   r: RestaurantView;
   /** Position in the candidates handed in. */
   index: number;
-  /** 100 * (0.5 A + 0.2 F + 0.2 Q + 0.1 N). */
+  /**
+   * Your taste: 100 * (0.5 A + 0.2 F + 0.2 Q + 0.1 N).
+   * For me: G * 100 * (0.4 A + 0.2 F + 0.3 Q + 0.1 N).
+   */
   score: number;
   /** 100 * (0.2 Q + 0.1 N): how the "also well rated" tail is ordered. */
   tail: number;
@@ -336,6 +477,10 @@ export type Scored = {
   F: number;
   Q: number;
   N: number;
+  /** For me: the shrunk rating R', null when unrated. Always null in the cuisine-share mode. */
+  Rs: number | null;
+  /** For me: the soft floor on `score`. Always 1 in the cuisine-share mode. */
+  G: number;
   /** Plate percent when ready, else -1: a tiebreak that never invents a number. */
   plate: number;
   friends: string[];
@@ -360,6 +505,13 @@ export type ScanInput = TasteInput & {
    * (Your taste).
    */
   traits?: TraitIndex;
+  /**
+   * For me: C in the shrunk rating, the mean rating of the rated places in the
+   * corpus (`Corpus.ratingMean`). Null: nothing is rated, so no rating is
+   * shrunk. Absent: read off `corpus` here, which a caller holding the cached
+   * corpus never needs, because it passes the one computed with it.
+   */
+  ratingMean?: number | null;
 };
 
 export type TasteScan = {
@@ -509,6 +661,14 @@ export function scoreAll(input: ScanInput): TasteScan {
   const sig = signalsOf(input);
   const { visitedIds, hidden, skips, effectiveLoves } = sig;
   const index = input.traits;
+  // For me carries its own weights and its own quality model; Your taste keeps
+  // WEIGHTS and the raw rating. `ratingMean` is only read when `index` is set.
+  const W = index ? FORME_WEIGHTS : WEIGHTS;
+  const ratingMean = index
+    ? input.ratingMean !== undefined
+      ? input.ratingMean
+      : meanRating(sig.universe)
+    : null;
 
   // History: distinct places per cuisine / neighborhood, never per post.
   const cuisineVisits = new Map<string, number>();
@@ -613,14 +773,16 @@ export function scoreAll(input: ScanInput): TasteScan {
     const names = fm ? [...fm.values()].sort((a, b) => a.localeCompare(b)) : [];
     const F = Math.min(1, names.length / WEIGHTS.friendsForFull);
     const N = maxHood > 0 && r.neighborhood ? (hoodVisits.get(r.neighborhood) ?? 0) / maxHood : 0;
-    const Q = qualityOf(r, plates[r.id]);
+    // Your taste: Rs null, G 1, so `score` is the sum it always was.
+    const Rs = index ? shrunkRating(r.rating, r.reviewCount, ratingMean) : null;
+    const G = index ? qualityFloor(Rs, r.rating, r.reviewCount) : 1;
+    const Q = qualityOf(r, plates[r.id], index ? Rs : undefined);
     const plate = plates[r.id];
+    const sum = 100 * (W.affinity * A + W.friends * F + W.quality * Q + W.neighborhood * N);
     scored.push({
       r,
       index: i,
-      score:
-        100 *
-        (WEIGHTS.affinity * A + WEIGHTS.friends * F + WEIGHTS.quality * Q + WEIGHTS.neighborhood * N),
+      score: index ? G * sum : sum,
       tail: 100 * (WEIGHTS.qualityInTail * Q + WEIGHTS.hoodInTail * N),
       A,
       Apick,
@@ -628,6 +790,8 @@ export function scoreAll(input: ScanInput): TasteScan {
       F,
       Q,
       N,
+      Rs,
+      G,
       plate: plate?.ready && plate.percent != null ? plate.percent : -1,
       friends: names,
       seed,
@@ -1123,9 +1287,9 @@ function chooseReason(
     const wHist = mixed ? WEIGHTS.histInA : scan.historyActive ? 1 : 0;
     const wPick = mixed ? WEIGHTS.pickInA : scan.picksActive ? 1 : 0;
     const kinds = [
-      { kind: "like" as const, pts: WEIGHTS.affinity * wHist * s.Ahist, rank: 0 },
-      { kind: "pick" as const, pts: WEIGHTS.affinity * wPick * s.Apick, rank: 1 },
-      { kind: "friends" as const, pts: WEIGHTS.friends * s.F, rank: 2 },
+      { kind: "like" as const, pts: FORME_WEIGHTS.affinity * wHist * s.Ahist, rank: 0 },
+      { kind: "pick" as const, pts: FORME_WEIGHTS.affinity * wPick * s.Apick, rank: 1 },
+      { kind: "friends" as const, pts: FORME_WEIGHTS.friends * s.F, rank: 2 },
     ]
       .filter((k) => k.pts > 0)
       .sort((a, b) => b.pts - a.pts || a.rank - b.rank);
@@ -1141,10 +1305,15 @@ function chooseReason(
     const more = cuisineReason(s, scan, index);
     if (more) return more;
   }
-  if (s.Q >= WEIGHTS.wellRatedQ) {
+  // A claim about the rating is made off R', the number the score reads: a thin
+  // rating has been pulled toward the mean and a place with none says nothing.
+  // The card's quality line drops its own tier word whenever this one speaks
+  // (`forMeQualityNote`, on kind "rated"), so no card says it twice.
+  if (s.Rs != null && s.Rs >= FORME_QUALITY.wellRatedFrom) {
+    const word = s.Rs >= FORME_QUALITY.highlyRatedFrom ? "Highly rated" : "Well rated";
     return {
       kind: "rated",
-      text: s.r.neighborhood ? clipReason(`Well rated in ${s.r.neighborhood}`) : "Well rated",
+      text: s.r.neighborhood ? clipReason(`${word} in ${s.r.neighborhood}`) : word,
     };
   }
   // "Different from your usual" is a claim about this place, so it is made only

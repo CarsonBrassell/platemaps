@@ -78,6 +78,7 @@ import { EMPTY_PLATE_SCORE, type PlateScore } from "@/lib/plateScore";
 import { traitIndexFor, type ProfileTraitRow, type TraitIndex } from "@/lib/profileTraits";
 import { normalize, rungOf } from "@/lib/textMatch";
 import type { ForMeInfo, ForMeReason } from "@/lib/discoverWire";
+import { meanRating } from "@/lib/taste";
 // The For me wire types live in discoverWire.ts so client components can import
 // them; they are re-exported here for server code that already has this module.
 export type { ForMeInfo, ForMeReason } from "@/lib/discoverWire";
@@ -224,6 +225,12 @@ export type Corpus = {
   restaurants: RestaurantView[];
   aspects: ReturnType<typeof strongAspectsFrom>;
   plates: Record<string, PlateScore>;
+  /**
+   * C for For me's shrunk rating: the mean rating of the rated places above.
+   * Computed here, once per load, so a request never scans for it. Null when
+   * nothing is rated.
+   */
+  ratingMean: number | null;
 };
 
 const CORPUS_TTL_MS = 60_000;
@@ -243,7 +250,12 @@ function readCorpus(): Promise<Corpus> {
       getAllRestaurantPlateScores(),
       getAllRestaurantAspectTallies(),
     ]);
-    return { restaurants, aspects: strongAspectsFrom(tallies), plates };
+    return {
+      restaurants,
+      aspects: strongAspectsFrom(tallies),
+      plates,
+      ratingMean: meanRating(restaurants),
+    };
   })();
 }
 

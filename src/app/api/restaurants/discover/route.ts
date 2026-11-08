@@ -150,6 +150,7 @@ export async function POST(req: Request) {
       favoriteCuisine: ctx.favoriteCuisine,
       friendVisits: ctx.friendVisits,
       traits,
+      ratingMean: corpus.ratingMean,
     }),
   });
 

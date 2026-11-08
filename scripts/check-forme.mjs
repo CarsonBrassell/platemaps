@@ -25,13 +25,18 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   EMPTY_PREFS,
+  FORME_QUALITY,
+  FORME_WEIGHTS,
   WEIGHTS,
   chainKey,
   historyConfidence,
+  meanRating,
+  qualityFloor,
   rankTaste,
   scoreAll,
   scoreTaste,
   shortPlaceName,
+  shrunkRating,
   tasteExclusions,
 } from "../src/lib/taste.ts";
 import {
@@ -357,10 +362,12 @@ const taquerias = [
   place("Carnitas Rey", "Mexican", ["carnitas taco", "burrito", "tamale"], "counter", MID),
 ];
 
-// Edge places: long text, no rating, no photo, accents.
+// Edge places: long text, no rating, no photo, accents. dimBistro is poor and
+// well reviewed on purpose: the same rating off a dozen reviews would be pulled
+// toward the mean, and its own cases are in the quality-term block.
 const longName = place("The Extraordinarily Long Named Restaurant That Never Ends Grill", "Italian", ["pizza", "pasta", "tiramisu", "porchetta"], "full_service", MID);
 const accent = place("Café Roma", "Italian", ["pizza", "pasta", "tiramisu", "cannoli"], "cafe", MID);
-const dimBistro = place("Dim Corner Bistro", "Italian", ["pizza", "pasta", "ravioli", "focaccia"], "full_service", { rating: 3.9, reviews: 12, photo: null });
+const dimBistro = place("Dim Corner Bistro", "Italian", ["pizza", "pasta", "ravioli", "focaccia"], "full_service", { rating: 3.6, reviews: 400, photo: null });
 const unrated = place("Unrated Trattoria", "Italian", ["pizza", "pasta", "osso buco", "minestrone"], "full_service", { rating: null });
 const LONG_HOOD = "A Very Long Neighborhood Name That Easily Exceeds The Limit";
 const longHood = place("Overlook Pasta House", "Italian", ["pizza", "pasta", "carbonara", "arancini"], "full_service", { ...HIGH, hood: LONG_HOOD });
@@ -522,10 +529,11 @@ ok("cold start is the well-rated list", () => {
   const q = res.order.map((id) => scoredOf(sc, byIdMap.get(id)).Q);
   for (let i = 1; i < q.length; i++) assert.ok(q[i - 1] >= q[i] - 1e-12, "tail is ordered by quality");
   assert.ok(res.rank.get(ramen[0].id) < res.rank.get(dimBistro.id), "a high-quality place leads a low one");
-  // A fixture place with every part of quality is read aloud with its hood.
-  assert.equal(res.reasonOf(ramen[0].id).text, "Well rated in Downtown");
+  // A fixture place with every part of quality is read aloud with its hood: a
+  // 4.9 off 900 reviews is still over 4.5 once shrunk toward the mean.
+  assert.equal(res.reasonOf(ramen[0].id).text, "Highly rated in Downtown");
   assert.equal(res.reasonOf(longHood.id).text.length <= WEIGHTS.reasonMaxChars, true);
-  assert.ok(res.reasonOf(longHood.id).text.startsWith("Well rated in A Very Long"));
+  assert.ok(res.reasonOf(longHood.id).text.startsWith("Highly rated in A Very Long"));
   assert.ok(res.reasonOf(longHood.id).text.endsWith("…"));
   // No rating, or a poor and photoless one: no claim of quality.
   assert.equal(res.reasonOf(unrated.id).text, "Worth a look");
@@ -1122,7 +1130,9 @@ function miniWorld(specs) {
   return { restaurants, traits: buildTraitIndex(restaurants, rows) };
 }
 const miniRank = (world, o = {}) => rankTaste({ ...base, ...world, ...o });
-const POOR = { rating: 3.9, reviews: 12, photo: null };
+// Poor with weight behind it: a thin rating is lifted toward the corpus mean now,
+// so a poor place has to have the reviews to stay poor.
+const POOR = { rating: 3.6, reviews: 400, photo: null };
 const BOWL = ["ramen", "gyoza", "tonkotsu", "karaage"];
 
 ok("seeds: over the cap been and posts take turns, so neither starves the other", () => {
@@ -1337,6 +1347,280 @@ ok("the route source keeps For me off the cacheable path", () => {
   assert.ok(postFn.indexOf("limitForMe(") > 0 && postFn.indexOf("limitForMe(") < postFn.indexOf("rankTaste("), "rate limit before ranking");
   assert.ok(postFn.indexOf("limitForMe(") < postFn.indexOf("resolveTasteContext("), "rate limit before reading the viewer");
   assert.ok(postFn.indexOf("getCurrentUser(") < postFn.indexOf("limitForMe("));
+});
+
+/* ---------- the quality term: shrunk rating, soft floor, tail wording ---------- */
+
+const near = (a, b, eps = 1e-9) => Math.abs(a - b) < eps;
+const clampTo01 = (x) => Math.min(1, Math.max(0, x));
+const byRestaurant = (world, id) => world.restaurants.find((r) => r.id === id);
+const scoredId = (sc, id) => sc.scored.find((s) => s.r.id === id);
+
+ok("quality term: For me has its own weights and constants; Your taste keeps its own", () => {
+  assert.deepEqual({ ...FORME_WEIGHTS }, { affinity: 0.4, friends: 0.2, quality: 0.3, neighborhood: 0.1 });
+  const sum = FORME_WEIGHTS.affinity + FORME_WEIGHTS.friends + FORME_WEIGHTS.quality + FORME_WEIGHTS.neighborhood;
+  assert.ok(near(sum, 1, 1e-12), "the four weights sum to one, so a perfect place is 100");
+  assert.deepEqual([WEIGHTS.affinity, WEIGHTS.friends, WEIGHTS.quality, WEIGHTS.neighborhood], [0.5, 0.2, 0.2, 0.1]);
+  assert.equal(FORME_QUALITY.minReviews, 10);
+  assert.equal(FORME_QUALITY.priorReviews, 50);
+  assert.equal(FORME_QUALITY.rawGuardReviews, 15);
+  assert.equal(FORME_QUALITY.floorUnrated, 0.92);
+  assert.equal(FORME_QUALITY.wellRatedFrom, 4.2);
+  assert.equal(FORME_QUALITY.highlyRatedFrom, 4.5);
+  assert.ok(!("wellRatedQ" in WEIGHTS), "the tail wording reads R', not Q");
+});
+
+ok("quality term: C is the mean of the rated places; R' is a pull toward it that thins with reviews", () => {
+  const rows = (...xs) => xs.map(([rating, reviewCount]) => ({ rating, reviewCount }));
+  assert.ok(near(meanRating(rows([4, 100], [5, 100])), 4.5));
+  assert.ok(
+    near(meanRating(rows([4, 100], [5, 100], [1, 9], [2, null], [null, 500], [NaN, 500])), 4.5),
+    "thin, countless, unrated and unreadable ratings stay out of C",
+  );
+  assert.equal(meanRating([]), null);
+  assert.equal(meanRating(rows([5, 3], [null, 100])), null, "nothing rated: no mean");
+
+  assert.ok(near(shrunkRating(4, 50, 4.6), 4.3), "50 reviews against a prior of 50 is the midpoint");
+  assert.ok(near(shrunkRating(5, 10, 4.4), (10 * 5 + 50 * 4.4) / 60));
+  assert.equal(shrunkRating(5, 9, 4.4), null, "under ten reviews is unrated");
+  assert.equal(shrunkRating(5, null, 4.4), null);
+  assert.equal(shrunkRating(5, undefined, 4.4), null);
+  assert.equal(shrunkRating(null, 500, 4.4), null);
+  assert.equal(shrunkRating(undefined, 500, 4.4), null);
+  assert.equal(shrunkRating(NaN, 500, 4.4), null);
+  assert.equal(shrunkRating(4.1, 30, null), 4.1, "no corpus mean: nothing to pull toward");
+  assert.equal(shrunkRating(4.1, 30, NaN), 4.1);
+
+  let last = Infinity;
+  for (const nn of [10, 20, 50, 100, 400, 2000, 50000]) {
+    const v = shrunkRating(4.9, nn, 4.3);
+    assert.ok(v > 4.3 && v < 4.9, `R' sits between the rating and the mean (n=${nn})`);
+    assert.ok(4.9 - v < last, "and nearer the rating the more reviews stand behind it");
+    last = 4.9 - v;
+  }
+  assert.ok(near(shrunkRating(4.9, 50000, 4.3), 4.9, 1e-3));
+  assert.ok(shrunkRating(3.2, 40, 4.4) > 3.2, "a low thin rating is lifted too: thin is not poor");
+});
+
+ok("quality term: the soft floor g is 1, 0.8, 0.65, straight between, and 0.92 unrated", () => {
+  const g = (rs) => qualityFloor(rs, rs, 12); // 12 reviews: under the raw-rating guard
+  for (const rs of [4.2, 4.5, 5]) assert.equal(g(rs), 1);
+  assert.ok(near(g(4.0), 0.9));
+  assert.ok(near(g(3.8), 0.8));
+  assert.ok(near(g(3.65), 0.725));
+  assert.ok(near(g(3.5), 0.65));
+  for (const rs of [3.2, 1, 0]) assert.equal(g(rs), 0.65);
+  assert.equal(qualityFloor(null, 5, 500), 0.92, "unrated, whatever the raw number says");
+  assert.equal(qualityFloor(null, null, null), 0.92);
+
+  let prev = g(2);
+  for (let x = 2.01; x <= 5.5; x += 0.01) {
+    const v = g(x);
+    assert.ok(Number.isFinite(v) && v >= 0.65 && v <= 1, `g(${x}) = ${v}`);
+    assert.ok(v >= prev - 1e-12, `g never falls as R' rises (${x})`);
+    assert.ok(v - prev < 0.01, `g has no step (${x})`);
+    prev = v;
+  }
+
+  // From fifteen reviews the raw rating can only lower it.
+  assert.ok(near(qualityFloor(4.5, 3.9, 20), 0.85), "20 reviews at a raw 3.9 are judged on 3.9");
+  assert.equal(qualityFloor(4.5, 3.9, 14), 1, "14 reviews: the shrunk rating stands alone");
+  assert.ok(near(qualityFloor(4.5, 3.9, 15), 0.85), "the guard starts at 15");
+  assert.ok(near(qualityFloor(4.0, 4.7, 400), 0.9), "a raw rating above R' does not raise g");
+  assert.ok(near(qualityFloor(4.0, null, 400), 0.9));
+});
+
+ok("quality term: Q reads R' and g scales the score; missing data is neutral", () => {
+  const C = 4.4;
+  // One menu for all of them, so affinity is the same and only quality differs.
+  const menu = ["pad thai", "green curry"];
+  const world = miniWorld([
+    ["q1", "Great Place", "Thai", menu, { rating: 4.8, reviews: 800, photo: null }],
+    ["q2", "Good Place", "Thai", menu, { rating: 4.4, reviews: 800, photo: null }],
+    ["q3", "Okay Place", "Thai", menu, { rating: 3.9, reviews: 800, photo: null }],
+    ["q4", "Poor Place", "Thai", menu, { rating: 3.3, reviews: 800, photo: null }],
+    ["q5", "Thin Raving", "Thai", menu, { rating: 5, reviews: 9, photo: null }],
+    ["q6", "No Rating", "Thai", menu, { rating: null, photo: null }],
+    ["q7", "No Count", "Thai", menu, { rating: 4.8, photo: null }],
+    ["q8", "Steady Place", "Thai", menu, { rating: 4.5, reviews: 300, photo: null }],
+    ["q9", "Landmark Place", "Thai", menu, { rating: 4.5, reviews: 5000, photo: null }],
+    ["q10", "Photo Place", "Thai", menu, { rating: 4.4, reviews: 800 }],
+    ["g1", "Guarded Place", "Thai", menu, { rating: 3.9, reviews: 20, photo: null }],
+    ["g2", "Young Place", "Thai", menu, { rating: 3.9, reviews: 14, photo: null }],
+  ]);
+  byRestaurant(world, "q7").reviewCount = null;
+  const picks = prefs({ loves: ["Thai"] });
+  const scanned = (o = {}) => scoreAll({ ...base, ...world, prefs: picks, ratingMean: C, ...o });
+  const sc = scanned();
+  const at = (s, id) => scoredId(s, id);
+  assert.equal(sc.mode, "similarity", "fixture: For me scoring");
+  assert.ok(near(at(sc, "q1").A, at(sc, "q4").A) && near(at(sc, "q1").N, at(sc, "q4").N), "fixture: same menu, same affinity and hood");
+
+  // The score is g times the sum, every term from the same scored row.
+  for (const s of sc.scored) {
+    const sum = 100 * (FORME_WEIGHTS.affinity * s.A + FORME_WEIGHTS.friends * s.F + FORME_WEIGHTS.quality * s.Q + FORME_WEIGHTS.neighborhood * s.N);
+    assert.ok(near(s.score, s.G * sum, 1e-9), `${s.r.name}: score is g * the weighted sum`);
+    for (const v of [s.score, s.tail, s.Q, s.G, s.A]) assert.ok(Number.isFinite(v), `${s.r.name}: finite`);
+    assert.ok(near(s.tail, 100 * (WEIGHTS.qualityInTail * s.Q + WEIGHTS.hoodInTail * s.N)), "the tail formula is unchanged");
+  }
+
+  // Q is the stars of R' alone, and R' is the formula.
+  for (const id of ["q1", "q2", "q3", "q4", "q8", "q9"]) {
+    const s = at(sc, id);
+    const r = s.r;
+    assert.ok(near(s.Rs, (r.reviewCount * r.rating + 50 * C) / (r.reviewCount + 50)), `${id}: R'`);
+    assert.ok(near(s.Rs, shrunkRating(r.rating, r.reviewCount, C)));
+    assert.ok(near(s.Q, WEIGHTS.sourceOnlyInQ * clampTo01((s.Rs - WEIGHTS.ratingFloor) / WEIGHTS.ratingSpan)), `${id}: Q`);
+  }
+  assert.equal(at(sc, "q1").G, 1);
+  assert.ok(at(sc, "q3").G < 1 && at(sc, "q4").G === 0.65);
+  assert.ok(
+    at(sc, "q1").score > at(sc, "q2").score && at(sc, "q2").score > at(sc, "q3").score && at(sc, "q3").score > at(sc, "q4").score,
+    "better rated, higher score, all else equal",
+  );
+
+  // No volume factor: 300 reviews and 5,000 at the same rating differ only by the thin pull.
+  assert.ok(Math.abs(at(sc, "q8").Q - at(sc, "q9").Q) < 0.02, "a landmark is not rewarded for its crowd");
+  assert.ok(at(sc, "q9").Q >= at(sc, "q8").Q, "but a bigger sample is never trusted less");
+
+  // Missing data: neither rewarded nor punished, never a NaN.
+  for (const id of ["q5", "q6", "q7"]) {
+    const s = at(sc, id);
+    assert.equal(s.Rs, null, `${id} is unrated`);
+    assert.equal(s.Q, WEIGHTS.unratedQ, `${id}: Q stays at the unrated value`);
+    assert.equal(s.G, 0.92, `${id}: g is the unrated factor`);
+  }
+  assert.ok(near(at(sc, "q5").score, at(sc, "q6").score), "nine glowing reviews buy nothing");
+  assert.ok(near(at(sc, "q7").score, at(sc, "q6").score), "a rating with no count buys nothing");
+  assert.ok(
+    at(sc, "q2").score > at(sc, "q5").score && at(sc, "q5").score > at(sc, "q3").score,
+    "unrated sits between a good place and a mediocre one",
+  );
+
+  // Photo and plate branches are the ones they were.
+  assert.ok(near(at(sc, "q10").Q, Math.min(1, at(sc, "q2").Q + WEIGHTS.photoInQ)));
+  const plate90 = { percent: 90, dishCount: 5, ratingCount: 30, ready: true };
+  const plated = scanned({ plates: { q2: plate90, q6: plate90 } });
+  const p = clampTo01((90 - WEIGHTS.plateFloorPct) / WEIGHTS.plateSpanPct);
+  const srcB = clampTo01((at(plated, "q2").Rs - WEIGHTS.ratingFloor) / WEIGHTS.ratingSpan);
+  assert.ok(near(at(plated, "q2").Q, WEIGHTS.plateInQ * p + WEIGHTS.sourceInQ * srcB), "plate branch over R'");
+  assert.ok(near(at(plated, "q6").Q, WEIGHTS.plateInQ * p + WEIGHTS.sourceInQ * WEIGHTS.unratedQ), "plate branch, unrated source");
+  assert.equal(at(plated, "q6").G, 0.92, "a plate score does not change the floor");
+
+  // The raw-rating guard, seen through the scan.
+  const guarded = scanned({ ratingMean: 4.6 });
+  assert.ok(near(at(guarded, "g1").Rs, (20 * 3.9 + 50 * 4.6) / 70));
+  assert.ok(near(at(guarded, "g1").G, 0.85), "20 reviews at 3.9 are held to 3.9");
+  assert.equal(at(guarded, "g2").G, 1, "14 reviews at 3.9 are lifted by the prior");
+
+  // No corpus mean: ratings stand as they are. No hint at all: C is read off the corpus.
+  const noMean = scanned({ ratingMean: null });
+  assert.equal(at(noMean, "q1").Rs, 4.8);
+  assert.equal(at(noMean, "q5").Rs, null);
+  const derived = scanned({ ratingMean: undefined });
+  const fromCorpus = meanRating(world.restaurants);
+  for (const s of derived.scored) assert.equal(s.Rs, shrunkRating(s.r.rating, s.r.reviewCount, fromCorpus));
+  assert.deepEqual(
+    derived.scored.map((s) => s.score),
+    scanned({ ratingMean: fromCorpus }).scored.map((s) => s.score),
+  );
+
+  // A corpus with nothing rated, and with one rated place: finite, and the lone rating stands.
+  for (const [label, specs, want] of [
+    ["unrated", [["n1", "A Cafe", "Thai", ["a"], { rating: null }], ["n2", "B Cafe", "Thai", ["b"], { rating: 5, reviews: 3 }]], null],
+    ["alone", [["n1", "A Cafe", "Thai", ["a"], { rating: 4.2, reviews: 30 }], ["n2", "B Cafe", "Thai", ["b"], { rating: null }]], 4.2],
+  ]) {
+    const lone = scoreAll({ ...base, ...miniWorld(specs), prefs: picks });
+    for (const s of lone.scored) for (const v of [s.score, s.tail, s.Q, s.G]) assert.ok(Number.isFinite(v), `${label}: finite`);
+    assert.equal(scoredId(lone, "n1").Rs, want, `${label}: R'`);
+  }
+});
+
+ok("quality term: Your taste never sees R', g or the new weights", () => {
+  const world = miniWorld([
+    ["y1", "Great Place", "Thai", ["a"], { rating: 4.8, reviews: 800 }],
+    ["y2", "Thin Raving", "Thai", ["b"], { rating: 5, reviews: 9, photo: null }],
+    ["y3", "No Rating", "Thai", ["c"], { rating: null }],
+    ["y4", "No Count", "Thai", ["d"], { rating: 4.4, photo: null }],
+    ["y5", "Poor Place", "Thai", ["e"], { rating: 3.4, reviews: 600, photo: null }],
+  ]);
+  byRestaurant(world, "y4").reviewCount = null;
+  const plates = {
+    y1: { percent: 80, dishCount: 5, ratingCount: 30, ready: true },
+    y3: { percent: 95, dishCount: 5, ratingCount: 30, ready: true },
+  };
+  const input = { ...base, restaurants: world.restaurants, traits: undefined, plates, prefs: prefs({ loves: ["Thai"] }) };
+  const legacyQ = (r, plate) => {
+    const src =
+      r.rating == null
+        ? WEIGHTS.unratedQ
+        : clampTo01((r.rating - WEIGHTS.ratingFloor) / WEIGHTS.ratingSpan) *
+          Math.min(1, Math.log10(1 + (r.reviewCount ?? 0)) / WEIGHTS.reviewLogDivisor);
+    let b;
+    if (plate?.ready && plate.percent != null) {
+      b = WEIGHTS.plateInQ * clampTo01((plate.percent - WEIGHTS.plateFloorPct) / WEIGHTS.plateSpanPct) + WEIGHTS.sourceInQ * src;
+    } else b = r.rating == null ? WEIGHTS.unratedQ : WEIGHTS.sourceOnlyInQ * src;
+    return r.photo ? Math.min(1, b + WEIGHTS.photoInQ) : b;
+  };
+  for (const mean of [undefined, null, 1, 9]) {
+    const s0 = scoreAll({ ...input, ratingMean: mean });
+    assert.equal(s0.mode, "cuisine");
+    for (const s of s0.scored) {
+      assert.equal(s.Rs, null, "no shrunk rating in the cuisine-share mode");
+      assert.equal(s.G, 1, "no floor in the cuisine-share mode");
+      assert.equal(s.Q, legacyQ(s.r, plates[s.r.id]), `${s.r.name}: Q is the raw-rating formula`);
+      assert.equal(
+        s.score,
+        100 * (WEIGHTS.affinity * s.A + WEIGHTS.friends * s.F + WEIGHTS.quality * s.Q + WEIGHTS.neighborhood * s.N),
+        `${s.r.name}: score on WEIGHTS`,
+      );
+    }
+  }
+});
+
+ok("quality term: the tail says Well rated from R' 4.2 and Highly rated from 4.5, off R' alone", () => {
+  const C = 4.4;
+  const sweep = [3.4, 3.7, 3.9, 4.0, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.8, 5.0];
+  const id = (i) => `t${String(i).padStart(2, "0")}`;
+  const specs = sweep.map((rating, i) => [id(i), `Sweep ${i} Cafe`, "Thai", [`d${i}`, "pad thai"], { rating, reviews: 400, photo: null }]);
+  specs.push(["tu", "Unrated Cafe", "Thai", ["u1"], { rating: null, photo: null }]);
+  specs.push(["tn", "Thin Raving Cafe", "Thai", ["u2"], { rating: 5, reviews: 9, photo: null }]);
+  specs.push(["tp", "Plate Only Cafe", "Thai", ["u3"], { rating: null, photo: null }]);
+  const world = miniWorld(specs);
+  const plates = { tp: { percent: 95, dishCount: 6, ratingCount: 40, ready: true } };
+  const res = miniRank(world, { ratingMean: C, plates });
+  const sc = scoreAll({ ...base, ...world, ratingMean: C, plates });
+  assert.equal(res.matched, 0, "fixture: cold start, everything is tail");
+
+  const seen = new Set();
+  for (const s of sc.scored) {
+    const reason = res.reasonOf(s.r.id);
+    const want =
+      s.Rs != null && s.Rs >= 4.5 ? "Highly rated in Downtown" : s.Rs != null && s.Rs >= 4.2 ? "Well rated in Downtown" : "Worth a look";
+    assert.equal(reason.text, want, `${s.r.name} (R' ${s.Rs})`);
+    seen.add(want);
+    // The card's own line never repeats the claim.
+    const note = forMeQualityNote({ rating: s.r.rating, reviewCount: s.r.reviewCount, reason });
+    assert.ok(!(/rated/.test(reason.text) && note?.label), `${s.r.name}: reason and quality line both say rated`);
+  }
+  assert.equal(seen.size, 3, "the sweep covers all three wordings");
+  assert.equal(res.reasonOf("tp").text, "Worth a look", "a strong plate score with no sourced rating is not 'well rated'");
+  assert.ok(scoredOf(sc, byRestaurant(world, "tp")).Q > 0.5, "fixture: its Q is high enough that the old wording would have said it");
+
+  // The tail runs best rated first; thin and unrated places tie at the unrated value.
+  const rankOf = (rid) => res.rank.get(rid);
+  for (let i = 2; i < sweep.length - 1; i++) {
+    assert.ok(rankOf(id(i + 1)) < rankOf(id(i)), `${sweep[i + 1]} leads ${sweep[i]}`);
+  }
+  assert.ok(near(scoredId(sc, "tu").tail, scoredId(sc, "tn").tail), "nine glowing reviews tie with no rating");
+  assert.ok(rankOf("tu") < rankOf(id(0)) && rankOf(id(10)) < rankOf("tu"), "unrated sits between the poor and the excellent");
+});
+
+ok("quality term: the corpus carries C and the route hands it to the ranker", () => {
+  const discoverCode = stripComments(read("../src/lib/discover.ts"));
+  assert.match(discoverCode, /ratingMean:\s*number \| null;/, "Corpus has the field");
+  assert.match(discoverCode, /ratingMean:\s*meanRating\(restaurants\)/, "computed where the corpus is read, so it is cached with it");
+  assert.match(postFn, /ratingMean:\s*corpus\.ratingMean/, "the route passes the cached value");
 });
 
 ok("the 429 is private too, and the client keeps foryou out of the shared GET", () => {
@@ -1669,7 +1953,9 @@ async function live() {
     }));
 
     // Main cuisine speaks at full strength, a secondary-only match says "Also serves" and
-    // comes after every main match: the same cuisine on the side is not the same pick.
+    // comes after every main match of equal quality: the same cuisine on the side is
+    // not the same pick. (Quality weighs 0.30 and the gate g can cost a poor place a
+    // third, so an excellent side place may pass a poor main one on purpose.)
     const liveById = new Map(restaurants.map((r) => [r.id, r]));
     const matches = matchesOf(v.res);
     const mains = matches.filter((id) => liveById.get(id).cuisine === cu);
@@ -1682,10 +1968,19 @@ async function live() {
       assert.ok(reason.text.length <= WEIGHTS.reasonMaxChars);
     }
     if (mains.length && sides.length) {
-      assert.ok(
-        Math.max(...mains.map((id) => v.res.rank.get(id))) < Math.min(...sides.map((id) => v.res.rank.get(id))),
-        `${cu}: a secondary-only place ranked above a main-cuisine one`,
-      );
+      const sc = new Map(v.sc.scored.map((x) => [x.r.id, x]));
+      for (const id of mains) {
+        for (const sd of sides) {
+          const a = sc.get(id);
+          const b = sc.get(sd);
+          if (a.Q >= b.Q && a.G >= b.G) {
+            assert.ok(
+              v.res.rank.get(id) < v.res.rank.get(sd),
+              `${cu}: a secondary-only place ranked above a main-cuisine one that is no worse on quality`,
+            );
+          }
+        }
+      }
     }
     sideMatches += sides.length;
   }
