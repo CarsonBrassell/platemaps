@@ -26,6 +26,7 @@ import {
   captionSours, nameEvidence, tagCaption, tagDish,
 } from "../src/lib/flavor.ts";
 import { EMPTY_PREFS } from "../src/lib/taste.ts";
+import { orderOrigin } from "../src/lib/discoverFilters.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const src = (p) => readFileSync(root + p, "utf8");
@@ -1240,6 +1241,45 @@ ok("Discover has no Show distance button, and distance reaches every card for th
   assert.deepEqual(callers, ["src/lib/useDiscoverQuery.ts"], "no other page asks for a position on load");
   // Coordinates travel in the POST body, never in a URL.
   assert.ok(!/coords[^\n]*(?:\?|&)(?:lat|lng)=/.test(src("src/lib/useDiscoverQuery.ts")), "no coordinates in a URL");
+});
+
+ok("a gated account's position prices the page and does not reorder it, unless Nearby is the filter", () => {
+  const here = { lat: 32.73, lng: -117.15 };
+  // The origin the sort measures from. For the gated accounts (distanceOnly) it is
+  // the one a request without a position gets, so the order is identical with and
+  // without coordinates; Nearby is the one choice that still asks for nearest-first.
+  assert.equal(orderOrigin(here, true, { nearby: false }), null, "no reorder from the ask on load");
+  assert.equal(orderOrigin(here, true, { nearby: false }), orderOrigin(null, true, { nearby: false }), "same sort input with and without coordinates");
+  assert.equal(orderOrigin(here, true, { nearby: true }), here, "Nearby still sorts nearest-first");
+  // Everyone else (no flag in the body) is ordered nearest-first exactly as before.
+  assert.equal(orderOrigin(here, false, { nearby: false }), here, "the bare grid keeps its nearest-first doctrine");
+  assert.equal(orderOrigin(here, false, { nearby: true }), here);
+  assert.equal(orderOrigin(null, false, { nearby: true }), null, "no position, no sort");
+
+  // The sort is handed that origin and nothing else, and it is the only call.
+  const discover = src("src/lib/discover.ts");
+  assert.match(
+    discover,
+    /orderResults\(\s*applyFilters\(restaurants, filters, ctx\),\s*filters,\s*orderOrigin\(here, distanceOnly, filters\),\s*scores,?\s*\)/,
+    "getDiscoverPage orders from orderOrigin, not from here",
+  );
+  assert.equal((discover.match(/\borderResults\(/g) ?? []).length, 2, "one definition, one call");
+  assert.match(discover, /distanceOnly = false/, "the flag defaults off");
+  // The route takes only a literal true, so a stray value is the ordinary request.
+  assert.match(src("src/app/api/restaurants/discover/route.ts"), /distanceOnly:\s*distanceOnly === true/);
+  // Only the gated accounts send it; everyone else's POST body is {search, shown, coords}.
+  const q = src("src/lib/useDiscoverQuery.ts");
+  assert.match(q, /const priced = access && coords !== null/);
+  assert.match(q, /priced \? \{ search, shown, coords, distanceOnly: true \} : \{ search, shown, coords \}/);
+  const senders = [];
+  const walkSrc = (dir) => {
+    for (const e of readdirSync(root + dir, { withFileTypes: true })) {
+      if (e.isDirectory()) walkSrc(`${dir}/${e.name}`);
+      else if (/\.(ts|tsx|mts)$/.test(e.name) && /distanceOnly:\s*true/.test(src(`${dir}/${e.name}`))) senders.push(`${dir}/${e.name}`);
+    }
+  };
+  walkSrc("src");
+  assert.deepEqual(senders, ["src/lib/useDiscoverQuery.ts"], "nothing else sends distanceOnly");
 });
 
 /* ---------- 3. render parity ---------- */

@@ -32,8 +32,12 @@ import type { DiscoverPage } from "@/lib/discover";
  *
  * The accounts on lib/forMeGate.ts get a position asked for on load (once per
  * tab session, see `askOnLoad` in lib/nearby.ts) and again whenever a filter is
- * on, so every card can say how far away it is. For everyone else none of that
- * runs: nothing here asks for a position and a failed request stays silent.
+ * on, so every card can say how far away it is. Theirs is a distance to print,
+ * not a reason to reorder: their POST carries `distanceOnly`, so the answer is
+ * priced but keeps the order a request without a position gets (Nearby, the
+ * filter, still sorts nearest-first). For everyone else none of that runs:
+ * nothing here asks for a position, a failed request stays silent, and the
+ * body and the answer are what they always were.
  */
 
 /* The URL, as the client sees it, comes from lib/queryString.ts — one
@@ -87,10 +91,15 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
   const { search, shown } = filterQueryOf(raw);
   const coords = nearby.coords;
   const bare = search === "" && shown === PAGE_SIZE;
+  // A page asked for with a position is a different page for the gated
+  // accounts (priced, not reordered: `distanceOnly` below), so the account is
+  // part of the key once there are coordinates. Nobody else's key changes, and
+  // without coordinates `priced` is false whoever is looking.
+  const priced = access && coords !== null;
   const wanted =
     bare && !coords
       ? null
-      : `${search}::${shown}::${coords ? `${coords.lat},${coords.lng}` : ""}`;
+      : `${search}::${shown}::${coords ? `${coords.lat},${coords.lng}${priced ? "::d" : ""}` : ""}`;
   const answerKey = answer?.key ?? null;
 
   /*
@@ -119,7 +128,13 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
           ? await fetch("/api/restaurants/discover", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ search, shown, coords }),
+              // The gated accounts are asked for a position on load so every
+              // card can print a distance, not to have the grid reshuffled
+              // under them: `distanceOnly` prices the page and keeps its order
+              // (Nearby still sorts). Everyone else's body is what it was.
+              body: JSON.stringify(
+                priced ? { search, shown, coords, distanceOnly: true } : { search, shown, coords },
+              ),
             })
           : await fetch(
               `/api/restaurants/discover?${[search, shown > PAGE_SIZE ? `shown=${shown}` : ""]
@@ -136,7 +151,7 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
     return () => {
       cancelled = true;
     };
-  }, [wanted, answerKey, search, shown, coords]);
+  }, [wanted, answerKey, search, shown, coords, priced]);
 
   const view = wanted === null || !answer ? initial : answer.page;
   const onScreen = wanted === null || !answer ? { search: "", shown: PAGE_SIZE } : answer;

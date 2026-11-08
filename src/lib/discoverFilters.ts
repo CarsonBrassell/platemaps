@@ -170,6 +170,27 @@ export function activeFilterCount(f: DiscoverFilters): number {
   );
 }
 
+/**
+ * Where the result order measures distance from.
+ *
+ * Almost always `here`: once there is a position, the server orders nearest
+ * first (the note on `orderResults` in lib/discover.ts). The exception is a
+ * request that says `distanceOnly`, which the accounts on lib/forMeGate.ts
+ * send because their position is asked for on load so that every card can say
+ * how far away it is. That is a fact to print, not a reason to reshuffle the
+ * page they are looking at, so the order is the one a request without a
+ * position gets. The Nearby filter is the choice that does ask for nearest
+ * first, and it keeps it. Nobody else sends the flag, so for them this is
+ * `here`, as before.
+ */
+export function orderOrigin(
+  here: Coords | null,
+  distanceOnly: boolean,
+  f: Pick<DiscoverFilters, "nearby">,
+): Coords | null {
+  return distanceOnly && !f.nearby ? null : here;
+}
+
 /* --- Aspects ---------------------------------------------------------- */
 
 /**

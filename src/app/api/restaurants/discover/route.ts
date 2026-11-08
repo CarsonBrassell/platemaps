@@ -50,10 +50,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Expected JSON." }, { status: 400 });
   }
 
-  const { search, shown, coords } = (body ?? {}) as {
+  const { search, shown, coords, distanceOnly } = (body ?? {}) as {
     search?: unknown;
     shown?: unknown;
     coords?: unknown;
+    distanceOnly?: unknown;
   };
 
   // Far longer than any filter string the page can build.
@@ -78,6 +79,9 @@ export async function POST(req: Request) {
   const page = await getDiscoverPage(search, {
     shown: parseShown(typeof shown === "number" ? String(shown) : undefined),
     here,
+    // Only a literal `true` counts; the client sends it for the gated accounts
+    // alone, and anything else is the ordinary nearest-first.
+    distanceOnly: distanceOnly === true,
   });
 
   // Entry lists for the Maps -- see lib/discoverWire.ts.
