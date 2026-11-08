@@ -170,44 +170,6 @@ export function activeFilterCount(f: DiscoverFilters): number {
   );
 }
 
-/**
- * Where the result order measures distance from.
- *
- * Almost always `here`: once there is a position, the server orders nearest
- * first (the note on `orderResults` in lib/discover.ts). The exception is a
- * request that says `distanceOnly`, which the accounts on lib/forMeGate.ts
- * send because their position is asked for on load so that every card can say
- * how far away it is. That is a fact to print, not a reason to reshuffle the
- * page they are looking at, so the order is the one a request without a
- * position gets. The Nearby filter is the choice that does ask for nearest
- * first, and it keeps it. Nobody else sends the flag, so for them this is
- * `here`, as before.
- */
-export function orderOrigin(
-  here: Coords | null,
-  distanceOnly: boolean,
-  f: Pick<DiscoverFilters, "nearby">,
-): Coords | null {
-  return distanceOnly && !f.nearby ? null : here;
-}
-
-/**
- * The position Discover may build a request from.
- *
- * None while the account is still being asked for (`/api/auth/me`, which on a
- * hard load answers after a saved address or a granted permission has already
- * produced coordinates). The accounts on lib/forMeGate.ts send `distanceOnly`
- * with a position and everyone else is ordered nearest-first, so a request
- * built before the account is known would be the wrong kind for one of the two
- * and the grid would reorder when the answer came in. Once the account has
- * answered, either way, the position passes through untouched — the same
- * object, so nothing keyed on it re-runs. A client navigation to Discover finds
- * the account already answered and does not wait at all.
- */
-export function queryPosition(coords: Coords | null, accountLoading: boolean): Coords | null {
-  return accountLoading ? null : coords;
-}
-
 /* --- Aspects ---------------------------------------------------------- */
 
 /**

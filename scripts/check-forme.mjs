@@ -26,7 +26,6 @@ import {
   captionSours, nameEvidence, tagCaption, tagDish,
 } from "../src/lib/flavor.ts";
 import { EMPTY_PREFS } from "../src/lib/taste.ts";
-import { orderOrigin, queryPosition } from "../src/lib/discoverFilters.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const src = (p) => readFileSync(root + p, "utf8");
@@ -1241,72 +1240,6 @@ ok("Discover has no Show distance button, and distance reaches every card for th
   assert.deepEqual(callers, ["src/lib/useDiscoverQuery.ts"], "no other page asks for a position on load");
   // Coordinates travel in the POST body, never in a URL.
   assert.ok(!/coords[^\n]*(?:\?|&)(?:lat|lng)=/.test(src("src/lib/useDiscoverQuery.ts")), "no coordinates in a URL");
-});
-
-ok("a gated account's position prices the page and does not reorder it, unless Nearby is the filter", () => {
-  const here = { lat: 32.73, lng: -117.15 };
-  // The origin the sort measures from. For the gated accounts (distanceOnly) it is
-  // the one a request without a position gets, so the order is identical with and
-  // without coordinates; Nearby is the one choice that still asks for nearest-first.
-  assert.equal(orderOrigin(here, true, { nearby: false }), null, "no reorder from the ask on load");
-  assert.equal(orderOrigin(here, true, { nearby: false }), orderOrigin(null, true, { nearby: false }), "same sort input with and without coordinates");
-  assert.equal(orderOrigin(here, true, { nearby: true }), here, "Nearby still sorts nearest-first");
-  // Everyone else (no flag in the body) is ordered nearest-first exactly as before.
-  assert.equal(orderOrigin(here, false, { nearby: false }), here, "the bare grid keeps its nearest-first doctrine");
-  assert.equal(orderOrigin(here, false, { nearby: true }), here);
-  assert.equal(orderOrigin(null, false, { nearby: true }), null, "no position, no sort");
-
-  // The sort is handed that origin and nothing else, and it is the only call.
-  const discover = src("src/lib/discover.ts");
-  assert.match(
-    discover,
-    /orderResults\(\s*applyFilters\(restaurants, filters, ctx\),\s*filters,\s*orderOrigin\(here, distanceOnly, filters\),\s*scores,?\s*\)/,
-    "getDiscoverPage orders from orderOrigin, not from here",
-  );
-  assert.equal((discover.match(/\borderResults\(/g) ?? []).length, 2, "one definition, one call");
-  assert.match(discover, /distanceOnly = false/, "the flag defaults off");
-  // The route takes only a literal true, so a stray value is the ordinary request.
-  assert.match(src("src/app/api/restaurants/discover/route.ts"), /distanceOnly:\s*distanceOnly === true/);
-  // Only the gated accounts send it; everyone else's POST body is {search, shown, coords}.
-  const q = src("src/lib/useDiscoverQuery.ts");
-  assert.match(q, /const priced = access && coords !== null/);
-  assert.match(q, /priced \? \{ search, shown, coords, distanceOnly: true \} : \{ search, shown, coords \}/);
-  const senders = [];
-  const walkSrc = (dir) => {
-    for (const e of readdirSync(root + dir, { withFileTypes: true })) {
-      if (e.isDirectory()) walkSrc(`${dir}/${e.name}`);
-      else if (/\.(ts|tsx|mts)$/.test(e.name) && /distanceOnly:\s*true/.test(src(`${dir}/${e.name}`))) senders.push(`${dir}/${e.name}`);
-    }
-  };
-  walkSrc("src");
-  assert.deepEqual(senders, ["src/lib/useDiscoverQuery.ts"], "nothing else sends distanceOnly");
-});
-
-ok("no request is built from a position until the account has answered, and the position is untouched after", () => {
-  const here = { lat: 32.73, lng: -117.15 };
-  // While /api/auth/me is in flight a saved address or a granted permission can
-  // already have coordinates; a request built then is the wrong kind for the
-  // gated accounts (no `distanceOnly`, so nearest-first) and the grid reshuffles.
-  assert.equal(queryPosition(here, true), null, "held while the account is loading");
-  assert.equal(queryPosition(null, true), null);
-  // After the answer the same object passes through, so nothing keyed on it re-runs and
-  // a viewer who is not gated is asked with exactly the coordinates they always were.
-  assert.equal(queryPosition(here, false), here, "the position is passed through untouched");
-  assert.equal(queryPosition(null, false), null);
-
-  const q = src("src/lib/useDiscoverQuery.ts");
-  assert.match(q, /const \{ loading: accountLoading \} = useAuth\(\);/);
-  assert.match(q, /const coords = queryPosition\(nearby\.coords, accountLoading\);/, "the request reads the held position");
-  // `nearby.coords` is read in this file in two places only: that line, and the
-  // effect that asks for a position (which is about asking, not about a request).
-  const reads = q.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "").match(/nearby\.coords/g) ?? [];
-  assert.equal(reads.length, 3, "no request path reads nearby.coords directly");
-  assert.match(q, /if \(wantsPosition && !nearby\.coords && nearby\.state === "idle"\) requestPosition\(\);/);
-  // The account answers once per load; a client navigation finds it already answered,
-  // and a blip that never answers still sets `loading` false (lib/auth.tsx), so this
-  // is not a way to hold everyone's nearby results forever.
-  const auth = src("src/lib/auth.tsx");
-  assert.match(auth, /setLoading\(false\);/);
 });
 
 /* ---------- 3. render parity ---------- */

@@ -46,7 +46,6 @@ import {
   cuisineOptions,
   filtersFromSearch,
   neighborhoodOptions,
-  orderOrigin,
   priceOptions,
   scoreMatches,
   strongAspectsFrom,
@@ -253,20 +252,10 @@ export function loadCorpus(): Promise<Corpus> {
  * body to /api/restaurants/discover. `filters.nearby` without `here` matches
  * everything, which is the same "can't evaluate that yet" rule the client used
  * while waiting for the permission prompt.
- *
- * `distanceOnly` is sent by the accounts on lib/forMeGate.ts, whose position is
- * asked for on load so that every card can print how far away it is: `here`
- * then prices the distances (and any routed walk) but does not reorder the
- * page, see `orderOrigin` in lib/discoverFilters.ts. Everyone else leaves it
- * off and is ordered nearest-first, as before.
  */
 export async function getDiscoverPage(
   search: string,
-  {
-    shown = PAGE_SIZE,
-    here = null,
-    distanceOnly = false,
-  }: { shown?: number; here?: Coords | null; distanceOnly?: boolean } = {},
+  { shown = PAGE_SIZE, here = null }: { shown?: number; here?: Coords | null } = {},
 ): Promise<DiscoverPage> {
   const { restaurants, aspects, plates } = await loadCorpus();
   const filters = filtersFromSearch(search, restaurants);
@@ -308,14 +297,7 @@ export async function getDiscoverPage(
     namedDish,
   };
 
-  // `ctx.here` above still filters and counts "Nearby"; only the sort asks
-  // `orderOrigin` whether it may measure from the position.
-  const ordered = orderResults(
-    applyFilters(restaurants, filters, ctx),
-    filters,
-    orderOrigin(here, distanceOnly, filters),
-    scores,
-  );
+  const ordered = orderResults(applyFilters(restaurants, filters, ctx), filters, here, scores);
   // The bare grid (no search text, no filter of any kind) puts every restaurant
   // with a photo ahead of every one without. A stable partition: each half
   // keeps the order `orderResults` gave it. "Has a photo" is exactly what the
@@ -431,9 +413,6 @@ export async function getDiscoverPage(
  *    earlier or from a filter's own prompt — it only changes what the corpus
  *    falls back to once a position is already in hand. `sort_order` is what
  *    is still shown before that: no position yet, denied, or unsupported.
- *    The accounts on lib/forMeGate.ts are asked on load and send
- *    `distanceOnly`: their cards print the distance but the page keeps the
- *    order it had without one (`orderOrigin`), unless Nearby is the filter.
  *
  * `sort` is stable, so rows that tie on everything stay in corpus order.
  */

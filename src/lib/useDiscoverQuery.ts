@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useAuth, useForMeAccess } from "@/lib/auth";
+import { useForMeAccess } from "@/lib/auth";
 import { useNearby } from "@/lib/nearby";
 import { publishQuery, useQueryString } from "@/lib/queryString";
 import { fromWire } from "@/lib/discoverWire";
-import { PAGE_SIZE, hasFilterParams, parseShown, queryPosition } from "@/lib/discoverFilters";
+import { PAGE_SIZE, hasFilterParams, parseShown } from "@/lib/discoverFilters";
 import type { DiscoverPage } from "@/lib/discover";
 
 /**
@@ -32,16 +32,8 @@ import type { DiscoverPage } from "@/lib/discover";
  *
  * The accounts on lib/forMeGate.ts get a position asked for on load (once per
  * tab session, see `askOnLoad` in lib/nearby.ts) and again whenever a filter is
- * on, so every card can say how far away it is. Theirs is a distance to print,
- * not a reason to reorder: their POST carries `distanceOnly`, so the answer is
- * priced but keeps the order a request without a position gets (Nearby, the
- * filter, still sorts nearest-first). For everyone else none of that runs:
- * nothing here asks for a position, a failed request stays silent, and the
- * body and the answer are what they always were. The one thing that does reach
- * them is timing: on a hard load a position waits for the account's answer
- * (`queryPosition`) so the request is the right kind for whoever it turns out
- * to be, and a client navigation, where the account is already known, does not
- * wait.
+ * on, so every card can say how far away it is. For everyone else none of that
+ * runs: nothing here asks for a position and a failed request stays silent.
  */
 
 /* The URL, as the client sees it, comes from lib/queryString.ts — one
@@ -90,27 +82,15 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
   // for an account that is not on lib/forMeGate.ts.
   const nearby = useNearby({ askOnLoad: true });
   const access = useForMeAccess();
-  const { loading: accountLoading } = useAuth();
   const [answer, setAnswer] = useState<Answer | null>(null);
 
   const { search, shown } = filterQueryOf(raw);
-  // The request is built from this, not from `nearby.coords`: a saved address
-  // or a granted permission can hand over coordinates before the account has
-  // answered, and a request sent then is the wrong kind for the gated accounts
-  // (nearest-first, which reshuffles the grid when `priced` turns on and a
-  // second request replaces it). Held for the one account answer on a hard
-  // load, for everyone alike; see `queryPosition`.
-  const coords = queryPosition(nearby.coords, accountLoading);
+  const coords = nearby.coords;
   const bare = search === "" && shown === PAGE_SIZE;
-  // A page asked for with a position is a different page for the gated
-  // accounts (priced, not reordered: `distanceOnly` below), so the account is
-  // part of the key once there are coordinates. Nobody else's key changes, and
-  // without coordinates `priced` is false whoever is looking.
-  const priced = access && coords !== null;
   const wanted =
     bare && !coords
       ? null
-      : `${search}::${shown}::${coords ? `${coords.lat},${coords.lng}${priced ? "::d" : ""}` : ""}`;
+      : `${search}::${shown}::${coords ? `${coords.lat},${coords.lng}` : ""}`;
   const answerKey = answer?.key ?? null;
 
   /*
@@ -139,13 +119,7 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
           ? await fetch("/api/restaurants/discover", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              // The gated accounts are asked for a position on load so every
-              // card can print a distance, not to have the grid reshuffled
-              // under them: `distanceOnly` prices the page and keeps its order
-              // (Nearby still sorts). Everyone else's body is what it was.
-              body: JSON.stringify(
-                priced ? { search, shown, coords, distanceOnly: true } : { search, shown, coords },
-              ),
+              body: JSON.stringify({ search, shown, coords }),
             })
           : await fetch(
               `/api/restaurants/discover?${[search, shown > PAGE_SIZE ? `shown=${shown}` : ""]
@@ -162,7 +136,7 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
     return () => {
       cancelled = true;
     };
-  }, [wanted, answerKey, search, shown, coords, priced]);
+  }, [wanted, answerKey, search, shown, coords]);
 
   const view = wanted === null || !answer ? initial : answer.page;
   const onScreen = wanted === null || !answer ? { search: "", shown: PAGE_SIZE } : answer;
