@@ -1,13 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { RestaurantCard } from "@/components/RestaurantCard";
 import { TASTE_BTN, TastePickCard } from "@/components/TastePickCard";
 import { TasteChips, TasteInvite, TasteSignUp } from "@/components/TasteChips";
 import { useForMeAccess } from "@/lib/auth";
-import { FOR_ME_PARAM } from "@/lib/discoverFilters";
 import { distanceLabel, type Coords } from "@/lib/geo";
+import { qualityNote } from "@/lib/ratingDisplay";
 import { useTaste, type TastePick } from "@/lib/useTaste";
 
 /**
@@ -15,15 +14,15 @@ import { useTaste, type TastePick } from "@/lib/useTaste";
  * it shows comes from useTaste (one scorer, one payload, so web and phone
  * cannot drift); this file only lays it out. See probe/your-taste/DESIGN.md.
  *
- * For the accounts on lib/forMeGate.ts it is the small preview of the For me
- * list: "See all" opens that list (`?foryou=1`) rather than unfolding more cards
- * in place, and the chips and the card with its Been here / Not for me buttons
- * are shared with it (TasteChips, TastePickCard). Everyone else gets the section
- * as it was: "See all" unfolds 24 cards in a grid, the reason sits under the
- * card, and the distance is the seeded one.
+ * For the accounts on lib/forMeGate.ts the picks come from their own posted
+ * dishes (lib/dishTaste.ts), so there are no cuisine chips to tune: each card
+ * says which dish it is like, why the place is good and how far away it is, and
+ * the card with its Been here / Not for me buttons is TastePickCard. Everyone
+ * else gets the section as it was: the chips, the reason under the card, and
+ * the seeded distance.
  */
-// The buttons as they were, for everyone without For me (TASTE_BTN is the roomier
-// For me version, in TastePickCard).
+// The buttons as they were, for everyone without the dish picks (TASTE_BTN is the
+// roomier version, in TastePickCard).
 const BTN =
   "text-[13px] font-medium text-zinc-500 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 
@@ -95,7 +94,7 @@ export function TasteSection({
     );
   }
 
-  const picks = taste.picks.slice(0, !access && all ? PICKS_UNFOLDED : PICKS_SHOWN);
+  const picks = taste.picks.slice(0, all ? PICKS_UNFOLDED : PICKS_SHOWN);
 
   // The card as it was: the reason under it rather than in it, buttons below.
   const card = (p: TastePick, width: string) => (
@@ -128,6 +127,22 @@ export function TasteSection({
     </div>
   );
 
+  // The dish picks' card: reason, quality and distance inside it.
+  const pickCard = (p: TastePick, className: string) => (
+    <TastePickCard
+      key={p.restaurant.id}
+      restaurant={p.restaurant}
+      score={p.plateScore}
+      reason={p.reason.text}
+      quality={qualityNote(p.restaurant.rating, p.restaurant.reviewCount)}
+      distance={distanceLabel(p.restaurant, coords)}
+      shape="crop"
+      className={className}
+      onBeen={() => taste.apply({ kind: "been", value: p.restaurant.id })}
+      onHide={() => taste.apply({ kind: "hide", value: p.restaurant.id })}
+    />
+  );
+
   return (
     <section aria-labelledby="your-taste" className="mb-7">
       <div className="mb-3 flex items-baseline justify-between gap-3 px-1">
@@ -135,15 +150,21 @@ export function TasteSection({
           Your taste
         </h2>
         <span className="mono-label text-zinc-400">
-          {taste.header} ·{" "}
-          <button
-            type="button"
-            aria-expanded={editing}
-            onClick={() => setEditing((e) => !e)}
-            className="uppercase underline underline-offset-2"
-          >
-            Edit
-          </button>
+          {taste.header}
+          {!access && (
+            <>
+              {" "}
+              ·{" "}
+              <button
+                type="button"
+                aria-expanded={editing}
+                onClick={() => setEditing((e) => !e)}
+                className="uppercase underline underline-offset-2"
+              >
+                Edit
+              </button>
+            </>
+          )}
         </span>
       </div>
 
@@ -163,7 +184,7 @@ export function TasteSection({
         </div>
       )}
 
-      {editing && (
+      {editing && !access && (
         <div className="mb-4 rounded-2xl bg-white p-5">
           <TasteChips
             mode="edit"
@@ -178,73 +199,56 @@ export function TasteSection({
           <button
             type="button"
             onClick={() => taste.apply({ kind: "reset" })}
-            className={access ? TASTE_BTN : BTN}
+            className={BTN}
           >
             Reset my taste
           </button>
         </div>
       )}
 
-      <TasteChips
-        mode="row"
-        cuisines={cuisines}
-        loves={loves}
-        skips={skips}
-        apply={taste.apply}
-        more={more}
-        onMore={() => setMore(true)}
-      />
+      {!access && (
+        <TasteChips
+          mode="row"
+          cuisines={cuisines}
+          loves={loves}
+          skips={skips}
+          apply={taste.apply}
+          more={more}
+          onMore={() => setMore(true)}
+        />
+      )}
 
-      {/* For the For me accounts, a link and not a toggle: the full list is the
-          For me view of Discover, the same ranking with every place on it. A real
-          anchor so it opens in a new tab and shows up in history like any other
-          page. Everyone else still unfolds the grid in place. */}
       <div className="mb-2 flex justify-end px-1">
-        {access ? (
-          <Link
-            href={`/?${FOR_ME_PARAM}=1`}
-            className="mono-label text-zinc-500 underline underline-offset-2"
-          >
-            See all
-          </Link>
-        ) : (
-          <button
-            type="button"
-            aria-expanded={all}
-            onClick={() => setAll((a) => !a)}
-            className="mono-label text-zinc-500 underline underline-offset-2"
-          >
-            {all ? "Show fewer" : "See all"}
-          </button>
-        )}
+        <button
+          type="button"
+          aria-expanded={all}
+          onClick={() => setAll((a) => !a)}
+          className="mono-label text-zinc-500 underline underline-offset-2"
+        >
+          {all ? "Show fewer" : "See all"}
+        </button>
       </div>
 
-      {all && !access ? (
+      {all ? (
         <div className="grid grid-cols-2 items-stretch gap-4 lg:grid-cols-3 xl:grid-cols-4">
-          {picks.map((p) => card(p, "min-w-0"))}
+          {picks.map((p) => (access ? pickCard(p, "min-w-0") : card(p, "min-w-0")))}
         </div>
       ) : (
         <div className="-mx-1 overflow-x-auto overflow-y-hidden px-1 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex w-max items-stretch gap-4">
             {picks.map((p) =>
-              access ? (
-                <TastePickCard
-                  key={p.restaurant.id}
-                  restaurant={p.restaurant}
-                  score={p.plateScore}
-                  reason={p.reason.text}
-                  distance={distanceLabel(p.restaurant, coords)}
-                  shape="crop"
-                  className="w-[240px] shrink-0"
-                  onBeen={() => taste.apply({ kind: "been", value: p.restaurant.id })}
-                  onHide={() => taste.apply({ kind: "hide", value: p.restaurant.id })}
-                />
-              ) : (
-                card(p, "w-[240px] shrink-0")
-              ),
+              access ? pickCard(p, "w-[240px] shrink-0") : card(p, "w-[240px] shrink-0"),
             )}
           </div>
         </div>
+      )}
+
+      {/* The chips are gone for these accounts, so the one thing left to undo
+          is the Been here / Not for me they have pressed. */}
+      {access && (
+        <button type="button" onClick={() => taste.apply({ kind: "reset" })} className={TASTE_BTN}>
+          Reset my taste
+        </button>
       )}
       <TasteSignUp signedIn={taste.signedIn} />
     </section>

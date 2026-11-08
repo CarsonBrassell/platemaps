@@ -2,7 +2,7 @@ import { del } from "@vercel/blob";
 import { randomUUID } from "node:crypto";
 import type { MatchedDish, Restaurant, RestaurantView } from "@/data/restaurantTypes";
 import type { Dish } from "@/data/dishes";
-import { parsePrice, type PriceBand } from "@/data/priceBands";
+import type { PriceBand } from "@/data/priceBands";
 import type { Hours } from "@/lib/openState";
 import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
 import type { RatedPlate } from "@/lib/ratedPlates";
@@ -33,13 +33,13 @@ import { hashToken, SESSION_TTL_SECONDS } from "@/lib/tokens";
 import { milesBetween, NEARBY_RADIUS_MI, type Coords } from "@/lib/geo";
 
 /* Which driver this is depends on DATABASE_URL — see lib/sqlClient. */
+import type { DishRow, ProfileRow, ViewerPost } from "@/lib/dishTaste";
 import { sql } from "@/lib/sqlClient";
 import {
   applyOpToPrefs,
   EMPTY_PREFS,
   type FriendVisit,
   type FullTastePrefs,
-  type PostedSignal,
   type TasteOp,
 } from "@/lib/taste";
 import type { FeedCursor } from "@/lib/feedCursor";
@@ -1553,62 +1553,72 @@ export async function restaurantIdsPostedBy(userId: string): Promise<string[]> {
 }
 
 /**
- * Every restaurant a user has posted at, most recent post first (ties on the
- * id, so the order is stable). For me reads its seeds from it, and its cap of 30
- * is only "the 30 most recent" if the list really starts with the latest. Kept
- * apart from `restaurantIdsPostedBy`, whose callers (Your taste, account
- * deletion) never look at the order and stay exactly as they were.
+ * The viewer's own posts, newest first, with the menu's description and section
+ * of the dish they named (matched on the folded name; null when the menu has no
+ * such line). The seeds for Your taste's dish-level picks; nothing about votes,
+ * hearts or saves. SELECT only.
  */
-export async function restaurantIdsPostedByRecent(userId: string): Promise<string[]> {
+export async function postsForDishTaste(userId: string): Promise<ViewerPost[]> {
   const rows = await sql`
-    SELECT restaurant_id FROM posts
-    WHERE user_id = ${userId} AND restaurant_id IS NOT NULL
-    GROUP BY restaurant_id
-    ORDER BY max(created_at) DESC, restaurant_id
-  `;
-  return rows.map((r) => String(r.restaurant_id));
-}
-
-/**
- * When, and how often, a user has posted at each restaurant: the date of the
- * latest post (epoch milliseconds) and the number of distinct days they posted
- * there, a day being Los Angeles' own, the clock the rest of the app keeps. One
- * row per restaurant, in no particular order. A read only For me asks for, to
- * weigh a recent or repeated place more in the cuisine profile.
- */
-export async function postedSignalsBy(userId: string): Promise<PostedSignal[]> {
-  const rows = await sql`
-    SELECT restaurant_id,
-           max(created_at) AS last_at,
-           count(DISTINCT (created_at AT TIME ZONE 'America/Los_Angeles')::date)::int AS days
-    FROM posts
-    WHERE user_id = ${userId} AND restaurant_id IS NOT NULL
-    GROUP BY restaurant_id
+    SELECT p.restaurant_id, p.restaurant, p.dish_name, p.created_at, p.price,
+           d.description AS dish_description, d.section AS dish_section
+    FROM posts p
+    LEFT JOIN LATERAL (
+      SELECT description, section FROM dishes d
+      WHERE d.restaurant_id = p.restaurant_id AND lower(trim(d.name)) = lower(trim(p.dish_name))
+      LIMIT 1
+    ) d ON true
+    WHERE p.user_id = ${userId} AND p.restaurant_id IS NOT NULL
+    ORDER BY p.created_at DESC
   `;
   return rows.map((r) => ({
     restaurantId: String(r.restaurant_id),
-    lastAt: new Date(r.last_at).getTime(),
-    days: Number(r.days),
+    dishName: r.dish_name ? String(r.dish_name) : null,
+    restaurantName: r.restaurant ? String(r.restaurant) : null,
+    at: new Date(r.created_at).getTime(),
+    price: r.price == null ? null : String(r.price),
+    dishDescription: r.dish_description ? String(r.dish_description) : null,
+    dishSection: r.dish_section ? String(r.dish_section) : null,
   }));
 }
 
 /**
- * What a user has paid for the plates they posted, in dollars: one number per
- * post that carries a price the app can read (`parsePrice`, the same reading the
- * price bands use). Unsorted, and unfiltered: the budget term (lib/taste.ts)
- * drops the junk and the outliers itself. A read only For me asks for. SELECT only.
+ * The menu lines of the given listed restaurants, in the shape the dish index
+ * reads (descriptions cut to 160 characters: the index wants the first clause,
+ * not the paragraph). The caller pages by restaurant so no one response nears
+ * the driver's size cap. SELECT only.
  */
-export async function platePricesBy(userId: string): Promise<number[]> {
+export async function dishRowsFor(restaurantIds: readonly string[]): Promise<DishRow[]> {
   const rows = await sql`
-    SELECT price FROM posts
-    WHERE user_id = ${userId} AND price IS NOT NULL AND price <> ''
+    SELECT restaurant_id, name, left(description, 160) AS description, price, section
+    FROM dishes
+    WHERE restaurant_id = ANY(${restaurantIds as string[]})
   `;
-  const out: number[] = [];
-  for (const r of rows) {
-    const amount = parsePrice(String(r.price));
-    if (amount != null) out.push(amount);
-  }
-  return out;
+  return rows.map((r) => ({
+    rid: String(r.restaurant_id),
+    name: String(r.name),
+    description: r.description == null ? null : String(r.description),
+    price: r.price == null ? null : String(r.price),
+    section: r.section == null ? null : String(r.section),
+  }));
+}
+
+/** The menu profile of every place with a usable one: styles, dish types and median price. SELECT only. */
+export async function profileRowsForDishTaste(): Promise<ProfileRow[]> {
+  const rows = await sql`
+    SELECT restaurant_id, styles, dish_types, profile->'menu_stats'->>'median' AS median
+    FROM restaurant_profiles
+    WHERE status = 'ok'
+  `;
+  return rows.map((r) => {
+    const median = r.median == null ? NaN : Number(r.median);
+    return {
+      rid: String(r.restaurant_id),
+      styles: Array.isArray(r.styles) ? r.styles.map(String) : [],
+      dishTypes: Array.isArray(r.dish_types) ? r.dish_types.map(String) : [],
+      median: Number.isFinite(median) ? median : null,
+    };
+  });
 }
 
 export async function createPost(data: {
@@ -2518,48 +2528,6 @@ export async function getFriendRestaurantVisits(viewerId: string): Promise<Frien
     friendId: String(r.user_id),
     name: String(r.name),
   }));
-}
-
-/**
- * What every place with a usable menu profile serves: its dish terms and its
- * service style. The raw material for the "For me" similarity
- * (lib/profileTraits.ts builds the idf, the cuisine centroids and the per-place
- * traits from it). About 6.6K rows and half a megabyte, the same for every
- * viewer: it carries nothing personal, so it is safe behind the shared Discover
- * cache, but the caller owns the cache (a separate, longer TTL than the corpus)
- * because it changes only when an enrichment batch lands. SELECT only. Places
- * with no row or a "hold" row are simply absent; the caller imputes those from
- * their cuisine. Throws if the table is missing; the caller treats that as
- * "everything imputed", never as a failed request.
- */
-export async function getProfileTraitRows(): Promise<
-  {
-    restaurantId: string;
-    dishTypes: string[];
-    service: string | null;
-    menuStats: { median: number; priced: number } | null;
-  }[]
-> {
-  // The median price rides along (profile->'menu_stats'): For me's budget term
-  // reads it, and it is as shared as the dish terms are. A profile without one,
-  // or with a value that is not a number, comes back null.
-  const rows = await sql`
-    SELECT restaurant_id, dish_types, profile->>'service' AS service,
-           profile->'menu_stats'->>'median' AS price_median,
-           profile->'menu_stats'->>'priced' AS price_priced
-    FROM restaurant_profiles
-    WHERE status = 'ok'
-  `;
-  return rows.map((r) => {
-    const median = r.price_median == null ? NaN : Number(r.price_median);
-    const priced = r.price_priced == null ? NaN : Number(r.price_priced);
-    return {
-      restaurantId: String(r.restaurant_id),
-      dishTypes: Array.isArray(r.dish_types) ? r.dish_types.map(String) : [],
-      service: (r.service as string | null) ?? null,
-      menuStats: Number.isFinite(median) && Number.isFinite(priced) ? { median, priced } : null,
-    };
-  });
 }
 
 export type FriendSummary = {

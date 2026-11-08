@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { BrandMark, WordMark } from "@/components/BrandMark";
 import { PhoneDiscoverSearch } from "@/components/mobile/PhoneDiscoverSearch";
 import { PhoneFilterBar } from "@/components/mobile/PhoneFilterBar";
@@ -11,15 +10,11 @@ import type {
 } from "@/components/mobile/PhoneFilterSheet";
 import { PhoneStickyBar } from "@/components/mobile/PhoneStickyBar";
 import { PhoneDiscoverResults } from "@/components/mobile/PhoneDiscoverResults";
-import { PhoneForMeResults, PhoneTasteSection } from "@/components/mobile/PhoneTasteSection";
-import { useForMeAccess } from "@/lib/auth";
+import { PhoneTasteSection } from "@/components/mobile/PhoneTasteSection";
 import type { DiscoverPage } from "@/lib/discover";
 import {
-  FOR_ME_PARAM,
   PAGE_SIZE,
-  QUERY_PARAM,
   QUICK_FILTERS,
-  SCOPE_PARAM,
   activeFilterCount,
   type FacetOption,
 } from "@/lib/discoverFilters";
@@ -34,16 +29,8 @@ import { useDiscoverQuery } from "@/lib/useDiscoverQuery";
  * navigation up through DiscoverQuerySync rather than re-rendering the route.
  */
 export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
-  const { view, pending, viewKey, search, forMe, raw, failed, retry, nearby } = useDiscoverQuery(
-    initial,
-    "/m",
-  );
+  const { view, pending, viewKey, search, raw, nearby } = useDiscoverQuery(initial, "/m");
   const { filters, counts, options } = view;
-  /* The For me chip, the list behind it and the distances are for the accounts
-     on lib/forMeGate.ts. `forMe` above is already false for everyone else (the
-     hook ignores `?foryou=1` without access), so the rest of this screen needs
-     no gate of its own: it is the screen it was. */
-  const access = useForMeAccess();
 
   /* `?nav=` selects a nav variant on the phone; it rides along on every link
      the page builds but must never reach the filter parser, so the hook
@@ -51,13 +38,8 @@ export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
      column switch: dropped on the way in so old links land on the grid. */
   const nav = new URLSearchParams(raw).get("nav");
 
-  /* `?foryou=1` is a mode, not a filter, and the hook strips it from `search`
-     the same way. It is put back before the changes are applied, so every
-     link the page builds keeps For me on (the filters compose with it) and a
-     change can turn it off by naming it. */
   const hrefWith = (changes: Record<string, string | null>) => {
     const next = new URLSearchParams(search);
-    if (forMe) next.set(FOR_ME_PARAM, "1");
     for (const [key, value] of Object.entries(changes)) {
       if (value === null) next.delete(key);
       else next.set(key, value);
@@ -230,29 +212,11 @@ export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
      dish comes first because it came off a list rather than a text field, so
      it is the one word guaranteed to be real. */
   const subject = filters.dish ?? filters.cuisine ?? filters.q ?? null;
-
-  /* A text search wins over For me (decision D3): the server answers it in
-     search order and says so (`forMe.paused`). The chip then reads as off and
-     a line says why, rather than a lit chip over a list it is not ordering.
-     The URL still having a `q` is part of the test because the answer on
-     screen can lag the URL by one fetch: a paused answer with no `q` left is
-     the last list, and the one coming is personal, so that stays a skeleton
-     inside PhoneForMeResults rather than flashing the search results. */
-  const urlHasQuery = !!new URLSearchParams(search).get(QUERY_PARAM);
-  const paused = forMe && view.forMe?.paused === true && urlHasQuery;
-  const forMeOn = forMe && !paused;
-  /* Paused, the chip is the way back: it drops the search and keeps For me. */
-  const forMeHref = paused
-    ? hrefWith({ [QUERY_PARAM]: null, [SCOPE_PARAM]: null, [FOR_ME_PARAM]: "1", shown: null })
-    : hrefWith({ [FOR_ME_PARAM]: forMeOn ? null : "1", shown: null });
-
   const heading = subject
     ? `${subject} in ${filters.neighborhood ?? "San Diego"}`
     : filters.neighborhood
       ? `Places in ${filters.neighborhood}`
-      : forMeOn
-        ? "Picked for you"
-        : "Find something good";
+      : "Find something good";
 
   return (
     <div className="min-h-dvh">
@@ -286,60 +250,25 @@ export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
       <PhoneStickyBar className="pt-1">
         <div className="flex flex-col gap-2.5 px-4 pb-4">
           <PhoneDiscoverSearch value={filters.q ?? ""} />
-          <PhoneFilterBar
-            model={model}
-            forMe={access ? { on: forMeOn, href: forMeHref } : undefined}
-          />
+          <PhoneFilterBar model={model} />
         </div>
       </PhoneStickyBar>
 
-      {/* The strip is the doorway to the list, so it steps aside once the list
-          is open — For me carries its own header, prompt and controls. */}
-      {chips.length === 0 && !filters.q && !forMe && (
+      {chips.length === 0 && !filters.q && (
         <PhoneTasteSection
           cuisines={initial.options.cuisines.map((o) => o.value)}
           coords={nearby.coords}
-          seeAllHref={hrefWith({ [FOR_ME_PARAM]: "1", shown: null })}
         />
       )}
 
-      {paused && (
-        <p className="px-4 pb-3 text-[13px] leading-snug text-pm-grey-text">
-          Search results are in search order, not picked for you.{" "}
-          <Link
-            href={forMeHref}
-            scroll={false}
-            prefetch={false}
-            className="inline-flex min-h-11 items-center underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-          >
-            Back to For me
-          </Link>
-        </p>
-      )}
-
-      {forMeOn ? (
-        <PhoneForMeResults
-          view={view}
-          pending={pending}
-          viewKey={viewKey}
-          clearHref={clearHref}
-          moreHref={hrefWith({ shown: String(view.shown + PAGE_SIZE) })}
-          escapeHref={hrefWith({ [FOR_ME_PARAM]: null, shown: null })}
-          failed={failed}
-          onRetry={retry}
-          nearby={nearby}
-          cuisines={initial.options.cuisines.map((o) => o.value)}
-        />
-      ) : (
-        <PhoneDiscoverResults
-          view={view}
-          pending={pending}
-          viewKey={viewKey}
-          clearHref={clearHref}
-          moreHref={hrefWith({ shown: String(view.shown + PAGE_SIZE) })}
-          nearby={nearby}
-        />
-      )}
+      <PhoneDiscoverResults
+        view={view}
+        pending={pending}
+        viewKey={viewKey}
+        clearHref={clearHref}
+        moreHref={hrefWith({ shown: String(view.shown + PAGE_SIZE) })}
+        nearby={nearby}
+      />
     </div>
   );
 }

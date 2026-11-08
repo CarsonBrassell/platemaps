@@ -22,7 +22,7 @@ type Account = {
   photoNoticeSeen: boolean;
   /** Whether the first-run coach tour has run. Mirrors AccountJson. */
   tourSeen: boolean;
-  /** Set only for the accounts that can see For me. Mirrors AccountJson. */
+  /** Set only for the accounts that get the dish picks. Mirrors AccountJson. */
   forMe?: true;
 };
 
@@ -349,10 +349,10 @@ export function useAuth() {
 }
 
 /**
- * Whether this viewer can see For me (lib/forMeGate.ts). False while the
+ * Whether this viewer gets the dish picks (lib/forMeGate.ts). False while the
  * account is still loading, so the server render and the first client frame are
  * what every other visitor gets, and for everyone whose account does not carry
- * the flag. Every For me surface asks this and, on false, renders what the page
+ * the flag. Every dish-pick surface asks this and, on false, renders what the page
  * did before the feature.
  */
 export function useForMeAccess(): boolean {

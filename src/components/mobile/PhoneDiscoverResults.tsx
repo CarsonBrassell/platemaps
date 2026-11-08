@@ -53,8 +53,8 @@ export function PhoneDiscoverResults({
      are choosing, which is when a distance on each card earns its place. Not
      on a bare landing — a permission prompt before the visitor has done
      anything is the wrong first impression. (For the accounts on
-     lib/forMeGate.ts the ask is made in useDiscoverQuery, which also covers
-     For me; the offer to ask on purpose is the button above the grid.) */
+     lib/forMeGate.ts the ask is made in useDiscoverQuery; the offer to ask on
+     purpose is the button above the grid.) */
   const active = Object.values(filters).filter((v) => (Array.isArray(v) ? v.length : v)).length;
   const requestLocation = nearby.request;
   useEffect(() => {

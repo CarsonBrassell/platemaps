@@ -30,7 +30,7 @@ const MAIN_PHONE_BTN =
 const S: any = { taste: null };
 const origLoad = Module._load;
 Module._load = function (request: string) {
-  if (request === "@/lib/useTaste") return { useTaste: () => S.taste, useTasteRev: () => 0 };
+  if (request === "@/lib/useTaste") return { useTaste: () => S.taste };
   if (request === "next/navigation")
     return { usePathname: () => "/", useRouter: () => ({ push() {}, replace() {}, back() {}, prefetch() {} }), useSearchParams: () => new URLSearchParams("") };
   return origLoad.apply(this, arguments);
@@ -126,8 +126,22 @@ for (const [name, viewer] of Object.entries(VIEWERS)) {
 // Developer aid: FORME_DUMP=out.json writes every markup, so the same file run in a checkout of origin/main can be diffed.
 if (process.env.FORME_DUMP) require("node:fs").writeFileSync(process.env.FORME_DUMP, JSON.stringify(dump));
 
-// Control: with For me the web section is allowed to differ, and the check must be able to see it.
+// Control: for the dish-pick accounts the buttons are allowed to differ, and the check must be able to see it.
 const forMeWeb = render(FOR_ME, TasteSection, { cuisines: ["Thai"] }, false);
 const forMeBtns = classesOf(forMeWeb, /^(Been here|Not for me)$/);
-assert.ok(forMeBtns.length > 0 && forMeBtns.some((c) => c !== MAIN_WEB_BTN), "control: For me should render the roomier buttons");
-console.log(`forme:check  render parity ok (${n} section renders match origin/main's button classes; For me control differs)`);
+assert.ok(forMeBtns.length > 0 && forMeBtns.some((c) => c !== MAIN_WEB_BTN), "control: the dish-pick accounts should render the roomier buttons");
+
+// The dish-pick accounts get no For me pill or link, no cuisine chips and no Edit panel, and a text reset.
+for (const [label, Component] of [["web", TasteSection], ["phone", PhoneTasteSection]] as const) {
+  for (const editing of [false, true]) {
+    const html = render(FOR_ME, Component, { cuisines: ["Thai", "Mexican"] }, editing);
+    const where = `${label} dish picks editing=${editing}`;
+    assert.ok(!/For me|foryou|Tuned to you/.test(html), `${where}: a For me entry point is back: ${html.match(/.{30}(For me|foryou|Tuned to you).{30}/)?.[0]}`);
+    assert.ok(!/aria-pressed/.test(html), `${where}: cuisine chips are back`);
+    assert.ok(!/>Edit</.test(html), `${where}: the Edit button is back`);
+    assert.ok(/Reset my taste/.test(html), `${where}: no text reset`);
+    assert.ok(/Been here/.test(html) && /Not for me/.test(html), `${where}: a pick has lost its buttons`);
+    n++;
+  }
+}
+console.log(`forme:check  render parity ok (${n - 8} section renders match origin/main's button classes; the dish-pick accounts have no pill, chips or Edit)`);

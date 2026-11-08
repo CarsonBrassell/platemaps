@@ -46,7 +46,7 @@ export type AccountJson = {
   tourSeen: boolean;
   /**
    * Present, and `true`, only for the accounts on lib/forMeGate.ts' list: the
-   * client turns For me on from it. Left out entirely for everyone else, so
+   * client turns the dish picks on from it. Left out entirely for everyone else, so
    * their account JSON is what it was before the feature.
    */
   forMe?: true;

@@ -10,89 +10,41 @@
  * counts: ratings, likes, hearts, upvotes, saves. The reason on each pick
  * names only those inputs (picked, been to, posted).
  *
- * Two consumers share one scan (`scoreAll`):
- *  - `scoreTaste`: the small "Your taste" strip. Affinity from history is the
- *    old cuisine share and needs MIN_POSTS places; unchanged.
- *  - `rankTaste`: "For me", every candidate in one ordered list. Affinity from
- *    history is item-to-item similarity over menu profiles (profileTraits.ts),
- *    so one place is already enough to go on. Spec: probe/for-me/PLAN.md.
- *
- * Everything below that only For me does is switched on by `traits` (the menu
- * index), so Your taste never sees it:
- *  - Its own weights, FORME_WEIGHTS (A 0.40, F 0.20, Q 0.30, N 0.10), and a
- *    budget term beside them (below), worth at most 0.06 either way.
+ * `scoreTaste` is the cuisine scorer every viewer gets. The accounts on
+ * lib/forMeGate.ts are ranked dish by dish instead (lib/dishTaste.ts), which
+ * borrows the building blocks below: the shrunk rating and its soft floor, the
+ * budget term and the travel radius with its distance factor.
  *  - A shrunk rating. R' = (n*R + m*C) / (n+m) pulls a thin rating toward C, the
- *    mean of the rated places in the corpus (`Corpus.ratingMean`, read once per
- *    corpus load), with m = FORME_QUALITY.priorReviews. Fewer than minReviews
- *    reviews is unrated. Q's source term is then the stars alone, with no
- *    review-volume factor: R' already says how much to trust the number. Unrated
- *    stays at unratedQ, so a missing rating is neither rewarded nor punished.
- *  - A soft floor, g, on the score (the matches' order, not the tail's): 1 from
- *    R' 4.2 up, 0.8 at 3.8, 0.65 at 3.5 and below, linear between, 0.92 for an
- *    unrated place. A place with 15 or more reviews is judged on the lower of R'
- *    and its raw rating, so shrinking can only help a thin sample, never a
- *    well-reviewed place that is simply not good.
- *  - The tail's reason reads R': "Well rated in {hood}" from 4.2, "Highly rated"
- *    from 4.5. The grid's quality line drops its tier word on those cards.
- *  - A cuisine profile, from 3 seeds, over everything the viewer has posted at
- *    or marked been (not only the 30 seeds). Each place weighs recency x repeat:
- *    0.5 per 120 days since their latest post there (floored at 0.4), times 1 +
- *    0.5 per further day they posted there (capped at 2); a "been" with no post
- *    is 1. A cuisine's share s(c) is its weight over the total, secondary
- *    cuisines at SECONDARY_CUISINE_WEIGHT. A candidate's Acuis is its best
- *    weighted s(c) over 0.25, at most 1, and Ahist' = 0.7 Ahist + 0.3 Acuis,
- *    so what the viewer eats a lot of counts beside what a menu resembles.
- *    Fewer seeds, or a place with no cuisine, leave Ahist as it was. The scan
- *    lists the top cuisines (up to 3 at a 0.10 share or more), and a match with
- *    nothing stronger to say reads "You eat a lot of {cuisine}" from a 0.20
- *    share over 3 places. Dates are of the viewer's own posts, as history; the
- *    posts' ratings, votes and the rest still feed none of it.
+ *    mean of the rated places in the corpus (`meanRating`), with m =
+ *    FORME_QUALITY.priorReviews. Fewer than minReviews reviews is unrated.
+ *  - A soft floor, g, on the score: 1 from R' 4.2 up, 0.8 at 3.8, 0.65 at 3.5
+ *    and below, linear between, 0.92 for an unrated place. A place with 15 or
+ *    more reviews is judged on the lower of R' and its raw rating, so shrinking
+ *    can only help a thin sample, never a well-reviewed place that is simply not
+ *    good.
  *  - A budget term. B is the viewer's usual plate: the median price on their own
  *    posts (under $3 dropped, then anything over 2.5x the median of those kept),
  *    with the quartiles as its range, trusted from 3 plates and in full at 6.
  *    With fewer than 3, B is the median menu price of the places they have been
  *    (from 3 known, trusted at half at most); with both it is 0.6 plates + 0.4
- *    places. A candidate's price is its menu's median plate (from 4 priced
- *    items; the price band is not used, nothing is imputed). Inside the range
- *    the fit is 1, above it it falls off fast and below it slowly, and the
- *    score gains 100 * 0.06 * trust * (2 fit - 1), inside g. A place with no
- *    price, or a viewer with no B, gets exactly 0. A fit of 0.9 or more, at a
- *    trust of half or more, and a price that rounds to a dollar inside the
- *    printed range, earns "Fits your usual $11–18 plate" when no like,
- *    pick, friend or cuisine line applies. Prices on the viewer's posts are
- *    history, as dates are; the posts' ratings, votes and the rest feed nothing.
+ *    places. Inside the range the fit is 1, above it it falls off fast and below
+ *    it slowly, and the score gains 100 * 0.06 * trust * (2 fit - 1). A place
+ *    with no price, or a viewer with no B, gets exactly 0.
  *  - A travel radius. The viewer's history points are the places they have been
  *    or posted at (listed, with coordinates). R is how far they usually go: the
  *    75th percentile of the distances from the medoid (the point nearest all the
  *    others) pulled toward 7 mi by three places' worth of prior, R = (n*p75 +
- *    3*7) / (n+3), kept within 3 to 20 mi. Under 3 points R is 7 outright. The
- *    anchor is where the viewer stands (`here`) when they share it, else the
- *    medoid. A place within R of the anchor has D = 1; farther out D falls as
- *    1 / (1 + ((d-R)/R)^2), never under 0.55 (0.75 under 3 points). D scales
- *    the affinity and neighborhood terms only, so quality and friends stay as
- *    they were, and the matches are still picked on A alone: distance reorders
- *    them, it never removes one. No anchor, or a place with no coordinates, is
- *    D = 1. With `here` and from 3 points, a place within R with nothing
- *    stronger to say reads "Within your usual 7 mi". The scan also hands the
- *    profile line (budget range, radius, top cuisines) to the private POST.
+ *    3*7) / (n+3), kept within 3 to 20 mi. Under 3 points R is 7 outright. A
+ *    place within R of the anchor has D = 1; farther out D falls as
+ *    1 / (1 + ((d-R)/R)^2), never under 0.55 (0.75 under 3 points).
  * The viewer's own ratings, likes, hearts, upvotes and saves feed none of it.
- */
+*/
 import type { RestaurantView } from "@/data/restaurantTypes";
 import type { PlateScore } from "@/lib/plateScore";
-import {
-  SECONDARY_CUISINE_WEIGHT,
-  dishSetKey,
-  similarity,
-  similarityParts,
-  traitsOf,
-  type PlaceTraits,
-  type TraitIndex,
-} from "@/lib/profileTraits";
-import type { ForMeInfo, ForMeProfile, ForMeReason } from "@/lib/discoverWire";
 import { milesBetween, type Coords } from "@/lib/geo";
 import { MIN_POSTS } from "@/lib/tasteMatch";
 
-/** Your taste. For me reads FORME_WEIGHTS for the four terms below and the same rest. */
+/** Your taste. */
 export const WEIGHTS = {
   /** SCORE = 100 * (a*A + f*F + q*Q + n*N). */
   affinity: 0.5,
@@ -117,7 +69,7 @@ export const WEIGHTS = {
   plateSpanPct: 40,
   ratingFloor: 3.8,
   ratingSpan: 1.2,
-  /** Your taste only: review volume that earns the full sourceTerm, log10(1+n)/this. For me reads R' instead. */
+  /** Review volume that earns the full sourceTerm, log10(1+n)/this. */
   reviewLogDivisor: 2.5,
   /** Share of the list one cuisine may take (when 2+ cuisines score). */
   cuisineCapShare: 0.4,
@@ -127,47 +79,12 @@ export const WEIGHTS = {
   maxLoves: 5,
   maxSkips: 5,
   maxMarks: 300,
-
-  /* For me (rankTaste). Starting values: there is no ground truth to tune on. */
-  /** Ahist = conf(k) * (maxInAhist * best similarity + top3InAhist * mean of the best 3). */
-  maxInAhist: 0.75,
-  top3InAhist: 0.25,
-  /** conf(k) = min(1, confBase + confStep * (k - 1)) for k seeds. */
-  confBase: 0.6,
-  confStep: 0.2,
-  /** History counts from this many seeds (Your taste keeps MIN_POSTS). */
-  minSeeds: 1,
-  /** Seeds are the most recent places the viewer has been, at most this many. */
-  maxSeeds: 30,
-  /** A candidate is a match (block 1) at A >= this, or with any friend. */
-  matchGate: 0.15,
-  /** The tail (block 2) sorts by 100 * (qualityInTail * Q + hoodInTail * N). */
-  qualityInTail: 0.2,
-  hoodInTail: 0.1,
-  /** In block 1 the cuisine cap starts at this position (1-based)... */
-  capFromPosition: 6,
-  /** ...and is waived when the best other-cuisine place scores under this share of the leader. */
-  capRelaxRatio: 0.5,
-  /** Longest reason line. "Because you went to " is 20 of these, so a seed name keeps 36. */
-  reasonMaxChars: 56,
 } as const;
 
-/**
- * SCORE for For me = g * (100 * (a*A*D + f*F + q*Q + n*N*D) + budget points), the
- * weights of `WEIGHTS` for Your taste left alone. Dials: the four sum to 1, so a
- * perfect place scores 100 before the budget term, which moves it by at most
- * 100 * `budget` points either way (see FORME_BUDGET). D is the distance factor
- * (see FORME_RADIUS), 1 for a place in the viewer's range.
- */
-export const FORME_WEIGHTS = {
-  affinity: 0.4,
-  friends: 0.2,
-  quality: 0.3,
-  neighborhood: 0.1,
-  budget: 0.06,
-} as const;
+/** The budget term's reach: it moves a dish pick's score by at most 100 * this, either way. */
+export const FORME_WEIGHTS = { budget: 0.06 } as const;
 
-/** The quality model For me reads: the shrunk rating, the soft floor and the tail wording. */
+/** The quality model dish picks read: the shrunk rating and the soft floor. */
 export const FORME_QUALITY = {
   /** Fewer reviews than this and a place reads as unrated. */
   minReviews: 10,
@@ -185,37 +102,9 @@ export const FORME_QUALITY = {
   floorUnrated: 0.92,
   /** From this many reviews g reads min(R', R): a big sample's raw rating is not softened. */
   rawGuardReviews: 15,
-  /** A tail reason says "Well rated" from this R'... */
-  wellRatedFrom: 4.2,
-  /** ..."Highly rated" from this one. */
-  highlyRatedFrom: 4.5,
 } as const;
 
-/** The cuisine profile For me reads: how a place weighs, and how it joins Ahist. */
-export const FORME_CUISINE = {
-  /** A place's weight halves every this many days since the viewer's latest post there... */
-  halfLifeDays: 120,
-  /** ...and never falls below this. A `been` with no post date weighs 1. */
-  recencyFloor: 0.4,
-  /** Each further day the viewer posted at the same place adds this to its weight... */
-  repeatStep: 0.5,
-  /** ...up to this. */
-  repeatCap: 2,
-  /** A cuisine at this share of the viewer's history is full affinity for a candidate. */
-  fullShare: 0.25,
-  /** Ahist' = (1 - cuisineInAhist) * Ahist + cuisineInAhist * Acuis. */
-  cuisineInAhist: 0.3,
-  /** The profile counts from this many seeds; fewer and Ahist is left as it was. */
-  minSeeds: 3,
-  /** `topCuisines` lists at most this many, each with at least this share. */
-  topCount: 3,
-  topMinShare: 0.1,
-  /** "You eat a lot of X" needs X at this share, over at least this many distinct places. */
-  reasonShare: 0.2,
-  reasonPlaces: 3,
-} as const;
-
-/** The budget term For me reads: the viewer's usual plate, and how a place's price fits it. */
+/** The budget term: the viewer's usual plate, and how a place's price fits it. */
 export const FORME_BUDGET = {
   /** A plate price under this is a side or a typo and says nothing about what they spend. */
   minPlate: 3,
@@ -239,12 +128,9 @@ export const FORME_BUDGET = {
   upperWidth: 0.35,
   /** ...below it exp(-((-lower - x) / lowerWidth)), a slow one. */
   lowerWidth: 0.7,
-  /** The reason line needs a fit of at least this, at a trust of at least reasonConf. */
-  reasonFit: 0.9,
-  reasonConf: 0.5,
 } as const;
 
-/** The travel radius For me reads: how far the viewer usually goes, and how a farther place is softened. */
+/** The travel radius: how far the viewer usually goes, and how a farther place is softened. */
 export const FORME_RADIUS = {
   /** R is read off the history from this many points; under it R is priorMiles. */
   minPoints: 3,
@@ -259,20 +145,9 @@ export const FORME_RADIUS = {
   floorFew: 0.75,
 } as const;
 
-/**
- * When, and how often, the viewer posted at one restaurant: the latest post
- * (epoch milliseconds) and the number of distinct days they posted there.
- * `postedSignalsBy` in lib/db.ts reads it; a place missing from the list, or
- * with no usable date, weighs as a plain `been` does.
- */
-export type PostedSignal = { restaurantId: string; lastAt: number; days: number };
-
-/** A cuisine the viewer eats a lot of: its share of their weighted history. */
-export type CuisineShare = { cuisine: string; share: number; places: number };
-
 export type TasteBasis = "history" | "starting" | "friends" | "none";
 export type TasteReason = {
-  kind: "friend" | "picked" | "favorite" | "history" | "neighborhood";
+  kind: "friend" | "picked" | "favorite" | "history" | "neighborhood" | "dish" | "style" | "cuisine";
   text: string;
   short: string;
 };
@@ -424,23 +299,10 @@ export function applyOpToPrefs(
 /**
  * The cuisines a restaurant counts as, with weights; affinity is the max of
  * weight * A(cuisine). By default a restaurant is its one main cuisine (Your
- * taste). `secondary: true` adds its secondary cuisines at 0.4 (For me), so a
- * loved cuisine reaches the places that also file under it.
+ * taste).
  */
-export function restaurantTraits(
-  r: RestaurantView,
-  opts: { secondary?: boolean } = {},
-): { cuisine: string; weight: number }[] {
-  if (!r.cuisine) return [];
-  const out = [{ cuisine: r.cuisine, weight: 1 }];
-  if (opts.secondary) {
-    for (const c of r.cuisineSecondary ?? []) {
-      if (c && !out.some((t) => t.cuisine === c)) {
-        out.push({ cuisine: c, weight: SECONDARY_CUISINE_WEIGHT });
-      }
-    }
-  }
-  return out;
+export function restaurantTraits(r: RestaurantView): { cuisine: string; weight: number }[] {
+  return r.cuisine ? [{ cuisine: r.cuisine, weight: 1 }] : [];
 }
 
 /**
@@ -505,7 +367,7 @@ export function shrunkRating(
 }
 
 /**
- * g, the soft floor on a For me score: 1 from R' 4.2, linear to 0.8 at 3.8 and
+ * g, the soft floor on a dish pick's score: 1 from R' 4.2, linear to 0.8 at 3.8 and
  * on to 0.65 at 3.5, flat 0.65 below, 0.92 for an unrated place. From
  * rawGuardReviews reviews it reads min(R', R), so a big sample's raw rating
  * can only lower it. Continuous everywhere and never above 1, so a missing
@@ -534,42 +396,25 @@ export function qualityFloor(
   return f.floorLowFactor;
 }
 
-/**
- * The stars part of Q. `shrunk` is the For me switch: undefined is Your taste
- * (raw rating, scaled by review volume), null is a For me place with no usable
- * rating, a number is its R' (stars alone, the volume already inside R').
- */
-function sourceTerm(r: RestaurantView, shrunk?: number | null): number {
-  if (shrunk !== undefined) {
-    if (shrunk === null) return WEIGHTS.unratedQ;
-    return clamp01((shrunk - WEIGHTS.ratingFloor) / WEIGHTS.ratingSpan);
-  }
+function sourceTerm(r: RestaurantView): number {
   if (r.rating == null) return WEIGHTS.unratedQ;
   const stars = clamp01((r.rating - WEIGHTS.ratingFloor) / WEIGHTS.ratingSpan);
   const volume = Math.min(1, Math.log10(1 + (r.reviewCount ?? 0)) / WEIGHTS.reviewLogDivisor);
   return stars * volume;
 }
 
-function qualityOf(
-  r: RestaurantView,
-  plate: PlateScore | undefined,
-  shrunk?: number | null,
-): number {
-  const base = baseQuality(r, plate, shrunk);
+function qualityOf(r: RestaurantView, plate: PlateScore | undefined): number {
+  const base = baseQuality(r, plate);
   return r.photo ? Math.min(1, base + WEIGHTS.photoInQ) : base;
 }
 
-function baseQuality(
-  r: RestaurantView,
-  plate: PlateScore | undefined,
-  shrunk?: number | null,
-): number {
-  const src = sourceTerm(r, shrunk);
+function baseQuality(r: RestaurantView, plate: PlateScore | undefined): number {
+  const src = sourceTerm(r);
   if (plate?.ready && plate.percent != null) {
     const p = clamp01((plate.percent - WEIGHTS.plateFloorPct) / WEIGHTS.plateSpanPct);
     return WEIGHTS.plateInQ * p + WEIGHTS.sourceInQ * src;
   }
-  if (shrunk !== undefined ? shrunk === null : r.rating == null) return WEIGHTS.unratedQ;
+  if (r.rating == null) return WEIGHTS.unratedQ;
   return WEIGHTS.sourceOnlyInQ * src;
 }
 
@@ -589,97 +434,31 @@ export type Scored = {
   r: RestaurantView;
   /** Position in the candidates handed in. */
   index: number;
-  /**
-   * Your taste: 100 * (0.5 A + 0.2 F + 0.2 Q + 0.1 N).
-   * For me: G * (100 * (0.4 A*D + 0.2 F + 0.3 Q + 0.1 N*D) + budgetPts).
-   */
+  /** 100 * (0.5 A + 0.2 F + 0.2 Q + 0.1 N). */
   score: number;
-  /** 100 * (0.2 Q + 0.1 N): how the "also well rated" tail is ordered. */
-  tail: number;
   A: number;
-  /** The explicit-pick and history parts of A. For me only; 0 in the cuisine-share mode. */
-  Apick: number;
-  /** With the cuisine profile in, from 3 seeds: 0.7 * menu similarity + 0.3 * Acuis. */
-  Ahist: number;
-  /** For me: the candidate's affinity to the viewer's cuisine profile; null when it does not apply. */
-  Acuis: number | null;
   F: number;
   Q: number;
   N: number;
-  /** For me: the shrunk rating R', null when unrated. Always null in the cuisine-share mode. */
-  Rs: number | null;
-  /** For me: the soft floor on `score`. Always 1 in the cuisine-share mode. */
-  G: number;
   /** Plate percent when ready, else -1: a tiebreak that never invents a number. */
   plate: number;
   friends: string[];
-  /** For me: index into `TasteScan.seeds` of the most similar seed, -1 for none. */
-  seed: number;
-  /** For me: similarity to that seed. */
-  sim: number;
-  /** For me: shares a chainKey with a place the viewer has been. */
-  sibling: boolean;
-  /** For me: the place's median plate price, null when unknown. Always null in the cuisine-share mode. */
-  Pr: number | null;
-  /** For me: how well Pr fits the viewer's usual plate, 0 to 1; null when either is unknown. */
-  Pf: number | null;
-  /** For me: the budget term in score points, exactly 0 when Pf is null. Always 0 in the cuisine-share mode. */
-  budgetPts: number;
-  /** For me: miles from the radius anchor, null when there is no anchor or the place has no coordinates. */
-  dist: number | null;
-  /** For me: the distance factor on A and N, 0.55 to 1; exactly 1 when `dist` is null. Always 1 in the cuisine-share mode. */
-  D: number;
 };
 
 export type ScanInput = TasteInput & {
   /**
    * The whole listed corpus, when `restaurants` is only the candidates (a
-   * filtered Discover result). Seeds, real cuisines and exclusions are read
-   * from here. Defaults to `restaurants`.
+   * filtered Discover result). Real cuisines and exclusions are read from
+   * here. Defaults to `restaurants`.
    */
   corpus?: readonly RestaurantView[];
-  /**
-   * Present: affinity from history is similarity to the viewer's seeds, from
-   * one place (For me). Absent: the cuisine share, from MIN_POSTS places
-   * (Your taste).
-   */
-  traits?: TraitIndex;
-  /**
-   * For me: C in the shrunk rating, the mean rating of the rated places in the
-   * corpus (`Corpus.ratingMean`). Null: nothing is rated, so no rating is
-   * shrunk. Absent: read off `corpus` here, which a caller holding the cached
-   * corpus never needs, because it passes the one computed with it.
-   */
-  ratingMean?: number | null;
-  /**
-   * For me: when and how often the viewer posted at each place, for the cuisine
-   * profile's weights. Absent or empty: every visited place weighs 1.
-   */
-  postedSignals?: readonly PostedSignal[];
-  /**
-   * For me: the prices on the viewer's own posts (`parsePrice`, one per post), for
-   * the budget term. Junk and outliers are dropped here. Absent or empty: no B
-   * from plates.
-   */
-  platePrices?: readonly number[];
-  /**
-   * For me: where the viewer stands, for the travel radius. The anchor is this
-   * when set, else the medoid of their history. Absent, null or not a finite
-   * pair: no `here`, and the medoid anchors (or nothing, with no history).
-   */
-  here?: Coords | null;
-  /** For me: the clock the recency decay reads, in epoch milliseconds. Defaults to now. */
-  now?: number;
 };
 
 export type TasteScan = {
-  mode: "cuisine" | "similarity";
   /** Every candidate that was not excluded, in input order. Nothing is gated or capped. */
   scored: Scored[];
   /** Ids in the corpus that never show: visited, hidden, skipped cuisine. */
   exclude: Set<string>;
-  /** Similarity mode: the places history is read from, most recent first. */
-  seeds: RestaurantView[];
   historyActive: boolean;
   picksActive: boolean;
   explicitLoves: ReadonlySet<string>;
@@ -688,14 +467,6 @@ export type TasteScan = {
   cuisineVisits: ReadonlyMap<string, number>;
   /** Distinct places the viewer has posted at or marked been. */
   visited: number;
-  /** Similarity mode: each cuisine's share of the viewer's history. Empty under 3 seeds. */
-  cuisineShare: ReadonlyMap<string, number>;
-  /** Similarity mode: the viewer's biggest cuisines, largest first. Empty under 3 seeds. */
-  topCuisines: CuisineShare[];
-  /** Similarity mode: the viewer's usual plate in whole dollars, null when there is not enough to say. */
-  budget: UsualPlate | null;
-  /** Similarity mode: how far the viewer goes and from where; null in the cuisine-share mode. */
-  radius: Radius | null;
 };
 
 type Signals = {
@@ -770,74 +541,8 @@ export function tasteExclusions(input: SignalInput): Set<string> {
   return excludedIds(signalsOf(input));
 }
 
-/** How far to trust history from `k` seeds: 1 seed 0.6, 2 seeds 0.8, 3 or more 1. */
-export function historyConfidence(k: number): number {
-  return Math.min(1, WEIGHTS.confBase + WEIGHTS.confStep * (k - 1));
-}
-
-const DAY_MS = 86_400_000;
-
-/**
- * How much one visited place counts in the cuisine profile: recency x repeat,
- * read off the viewer's own posts there. A place with no post to read (a
- * `been`, or a post without a usable date) weighs 1, so missing data adds
- * nothing and takes nothing away.
- */
-export function placeWeight(p: PostedSignal | undefined, now: number): number {
-  if (!p) return 1;
-  const c = FORME_CUISINE;
-  const ageDays = Number.isFinite(p.lastAt) && Number.isFinite(now) ? Math.max(0, (now - p.lastAt) / DAY_MS) : 0;
-  const recency = Math.max(c.recencyFloor, 0.5 ** (ageDays / c.halfLifeDays));
-  const days = Number.isFinite(p.days) ? Math.max(1, p.days) : 1;
-  return recency * Math.min(c.repeatCap, 1 + c.repeatStep * (days - 1));
-}
-
-/**
- * Each cuisine's share of the viewer's history, summing to 1: every visited
- * place adds its weight to its main cuisine and `SECONDARY_CUISINE_WEIGHT` of it
- * to each secondary one. Empty when nothing visited has a cuisine.
- */
-function cuisineShares(
-  sig: Signals,
-  signals: readonly PostedSignal[],
-  now: number,
-): Map<string, number> {
-  const posted = new Map<string, PostedSignal>();
-  for (const p of signals) posted.set(p.restaurantId, p);
-  const sum = new Map<string, number>();
-  let total = 0;
-  // Sorted, because a float sum depends on its order and the profile must not
-  // depend on the order the places arrived in.
-  for (const id of [...sig.visitedIds].sort()) {
-    const w = placeWeight(posted.get(id), now);
-    for (const t of restaurantTraits(sig.byId.get(id)!, { secondary: true })) {
-      sum.set(t.cuisine, (sum.get(t.cuisine) ?? 0) + w * t.weight);
-      total += w * t.weight;
-    }
-  }
-  const out = new Map<string, number>();
-  if (total > 0) for (const [cuisine, v] of sum) out.set(cuisine, v / total);
-  return out;
-}
-
-/**
- * Acuis: the candidate's best cuisine against the share that earns full
- * affinity. A secondary cuisine counts at its weight, as it does for a pick. A
- * place with no cuisine has nothing to compare, so it gets null, not 0.
- */
-function cuisineAffinity(r: RestaurantView, share: ReadonlyMap<string, number>): number | null {
-  const traits = restaurantTraits(r, { secondary: true });
-  if (traits.length === 0) return null;
-  let best = 0;
-  for (const t of traits) best = Math.max(best, t.weight * (share.get(t.cuisine) ?? 0));
-  return Math.min(1, best / FORME_CUISINE.fullShare);
-}
-
 /** The viewer's usual plate: B and its quartile range in dollars, and how far to trust it (0 to 1). */
 export type Budget = { median: number; lo: number; hi: number; conf: number };
-
-/** `Budget` in whole dollars, for a line that says it. Trust is as it was. */
-export type UsualPlate = Budget;
 
 const ascending = (a: number, b: number) => a - b;
 
@@ -907,22 +612,6 @@ export function priceFit(price: number, b: Budget): number {
 /** The budget term in score points: 100 * 0.06 * trust * (2 fit - 1), so it runs from a penalty to a bonus. */
 export function budgetPoints(fit: number, conf: number): number {
   return 100 * FORME_WEIGHTS.budget * conf * (2 * fit - 1);
-}
-
-/** Whole dollars, never under 1, so a line never says "$0". */
-const wholeDollars = (v: number) => Math.max(1, Math.round(v));
-
-/** The biggest cuisines, largest first (ties by name), each with the places behind it. */
-function topCuisinesOf(
-  share: ReadonlyMap<string, number>,
-  visits: ReadonlyMap<string, number>,
-): CuisineShare[] {
-  const c = FORME_CUISINE;
-  return [...share]
-    .filter(([, v]) => v >= c.topMinShare)
-    .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))
-    .slice(0, c.topCount)
-    .map(([cuisine, v]) => ({ cuisine, share: v, places: visits.get(cuisine) ?? 0 }));
 }
 
 /** A place in the viewer's history, as a point: an id to break ties on, and where it is. */
@@ -1000,71 +689,19 @@ export function distanceFactor(miles: number, radius: number, floor: number): nu
 }
 
 /**
- * The seeds For me reads history from: places the viewer marked "been" (newest
- * first; the list is oldest-first) and places they posted at (in the order
- * given). Only places with something to compare on count, at most `maxSeeds`.
- *
- * While both fit, the been run comes first and the posts follow. Over the cap
- * the two take turns, been first, so a long been list cannot push every post
- * out of the seeds (nor the other way round): each source gets half the
- * places, and whichever has fewer leaves its unused share to the other.
- */
-function seedsOf(sig: Signals, input: ScanInput, index: TraitIndex) {
-  type Seed = { place: RestaurantView; traits: PlaceTraits };
-  const taken = new Set<string>();
-  const lane = (order: readonly string[]): Seed[] => {
-    const out: Seed[] = [];
-    for (const id of order) {
-      if (taken.has(id) || !sig.visitedIds.has(id)) continue;
-      const traits = traitsOf(index, id);
-      const place = sig.byId.get(id);
-      if (!traits || traits.empty || !place) continue;
-      taken.add(id);
-      out.push({ place, traits });
-    }
-    return out;
-  };
-  const been = lane(input.prefs.been.slice().reverse());
-  const posted = lane(input.postedIds);
-
-  const max = WEIGHTS.maxSeeds;
-  let picked: Seed[];
-  if (been.length + posted.length <= max) {
-    picked = [...been, ...posted];
-  } else {
-    picked = [];
-    for (let i = 0; picked.length < max; i++) {
-      if (i < been.length) picked.push(been[i]);
-      if (picked.length < max && i < posted.length) picked.push(posted[i]);
-    }
-  }
-  return { places: picked.map((s) => s.place), traits: picked.map((s) => s.traits) };
-}
-
-/**
  * Scores every candidate, uncapped. Callers decide what to do with the result:
  * `scoreTaste` gates, caps and interleaves it for the Your taste strip;
- * `rankTaste` orders all of it for For me.
+ * 
  */
 export function scoreAll(input: ScanInput): TasteScan {
   const { restaurants, plates } = input;
   const sig = signalsOf(input);
   const { visitedIds, hidden, skips, effectiveLoves } = sig;
-  const index = input.traits;
-  // For me carries its own weights and its own quality model; Your taste keeps
-  // WEIGHTS and the raw rating. `ratingMean` is only read when `index` is set.
-  const W = index ? FORME_WEIGHTS : WEIGHTS;
-  const ratingMean = index
-    ? input.ratingMean !== undefined
-      ? input.ratingMean
-      : meanRating(sig.universe)
-    : null;
 
   // History: distinct places per cuisine / neighborhood, never per post.
   const cuisineVisits = new Map<string, number>();
   const hoodVisits = new Map<string, number>();
   let visitedWithCuisine = 0;
-  const visitedChains = new Set<string>();
   for (const id of visitedIds) {
     const r = sig.byId.get(id)!;
     if (r.cuisine) {
@@ -1072,52 +709,11 @@ export function scoreAll(input: ScanInput): TasteScan {
       cuisineVisits.set(r.cuisine, (cuisineVisits.get(r.cuisine) ?? 0) + 1);
     }
     if (r.neighborhood) hoodVisits.set(r.neighborhood, (hoodVisits.get(r.neighborhood) ?? 0) + 1);
-    if (index) visitedChains.add(chainKey(r));
   }
   const maxCuisine = Math.max(0, ...cuisineVisits.values());
   const maxHood = Math.max(0, ...hoodVisits.values());
   const picksActive = effectiveLoves.size > 0;
-
-  let seeds: RestaurantView[] = [];
-  let seedTraits: PlaceTraits[] = [];
-  let historyActive = visitedWithCuisine >= MIN_POSTS;
-  if (index) {
-    const s = seedsOf(sig, input, index);
-    seeds = s.places;
-    seedTraits = s.traits;
-    historyActive = seedTraits.length >= WEIGHTS.minSeeds;
-  }
-  const conf = historyConfidence(seedTraits.length);
-  const mixed = picksActive && historyActive;
-  // The budget: B from the viewer's own plate prices, else from the menu prices
-  // of the places they have been. Sorted, because a float sum depends on order.
-  let budget: Budget | null = null;
-  if (index) {
-    const places: number[] = [];
-    for (const id of [...visitedIds].sort()) {
-      const p = index.prices.get(id);
-      if (p != null) places.push(p);
-    }
-    budget = budgetOf(input.platePrices ?? [], places);
-  }
-  // The radius: R from the places they have been (those with coordinates, by id
-  // so the order they arrived in cannot matter), measured from `here`, else the
-  // medoid. Absent in Your taste, so D is 1 and nothing moves.
-  let radius: Radius | null = null;
-  if (index) {
-    const points: HistoryPoint[] = [];
-    for (const id of [...visitedIds].sort()) {
-      const p = sig.byId.get(id)!;
-      if (Number.isFinite(p.lat) && Number.isFinite(p.lng)) points.push({ id, lat: p.lat, lng: p.lng });
-    }
-    radius = radiusOf(points, input.here);
-  }
-  // The cuisine profile reads the whole of the viewer's history, not just the
-  // seeds, and only once there are enough of them to say what they eat a lot of.
-  const cuisineShare: ReadonlyMap<string, number> =
-    index && seedTraits.length >= FORME_CUISINE.minSeeds
-      ? cuisineShares(sig, input.postedSignals ?? [], input.now ?? Date.now())
-      : new Map();
+  const historyActive = visitedWithCuisine >= MIN_POSTS;
 
   // Friends: distinct friends per restaurant.
   const friendsAt = new Map<string, Map<string, string>>();
@@ -1134,122 +730,39 @@ export function scoreAll(input: ScanInput): TasteScan {
     if (r.cuisine && skips.has(r.cuisine)) continue;
 
     let A = 0;
-    let Apick = 0;
-    let Ahist = 0;
-    let Acuis: number | null = null;
-    let seed = -1;
-    let sim = 0;
-    if (index) {
-      for (const t of restaurantTraits(r, { secondary: true })) {
-        if (effectiveLoves.has(t.cuisine)) Apick = Math.max(Apick, t.weight);
-      }
-      const traits = historyActive ? traitsOf(index, r.id) : undefined;
-      if (traits && !traits.empty) {
-        // The best 3 are summed in a fixed order, so the same candidate scores
-        // the same whatever order the seeds came in. The best seed (the one
-        // the reason names) is the same whatever the order too: seeds that tie
-        // on similarity are told apart by id, not by who came first.
-        let t1 = 0;
-        let t2 = 0;
-        let t3 = 0;
-        for (let k = 0; k < seedTraits.length; k++) {
-          const v = similarity(traits, seedTraits[k]);
-          if (v > t1) {
-            t3 = t2;
-            t2 = t1;
-            t1 = v;
-            seed = k;
-          } else {
-            if (v === t1 && seed >= 0 && seeds[k].id < seeds[seed].id) seed = k;
-            if (v > t2) {
-              t3 = t2;
-              t2 = v;
-            } else if (v > t3) {
-              t3 = v;
-            }
-          }
-        }
-        sim = t1;
-        const top = Math.min(3, seedTraits.length);
-        Ahist = clamp01(conf * (WEIGHTS.maxInAhist * t1 + (WEIGHTS.top3InAhist * (t1 + t2 + t3)) / top));
-      }
-      // A place with no cuisine, or a viewer with too little history, leaves
-      // Ahist exactly as the menu comparison made it.
-      if (cuisineShare.size > 0) {
-        Acuis = cuisineAffinity(r, cuisineShare);
-        if (Acuis != null) {
-          Ahist = (1 - FORME_CUISINE.cuisineInAhist) * Ahist + FORME_CUISINE.cuisineInAhist * Acuis;
-        }
-      }
-      if (mixed) A = WEIGHTS.pickInA * Apick + WEIGHTS.histInA * Ahist;
-      else if (picksActive) A = Apick;
-      else if (historyActive) A = Ahist;
-    } else {
-      for (const t of restaurantTraits(r)) {
-        const pick = effectiveLoves.has(t.cuisine) ? 1 : 0;
-        const hist =
-          historyActive && maxCuisine > 0 ? (cuisineVisits.get(t.cuisine) ?? 0) / maxCuisine : 0;
-        let a = 0;
-        if (picksActive && historyActive) a = WEIGHTS.pickInA * pick + WEIGHTS.histInA * hist;
-        else if (picksActive) a = pick;
-        else if (historyActive) a = hist;
-        A = Math.max(A, a * t.weight);
-      }
+    for (const t of restaurantTraits(r)) {
+      const pick = effectiveLoves.has(t.cuisine) ? 1 : 0;
+      const hist =
+        historyActive && maxCuisine > 0 ? (cuisineVisits.get(t.cuisine) ?? 0) / maxCuisine : 0;
+      let a = 0;
+      if (picksActive && historyActive) a = WEIGHTS.pickInA * pick + WEIGHTS.histInA * hist;
+      else if (picksActive) a = pick;
+      else if (historyActive) a = hist;
+      A = Math.max(A, a * t.weight);
     }
 
     const fm = friendsAt.get(r.id);
     const names = fm ? [...fm.values()].sort((a, b) => a.localeCompare(b)) : [];
     const F = Math.min(1, names.length / WEIGHTS.friendsForFull);
     const N = maxHood > 0 && r.neighborhood ? (hoodVisits.get(r.neighborhood) ?? 0) / maxHood : 0;
-    // Your taste: Rs null, G 1, so `score` is the sum it always was.
-    const Rs = index ? shrunkRating(r.rating, r.reviewCount, ratingMean) : null;
-    const G = index ? qualityFloor(Rs, r.rating, r.reviewCount) : 1;
-    const Q = qualityOf(r, plates[r.id], index ? Rs : undefined);
+    const Q = qualityOf(r, plates[r.id]);
     const plate = plates[r.id];
-    // Distance softens affinity and neighborhood, nothing else. No anchor or no
-    // coordinates: D is exactly 1 and the sum is what it was.
-    const dist =
-      radius?.anchor && Number.isFinite(r.lat) && Number.isFinite(r.lng)
-        ? milesBetween(radius.anchor, r)
-        : null;
-    const D = radius && dist != null ? distanceFactor(dist, radius.miles, radius.floor) : 1;
-    const sum = 100 * (W.affinity * A * D + W.friends * F + W.quality * Q + W.neighborhood * N * D);
-    // No price or no B: no fit and exactly 0 points, so the score is what it was.
-    const Pr = index ? (index.prices.get(r.id) ?? null) : null;
-    const Pf = budget && Pr != null ? priceFit(Pr, budget) : null;
-    const budgetPts = budget && Pf != null ? budgetPoints(Pf, budget.conf) : 0;
     scored.push({
       r,
       index: i,
-      score: index ? G * (sum + budgetPts) : sum,
-      tail: 100 * (WEIGHTS.qualityInTail * Q + WEIGHTS.hoodInTail * N),
+      score: 100 * (WEIGHTS.affinity * A + WEIGHTS.friends * F + WEIGHTS.quality * Q + WEIGHTS.neighborhood * N),
       A,
-      Apick,
-      Ahist,
-      Acuis,
       F,
       Q,
       N,
-      Rs,
-      G,
       plate: plate?.ready && plate.percent != null ? plate.percent : -1,
       friends: names,
-      seed,
-      sim,
-      sibling: visitedChains.size > 0 && visitedChains.has(chainKey(r)),
-      Pr,
-      Pf,
-      budgetPts,
-      dist,
-      D,
     });
   }
 
   return {
-    mode: index ? "similarity" : "cuisine",
     scored,
     exclude: excludedIds(sig),
-    seeds,
     historyActive,
     picksActive,
     explicitLoves: sig.explicitLoves,
@@ -1257,17 +770,6 @@ export function scoreAll(input: ScanInput): TasteScan {
     effectiveLoves,
     cuisineVisits,
     visited: visitedIds.size,
-    cuisineShare,
-    topCuisines: topCuisinesOf(cuisineShare, cuisineVisits),
-    budget: budget
-      ? {
-          median: wholeDollars(budget.median),
-          lo: wholeDollars(budget.lo),
-          hi: wholeDollars(budget.hi),
-          conf: budget.conf,
-        }
-      : null,
-    radius,
   };
 }
 
@@ -1280,7 +782,7 @@ export function scoreTaste(input: TasteInput): TasteResult {
     Math.min(WEIGHTS.maxLimit, Math.floor(input.limit ?? WEIGHTS.defaultLimit)),
   );
 
-  // No traits: the cuisine share, gated at MIN_POSTS places. Unchanged.
+  // The cuisine share, gated at MIN_POSTS places.
   const scan = scoreAll({
     restaurants,
     plates,
@@ -1415,296 +917,6 @@ function buildReason(
   };
 }
 
-/* ---------- For me ---------- */
-
-export type ForMeBasis = ForMeInfo["basis"];
-
-export type RankInput = ScanInput & { traits: TraitIndex };
-
-/**
- * One arrangement of the For me list: the candidates it was built over, split
- * into matches and tail, with the header and the reasons that go with that
- * split. `rankTaste` builds one over every candidate; `rankAmong` builds one
- * over the rows a filter left, so the split is the filtered list's own.
- */
-export type ForMeArrangement = {
-  /** One line for the grid header. */
-  header: string;
-  /** Size of block 1, the matches. The rest of `order` is the "also well rated" tail. */
-  matched: number;
-  /** Every candidate in this arrangement: matches in diversity order, then the tail. */
-  order: string[];
-  /** Id to position in `order`: the map `orderResults` sorts by. */
-  rank: Map<string, number>;
-  /**
-   * The one-line reason for a card, built on first ask and kept. Null for an id
-   * that is not in `order`. Names the viewer's own places, so it belongs only in
-   * a private response.
-   */
-  reasonOf: (id: string) => ForMeReason | null;
-};
-
-export type ForMeRank = ForMeArrangement & {
-  /** What the list is read from. "none" can still carry matches: places friends have been. */
-  basis: ForMeBasis;
-  /** Places history is read from (those with something to compare on, at most 30). */
-  seeds: number;
-  /** Ids in the corpus that never show: visited, hidden, skipped cuisine. */
-  exclude: Set<string>;
-  /**
-   * What the viewer eats a lot of: up to FORME_CUISINE.topCount cuisines at a
-   * share of FORME_CUISINE.topMinShare or more, largest first. Empty under
-   * FORME_CUISINE.minSeeds seeds.
-   */
-  topCuisines: CuisineShare[];
-  /**
-   * The viewer's usual plate in whole dollars (lo and hi are the quartiles) and
-   * how far it is trusted; null when there is not enough to say. Private to the
-   * viewer: it is never sent for anyone else, and only on the private POST.
-   */
-  budget: UsualPlate | null;
-  /** How far the viewer goes and from where; see `Radius`. Server side only: the wire carries the rounded R. */
-  radius: Radius | null;
-  /**
-   * What For me has learned about the viewer, for the one quiet line above the
-   * list. Private to the viewer, like `budget`, and from their own data only.
-   */
-  profile: ForMeProfile;
-  /**
-   * The arrangement over just these ids (the rows a filter left). Sorting the
-   * full list and then filtering it is not the same thing: a chain's best
-   * branch, or a menu's twin, can sit outside the filter and have pushed the
-   * only one inside it down to the tail. Here the dedupe, the cuisine cap and
-   * the header are decided among the ids given. A set that covers every
-   * candidate returns the full arrangement as it stands. Ids that are not
-   * candidates are ignored. Siblings of a place the viewer has been stay out of
-   * the matches, and the seeds and exclusions stay the corpus's own: neither
-   * depends on the filter.
-   */
-  rankAmong: (ids: ReadonlySet<string>) => ForMeArrangement;
-};
-
-const byScore = (a: Scored, b: Scored) =>
-  b.score - a.score || b.plate - a.plate || (a.r.id < b.r.id ? -1 : a.r.id > b.r.id ? 1 : 0);
-const byTail = (a: Scored, b: Scored) =>
-  b.tail - a.tail || b.plate - a.plate || (a.r.id < b.r.id ? -1 : a.r.id > b.r.id ? 1 : 0);
-
-/**
- * "For me": every candidate in one list, best fit first.
- *
- * Block 1 (matches) is the candidates with A >= matchGate or a friend, minus
- * siblings of a place the viewer has been (same chain), one branch per chain,
- * and one place per menu in a cuisine. It is ordered by score, with a cap so no
- * cuisine holds more than 40% of the prefix (waived when the best alternative
- * scores under half of the leader). Block 2 is everything else, including what
- * the diversity rules set aside, ordered by quality: the grid is never blank.
- *
- * One pass over the whole list with a total order (ties break on plate score,
- * then id), so the first 24 of a 48-result run are the 24-result run, and the
- * order does not depend on the order candidates arrive in.
- */
-export function rankTaste(input: RankInput): ForMeRank {
-  const scan = scoreAll(input);
-  const index = input.traits;
-  const basis: ForMeBasis = scan.historyActive ? "history" : scan.picksActive ? "picks" : "none";
-
-  // Sorted once. Every arrangement is built from a subsequence of this, so a
-  // filtered one is ordered exactly as the full one is.
-  const sorted = scan.scored.slice().sort(byScore);
-  const full = arrange(sorted, scan, index, basis);
-
-  return {
-    ...full,
-    basis,
-    seeds: scan.seeds.length,
-    exclude: scan.exclude,
-    topCuisines: scan.topCuisines,
-    budget: scan.budget,
-    radius: scan.radius,
-    profile: profileOf(scan),
-    rankAmong: (ids) => {
-      let all = true;
-      for (const s of sorted) {
-        if (!ids.has(s.r.id)) {
-          all = false;
-          break;
-        }
-      }
-      if (all) return full;
-      return arrange(
-        sorted.filter((s) => ids.has(s.r.id)),
-        scan,
-        index,
-        basis,
-      );
-    },
-  };
-}
-
-/**
- * The profile line's parts: the usual plate range, the usual radius and the top
- * cuisines, each null or empty when there is not enough to say. The radius is
- * only claimed from FORME_RADIUS.minPoints points: below it R is a prior, not
- * something the viewer did.
- */
-function profileOf(scan: TasteScan): ForMeProfile {
-  const r = scan.radius;
-  return {
-    budget: scan.budget ? { lo: scan.budget.lo, hi: scan.budget.hi } : null,
-    radiusMi: r && r.points >= FORME_RADIUS.minPoints ? Math.round(r.miles) : null,
-    cuisines: scan.topCuisines.map((c) => c.cuisine),
-  };
-}
-
-/** Splits `sorted` (in `byScore` order) into matches and tail, and words both. */
-function arrange(
-  sorted: readonly Scored[],
-  scan: TasteScan,
-  index: TraitIndex,
-  basis: ForMeBasis,
-): ForMeArrangement {
-  const matches: Scored[] = [];
-  const rest: Scored[] = [];
-  for (const s of sorted) {
-    if ((s.A >= WEIGHTS.matchGate || s.F > 0) && !s.sibling) matches.push(s);
-    else rest.push(s);
-  }
-
-  // One branch per chain, one place per menu in a cuisine; the best scores keep
-  // the slot and the others drop to the tail.
-  const chains = new Set<string>();
-  const menus = new Set<string>();
-  const kept: Scored[] = [];
-  for (const s of matches) {
-    const ck = chainKey(s.r);
-    const t = traitsOf(index, s.r.id);
-    const mk = t && !t.empty && !t.imputed ? `${dishSetKey(t)}|${s.r.cuisine ?? ""}` : null;
-    if (chains.has(ck) || (mk && menus.has(mk))) {
-      rest.push(s);
-      continue;
-    }
-    chains.add(ck);
-    if (mk) menus.add(mk);
-    kept.push(s);
-  }
-
-  const block1 = capCuisines(kept, scan.effectiveLoves);
-  rest.sort(byTail);
-  const order = [...block1, ...rest].map((s) => s.r.id);
-  const rank = new Map<string, number>();
-  order.forEach((id, i) => rank.set(id, i));
-
-  const header = forMeHeader(basis, scan.seeds.length, [...scan.effectiveLoves], block1.length);
-
-  const byId = new Map<string, Scored>();
-  for (const s of sorted) byId.set(s.r.id, s);
-  const made = new Map<string, ForMeReason>();
-  const reasonOf = (id: string): ForMeReason | null => {
-    const hit = made.get(id);
-    if (hit) return hit;
-    const s = byId.get(id);
-    if (!s) return null;
-    const reason = forMeReason(s, scan, index, (rank.get(id) ?? Infinity) < block1.length);
-    made.set(id, reason);
-    return reason;
-  };
-
-  return { header, matched: block1.length, order, rank, reasonOf };
-}
-
-/**
- * Orders block 1 so no cuisine holds more than `cuisineCapShare` of the prefix
- * from position `capFromPosition` on. `kept` arrives in score order. At each
- * step the leader is the best remaining place; if its cuisine is over the cap
- * the best place of a cuisine with room goes instead, unless that one scores
- * under `capRelaxRatio` of the leader (then diversity is not worth a weak pick).
- * With a single cuisine, or whenever nothing else has room, the leader goes.
- *
- * "Cuisine" here is `capGroupOf`, not always the main one: a place filed under a
- * loved cuisine only as a secondary counts with that cuisine. Otherwise an
- * American bar that lists Mexican would read as variety against the Mexican the
- * viewer asked for, and the cap would hand it the slots a real taqueria earned.
- */
-function capCuisines(kept: readonly Scored[], loves: ReadonlySet<string>): Scored[] {
-  const groups = new Map<string, { items: Scored[]; at: number; taken: number }>();
-  for (const s of kept) {
-    const c = capGroupOf(s.r, loves);
-    const g = groups.get(c);
-    if (g) g.items.push(s);
-    else groups.set(c, { items: [s], at: 0, taken: 0 });
-  }
-  if (groups.size < 2) return kept.slice();
-
-  const lists = [...groups.values()];
-  const out: Scored[] = [];
-  while (out.length < kept.length) {
-    const length = out.length + 1;
-    const room = (g: { taken: number }) =>
-      g.taken + 1 <= WEIGHTS.cuisineCapShare * length + 1e-9;
-    let lead: (typeof lists)[number] | null = null;
-    for (const g of lists) {
-      if (g.at < g.items.length && (!lead || byScore(g.items[g.at], lead.items[lead.at]) < 0)) {
-        lead = g;
-      }
-    }
-    let pick = lead!;
-    if (length >= WEIGHTS.capFromPosition && !room(pick)) {
-      let alt: (typeof lists)[number] | null = null;
-      for (const g of lists) {
-        if (g === pick || g.at >= g.items.length || !room(g)) continue;
-        if (!alt || byScore(g.items[g.at], alt.items[alt.at]) < 0) alt = g;
-      }
-      if (alt && alt.items[alt.at].score >= WEIGHTS.capRelaxRatio * pick.items[pick.at].score) {
-        pick = alt;
-      }
-    }
-    out.push(pick.items[pick.at++]);
-    pick.taken++;
-  }
-  return out;
-}
-
-/**
- * The cuisine a place counts toward in the cap: its main cuisine, unless that is
- * not a loved one and a secondary is (the first, in the order the place lists
- * them), which is the cuisine its pick score rests on.
- */
-function capGroupOf(r: RestaurantView, loves: ReadonlySet<string>): string {
-  const main = r.cuisine ?? "";
-  if (loves.has(main)) return main;
-  for (const c of r.cuisineSecondary ?? []) if (loves.has(c)) return c;
-  return main;
-}
-
-function joinNames(names: readonly string[]): string {
-  if (names.length <= 1) return names[0] ?? "";
-  if (names.length <= 3) return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
-  return `${names.slice(0, 2).join(", ")} and ${names.length - 2} more`;
-}
-
-function forMeHeader(
-  basis: ForMeBasis,
-  seeds: number,
-  loves: readonly string[],
-  matched: number,
-): string {
-  const plus = loves.length ? `, plus ${joinNames(loves)}` : "";
-  if (basis === "history") {
-    if (seeds >= 3) return `From the ${plural(seeds, "place", "places")} you've been${plus}`;
-    return `Based on ${plural(seeds, "place", "places")} so far${plus}; post more to sharpen this`;
-  }
-  if (basis === "picks") return `Based on your picks: ${joinNames(loves)}`;
-  return matched > 0 ? "Where your friends eat" : "Pick what you like to tune this";
-}
-
-/* ---------- For me reasons ---------- */
-
-const clipReason = (text: string): string => {
-  const t = text.normalize("NFC");
-  const max = WEIGHTS.reasonMaxChars;
-  return t.length <= max ? t : `${t.slice(0, max - 1).trimEnd()}…`;
-};
-
 /** Where a listing name stops being the name: "sweetgreen - Healthy Salads, Wraps, and Bowls". */
 const NAME_SEPARATORS = [" - ", " – ", " — ", " | ", ": "] as const;
 
@@ -1724,211 +936,4 @@ export function shortPlaceName(name: string): string {
   if (cut < 0) return full;
   const head = full.slice(0, cut).trim();
   return head.length >= 3 ? head : full;
-}
-
-/**
- * "Because you went to {name}", trimmed to fit. The dishes the two places share
- * used to ride along ("slices, pizzas"); they were generic, so the line now names
- * only the place the viewer has actually been.
- */
-function likeText(name: string): string {
-  return clipReason(`Because you went to ${shortPlaceName(name)}`);
-}
-
-/**
- * Friends by first name, in `Scored.friends` order, each once. The same first
- * names Your taste already prints ("Sam posted here"); never a count of friends.
- */
-function friendsLine(s: Scored): string | null {
-  const names: string[] = [];
-  for (const full of s.friends) {
-    const first = firstName(full).normalize("NFC");
-    if (!names.includes(first)) names.push(first);
-  }
-  if (names.length === 0) return null;
-  if (names.length === 1) return clipReason(`${names[0]} has been`);
-  if (names.length === 2) return clipReason(`${names[0]} and ${names[1]} have been`);
-  return clipReason(`${names[0]}, ${names[1]} and others have been`);
-}
-
-/**
- * The line that says why a place is on the list, plus, when the line is not
- * about friends but a friend has been, who. Without friends the key is absent
- * rather than undefined, so the object stays exactly what it was.
- */
-function forMeReason(
-  s: Scored,
-  scan: TasteScan,
-  index: TraitIndex,
-  matched: boolean,
-): ForMeReason {
-  const reason = chooseReason(s, scan, index, matched);
-  if (reason.kind === "friends") return reason;
-  const friends = friendsLine(s);
-  return friends ? { ...reason, friends } : reason;
-}
-
-/** `matched`: the place is in block 1. The tail never says why it fits, only that it is well rated. */
-function chooseReason(
-  s: Scored,
-  scan: TasteScan,
-  index: TraitIndex,
-  matched: boolean,
-): ForMeReason {
-  if (matched) {
-    // The biggest contributor to the score speaks first; plan order breaks ties.
-    const mixed = scan.picksActive && scan.historyActive;
-    const wHist = mixed ? WEIGHTS.histInA : scan.historyActive ? 1 : 0;
-    const wPick = mixed ? WEIGHTS.pickInA : scan.picksActive ? 1 : 0;
-    const kinds = [
-      { kind: "like" as const, pts: FORME_WEIGHTS.affinity * wHist * s.Ahist, rank: 0 },
-      { kind: "pick" as const, pts: FORME_WEIGHTS.affinity * wPick * s.Apick, rank: 1 },
-      { kind: "friends" as const, pts: FORME_WEIGHTS.friends * s.F, rank: 2 },
-    ]
-      .filter((k) => k.pts > 0)
-      .sort((a, b) => b.pts - a.pts || a.rank - b.rank);
-    for (const { kind } of kinds) {
-      const reason =
-        kind === "like"
-          ? likeReason(s, scan, index)
-          : kind === "pick"
-            ? pickReason(s, scan)
-            : friendsReason(s);
-      if (reason) return reason;
-    }
-    const eats = cuisineShareReason(s, scan);
-    if (eats) return eats;
-    const more = cuisineReason(s, scan, index);
-    if (more) return more;
-  }
-  // The tail's price line goes ahead of its rating line: it says something about
-  // this viewer, the rating line only about the place.
-  const usual = priceReason(s, scan);
-  if (usual) return usual;
-  const close = nearReason(s, scan);
-  if (close) return close;
-  // A claim about the rating is made off R', the number the score reads: a thin
-  // rating has been pulled toward the mean and a place with none says nothing.
-  // The card's quality line drops its own tier word whenever this one speaks
-  // (`forMeQualityNote`, on kind "rated"), so no card says it twice.
-  if (s.Rs != null && s.Rs >= FORME_QUALITY.wellRatedFrom) {
-    const word = s.Rs >= FORME_QUALITY.highlyRatedFrom ? "Highly rated" : "Well rated";
-    return {
-      kind: "rated",
-      text: s.r.neighborhood ? clipReason(`${word} in ${s.r.neighborhood}`) : word,
-    };
-  }
-  // "Different from your usual" is a claim about this place, so it is made only
-  // for one that really is: nothing in its fit (below the match gate), no friend
-  // behind it, and not another branch of a chain the viewer has been to. A
-  // place that missed the matches for any other reason (a twin menu, a second
-  // branch, the cuisine cap) fits fine and is simply not claimed to be unusual.
-  const unusual =
-    (scan.historyActive || scan.picksActive) && !s.sibling && s.F === 0 && s.A < WEIGHTS.matchGate;
-  return { kind: "rated", text: unusual ? "Different from your usual" : "Worth a look" };
-}
-
-/**
- * "Fits your usual $11–18 plate": the place's price sits inside the range they
- * spend in (a fit of reasonFit or more), and that range is trusted at half or
- * more. The dollars are the scan's rounded quartiles, and the line is only said
- * of a place whose own price rounds to a dollar inside them: the fit band the
- * score reads is wider than the printed range, so a fit alone could print "$9–16"
- * for a $18 place. It never says a place is too dear or too cheap: a poor fit is
- * simply not claimed.
- */
-function priceReason(s: Scored, scan: TasteScan): ForMeReason | null {
-  const u = scan.budget;
-  if (!u || s.Pr == null || s.Pf == null) return null;
-  if (u.conf < FORME_BUDGET.reasonConf || s.Pf < FORME_BUDGET.reasonFit) return null;
-  const shown = Math.round(s.Pr);
-  if (shown < u.lo || shown > u.hi) return null;
-  const range = u.lo === u.hi ? `$${u.lo}` : `$${u.lo}\u2013${u.hi}`;
-  return { kind: "price", text: clipReason(`Fits your usual ${range} plate`) };
-}
-
-/**
- * "Within your usual 7 mi": the viewer shared where they are, the place is
- * inside the radius their history gives (read off at least minPoints places, so
- * "usual" is true), and nothing stronger spoke. Without `here` there is no
- * position to be near, so it never speaks off the medoid.
- */
-function nearReason(s: Scored, scan: TasteScan): ForMeReason | null {
-  const r = scan.radius;
-  if (!r || r.source !== "here" || r.points < FORME_RADIUS.minPoints) return null;
-  if (s.dist == null || s.dist > r.miles) return null;
-  return { kind: "near", text: clipReason(`Within your usual ${Math.round(r.miles)} mi`) };
-}
-
-/** Needs a profile on both sides: a place without one never claims shared dishes. */
-function likeReason(s: Scored, scan: TasteScan, index: TraitIndex): ForMeReason | null {
-  if (s.seed < 0) return null;
-  const seed = scan.seeds[s.seed];
-  const a = traitsOf(index, s.r.id);
-  const b = traitsOf(index, seed.id);
-  if (!a || !b) return null;
-  const parts = similarityParts(index, a, b);
-  if (parts.imputed) return null;
-  // Something real in common (a dish, or failing that a cuisine) is what earns
-  // the line; what it is no longer gets printed.
-  if (parts.shared.length > 0 || parts.sharedCuisines.length > 0) {
-    return { kind: "like", text: likeText(seed.name) };
-  }
-  return null;
-}
-
-/**
- * Says what the pick score rests on, strongest first: the main cuisine (picked,
- * then favorite) at full strength, then a secondary at `SECONDARY_CUISINE_WEIGHT`.
- * A place that is only filed under the cuisine as a secondary says "Also serves",
- * never "You picked": the viewer did not pick a bar that happens to list tacos.
- */
-function pickReason(s: Scored, scan: TasteScan): ForMeReason | null {
-  const main = s.r.cuisine;
-  if (main && scan.explicitLoves.has(main)) return { kind: "pick", text: clipReason(`You picked ${main}`) };
-  if (main && main === scan.favorite) return { kind: "pick", text: clipReason(`Your favorite: ${main}`) };
-  const others = (s.r.cuisineSecondary ?? []).filter((c) => c && c !== main);
-  const also = others.find((c) => scan.explicitLoves.has(c)) ?? others.find((c) => c === scan.favorite);
-  if (also) return { kind: "pick", text: clipReason(`Also serves ${also}`) };
-  return null;
-}
-
-function friendsReason(s: Scored): ForMeReason | null {
-  const text = friendsLine(s);
-  return text ? { kind: "friends", text } : null;
-}
-
-/**
- * A match whose own cuisine is a big part of what the viewer eats: at least
- * FORME_CUISINE.reasonShare of their history, over at least reasonPlaces places
- * they have been. Spoken only when nothing stronger (a like, a pick, a friend)
- * could be, and it claims the place's main cuisine, never a secondary one.
- */
-function cuisineShareReason(s: Scored, scan: TasteScan): ForMeReason | null {
-  const cuisine = s.r.cuisine;
-  if (!cuisine) return null;
-  const c = FORME_CUISINE;
-  if ((scan.cuisineShare.get(cuisine) ?? 0) < c.reasonShare) return null;
-  if ((scan.cuisineVisits.get(cuisine) ?? 0) < c.reasonPlaces) return null;
-  return { kind: "cuisine", text: clipReason(`You eat a lot of ${cuisine}`) };
-}
-
-/**
- * A match that rests on cuisine alone (an imputed profile on either side).
- * "More X" is a claim that the viewer has been to X, so X is a cuisine the place
- * shares with its best seed. A place with no seed (a match on a picked cuisine)
- * is its own cuisine by definition. A place whose seed shares no cuisine with it
- * has nothing to name, so it says only that it is similar.
- */
-function cuisineReason(s: Scored, scan: TasteScan, index: TraitIndex): ForMeReason | null {
-  if (s.A <= 0) return null;
-  if (s.seed < 0) {
-    return s.r.cuisine ? { kind: "cuisine", text: clipReason(`More ${s.r.cuisine}`) } : null;
-  }
-  const a = traitsOf(index, s.r.id);
-  const b = traitsOf(index, scan.seeds[s.seed].id);
-  const shared = a && b ? similarityParts(index, a, b).sharedCuisines[0] : undefined;
-  return shared
-    ? { kind: "cuisine", text: clipReason(`More ${shared}`) }
-    : { kind: "cuisine", text: "Similar to places you've been" };
 }

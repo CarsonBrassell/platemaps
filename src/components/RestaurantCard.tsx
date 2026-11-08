@@ -72,7 +72,6 @@ export function RestaurantCard({
   match = NO_MATCHES,
   shape = "crop",
   reason = null,
-  friends = null,
   quality = null,
   distance,
 }: {
@@ -97,26 +96,21 @@ export function RestaurantCard({
   shape?: "crop" | "natural";
   /**
    * Why this place is in a personal list, in one short line ("Because you went
-   * to Tajima Ramen"). Set only by the For me list and Your taste, whose callers
+   * to Tajima Ramen"). Set only by Your taste, whose callers
    * hold the viewer's own signals; every other surface leaves it out and the
    * card is exactly what it was. Server-built and capped at 56 characters, so it
    * fits in at most two lines.
    */
   reason?: string | null;
   /**
-   * For me only: friends' first names when one has been and the reason is about
-   * something else ("Ana and Ben have been"). A second line under the reason.
-   */
-  friends?: string | null;
-  /**
-   * For me only: why the place is good, in words and a review count
+   * Your taste picks only: why the place is good, in words and a review count
    * ("Highly rated · 1,017 reviews"). Never the blend number or a star.
    */
   quality?: QualityNote | null;
   /**
    * How far from the visitor, already formatted ("0.8 mi"), from
    * lib/geo.ts's `distanceLabel`. Left out, the card prints the seeded
-   * `restaurant.distance` as it always has. Set by the For me accounts only
+   * `restaurant.distance` as it always has. Set by the dish-pick accounts only
    * (lib/forMeGate.ts), whose callers know where the visitor is: a string
    * replaces the seeded figure, which is measured from a fixed downtown origin
    * and would pass for a distance from you, and `null` prints nothing at all.
@@ -124,7 +118,7 @@ export function RestaurantCard({
   distance?: string | null;
 }) {
   const highlight = match.aspect;
-  const why = !!(reason || friends || quality);
+  const why = !!(reason || quality);
   const natural = shape === "natural";
   return (
     <Link
@@ -265,9 +259,6 @@ export function RestaurantCard({
                 <ReasonText text={reason} />
               </p>
             )}
-            {/* For me: who has been, then why the place is good. Regular weight
-                so the reason stays the lead line of the three. */}
-            {friends && <p className="line-clamp-2 text-xs text-zinc-600">{friends}</p>}
             {quality && <QualityLine quality={quality} className="text-xs text-zinc-500" />}
           </div>
         )}

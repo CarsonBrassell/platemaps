@@ -7,8 +7,8 @@ import { signInHrefFor } from "@/lib/signInGate";
 import type { TasteOp } from "@/lib/useTaste";
 
 /**
- * The cuisine chips behind "Your taste", pulled out so the For me list can put
- * the same ones in its Tune panel and its "what do you like?" prompt. One
+ * The cuisine chips behind "Your taste", pulled out so the "what do you like?"
+ * prompt can put the same ones in its card. One
  * component, so a love picked in either place looks and counts the same: it is
  * the same `useTaste` op underneath (`apply`), and the cap is the server's.
  * See probe/your-taste/DESIGN.md and probe/for-me/PLAN.md.
@@ -184,8 +184,7 @@ export function TasteSignUp({ signedIn }: { signedIn: boolean }) {
 /**
  * "What do you like?": the prompt for a viewer with nothing to score yet. Never
  * fake picks — it asks, offers the chips, and points at the other way in (post a
- * plate), then the sign-up nudge. Your taste shows it in place of the carousel
- * and the For me list in place of its matches.
+ * plate), then the sign-up nudge. Your taste shows it in place of the carousel.
  */
 export function TasteInvite({
   cuisines,

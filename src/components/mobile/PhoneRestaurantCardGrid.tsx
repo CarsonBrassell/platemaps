@@ -39,30 +39,23 @@ export function PhoneRestaurantCardGrid({
   aspect = null,
   distance = null,
   reason = null,
-  friends = null,
   quality = null,
 }: {
   restaurant: RestaurantView;
   score?: PlateScore;
   priority?: boolean;
   /**
-   * Why this card is in a "For me" list, already worded ("Because you loved
-   * Tacos Jalisco"), or null everywhere else.
+   * Why this card is one of Your taste picks, already worded ("Like your
+   * Pad Thai at Siam"), or null everywhere else.
    *
    * Two lines at most and then an ellipsis: the card is ~167px wide and the
-   * longest reason is a sentence, so an unclamped one would make a For me
-   * wall's cards run to wildly different heights for a reason that is not
+   * longest reason is a sentence, so an unclamped one would make the
+   * cards run to wildly different heights for a reason that is not
    * the photo.
    */
   reason?: string | null;
   /**
-   * For me only: friends' first names when one has been and the reason is about
-   * something else ("Ana and Ben have been"). A second short line under the
-   * reason; null everywhere else.
-   */
-  friends?: string | null;
-  /**
-   * For me only: why the place is good, in words and a review count
+   * Your taste picks only: why the place is good, in words and a review count
    * ("Highly rated · 1,017 reviews"). Never the blend number or a star.
    */
   quality?: QualityNote | null;
@@ -215,13 +208,7 @@ export function PhoneRestaurantCardGrid({
             <ReasonText text={reason} />
           </p>
         )}
-        {/* For me: the second half of the answer. A friend who has been (when
-            the reason is about something else), then why the place is good. The
-            quality line is a step lighter than the reasons so the two grey
-            lines above it stay the lead. */}
-        {friends && (
-          <p className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-zinc-600">{friends}</p>
-        )}
+        {/* Why the place is good, a step lighter than the reason above it. */}
         {quality && (
           <QualityLine
             quality={quality}

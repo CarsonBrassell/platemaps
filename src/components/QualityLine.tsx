@@ -1,7 +1,7 @@
 import type { QualityNote } from "@/lib/ratingDisplay";
 
 /**
- * "Highly rated · 1,017 reviews": why a For me place is good, in words. The tier
+ * "Highly rated · 1,017 reviews": why a Your taste pick is good, in words. The tier
  * is prose; the count is a number, so it is mono. Never the blend figure or a
  * star (see `qualityNote`). The caller sets size, colour and spacing, since the
  * phone grid and the web card differ in both.

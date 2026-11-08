@@ -1,5 +1,5 @@
 /**
- * A For me reason line: prose with its numbers set in mono. "Fits your usual
+ * A Your taste reason line: prose with its numbers set in mono. "Fits your usual
  * $11–18 plate" keeps its sans and gives the dollar range the tabular mono every
  * other number in the app wears; a distance ("0.4 mi") and a plain numeral
  * ("Pho 79") do the same. The caller sets size, colour and spacing, since the

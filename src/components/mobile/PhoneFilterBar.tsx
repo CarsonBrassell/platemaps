@@ -26,20 +26,7 @@ import { PhoneFilterSheet, type PhoneFilterModel } from "@/components/mobile/Pho
  * horizontally scrolling strip is a trap waiting for the first ancestor that
  * clips.
  */
-export function PhoneFilterBar({
-  model,
-  forMe,
-}: {
-  model: PhoneFilterModel;
-  /**
-   * The "For me" chip, first in the row: `on` is whether the list on screen is
-   * the personal one, `href` is where tapping it goes (the screen builds it,
-   * so `nav` and every other param survive the tap, and a second tap comes
-   * back to the unpersonalised list). Left out, no chip is drawn — the row is
-   * exactly what it was.
-   */
-  forMe?: { on: boolean; href: string };
-}) {
+export function PhoneFilterBar({ model }: { model: PhoneFilterModel }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -57,26 +44,6 @@ export function PhoneFilterBar({
         className="-mx-4 overflow-x-auto overflow-y-hidden px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         <div className="flex w-max gap-2 pb-1">
-          {/* First, ahead of the Filters button: it is the one chip that
-              changes what the list is *for* rather than narrowing it, and the
-              visitor should meet it before any of the ways to narrow. A link
-              because it is a navigation, like everything else here (`?foryou=1`
-              is the URL, so it survives a reload and can be shared). Selected
-              is the same orange fill the removable chips below it use. */}
-          {forMe && (
-            <Link
-              href={forMe.href}
-              scroll={false}
-              prefetch={false}
-              aria-current={forMe.on ? "true" : undefined}
-              className={`inline-flex min-h-11 shrink-0 items-center rounded-full px-4 text-[13px] font-medium transition-transform active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
-                forMe.on ? "bg-pm-orange text-[#F7F4EC]" : "bg-pm-grey-tint text-pm-grey-text"
-              }`}
-            >
-              For me
-            </Link>
-          )}
-
           {/* Tan: this opens something, it is not a value you can be inside.
               That is the unselected-pill fill from DESIGN.md doing exactly
               the job it is specified for. */}

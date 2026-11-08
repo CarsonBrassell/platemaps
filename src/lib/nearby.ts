@@ -221,7 +221,7 @@ export function useNearby(): Nearby {
     if (typeof navigator === "undefined" || !navigator.geolocation) return;
     // A saved address already answers "where", so there is nothing to ask the
     // browser. Read from the store rather than from `saved` below: a caller
-    // that asks on mount (useDiscoverQuery, for a For me link) runs in the
+    // that asks on mount (useDiscoverQuery, for the dish-pick accounts) runs in the
     // hydration pass, where the hook still reads the server's "none" and the
     // saved address has not been picked up yet — without this it would raise
     // a permission prompt under an address that was set to avoid one. Only for

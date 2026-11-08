@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import { clientIp } from "@/lib/loginThrottle";
 import { limitOrReject } from "@/lib/rateLimit";
 import { getCurrentUser } from "@/lib/session";
-import { TASTE_OP_KINDS, scoreTaste, type TasteOp } from "@/lib/taste";
+import { postsForDishTaste } from "@/lib/db";
+import { loadDishIndex } from "@/lib/dishIndex";
+import { rankDishes } from "@/lib/dishTaste";
+import { isForMeUser } from "@/lib/forMeGate";
+import { TASTE_OP_KINDS, meanRating, scoreTaste, type TasteOp, type TastePick } from "@/lib/taste";
 import { resolveTasteContext } from "@/lib/tasteContext";
 
 /**
@@ -24,6 +28,9 @@ import { resolveTasteContext } from "@/lib/tasteContext";
  *   reply echoes the updated prefs for the client to keep.
  */
 const NO_STORE = { "Cache-Control": "private, no-store" };
+
+// The first request after the dish index lapses reads the menu table in pages.
+export const maxDuration = 60;
 
 function json(body: unknown, status = 200) {
   return NextResponse.json(body, { status, headers: NO_STORE });
@@ -71,7 +78,7 @@ export async function POST(req: Request) {
   }
 
   // Prefs (server row or the body's local copy), the op, history and friends are
-  // gathered by `lib/tasteContext.ts`, which the For me POST on Discover shares.
+  // gathered by `lib/tasteContext.ts`.
   const ctx = await resolveTasteContext({
     user,
     prefs: b.prefs,
@@ -90,6 +97,29 @@ export async function POST(req: Request) {
     limit,
   });
 
+  // The viewer on the dish-level test reads their own posts' dishes instead of
+  // the cuisine picks. Gated before any extra load; with too little to go on, or
+  // a failed read, the ordinary picks stand.
+  let picks: TastePick[] = result.picks;
+  if (user && isForMeUser(user.id)) {
+    try {
+      const [index, posts] = await Promise.all([loadDishIndex(ctx.corpus), postsForDishTaste(user.id)]);
+      const dish = rankDishes({
+        index,
+        restaurants: ctx.corpus.restaurants,
+        plates: ctx.corpus.plates,
+        ratingMean: meanRating(ctx.corpus.restaurants),
+        posts,
+        prefs,
+        now: Date.now(),
+        limit,
+      });
+      if (dish && dish.length > 0) picks = dish;
+    } catch (err) {
+      console.error("dish picks failed, keeping the ordinary picks", err);
+    }
+  }
+
   return json({
     storage,
     basis: result.basis,
@@ -97,6 +127,6 @@ export async function POST(req: Request) {
     shortHeader: result.shortHeader,
     prefs,
     counts: result.counts,
-    picks: result.picks,
+    picks,
   });
 }

@@ -12,8 +12,7 @@ import type { QualityNote } from "@/lib/ratingDisplay";
  * behaves the same wherever it is tapped. See probe/for-me/PLAN.md.
  *
  * The card knows nothing about useTaste: the caller wires the buttons, so the
- * Your taste carousel can send the op through its own hook while the For me
- * list also takes the card off its grid and offers the Undo.
+ * phone and web strips can each send the op through their own hook.
  *
  * The buttons sit outside the card's link (the whole card is one `<Link>`, and
  * a button inside an anchor is invalid), in a footer that pins to the bottom
@@ -26,7 +25,6 @@ export function TastePickCard({
   restaurant,
   score,
   reason,
-  friends,
   quality,
   distance,
   shape = "crop",
@@ -39,8 +37,6 @@ export function TastePickCard({
   score?: PlateScore | null;
   /** The one line that says why this place is here. */
   reason?: string | null;
-  /** For me only: friends' first names, when one has been ("Ana and Ben have been"). */
-  friends?: string | null;
   /** For me only: why the place is good, in words ("Highly rated · 1,017 reviews"). */
   quality?: QualityNote | null;
   /** How far from the visitor, from `distanceLabel`; null or omitted prints nothing. */
@@ -62,7 +58,6 @@ export function TastePickCard({
           shape={shape}
           match={match}
           reason={reason}
-          friends={friends}
           quality={quality}
           distance={distance}
         />

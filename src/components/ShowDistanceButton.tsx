@@ -10,7 +10,7 @@ import { wantsPositionOf } from "@/lib/useDiscoverQuery";
  * you".
  *
  * A bare landing never asks for a position (lib/useDiscoverQuery.ts has the
- * rule: narrowing the grid or turning on For me asks, nothing else does), so
+ * rule: narrowing the grid asks, nothing else does), so
  * the cards would carry no distance at all. This is the way to ask on purpose,
  * with the reason in the label. One tap on the shared `nearby.request`, and the
  * query re-asks with the position the moment it lands.
@@ -25,7 +25,7 @@ import { wantsPositionOf } from "@/lib/useDiscoverQuery";
  * grid 44px each way. It waits for `nearby.offerable`, so the prerendered shell
  * never prints it for a visitor whose position is about to arrive without a
  * tap (permission already granted, a saved address), and it stands down while
- * the URL itself asks for a position (a filter or For me is on): the request
+ * the URL itself asks for a position (a filter is on): the request
  * that ask makes is one effect away, and `idle` is still what this render sees.
  *
  * Only for the accounts on lib/forMeGate.ts: it draws nothing for anyone else,
@@ -39,10 +39,10 @@ export function ShowDistanceButton({
   className?: string;
 }) {
   const access = useForMeAccess();
-  const asking = wantsPositionOf(useQueryString(), access);
+  const asking = wantsPositionOf(useQueryString());
   if (!access || nearby.coords || !nearby.offerable) return null;
   if (nearby.state !== "idle" && nearby.state !== "failed") return null;
-  // A filter or For me is on and nothing has been asked yet: the hook's effect
+  // A filter is on and nothing has been asked yet: the hook's effect
   // asks next. A *failed* ask is the reader's to retry, so that still shows.
   if (asking && nearby.state === "idle") return null;
   return (

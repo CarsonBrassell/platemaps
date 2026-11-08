@@ -36,8 +36,8 @@ export function PhoneRestaurantCard({
   /** Set on the first couple of cards so the fold isn't lazy-loaded. */
   priority?: boolean;
   /**
-   * Why this card is in a "For me" list, already worded, or null everywhere
-   * else. Two lines and an ellipsis, same as the grid card's.
+   * Why this card is one of Your taste picks, already worded, or null
+   * everywhere else. Two lines and an ellipsis, same as the grid card's.
    */
   reason?: string | null;
 }) {

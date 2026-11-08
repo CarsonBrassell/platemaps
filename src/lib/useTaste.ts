@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import type {
   FullTastePrefs,
@@ -38,13 +38,7 @@ type Reply = {
   picks: TastePick[];
 };
 
-/**
- * The device copy of the prefs (pm.taste.v1), empty on the server or when
- * storage is blocked. Exported for lib/useDiscoverQuery.ts: the For me POST
- * carries it as the signed-out viewer's prefs and as the fallback while the
- * server table is missing.
- */
-export function readLocalTaste(): FullTastePrefs {
+function readLocal(): FullTastePrefs {
   try {
     const raw = window.localStorage.getItem(KEY);
     if (!raw) return EMPTY;
@@ -70,60 +64,6 @@ function writeLocal(p: FullTastePrefs | null) {
 
 const isEmpty = (p: FullTastePrefs) =>
   !p.loves.length && !p.skips.length && !p.been.length && !p.hidden.length;
-
-/*
- * A revision counter for the picks, shared by every caller of this module.
- *
- * The For me list (?foryou=1, lib/useDiscoverQuery.ts) is ranked on the server
- * from these prefs, and the chips that edit them live in a different component
- * from the grid, so the grid cannot see a tap through `useTaste`'s own state:
- * each call to the hook has its own. This bumps once an op that changes what
- * the ranking is built from has been sent and answered (a signed-in viewer's
- * prefs are on the server by then, which is what the next For me POST reads),
- * and the query keys its request on it. Been / hide are not here on purpose:
- * they take the card off the screen at once and ride in the next page request's
- * `prefs`, so they do not refetch the list under the reader. Their undoes are
- * here, though: an undo has to bring the place back, and the page it left may
- * already have been replaced by one asked for with the pick in its prefs (a
- * filter tap in the seconds between), so there is no card left on screen to
- * un-hide and only a fresh answer has it.
- */
-const RETUNES: ReadonlySet<TasteOp["kind"]> = new Set([
-  "love",
-  "unlove",
-  "skip",
-  "unskip",
-  "unbeen",
-  "unhide",
-  "reset",
-]);
-let tasteRevision = 0;
-const revisionListeners = new Set<() => void>();
-
-function bumpTasteRev() {
-  tasteRevision += 1;
-  for (const listener of revisionListeners) listener();
-}
-
-function subscribeTasteRev(listener: () => void): () => void {
-  revisionListeners.add(listener);
-  return () => {
-    revisionListeners.delete(listener);
-  };
-}
-
-function subscribeToNothing(): () => void {
-  return () => {};
-}
-
-/**
- * The revision counter, as a hook. 0 until the first love / unlove / skip /
- * unskip / reset lands. `enabled` is For me access: everyone else does not
- * subscribe, so a tap re-renders nothing for them that it did not before.
- */
-export function useTasteRev(enabled: boolean): number {
-  return useSyncExternalStore(enabled ? subscribeTasteRev : subscribeToNothing, () => tasteRevision, () => 0);
-}
 
 /** Cheap client-side mirror of lib/taste.ts applyOpToPrefs, for instant chips. */
 function optimistic(p: FullTastePrefs, op: TasteOp): FullTastePrefs {
@@ -167,7 +107,6 @@ export function useTaste(): {
 } {
   const { account, resolved } = useAuth();
   const signedIn = !!account;
-  const forMe = account?.forMe === true;
   const userKey = account ? "in" : "out";
 
   const [status, setStatus] = useState<Status>("loading");
@@ -187,7 +126,7 @@ export function useTaste(): {
 
   const post = useCallback(
     async (op: TasteOp | null, myGen: number): Promise<void> => {
-      const local = readLocalTaste();
+      const local = readLocal();
       const ctl = controller.current ?? new AbortController();
       controller.current = ctl;
       try {
@@ -233,7 +172,7 @@ export function useTaste(): {
     const myGen = ++gen.current;
     const ctl = new AbortController();
     controller.current = ctl;
-    const local = readLocalTaste();
+    const local = readLocal();
     prefsRef.current = local;
 
     if (!signedIn && isEmpty(local)) {
@@ -264,20 +203,15 @@ export function useTaste(): {
       // Ops are serialized so a local-storage viewer's second tap is built on
       // the first one's result rather than on a stale copy.
       chain.current = chain.current.then(() => post(op, myGen));
-      // Only For me reads the revision; for everyone else the chain is exactly
-      // the one post, with no extra hop after it.
-      if (forMe && RETUNES.has(op.kind)) {
-        chain.current = chain.current.then(() => bumpTasteRev());
-      }
     },
-    [post, forMe],
+    [post],
   );
 
   const apply = useCallback(
     (op: TasteOp) => {
       // Local copy first, so a signed-out tap survives even if the request fails.
       if (!signedIn) {
-        prefsRef.current = optimistic(readLocalTaste(), op);
+        prefsRef.current = optimistic(readLocal(), op);
         writeLocal(prefsRef.current);
       }
 

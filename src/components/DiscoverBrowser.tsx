@@ -1,23 +1,17 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   FilterControls,
   FilterRail,
-  ForMePill,
   QuickFilterChips,
 } from "@/components/DiscoverFilters";
 import { RestaurantCard, type MatchMarks } from "@/components/RestaurantCard";
-import { ForMeProfileLine } from "@/components/ForMeProfileLine";
 import { OurPicks } from "@/components/OurPicks";
-import { ReasonText } from "@/components/ReasonText";
 import { ShowDistanceButton } from "@/components/ShowDistanceButton";
-import { TasteChips, TasteInvite } from "@/components/TasteChips";
-import { TASTE_BTN, TastePickCard } from "@/components/TastePickCard";
 import { TasteSection } from "@/components/TasteSection";
 import { Dialog } from "@/components/feed/Dialog";
 import {
-  FOR_ME_PARAM,
   NO_FILTERS,
   PAGE_SIZE,
   activeFilterCount,
@@ -28,12 +22,10 @@ import {
   type QuickFilter,
 } from "@/lib/discoverFilters";
 import { useForMeAccess } from "@/lib/auth";
-import { distanceLabel, type Coords } from "@/lib/geo";
+import { distanceLabel } from "@/lib/geo";
 import { useDiscoverQuery } from "@/lib/useDiscoverQuery";
-import { useTaste } from "@/lib/useTaste";
 import type { DiscoverPage, DiscoverResult } from "@/lib/discover";
 import { packColumns } from "@/lib/photoShape";
-import { forMeQualityNote } from "@/lib/ratingDisplay";
 import type { PriceBand } from "@/data/priceBands";
 
 /**
@@ -92,7 +84,7 @@ function useColumnCount() {
 /**
  * What a card should light up for the filters in effect: the cuisine,
  * neighbourhood and price the grid was narrowed to, plus the score in the
- * "rated well for" category. Shared by the plain grid and the For me list so a
+ * "rated well for" category. Shared by the plain grid and the Your taste row so a
  * filter reads the same on either.
  */
 function marksFor(restaurant: DiscoverResult, filters: DiscoverFilters): MatchMarks {
@@ -107,13 +99,6 @@ function marksFor(restaurant: DiscoverResult, filters: DiscoverFilters): MatchMa
           }
         : null,
   };
-}
-
-/** The query string without the For me mode — see `apply`. */
-function withoutForMe(search: string): string {
-  const params = new URLSearchParams(search);
-  params.delete(FOR_ME_PARAM);
-  return params.toString();
 }
 
 function ShowMoreButton({
@@ -136,371 +121,6 @@ function ShowMoreButton({
         {pending ? "Loading…" : `Show more (${left} left)`}
       </button>
     </div>
-  );
-}
-
-/** How long the Undo after "Been here" / "Not for me" stays up, as in useTaste. */
-const UNDO_MS = 10_000;
-
-/** How long the For me list may be missing before the page says so. */
-const SLOW_MS = 10_000;
-
-/**
- * The For me list: the whole grid ordered by how well each place fits the
- * viewer, in two blocks — the matches, then "Also well rated" so the list never
- * ends short (decision D4). The ranking is the server's; this lays it out.
- * See probe/for-me/PLAN.md.
- *
- * ## What lives here and not in DiscoverBrowser
- *
- * `useTaste` is called here, not up there. It asks the server for the Your
- * taste picks on mount, and the plain Discover page already has a TasteSection
- * doing that; one more instance there would be a second request for nothing.
- * Here the Your taste strip is hidden, so this is the one instance, and it
- * supplies what the list needs: the chip prefs for Tune and the ops behind the
- * two buttons on each card.
- *
- * ## Why the card removal and Undo are local
- *
- * "Been here" and "Not for me" ride in the next request's `prefs`, so they do
- * not refetch the list under the reader (lib/useTaste.ts). The card has to go
- * at once all the same, so the ids are held here and filtered out. useTaste has
- * its own Undo, but it only knows the cards in its Your taste carousel, which
- * are a different, shorter list; for a card from this one it offers nothing, so
- * the Undo bar is this component's.
- *
- * ## Why two grids and not one with a divider row
- *
- * The cards are packed into columns of uneven height (`packColumns`), so there
- * is no row for a full-width divider to sit in. Each block is packed on its
- * own, and the divider is a heading between them.
- */
-function ForMeSection({
-  view,
-  pending,
-  columns,
-  cuisines,
-  coords,
-  headingRef,
-  failed,
-  onRetry,
-  onShowMore,
-  onClearFilters,
-  onTurnOff,
-}: {
-  view: DiscoverPage;
-  pending: boolean;
-  /** The request for this list failed and nothing is in flight. */
-  failed: boolean;
-  onRetry: () => void;
-  columns: number;
-  /** Every cuisine, for the Tune chips — from the unfiltered shell, not the facet counts. */
-  cuisines: string[];
-  /** Where the reader is, for the distance on each card; null when unknown. */
-  coords: Coords | null;
-  headingRef: RefObject<HTMLHeadingElement | null>;
-  onShowMore: () => void;
-  onClearFilters: () => void;
-  onTurnOff: () => void;
-}) {
-  const { filters, results, total, shown } = view;
-  // Undefined until the first personal answer lands: `view` is then the static
-  // shell's default order, which must never be drawn as if it were the list.
-  const info = view.forMe;
-  const taste = useTaste();
-  const [tuning, setTuning] = useState(false);
-  const [gone, setGone] = useState<ReadonlySet<string>>(() => new Set());
-  const [last, setLast] = useState<{ kind: "been" | "hide"; id: string; name: string } | null>(
-    null,
-  );
-  const [slow, setSlow] = useState(false);
-
-  // The Undo bar lasts a few seconds. Keyed on `last`, which is a new object per
-  // mark, so a second mark restarts the clock and the cleanup stops the old one.
-  useEffect(() => {
-    if (!last) return;
-    const timer = setTimeout(() => setLast(null), UNDO_MS);
-    return () => clearTimeout(timer);
-  }, [last]);
-
-  // A rate-limited or failed request leaves the hook on the shell with no
-  // error to show. Rather than a skeleton forever, say so and offer the way out.
-  const missing = !info;
-  useEffect(() => {
-    if (!missing) return;
-    const timer = setTimeout(() => setSlow(true), SLOW_MS);
-    return () => clearTimeout(timer);
-  }, [missing]);
-
-  function mark(kind: "been" | "hide", restaurant: DiscoverResult) {
-    setGone((prev) => new Set(prev).add(restaurant.id));
-    taste.apply({ kind, value: restaurant.id });
-    setLast({ kind, id: restaurant.id, name: restaurant.name });
-  }
-
-  function undo() {
-    if (!last) return;
-    setGone((prev) => {
-      const next = new Set(prev);
-      next.delete(last.id);
-      return next;
-    });
-    taste.apply({ kind: last.kind === "hide" ? "unhide" : "unbeen", value: last.id });
-    setLast(null);
-  }
-
-  // `matched` is how many of the leading results are matches; the rest are the
-  // tail. Split before dropping the ones just marked, so the boundary holds.
-  const matches = results.slice(0, info?.matched ?? 0).filter((r) => !gone.has(r.id));
-  const tail = results.slice(info?.matched ?? 0).filter((r) => !gone.has(r.id));
-  const places = total - (results.length - matches.length - tail.length);
-
-  const cards = (items: DiscoverResult[]) => (
-    <div className="grid auto-rows-min grid-cols-1 gap-4 sm:grid-cols-2">
-      {packColumns(items, columns).map((column, i) => (
-        // Index keys for the reason the plain grid gives: a column is a place
-        // in the layout, not a thing.
-        <div key={i} className="grid auto-rows-min content-start gap-4">
-          {column.map((restaurant) => (
-            <TastePickCard
-              key={restaurant.id}
-              restaurant={restaurant}
-              score={restaurant.plateScore}
-              reason={restaurant.reason?.text}
-              friends={restaurant.reason?.friends}
-              quality={forMeQualityNote(restaurant)}
-              distance={distanceLabel(restaurant, coords)}
-              shape="natural"
-              match={marksFor(restaurant, filters)}
-              onBeen={() => mark("been", restaurant)}
-              onHide={() => mark("hide", restaurant)}
-            />
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-
-  return (
-    <section aria-labelledby="all-restaurants">
-      <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-1">
-        <h2
-          ref={headingRef}
-          id="all-restaurants"
-          tabIndex={-1}
-          className="mono-label text-zinc-500 outline-none focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange"
-        >
-          For me
-        </h2>
-        {info && (
-          <p role="status" className="mono-label shrink-0 tabular-nums text-zinc-500">
-            {places} {places === 1 ? "place" : "places"}
-          </p>
-        )}
-      </div>
-
-      {/* What the list is built from, and the way to change it. Not when there
-          is nothing to build from: the prompt below is the same chips. */}
-      {info && info.basis !== "none" && (
-        <div className="mb-3 flex flex-wrap items-center gap-x-2 px-1 text-[13px] text-pm-grey-text">
-          {info.header && (
-            <p>
-              <ReasonText text={info.header} />
-            </p>
-          )}
-          <button
-            type="button"
-            aria-expanded={tuning}
-            onClick={() => setTuning((t) => !t)}
-            className="inline-flex min-h-9 items-center font-medium underline underline-offset-2 hover:text-zinc-900 pointer-coarse:min-h-11 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-          >
-            Tune
-          </button>
-          {/* One quiet line of what the list has learned, on a row of its own. */}
-          {info.profile && (
-            <ForMeProfileLine profile={info.profile} className="basis-full leading-snug" />
-          )}
-        </div>
-      )}
-
-      {last && (
-        <div
-          role="status"
-          className="mb-3 flex items-center justify-between rounded-xl bg-pm-grey-tint px-4 py-2.5 text-[13px] text-pm-grey-text"
-        >
-          <span>{last.kind === "hide" ? `Hidden ${last.name}` : `Marked ${last.name} as been`}</span>
-          <button
-            type="button"
-            onClick={undo}
-            className="font-medium text-pm-orange-text underline underline-offset-2"
-          >
-            Undo
-          </button>
-        </div>
-      )}
-
-      {tuning && info && info.basis !== "none" && (
-        <div className="mb-4 rounded-2xl bg-white p-5">
-          {taste.status === "loading" ? (
-            <p className="text-[13px] text-zinc-500">Loading your picks…</p>
-          ) : (
-            <>
-              <TasteChips
-                mode="edit"
-                cuisines={cuisines}
-                loves={taste.prefs.loves}
-                skips={taste.prefs.skips}
-                apply={taste.apply}
-              />
-              <p className="mb-3 text-[13px] text-zinc-500">
-                Changes re-rank this list, and Your taste on the home page.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  // Reset un-hides and un-beens everything, so the cards this
-                  // view dropped locally (and the Undo for the last of them)
-                  // are no longer true; the answer it asks for has them back.
-                  setGone(new Set());
-                  setLast(null);
-                  taste.apply({ kind: "reset" });
-                }}
-                className={TASTE_BTN}
-              >
-                Reset my taste
-              </button>
-            </>
-          )}
-        </div>
-      )}
-
-      {info && failed && (
-        <p role="status" className="mb-3 px-1 text-[13px] text-pm-grey-text">
-          Couldn&apos;t refresh this list.{" "}
-          <button
-            type="button"
-            onClick={onRetry}
-            className="inline-flex min-h-9 items-center font-medium underline underline-offset-2 hover:text-zinc-900 pointer-coarse:min-h-11 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-          >
-            Try again
-          </button>
-        </p>
-      )}
-
-      {!info && failed ? (
-        <div role="alert" className="rounded-2xl bg-white px-6 py-12 text-center">
-          <p className="text-sm font-medium text-zinc-900">Couldn&apos;t load your list</p>
-          <p className="mt-1 text-[13px] text-pm-grey-text">
-            Check your connection and try again.
-          </p>
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-            <button
-              type="button"
-              onClick={onRetry}
-              className="min-h-11 rounded-full bg-pm-orange px-5 text-[13px] font-medium text-[#F7F4EC] transition-transform hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-            >
-              Try again
-            </button>
-            <button
-              type="button"
-              onClick={onTurnOff}
-              className="min-h-11 text-[13px] font-medium text-pm-grey-text underline underline-offset-2 hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-            >
-              Show all restaurants
-            </button>
-          </div>
-        </div>
-      ) : !info ? (
-        <div aria-busy="true">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {[0, 1, 2, 3].map((i) => (
-              <div key={i} className="h-[300px] animate-pulse rounded-2xl bg-white/60" />
-            ))}
-          </div>
-          {slow && (
-            <p role="status" className="mt-4 px-1 text-[13px] text-pm-grey-text">
-              This is taking longer than usual.{" "}
-              <button
-                type="button"
-                onClick={onTurnOff}
-                className="font-medium underline underline-offset-2 hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-              >
-                Show all restaurants
-              </button>
-            </p>
-          )}
-        </div>
-      ) : results.length === 0 ? (
-        <div className="rounded-2xl bg-white px-6 py-12 text-center">
-          <p className="text-sm font-medium text-zinc-900">
-            {activeFilterCount(filters) > 0 ? "Nothing matches those filters" : "No places to show yet"}
-          </p>
-          {activeFilterCount(filters) > 0 && (
-            <button
-              type="button"
-              onClick={onClearFilters}
-              className="mt-4 min-h-11 rounded-full bg-pm-orange px-5 text-[13px] font-medium text-[#F7F4EC] transition-transform hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-            >
-              Clear filters
-            </button>
-          )}
-        </div>
-      ) : (
-        <>
-          {/* Nothing to match on, or nothing in this view that matches: ask, or
-              say so, then go straight to the tail. Never fake matches. */}
-          {info.basis === "none" ? (
-            <div className="mb-6 rounded-2xl bg-white p-5">
-              <TasteInvite
-                cuisines={cuisines}
-                loves={taste.prefs.loves}
-                skips={taste.prefs.skips}
-                apply={taste.apply}
-                signedIn={taste.signedIn}
-              />
-            </div>
-          ) : (
-            info.matched === 0 && (
-              <p className="mb-4 px-1 text-[13px] text-pm-grey-text">
-                Nothing here fits your taste yet. These are the best-rated places instead.
-              </p>
-            )
-          )}
-
-          <div
-            className={`transition-opacity duration-200 ${pending ? "opacity-60" : "opacity-100"}`}
-            aria-busy={pending}
-          >
-            {matches.length > 0 && cards(matches)}
-
-            {tail.length > 0 && (
-              <>
-                {/* The same dotted rule the leaderboard uses between a label and
-                    the rest of its row. */}
-                <div className={`${matches.length > 0 ? "mt-8" : "mt-1"} mb-3 flex items-center gap-3 px-1`}>
-                  <h3 className="mono-label shrink-0 text-zinc-500">Also well rated</h3>
-                  <span
-                    aria-hidden="true"
-                    className="mb-1 h-px flex-1 border-b border-dotted border-zinc-300"
-                  />
-                </div>
-                {cards(tail)}
-              </>
-            )}
-
-            {matches.length + tail.length === 0 && (
-              <p className="rounded-2xl bg-white px-6 py-8 text-center text-[13px] text-zinc-500">
-                That is everything on this page.
-              </p>
-            )}
-          </div>
-
-          {total > shown && (
-            <ShowMoreButton left={total - shown} pending={pending} onClick={onShowMore} />
-          )}
-        </>
-      )}
-    </section>
   );
 }
 
@@ -534,29 +154,14 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
     view,
     pending,
     viewKey,
-    forMe: forMeOn,
-    failed,
-    retry,
     nearby,
     navigate,
   } = useDiscoverQuery(initial, "/");
   const { filters, results, counts, options, picks, total, shown } = view;
   const active = activeFilterCount(filters);
-  /* Everything For me on this page (the pill, the list, the distances, the
-     button that asks for a position) is for the accounts on lib/forMeGate.ts.
-     For everyone else this is the page it was: `forMeOn` is already false for
-     them, and each piece below falls back to what it drew before. */
+  /* The distances and the button that asks for a position are for the accounts
+     on lib/forMeGate.ts. For everyone else this is the page it was. */
   const access = useForMeAccess();
-
-  /*
-   * For me is a mode of this same page (`?foryou=1`), and three states of it
-   * matter here. `forMeOn` is what the URL asks for. The server can answer that
-   * with `paused` — a pasted `?q=…&foryou=1` — meaning the text search won
-   * (decision D3), in which case the page draws the ordinary search results and
-   * says so rather than a For me list nobody built.
-   */
-  const forMePaused = forMeOn && view.forMe?.paused === true;
-  const forMeMode = forMeOn && !forMePaused;
 
   /**
    * Navigate to a new set of filters.
@@ -564,30 +169,13 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
    * `shown` is deliberately dropped: after changing what you are looking for,
    * "show me more of the last thing" is not a request anyone made, and keeping
    * it would silently make the next query heavier than a first page.
-   *
-   * A typed search turns For me off (decision D3: text search wins). The two
-   * are different questions — "what fits me" and "what is named this" — and a
-   * search run from inside For me that kept the mode would be answered `paused`,
-   * i.e. with the plain results under a URL that still says otherwise. Dropping
-   * the flag here makes the URL say what is on screen. Clearing the search does
-   * not bring it back; For me is a pill the visitor taps.
    */
   const apply = useCallback(
     (next: DiscoverFilters) => {
-      const search = searchFromFilters(window.location.search, next);
-      navigate(access && next.q ? withoutForMe(search) : search, null);
+      navigate(searchFromFilters(window.location.search, next), null);
     },
-    [navigate, access],
+    [navigate],
   );
-
-  // The pill, in the strip and in the rail. Edits the one key and leaves every
-  // filter alone: For me composes with them (decision D3).
-  const toggleForMe = useCallback(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.has(FOR_ME_PARAM)) params.delete(FOR_ME_PARAM);
-    else params.set(FOR_ME_PARAM, "1");
-    navigate(params.toString(), null);
-  }, [navigate]);
 
   const showMore = useCallback(
     () => navigate(window.location.search, shown + PAGE_SIZE),
@@ -601,7 +189,7 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
    * impression. The prompt itself goes up in lib/nearby.ts.
    *
    * For the accounts on lib/forMeGate.ts the ask is made in useDiscoverQuery
-   * instead (a filter, or For me, asks; a bare landing never does), and the
+   * instead (a filter asks; a bare landing never does), and the
    * offer to ask on purpose is the button above the plain grid.
    */
   const requestLocation = nearby.request;
@@ -723,8 +311,6 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
           the first screen. This is what replaces it: one line holding the
           toggles people reach for most, with the rest a tap away. */}
       <div className="flex items-center gap-2 overflow-x-auto py-2 lg:hidden">
-        {access && <ForMePill on={forMeOn} onToggle={toggleForMe} />}
-
         <button
           type="button"
           onClick={() => setSheetOpen(true)}
@@ -763,8 +349,6 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
           onAspect={setAspect}
           onQuick={toggleQuick}
           onClear={clearAll}
-          forMe={access ? forMeOn : undefined}
-          onForMe={access ? toggleForMe : undefined}
         />
 
         {/* Lifted so the top of the first row of restaurant cards is level with
@@ -784,32 +368,15 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
          * to. */}
         <main className="min-w-0 flex-1 lg:-mt-[25.2px]">
           {/* Picks are a curated strip, not a search result — they stay put
-              while a filter is on rather than disappearing. In For me they step
-              aside: that list is the full version of Your taste, and showing
-              both would put the same cards on the page twice. */}
-          {active === 0 && !forMeOn && (
+              while a filter is on rather than disappearing. */}
+          {active === 0 && (
             <TasteSection
               cuisines={initial.options.cuisines.map((o) => o.value)}
               coords={nearby.coords}
             />
           )}
-          {active === 0 && !forMeOn && <OurPicks picks={picks} />}
+          {active === 0 && <OurPicks picks={picks} />}
 
-          {forMeMode ? (
-            <ForMeSection
-              view={view}
-              pending={pending}
-              failed={failed}
-              onRetry={retry}
-              columns={columns}
-              cuisines={initial.options.cuisines.map((o) => o.value)}
-              coords={nearby.coords}
-              headingRef={resultsHeadingRef}
-              onShowMore={showMore}
-              onClearFilters={clearAll}
-              onTurnOff={toggleForMe}
-            />
-          ) : (
           <section aria-labelledby="all-restaurants">
             <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-1">
               {/* A searched term becomes the heading, because it is what the
@@ -873,15 +440,6 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
                 {total} {total === 1 ? "place" : "places"}
               </p>
             </div>
-
-            {/* The URL still says For me, but a search is on, and the search
-                wins (decision D3) — the server answered it as `paused`. Say why
-                the list is not ranked rather than leave the lit pill unexplained. */}
-            {forMePaused && (
-              <p className="mb-3 px-1 text-[13px] text-pm-grey-text">
-                For me is paused while you search.
-              </p>
-            )}
 
             {results.length === 0 ? (
               <div className="rounded-2xl bg-white px-6 py-12 text-center">
@@ -962,7 +520,6 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
               </>
             )}
           </section>
-          )}
         </main>
       </div>
 

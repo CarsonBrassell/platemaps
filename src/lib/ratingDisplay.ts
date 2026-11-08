@@ -162,20 +162,3 @@ export function qualityNote(
   }
   return { label, reviews: reviewCount };
 }
-
-/**
- * The quality line of a For me card, from the result row alone.
- *
- * A card with no reason is not a For me card, so it gets no line. A tail card's
- * reason is already "Well rated in {hood}", so its note drops the tier word and
- * keeps the review count: it must never say "well rated" twice.
- */
-export function forMeQualityNote(r: {
-  rating: number | null;
-  reviewCount: number | null;
-  reason?: { kind: string } | null;
-}): QualityNote | null {
-  if (!r.reason) return null;
-  const note = qualityNote(r.rating, r.reviewCount);
-  return note && r.reason.kind === "rated" ? { ...note, label: null } : note;
-}

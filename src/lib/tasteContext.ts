@@ -4,10 +4,7 @@ import {
   applyTasteOp,
   getFriendRestaurantVisits,
   getTastePrefs,
-  platePricesBy,
-  postedSignalsBy,
   restaurantIdsPostedBy,
-  restaurantIdsPostedByRecent,
   saveTastePrefs,
   type User,
 } from "@/lib/db";
@@ -18,13 +15,12 @@ import {
   sanitizePrefs,
   type FriendVisit,
   type FullTastePrefs,
-  type PostedSignal,
   type TasteOp,
 } from "@/lib/taste";
 
 /**
  * Everything the scorer needs to know about the viewer, gathered in one place so
- * `/api/account/taste` and the For me POST on Discover read the same thing.
+ * `/api/account/taste` reads it.
  *
  * Server-only (it reaches the database through `lib/db.ts`) and PERSONAL: the
  * result must only ever be used inside a private, uncached response. Discover's
@@ -37,13 +33,7 @@ import {
  *
  * Writes happen only when the caller asks: an `op` mutates the signed-in
  * viewer's stored prefs, and `importLocal` uploads a first-time local copy.
- * A read-only caller (the For me POST) passes neither and nothing is stored.
- *
- * The posting dates and repeat counts (`postedSignals`), the prices of the
- * plates the viewer posted (`platePrices`) and the places ordered newest first
- * (`recentFirst`) are queries on the posts table that only For me reads, so
- * they come only when asked for. Without them the answer is exactly what the
- * taste route has always read.
+ * A read-only caller passes neither and nothing is stored.
  */
 export type TasteContextOptions = {
   /** The session user. Omit to resolve it here; `null` means already known signed out. */
@@ -56,12 +46,6 @@ export type TasteContextOptions = {
   op?: TasteOp | null;
   /** Signed in with no server row yet: store the body's prefs once. Never set by a read. */
   importLocal?: boolean;
-  /** Also read when, and on how many days, the viewer posted at each place. For me only. */
-  postedSignals?: boolean;
-  /** Also read the price on each of the viewer's posts, for the budget term. For me only. */
-  platePrices?: boolean;
-  /** Order `postedIds` newest post first, for the seed cap. For me only. */
-  recentFirst?: boolean;
 };
 
 export type TasteContext = {
@@ -81,10 +65,6 @@ export type TasteContext = {
   postedIds: string[];
   /** Hero posts by mutual friends. Empty when signed out. */
   friendVisits: FriendVisit[];
-  /** The latest post and the distinct posting days per place. Empty unless asked for, or signed out. */
-  postedSignals: PostedSignal[];
-  /** The price of each plate the viewer posted, in dollars. Empty unless asked for, or signed out. */
-  platePrices: number[];
   /** Straight from the user row; the scorer checks it is a real corpus cuisine. */
   favoriteCuisine: string | null;
 };
@@ -128,19 +108,9 @@ export async function resolveTasteContext(opts: TasteContextOptions = {}): Promi
   }
   if (storage === "local" && op) prefs = applyOpToPrefs(prefs, op, cuisines, ids);
 
-  const [postedIds, friendVisits, postedSignals, platePrices]: [
-    string[],
-    FriendVisit[],
-    PostedSignal[],
-    number[],
-  ] = user
-    ? await Promise.all([
-        opts.recentFirst === true ? restaurantIdsPostedByRecent(user.id) : restaurantIdsPostedBy(user.id),
-        getFriendRestaurantVisits(user.id),
-        opts.postedSignals === true ? postedSignalsBy(user.id) : Promise.resolve([]),
-        opts.platePrices === true ? platePricesBy(user.id) : Promise.resolve([]),
-      ])
-    : [[], [], [], []];
+  const [postedIds, friendVisits]: [string[], FriendVisit[]] = user
+    ? await Promise.all([restaurantIdsPostedBy(user.id), getFriendRestaurantVisits(user.id)])
+    : [[], []];
 
   return {
     user,
@@ -151,8 +121,6 @@ export async function resolveTasteContext(opts: TasteContextOptions = {}): Promi
     prefs,
     postedIds,
     friendVisits,
-    postedSignals,
-    platePrices,
     favoriteCuisine: user?.favoriteCuisine ?? null,
   };
 }
