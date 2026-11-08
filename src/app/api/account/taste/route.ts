@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { clientIp } from "@/lib/loginThrottle";
 import { limitOrReject } from "@/lib/rateLimit";
 import { getCurrentUser } from "@/lib/session";
@@ -36,6 +36,24 @@ function json(body: unknown, status = 200) {
   return NextResponse.json(body, { status, headers: NO_STORE });
 }
 
+/**
+ * How long the dish-level picks may wait on a cold dish index. A cold instance builds the index from the
+ * menu table (about 16s); past this grace the viewer gets the ordinary picks now, and the build finishes in
+ * the background so the next request finds it warm.
+ */
+const DISH_INDEX_GRACE_MS = 2500;
+
+/** The most place ids a refresh may carry. The newest are kept. */
+const MAX_EXCLUDE = 240;
+
+/** A body's `exclude`: an array's strings of 1 to 64 characters, de-duplicated, the last 240. Anything else is empty. */
+function excludeIds(v: unknown): string[] {
+  if (!Array.isArray(v)) return [];
+  const ids = new Set<string>();
+  for (const x of v) if (typeof x === "string" && x.length >= 1 && x.length <= 64) ids.add(x);
+  return [...ids].slice(-MAX_EXCLUDE);
+}
+
 export async function POST(req: Request) {
   let body: unknown;
   try {
@@ -59,12 +77,15 @@ export async function POST(req: Request) {
     op = { kind: o.kind as TasteOp["kind"], value: o.value as string | undefined };
   }
   const limit = typeof b.limit === "number" && Number.isFinite(b.limit) ? b.limit : undefined;
+  // Place ids already shown by a "Refresh" (dish-level test only). Read here so it is validated once; it is
+  // only ever used below for an account on the gate, and ignored for everyone else.
+  const exclude = excludeIds(b.exclude);
 
   const user = await getCurrentUser();
 
-  // A signed-in write is metered per person. Everything else is metered per
-  // address, because it needs no account and scores the whole corpus.
-  if (user ? op : true) {
+  // A signed-in write is metered per person, and so is a refresh on the dish-level test (it re-ranks the whole
+  // index). Everything else is metered per address, because it needs no account and scores the whole corpus.
+  if (user ? op || (exclude.length > 0 && isForMeUser(user.id)) : true) {
     const limited = await limitOrReject({
       scope: user ? "taste:user" : "taste:ip",
       key: user ? user.id : clientIp(req),
@@ -101,22 +122,57 @@ export async function POST(req: Request) {
   // the cuisine picks. Gated before any extra load; with too little to go on, or
   // a failed read, the ordinary picks stand.
   let picks: TastePick[] = result.picks;
+  let { basis, header, shortHeader } = result;
   if (user && isForMeUser(user.id)) {
     // The quality floor (over 4.0 stars, 5+ reviews) holds on the fallback too.
+    // A refresh drops what was already shown, so one that has run out answers with none rather than the old picks.
     picks = result.picks.filter((p) => passesFloor(p.restaurant));
+    if (exclude.length > 0) {
+      const shown = new Set(exclude);
+      picks = picks.filter((p) => !shown.has(p.restaurant.id));
+    }
     try {
-      const [index, posts] = await Promise.all([loadDishIndex(ctx.corpus), postsForDishTaste(user.id)]);
-      const dish = rankDishes({
-        index,
-        restaurants: ctx.corpus.restaurants,
-        plates: ctx.corpus.plates,
-        ratingMean: meanRating(ctx.corpus.restaurants),
-        posts,
-        prefs,
-        now: Date.now(),
-        limit,
-      });
-      if (dish && dish.length > 0) picks = dish;
+      // One call only: concurrent callers share the in-flight build inside loadDishIndex, so holding this
+      // promise past the grace never starts a second build.
+      const indexLoad = loadDishIndex(ctx.corpus);
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      const graced = await Promise.race([
+        indexLoad,
+        new Promise<null>((resolve) => {
+          timer = setTimeout(() => resolve(null), DISH_INDEX_GRACE_MS);
+        }),
+      ]);
+      clearTimeout(timer);
+      if (graced === null) {
+        // Cold: keep the instance alive until the build lands (a failure is logged by the catch below on the
+        // next request, which retries), and answer with the ordinary picks.
+        after(() => indexLoad.then(() => undefined, () => undefined));
+      } else {
+        const posts = await postsForDishTaste(user.id);
+        const dish = rankDishes({
+          index: graced,
+          restaurants: ctx.corpus.restaurants,
+          plates: ctx.corpus.plates,
+          ratingMean: meanRating(ctx.corpus.restaurants),
+          posts,
+          prefs,
+          now: Date.now(),
+          limit,
+          exclude,
+        });
+        // A refresh that has run out of dish picks answers with none (the client starts over), never with the
+        // cuisine-level picks, which are a different kind of card.
+        if (dish && (dish.length > 0 || exclude.length > 0)) {
+          picks = dish;
+          // scoreTaste reports "none" (and an empty header) when the cuisine picks had nothing to go on, but
+          // the client hides the section on "none", so valid dish picks would never show.
+          if (dish.length > 0 && basis === "none") {
+            basis = "history";
+            header = "Based on your posts";
+            shortHeader = header;
+          }
+        }
+      }
     } catch (err) {
       console.error("dish picks failed, keeping the ordinary picks", err);
     }
@@ -124,9 +180,9 @@ export async function POST(req: Request) {
 
   return json({
     storage,
-    basis: result.basis,
-    header: result.header,
-    shortHeader: result.shortHeader,
+    basis,
+    header,
+    shortHeader,
     prefs,
     counts: result.counts,
     picks,

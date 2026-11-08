@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useId, useState } from "react";
-import { CloseIcon } from "@/components/icons";
+import { useEffect, useId, useRef, useState } from "react";
+import { CloseIcon, RefreshIcon } from "@/components/icons";
 import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
+import { pickDistanceLabel } from "@/lib/pickDistance";
 import { useForMeAccess } from "@/lib/auth";
-import { distanceLabel, type Coords } from "@/lib/geo";
+import type { Coords } from "@/lib/geo";
 import { qualityNote } from "@/lib/ratingDisplay";
 import { signInHrefFor } from "@/lib/signInGate";
 import { useTaste } from "@/lib/useTaste";
@@ -30,6 +31,26 @@ const CHIP_PLAIN = `${CHIP} bg-pm-grey-tint text-pm-grey-text`;
 const BTN =
   "min-h-11 text-[13px] font-medium text-zinc-500 underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 const ROW = "overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden";
+
+/**
+ * Dish-picks accounts only: swaps the row for places not shown yet. A 44px
+ * target, text in --pm-grey-text because the section sits on the cream ground.
+ */
+function RefreshButton({ refreshing, onRefresh }: { refreshing: boolean; onRefresh: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={refreshing ? undefined : onRefresh}
+      aria-disabled={refreshing}
+      aria-busy={refreshing}
+      title="Show new places you might like"
+      className="mono-label flex min-h-11 items-center gap-1.5 text-pm-grey-text underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange aria-disabled:cursor-wait"
+    >
+      <RefreshIcon className={refreshing ? "h-3.5 w-3.5 motion-safe:animate-spin" : "h-3.5 w-3.5"} />
+      Refresh
+    </button>
+  );
+}
 
 const MAX_PREFS = 5;
 const INVITE_COUNT = 10;
@@ -246,16 +267,27 @@ function TastePrompt({
 export function PhoneTasteSection({
   cuisines,
   coords = null,
+  served,
 }: {
   cuisines: string[];
   /** Where the reader is, for the distance on each pick; null when unknown. */
   coords?: Coords | null;
+  /** Restaurant id to the distance the grid card printed, so a place reads the same in both. */
+  served?: ReadonlyMap<string, string>;
 }) {
   const taste = useTaste();
   const access = useForMeAccess();
   const pathname = usePathname() ?? "/m";
   const [editing, setEditing] = useState(false);
   const [more, setMore] = useState(false);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const wasRefreshing = useRef(false);
+
+  // A refresh lands at the start of the row, not wherever the old one was scrolled to.
+  useEffect(() => {
+    if (wasRefreshing.current && !taste.refreshing) rowRef.current?.scrollTo({ left: 0 });
+    wasRefreshing.current = taste.refreshing;
+  }, [taste.refreshing]);
 
   if (taste.status === "loading") {
     return (
@@ -296,9 +328,18 @@ export function PhoneTasteSection({
   if (taste.status === "error" || taste.basis === "none" || taste.picks.length === 0) {
     return (
       <section aria-labelledby="your-taste" className="py-4">
-        <h2 id="your-taste" className="mono-label mb-1.5 px-4 text-zinc-500">
-          Your taste
-        </h2>
+        {access && taste.signedIn ? (
+          <div className="mb-1.5 flex items-center justify-between gap-3 px-4">
+            <h2 id="your-taste" className="mono-label text-zinc-500">
+              Your taste
+            </h2>
+            <RefreshButton refreshing={taste.refreshing} onRefresh={taste.refresh} />
+          </div>
+        ) : (
+          <h2 id="your-taste" className="mono-label mb-1.5 px-4 text-zinc-500">
+            Your taste
+          </h2>
+        )}
         <TastePrompt
           cuisines={cuisines}
           taste={taste}
@@ -320,7 +361,10 @@ export function PhoneTasteSection({
         <h2 id="your-taste" className="mono-label text-zinc-500">
           Your taste
         </h2>
-        {/* The picks come from the reader's posts: nothing to tune. */}
+        {/* The picks come from the reader's posts: nothing to tune, only to refresh. */}
+        {access && taste.signedIn && (
+          <RefreshButton refreshing={taste.refreshing} onRefresh={taste.refresh} />
+        )}
         {!access && (
           <button
             type="button"
@@ -384,7 +428,10 @@ export function PhoneTasteSection({
         </div>
       )}
 
-      <div className={`${ROW} mt-2 flex snap-x snap-mandatory items-stretch gap-2 scroll-px-4 px-4`}>
+      <div
+        ref={rowRef}
+        className={`${ROW} mt-2 flex snap-x snap-mandatory items-stretch gap-2 scroll-px-4 px-4${access ? ` motion-safe:transition-opacity${taste.refreshing ? " opacity-60" : ""}` : ""}`}
+      >
         {taste.picks.slice(0, 12).map((p) => (
           <div
             key={p.restaurant.id}
@@ -395,7 +442,7 @@ export function PhoneTasteSection({
                 <PhoneRestaurantCardGrid
                   restaurant={p.restaurant}
                   score={p.plateScore ?? undefined}
-                  distance={distanceLabel(p.restaurant, coords)}
+                  distance={pickDistanceLabel(p.restaurant, coords, served)}
                   reason={p.reason.short}
                   reasonLines={3}
                   quality={qualityNote(p.restaurant.rating, p.restaurant.reviewCount)}
@@ -438,13 +485,6 @@ export function PhoneTasteSection({
           </div>
         ))}
       </div>
-      {access && (
-        <p className="px-4">
-          <button type="button" onClick={() => taste.apply({ kind: "reset" })} className={BTN}>
-            Reset my taste
-          </button>
-        </p>
-      )}
       {signUp}
 
       {!access && editing && (

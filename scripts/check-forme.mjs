@@ -1223,7 +1223,7 @@ ok("Discover has no Show distance button, and distance reaches every card for th
     assert.match(s, /useForMeAccess\(\)/, `${f} gates the distance on the account`);
   }
   // Our picks gets the reader's position only through the gate; null prints nothing.
-  assert.match(src("src/components/DiscoverBrowser.tsx"), /<OurPicks picks=\{picks\} coords=\{access \? nearby\.coords : null\} \/>/);
+  assert.match(src("src/components/DiscoverBrowser.tsx"), /<OurPicks picks=\{picks\} coords=\{access \? nearby\.coords : null\} served=\{served\} \/>/);
   // The one automatic ask: opt-in, only by the Discover query, and only when the account is gated.
   const near = src("src/lib/nearby.ts");
   assert.match(near, /askOnLoad\s*&&\s*access/, "the ask on load is gated on the account");

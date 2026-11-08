@@ -1282,6 +1282,8 @@ export type DishRankInput = {
   /** Epoch milliseconds; a parameter so a run is repeatable. */
   now: number;
   limit?: number;
+  /** Place ids a "Refresh" already showed: they and their branches are dropped from the candidates, nothing else changes. */
+  exclude?: readonly string[];
 };
 
 type Cand = {
@@ -1762,6 +1764,14 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     const r = byId.get(id);
     if (r) seenChains.add(chainKeyM(r));
   }
+  // Places a refresh already showed, and their branches. Kept apart from `seen` and used only at the candidate
+  // filter below, so a refresh removes candidates and changes nothing about how the rest are scored.
+  const excluded = new Set<string>(input.exclude ?? []);
+  const excludedChains = new Set<string>();
+  for (const id of excluded) {
+    const r = byId.get(id);
+    if (r) excludedChains.add(chainKeyM(r));
+  }
 
   // What is new to them: a cuisine none of their posts (or been places) is in, or a dish family none of their posts
   // is in. Every post counts here, whatever it was rated.
@@ -2150,6 +2160,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     // The hard quality floor, for every kind of pick: no rating or too few reviews never qualifies, and nothing
     // below it is backfilled to fill the row. (Before the chain check, which is the dearer of the two.)
     if (!passesFloor(r) || seenChains.has(chainKeyM(r))) continue;
+    if (excluded.size > 0 && (excluded.has(r.id) || excludedChains.has(chainKeyM(r)))) continue;
     const rid = index.ridIndex.get(r.id);
     let hits = rid === undefined ? [] : (best.get(rid) ?? []);
     if (layer && rid !== undefined) hits = flavorHits(rid, hits);

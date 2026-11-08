@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   FilterControls,
   FilterRail,
@@ -8,6 +8,7 @@ import {
 } from "@/components/DiscoverFilters";
 import { RestaurantCard, type MatchMarks } from "@/components/RestaurantCard";
 import { OurPicks } from "@/components/OurPicks";
+import { servedDistances } from "@/lib/pickDistance";
 import { TasteSection } from "@/components/TasteSection";
 import { Dialog } from "@/components/feed/Dialog";
 import {
@@ -161,6 +162,9 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
   /* A distance from the reader on every card, Our picks included, is for the
      accounts on lib/forMeGate.ts. For everyone else this is the page it was. */
   const access = useForMeAccess();
+  /* The grid's own distance labels, so a place in both the grid and a strip
+     above it reads the same figure in both (lib/pickDistance.ts). */
+  const served = useMemo(() => (access ? servedDistances(results) : undefined), [access, results]);
 
   /**
    * Navigate to a new set of filters.
@@ -372,11 +376,12 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
             <TasteSection
               cuisines={initial.options.cuisines.map((o) => o.value)}
               coords={nearby.coords}
+              served={served}
             />
           )}
           {/* The reader's distance on the two promoted places, for the accounts
               on lib/forMeGate.ts; null prints nothing for everyone else. */}
-          {active === 0 && <OurPicks picks={picks} coords={access ? nearby.coords : null} />}
+          {active === 0 && <OurPicks picks={picks} coords={access ? nearby.coords : null} served={served} />}
 
           <section aria-labelledby="all-restaurants">
             <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-1">

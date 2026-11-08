@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RestaurantCard } from "@/components/RestaurantCard";
-import { TASTE_BTN, TastePickCard } from "@/components/TastePickCard";
+import { RefreshIcon } from "@/components/icons";
+import { TastePickCard } from "@/components/TastePickCard";
+import { pickDistanceLabel } from "@/lib/pickDistance";
 import { TasteChips, TasteInvite, TasteSignUp } from "@/components/TasteChips";
 import { useForMeAccess } from "@/lib/auth";
-import { distanceLabel, type Coords } from "@/lib/geo";
+import type { Coords } from "@/lib/geo";
 import { qualityNote } from "@/lib/ratingDisplay";
 import { useTaste, type TastePick } from "@/lib/useTaste";
 
@@ -29,19 +31,51 @@ const BTN =
 const PICKS_SHOWN = 12;
 const PICKS_UNFOLDED = 24;
 
+/**
+ * Dish-picks accounts only: swaps the row for places not shown yet. The same
+ * mono-label text button as "See all" beside it, in --pm-grey-text because the
+ * section sits on the cream ground (zinc-500 fails there).
+ */
+function RefreshButton({ refreshing, onRefresh }: { refreshing: boolean; onRefresh: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={refreshing ? undefined : onRefresh}
+      aria-disabled={refreshing}
+      aria-busy={refreshing}
+      title="Show new places you might like"
+      className="mono-label inline-flex min-h-9 items-center gap-1.5 text-pm-grey-text underline underline-offset-2 pointer-coarse:min-h-11 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange aria-disabled:cursor-wait"
+    >
+      <RefreshIcon className={refreshing ? "h-3.5 w-3.5 motion-safe:animate-spin" : "h-3.5 w-3.5"} />
+      Refresh
+    </button>
+  );
+}
+
 export function TasteSection({
   cuisines,
   coords = null,
+  served,
 }: {
   cuisines: string[];
   /** Where the reader is, for the distance on each pick; null when unknown. */
   coords?: Coords | null;
+  /** Restaurant id to the distance the grid card printed, so a place reads the same in both. */
+  served?: ReadonlyMap<string, string>;
 }) {
   const taste = useTaste();
   const access = useForMeAccess();
   const [editing, setEditing] = useState(false);
   const [all, setAll] = useState(false);
   const [more, setMore] = useState(false);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const wasRefreshing = useRef(false);
+
+  // A refresh lands at the start of the row, not wherever the old one was scrolled to.
+  useEffect(() => {
+    if (wasRefreshing.current && !taste.refreshing) rowRef.current?.scrollTo({ left: 0 });
+    wasRefreshing.current = taste.refreshing;
+  }, [taste.refreshing]);
 
   if (taste.status === "loading") {
     return (
@@ -76,10 +110,13 @@ export function TasteSection({
   if (taste.status === "error" || taste.basis === "none" || taste.picks.length === 0) {
     return (
       <section aria-labelledby="your-taste" className="mb-7">
-        <div className="mb-2 flex items-baseline justify-between gap-3 px-1">
+        <div className={access && taste.signedIn ? "mb-2 flex items-center justify-between gap-3 px-1" : "mb-2 flex items-baseline justify-between gap-3 px-1"}>
           <h2 id="your-taste" className="mono-label text-zinc-500">
             Your taste
           </h2>
+          {access && taste.signedIn && (
+            <RefreshButton refreshing={taste.refreshing} onRefresh={taste.refresh} />
+          )}
         </div>
         <TasteInvite
           cuisines={cuisines}
@@ -95,6 +132,8 @@ export function TasteSection({
   }
 
   const picks = taste.picks.slice(0, all ? PICKS_UNFOLDED : PICKS_SHOWN);
+  // The dish picks dim while a refresh is out; the row keeps its cards rather than blanking.
+  const dim = access ? ` motion-safe:transition-opacity${taste.refreshing ? " opacity-60" : ""}` : "";
 
   // The card as it was: the reason under it rather than in it, buttons below.
   const card = (p: TastePick, width: string) => (
@@ -136,7 +175,7 @@ export function TasteSection({
       reason={p.reason.text}
       reasonLines={3}
       quality={qualityNote(p.restaurant.rating, p.restaurant.reviewCount)}
-      distance={distanceLabel(p.restaurant, coords)}
+      distance={pickDistanceLabel(p.restaurant, coords, served)}
       shape="crop"
       className={className}
       onBeen={() => taste.apply({ kind: "been", value: p.restaurant.id })}
@@ -219,7 +258,10 @@ export function TasteSection({
         />
       )}
 
-      <div className="mb-2 flex justify-end px-1">
+      <div className={access && taste.signedIn ? "mb-2 flex items-center justify-end gap-4 px-1" : "mb-2 flex justify-end px-1"}>
+        {access && taste.signedIn && (
+          <RefreshButton refreshing={taste.refreshing} onRefresh={taste.refresh} />
+        )}
         <button
           type="button"
           aria-expanded={all}
@@ -231,11 +273,14 @@ export function TasteSection({
       </div>
 
       {all ? (
-        <div className="grid grid-cols-2 items-stretch gap-4 lg:grid-cols-3 xl:grid-cols-4">
+        <div className={`grid grid-cols-2 items-stretch gap-4 lg:grid-cols-3 xl:grid-cols-4${dim}`}>
           {picks.map((p) => (access ? pickCard(p, "min-w-0") : card(p, "min-w-0")))}
         </div>
       ) : (
-        <div className="-mx-1 overflow-x-auto overflow-y-hidden px-1 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div
+          ref={rowRef}
+          className={`-mx-1 overflow-x-auto overflow-y-hidden px-1 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden${dim}`}
+        >
           <div className="flex w-max items-stretch gap-4">
             {picks.map((p) =>
               access ? pickCard(p, "w-[240px] shrink-0") : card(p, "w-[240px] shrink-0"),
@@ -244,13 +289,6 @@ export function TasteSection({
         </div>
       )}
 
-      {/* The chips are gone for these accounts, so the one thing left to undo
-          is the Been here / Not for me they have pressed. */}
-      {access && (
-        <button type="button" onClick={() => taste.apply({ kind: "reset" })} className={TASTE_BTN}>
-          Reset my taste
-        </button>
-      )}
       <TasteSignUp signedIn={taste.signedIn} />
     </section>
   );

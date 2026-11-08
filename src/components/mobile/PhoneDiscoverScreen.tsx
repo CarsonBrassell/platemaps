@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { BrandMark, WordMark } from "@/components/BrandMark";
 import { PhoneDiscoverSearch } from "@/components/mobile/PhoneDiscoverSearch";
 import { PhoneFilterBar } from "@/components/mobile/PhoneFilterBar";
@@ -11,6 +12,7 @@ import type {
 import { PhoneStickyBar } from "@/components/mobile/PhoneStickyBar";
 import { PhoneDiscoverResults } from "@/components/mobile/PhoneDiscoverResults";
 import { PhoneTasteSection } from "@/components/mobile/PhoneTasteSection";
+import { useForMeAccess } from "@/lib/auth";
 import type { DiscoverPage } from "@/lib/discover";
 import {
   PAGE_SIZE,
@@ -18,6 +20,7 @@ import {
   activeFilterCount,
   type FacetOption,
 } from "@/lib/discoverFilters";
+import { servedDistances } from "@/lib/pickDistance";
 import { useDiscoverQuery } from "@/lib/useDiscoverQuery";
 
 /**
@@ -31,6 +34,13 @@ import { useDiscoverQuery } from "@/lib/useDiscoverQuery";
 export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
   const { view, pending, viewKey, search, raw, nearby } = useDiscoverQuery(initial, "/m");
   const { filters, counts, options } = view;
+  /* The grid's own distance labels for the taste row, for the accounts on
+     lib/forMeGate.ts, so one place never shows two figures. */
+  const access = useForMeAccess();
+  const served = useMemo(
+    () => (access ? servedDistances(view.results) : undefined),
+    [access, view.results],
+  );
 
   /* `?nav=` selects a nav variant on the phone; it rides along on every link
      the page builds but must never reach the filter parser, so the hook
@@ -258,6 +268,7 @@ export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
         <PhoneTasteSection
           cuisines={initial.options.cuisines.map((o) => o.value)}
           coords={nearby.coords}
+          served={served}
         />
       )}
 

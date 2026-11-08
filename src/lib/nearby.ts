@@ -18,7 +18,7 @@
  * Everyone else keeps the tap, and so does every other caller.
  */
 
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useForMeAccess } from "@/lib/auth";
 
 /**
@@ -212,6 +212,16 @@ export function useNearby({ askOnLoad = false }: { askOnLoad?: boolean } = {}): 
   const access = useForMeAccess();
   const [state, setState] = useState<Exclude<NearbyState, "unsupported">>("idle");
   const [coords, setCoords] = useState<Coords | null>(null);
+  /*
+   * Where this hook's own GPS fix stands. Written by every request (a ref
+   * change is unobservable), but read only for the accounts on
+   * lib/forMeGate.ts — nothing else consults it.
+   * The account arrives after the first render, so `access` flips and the
+   * permission effect below runs a second time; with a permission already
+   * granted, both runs would take a fix, and the second one hands back a fresh
+   * `coords` object that cancels the discover request already in flight.
+   */
+  const fix = useRef<"none" | "pending" | "done">("none");
 
   const supported = useSyncExternalStore(
     subscribeToNothing,
@@ -237,6 +247,12 @@ export function useNearby({ askOnLoad = false }: { askOnLoad?: boolean } = {}): 
     // everyone else a request is asked of the browser as it always was.
     if (access && getSavedLocationSnapshot()) return;
 
+    // Recorded for every caller, not just the gated accounts: the first run of
+    // the permission effect below still holds the pre-account `access` (false)
+    // in its closure, so a gate here would leave the ref at "none" for exactly
+    // the run it has to remember. Writing a ref is invisible to everyone else;
+    // only the skip in the effect is gated.
+    fix.current = "pending";
     setState("locating");
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -244,9 +260,13 @@ export function useNearby({ askOnLoad = false }: { askOnLoad?: boolean } = {}): 
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
+        fix.current = "done";
         setState("ready");
       },
       (error) => {
+        // A failed or refused fix goes back to unasked, so a later run (or the
+        // tap) can try again exactly as it always could.
+        fix.current = "none";
         setState(error.code === error.PERMISSION_DENIED ? "denied" : "failed");
       },
       {
@@ -307,7 +327,9 @@ export function useNearby({ askOnLoad = false }: { askOnLoad?: boolean } = {}): 
           access &&
           !getSavedLocationSnapshot() &&
           claimAutoAsk());
-      if (asks) {
+      // Once the account is known and a fix is already in flight or taken
+      // (from the run before `access` flipped), a second one adds nothing.
+      if (asks && !(access && fix.current !== "none")) {
         try {
           request();
         } catch {

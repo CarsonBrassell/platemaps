@@ -6,7 +6,8 @@ import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plate
 import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
 import { photoCreditFor } from "@/lib/photoCredit";
 import { placeLine } from "@/lib/placeLine";
-import { distanceLabel, type Coords } from "@/lib/geo";
+import type { Coords } from "@/lib/geo";
+import { pickDistanceLabel } from "@/lib/pickDistance";
 
 /** A pick's plate score, or the unrated one when the caller didn't attach it. */
 const score = (r: { plateScore?: PlateScore }) => r.plateScore ?? EMPTY_PLATE_SCORE;
@@ -18,11 +19,13 @@ const score = (r: { plateScore?: PlateScore }) => r.plateScore ?? EMPTY_PLATE_SC
 function PickDistance({
   restaurant,
   coords,
+  served,
 }: {
   restaurant: RestaurantView;
   coords: Coords | null;
+  served?: ReadonlyMap<string, string>;
 }) {
-  const label = distanceLabel(restaurant, coords);
+  const label = pickDistanceLabel(restaurant, coords, served);
   if (label === null) return null;
   return <span className="ml-auto max-w-[8.5rem] shrink-0 truncate text-zinc-500">{label}</span>;
 }
@@ -44,9 +47,12 @@ function PickDistance({
 export function OurPicks({
   picks,
   coords = null,
+  served,
 }: {
   picks: readonly (RestaurantView & { plateScore?: PlateScore })[];
   coords?: Coords | null;
+  /** Restaurant id to the distance the grid card printed, so a place reads the same in both. */
+  served?: ReadonlyMap<string, string>;
 }) {
   if (picks.length === 0) return null;
 
@@ -121,7 +127,7 @@ export function OurPicks({
                     </span>
                   </>
                 )}
-                <PickDistance restaurant={r} coords={coords} />
+                <PickDistance restaurant={r} coords={coords} served={served} />
               </div>
               <p className="text-xs text-zinc-500">
                 {placeLine(r.cuisine, r.neighborhood)}

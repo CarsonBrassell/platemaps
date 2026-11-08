@@ -28,6 +28,8 @@ type Undo = { label: string; run: () => void } | null;
 const KEY = "pm.taste.v1";
 const UNDO_MS = 10_000;
 const EMPTY: FullTastePrefs = { loves: [], skips: [], been: [], hidden: [] };
+/** Most place ids a refresh remembers having shown (the server keeps the same last 240). */
+const MAX_EXCLUDE = 240;
 
 type Reply = {
   storage: "server" | "local";
@@ -64,6 +66,19 @@ function writeLocal(p: FullTastePrefs | null) {
 
 const isEmpty = (p: FullTastePrefs) =>
   !p.loves.length && !p.skips.length && !p.been.length && !p.hidden.length;
+
+/** `shown` appended to `seen` without repeats (a repeat moves to the end), the newest `MAX_EXCLUDE` kept. */
+function remember(seen: readonly string[], shown: readonly string[]): string[] {
+  const ids = new Set(seen);
+  for (const id of shown) {
+    ids.delete(id);
+    ids.add(id);
+  }
+  return [...ids].slice(-MAX_EXCLUDE);
+}
+
+/** What a request came to: its picks are on screen, it ran a refresh out of places, or it did not land. */
+type Landed = "shown" | "exhausted" | "failed";
 
 /** Cheap client-side mirror of lib/taste.ts applyOpToPrefs, for instant chips. */
 function optimistic(p: FullTastePrefs, op: TasteOp): FullTastePrefs {
@@ -103,6 +118,9 @@ export function useTaste(): {
   picks: TastePick[];
   signedIn: boolean;
   apply: (op: TasteOp) => void;
+  /** Dish-level test only: swap the row for places not shown yet. */
+  refresh: () => void;
+  refreshing: boolean;
   undo: Undo;
 } {
   const { account, resolved } = useAuth();
@@ -112,6 +130,7 @@ export function useTaste(): {
   const [status, setStatus] = useState<Status>("loading");
   const [reply, setReply] = useState<Omit<Reply, "storage"> | null>(null);
   const [undo, setUndo] = useState<Undo>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const prefsRef = useRef<FullTastePrefs>(EMPTY);
   const picksRef = useRef<TastePick[]>([]);
@@ -119,13 +138,16 @@ export function useTaste(): {
   const gen = useRef(0);
   const undoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const controller = useRef<AbortController | null>(null);
+  // Place ids a refresh has already shown; every request carries them (nothing is sent while it is empty).
+  const excludeRef = useRef<string[]>([]);
+  const refreshes = useRef(0);
 
   useEffect(() => {
     picksRef.current = reply?.picks ?? [];
   }, [reply]);
 
   const post = useCallback(
-    async (op: TasteOp | null, myGen: number): Promise<void> => {
+    async (op: TasteOp | null, myGen: number, soft = false): Promise<Landed> => {
       const local = readLocal();
       const ctl = controller.current ?? new AbortController();
       controller.current = ctl;
@@ -139,11 +161,14 @@ export function useTaste(): {
             prefs: local,
             import: signedIn && !isEmpty(local) ? true : undefined,
             op: op ?? undefined,
+            exclude: excludeRef.current.length > 0 ? excludeRef.current : undefined,
           }),
         });
         if (!res.ok) throw new Error(String(res.status));
         const data = (await res.json()) as Reply;
-        if (myGen !== gen.current) return;
+        if (myGen !== gen.current) return "failed";
+        // A refresh that has shown everything is not put on screen: the caller starts over instead of blanking the row.
+        if (soft && data.picks.length === 0 && excludeRef.current.length > 0) return "exhausted";
         // Server-held prefs replace the device copy (uploaded once, then cleared);
         // local storage keeps the validated result so the next POST carries it.
         writeLocal(data.storage === "server" ? null : data.prefs);
@@ -156,11 +181,13 @@ export function useTaste(): {
           picks: data.picks,
         });
         setStatus("ready");
+        return "shown";
       } catch (err) {
-        if ((err as { name?: string })?.name === "AbortError") return;
-        if (myGen !== gen.current) return;
-        // A refused or failed request hides the picks but keeps the local chips.
-        setStatus("error");
+        if ((err as { name?: string })?.name === "AbortError") return "failed";
+        if (myGen !== gen.current) return "failed";
+        // A refused or failed request hides the picks but keeps the local chips. A failed refresh keeps the row it had.
+        if (!soft) setStatus("error");
+        return "failed";
       }
     },
     [signedIn],
@@ -174,6 +201,8 @@ export function useTaste(): {
     controller.current = ctl;
     const local = readLocal();
     prefsRef.current = local;
+    // What one viewer was shown is not what the next one has seen.
+    excludeRef.current = [];
 
     if (!signedIn && isEmpty(local)) {
       // Nothing to score: render the chip invite without a request.
@@ -245,6 +274,33 @@ export function useTaste(): {
     [signedIn, send],
   );
 
+  const refresh = useCallback(() => {
+    if (refreshes.current > 0) return;
+    const myGen = gen.current;
+    const before = excludeRef.current;
+    // Everything on screen now counts as seen, so the next answer is made of places not shown yet.
+    excludeRef.current = remember(before, picksRef.current.map((p) => p.restaurant.id));
+    if (undoTimer.current) clearTimeout(undoTimer.current);
+    setUndo(null);
+    refreshes.current += 1;
+    setRefreshing(true);
+    // The same queue as the ops, so a refresh is built on a tap made just before it.
+    chain.current = chain.current.then(async () => {
+      try {
+        let landed = await post(null, myGen, true);
+        if (landed === "exhausted") {
+          // Every place has been shown: start over from the first set, once.
+          excludeRef.current = [];
+          landed = await post(null, myGen, true);
+        }
+        if (landed === "failed" && myGen === gen.current) excludeRef.current = before;
+      } finally {
+        refreshes.current -= 1;
+        setRefreshing(refreshes.current > 0);
+      }
+    });
+  }, [post]);
+
   const prefs = useMemo<TastePrefs>(
     () => ({ loves: reply?.prefs.loves ?? [], skips: reply?.prefs.skips ?? [] }),
     [reply],
@@ -259,6 +315,8 @@ export function useTaste(): {
     picks: reply?.picks ?? [],
     signedIn,
     apply,
+    refresh,
+    refreshing,
     undo,
   };
 }

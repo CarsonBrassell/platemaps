@@ -145,7 +145,7 @@ for (const [label, Component, BTN] of [["web", TasteSection, MAIN_WEB_BTN], ["ph
 }
 S.hydrated = true;
 
-// The dish-pick accounts get no For me pill or link, no cuisine chips and no Edit panel, and a text reset.
+// The dish-pick accounts get no For me pill or link, no cuisine chips, no Edit panel and no text reset.
 for (const [label, Component] of [["web", TasteSection], ["phone", PhoneTasteSection]] as const) {
   for (const editing of [false, true]) {
     const html = render(FOR_ME, Component, { cuisines: ["Thai", "Mexican"] }, editing);
@@ -153,7 +153,7 @@ for (const [label, Component] of [["web", TasteSection], ["phone", PhoneTasteSec
     assert.ok(!/For me|foryou|Tuned to you/.test(html), `${where}: a For me entry point is back: ${html.match(/.{30}(For me|foryou|Tuned to you).{30}/)?.[0]}`);
     assert.ok(!/aria-pressed/.test(html), `${where}: cuisine chips are back`);
     assert.ok(!/>Edit</.test(html), `${where}: the Edit button is back`);
-    assert.ok(/Reset my taste/.test(html), `${where}: no text reset`);
+    assert.ok(!/Reset my taste/.test(html), `${where}: the text reset is back`);
     assert.ok(/Been here/.test(html) && /Not for me/.test(html), `${where}: a pick has lost its buttons`);
     n++;
   }
