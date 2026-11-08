@@ -14,7 +14,10 @@
  * that field and the checks that read it.
  */
 export const FOR_ME_USER_IDS: ReadonlySet<string> = new Set([
+  /* Calvin Lensink */
   "940561ca-05c8-4010-b8a9-f397235378b9",
+  /* Carson Brassell */
+  "0c39f913-fa39-4fdf-b2d6-486c027cebdc",
 ]);
 
 /** Whether the account with this id is on the list. Signed out is never. */
