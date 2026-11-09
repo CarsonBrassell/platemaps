@@ -1991,6 +1991,58 @@ export async function getCommentContext(
 }
 
 /**
+ * Deletes a comment and every reply under it (the `parent_id` FK cascades),
+ * and takes back what they paid: the `comment:<id>` award to the post's author
+ * and the `comment-upvote:<id>:<voter>` awards to each comment's author. Same
+ * reasoning as `reversePostPoints`: points must die with what earned them.
+ * Read before the DELETE, because the reply ids go with the cascade.
+ * Returns the post id it was on, or null when the comment was already gone.
+ */
+export async function deleteComment(commentId: string): Promise<string | null> {
+  const ids = (await sql`
+    WITH RECURSIVE thread AS (
+      SELECT id, post_id FROM comments WHERE id = ${commentId}
+      UNION ALL
+      SELECT c.id, c.post_id FROM comments c JOIN thread t ON c.parent_id = t.id
+    )
+    SELECT id, post_id FROM thread
+  `) as { id: string; post_id: string }[];
+  if (ids.length === 0) return null;
+  const commentIds = ids.map((r) => r.id);
+
+  const reversed = (await sql`
+    DELETE FROM point_events
+    WHERE reason IN (SELECT 'comment:' || x FROM unnest(${commentIds}::text[]) AS x)
+       OR EXISTS (
+         SELECT 1 FROM unnest(${commentIds}::text[]) AS x
+         WHERE point_events.reason LIKE 'comment-upvote:' || x || ':%'
+       )
+    RETURNING user_id, amount, to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM') AS month
+  `) as { user_id: string; amount: number; month: string }[];
+
+  const monthKey = currentMonthKey();
+  const byUser = new Map<string, { total: number; thisMonth: number }>();
+  for (const r of reversed) {
+    const t = byUser.get(r.user_id) ?? { total: 0, thisMonth: 0 };
+    t.total += Number(r.amount);
+    if (r.month === monthKey) t.thisMonth += Number(r.amount);
+    byUser.set(r.user_id, t);
+  }
+  for (const [userId, t] of byUser) {
+    await sql`
+      UPDATE users
+      SET points = GREATEST(points - ${t.total}, 0),
+          monthly_points = CASE WHEN monthly_points_month = ${monthKey}
+            THEN GREATEST(monthly_points - ${t.thisMonth}, 0) ELSE monthly_points END
+      WHERE id = ${userId}
+    `;
+  }
+
+  await sql`DELETE FROM comments WHERE id = ${commentId}`;
+  return ids[0].post_id;
+}
+
+/**
  * A comment's vote. Same three-state contract as castVote — pressing the
  * direction you already hold clears it, the other one switches sides — and the
  * same two-table shape, so the counts can't be confused with each other.

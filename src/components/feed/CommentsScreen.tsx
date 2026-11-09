@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReportButton } from "./ReportButton";
+import { AdminDeleteButton } from "./AdminDeleteButton";
 import { signInPathFor } from "@/lib/signInGate";
 import { Dialog } from "./Dialog";
 import { Composer } from "./Composer";
@@ -332,6 +333,9 @@ function CommentNode({
   reactPoints: Record<string, number>;
 }) {
   const { comment, replies } = node;
+  /* Gone after an admin delete. Its replies are this node's children, so
+     they leave with it, as they do on the server. */
+  const [removed, setRemoved] = useState(false);
   const isCollapsed = collapsed.has(comment.id);
   const hidden = isCollapsed ? countReplies(node) : 0;
   const handle = handleFor(comment.authorName);
@@ -343,6 +347,8 @@ function CommentNode({
   const toggleLabel = isCollapsed
     ? `Expand ${handle}'s comment`
     : `Collapse ${handle}'s comment`;
+
+  if (removed) return null;
 
   return (
     <div className="min-w-0">
@@ -423,6 +429,12 @@ function CommentNode({
                 authorId={comment.userId}
                 currentUserId={currentUserId}
                 className="min-h-11 rounded-full px-2 font-mono text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+              />
+
+              <AdminDeleteButton
+                kind="comment"
+                targetId={comment.id}
+                onDeleted={() => setRemoved(true)}
               />
             </div>
 

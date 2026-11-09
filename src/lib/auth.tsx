@@ -25,6 +25,8 @@ type Account = {
   tourSeen: boolean;
   /** Set only for the accounts that get the dish picks. Mirrors AccountJson. */
   forMe?: true;
+  /** Set only for admin accounts (lib/adminGate.ts). Mirrors AccountJson. */
+  admin?: true;
 };
 
 type AuthContextValue = {
@@ -363,5 +365,15 @@ export function useAuth() {
  */
 export function useForMeAccess(): boolean {
   const flagged = useAuth().account?.forMe === true;
+  return useHydrated() && flagged;
+}
+
+/**
+ * Whether this viewer may delete anyone's post or comment (lib/adminGate.ts).
+ * Hydration-gated for the same reason as `useForMeAccess`. Display only: the
+ * DELETE routes check the session's id themselves.
+ */
+export function useAdminAccess(): boolean {
+  const flagged = useAuth().account?.admin === true;
   return useHydrated() && flagged;
 }

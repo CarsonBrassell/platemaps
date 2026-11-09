@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReportButton } from "@/components/feed/ReportButton";
+import { AdminDeleteButton } from "@/components/feed/AdminDeleteButton";
 import { signInPathFor } from "@/lib/signInGate";
 import { Composer } from "@/components/feed/Composer";
 import { VotePair, type VoteDirection } from "@/components/feed/PostActions";
@@ -317,6 +318,8 @@ export function ShortPostRow({
   const [open, setOpen] = useState(false);
   /* Which comment's inline Composer is showing, if any. One at a time. */
   const [replyTo, setReplyTo] = useState<string | null>(null);
+  /* Gone after an admin delete (lib/adminGate.ts). */
+  const [removed, setRemoved] = useState(false);
 
   const myVote: VoteDirection | null = post.upvotedByMe
     ? "up"
@@ -344,6 +347,8 @@ export function ShortPostRow({
       fn(...args);
     };
   }
+
+  if (removed) return null;
 
   return (
     /* The ring is the feed card's — `ring-2 ring-pm-orange` — so arriving from
@@ -442,6 +447,11 @@ export function ShortPostRow({
           >
             {count === 0 ? "Reply" : `${count} ${count === 1 ? "reply" : "replies"}`}
           </button>
+          <AdminDeleteButton
+            kind="post"
+            targetId={post.id}
+            onDeleted={() => setRemoved(true)}
+          />
           <span className="ml-auto shrink-0 font-mono text-xs text-zinc-500">
             {relativeTime(post.createdAt)}
           </span>
@@ -519,6 +529,9 @@ function CommentRow({
   const { comment, replies } = node;
   const open = replyTo === comment.id;
   const { avatarBg } = avatarPalette(comment.authorName);
+  /* Gone after an admin delete, replies with it, as on the server. */
+  const [removed, setRemoved] = useState(false);
+  if (removed) return null;
 
   return (
     <li>
@@ -573,6 +586,11 @@ function CommentRow({
               authorId={comment.userId}
               currentUserId={currentUserId}
               className="min-h-11 rounded-full px-2 font-mono text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            />
+            <AdminDeleteButton
+              kind="comment"
+              targetId={comment.id}
+              onDeleted={() => setRemoved(true)}
             />
           </div>
         </div>

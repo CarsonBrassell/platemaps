@@ -14,6 +14,7 @@ import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon, CloseIcon } from "@/componen
 import { relativeTime } from "@/lib/format";
 import { vibeChip } from "@/data/reviewScales";
 import type { Post } from "@/components/feed/types";
+import { useAdminAccess } from "@/lib/auth";
 import { ReportSheet } from "@/components/feed/ReportSheet";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 
@@ -266,6 +267,9 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
   const trending = props.surface === "discover" && props.trending;
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const admin = useAdminAccess();
+  /** Second step of the admin's delete. Reset whenever the menu toggles. */
+  const [adminConfirm, setAdminConfirm] = useState(false);
   /*
    * Which way the options menu opens, decided per tap.
    *
@@ -790,8 +794,9 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                  safe here, it just flips a little earlier than it must. */
               if (!menuOpen) {
                 const below = window.innerHeight - e.currentTarget.getBoundingClientRect().bottom;
-                setDropUp(below < 176);
+                setDropUp(below < (admin ? 224 : 176));
               }
+              setAdminConfirm(false);
               setMenuOpen((o) => !o);
             }}
             aria-label="Post options"
@@ -876,6 +881,25 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                     <CloseIcon className="h-4 w-4 shrink-0" />
                     Block {handleFor(post.authorName)}
                   </button>
+                  {admin && (
+                    /* Admin only (lib/adminGate.ts). Two taps, because
+                       this is someone else's post and it is not undoable. */
+                    <button
+                      role="menuitem"
+                      onClick={() => {
+                        if (!adminConfirm) {
+                          setAdminConfirm(true);
+                          return;
+                        }
+                        setMenuOpen(false);
+                        setStatus("deleted");
+                        onDelete(post.id);
+                      }}
+                      className="flex min-h-11 w-full items-center gap-2 rounded-lg px-3 text-left text-sm font-medium text-red-700"
+                    >
+                      {adminConfirm ? "Delete for good" : "Delete post (admin)"}
+                    </button>
+                  )}
                 </>
               )}
             </div>

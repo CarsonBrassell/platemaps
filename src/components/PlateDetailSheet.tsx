@@ -16,6 +16,7 @@ import {
 } from "@/lib/format";
 import { VotePair, type VoteDirection } from "@/components/feed/PostActions";
 import { ReportButton } from "@/components/feed/ReportButton";
+import { AdminDeleteButton } from "@/components/feed/AdminDeleteButton";
 import { useAuth } from "@/lib/auth";
 import { PostOptionsMenu } from "@/components/PostOptionsMenu";
 import { askForPushInContext } from "@/lib/pushClient";
@@ -462,6 +463,9 @@ function CommentRow({
   const { comment, replies } = node;
   const open = replyTo === comment.id;
   const { account } = useAuth();
+  /* Gone after an admin delete, replies with it, as on the server. */
+  const [removed, setRemoved] = useState(false);
+  if (removed) return null;
 
   return (
     <li>
@@ -521,6 +525,11 @@ function CommentRow({
                 className="min-h-11 rounded-full px-2 font-mono text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
               />
             )}
+            <AdminDeleteButton
+              kind="comment"
+              targetId={comment.id}
+              onDeleted={() => setRemoved(true)}
+            />
           </div>
         </div>
       </div>

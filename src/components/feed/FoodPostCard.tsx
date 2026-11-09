@@ -16,6 +16,7 @@ import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import { vibeChip } from "@/data/reviewScales";
 import { ReportSheet } from "@/components/feed/ReportSheet";
 import type { Post } from "./types";
+import { useAdminAccess } from "@/lib/auth";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 /** Handle shown next to the avatar — "Maya Ellis" reads as "mayaellis". */
@@ -159,6 +160,9 @@ export function FoodPostCard(props: FoodPostCardProps) {
   const trending = props.surface === "discover" && props.trending;
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const admin = useAdminAccess();
+  /** Second step of the admin's delete. Reset whenever the menu toggles. */
+  const [adminConfirm, setAdminConfirm] = useState(false);
   /* The reason sheet. Separate from `status` because opening it is not the
      same as having reported — only a 200 from /api/reports sets that. */
   const [reporting, setReporting] = useState(false);
@@ -694,7 +698,10 @@ export function FoodPostCard(props: FoodPostCardProps) {
         <div ref={menuRef} className="relative shrink-0">
           <button
             type="button"
-            onClick={() => setMenuOpen((o) => !o)}
+            onClick={() => {
+              setAdminConfirm(false);
+              setMenuOpen((o) => !o);
+            }}
             aria-label="Post options"
             aria-expanded={menuOpen}
             aria-haspopup="menu"
@@ -758,6 +765,25 @@ export function FoodPostCard(props: FoodPostCardProps) {
                     <CloseIcon className="h-4 w-4 shrink-0" />
                     Block {handleFor(post.authorName)}
                   </button>
+                  {admin && (
+                    /* Admin only (lib/adminGate.ts). Two taps, because
+                       this is someone else's post and it is not undoable. */
+                    <button
+                      role="menuitem"
+                      onClick={() => {
+                        if (!adminConfirm) {
+                          setAdminConfirm(true);
+                          return;
+                        }
+                        setMenuOpen(false);
+                        setStatus("deleted");
+                        onDelete(post.id);
+                      }}
+                      className="flex min-h-11 w-full items-center gap-2 rounded-lg px-3 text-left text-sm font-medium text-red-700 transition-colors hover:bg-red-50"
+                    >
+                      {adminConfirm ? "Delete for good" : "Delete post (admin)"}
+                    </button>
+                  )}
                 </>
               )}
             </div>

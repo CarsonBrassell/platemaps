@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/session";
 import { limitOrReject } from "@/lib/rateLimit";
 import { cachedJson } from "@/lib/httpCache";
 import { invalidateRestaurantPage } from "@/lib/restaurantPage";
+import { isAdminUser } from "@/lib/adminGate";
 
 /**
  * A single post by id, for the case a deep link (a share, or a bubble on the
@@ -48,7 +49,8 @@ export async function DELETE(
   if (!post) {
     return NextResponse.json({ error: "Post not found." }, { status: 404 });
   }
-  if (post.userId !== user.id) {
+  // An admin (lib/adminGate.ts) may delete anyone's post, by session id.
+  if (post.userId !== user.id && !isAdminUser(user.id)) {
     return NextResponse.json(
       { error: "You can only delete your own posts." },
       { status: 403 }

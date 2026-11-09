@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { UPVOTE_MILESTONES } from "@/lib/points";
 import { PLATES_KEPT, ShowAllToggle, useFoldedList } from "@/components/ShowAllToggle";
 import { ChatIcon } from "@/components/icons";
+import { useAdminAccess } from "@/lib/auth";
 import { postedDate } from "@/lib/format";
 import { packBy } from "@/lib/photoShape";
 import { orderForCollage, type CollagePlate } from "@/components/feed/MealCollage";
@@ -1157,6 +1158,19 @@ export function PublicProfilePlates({ posts: initialPosts }: { posts: ShelfPost[
   const [openId, setOpenId] = useState<string | null>(null);
   const openPost = openId ? (posts.find((p) => p.id === openId) ?? null) : null;
   const plates = useFoldedList(posts, PLATES_KEPT);
+  /* Someone else's profile, so the sheet only offers delete to an admin
+     (lib/adminGate.ts); the route checks the session id regardless. */
+  const admin = useAdminAccess();
+  async function adminDelete(postId: string) {
+    const snapshot = posts;
+    setPosts((prev) => prev.filter((p) => p.id !== postId));
+    try {
+      const res = await fetch(`/api/posts/${postId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("failed");
+    } catch {
+      setPosts(snapshot);
+    }
+  }
 
   if (posts.length === 0) {
     return (
@@ -1190,6 +1204,7 @@ export function PublicProfilePlates({ posts: initialPosts }: { posts: ShelfPost[
         <PlateDetailSheet
           post={openPost}
           onClose={() => setOpenId(null)}
+          onDelete={admin ? () => void adminDelete(openPost.id) : undefined}
           onCommentAdded={(comment) =>
             setPosts((prev) =>
               prev.map((p) =>

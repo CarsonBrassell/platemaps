@@ -1,5 +1,6 @@
 import type { User } from "@/lib/db";
 import { isForMeUser } from "@/lib/forMeGate";
+import { isAdminUser } from "@/lib/adminGate";
 
 /**
  * The account object the client is allowed to see.
@@ -50,6 +51,12 @@ export type AccountJson = {
    * their account JSON is what it was before the feature.
    */
   forMe?: true;
+  /**
+   * Present, and `true`, only for lib/adminGate.ts' ids: shows the delete
+   * control on everyone's posts and comments. Display only; the routes check
+   * the id themselves.
+   */
+  admin?: true;
 };
 
 export function accountJson(user: User): AccountJson {
@@ -70,5 +77,6 @@ export function accountJson(user: User): AccountJson {
     photoNoticeSeen: user.photoNoticeSeen,
     tourSeen: user.tourSeen,
     ...(isForMeUser(user.id) ? { forMe: true as const } : {}),
+    ...(isAdminUser(user.id) ? { admin: true as const } : {}),
   };
 }
