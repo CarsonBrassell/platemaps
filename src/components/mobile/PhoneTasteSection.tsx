@@ -304,7 +304,14 @@ export function PhoneTasteSection({
             />
           ))}
         </div>
-        <div className="mt-2 flex gap-2 px-4">
+        {/* Three 170px cards are ~560px, wider than any phone, and with nothing
+            clipping them they widen .pm-phone-content itself (overflow-y: auto
+            makes its x axis scroll too), so a sideways swipe during loading moves
+            the whole screen. `overflow-hidden`, as the web skeleton has, for the
+            gated accounts only for now; everyone else keeps origin/main's row.
+            The gate opens once the account resolves, which is before the taste
+            request starts, so it covers the request but not the frames before. */}
+        <div className={access ? "mt-2 flex gap-2 overflow-hidden px-4" : "mt-2 flex gap-2 px-4"}>
           {[0, 1, 2].map((i) => (
             <div
               key={i}

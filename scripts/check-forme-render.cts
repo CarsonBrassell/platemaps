@@ -160,6 +160,31 @@ for (const [label, Component] of [["web", TasteSection], ["phone", PhoneTasteSec
 }
 console.log(`forme:check  render parity ok (${n - 8} section renders match origin/main's button classes; the dish-pick accounts have no pill, chips or Edit)`);
 
+// Phone loading skeleton: the card row is clipped for the gated accounts once hydrated (the
+// unclipped ~560px row widened the whole screen), and is origin/main's row for everyone else
+// and in the server/hydrating frame. Inlined from main (b5a10df) on purpose, as above.
+{
+  const MAIN_SKELETON_ROW = "mt-2 flex gap-2 px-4";
+  const rowOf = (html: string) => {
+    assert.ok(/aria-busy="true"/.test(html), "the loading skeleton rendered");
+    const rows = [...html.matchAll(/<div class="([^"]*)"><div class="h-\[260px\] w-\[170px\]/g)].map((m) => m[1]);
+    assert.equal(rows.length, 1, "one skeleton card row");
+    return rows[0];
+  };
+  const loading = (value: any) => {
+    S.taste = { ...taste(), status: "loading" };
+    return renderToStaticMarkup(withAuth(value, React.createElement(PhoneTasteSection, { cuisines: ["Thai"] })));
+  };
+  for (const [name, viewer] of Object.entries(VIEWERS)) {
+    assert.equal(rowOf(loading(viewer)), MAIN_SKELETON_ROW, `phone loading ${name}: the skeleton row differs from origin/main`);
+  }
+  assert.equal(rowOf(loading(FOR_ME)), "mt-2 flex gap-2 overflow-hidden px-4", "phone loading dish picks: the skeleton row must clip its cards");
+  S.hydrated = false;
+  assert.equal(rowOf(loading(FOR_ME)), MAIN_SKELETON_ROW, "phone loading dish picks hydrating: differs from the server frame, which is a hydration error");
+  S.hydrated = true;
+  console.log("forme:check  phone loading row ok (clipped for the gated accounts once hydrated, origin/main's for everyone else and while hydrating)");
+}
+
 // Our picks: a distance on each promoted place when the caller hands it the reader's position, and
 // the markup it always was when it does not (the caller passes null for every account but the gated ones).
 {
