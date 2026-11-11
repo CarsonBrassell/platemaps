@@ -20,6 +20,7 @@ import {
 } from "@/lib/flavor";
 import { milesBetween } from "@/lib/geo";
 import type { PlateScore } from "@/lib/plateScore";
+import { evidenceOf } from "@/lib/tasteEvidence";
 import {
   budgetOf,
   budgetPoints,
@@ -44,10 +45,11 @@ import {
  * private, uncached response.
  *
  * What counts as the viewer's taste is what they chose to post: the dish they
- * named, the restaurant, its cuisine, the plate's price, and (only to weigh
- * their own dishes against each other) the rating they gave it: their highest-
- * rated dishes lead and their lowest still count, a little. Likes, hearts,
- * upvotes and saves never enter, and a missing input is neutral.
+ * named, the restaurant, its cuisine, the plate's price, and the rating they
+ * gave it, read against what they themselves usually give: their highest-rated
+ * dishes lead, a middling one still counts a little, and one rated low counts
+ * against the dishes like it. Likes, hearts, upvotes and saves never enter,
+ * and a missing input is neutral.
  *
  * How a place scores:
  * - Each posted dish is a seed. Its terms (words and word pairs from the dish
@@ -108,14 +110,20 @@ export const DISH_TASTE = {
   perDrinks: 2,
   textChars: 84,
   shortChars: 72,
-  /** A rating under this (of 100) is a verdict against the dish: that post seeds nothing. */
-  dropBelow: 50,
-  /** The weight of the viewer's lowest-rated dish; their highest weighs 1. */
+  /** The weight of the viewer's weakest liked dish; their strongest evidence weighs 1. */
   ratingFloor: 0.4,
-  /** In the final order a pick weighs `score` x (this + the rest x its seed's rating weight). */
+  /** In the final order a pick weighs `score` x (this + the rest x its seed's evidence weight). */
   orderFloor: 0.3,
-  /** The rating weight is raised to this in the final order, so a 90+ dish visibly leads. */
+  /** The evidence weight is raised to this in the final order, so a dish they loved and went back for visibly leads. */
   ratingPow: 1.5,
+  /** A pick that matches a dish they rated low loses up to this share of its score. */
+  againstShade: 0.5,
+  /** The strength of a counts-against post (its signed evidence, recency applied) that reads as full. */
+  againstFull: 0.6,
+  /** A pick in the same dish family as a dish they rated low counts this much of a same-dish match. */
+  againstFam: 0.6,
+  /** The share of a low-rated dish's name terms a line must contain to count as the same dish. */
+  againstSameMin: 0.5,
   /** Dish families (pizza, sushi, ...): the profile evidence a place needs, and how a pick is capped. */
   famSpecialist: 0.85,
   famServes: 0.5,
@@ -919,7 +927,7 @@ type Seed = {
   kind: number;
   /** Recency weight, `weightFloor` to 1. */
   w: number;
-  /** The viewer's own rating weight, `ratingFloor` (their lowest) to 1 (their highest). */
+  /** How much they liked it on their own scale, carried by how often they went back: `ratingFloor` (weakest liked) to 1 (strongest evidence). */
   rw: number;
   /** term -> weight (1 for the dish name, descWeight for its description, styleWeight for a style). */
   terms: Map<string, number>;
@@ -945,41 +953,6 @@ const DAY_MS = 86_400_000;
 function recency(at: number, now: number): number {
   const days = Math.max(0, (now - at) / DAY_MS);
   return Math.max(DISH_TASTE.weightFloor, 0.5 ** (days / DISH_TASTE.halfLifeDays));
-}
-
-/**
- * How much each of the viewer's posts counts, by their own rating relative to
- * their own other ratings: `ratingFloor` for their lowest-rated dish up to 1
- * for their highest, a blend of rank and distance so it is smooth and
- * monotone. Unrated posts get the median of the rated ones; with no rating
- * spread at all everything is 1. A rating under `dropBelow` is a verdict
- * against the dish and weighs 0 (the post seeds nothing). Aligned with `posts`.
- */
-export function postWeights(posts: readonly { rating?: number | null }[]): number[] {
-  const c = DISH_TASTE;
-  const rated: number[] = [];
-  for (const p of posts) {
-    const r = p.rating;
-    if (typeof r === "number" && Number.isFinite(r) && r >= c.dropBelow) rated.push(r);
-  }
-  const lo = Math.min(...rated);
-  const hi = Math.max(...rated);
-  const n = rated.length;
-  const weigh = (r: number): number => {
-    if (n === 0 || hi === lo) return 1;
-    const below = rated.filter((x) => x < r).length;
-    const same = rated.filter((x) => x === r).length;
-    const rank = n > 1 ? (below + (same - 1) / 2) / (n - 1) : 0.5;
-    const lin = (r - lo) / (hi - lo);
-    return c.ratingFloor + (1 - c.ratingFloor) * (0.5 * rank + 0.5 * lin);
-  };
-  const all = rated.map(weigh).sort((a, b) => a - b);
-  const median = all.length === 0 ? 1 : (all[(all.length - 1) >> 1] + all[all.length >> 1]) / 2;
-  return posts.map((p) => {
-    const r = p.rating;
-    if (typeof r !== "number" || !Number.isFinite(r)) return median;
-    return r < c.dropBelow ? 0 : weigh(r);
-  });
 }
 
 /* ---------- the head noun ---------- */
@@ -1031,7 +1004,7 @@ type Hit = {
   seed: number;
   /** The match on its own, the part the gate reads. */
   v: number;
-  /** `v` carried by the weight of the viewer's own rating, the part the score reads. */
+  /** `v` carried by how strongly they liked the dish it matches (rating and repeat visits), the part the score reads. */
   vw: number;
   item: string;
   price: number | null;
@@ -1349,7 +1322,12 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   const { index, restaurants, posts, prefs, now } = input;
   const byId = new Map(restaurants.map((r) => [r.id, r]));
   const idfOf = (term: string): number => index.idf.get(termId(term)) ?? 0;
-  const pw = postWeights(posts);
+  // Signed evidence per post: positive when liked on their own scale (more so with repeat visits), negative when rated low.
+  // pw: 0 seeds nothing, otherwise `ratingFloor`..1 with their strongest evidence at 1.
+  const ev = evidenceOf(posts);
+  const pw = ev.e.map((e) => (e > 0 && ev.top > 0 ? c.ratingFloor + (1 - c.ratingFloor) * (e / ev.top) : 0));
+  /** A rating about value, service or ambiance is not a rating of the food: it counts this much of one that is. */
+  const foodShare = (p: ViewerPost): number => (/^(value|service|ambian)/i.test(p.vibe ?? "") ? c.flavorVibeFactor : 1);
 
   /** Lends a seed its place's styles and dish types ("ribs", "bbq") for what its own words cannot say. */
   const borrowStyles = (s: Seed, minIdf: number, clear: boolean): boolean => {
@@ -1394,8 +1372,11 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     return k;
   };
 
-  /** The families a post is in: its dish's, or (no dish, or a name that says nothing) the one its place specialises in. */
-  const famsOf = (dishName: string | null, rid: number | undefined): SeedFam[] => {
+  /**
+   * The families a post is in: its dish's, or (no dish, or a name that says nothing) the one its place specialises in.
+   * `nameOnly` keeps to what the dish's own name says.
+   */
+  const famsOf = (dishName: string | null, rid: number | undefined, nameOnly = false): SeedFam[] => {
     const spec = rid === undefined ? undefined : index.famSpec.get(rid);
     const placeTags = rid === undefined ? undefined : index.tags.get(rid);
     const dish = dishName ? foldM(dishName) : "";
@@ -1410,7 +1391,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       if (dish && f.dish.test(dish)) add(f);
       else if (dish && f.weak?.test(dish) && (spec?.get(f.id) ?? 0) >= c.famServes) add(f);
     }
-    if (out.length === 0 && spec && (!dishName || headOf(dishName).length === 0)) {
+    if (!nameOnly && out.length === 0 && spec && (!dishName || headOf(dishName).length === 0)) {
       let best: Family | null = null;
       let bv = 0.89;
       for (const f of FAMILIES) {
@@ -1504,7 +1485,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
    */
   const flavorSeedOf = (p: ViewerPost, pi: number, id: number, seed: Seed): FlavorSeed | null => {
     const rating = p.rating;
-    if (!p.dishName || typeof rating !== "number" || !Number.isFinite(rating) || rating < c.dropBelow || seed.kind === DRINK) return null;
+    if (!p.dishName || typeof rating !== "number" || !Number.isFinite(rating) || pw[pi] === 0 || seed.kind === DRINK) return null;
     const asian = seed.rid !== undefined && index.asian.has(seed.rid);
     let mask = tagDish(p.dishName, p.dishDescription, p.dishSection, asian);
     let said = !!p.dishDescription?.trim();
@@ -1534,17 +1515,63 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       id,
       mask,
       pw: pw[pi],
-      // A rating about value, service or ambiance is not a rating of the food.
-      c: /^(value|service|ambian)/i.test(p.vibe ?? "") ? c.flavorVibeFactor : 1,
+      c: foodShare(p),
       r: Math.max(c.flavorRecencyFloor, recency(p.at, now)),
       rating,
     };
   };
 
+  /** A term that is only the place's own name ("Pho Hoa" for a pho dish at Pho Hoa) says nothing about the dish. */
+  const usableAt = (placeName: string) => {
+    const own = new Set(foldM(placeName).split(" ").map(stem));
+    return (x: string) => idfOf(x) > 0 && !x.split(" ").every((w) => own.has(w));
+  };
+  /** The terms of a dish's own name that a match must share. */
+  const coreOf = (dishName: string, usable: (x: string) => boolean): Set<string> => new Set(termsOf(dishName).filter(usable));
+  /** The dish's head noun and kin; empty for a head rare enough to be a brand's own word, which the term match already pins. */
+  const headFor = (dishName: string): string[] => {
+    const h = headOf(dishName);
+    return h.length > 0 && idfOf(h[0]) >= c.loneIdf ? [] : h;
+  };
+  /** The terms of a menu line, as the index reads them, kept per line. */
+  const lineTermSets = new Map<string, Set<string>>();
+  const termSetOf = (line: string): Set<string> => {
+    let s = lineTermSets.get(line);
+    if (!s) lineTermSets.set(line, (s = new Set(termsOf(line))));
+    return s;
+  };
+  /** What the viewer rated low: a post that seeds nothing but shades picks that look like it. */
+  const against: { core: Set<string>; head: readonly string[]; fams: string[]; n: number }[] = [];
+  /** How much of a low-rated dish's name a line shares (0..1); 0 when the line is a different dish. */
+  const sameDish = (a: { core: Set<string>; head: readonly string[] }, line: string): number => {
+    if (a.core.size === 0 || (a.head.length > 0 && !namesHead(line, a.head))) return 0;
+    const lineTerms = termSetOf(line);
+    let all = 0;
+    let hit = 0;
+    for (const x of a.core) {
+      const w = idfOf(x) || 1;
+      all += w;
+      if (lineTerms.has(x)) hit += w;
+    }
+    return hit / all >= c.againstSameMin ? hit / all : 0;
+  };
   const seeds: Seed[] = [];
   posts.forEach((p, pi) => {
-    // Rated under `dropBelow`: nothing to seed from (the place still counts below).
-    if (pw[pi] === 0) return;
+    // No evidence in its favour: nothing to seed from (the place still counts below). A low one counts against.
+    if (pw[pi] === 0) {
+      // A low rating with no dish named is about the place: it counts against the place's cuisine below, not a dish.
+      if (ev.e[pi] < 0 && p.dishName) {
+        const place = byId.get(p.restaurantId);
+        against.push({
+          core: coreOf(p.dishName, usableAt(place?.name ?? "")),
+          head: headFor(p.dishName),
+          // Only the families the dish's own name states: the place's specialty is not what they rated low.
+          fams: famsOf(p.dishName, index.ridIndex.get(p.restaurantId), true).map((f) => f.id),
+          n: Math.min(1, (-ev.e[pi] * recency(p.at, now) * foodShare(p)) / c.againstFull),
+        });
+      }
+      return;
+    }
     const place = byId.get(p.restaurantId);
     const rid = index.ridIndex.get(p.restaurantId);
     const fams = famsOf(p.dishName, rid);
@@ -1571,21 +1598,15 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       return;
     }
     const name = foldM(p.dishName);
-    const own = new Set(foldM(place?.name ?? "").split(" ").map(stem));
-    // A term that is only the place's own name ("Pho Hoa" for a pho dish at Pho Hoa) says nothing about the dish.
-    const usable = (x: string) => idfOf(x) > 0 && !x.split(" ").every((w) => own.has(w));
+    const usable = usableAt(place?.name ?? "");
     const terms = new Map<string, number>();
     const desc = termsOf(p.dishDescription ?? "")
       .filter(usable)
       .sort((a, b) => idfOf(b) - idfOf(a))
       .slice(0, 4);
     for (const x of desc) terms.set(x, c.descWeight);
-    const core = new Set<string>();
-    for (const x of termsOf(p.dishName)) {
-      if (!usable(x)) continue;
-      terms.set(x, 1);
-      core.add(x);
-    }
+    const core = coreOf(p.dishName, usable);
+    for (const x of core) terms.set(x, 1);
     let strength = 0;
     for (const [x, w] of terms) strength += idfOf(x) * w;
     const seed: Seed = {
@@ -1598,7 +1619,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       terms,
       core,
       placeLevel: false,
-      head: ((h) => (h.length > 0 && idfOf(h[0]) >= c.loneIdf ? [] : h))(headOf(p.dishName)),
+      head: headFor(p.dishName),
       words: new Set(name.split(" ").filter(Boolean).map(wordOf)),
       chain: place ? chainKeyM(place) : "",
       fams,
@@ -1611,6 +1632,15 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     if (fs) fSeeds.push(fs);
   });
   if (seeds.filter((s) => !s.famOnly).length < c.minSeeds) return null;
+  // A family they also have a liked dish in is not what they rated low, that one dish was: the family shade is
+  // kept for families where everything they posted counts against.
+  const likedFams = new Set<string>();
+  for (const s of seeds) for (const f of s.fams) likedFams.add(f.id);
+  for (const a of against) a.fams = a.fams.filter((f) => !likedFams.has(f));
+  // The same goes for the dish itself: one they also rated well somewhere else is not a dish they dislike.
+  for (const a of against) {
+    if (seeds.some((s) => s.dish !== "" && sameDish(a, s.dish) > 0)) a.core = new Set();
+  }
 
   // The flavor profile. Quiet (no effect at all) unless something they like is both evidenced and rare.
   const prof = buildFlavorProfile(fSeeds, index.flavorBase, {
@@ -1721,34 +1751,42 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     idfOf(x) * (s.terms.get(x) ?? 0) * (1 + 0.4 * Math.min(2, (shared.get(x) ?? 0) - s.w));
 
   // Where the viewer posts: places, weights, cuisines, range and budget.
-  type Visit = { last: number; days: Set<string>; rw: number };
+  type Visit = { last: number };
   const visits = new Map<string, Visit>();
-  posts.forEach((p, pi) => {
-    const v = visits.get(p.restaurantId) ?? { last: 0, days: new Set<string>(), rw: 0 };
+  posts.forEach((p) => {
+    const v = visits.get(p.restaurantId) ?? { last: 0 };
     v.last = Math.max(v.last, p.at);
-    v.days.add(new Date(p.at).toLocaleDateString("en-CA", { timeZone: "America/Los_Angeles" }));
-    // The place counts for cuisine by how highly they rated what they had there.
-    v.rw = Math.max(v.rw, pw[pi]);
     visits.set(p.restaurantId, v);
   });
   const cuisineWeight = new Map<string, number>();
-  // Cuisines of places he actually posted at; secondary tags only tint the score.
+  // What a place they rated low takes off its cuisine. It never adds to the total.
+  const cuisineAgainst = new Map<string, number>();
+  // Cuisines of places he actually posted at and liked; secondary tags only tint the score.
   const eaten = new Set<string>();
   let cuisineTotal = 0;
   const bump = (cuisine: string, w: number) => {
     cuisineWeight.set(cuisine, (cuisineWeight.get(cuisine) ?? 0) + w);
     cuisineTotal += w;
   };
+  const bumpAgainst = (cuisine: string, w: number) => cuisineAgainst.set(cuisine, (cuisineAgainst.get(cuisine) ?? 0) + w);
   for (const [id, v] of visits) {
     const r = byId.get(id);
-    if (!r?.cuisine || v.rw === 0) continue;
-    const w = recency(v.last, now) * Math.min(2, 1 + 0.5 * (v.days.size - 1)) * v.rw;
-    bump(r.cuisine, w);
-    eaten.add(r.cuisine);
-    for (const s of r.cuisineSecondary ?? []) bump(s, w * 0.4);
+    const pe = ev.places.get(id);
+    if (!r?.cuisine || !pe || pe.e === 0) continue;
+    const w = recency(v.last, now) * pe.e;
+    if (pe.e > 0) {
+      bump(r.cuisine, w);
+      eaten.add(r.cuisine);
+      for (const s of r.cuisineSecondary ?? []) bump(s, w * 0.4);
+    } else {
+      bumpAgainst(r.cuisine, -w);
+      for (const s of r.cuisineSecondary ?? []) bumpAgainst(s, -w * 0.4);
+    }
   }
   const cuisineAffinity = (cuisine: string | null): number =>
-    cuisine && cuisineTotal > 0 ? Math.min(1, (cuisineWeight.get(cuisine) ?? 0) / cuisineTotal / c.cuisineFull) : 0;
+    cuisine && cuisineTotal > 0
+      ? Math.min(1, Math.max(0, (cuisineWeight.get(cuisine) ?? 0) - (cuisineAgainst.get(cuisine) ?? 0)) / cuisineTotal / c.cuisineFull)
+      : 0;
 
   const plates = posts.map((p) => priceOf(p.price)).filter((v): v is number => v != null);
   const placeMedians: number[] = [];
@@ -2190,7 +2228,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     const h1 = wHits[0] ?? null;
     const h2 = h1 ? wHits.find((h) => h.seed !== h1.seed && h.item !== h1.item) : undefined;
     const M = Math.min(1, (h1?.vw ?? 0) + 0.25 * (h2?.vw ?? 0));
-    // The reason names the highest-rated of the dishes that really match.
+    // The reason names the best-liked of the dishes that really match.
     const svc = rid === undefined ? "" : (index.service.get(rid) ?? "");
     const barish = svc === "bar" || BAR_PLACE.test(foldM(r.cuisine ?? ""));
     // A bar or a brewpub is not where a dish family is looked for: those matches wait after the first picks, like bar bites.
@@ -2216,6 +2254,16 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     const Cc = cuisineAffinity(r.cuisine);
     const trust = c.reviewFloor + (1 - c.reviewFloor) * Math.min(1, (r.reviewCount ?? 0) / c.reviewFull);
     let score = g * trust * (100 * (c.wM * M * D + c.wC * Cc * D + c.wQ * Q) + bonus) * (namedInCaption(r.name) ? c.knownShade : 1) * (named?.flav?.only && (named.flav.kinds & ~KB.starter) === 0 ? c.oddShade : 1);
+    // A line that looks like a dish they rated low (the same dish, or the same family) counts for less.
+    if (named && named.item !== "" && against.length > 0) {
+      let worst = 0;
+      for (const a of against) {
+        let sim = sameDish(a, named.item);
+        if (named.fam !== undefined && a.fams.includes(named.fam)) sim = Math.max(sim, c.againstFam);
+        worst = Math.max(worst, a.n * sim);
+      }
+      score *= 1 - c.againstShade * worst;
+    }
     // A pick that stands on flavor alone is new to them when its cuisine or its dish family is one they have not
     // posted. It is one of the adventurous picks when it is also a sit-down meal of real quality, at a place that
     // does not specialise in something else (a sushi bar is not picked for its burger).
@@ -2269,11 +2317,11 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   const seedOf = (x: Cand) => (x.hit && !x.hit.flav?.only ? x.hit.seed : -1);
   const famOf = (x: Cand): string =>
     x.hit ? (x.hit.fam ?? (x.hit.flav?.only ? "" : (seeds[x.hit.seed].fams[0]?.id ?? ""))) : "";
-  // The viewer's own ratings lead the order: a pick from a dish they rated highly outranks a slightly better
-  // match from one they rated low, and a bar bite or a drink counts for less than a meal.
+  // How much they liked a dish, on their own scale and by how often they went back, leads the order: a pick from a
+  // dish they loved outranks a slightly better match from one they only liked, and a bar bite or a drink counts for less than a meal.
   const shade = [1, c.barShade, c.drinkShade];
-  // How the viewer rated the dish a pick is weighed by: a flavor reason is shown against their best dish of that
-  // flavor and kind, so that is the rating it stands on when it is higher than the dish the match started from.
+  // The evidence weight a pick is weighed by: a flavor reason is shown against their best dish of that
+  // flavor and kind, so that is the weight it stands on when it is higher than the dish the match started from.
   const rwOf = (h: Hit): number => {
     const fl = h.flav;
     const top = fl?.claim && !fl.cross ? seedsFor(fl.attr, fl.kinds)[0] : undefined;

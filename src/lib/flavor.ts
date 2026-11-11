@@ -450,7 +450,7 @@ export interface FlavorSeed {
   id: number;
   /** Packed flavor of the dish the user rated (menu text, sibling rows and caption merged). */
   mask: number;
-  /** The user's own rating weight (postWeights). */
+  /** How much this post counts as a like, 0..1 (scaled from its signed evidence, tasteEvidence.ts). */
   pw: number;
   /** 0.5 when the rating is not about the food (vibe Value, Service, Ambiance), else 1. */
   c: number;

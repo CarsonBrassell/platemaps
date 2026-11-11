@@ -20,7 +20,8 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { DISH_TASTE, buildDishIndex, clipWords, displayDish, passesFloor, postWeights, rankDishes, termsOf } from "../src/lib/dishTaste.ts";
+import { DISH_TASTE, buildDishIndex, clipWords, dishPickLog, displayDish, passesFloor, rankDishes, termsOf } from "../src/lib/dishTaste.ts";
+import { evidenceOf } from "../src/lib/tasteEvidence.ts";
 import {
   BIT_DEMOTED, BIT_DESSERT, FA, FLAVOR_ATTRS, N_FLAVOR, anchorAttr, buildFlavorProfile, claimsOf, flavorFit, gradeOf, mergeMasks,
   captionSours, nameEvidence, tagCaption, tagDish,
@@ -276,17 +277,21 @@ const RATED = [
   rated("hD", "Brisket Tacos", 40),
 ];
 
-ok("weights: smooth, monotone, floored, top about 2.5x the lowest; under 50 weighs nothing; unrated is the median", () => {
-  const w = postWeights([{ rating: 95 }, { rating: 60 }, { rating: 80 }, { rating: 40 }, { rating: null }, { rating: 70 }]);
-  assert.equal(w[3], 0, "under 50 is dropped");
-  assert.equal(w[0], 1, "the highest-rated weighs most");
-  assert.ok(Math.abs(w[1] - DISH_TASTE.ratingFloor) < 1e-9, "the lowest kept sits on the floor");
-  assert.ok(w[0] / w[1] >= 2 && w[0] / w[1] <= 3, "top is 2-3x the lowest");
+ok("evidence: only a low rating counts against; the rest are likes, the best-rated strongest; unrated reads as their average", () => {
+  const at = Date.UTC(2026, 0, 5);
+  const E = (ratings) => evidenceOf(ratings.map((rating, i) => ({ restaurantId: "e" + i, at, rating }))).e;
+  const w = E([95, 60, 80, 40, null, 70]);
+  assert.ok(w[3] < 0, "under 50 counts against");
+  assert.ok(w.every((x, i) => i === 3 || x > 0), "everything else is a like");
+  assert.equal(Math.max(...w), w[0], "the highest-rated weighs most");
   assert.ok(w[1] < w[5] && w[5] < w[2] && w[2] < w[0], "monotone");
-  const kept = [w[0], w[1], w[2], w[5]].sort((a, b) => a - b);
-  assert.equal(w[4], (kept[1] + kept[2]) / 2, "unrated gets the median");
-  assert.deepEqual(postWeights([{ rating: 70 }, { rating: 70 }]), [1, 1], "no spread, no preference");
-  assert.deepEqual(postWeights([{}, { rating: null }]), [1, 1], "nothing rated, all neutral");
+  assert.ok(w[1] < w[4] && w[4] < w[2], "unrated sits between their low and high likes");
+  const flat = E([70, 70]);
+  assert.ok(flat[0] > 0 && flat[0] === flat[1], "no spread, no preference");
+  const none = E([undefined, null]);
+  assert.ok(none[0] > 0 && none[0] === none[1], "nothing rated, all equal likes");
+  assert.ok(E([90, 90, 90, 90, 62])[4] < 0, "under 70 and well below their own usual counts against");
+  assert.ok(E([72, 70, 66, 64, 62])[4] > 0, "the same 62 from someone who rates everything about there is still a like");
 });
 
 ok("a high-rated seed outranks an equal match from a low-rated one", () => {
@@ -315,6 +320,44 @@ ok("a dish rated under 50 seeds nothing; an unrated one still does", () => {
   assert.ok(!picks.some((p) => /Brisket/.test(p.reason.text) && p.reason.kind === "dish"), "the 40-rated brisket seeds no dish pick");
   const unrated = RATED.map((p) => (p.dishName === "Hot Honey Chicken" ? { ...p, rating: null } : p));
   assert.ok(ids(rank2(unrated)).includes("c1"), "an unrated post still seeds");
+});
+
+ok("a dish rated low shades the lines that carry its name; a middling rating, or a liked copy of the dish, does not", () => {
+  const rank2 = W([
+    ["hA", "Sushi Uno", "Japanese", 4.5, [["California Roll"]]],
+    ["hB", "Noodle Tomo", "Japanese", 4.4, [["Mushroom Kimchi Ramen"]]],
+    ["hC", "Better Beans", "Coffee & Tea", 4.6, [["Banana Matcha", null, "Drinks"]]],
+    ["hD", "Sushi Stop", "Japanese", 4.5, [["Spicy Tuna Roll"], ["Garlic Edamame"]]],
+    ["hE", "Sushi Tres", "Japanese", 4.5, [["Spicy Tuna Roll"]]],
+    ["cX", "Roll House", "Japanese", 4.6, [["Spicy Tuna California Roll"]]],
+    ["cY", "Maki Bar", "Japanese", 4.6, [["California Roll Combo"]]],
+    ["cZ", "Ramen Lab", "Japanese", 4.6, [["Kimchi Ramen Bowl"]]],
+  ]);
+  const liked = [rated("hA", "California Roll", 95), rated("hB", "Mushroom Kimchi Ramen", 85), rated("hC", "Banana Matcha", 90)];
+  // Both lines stand on the liked California Roll; only cX's also carries the name of the other dish.
+  const scores = (extra) => {
+    const out = rank2([...liked, ...extra]);
+    const s = (id) => {
+      const p = out.find((q) => q.restaurant.id === id);
+      assert.ok(p && p.reason.kind === "dish", id + " is a dish pick");
+      return dishPickLog(p).score;
+    };
+    return { x: s("cX"), y: s("cY") };
+  };
+  const level = (s) => Math.abs(s.x - s.y) < 0.5;
+  // The control rates another dish at the same place just as low, so the place itself counts the same in both.
+  for (const low of [40, 62]) {
+    const other = scores([rated("hD", "Garlic Edamame", low)]);
+    const same = scores([rated("hD", "Spicy Tuna Roll", low)]);
+    assert.ok(level(other), "a " + low + " on another dish leaves the two lines level");
+    assert.ok(Math.abs(same.y - other.y) < 0.5, "the line without the low dish's name is untouched");
+    assert.ok(same.x < same.y * 0.8, "a " + low + " on the dish shades the line that carries its name");
+  }
+  assert.ok(level(scores([rated("hD", "Spicy Tuna Roll", 75)])), "a middling rating shades nothing");
+  assert.ok(
+    level(scores([rated("hD", "Spicy Tuna Roll", 40), rated("hE", "Spicy Tuna Roll", 92)])),
+    "a liked copy of the same dish lifts the shade",
+  );
 });
 
 ok("a match needs the dish's head noun, not a modifier alone", () => {
@@ -857,7 +900,8 @@ const advSpec = () => {
   spec.push(["p11", "Matcha Lab", "Coffee & Tea", 4.6, [["Banana Matcha Latte", null, "Drinks"]], 300]);
   return spec;
 };
-const advPosts = (r = [95, 85, 90, 70, 60]) => [
+// All five are likes: none is rated low enough, against their own average, to count against its dish.
+const advPosts = (r = [95, 85, 90, 75, 70]) => [
   rated("hA", "Hot Honey Chicken", r[0], { dishDescription: "fried thigh, hot honey, pickles" }),
   rated("hB", "Spicy Miso Ramen", r[1]),
   rated("hC", "Sriracha Honey Wings", r[2]),
@@ -901,6 +945,23 @@ ok("a few adventurous picks: 2-3 of the 12, spread, none in the first three, eac
   // The others are known territory: they stand on a dish they posted, not on flavor alone in a new cuisine.
   for (const p of out.filter((q) => !isNew(q))) assert.ok(!NEW_RE.test(p.reason.text));
   for (const p of out) assert.ok(p.reason.text.length <= DISH_TASTE.textChars && p.reason.short.length <= DISH_TASTE.shortChars, "the reason fits");
+});
+
+ok("a low-rated dish among the posts: its look-alikes leave the row, and the adventurous picks stay sound", () => {
+  const spec = advSpec();
+  const posts = advPosts([95, 85, 90, 70, 60]);
+  const out = FW(spec, [], 1200)(posts);
+  // The 60 sits well under what this viewer usually gives, so the brisket places stop being picks at all.
+  const brisket = spec.filter((s) => /^p/.test(s[0]) && /Brisket/.test(s[4][0][0])).map((s) => s[0]);
+  assert.equal(brisket.length, 3);
+  assert.ok(!ids(out).some((id) => brisket.includes(id)), "no place is picked for the dish they rated low");
+  assert.ok(!out.some((p) => /Brisket/.test(p.reason.text)), "and no reason cites it");
+  // With three fewer known-territory places the row runs short, and new cuisines fill what is left of it
+  // (the same row as when those three places are simply not on offer).
+  assert.ok(out.length >= DISH_TASTE.limit - 1, out.length + " picks");
+  const at = out.flatMap((p, i) => (isNew(p) ? [i] : []));
+  assert.ok(at.length >= 1 && at.every((x) => x >= 3), "adventurous picks remain, none in the first three");
+  checkNew(out, spec, posts, ADV_POSTED);
 });
 
 ok("the adventurous count scales with the row: none in a row of four, at most two in eight", () => {
@@ -1191,7 +1252,7 @@ ok("the floor holds on the fallback inside the gate, and nothing outside the gat
   const gate = s.indexOf("isForMeUser(user.id)");
   const floor = s.indexOf("result.picks.filter((p) => passesFloor(p.restaurant))");
   assert.ok(gate > 0 && floor > gate, "the cuisine fallback is floored only for the gated viewer, so everyone else keeps origin/main's picks");
-  assert.match(s, /import \{ passesFloor, rankDishes \} from "@\/lib\/dishTaste"/);
+  assert.match(s, /import \{ dishPickLog, passesFloor, rankDishes \} from "@\/lib\/dishTaste"/);
   // rankDishes is called from exactly one place: the gated block of this route.
   const callers = [];
   const walk = (dir) => {
