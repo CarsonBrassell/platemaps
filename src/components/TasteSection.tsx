@@ -9,6 +9,7 @@ import { TasteChips, TasteInvite, TasteSignUp } from "@/components/TasteChips";
 import { useForMeAccess } from "@/lib/auth";
 import type { Coords } from "@/lib/geo";
 import { qualityNote } from "@/lib/ratingDisplay";
+import { usePickLog } from "@/lib/usePickLog";
 import { useTaste, type TastePick } from "@/lib/useTaste";
 
 /**
@@ -76,6 +77,9 @@ export function TasteSection({
     if (wasRefreshing.current && !taste.refreshing) rowRef.current?.scrollTo({ left: 0 });
     wasRefreshing.current = taste.refreshing;
   }, [taste.refreshing]);
+
+  // Dish-level test only: which of these cards were really seen, and which was opened.
+  const { attach, handlers: pickHandlers } = usePickLog({ on: access, batch: taste.batch, ids: taste.picks.map((p) => p.restaurant.id), surface: "web" });
 
   if (taste.status === "loading") {
     return (
@@ -184,7 +188,7 @@ export function TasteSection({
   );
 
   return (
-    <section aria-labelledby="your-taste" className="mb-7">
+    <section ref={attach} {...pickHandlers} aria-labelledby="your-taste" className="mb-7">
       <div className={access ? "mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-1" : "mb-3 flex items-baseline justify-between gap-3 px-1"}>
         <h2 id="your-taste" className="mono-label text-zinc-500">
           Your taste

@@ -1,13 +1,15 @@
+import { randomUUID } from "node:crypto";
 import { NextResponse, after } from "next/server";
 import { clientIp } from "@/lib/loginThrottle";
 import { limitOrReject } from "@/lib/rateLimit";
 import { getCurrentUser } from "@/lib/session";
 import { postsForDishTaste } from "@/lib/db";
 import { loadDishIndex } from "@/lib/dishIndex";
-import { passesFloor, rankDishes } from "@/lib/dishTaste";
+import { dishPickLog, passesFloor, rankDishes } from "@/lib/dishTaste";
 import { isForMeUser } from "@/lib/forMeGate";
 import { TASTE_OP_KINDS, meanRating, scoreTaste, type TasteOp, type TastePick } from "@/lib/taste";
 import { resolveTasteContext } from "@/lib/tasteContext";
+import { isBatchId, isTapOp, logTasteOpTap, logTasteShown } from "@/lib/tasteLog";
 
 /**
  * "Your taste" picks for Discover, computed per viewer.
@@ -123,7 +125,11 @@ export async function POST(req: Request) {
   // a failed read, the ordinary picks stand.
   let picks: TastePick[] = result.picks;
   let { basis, header, shortHeader } = result;
+  // The name of this row of picks in the activity log (lib/tasteLog.ts). Test accounts only: everyone else's
+  // reply carries no `batch` and is what it always was.
+  let batch: string | undefined;
   if (user && isForMeUser(user.id)) {
+    let algo = "cuisine-1";
     // The quality floor (over 4.0 stars, 5+ reviews) holds on the fallback too.
     // A refresh drops what was already shown, so one that has run out answers with none rather than the old picks.
     picks = result.picks.filter((p) => passesFloor(p.restaurant));
@@ -164,6 +170,7 @@ export async function POST(req: Request) {
         // cuisine-level picks, which are a different kind of card.
         if (dish && (dish.length > 0 || exclude.length > 0)) {
           picks = dish;
+          algo = "dish-1";
           // scoreTaste reports "none" (and an empty header) when the cuisine picks had nothing to go on, but
           // the client hides the section on "none", so valid dish picks would never show.
           if (dish.length > 0 && basis === "none") {
@@ -176,6 +183,36 @@ export async function POST(req: Request) {
     } catch (err) {
       console.error("dish picks failed, keeping the ordinary picks", err);
     }
+
+    // The activity log: what this reply shows, and the Been here / Not for me (or undo) that asked for it.
+    // Written after the reply has gone, so it can neither slow the picks nor fail them.
+    const tapped =
+      op && op.value && isTapOp(op.kind)
+        ? { id: op.value, kind: op.kind, batch: isBatchId(b.batch) ? b.batch : null }
+        : null;
+    const id = picks.length > 0 ? randomUUID() : undefined;
+    batch = id;
+    if (tapped || id) {
+      const userId = user.id;
+      const refresh = exclude.length > 0;
+      const shown = picks.map((p, i) => {
+        const made = dishPickLog(p);
+        return {
+          id: p.restaurant.id,
+          position: i,
+          slot: p.reason.kind,
+          // A friend pick's wording names the friend: the log keeps its kind, not the name.
+          reason: p.reason.kind === "friend" ? "" : p.reason.text.slice(0, 200),
+          dish: made?.dish?.slice(0, 200) ?? null,
+          score: made && Number.isFinite(made.score) ? made.score : null,
+        };
+      });
+      after(async () => {
+        // The tap first: it belongs to the row it was made in, not the one this reply starts.
+        if (tapped) await logTasteOpTap(userId, tapped.id, tapped.kind, tapped.batch);
+        if (id) await logTasteShown(userId, id, shown, { algo, refresh });
+      });
+    }
   }
 
   return json({
@@ -186,5 +223,6 @@ export async function POST(req: Request) {
     prefs,
     counts: result.counts,
     picks,
+    ...(batch ? { batch } : {}),
   });
 }

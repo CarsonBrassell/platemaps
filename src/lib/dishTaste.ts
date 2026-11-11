@@ -1286,6 +1286,14 @@ export type DishRankInput = {
   exclude?: readonly string[];
 };
 
+/**
+ * What the activity log (lib/tasteLog.ts) keeps about a dish pick: the menu
+ * line it was sent for (null when the place has none) and its score. Held
+ * beside the pick, not on it, so the picks themselves are unchanged.
+ */
+const pickLog = new WeakMap<TastePick, { dish: string | null; score: number }>();
+export const dishPickLog = (p: TastePick): { dish: string | null; score: number } | undefined => pickLog.get(p);
+
 type Cand = {
   r: RestaurantView;
   hit: Hit | null;
@@ -2502,10 +2510,12 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     // A meat-free house says so when the dish it is compared to is not one.
     const shown = hit?.flav?.claim ? hit.flav.seed : hit?.seed;
     const plant = isPlant(rid) && shown !== undefined && !isPlant(seeds[shown]?.rid);
-    return {
+    const pick: TastePick = {
       restaurant: x.r,
       plateScore: input.plates[x.r.id] ?? null,
       reason: reasonOf(hit, seeds, x.r.cuisine, x.r.name, x.adv === true || x.novel === true, plant, hit?.fam ? knownFor(rid, hit.fam) : null),
     };
+    pickLog.set(pick, { dish: hit?.item ?? null, score: x.score });
+    return pick;
   });
 }

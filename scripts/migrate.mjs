@@ -1385,6 +1385,45 @@ const statements = [
     UNIQUE (event_key, user_id),
     UNIQUE (event_key, device_id)
   )`,
+  // The For me row's activity log (lib/tasteLog.ts). taste_shown: one row per
+  // place in each row of picks the server sent (batch_id names that row of
+  // picks). position is its place in the row, slot the kind of reason, algo
+  // the scorer that made it, seen_at when the card was really on screen. dish
+  // and score are the menu line a dish pick was sent for and what it scored.
+  // taste_tapped: what was tapped in it (open, been, hide, and their undos).
+  // Written for the accounts on lib/forMeGate.ts only; nothing reads it yet.
+  // Restaurant ids are soft references, like posts.
+  `CREATE TABLE IF NOT EXISTS taste_shown (
+    id BIGSERIAL PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    batch_id TEXT NOT NULL,
+    restaurant_id TEXT NOT NULL,
+    position INTEGER NOT NULL,
+    slot TEXT NOT NULL,
+    reason TEXT,
+    dish TEXT,
+    score REAL,
+    algo TEXT NOT NULL,
+    refresh BOOLEAN NOT NULL DEFAULT FALSE,
+    surface TEXT,
+    shown_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    seen_at TIMESTAMPTZ,
+    UNIQUE (batch_id, restaurant_id)
+  )`,
+  `CREATE INDEX IF NOT EXISTS taste_shown_user_place_idx
+    ON taste_shown (user_id, restaurant_id, shown_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS taste_tapped (
+    id BIGSERIAL PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    batch_id TEXT NOT NULL,
+    restaurant_id TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    position INTEGER NOT NULL,
+    surface TEXT,
+    tapped_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`,
+  `CREATE INDEX IF NOT EXISTS taste_tapped_user_idx
+    ON taste_tapped (user_id, tapped_at DESC)`,
 ];
 
 for (const statement of statements) {

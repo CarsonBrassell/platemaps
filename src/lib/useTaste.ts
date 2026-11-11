@@ -38,6 +38,8 @@ type Reply = {
   shortHeader: string;
   prefs: FullTastePrefs;
   picks: TastePick[];
+  /** Dish-level test only: the name of this row of picks in the activity log (lib/tasteLog.ts). */
+  batch?: string;
 };
 
 function readLocal(): FullTastePrefs {
@@ -116,6 +118,8 @@ export function useTaste(): {
   shortHeader: string;
   prefs: TastePrefs;
   picks: TastePick[];
+  /** Dish-level test only: the name of the row on screen, for lib/usePickLog.ts. */
+  batch: string | undefined;
   signedIn: boolean;
   apply: (op: TasteOp) => void;
   /** Dish-level test only: swap the row for places not shown yet. */
@@ -142,12 +146,16 @@ export function useTaste(): {
   const excludeRef = useRef<string[]>([]);
   const refreshes = useRef(0);
 
+  // The row on screen (dish-level test only), so a tap can say which row it was made in.
+  const batchRef = useRef<string | undefined>(undefined);
+
   useEffect(() => {
     picksRef.current = reply?.picks ?? [];
+    batchRef.current = reply?.batch;
   }, [reply]);
 
   const post = useCallback(
-    async (op: TasteOp | null, myGen: number, soft = false): Promise<Landed> => {
+    async (op: TasteOp | null, myGen: number, soft = false, batch?: string): Promise<Landed> => {
       const local = readLocal();
       const ctl = controller.current ?? new AbortController();
       controller.current = ctl;
@@ -161,6 +169,7 @@ export function useTaste(): {
             prefs: local,
             import: signedIn && !isEmpty(local) ? true : undefined,
             op: op ?? undefined,
+            batch: op ? batch : undefined,
             exclude: excludeRef.current.length > 0 ? excludeRef.current : undefined,
           }),
         });
@@ -179,6 +188,7 @@ export function useTaste(): {
           shortHeader: data.shortHeader,
           prefs: data.prefs,
           picks: data.picks,
+          batch: data.batch,
         });
         setStatus("ready");
         return "shown";
@@ -231,7 +241,9 @@ export function useTaste(): {
       const myGen = gen.current;
       // Ops are serialized so a local-storage viewer's second tap is built on
       // the first one's result rather than on a stale copy.
-      chain.current = chain.current.then(() => post(op, myGen));
+      // Read now, not when the request goes out: by then an earlier tap's reply may have swapped the row.
+      const batch = batchRef.current;
+      chain.current = chain.current.then(() => post(op, myGen, false, batch));
     },
     [post],
   );
@@ -313,6 +325,7 @@ export function useTaste(): {
     shortHeader: reply?.shortHeader ?? "",
     prefs,
     picks: reply?.picks ?? [],
+    batch: reply?.batch,
     signedIn,
     apply,
     refresh,

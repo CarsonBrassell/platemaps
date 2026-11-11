@@ -10,6 +10,7 @@ import { useForMeAccess } from "@/lib/auth";
 import type { Coords } from "@/lib/geo";
 import { qualityNote } from "@/lib/ratingDisplay";
 import { signInHrefFor } from "@/lib/signInGate";
+import { usePickLog } from "@/lib/usePickLog";
 import { useTaste } from "@/lib/useTaste";
 
 /**
@@ -289,6 +290,9 @@ export function PhoneTasteSection({
     wasRefreshing.current = taste.refreshing;
   }, [taste.refreshing]);
 
+  // Dish-level test only: which of these cards were really seen, and which was opened.
+  const { attach, handlers: pickHandlers } = usePickLog({ on: access, batch: taste.batch, ids: taste.picks.map((p) => p.restaurant.id), surface: "phone" });
+
   if (taste.status === "loading") {
     return (
       <section aria-label="Your taste" aria-busy="true" className="h-[400px] pb-4 pt-2">
@@ -363,7 +367,7 @@ export function PhoneTasteSection({
     .slice(0, more ? cuisines.length : SUGGEST_COUNT);
 
   return (
-    <section aria-labelledby="your-taste" className="pb-4 pt-2">
+    <section ref={attach} {...pickHandlers} aria-labelledby="your-taste" className="pb-4 pt-2">
       <div className="flex items-center justify-between gap-3 px-4">
         <h2 id="your-taste" className="mono-label text-zinc-500">
           Your taste
