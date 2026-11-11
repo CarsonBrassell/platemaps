@@ -6,7 +6,8 @@ import { getCurrentUser } from "@/lib/session";
 import { postsForDishTaste } from "@/lib/db";
 import { loadDishIndex } from "@/lib/dishIndex";
 import { dishPickLog, passesFloor, rankDishes } from "@/lib/dishTaste";
-import { isForMeUser } from "@/lib/forMeGate";
+import { isDiscoverModesUser, isForMeUser } from "@/lib/forMeGate";
+import { NEARBY_RADIUS_MI, milesBetween, type Coords } from "@/lib/geo";
 import { TASTE_OP_KINDS, meanRating, scoreTaste, type TasteOp, type TastePick } from "@/lib/taste";
 import { resolveTasteContext } from "@/lib/tasteContext";
 import { isBatchId, isTapOp, logTasteOpTap, logTasteShown } from "@/lib/tasteLog";
@@ -56,6 +57,16 @@ function excludeIds(v: unknown): string[] {
   return [...ids].slice(-MAX_EXCLUDE);
 }
 
+/** A body's `near`: a finite lat in [-90, 90] and lng in [-180, 180], else null (ignored, not an error). */
+function nearCoords(v: unknown): Coords | null {
+  if (!v || typeof v !== "object") return null;
+  const { lat, lng } = v as { lat?: unknown; lng?: unknown };
+  if (typeof lat !== "number" || typeof lng !== "number") return null;
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return null;
+  return { lat, lng };
+}
+
 export async function POST(req: Request) {
   let body: unknown;
   try {
@@ -82,12 +93,14 @@ export async function POST(req: Request) {
   // Place ids already shown by a "Refresh" (dish-level test only). Read here so it is validated once; it is
   // only ever used below for an account on the gate, and ignored for everyone else.
   const exclude = excludeIds(b.exclude);
+  // Where the viewer is, for the Nearby button. Honoured only for the Discover-buttons account, below.
+  const near = nearCoords(b.near);
 
   const user = await getCurrentUser();
 
   // A signed-in write is metered per person, and so is a refresh on the dish-level test (it re-ranks the whole
   // index). Everything else is metered per address, because it needs no account and scores the whole corpus.
-  if (user ? op || (exclude.length > 0 && isForMeUser(user.id)) : true) {
+  if (user ? op || ((exclude.length > 0 || near !== null) && isForMeUser(user.id)) : true) {
     const limited = await limitOrReject({
       scope: user ? "taste:user" : "taste:ip",
       key: user ? user.id : clientIp(req),
@@ -130,9 +143,13 @@ export async function POST(req: Request) {
   let batch: string | undefined;
   if (user && isForMeUser(user.id)) {
     let algo = "cuisine-1";
+    // Only the Discover-buttons account can narrow the picks to the radius around it.
+    const modesUser = isDiscoverModesUser(user.id);
+    const within = near && modesUser ? { here: near, miles: NEARBY_RADIUS_MI } : undefined;
     // The quality floor (over 4.0 stars, 5+ reviews) holds on the fallback too.
     // A refresh drops what was already shown, so one that has run out answers with none rather than the old picks.
     picks = result.picks.filter((p) => passesFloor(p.restaurant));
+    if (within) picks = picks.filter((p) => milesBetween(within.here, p.restaurant) <= within.miles);
     if (exclude.length > 0) {
       const shown = new Set(exclude);
       picks = picks.filter((p) => !shown.has(p.restaurant.id));
@@ -163,8 +180,9 @@ export async function POST(req: Request) {
           posts,
           prefs,
           now: Date.now(),
-          limit,
+          limit: modesUser && limit !== undefined ? Math.min(48, Math.max(1, Math.trunc(limit))) : limit,
           exclude,
+          within,
         });
         // A refresh that has run out of dish picks answers with none (the client starts over), never with the
         // cuisine-level picks, which are a different kind of card.

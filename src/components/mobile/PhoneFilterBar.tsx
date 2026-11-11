@@ -26,7 +26,26 @@ import { PhoneFilterSheet, type PhoneFilterModel } from "@/components/mobile/Pho
  * horizontally scrolling strip is a trap waiting for the first ancestor that
  * clips.
  */
-export function PhoneFilterBar({ model }: { model: PhoneFilterModel }) {
+/** The For me / Nearby toggles, for the one account on lib/forMeGate.ts (isDiscoverModesUser). */
+export type PhoneModeToggles = {
+  picks: boolean;
+  near: boolean;
+  onPicks: () => void;
+  onNear: () => void;
+};
+
+const MODE_BASE =
+  "inline-flex min-h-11 shrink-0 items-center rounded-full px-4 text-[13px] transition-transform active:scale-[0.97] motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
+const MODE_ON = `${MODE_BASE} bg-pm-orange font-medium text-[#F7F4EC]`;
+const MODE_OFF = `${MODE_BASE} bg-pm-grey-tint font-medium text-pm-grey-text`;
+
+export function PhoneFilterBar({
+  model,
+  modes,
+}: {
+  model: PhoneFilterModel;
+  modes?: PhoneModeToggles;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -74,6 +93,27 @@ export function PhoneFilterBar({ model }: { model: PhoneFilterModel }) {
               </span>
             )}
           </button>
+
+          {modes && (
+            <>
+              <button
+                type="button"
+                aria-pressed={modes.picks}
+                onClick={modes.onPicks}
+                className={modes.picks ? MODE_ON : MODE_OFF}
+              >
+                For me
+              </button>
+              <button
+                type="button"
+                aria-pressed={modes.near}
+                onClick={modes.onNear}
+                className={modes.near ? MODE_ON : MODE_OFF}
+              >
+                Nearby
+              </button>
+            </>
+          )}
 
           {/* Removable, and the × says so. An active filter that only exists
               inside a closed sheet is state the visitor cannot see, which is

@@ -1,5 +1,5 @@
 import type { User } from "@/lib/db";
-import { isForMeUser } from "@/lib/forMeGate";
+import { isDiscoverModesUser, isForMeUser } from "@/lib/forMeGate";
 import { isAdminUser } from "@/lib/adminGate";
 
 /**
@@ -52,6 +52,12 @@ export type AccountJson = {
    */
   forMe?: true;
   /**
+   * Present, and `true`, only for the ids on lib/forMeGate.ts' narrower list:
+   * Discover shows the For me and Nearby buttons in place of the Your taste row.
+   * Left out for everyone else, so their account JSON is unchanged.
+   */
+  discoverModes?: true;
+  /**
    * Present, and `true`, only for lib/adminGate.ts' ids: shows the delete
    * control on everyone's posts and comments. Display only; the routes check
    * the id themselves.
@@ -77,6 +83,7 @@ export function accountJson(user: User): AccountJson {
     photoNoticeSeen: user.photoNoticeSeen,
     tourSeen: user.tourSeen,
     ...(isForMeUser(user.id) ? { forMe: true as const } : {}),
+    ...(isDiscoverModesUser(user.id) ? { discoverModes: true as const } : {}),
     ...(isAdminUser(user.id) ? { admin: true as const } : {}),
   };
 }

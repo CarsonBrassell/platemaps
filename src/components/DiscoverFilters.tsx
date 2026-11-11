@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { BEST_AT } from "@/data/reviewScales";
 import { PRICE_BANDS, type PriceBand } from "@/data/priceBands";
 import {
@@ -562,7 +562,10 @@ function NearbyRow({
   onSelect,
   onSaveLocation,
   onClearLocation,
+  hideToggle = false,
 }: {
+  /** The account with the For me / Nearby buttons has one Nearby control, up in the bar. */
+  hideToggle?: boolean;
   on: boolean;
   state: NearbyState;
   count: number | null;
@@ -575,7 +578,7 @@ function NearbyRow({
   // without the API — but never hides the address control below it, which
   // needs nothing from `navigator.geolocation` and is the fallback this
   // browser actually wants.
-  const showGpsRow = state !== "unsupported";
+  const showGpsRow = state !== "unsupported" && !hideToggle;
 
   const hint =
     state === "locating"
@@ -615,6 +618,37 @@ function NearbyRow({
         </p>
       )}
       <AddressControl saved={saved} onSave={onSaveLocation} onClear={onClearLocation} />
+    </>
+  );
+}
+
+/**
+ * "For me" and "Nearby": two independent toggles, for the one account that has
+ * them (lib/discoverModes.ts). Same on/off look as the quick filter chips.
+ */
+export function DiscoverModeButtons({
+  picks,
+  near,
+  onPicks,
+  onNear,
+}: {
+  picks: boolean;
+  near: boolean;
+  onPicks: () => void;
+  onNear: () => void;
+}) {
+  const cls = (on: boolean) =>
+    `inline-flex min-h-11 shrink-0 items-center rounded-full px-4 text-[13px] motion-safe:transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+      on ? "bg-pm-orange font-medium text-[#F7F4EC]" : "bg-pm-grey-tint text-pm-grey-text hover:text-zinc-900"
+    }`;
+  return (
+    <>
+      <button type="button" onClick={onPicks} aria-pressed={picks} className={cls(picks)}>
+        For me
+      </button>
+      <button type="button" onClick={onNear} aria-pressed={near} className={cls(near)}>
+        Nearby
+      </button>
     </>
   );
 }
@@ -687,6 +721,7 @@ export function FilterControls({
   onPrice,
   onAspect,
   onQuick,
+  hideNearbyToggle = false,
 }: {
   filters: Filters;
   counts: FacetCounts;
@@ -695,6 +730,8 @@ export function FilterControls({
   prices: readonly FacetOption[];
   aspects: readonly FacetOption[];
   nearby: NearbyProps;
+  /** Hides the Nearby row's toggle (the address control stays). */
+  hideNearbyToggle?: boolean;
 } & Omit<FilterHandlers, "onClear">) {
   return (
     <div className="flex flex-col gap-5">
@@ -717,6 +754,7 @@ export function FilterControls({
           onSelect={onNearby}
           onSaveLocation={nearby.setSavedLocation}
           onClearLocation={nearby.clearSavedLocation}
+          hideToggle={hideNearbyToggle}
         />
       </Facet>
       <Facet
@@ -784,6 +822,7 @@ export function FilterRail({
   onAspect,
   onQuick,
   onClear,
+  modes,
 }: {
   filters: Filters;
   counts: FacetCounts;
@@ -792,6 +831,8 @@ export function FilterRail({
   prices: readonly FacetOption[];
   aspects: readonly FacetOption[];
   nearby: NearbyProps;
+  /** The For me / Nearby buttons, under the header row; absent for everyone without them. */
+  modes?: ReactNode;
 } & FilterHandlers) {
   const active = activeFilterCount(filters);
 
@@ -824,7 +865,10 @@ export function FilterRail({
         )}
       </div>
 
+      {modes && <div className="mb-4 flex flex-wrap gap-1.5">{modes}</div>}
+
       <FilterControls
+        hideNearbyToggle={!!modes}
         filters={filters}
         counts={counts}
         neighborhoods={neighborhoods}

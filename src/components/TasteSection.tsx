@@ -37,7 +37,7 @@ const PICKS_UNFOLDED = 24;
  * mono-label text button as "See all" beside it, in --pm-grey-text because the
  * section sits on the cream ground (zinc-500 fails there).
  */
-function RefreshButton({ refreshing, onRefresh }: { refreshing: boolean; onRefresh: () => void }) {
+export function RefreshButton({ refreshing, onRefresh }: { refreshing: boolean; onRefresh: () => void }) {
   return (
     <button
       type="button"

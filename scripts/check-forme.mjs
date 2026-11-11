@@ -27,6 +27,8 @@ import {
   captionSours, nameEvidence, tagCaption, tagDish,
 } from "../src/lib/flavor.ts";
 import { EMPTY_PREFS } from "../src/lib/taste.ts";
+import { DISCOVER_MODES_USER_IDS, FOR_ME_USER_IDS, isDiscoverModesUser } from "../src/lib/forMeGate.ts";
+import { milesBetween } from "../src/lib/geo.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const src = (p) => readFileSync(root + p, "utf8");
@@ -1301,6 +1303,71 @@ ok("Discover has no Show distance button, and distance reaches every card for th
   assert.deepEqual(callers, ["src/lib/useDiscoverQuery.ts"], "no other page asks for a position on load");
   // Coordinates travel in the POST body, never in a URL.
   assert.ok(!/coords[^\n]*(?:\?|&)(?:lat|lng)=/.test(src("src/lib/useDiscoverQuery.ts")), "no coordinates in a URL");
+});
+
+ok("discover modes gate: one id, inside the For me list, false for anyone else", () => {
+  assert.equal(DISCOVER_MODES_USER_IDS.size, 1, "exactly one account gets the buttons");
+  for (const id of DISCOVER_MODES_USER_IDS) {
+    assert.ok(FOR_ME_USER_IDS.has(id), "every modes id is also a For me id");
+    assert.equal(isDiscoverModesUser(id), true);
+  }
+  for (const id of FOR_ME_USER_IDS) if (!DISCOVER_MODES_USER_IDS.has(id)) assert.equal(isDiscoverModesUser(id), false, "the other For me account keeps the row");
+  for (const id of [null, undefined, "", "not-a-user"]) assert.equal(isDiscoverModesUser(id), false);
+});
+
+ok("discoverModes reaches the account JSON only through the gate", () => {
+  const a = src("src/lib/account.ts");
+  assert.match(a, /discoverModes/);
+  assert.match(a, /isDiscoverModesUser\(user\.id\)\s*\?\s*\{\s*discoverModes:\s*true as const\s*\}/);
+  assert.equal((a.match(/discoverModes:\s*true/g) ?? []).length, 1, "set in one place");
+  assert.match(src("src/lib/auth.tsx"), /discoverModes/);
+});
+
+ok("rankDishes with within keeps only places inside the radius; without it nothing changes", () => {
+  const here = { lat: 32.72, lng: -117.16 };
+  const far = new Set(ids(rank()).filter((_, i) => i % 2));
+  const spread = restaurants.map((r) => (far.has(r.id) ? { ...r, lat: r.lat + 0.12 } : r));
+  const base = ids(rank({ restaurants: spread }));
+  assert.deepEqual(ids(rank({ restaurants: spread, within: undefined })), base, "absent within is the old answer, same order");
+  const near = ids(rank({ restaurants: spread, within: { here, miles: 5 } }));
+  const byId = new Map(spread.map((r) => [r.id, r]));
+  assert.ok(near.every((id) => milesBetween(here, byId.get(id)) <= 5), "every pick is inside 5 miles");
+  assert.ok(base.some((id) => milesBetween(here, byId.get(id)) > 5), "the unfiltered answer did reach outside it");
+  assert.ok(near.length > 0, "and some picks survive");
+  assert.deepEqual(ids(rank({ restaurants: spread, within: { here: { lat: 10, lng: 10 }, miles: 5 } })), [], "nowhere near, nothing");
+});
+
+ok("the taste route computes within only behind the modes gate, inside the For me block", () => {
+  const s = src("src/app/api/account/taste/route.ts");
+  const forMe = s.indexOf("isForMeUser(user.id)", s.indexOf("passesFloor") > 0 ? s.indexOf("const modesUser") - 400 : 0);
+  const modes = s.indexOf("isDiscoverModesUser(user.id)");
+  const within = s.indexOf("const within");
+  assert.ok(modes > 0 && within > modes, "within is built after the modes check");
+  assert.match(s, /near && modesUser \? \{ here: near/, "and only for the modes account");
+  const block = s.lastIndexOf("if (user && isForMeUser(user.id))", modes);
+  assert.ok(block > 0 && block < modes && block < within && block < s.indexOf("rankDishes({"), "all inside the isForMeUser block");
+  assert.ok(forMe >= 0);
+});
+
+ok("discover modes never put a position or a mode in a URL", () => {
+  const m = src("src/lib/discoverModes.ts");
+  assert.ok(!/\blat\b|\blng\b|coords/i.test(m), "the store holds two booleans, no position");
+  const q = src("src/lib/useDiscoverQuery.ts");
+  assert.ok(!/\?lat=|&lng=/.test(q), "no coordinates in a URL");
+  assert.ok(!/replaceState|pushState|location\.href/.test(m), "the store writes no URL");
+  for (const line of q.split(/\r?\n/)) {
+    if (/replaceState|history\.|\.href|searchParams|URLSearchParams|\.set\(/.test(line)) assert.ok(!/modes\.(picks|near)|\bpicks\b.*\bnear\b/.test(line), `a mode reaches a URL: ${line.trim()}`);
+  }
+});
+
+ok("both screens read the modes and both taste sections keep their gate and reset", () => {
+  assert.match(src("src/components/DiscoverBrowser.tsx"), /useDiscoverModes\(\)/);
+  assert.match(src("src/components/mobile/PhoneDiscoverScreen.tsx"), /useDiscoverModes\(\)/);
+  for (const f of ["src/components/TasteSection.tsx", "src/components/mobile/PhoneTasteSection.tsx"]) {
+    const s = src(f);
+    assert.ok(/!access/.test(s), `${f} keeps the !access gate`);
+    assert.ok(/Reset my taste/.test(s), `${f} keeps the text reset`);
+  }
 });
 
 /* ---------- 3. render parity ---------- */

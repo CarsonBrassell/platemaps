@@ -18,7 +18,7 @@ import {
   type FlavorClaim,
   type FlavorSeed,
 } from "@/lib/flavor";
-import { milesBetween } from "@/lib/geo";
+import { milesBetween, type Coords } from "@/lib/geo";
 import type { PlateScore } from "@/lib/plateScore";
 import { evidenceOf } from "@/lib/tasteEvidence";
 import {
@@ -1257,6 +1257,11 @@ export type DishRankInput = {
   limit?: number;
   /** Place ids a "Refresh" already showed: they and their branches are dropped from the candidates, nothing else changes. */
   exclude?: readonly string[];
+  /**
+   * Only places within `miles` of `here` are candidates (the Nearby button). The taste profile is still built
+   * from every place; a place with no usable coordinates is not a candidate when this is set.
+   */
+  within?: { here: Coords; miles: number };
 };
 
 /**
@@ -2207,6 +2212,12 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     // below it is backfilled to fill the row. (Before the chain check, which is the dearer of the two.)
     if (!passesFloor(r) || seenChains.has(chainKeyM(r))) continue;
     if (excluded.size > 0 && (excluded.has(r.id) || excludedChains.has(chainKeyM(r)))) continue;
+    if (
+      input.within &&
+      !(Number.isFinite(r.lat) && Number.isFinite(r.lng) && milesBetween(input.within.here, r) <= input.within.miles)
+    ) {
+      continue;
+    }
     const rid = index.ridIndex.get(r.id);
     let hits = rid === undefined ? [] : (best.get(rid) ?? []);
     if (layer && rid !== undefined) hits = flavorHits(rid, hits);

@@ -9,6 +9,7 @@ import type {
   TastePick,
   TasteReason,
 } from "@/lib/taste";
+import type { Coords } from "@/lib/geo";
 
 /*
  * The client side of "Your taste" (lib/taste.ts, /api/account/taste).
@@ -111,7 +112,14 @@ function optimistic(p: FullTastePrefs, op: TasteOp): FullTastePrefs {
   }
 }
 
-export function useTaste(): {
+/**
+ * `limit` caps the row (the server clamps it for the accounts that may send one). `near` limits the picks to the
+ * radius around that position; it travels in the POST body, never a URL. `wait: true` means do not ask yet: the
+ * status stays "loading" and nothing is sent. A change of `near` (compared by value), of `limit`, or `wait`
+ * going back to false starts over: places already shown are forgotten, older replies are dropped, and the
+ * picks are fetched again.
+ */
+export function useTaste(opts?: { limit?: number; near?: Coords | null; wait?: boolean }): {
   status: Status;
   basis: TasteBasis;
   header: string;
@@ -127,6 +135,10 @@ export function useTaste(): {
   refreshing: boolean;
   undo: Undo;
 } {
+  const limit = opts?.limit;
+  const wait = opts?.wait === true;
+  // By value, so a new object with the same position is not a change.
+  const nearKey = opts?.near ? `${opts.near.lat},${opts.near.lng}` : "";
   const { account, resolved } = useAuth();
   const signedIn = !!account;
   const userKey = account ? "in" : "out";
@@ -145,6 +157,8 @@ export function useTaste(): {
   // Place ids a refresh has already shown; every request carries them (nothing is sent while it is empty).
   const excludeRef = useRef<string[]>([]);
   const refreshes = useRef(0);
+  // What the last load ran with, so a change of near or wait (not a first load) can show "loading" again.
+  const lastLoad = useRef<string | null>(null);
 
   // The row on screen (dish-level test only), so a tap can say which row it was made in.
   const batchRef = useRef<string | undefined>(undefined);
@@ -171,6 +185,8 @@ export function useTaste(): {
             op: op ?? undefined,
             batch: op ? batch : undefined,
             exclude: excludeRef.current.length > 0 ? excludeRef.current : undefined,
+            limit,
+            near: nearKey ? { lat: Number(nearKey.split(",")[0]), lng: Number(nearKey.split(",")[1]) } : undefined,
           }),
         });
         if (!res.ok) throw new Error(String(res.status));
@@ -200,10 +216,10 @@ export function useTaste(): {
         return "failed";
       }
     },
-    [signedIn],
+    [signedIn, limit, nearKey],
   );
 
-  // Initial load, and again whenever the viewer signs in or out.
+  // Initial load, and again whenever the viewer signs in or out, or near, limit or wait change.
   useEffect(() => {
     if (!resolved) return;
     const myGen = ++gen.current;
@@ -213,6 +229,12 @@ export function useTaste(): {
     prefsRef.current = local;
     // What one viewer was shown is not what the next one has seen.
     excludeRef.current = [];
+    const loadKey = `${nearKey}|${limit ?? ""}|${wait}`;
+    const changed = lastLoad.current !== null && lastLoad.current !== loadKey;
+    lastLoad.current = loadKey;
+    if (changed) setStatus("loading");
+    // Asked not to start yet: nothing is sent, and the status stays "loading".
+    if (wait) return () => ctl.abort();
 
     if (!signedIn && isEmpty(local)) {
       // Nothing to score: render the chip invite without a request.
@@ -227,7 +249,7 @@ export function useTaste(): {
     return () => ctl.abort();
     // userKey, not signedIn: re-run only on a real auth flip.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resolved, userKey, post]);
+  }, [resolved, userKey, post, wait, nearKey, limit]);
 
   useEffect(
     () => () => {

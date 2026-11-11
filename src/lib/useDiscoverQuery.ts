@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForMeAccess } from "@/lib/auth";
+import { clearDiscoverModes, useDiscoverModes } from "@/lib/discoverModes";
 import { useNearby } from "@/lib/nearby";
 import { publishQuery, useQueryString } from "@/lib/queryString";
 import { fromWire } from "@/lib/discoverWire";
@@ -34,6 +35,12 @@ import type { DiscoverPage } from "@/lib/discover";
  * tab session, see `askOnLoad` in lib/nearby.ts) and again whenever a filter is
  * on, so every card can say how far away it is. For everyone else none of that
  * runs: nothing here asks for a position and a failed request stays silent.
+ *
+ * The one account on the Discover buttons (lib/discoverModes.ts) has a Nearby
+ * toggle: with a position known, the POST asks for `nearby=1` on top of the
+ * current search. The URL, `search` and `raw` never change for it, and the page
+ * is handed on with `filters.nearby` put back to false, so the toggle shows no
+ * chip, no filter count and no "clear". Any applied filter turns the toggles off.
  */
 
 /* The URL, as the client sees it, comes from lib/queryString.ts — one
@@ -52,7 +59,14 @@ export function filterQueryOf(raw: string): { search: string; shown: number } {
   return { search: filters.toString(), shown };
 }
 
-type Answer = { key: string; search: string; shown: number; page: DiscoverPage };
+type Answer = { key: string; search: string; shown: number; page: DiscoverPage; near: boolean };
+
+/** The search with the Nearby filter added, for the request body only. */
+function withNearby(search: string): string {
+  const params = new URLSearchParams(search);
+  params.set("nearby", "1");
+  return params.toString();
+}
 
 export type DiscoverQuery = {
   /** The page on screen. */
@@ -82,15 +96,18 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
   // for an account that is not on lib/forMeGate.ts.
   const nearby = useNearby({ askOnLoad: true });
   const access = useForMeAccess();
+  const modes = useDiscoverModes();
   const [answer, setAnswer] = useState<Answer | null>(null);
 
   const { search, shown } = filterQueryOf(raw);
   const coords = nearby.coords;
+  // Nearby needs a position to mean anything; until there is one the page is the ordinary one.
+  const nearOn = modes.near && !!coords;
   const bare = search === "" && shown === PAGE_SIZE;
   const wanted =
     bare && !coords
       ? null
-      : `${search}::${shown}::${coords ? `${coords.lat},${coords.lng}` : ""}`;
+      : `${search}::${shown}::${coords ? `${coords.lat},${coords.lng}` : ""}${nearOn ? "::near" : ""}`;
   const answerKey = answer?.key ?? null;
 
   /*
@@ -104,11 +121,19 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
    * `hasFilterParams` rather than any query key: a landing from an ad carries
    * `utm_source` or `fbclid` and is still a bare landing.
    */
-  const wantsPosition = access && hasFilterParams(search);
+  const wantsPosition = (access && hasFilterParams(search)) || modes.near;
   const requestPosition = nearby.request;
   useEffect(() => {
     if (wantsPosition && !nearby.coords && nearby.state === "idle") requestPosition();
   }, [wantsPosition, nearby.coords, nearby.state, requestPosition]);
+
+  // Filters and the buttons are never both on: whatever applies a filter (the
+  // sheet, a chip, search text, a dish, a URL opened cold) turns both buttons off.
+  // Keyed on the search only, so "Show more" does not.
+  const modesAccess = modes.access;
+  useEffect(() => {
+    if (modesAccess && hasFilterParams(search)) clearDiscoverModes();
+  }, [modesAccess, search]);
 
   useEffect(() => {
     if (wanted === null || answerKey === wanted) return;
@@ -119,7 +144,7 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
           ? await fetch("/api/restaurants/discover", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ search, shown, coords }),
+              body: JSON.stringify({ search: nearOn ? withNearby(search) : search, shown, coords }),
             })
           : await fetch(
               `/api/restaurants/discover?${[search, shown > PAGE_SIZE ? `shown=${shown}` : ""]
@@ -128,7 +153,7 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
             );
         if (!res.ok) return;
         const page = fromWire(await res.json());
-        if (!cancelled) setAnswer({ key: wanted, search, shown, page });
+        if (!cancelled) setAnswer({ key: wanted, search, shown, page, near: nearOn });
       } catch {
         // Keep what is on screen; the next change of query asks again.
       }
@@ -136,12 +161,22 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
     return () => {
       cancelled = true;
     };
-  }, [wanted, answerKey, search, shown, coords]);
+  }, [wanted, answerKey, search, shown, coords, nearOn]);
 
-  const view = wanted === null || !answer ? initial : answer.page;
-  const onScreen = wanted === null || !answer ? { search: "", shown: PAGE_SIZE } : answer;
+  // A near answer carries filters.nearby = true, put there by the injected key. Hand the screens a copy with it
+  // off (the cached page is never touched) so nothing downstream reads it as a filter the visitor chose.
+  const answered = answer?.page;
+  const answeredNear = answer?.near ?? false;
+  const answerView = useMemo(
+    () => (answered && answeredNear ? { ...answered, filters: { ...answered.filters, nearby: false } } : answered),
+    [answered, answeredNear],
+  );
+  const view = wanted === null || !answer || !answerView ? initial : answerView;
+  const onScreen = wanted === null || !answer ? { search: "", shown: PAGE_SIZE, near: false } : answer;
   const pending =
-    wanted !== null && answerKey !== wanted && (onScreen.search !== search || onScreen.shown !== shown);
+    wanted !== null &&
+    answerKey !== wanted &&
+    (onScreen.search !== search || onScreen.shown !== shown || onScreen.near !== nearOn);
 
   const navigate = useCallback(
     (nextSearch: string, nextShown: number | null) => {
@@ -161,7 +196,7 @@ export function useDiscoverQuery(initial: DiscoverPage, basePath: "/" | "/m"): D
   return {
     view,
     pending,
-    viewKey: `${onScreen.search}::${onScreen.shown}`,
+    viewKey: `${onScreen.search}::${onScreen.shown}${onScreen.near ? "::near" : ""}`,
     search,
     shown,
     raw,

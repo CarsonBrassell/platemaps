@@ -37,7 +37,7 @@ const ROW = "overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webki
  * Dish-picks accounts only: swaps the row for places not shown yet. A 44px
  * target, text in --pm-grey-text because the section sits on the cream ground.
  */
-function RefreshButton({ refreshing, onRefresh }: { refreshing: boolean; onRefresh: () => void }) {
+export function RefreshButton({ refreshing, onRefresh }: { refreshing: boolean; onRefresh: () => void }) {
   return (
     <button
       type="button"
@@ -50,6 +50,25 @@ function RefreshButton({ refreshing, onRefresh }: { refreshing: boolean; onRefre
       <RefreshIcon className={refreshing ? "h-3.5 w-3.5 motion-safe:animate-spin" : "h-3.5 w-3.5"} />
       Refresh
     </button>
+  );
+}
+
+/** The undo bar under the section header after a Been here / Not for me. */
+export function UndoBar({ undo }: { undo: { label: string; run: () => void } }) {
+  return (
+    <div
+      role="status"
+      className="mx-4 mb-2 flex items-center justify-between rounded-xl bg-pm-grey-tint pl-4 text-[13px] text-pm-grey-text"
+    >
+      <span className="truncate">{undo.label}</span>
+      <button
+        type="button"
+        onClick={undo.run}
+        className="min-h-11 px-4 font-medium text-pm-orange-text underline underline-offset-2"
+      >
+        Undo
+      </button>
+    </div>
   );
 }
 
@@ -183,7 +202,7 @@ function SignUpNudge({ pathname }: { pathname: string }) {
  * about which one it is — and the name starts with the visible words, which is
  * what keeps the label and the text in agreement.
  */
-function PickButtons({
+export function PickButtons({
   name,
   onBeen,
   onHide,
@@ -388,21 +407,7 @@ export function PhoneTasteSection({
       </div>
       <p className={access ? "mb-3 mt-1 px-4 text-[12px] text-zinc-500" : "-mt-2 mb-2 px-4 text-[12px] text-zinc-400"}>{taste.shortHeader}</p>
 
-      {taste.undo && (
-        <div
-          role="status"
-          className="mx-4 mb-2 flex items-center justify-between rounded-xl bg-pm-grey-tint pl-4 text-[13px] text-pm-grey-text"
-        >
-          <span className="truncate">{taste.undo.label}</span>
-          <button
-            type="button"
-            onClick={taste.undo.run}
-            className="min-h-11 px-4 font-medium text-pm-orange-text underline underline-offset-2"
-          >
-            Undo
-          </button>
-        </div>
-      )}
+      {taste.undo && <UndoBar undo={taste.undo} />}
 
       {!access && (
         <div className={`${ROW} px-4`}>

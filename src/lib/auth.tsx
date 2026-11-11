@@ -25,6 +25,8 @@ type Account = {
   tourSeen: boolean;
   /** Set only for the accounts that get the dish picks. Mirrors AccountJson. */
   forMe?: true;
+  /** Set only for the accounts that get the Discover buttons. Mirrors AccountJson. */
+  discoverModes?: true;
   /** Set only for admin accounts (lib/adminGate.ts). Mirrors AccountJson. */
   admin?: true;
 };
@@ -365,6 +367,16 @@ export function useAuth() {
  */
 export function useForMeAccess(): boolean {
   const flagged = useAuth().account?.forMe === true;
+  return useHydrated() && flagged;
+}
+
+/**
+ * Whether this viewer gets the For me and Nearby buttons on Discover
+ * (lib/forMeGate.ts, lib/discoverModes.ts). Hydration-gated for the same reason
+ * as `useForMeAccess`. Display only: the server checks the session's id itself.
+ */
+export function useDiscoverModesAccess(): boolean {
+  const flagged = useAuth().account?.discoverModes === true;
   return useHydrated() && flagged;
 }
 

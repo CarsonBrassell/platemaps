@@ -25,7 +25,10 @@ export function PhoneDiscoverResults({
   clearHref,
   moreHref,
   nearby,
+  emptyTitle,
 }: {
+  /** Replaces the empty state's copy (and drops its "Clear filters" link): the Nearby button's own empty answer. */
+  emptyTitle?: string;
   view: DiscoverPage;
   pending: boolean;
   viewKey: string;
@@ -86,8 +89,9 @@ export function PhoneDiscoverResults({
             filter emptied the grid — `?dish=` is an equality on menu wording
             (dishesNamedExactly in lib/db.ts), so nothing else got a vote. */}
         <p className="font-display text-lg text-zinc-900">
-          {filters.dish ? `No menus list “${filters.dish}”` : "Nothing matches that"}
+          {emptyTitle ?? (filters.dish ? `No menus list “${filters.dish}”` : "Nothing matches that")}
         </p>
+        {emptyTitle === undefined && (<>
         {/* Otherwise points at the sheet rather than guessing: every row in
             there prints what it would return, and the ones reading 0 are the
             ones ruling everything out. */}
@@ -102,6 +106,7 @@ export function PhoneDiscoverResults({
         >
           Clear filters
         </Link>
+        </>)}
       </div>
     );
   }

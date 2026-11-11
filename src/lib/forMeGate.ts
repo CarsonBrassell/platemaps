@@ -24,3 +24,19 @@ export const FOR_ME_USER_IDS: ReadonlySet<string> = new Set([
 export function isForMeUser(id?: string | null): boolean {
   return typeof id === "string" && FOR_ME_USER_IDS.has(id);
 }
+
+/**
+ * Who gets the For me and Nearby buttons on Discover (lib/discoverModes.ts)
+ * in place of the Your taste row. A narrower list than the one above, and an
+ * id only counts when it is on that one too: the buttons show the same dish
+ * picks, laid out as the grid. Everyone else on the list above keeps the row.
+ */
+export const DISCOVER_MODES_USER_IDS: ReadonlySet<string> = new Set([
+  /* Calvin Lensink */
+  "940561ca-05c8-4010-b8a9-f397235378b9",
+]);
+
+/** Whether the account with this id gets the Discover buttons. Signed out is never. */
+export function isDiscoverModesUser(id?: string | null): boolean {
+  return isForMeUser(id) && DISCOVER_MODES_USER_IDS.has(id as string);
+}
