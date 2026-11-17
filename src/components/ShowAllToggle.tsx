@@ -52,6 +52,7 @@ export function ShowAllToggle({
   onChange,
   controls,
   background = "bg-white",
+  moreLabel = "Show all",
 }: {
   expanded: boolean;
   onChange: (expanded: boolean) => void;
@@ -59,6 +60,8 @@ export function ShowAllToggle({
   controls: string;
   /** Inside a white card the default pill vanishes, so pass a tan one there. */
   background?: string;
+  /** The folded-state label; the profile's plates say "See more". */
+  moreLabel?: string;
 }) {
   const ref = useRef<HTMLButtonElement>(null);
 
@@ -76,7 +79,7 @@ export function ShowAllToggle({
       }}
       className={`mx-auto mt-3 flex min-h-11 items-center gap-1.5 rounded-full ${background} pl-5 pr-4 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-900 transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange`}
     >
-      {expanded ? "Show less" : "Show all"}
+      {expanded ? "Show less" : moreLabel}
       <ChevronIcon
         className={`h-4 w-4 text-zinc-500 transition-transform duration-300 motion-reduce:transition-none ${
           expanded ? "-rotate-90" : "rotate-90"
