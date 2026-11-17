@@ -25,7 +25,7 @@
  * cover all of San Diego unless the viewer turns on the separate **Nearby
  * filter** (`NearbyChip`, beside this switch, not a third segment of it) —
  * which limits whichever ordering is already selected to posts within
- * `NEARBY_RADIUS_MI` (see lib/geo.ts, the same 5 miles) rather than replacing
+ * `NEARBY_RADIUS_MI` (see lib/geo.ts, 3 miles) rather than replacing
  * it. A radius nobody asked for on the default view would quietly hide plates
  * from someone who never opted into a geofence, so the position that filter
  * needs is opt-in and arrives only by POST body, never a query string (see

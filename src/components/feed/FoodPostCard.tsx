@@ -82,6 +82,8 @@ type SharedCardProps = {
    */
   onAddFriend?: (userId: string) => void;
   onRequireSignIn: () => void;
+  /** Miles from the viewer to the restaurant, already formatted. Absent until a position is known. */
+  distance?: string;
 };
 
 /**
@@ -128,6 +130,7 @@ export function FoodPostCard(props: FoodPostCardProps) {
     onDelete,
     onAddFriend,
     onRequireSignIn,
+    distance,
   } = props;
 
   /* Flattened out of the union once, here, rather than reached through `props`
@@ -595,6 +598,11 @@ export function FoodPostCard(props: FoodPostCardProps) {
                   {lineRestaurant}
                 </span>
               ))}
+            {lineRestaurant && distance && (
+              <span className="shrink-0 font-mono text-[12px] tabular-nums text-zinc-500">
+                · {distance}
+              </span>
+            )}
           </p>
         )}
 

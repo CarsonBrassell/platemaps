@@ -16,10 +16,10 @@
 export type Coords = { lat: number; lng: number };
 
 /**
- * How far "nearby" reaches. Wide enough that a filter on it still returns
- * something in a county this spread out, tight enough to still mean "tonight".
+ * How far "nearby" reaches: 3 miles, roughly a 10-minute drive. Every Nearby
+ * path (client filter, SQL, chip counts, copy) reads this one constant.
  */
-export const NEARBY_RADIUS_MI = 5;
+export const NEARBY_RADIUS_MI = 3;
 
 const EARTH_RADIUS_MI = 3958.8;
 

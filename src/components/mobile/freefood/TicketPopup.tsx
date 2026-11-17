@@ -24,8 +24,8 @@ import "./freefood.css";
 
 /**
  * The claim popup: Pizza on Pearl x PlateMaps, a free slice. Opened from
- * `TicketButton` on the feed. Claiming needs the iOS app, a signed-in account
- * and one post; the claimed ticket is activated from the Profile.
+ * `TicketButton` on the feed. Claiming needs the iOS app, a signed-in account;
+ * the claimed ticket is activated from the Profile.
  *
  * Orange head, white body holding the ticket card: the one place the accent is
  * a ground rather than a fill, the same exception the Friends hero card makes.

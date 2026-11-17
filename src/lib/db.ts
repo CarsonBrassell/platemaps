@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import type { MatchedDish, Restaurant, RestaurantView } from "@/data/restaurantTypes";
 import type { Dish } from "@/data/dishes";
 import type { PriceBand } from "@/data/priceBands";
-import type { Hours } from "@/lib/openState";
+import { localDay, type Hours } from "@/lib/openState";
 import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
 import type { RatedPlate } from "@/lib/ratedPlates";
 import {
@@ -31,6 +31,7 @@ import { hashToken, SESSION_TTL_SECONDS } from "@/lib/tokens";
 // From lib/geo.ts for the same reason discoverFilters.ts takes it from there:
 // lib/nearby.ts is a React hook and this module is server-only.
 import { milesBetween, NEARBY_RADIUS_MI, type Coords } from "@/lib/geo";
+import { HAVASU_POST_SQL } from "@/lib/havasu";
 
 /* Which driver this is depends on DATABASE_URL — see lib/sqlClient. */
 import type { DishRow, ProfileRow, ViewerPost } from "@/lib/dishTaste";
@@ -1318,6 +1319,7 @@ async function feedPage(
         createdAt: last.created_at_text,
         id: last.id,
         score: trending ? Number(last.rank_score) : null,
+        hav: last.is_hav === true,
       }
     : null;
   return { posts, nextCursor };
@@ -1381,10 +1383,14 @@ export async function getDiscoverFeed(
   const params: unknown[] = [at, blockedIds, limit + 1];
   let after = "";
   if (cursor) {
-    params.push(trending ? (cursor.score ?? 0) : cursor.createdAt, cursor.id);
+    params.push(trending ? (cursor.score ?? 0) : cursor.createdAt, cursor.id, cursor.hav === true);
+    // Havasu posts are ordered after every other post, so the keyset key is
+    // (is_hav, score|created_at, id): false rows come first, and a cursor
+    // inside the non-Havasu run must still be allowed to move into the
+    // Havasu run.
     after = trending
-      ? "WHERE (s.rank_score, s.id) < ($4::float8, $5)"
-      : "WHERE (s.created_at, s.id) < ($4::timestamptz, $5)";
+      ? "WHERE (s.is_hav::int > $6::boolean::int) OR (s.is_hav = $6::boolean AND (s.rank_score, s.id) < ($4::float8, $5))"
+      : "WHERE (s.is_hav::int > $6::boolean::int) OR (s.is_hav = $6::boolean AND (s.created_at, s.id) < ($4::timestamptz, $5))";
   }
   // Bound after the cursor params rather than at a fixed slot, so the
   // placeholder number is right whether or not a cursor pushed $4/$5 first —
@@ -1421,7 +1427,8 @@ export async function getDiscoverFeed(
               p.vibe, p.photos_public,
               u.name AS author_name, u.avatar_url AS author_avatar_url,
               u.points AS author_points,
-              ${TRENDING_SCORE} AS rank_score
+              ${TRENDING_SCORE} AS rank_score,
+              ${HAVASU_POST_SQL} AS is_hav
        FROM posts p
        JOIN users u ON u.id = p.user_id
        LEFT JOIN (
@@ -1439,7 +1446,7 @@ export async function getDiscoverFeed(
          ${nearbyFilter}
      ) s
      ${after}
-     ORDER BY ${trending ? "s.rank_score DESC, s.id DESC" : "s.created_at DESC, s.id DESC"}
+     ORDER BY s.is_hav ASC, ${trending ? "s.rank_score DESC, s.id DESC" : "s.created_at DESC, s.id DESC"}
      LIMIT $3`,
     params,
   );
@@ -1458,12 +1465,14 @@ export async function getFriendsFeed(
   const params: unknown[] = [viewerId, blockedIds, limit + 1, at];
   let after = "";
   if (cursor) {
-    params.push(cursor.createdAt, cursor.id);
-    after = "AND (p.created_at, p.id) < ($5::timestamptz, $6)";
+    params.push(cursor.createdAt, cursor.id, cursor.hav === true);
+    // Havasu posts last (lib/havasu.ts): keyset on (is_hav, created_at, id).
+    after = `AND ((${HAVASU_POST_SQL})::int > $7::boolean::int
+      OR ((${HAVASU_POST_SQL}) = $7::boolean AND (p.created_at, p.id) < ($5::timestamptz, $6)))`;
   }
   const rows = await sql.query(
     `SELECT s.*, s.created_at::text AS created_at_text FROM (
-       ${POST_SELECT}
+       ${POST_SELECT.replace("u.points AS author_points", `u.points AS author_points, ${HAVASU_POST_SQL} AS is_hav`)}
        WHERE p.user_id IN (
          SELECT CASE WHEN f.user_a = $1 THEN f.user_b ELSE f.user_a END
          FROM friendships f
@@ -1474,7 +1483,7 @@ export async function getFriendsFeed(
        AND p.created_at > $4::timestamptz - make_interval(days => ${FEED_WINDOW_DAYS})
        ${after}
      ) s
-     ORDER BY s.created_at DESC, s.id DESC
+     ORDER BY s.is_hav ASC, s.created_at DESC, s.id DESC
      LIMIT $3`,
     params,
   );
@@ -4128,25 +4137,46 @@ export async function getRestaurantMapRows(): Promise<RestaurantMapRow[]> {
    * `openStateFor` needs no change. It already selects by `day`, and slots it
    * would have skipped are simply not there.
    *
-   * "Today" is Los Angeles' today, computed here, which is the same clock
-   * `openState.ts` uses; there is no timezone for the two to disagree about.
-   * The route caches for 60s, so within a minute of midnight a cached response
-   * can carry the previous pair. One dot's dimming, for under a minute, once a
-   * day.
+   * "Today" is `localDay(new Date())` from lib/openState.ts: Los Angeles' day,
+   * numbered the way the stored slots are. The two clocks agree on the zone;
+   * what they once disagreed on was the numbering. Slots carry Yelp's day, where
+   * 0 = Monday (see `DaySlot`), and this query used to work the weekday out for
+   * itself from a Sunday-first array, so it kept {tomorrow, today} instead of
+   * {today, yesterday}. Today's own slot survived, which is why daytime looked
+   * right; yesterday's did not, so between midnight and the close of a late
+   * night the dot of every place still running yesterday's overnight window
+   * dimmed as closed ("Opens 11:30am") while its card, which has the full week,
+   * said open. Taking the day from the same function `openStateFor` reads means
+   * the two cannot be numbered differently again. Yesterday is
+   * `(today + 6) % 7`, the expression `windowsAround` uses.
+   *
+   * A place with a published schedule and no slot on either day - closed both
+   * days - would aggregate to NULL, and `openStateFor` reads a null as "no hours
+   * on file": `unknown`, which draws the dot undimmed, where the full week says
+   * "Closed today" and dims it. So such a place keeps its first slot as the
+   * fallback. Any slot would do: by construction it is neither today's nor
+   * yesterday's, so `windowsAround` ignores it and the verdict is the same
+   * "Closed today", but it keeps `hours` non-empty. A place with no hours at all
+   * has no first slot and stays null, as before.
+   *
+   * The route sends `s-maxage=60, stale-while-revalidate=300` (the httpCache
+   * default) and is the same response for every viewer, so it needs nothing
+   * here: the day is read on each request, not once at module load, and after
+   * midnight a cached copy can carry the previous pair for a few minutes at
+   * most. One dot's dimming, once a day.
    */
-  const laDay = new Date().toLocaleDateString("en-US", {
-    timeZone: "America/Los_Angeles",
-    weekday: "short",
-  });
-  const today = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(laDay);
+  const today = localDay(new Date());
   const yesterday = (today + 6) % 7;
 
   const rows = await sql`
     SELECT id, name, lat, lng, rating,
-           (
-             SELECT jsonb_agg(slot)
-             FROM jsonb_array_elements(hours) AS slot
-             WHERE (slot->>'day')::int IN (${today}, ${yesterday})
+           COALESCE(
+             (
+               SELECT jsonb_agg(slot)
+               FROM jsonb_array_elements(hours) AS slot
+               WHERE (slot->>'day')::int IN (${today}, ${yesterday})
+             ),
+             CASE WHEN hours->0 IS NOT NULL THEN jsonb_build_array(hours->0) END
            ) AS hours
     FROM restaurants WHERE listed ORDER BY sort_order, id
   `;

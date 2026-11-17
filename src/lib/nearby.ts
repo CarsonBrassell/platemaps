@@ -270,7 +270,7 @@ export function useNearby({ askOnLoad = false }: { askOnLoad?: boolean } = {}): 
         setState(error.code === error.PERMISSION_DENIED ? "denied" : "failed");
       },
       {
-        // Street-level accuracy is pointless against a 5-mile radius, and the
+        // Street-level accuracy is pointless against a 3-mile radius, and the
         // high-accuracy path costs a GPS fix and seconds of waiting. A fix from
         // the last five minutes is just as good for this question.
         enableHighAccuracy: false,
