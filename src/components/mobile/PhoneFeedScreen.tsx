@@ -100,7 +100,9 @@ export function PhoneFeedScreen() {
      comment. Read here, not inside FeedSortSwitch, because the tap that
      should raise the prompt is "switch on Nearby", a decision this screen
      owns rather than a thing the segmented control should know how to do. */
-  const nearby = useNearby();
+  /* Asks for the reader's position once per tab session, so each post card can
+     print how far the restaurant is from them. Without it the card says nothing. */
+  const nearby = useNearby({ askOnLoad: true, askEveryone: true });
   const handleSortChange = useCallback((next: FeedSort) => {
     setSort(next);
   }, []);
