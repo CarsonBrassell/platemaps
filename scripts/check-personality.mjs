@@ -13,6 +13,7 @@ import {
   computePersonality,
   dishKey,
   dishNameKey,
+  expectedCuisines,
   personalityStats,
 } from "../src/lib/personality.ts";
 
@@ -44,6 +45,23 @@ near(at(me, "Regular"), 0.06);
 assert.ok(at(me, "Classic American") > at(me, "Adventurer"));
 assert.ok(at(me, "Adventurer") > AVERAGE_RING && at(me, "Quick Bite") < AVERAGE_RING);
 for (const r of me.you) assert.ok(r >= 0.06 && r <= 1);
+
+/* Measured baselines (2026-11-18): Adventurer is cuisines hit over a random eater's expected
+   count for the same visits, so matching the expectation is exactly average; foodieBase replaces 0.036. */
+const shares = Array(10).fill(0.1);
+near(expectedCuisines(shares, 1), 1);
+near(expectedCuisines(shares, 1000), 10, 1e-6);
+const e5 = expectedCuisines(shares, 5);
+const par = computePersonality({ ...none, posts: 5, visits: 5, places: 5, cuisines: e5 }, { cuisineShares: shares });
+near(at(par, "Adventurer"), AVERAGE_RING, 1e-9);
+const wide = computePersonality({ ...none, posts: 5, visits: 5, places: 5, cuisines: 5 }, { cuisineShares: shares });
+assert.ok(at(wide, "Adventurer") > AVERAGE_RING);
+/* Calvin under the 2026-11-18 corpus (18 cuisines, foodie base 0.117): Foodie drops below average. */
+const meC = computePersonality(
+  { posts: 20, dishPosts: 20, tags: { s: 3, w: 1, d: 2, c: 9 }, visits: 20, places: 20, quickVisits: 9, foodieVisits: 2, cuisines: 12 },
+  { foodieBase: 0.117 },
+);
+assert.ok(at(meC, "Foodie") < AVERAGE_RING);
 
 /* Stats: same place same day is one visit; foodie counts upscale too. */
 const post = (o) => ({ tag: null, hasDish: true, placeKey: "a", day: "2026-11-01", cuisine: "Thai", kind: null, foodie: false, ...o });

@@ -29,6 +29,8 @@ import {
   dishNameKey,
   foldText,
   personalityStats,
+  BASELINE,
+  type CorpusBaselines,
   type PersonalityPost,
   type PersonalityProfile,
 } from "@/lib/personality";
@@ -1233,6 +1235,51 @@ export async function getTasteMatchForProfile(
  * `getPersonalityMatchForProfile`, which adds a friend's only after the same
  * friends-only gate as the cuisine Taste match. Never call it for anyone else.
  */
+const CORPUS_TTL_MS = 60 * 60 * 1000;
+let corpusCache: { at: number; value: Promise<CorpusBaselines> } | null = null;
+
+/**
+ * The food personality's measured baselines (lib/personality.ts
+ * `CorpusBaselines`): each cuisine's share of all posts, and the share of all
+ * users' visits (distinct user + place + day) that were foodie or upscale,
+ * floored at the share of places on best-of lists. Aggregates only; cached an
+ * hour since one new post barely moves either.
+ */
+function getCorpusBaselines(): Promise<CorpusBaselines> {
+  if (corpusCache && Date.now() - corpusCache.at < CORPUS_TTL_MS) return corpusCache.value;
+  const value = (async () => {
+    const [cuisines, foodie] = (await Promise.all([
+      sql`
+        SELECT count(*)::int AS n FROM posts p JOIN restaurants r ON r.id = p.restaurant_id
+        WHERE r.cuisine IS NOT NULL AND r.cuisine <> '' GROUP BY r.cuisine
+      `,
+      sql`
+        SELECT count(*)::int AS visits,
+               count(*) FILTER (WHERE v.foodie)::int AS foodie
+        FROM (
+          SELECT DISTINCT p.user_id, p.restaurant_id,
+                 to_char(p.created_at AT TIME ZONE 'America/Los_Angeles', 'YYYY-MM-DD') AS day,
+                 coalesce(rk.foodie, false) OR rk.kind = 'u' AS foodie
+          FROM posts p
+          LEFT JOIN restaurant_kind rk ON rk.restaurant_id = p.restaurant_id::text
+          WHERE p.restaurant_id IS NOT NULL
+        ) v
+      `,
+    ])) as [{ n: number }[], { visits: number; foodie: number }[]];
+    const total = cuisines.reduce((sum, c) => sum + c.n, 0);
+    const { visits, foodie: hits } = foodie[0] ?? { visits: 0, foodie: 0 };
+    return {
+      cuisineShares: total ? cuisines.map((c) => c.n / total) : undefined,
+      foodieBase: visits ? Math.max(BASELINE.Foodie, hits / visits) : undefined,
+    };
+  })();
+  value.catch(() => {
+    corpusCache = null;
+  });
+  corpusCache = { at: Date.now(), value };
+  return value;
+}
+
 export async function getFlavorProfile(userId: string): Promise<{ flavor: PersonalityProfile | null }> {
   const rows = (await sql`
     SELECT p.dish_name, p.restaurant_id, coalesce(r.name, p.restaurant) AS place,
@@ -1283,7 +1330,7 @@ export async function getFlavorProfile(userId: string): Promise<{ flavor: Person
       foodie: r.foodie,
     };
   });
-  return { flavor: computePersonality(personalityStats(posts)) };
+  return { flavor: computePersonality(personalityStats(posts), await getCorpusBaselines()) };
 }
 
 /**

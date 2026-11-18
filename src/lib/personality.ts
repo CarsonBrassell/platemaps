@@ -47,9 +47,11 @@ const MIN_RADIUS = 0.06;
  * The average eater, per spoke. Dish shares are occurrence-weighted across the
  * whole tagged corpus (probe/for-me/personality/me-scored.json `corpusShare`);
  * Quick Bite and Foodie are the share of live places of that kind (4,501 and
- * ~310 of 8,625). Adventurer and Regular have no corpus to measure against
- * yet, so they start from plain estimates: about one new cuisine per three
- * visits, about one visit in four a return.
+ * ~310 of 8,625). Regular starts from a plain estimate, about one visit in
+ * four a return. Adventurer and Foodie are fallbacks only: the live card
+ * passes `CorpusBaselines` measured from everyone's posts (db.ts), which
+ * replace them (2026-11-18: the fixed 0.35 made every short log an
+ * Adventurer, and 0.036 was the share of places, not of visits).
  */
 export const BASELINE: Record<PersonalityType, number> = {
   Adventurer: 0.35,
@@ -61,6 +63,22 @@ export const BASELINE: Record<PersonalityType, number> = {
   "Classic American": 0.153,
   "Spice Chaser": 0.034,
 };
+
+/** Baselines measured from all users' posts, passed in by the query. */
+export type CorpusBaselines = {
+  /** Share of all posts per cuisine (any order, sums to about 1). */
+  cuisineShares?: number[];
+  /** Share of all visits that were foodie or upscale. */
+  foodieBase?: number;
+};
+
+/**
+ * Distinct cuisines a random eater would hit in `n` visits, each visit drawn
+ * from the corpus mix: sum over cuisines of 1 - (1 - share)^n.
+ */
+export function expectedCuisines(shares: number[], n: number): number {
+  return shares.reduce((sum, p) => sum + 1 - Math.pow(1 - p, n), 0);
+}
 
 /** One post as the query returns it, already joined to its tag and place kind. */
 export type PersonalityPost = {
@@ -161,7 +179,7 @@ function lift(hits: number, n: number, base: number): number {
 }
 
 /** Null is the empty state: too few posts to say anything. */
-export function computePersonality(stats: PersonalityStats): PersonalityProfile | null {
+export function computePersonality(stats: PersonalityStats, corpus: CorpusBaselines = {}): PersonalityProfile | null {
   if (stats.posts < PERSONALITY_MIN_POSTS) return null;
   const { dishPosts: n, visits: v, tags } = stats;
   const hits: Record<PersonalityType, [number, number]> = {
@@ -175,7 +193,17 @@ export function computePersonality(stats: PersonalityStats): PersonalityProfile 
     "Classic American": [tags.c, n],
     "Spice Chaser": [tags.s, n],
   };
-  const lifts = PERSONALITY_SPOKES.map((s) => lift(hits[s][0], hits[s][1], BASELINE[s]));
+  const base = { ...BASELINE, ...(corpus.foodieBase ? { Foodie: corpus.foodieBase } : {}) };
+  const lifts = PERSONALITY_SPOKES.map((s) => lift(hits[s][0], hits[s][1], base[s]));
+  /*
+   * Adventurer against a random eater with the same number of visits: the
+   * cuisines you hit over the cuisines they'd expect to, with K pseudo-cuisines
+   * on both sides so a short log stays near average.
+   */
+  if (corpus.cuisineShares?.length) {
+    const e = expectedCuisines(corpus.cuisineShares, v);
+    lifts[PERSONALITY_SPOKES.indexOf("Adventurer")] = (Math.min(stats.cuisines, v) + SHRINK_K) / (e + SHRINK_K);
+  }
   const order = PERSONALITY_SPOKES.map((s, i) => ({ s, l: lifts[i] })).sort(
     (a, b) => b.l - a.l || a.s.localeCompare(b.s),
   );
