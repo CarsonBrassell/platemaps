@@ -12,6 +12,7 @@ import {
 import { getCurrentUser } from "@/lib/session";
 import { clientIp } from "@/lib/loginThrottle";
 import { invalidateRestaurantPage } from "@/lib/restaurantPage";
+import { notifyFriendsPosted } from "@/lib/notify";
 import { MAX_PAID_POSTS_PER_DAY, POINT_RULES } from "@/lib/points";
 import { BEST_AT_LABELS } from "@/data/reviewScales";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
@@ -343,6 +344,7 @@ export async function POST(req: NextRequest) {
   // The restaurant's page is served from cache until told otherwise
   // (lib/restaurantPage.ts); a new plate is exactly what changes it.
   invalidateRestaurantPage(claimedRestaurantId ?? null);
+  notifyFriendsPosted(post, user);
 
   /* The publish award. "post:<id>" is unique by construction, so a retried
      create cannot pay it twice; the amount itself lives in lib/points.ts. */

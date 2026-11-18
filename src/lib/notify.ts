@@ -1,9 +1,9 @@
 import { after } from "next/server";
-import { getBlockStatus } from "@/lib/db";
+import { getBlockStatus, getFriendIds } from "@/lib/db";
 import { pushConfigured, sendPushToUser, type PushMessage } from "@/lib/push";
 
 /**
- * The four things PlateMaps pushes about, and the words it uses.
+ * The things PlateMaps pushes about, and the words it uses.
  *
  * Routes call one function each, after the write has succeeded and before
  * they answer. Every function schedules its send with `after()`, so the
@@ -99,6 +99,38 @@ export function notifyHeart(post: PostLike, hearter: Actor): void {
     url: `/m/feed?post=${post.id}`,
     threadId: `post:${post.id}`,
     collapseId: `heart:${post.id}:${hearter.id}`,
+  });
+}
+
+/**
+ * A friend rated a plate. Friends only, never a wider audience, because that
+ * is the one feed people opted into by accepting a request. Collapsed per
+ * author, so posting a whole meal course by course leaves one banner on each
+ * friend's lock screen rather than a stack.
+ */
+export function notifyFriendsPosted(
+  post: PostLike & { rating?: number },
+  author: Actor,
+): void {
+  if (!pushConfigured()) return;
+  const dish = post.dishName?.trim();
+  const place = post.restaurant?.trim();
+  const what = dish && place ? `the ${dish} at ${place}` : dish || place || "a plate";
+  const score = typeof post.rating === "number" ? ` ${post.rating}%` : "";
+  const message = {
+    title: `${author.name} just rated ${what}${score}`,
+    body: "See what they ordered.",
+    url: `/m/feed?post=${post.id}`,
+    threadId: `friend-posts:${author.id}`,
+    collapseId: `friend-post:${author.id}`,
+  };
+  after(async () => {
+    const friendIds = await getFriendIds(author.id);
+    for (const friendId of friendIds) {
+      if (friendId === author.id) continue;
+      if ((await getBlockStatus(author.id, friendId)) !== "none") continue;
+      await sendPushToUser(friendId, message);
+    }
   });
 }
 
