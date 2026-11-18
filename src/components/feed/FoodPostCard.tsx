@@ -461,7 +461,7 @@ export function FoodPostCard(props: FoodPostCardProps) {
                   className="h-[34px] w-[34px] shrink-0 rounded-full border-2 border-white object-cover"
                 />
               ) : (
-                <span className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border-2 border-white bg-[#E2622B] text-[14px] font-bold text-white">
+                <span className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border-2 border-white bg-zinc-800 text-[14px] font-bold text-white">
                   {post.authorName.trim().charAt(0).toUpperCase()}
                 </span>
               )}
