@@ -1229,8 +1229,9 @@ export async function getTasteMatchForProfile(
  * `restaurant_kind` for Quick Bite and Foodie. A second round trip looks up the
  * dish tags; a dish missing its exact key falls back to the name-only key.
  *
- * Callers pass the session user's own id and nothing else: the card is shown
- * to yourself only, on your account screen and on your own public profile.
+ * Callers pass the session user's own id, or go through
+ * `getPersonalityMatchForProfile`, which adds a friend's only after the same
+ * friends-only gate as the cuisine Taste match. Never call it for anyone else.
  */
 export async function getFlavorProfile(userId: string): Promise<{ flavor: PersonalityProfile | null }> {
   const rows = (await sql`
@@ -1283,6 +1284,22 @@ export async function getFlavorProfile(userId: string): Promise<{ flavor: Person
     };
   });
   return { flavor: computePersonality(personalityStats(posts)) };
+}
+
+/**
+ * Both wheels for the Taste match card on a friend's profile: yours and
+ * theirs, laid over each other (lib/personality.ts `comparePersonality`).
+ * Same gate as `getTasteMatchForProfile`: `null` for yourself or anyone who
+ * isn't a friend; a side is null when that person has too few posts.
+ */
+export async function getPersonalityMatchForProfile(
+  viewerId: string,
+  otherId: string
+): Promise<{ you: PersonalityProfile | null; them: PersonalityProfile | null } | null> {
+  if (viewerId === otherId) return null;
+  if ((await getFriendStatus(viewerId, otherId)) !== "friends") return null;
+  const [you, them] = await Promise.all([getFlavorProfile(viewerId), getFlavorProfile(otherId)]);
+  return { you: you.flavor, them: them.flavor };
 }
 
 /**

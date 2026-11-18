@@ -198,3 +198,38 @@ export function computePersonality(stats: PersonalityStats): PersonalityProfile 
 export function formatLift(l: number): string {
   return `${l >= 10 ? Math.round(l) : l.toFixed(1)}x`;
 }
+
+/** A friend's wheel against yours, for the Taste match card on their profile. */
+export type PersonalityComparison = {
+  /** 0-100: 100 when the two shapes coincide, falling with the average gap between them. */
+  similarity: number;
+  /** Types both of you are well above average on, strongest shared first, at most three. */
+  both: PersonalityType[];
+  /** The type you two differ on most, when one of you is at least twice the other. */
+  diff: { type: PersonalityType; you: number; them: number } | null;
+};
+
+/** Average radius gap at which similarity reaches 0; the gap from average to a 3x spoke is about 0.48. */
+const SIMILARITY_ZERO_GAP = 0.5;
+const SHARED_LIFT = 1.25;
+
+export function comparePersonality(you: PersonalityProfile, them: PersonalityProfile): PersonalityComparison {
+  const gap = you.you.reduce((sum, r, i) => sum + Math.abs(r - them.you[i]), 0) / you.you.length;
+  const similarity = Math.max(0, Math.min(100, Math.round(100 * (1 - gap / SIMILARITY_ZERO_GAP))));
+  const both = you.spokes
+    .map((s, i) => ({ s, m: Math.min(you.lift[i], them.lift[i]) }))
+    .filter((x) => x.m >= SHARED_LIFT)
+    .sort((a, b) => b.m - a.m || a.s.localeCompare(b.s))
+    .slice(0, 3)
+    .map((x) => x.s);
+  let diff: PersonalityComparison["diff"] = null;
+  let widest = 1;
+  you.spokes.forEach((s, i) => {
+    const d = Math.abs(Math.log2(you.lift[i] / them.lift[i]));
+    if (d >= widest) {
+      widest = d;
+      diff = { type: s, you: you.lift[i], them: them.lift[i] };
+    }
+  });
+  return { similarity, both, diff };
+}

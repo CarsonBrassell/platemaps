@@ -47,7 +47,6 @@ const SAM: TasteInput = {
   },
 };
 
-const SPARSE: TasteInput = { counts: { Mexican: 1, Thai: 1 }, topPlaces: {} };
 
 /* A real-shaped log: 20 plates at 20 places, spicy and classic-leaning. */
 const EATER: PersonalityStats = {
@@ -61,11 +60,24 @@ const EATER: PersonalityStats = {
   cuisines: 12,
 };
 
+/* A friend who eats lighter and sweeter, at more counter spots. */
+const SAM_EATER: PersonalityStats = {
+  posts: 18,
+  dishPosts: 18,
+  tags: { s: 0, w: 5, d: 6, c: 4 },
+  visits: 15,
+  places: 11,
+  quickVisits: 11,
+  foodieVisits: 1,
+  cuisines: 7,
+};
+
 export default function TasteMatchDraftPage() {
   const match = computeTasteMatch(YOU, SAM);
-  const empty = computeTasteMatch(SPARSE, SAM);
   const flavor = computePersonality(EATER);
   const flavorEmpty = computePersonality({ ...EATER, posts: 2 });
+  const pair = { you: flavor, them: computePersonality(SAM_EATER) };
+  const pairEmpty = { you: flavorEmpty, them: pair.them };
 
   return (
     <>
@@ -79,20 +91,20 @@ export default function TasteMatchDraftPage() {
 
         <p className="mono-label mb-3 mt-8 text-zinc-900">Web</p>
         <div className="-mx-4 sm:-mx-6">
-          <TasteMatchCard friendName="Sam" match={match} />
+          <TasteMatchCard friendName="Sam" personality={pair} tryPick={match?.tryPick} />
         </div>
 
         <p className="mono-label mb-3 mt-10 text-zinc-900">Phone (390px)</p>
         <div className="-mx-4 w-[390px] max-w-full">
-          <PhoneTasteMatchCard friendName="Sam" match={match} />
+          <PhoneTasteMatchCard friendName="Sam" personality={pair} tryPick={match?.tryPick} />
         </div>
 
         <p className="mono-label mb-3 mt-10 text-zinc-900">Empty state</p>
         <div className="-mx-4 sm:-mx-6">
-          <TasteMatchCard friendName="Sam" match={empty} />
+          <TasteMatchCard friendName="Sam" personality={pairEmpty} />
         </div>
         <div className="-mx-4 mt-6 w-[390px] max-w-full">
-          <PhoneTasteMatchCard friendName="Sam" match={empty} />
+          <PhoneTasteMatchCard friendName="Sam" personality={pairEmpty} />
         </div>
 
         <p className="mono-label mb-3 mt-10 text-zinc-900">Your food personality</p>

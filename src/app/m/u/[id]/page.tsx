@@ -7,6 +7,7 @@ import { ProfileBlockButton } from "@/components/ProfileBlockButton";
 import {
   getBlockStatus,
   getFlavorProfile,
+  getPersonalityMatchForProfile,
   getPublicProfile,
   getRestaurantById,
   getTasteMatchForProfile,
@@ -94,15 +95,17 @@ export default async function PhonePublicProfilePage({
   };
   const back = (from && BACK_TARGETS[from]) || { href: "/m", label: "Discover" };
 
-  /* Taste match is null for yourself and for non-friends — no card at all; see
-     getTasteMatchForProfile. On your own profile the flavor profile takes its
+  /* Taste match (both food personality wheels, plus the cuisine match for its
+     "Try their pick") is null for yourself and for non-friends — no card at
+     all; see getPersonalityMatchForProfile. On your own profile the flavor profile takes its
      place, so exactly one of the two is ever non-null. The block check above
      has already run. */
   const isSelf = viewer.id === profile.id;
-  const [favoriteRestaurant, posts, taste, flavor] = await Promise.all([
+  const [favoriteRestaurant, posts, taste, personality, flavor] = await Promise.all([
     profile.favoriteRestaurantId ? getRestaurantById(profile.favoriteRestaurantId) : null,
     getUserPublicPosts(profile.id, viewer?.id ?? null),
     getTasteMatchForProfile(viewer.id, profile.id),
+    getPersonalityMatchForProfile(viewer.id, profile.id),
     isSelf ? getFlavorProfile(profile.id) : null,
   ]);
 
@@ -195,7 +198,14 @@ export default async function PhonePublicProfilePage({
         </div>
       </div>
 
-      {taste && <PhoneTasteMatchCard friendName={profile.name} match={taste.match} to={to} />}
+      {personality && (
+        <PhoneTasteMatchCard
+          friendName={profile.name}
+          personality={personality}
+          tryPick={taste?.match?.tryPick}
+          to={to}
+        />
+      )}
       {flavor && <PhoneFlavorProfileCard flavor={flavor.flavor} />}
 
       <div className="mx-4 mt-6">
