@@ -1406,15 +1406,23 @@ ok("the route turns the 40-axis fit on for the gated account only and never send
   assert.ok(F40.weight > 0 && F40.weight <= 0.5, "the blend stays a nudge");
 });
 
-ok("crowd bonus: capped at 1.08, never under 1.0, silent", () => {
-  assert.equal(CROWD.cap, 0.08);
+ok("crowd bonus v2: only ratings drive it, 0.85 to 1.30, silent", () => {
+  assert.equal(CROWD.cap, 0.3);
+  assert.equal(CROWD.floor, 0.85);
   assert.equal(crowdMultiplier([]), 1);
-  assert.equal(crowdMultiplier([-0.5, -2]), 1, "negative evidence is never a penalty");
-  assert.equal(crowdMultiplier([1, -1]), 1, "negative cancels positive down to nothing");
-  const one = crowdMultiplier([0.5]);
-  assert.ok(one > 1 && one < crowdMultiplier([0.5, 0.5, 0.5]), "more posters, more bonus");
-  assert.ok(crowdMultiplier(Array(500).fill(1)) <= 1 + CROWD.cap + 1e-12, "capped");
-  assert.ok(crowdMultiplier([0.5, 0.5]) - one < one - 1, "diminishing returns");
+  assert.equal(crowdMultiplier([4.0, 4.2, 4.4]), 1, "4.0-4.4 adds nothing");
+  assert.ok(crowdMultiplier([4.5]) > 1.1, "4.5 adds clearly");
+  assert.ok(crowdMultiplier([5]) > crowdMultiplier([4.5]), "5.0 adds more than 4.5");
+  assert.ok(crowdMultiplier([3.9]) < 1 && crowdMultiplier([3.9]) > crowdMultiplier([2]), "under 4.0 subtracts, lower subtracts more");
+  assert.ok(crowdMultiplier(Array(500).fill(1)) >= CROWD.floor - 1e-12, "floored");
+  assert.ok(crowdMultiplier(Array(500).fill(5)) <= 1 + CROWD.cap + 1e-12, "capped");
+  assert.ok(crowdMultiplier([4.5, 4.5, 4.5]) > 1.2, "2-3 strong ratings get most of the cap");
+  assert.ok(crowdMultiplier([5, 5]) - 1 > 0.9 * CROWD.cap, "two 5s are near the cap");
+  assert.ok(crowdMultiplier([5, 5]) - crowdMultiplier([5]) < crowdMultiplier([5]) - 1, "diminishing returns");
+  assert.ok(crowdMultiplier([5, 2]) < crowdMultiplier([5]), "a low rating pulls a strong one down");
+  const T = Date.parse("2026-06-01T12:00:00Z");
+  const photoOnly = buildCrowd([{ userId: "a", restaurantId: "p", at: T, rating: NaN }, { userId: "b", restaurantId: "p", at: T, rating: NaN }]);
+  assert.equal(photoOnly.size, 0, "posts without a rating count for nothing");
   const lib = src("src/lib/crowdBonus.ts") + src("src/lib/crowdIndex.ts");
   assert.ok(!/localStorage|fetch[(]|INSERT |UPDATE |DELETE /.test(lib), "no I/O beyond one read");
   assert.ok(/WHERE meal_id IS NULL AND restaurant_id IS NOT NULL AND rating IS NOT NULL/.test(src("src/lib/db.ts")), "the public feed's terms, rated posts only");
@@ -1436,23 +1444,24 @@ ok("crowd bonus: the viewer's own posts, blocked users, and unrated posts do not
   assert.ok(mine.get("pl") > blk.get("pl"), "a blocked poster is left out");
   const lone = crowdMultipliers(buildCrowd([{ userId: "me", restaurantId: "pl", at: T, rating: 99 }]), "me");
   assert.equal(lone.size, 0, "only the viewer posted: no bonus");
-  for (const m of all.values()) assert.ok(m > 1 && m <= 1 + CROWD.cap);
+  for (const m of all.values()) assert.ok(m >= CROWD.floor && m <= 1 + CROWD.cap);
   assert.ok(!JSON.stringify([...all]).match(/"(a|b|me|blk)"/), "no poster id in the multipliers");
 });
 
 ok("crowd bonus: only the flavor40 path, only new places, others byte-identical", () => {
   const plain = JSON.stringify(rank());
-  const crowd = new Map([["m1", 1.08], ["m4", 1.08], ["m6", 1.08]]);
+  const crowd = new Map([["m1", 1.3], ["m4", 1.3], ["m6", 1.3]]);
   assert.equal(JSON.stringify(rank({ crowd })), plain, "crowd without flavor40 is the old answer");
   assert.equal(JSON.stringify(rank({ flavor40: false, crowd })), plain, "flavor40 false ignores it");
   const f40 = JSON.stringify(rank({ flavor40: true }));
   assert.equal(JSON.stringify(rank({ flavor40: true, crowd: new Map() })), f40, "an empty crowd changes nothing");
-  assert.equal(JSON.stringify(rank({ flavor40: true, crowd: new Map([["m1", 0.5], ["m4", 1]]) })), f40, "below 1.0 is clamped to nothing");
+  assert.equal(JSON.stringify(rank({ flavor40: true, crowd: new Map([["m4", 1]]) })), f40, "1.0 changes nothing");
+  assert.equal(JSON.stringify(rank({ flavor40: true, crowd: new Map([["m1", 0.1]]) })), JSON.stringify(rank({ flavor40: true, crowd: new Map([["m1", 0.85]]) })), "a multiplier under the floor is held at 0.85");
   const huge = rank({ flavor40: true, crowd: new Map([["m1", 50]]) });
-  const capped = rank({ flavor40: true, crowd: new Map([["m1", 1.08]]) });
-  assert.equal(JSON.stringify(huge), JSON.stringify(capped), "a multiplier past the cap is held at 1.08");
+  const capped = rank({ flavor40: true, crowd: new Map([["m1", 1.3]]) });
+  assert.equal(JSON.stringify(huge), JSON.stringify(capped), "a multiplier past the cap is held at 1.30");
   const posted = POSTS[0].restaurantId;
-  assert.equal(JSON.stringify(rank({ flavor40: true, crowd: new Map([[posted, 1.08]]) })), f40, "a place the viewer posted gets nothing");
+  assert.equal(JSON.stringify(rank({ flavor40: true, crowd: new Map([[posted, 1.3]]) })), f40, "a place the viewer posted gets nothing");
   const route = src("src/app/api/account/taste/route.ts");
   assert.ok(route.includes("if (flavor40User) {") && route.includes("await Promise.all([loadCrowd(), getBlockedEitherWayIds(user.id)])"), "loaded for the 40-axis account only");
   assert.equal((route.match(/loadCrowd[(]/g) ?? []).length, 1);

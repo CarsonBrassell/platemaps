@@ -1281,7 +1281,7 @@ export type DishRankInput = {
    */
   flavor40?: boolean;
   /**
-   * Place id -> crowd multiplier (lib/crowdBonus.ts), 1 to 1.08. Read only on the flavor40 path, and only for a
+   * Place id -> crowd multiplier (lib/crowdBonus.ts), 0.85 to 1.30. Read only on the flavor40 path, and only for a
    * place the viewer has not posted. Absent, the ranking is what it was.
    */
   crowd?: ReadonlyMap<string, number>;
@@ -2304,7 +2304,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     const trust = c.reviewFloor + (1 - c.reviewFloor) * Math.min(1, (r.reviewCount ?? 0) / c.reviewFull);
     let score = g * trust * (100 * (c.wM * M * D + c.wC * Cc * D + c.wQ * Q) + bonus) * (namedInCaption(r.name) ? c.knownShade : 1) * (named?.flav?.only && (named.flav.kinds & ~KB.starter) === 0 ? c.oddShade : 1);
     if (f40profile && f40vecs && rid !== undefined) score *= 1 + F40.weight * fit40(f40profile, f40vecs, rid);
-    if (crowd && !postedIds.has(r.id)) score *= Math.min(1 + CROWD.cap, Math.max(1, crowd.get(r.id) ?? 1));
+    if (crowd && !postedIds.has(r.id)) score *= Math.min(1 + CROWD.cap, Math.max(CROWD.floor, crowd.get(r.id) ?? 1));
     // A line that looks like a dish they rated low (the same dish, or the same family) counts for less.
     if (named && named.item !== "" && against.length > 0) {
       let worst = 0;
