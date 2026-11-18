@@ -141,12 +141,22 @@ export function CameraCapture({
   const [mode, setMode] = useState<Mode>("single");
   const [facing, setFacing] = useState<Facing>("environment");
   /**
-   * Which camera fills which half of a split — [top, bottom]. Fixed: the plate
-   * on top, the face under it. This used to be state behind the flip button,
-   * which in split mode swapped the halves instead of turning the camera —
-   * the same icon meaning two things, and the second one nobody wanted.
+   * Which camera fills which half of a split — [top, bottom]. Defaults to the
+   * plate on top and the face under it. In split the flip button turns the
+   * camera for the half being shot (it once swapped the halves, which nobody
+   * wanted), so both halves can come from the same lens — e.g. plate and room
+   * both on the front camera. Same lens twice is always the two-shot path.
    */
-  const order: [Facing, Facing] = ["environment", "user"];
+  const [order, setOrder] = useState<[Facing, Facing]>(["environment", "user"]);
+  /**
+   * Set by the first flip in split. From then on each half is its own press
+   * with its own camera choice, even on hardware that can run both lenses at
+   * once — otherwise a phone showing both live would snap back to that view
+   * the moment the halves differed again, and the bottom could never be picked.
+   */
+  const [pickedLens, setPickedLens] = useState(false);
+  /** One camera, two presses: same lens twice, or the person chose per half. */
+  const sameLens = order[0] === order[1] || pickedLens;
   const [pendingUrl, setPendingUrl] = useState<string | null>(null);
   const [bothLive, setBothLive] = useState(false);
   const [status, setStatus] = useState<Status>("starting");
@@ -358,7 +368,7 @@ export function CameraCapture({
       show(videoRef.current, stream);
       setStatus("live");
 
-      if (mode !== "split" || bothAtOnceRef.current === false) return;
+      if (mode !== "split" || sameLens || bothAtOnceRef.current === false) return;
       await openSpare(stream);
     }
 
@@ -373,7 +383,7 @@ export function CameraCapture({
       setBothLive(false);
       setReady(false);
     };
-  }, [live, spare, mode, attempt]);
+  }, [live, spare, mode, sameLens, attempt]);
 
   function flashOnce() {
     setFlash(true);
@@ -452,7 +462,7 @@ export function CameraCapture({
     if (!video?.videoWidth) return;
 
     // Both lenses running: one press is the whole picture, nothing to wait for.
-    if (bothLive) {
+    if (bothLive && !sameLens) {
       const other = spareVideoRef.current;
       if (!other?.videoWidth) return;
       const top = halfFrom(order[0] === live ? video : other, order[0] === "user");
@@ -517,8 +527,17 @@ export function CameraCapture({
     setMode(next);
   }
 
-  /** Turns the camera round. Single mode only — a split has no side to pick. */
+  /** Turns the camera round — in split, for the half about to be shot. */
   function flip() {
+    if (mode === "split") {
+      setPickedLens(true);
+      setOrder((o) => {
+        const next: [Facing, Facing] = [o[0], o[1]];
+        next[slot] = o[slot] === "environment" ? "user" : "environment";
+        return next;
+      });
+      return;
+    }
     setFacing((f) => (f === "environment" ? "user" : "environment"));
   }
 
@@ -558,7 +577,7 @@ export function CameraCapture({
         muted
         aria-label="Second camera preview"
         className={`absolute inset-x-0 bottom-0 h-1/2 w-full object-cover ${
-          mode === "split" && bothLive ? "" : "hidden"
+          mode === "split" && bothLive && !sameLens ? "" : "hidden"
         } ${order[1] === "user" ? "-scale-x-100" : ""}`}
       />
 
@@ -576,11 +595,11 @@ export function CameraCapture({
           to an icon and three words, and pinned under the seam: the shutter
           hint below already says what the next press does, and the middle of
           this half is where the controls sit. */}
-      {mode === "split" && !bothLive && !pendingUrl && status === "live" && (
+      {mode === "split" && (!bothLive || sameLens) && !pendingUrl && status === "live" && (
         <div className="absolute inset-x-0 bottom-0 flex h-1/2 flex-col items-center gap-2 bg-pm-charcoal px-8 pt-8 text-center">
           <CameraIcon className="h-6 w-6 text-white/30" />
           <p className="text-xs text-white/45">
-            {order[1] === "user" ? "Selfie" : "Plate"} goes here
+            {order[1] === "user" ? "Front camera" : "Back camera"} shot goes here
           </p>
         </div>
       )}
@@ -763,31 +782,26 @@ export function CameraCapture({
         />
       </button>
 
-      {/* No flip in split: both cameras are already in the picture, and the
-          button used to swap the halves instead — a second meaning for the
-          same icon. The spacer keeps the shutter centred, matching the left. */}
-      {mode === "split" ? (
-        <span className="h-12 w-12 shrink-0" aria-hidden="true" />
-      ) : (
-        <button
-          type="button"
-          onClick={flip}
-          disabled={status !== "live"}
-          aria-label={
-            facing === "environment"
-              ? "Switch to the front camera"
-              : "Switch to the rear camera"
-          }
-          className={railButton}
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
-            <path d="M3 10a7 7 0 0 1 11.9-5" />
-            <path d="M21 14a7 7 0 0 1-11.9 5" />
-            <path d="M15 5h4V1" />
-            <path d="M9 19H5v4" />
-          </svg>
-        </button>
-      )}
+      {/* Flip turns the live camera. In split that is the camera for the half
+          being shot (top first, then bottom), so both halves can use one lens. */}
+      <button
+        type="button"
+        onClick={flip}
+        disabled={status !== "live"}
+        aria-label={
+          live === "environment"
+            ? `Switch ${mode === "split" ? (slot === 0 ? "top half " : "bottom half ") : ""}to the front camera`
+            : `Switch ${mode === "split" ? (slot === 0 ? "top half " : "bottom half ") : ""}to the rear camera`
+        }
+        className={railButton}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
+          <path d="M3 10a7 7 0 0 1 11.9-5" />
+          <path d="M21 14a7 7 0 0 1-11.9 5" />
+          <path d="M15 5h4V1" />
+          <path d="M9 19H5v4" />
+        </svg>
+      </button>
     </div>
   );
 
@@ -802,10 +816,10 @@ export function CameraCapture({
           ? pickError
           : mode === "split"
           ? midSplit
-            ? `Now the ${order[1] === "user" ? "selfie" : "plate"}`
-            : bothLive
+            ? "Now the bottom half · flip to switch camera"
+            : bothLive && !sameLens
               ? "Both cameras, one picture"
-              : `${order[0] === "user" ? "Selfie" : "Plate"} first, then the other side`
+              : "Top half first, then the bottom"
           : ""}
       </span>
     </p>
