@@ -1,5 +1,6 @@
 "use client";
 
+import { useRegisterModal } from "@/lib/modalGate";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth";
@@ -33,6 +34,7 @@ import "./freefood.css";
 
 export function TicketPopup({ onClose }: { onClose: () => void }) {
   const { account } = useAuth();
+  useRegisterModal();
   const [native, setNative] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const { ticket, loaded, busy, error, slicesLeft, simOn, offset, claim } = useEventTicket(!!account);
