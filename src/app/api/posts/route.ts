@@ -280,9 +280,8 @@ export async function POST(req: NextRequest) {
     locationLabel: locationLabel ? String(locationLabel).trim().slice(0, 120) : undefined,
     vibe,
     media,
-    // Snapshot of the author's CURRENT toggle, frozen onto the row — not read
-    // live later. See the photosPublic note on createPost in lib/db.ts.
-    photosPublic: user.sharePhotosPublicly,
+    // Every photo goes to the public feed — there is no friends-only option.
+    photosPublic: true,
     bestAspect,
     worstAspect,
     courses: courses.length > 0 ? courses : undefined,
