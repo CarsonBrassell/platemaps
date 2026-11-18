@@ -124,7 +124,7 @@ export function PhoneRestaurantCardGrid({
             carries a cold-start card and it was missing from the phone
             entirely, so the words moved to the body — where the web card has
             always kept them — and the stars took the slot. */}
-        <span className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-full bg-white/95 px-1.5 py-0.5 font-mono text-[10px] leading-none tabular-nums">
+        <span className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-full bg-white/95 px-1.5 py-0.5 font-mono text-[11px] leading-none tabular-nums">
           {score.percent !== null && (
             <span className="font-bold text-pm-orange-text">{score.percent}%</span>
           )}
@@ -132,7 +132,7 @@ export function PhoneRestaurantCardGrid({
             <>
               {score.percent !== null && <span className="text-zinc-300">·</span>}
               <span className="flex items-center gap-0.5 font-medium text-zinc-600">
-                <StarIcon className="h-2.5 w-2.5 text-zinc-400" />
+                <StarIcon className="h-2.5 w-2.5 text-zinc-500" />
                 {blendLabel(restaurant.rating)}
               </span>
             </>
@@ -155,7 +155,7 @@ export function PhoneRestaurantCardGrid({
             compare two of these ($6.90 against $21.00 for the same burrito),
             and truncating it away would leave the comparison unmade. */}
         {restaurant.matchedDish ? (
-          <p className="mt-0.5 flex items-center gap-1 text-[10px]">
+          <p className="mt-0.5 flex items-center gap-1 text-[11px]">
             <span className="truncate rounded-full bg-pm-orange-tint px-1.5 py-0.5 font-medium text-pm-orange-text">
               {restaurant.matchedDish.name}
             </span>
@@ -182,7 +182,7 @@ export function PhoneRestaurantCardGrid({
           // and the distance, which is why the card is where it is on a
           // search, survives it.
           (restaurant.cuisine || distance) && (
-            <p className="mt-0.5 flex items-center gap-1 text-[10px] text-zinc-500">
+            <p className="mt-0.5 flex items-center gap-1 text-[11px] text-zinc-500">
               {restaurant.cuisine && (
                 <span
                   className={
@@ -223,7 +223,7 @@ export function PhoneRestaurantCardGrid({
             one rather than filling it with somebody else's. Spelled out so
             "we have no ratings" never reads as "rated badly". */}
         {score.percent === null && (
-          <p className="mt-1 truncate font-mono text-[9px] leading-none text-zinc-400">
+          <p className="mt-1 truncate font-mono text-[11px] leading-none text-zinc-500">
             {plateScoreLabel(score)}
           </p>
         )}
@@ -238,7 +238,7 @@ export function PhoneRestaurantCardGrid({
             works on the restaurant page is a coloured smudge. */}
         {aspect && (
           <p
-            className="mt-1 inline-flex max-w-full items-center gap-1 truncate rounded-full bg-pm-orange-tint px-1.5 py-0.5 text-[9px] font-medium leading-none text-pm-orange-text"
+            className="mt-1 inline-flex max-w-full items-center gap-1 truncate rounded-full bg-pm-orange-tint px-1.5 py-0.5 text-[11px] font-medium leading-none text-pm-orange-text"
             aria-label={`${aspect.aspect} rated ${aspect.score.toFixed(1)} out of ${ASPECT_SCALE_MAX}`}
           >
             <span className="truncate">{aspect.aspect}</span>

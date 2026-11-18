@@ -304,7 +304,7 @@ function ArcNav({ to, isCurrent, dotFor, showCreate, slots }: VariantProps) {
            only: `pill` and `strip` are the runners-up awaiting deletion, and
            the note above this component says not to build on them. */
         data-coach={COACH_KEYS[item.href]}
-        className={`flex min-h-12 flex-1 flex-col items-center justify-center gap-0.5 text-[10px] font-medium transition-colors ${FOCUS} ${
+        className={`flex min-h-12 flex-1 flex-col items-center justify-center gap-0.5 text-[11px] font-medium transition-colors ${FOCUS} ${
           current ? "text-pm-orange-text" : "text-pm-grey-text"
         }`}
       >

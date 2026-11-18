@@ -57,6 +57,26 @@ cd "$ROOT"
 echo "==> Syncing web assets into the iOS project"
 npx cap sync ios
 
+# Refuse to archive a stale shell. Build 8 was rejected under Guideline 2.1(a)
+# because the config inside the app had no allowNavigation: Capacitor then
+# hands every page that is not server.url itself (Account, Discover) to Safari,
+# and the cancelled load falls through to offline.html. The sync above rewrites
+# both files on every run; this checks what it actually wrote, so that line
+# cannot go missing again without the build stopping here.
+echo "==> Checking the synced Capacitor config"
+SYNCED="ios/App/App/capacitor.config.json"
+node -e '
+  const c = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
+  const server = c.server || {};
+  const host = new URL(server.url).hostname;
+  if (!(server.allowNavigation || []).includes(host)) {
+    console.error("allowNavigation is missing " + host + " in " + process.argv[1]);
+    process.exit(1);
+  }
+' "$SYNCED" || { echo "Stale Capacitor config - run: npx cap sync ios" >&2; exit 1; }
+cmp -s public/offline.html ios/App/App/public/offline.html \
+  || { echo "ios/App/App/public/offline.html is not the current public/offline.html" >&2; exit 1; }
+
 echo "==> Archiving"
 xcodebuild -workspace ios/App/App.xcworkspace -scheme App \
   -configuration Release -destination 'generic/platform=iOS' \

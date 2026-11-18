@@ -1,0 +1,175 @@
+diff --git a/DESIGN.md b/DESIGN.md
+index e1a9ff7..ecb30a7 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -69,6 +69,13 @@ Tokens live in `src/app/globals.css` (`:root` + the retuned `zinc` ramp).
+ | `--pm-grey-tint` | `#EDE8DC` | Neutral chip/pill tan, quiet input fills |
+ | `--pm-tone-1/2/3` | `#EEE5D2` / `#E6DCC6` / `#EFE8DA` | Warm tone blocks standing in for missing photos |
+ 
++**Light only.** There is no dark theme and none is planned (owner decision,
++2026-11-17). The pages declare `color-scheme: only light` (`:root` in
++`globals.css` and the `viewport` export in `src/app/layout.tsx`) and the iOS
++shell sets `UIUserInterfaceStyle` to `Light` (`ios/App/App/Info.plist`), so a
++phone in Dark Mode gets the same cream app. The map's night style (see Map)
++is the one deliberately dark surface.
++
+ **One accent.** Orange appears only on: recommendation percentages / vote
+ counts (data), the selected state of pills and tabs, and the primary action.
+ Cream text on orange fills is `#F7F4EC`, not white — that pairing is 3.87:1,
+diff --git a/capacitor.config.ts b/capacitor.config.ts
+index 706d580..be4118e 100644
+--- a/capacitor.config.ts
++++ b/capacitor.config.ts
+@@ -84,6 +84,15 @@ const config: CapacitorConfig = {
+     // moment the default is what ships.
+     errorPath: 'offline.html'
+   },
++  ios: {
++    // What the WebView's own surface is painted with wherever the page is not
++    // covering it: before the first paint, behind rubber-band overscroll, in
++    // the beat before offline.html draws. Unset, Capacitor uses the system
++    // background - white, or black on a phone in Dark Mode. PlateMaps is
++    // light only (DESIGN.md, Color; Info.plist sets UIUserInterfaceStyle to
++    // Light), so this pins it to the same cream as --background.
++    backgroundColor: '#F7F4EC'
++  },
+   plugins: {
+     // How a push is shown while the app is in the foreground. Without this
+     // iOS swallows it silently; with it a comment on your plate still shows a
+diff --git a/ios/App/App/Info.plist b/ios/App/App/Info.plist
+index 4cf2ec1..db2da9f 100644
+--- a/ios/App/App/Info.plist
++++ b/ios/App/App/Info.plist
+@@ -49,6 +49,8 @@
+ 		<string>UIInterfaceOrientationLandscapeLeft</string>
+ 		<string>UIInterfaceOrientationLandscapeRight</string>
+ 	</array>
++	<key>UIUserInterfaceStyle</key>
++	<string>Light</string>
+ 	<key>UIViewControllerBasedStatusBarAppearance</key>
+ 	<true/>
+ </dict>
+diff --git a/scripts/ship-ios.sh b/scripts/ship-ios.sh
+index f71b07f..a6779ae 100755
+--- a/scripts/ship-ios.sh
++++ b/scripts/ship-ios.sh
+@@ -57,6 +57,26 @@ cd "$ROOT"
+ echo "==> Syncing web assets into the iOS project"
+ npx cap sync ios
+ 
++# Refuse to archive a stale shell. Build 8 was rejected under Guideline 2.1(a)
++# because the config inside the app had no allowNavigation: Capacitor then
++# hands every page that is not server.url itself (Account, Discover) to Safari,
++# and the cancelled load falls through to offline.html. The sync above rewrites
++# both files on every run; this checks what it actually wrote, so that line
++# cannot go missing again without the build stopping here.
++echo "==> Checking the synced Capacitor config"
++SYNCED="ios/App/App/capacitor.config.json"
++node -e '
++  const c = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
++  const server = c.server || {};
++  const host = new URL(server.url).hostname;
++  if (!(server.allowNavigation || []).includes(host)) {
++    console.error("allowNavigation is missing " + host + " in " + process.argv[1]);
++    process.exit(1);
++  }
++' "$SYNCED" || { echo "Stale Capacitor config - run: npx cap sync ios" >&2; exit 1; }
++cmp -s public/offline.html ios/App/App/public/offline.html \
++  || { echo "ios/App/App/public/offline.html is not the current public/offline.html" >&2; exit 1; }
++
+ echo "==> Archiving"
+ xcodebuild -workspace ios/App/App.xcworkspace -scheme App \
+   -configuration Release -destination 'generic/platform=iOS' \
+diff --git a/src/app/globals.css b/src/app/globals.css
+index 5107dde..28311f0 100644
+--- a/src/app/globals.css
++++ b/src/app/globals.css
+@@ -5,6 +5,7 @@
+      The accent has two voices: --pm-orange for fills, selected states and
+      large display numerals (4.26:1 on white — large text only), and
+      --pm-orange-text for orange type at body sizes (5.8:1, passes 4.5:1). */
++  color-scheme: only light; /* light only by decision, no dark theme: DESIGN.md, Color */
+   --background: #f7f4ec;
+   --foreground: #232019;
+   --pm-charcoal: #232019;
+diff --git a/src/app/layout.tsx b/src/app/layout.tsx
+index 761c2bf..67237b9 100644
+--- a/src/app/layout.tsx
++++ b/src/app/layout.tsx
+@@ -93,6 +93,9 @@ export const metadata: Metadata = {
+ export const viewport: Viewport = {
+   viewportFit: "cover",
+   themeColor: "#F7F4EC",
++  /* Light only, by decision (DESIGN.md, Color). `only` also opts the pages
++     out of a browser's forced-dark rendering. */
++  colorScheme: "only light",
+ };
+ 
+ export default function RootLayout({
+diff --git a/src/components/mobile/PhoneSignUpSheet.tsx b/src/components/mobile/PhoneSignUpSheet.tsx
+index a40e096..71aa972 100644
+--- a/src/components/mobile/PhoneSignUpSheet.tsx
++++ b/src/components/mobile/PhoneSignUpSheet.tsx
+@@ -63,6 +63,23 @@ function remember() {
+   }
+ }
+ 
++/* True while some other modal is on screen. The feed opens the free-food
++   ticket by itself on a first visit - the same moment this sheet wants to
++   appear - and two dialogs stacked on first launch read as a broken app, so
++   this one waits its turn. The sheet's own panel is skipped: a press inside
++   the open sheet restarts the timer too, and it must not find itself. */
++function anotherDialogOpen(): boolean {
++  const dialogs = document.querySelectorAll<HTMLElement>(
++    '[role="dialog"],[role="alertdialog"],[aria-modal="true"],dialog[open]',
++  );
++  return Array.from(dialogs).some(
++    (el) =>
++      !el.closest("[data-signup-sheet]") &&
++      !el.closest('[aria-hidden="true"],[inert]') &&
++      el.getClientRects().length > 0,
++  );
++}
++
+ export function PhoneSignUpSheet() {
+   const { isSignedIn, loading } = useAuth();
+   const pathname = usePathname();
+@@ -78,16 +95,24 @@ export function PhoneSignUpSheet() {
+     if (!eligible || wasDismissed()) return;
+     /* Restarted on every press, so the sheet never slides in under a finger
+        that is already reaching for something - it used to land its "Not now"
+-       exactly where the nav's Friends tab is, eating that first tap. */
+-    let t = window.setTimeout(() => setOpen(true), SHOW_DELAY_MS);
+-    function restart() {
++       exactly where the nav's Friends tab is, eating that first tap.
++
++       It also waits out any other dialog (anotherDialogOpen): while one is up
++       the timer only re-arms, so the sheet arrives after that dialog is
++       closed instead of sliding in on top of it. */
++    let t = 0;
++    function arm() {
+       window.clearTimeout(t);
+-      t = window.setTimeout(() => setOpen(true), SHOW_DELAY_MS);
++      t = window.setTimeout(() => {
++        if (anotherDialogOpen()) arm();
++        else setOpen(true);
++      }, SHOW_DELAY_MS);
+     }
+-    document.addEventListener("pointerdown", restart, true);
++    arm();
++    document.addEventListener("pointerdown", arm, true);
+     return () => {
+       window.clearTimeout(t);
+-      document.removeEventListener("pointerdown", restart, true);
++      document.removeEventListener("pointerdown", arm, true);
+       setOpen(false);
+     };
+   }, [eligible]);
+@@ -153,6 +178,7 @@ function Sheet({ onDismiss }: { onDismiss: () => void }) {
+ 
+   return (
+     <div
++      data-signup-sheet
+       className="animate-fade-in fixed inset-0 z-[60] flex items-end justify-center overflow-hidden bg-pm-charcoal/45 backdrop-blur-[2px]"
+       onMouseDownCapture={tooSoon}
+       onClickCapture={tooSoon}

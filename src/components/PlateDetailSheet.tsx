@@ -17,6 +17,7 @@ import {
 import { VotePair, type VoteDirection } from "@/components/feed/PostActions";
 import { ReportButton } from "@/components/feed/ReportButton";
 import { AdminDeleteButton } from "@/components/feed/AdminDeleteButton";
+import { ReportSheet } from "@/components/feed/ReportSheet";
 import { useAuth } from "@/lib/auth";
 import { PostOptionsMenu } from "@/components/PostOptionsMenu";
 import { askForPushInContext } from "@/lib/pushClient";
@@ -1095,6 +1096,8 @@ export function PlateDetailSheet({
           </p>
         )}
 
+        <PlateModeration post={post} onBlocked={onClose} onTone={words} />
+
         <div className={words ? "px-5 pb-5" : undefined}>
           <p
             className={`mono-label mb-2 ${words ? "text-pm-grey-text" : "text-zinc-500"}`}
@@ -1138,5 +1141,74 @@ export function PlateDetailSheet({
         </div>
       </div>
     </Dialog>
+  );
+}
+
+/**
+ * Report and Block for someone else's plate (HIG #11, App Store Guideline 1.2).
+ * The feed card's options menu already offers both; a plate opened here had
+ * neither. Same routes as the card: the reason sheet files to /api/reports,
+ * Block POSTs /api/blocks and closes the sheet, since the plate is now hidden.
+ * Renders nothing signed out or on your own plate, the cases both routes refuse.
+ */
+function PlateModeration({
+  post,
+  onBlocked,
+  onTone,
+}: {
+  post: ShelfPost;
+  onBlocked: () => void;
+  onTone: boolean;
+}) {
+  const { account } = useAuth();
+  const [reporting, setReporting] = useState(false);
+  const [reported, setReported] = useState(false);
+  const [blocking, setBlocking] = useState(false);
+
+  if (!account || !post.userId || account.id === post.userId) return null;
+
+  async function block() {
+    if (blocking) return;
+    setBlocking(true);
+    try {
+      const res = await fetch("/api/blocks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: post.userId }),
+      });
+      if (!res.ok) throw new Error("failed");
+      onBlocked();
+    } catch {
+      setBlocking(false);
+    }
+  }
+
+  const btn =
+    "min-h-11 rounded-full px-3 font-mono text-xs font-medium text-red-700 transition-colors hover:text-red-900 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
+  return (
+    <div className={`-mt-1 mb-2 flex items-center justify-end gap-1 ${onTone ? "px-5" : ""}`}>
+      {reported ? (
+        <span role="status" className={`${btn} pointer-events-none flex items-center opacity-70`}>
+          Reported
+        </span>
+      ) : (
+        <button type="button" aria-haspopup="dialog" onClick={() => setReporting(true)} className={btn}>
+          Report plate
+        </button>
+      )}
+      <button type="button" disabled={blocking} onClick={() => void block()} className={btn}>
+        Block user
+      </button>
+      {reporting && (
+        <ReportSheet
+          postId={post.id}
+          onClose={() => setReporting(false)}
+          onReported={() => {
+            setReporting(false);
+            setReported(true);
+          }}
+        />
+      )}
+    </div>
   );
 }

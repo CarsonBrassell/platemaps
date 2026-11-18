@@ -358,7 +358,7 @@ function CommentNode({
           onClick={() => onToggleCollapsed(comment.id)}
           aria-expanded={!isCollapsed}
           aria-label={toggleLabel}
-          className="-ml-1 flex h-6 w-5 shrink-0 items-center justify-center rounded font-mono text-xs leading-none text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+          className="-ml-1.5 -my-2.5 flex h-11 w-8 shrink-0 items-center justify-center rounded font-mono text-xs leading-none text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
         >
           <span aria-hidden="true">{isCollapsed ? "+" : "–"}</span>
         </button>
@@ -538,7 +538,7 @@ function CommentVotes({
               ? "Upvote this comment"
               : "Downvote this comment"
         }
-        className={`flex h-11 w-6 items-center justify-center transition-colors disabled:opacity-40 disabled:hover:text-zinc-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+        className={`flex h-11 w-8 items-center justify-center transition-colors disabled:opacity-40 disabled:hover:text-zinc-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
           active ? "text-pm-orange" : "text-zinc-400 hover:text-pm-orange-text"
         }`}
       >

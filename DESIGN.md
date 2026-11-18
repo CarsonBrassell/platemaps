@@ -69,6 +69,13 @@ Tokens live in `src/app/globals.css` (`:root` + the retuned `zinc` ramp).
 | `--pm-grey-tint` | `#EDE8DC` | Neutral chip/pill tan, quiet input fills |
 | `--pm-tone-1/2/3` | `#EEE5D2` / `#E6DCC6` / `#EFE8DA` | Warm tone blocks standing in for missing photos |
 
+**Light only.** There is no dark theme and none is planned (owner decision,
+2026-11-17). The pages declare `color-scheme: only light` (`:root` in
+`globals.css` and the `viewport` export in `src/app/layout.tsx`) and the iOS
+shell sets `UIUserInterfaceStyle` to `Light` (`ios/App/App/Info.plist`), so a
+phone in Dark Mode gets the same cream app. The map's night style (see Map)
+is the one deliberately dark surface.
+
 **One accent.** Orange appears only on: recommendation percentages / vote
 counts (data), the selected state of pills and tabs, and the primary action.
 Cream text on orange fills is `#F7F4EC`, not white — that pairing is 3.87:1,

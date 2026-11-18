@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { onPushOpened, syncPushRegistration } from "@/lib/pushClient";
+import { followLargerText } from "@/lib/nativeChrome";
 
 /**
  * Mounted once in the /m layout. Renders nothing.
@@ -26,6 +27,10 @@ export function PushRegistration() {
   const { account, loading } = useAuth();
   const router = useRouter();
   const accountId = account?.id ?? null;
+
+  /* Rides along here because this is the one component every /m screen mounts:
+     the iPhone's Larger Text setting, applied to the WebView (HIG #10). */
+  useEffect(() => followLargerText(), []);
 
   useEffect(() => {
     if (loading || !accountId) return;

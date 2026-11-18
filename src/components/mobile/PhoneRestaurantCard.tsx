@@ -68,18 +68,18 @@ export function PhoneRestaurantCard({
         {score.percent !== null ? (
           <span className="absolute bottom-2.5 left-2.5 flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 font-mono text-sm font-bold tabular-nums text-pm-orange-text">
             {score.percent}%
-            <span className="text-[10px] font-medium text-zinc-500">
+            <span className="text-[11px] font-medium text-zinc-500">
               ({score.ratingCount.toLocaleString()})
             </span>
           </span>
         ) : (
-          <span className="absolute bottom-2.5 left-2.5 rounded-full bg-white/95 px-2.5 py-1 font-mono text-[10px] font-medium text-zinc-500">
+          <span className="absolute bottom-2.5 left-2.5 rounded-full bg-white/95 px-2.5 py-1 font-mono text-[11px] font-medium text-zinc-500">
             {plateScoreLabel(score)}
           </span>
         )}
 
         {restaurant.trending && (
-          <span className="absolute right-2.5 top-2.5 rounded-full bg-white/95 px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-700">
+          <span className="absolute right-2.5 top-2.5 rounded-full bg-white/95 px-2 py-0.5 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-700">
             Promoted
           </span>
         )}
@@ -94,7 +94,7 @@ export function PhoneRestaurantCard({
             business page without nesting anchors — same trade the grid card
             makes. */}
         {credit && (
-          <span className="absolute bottom-2.5 right-2.5 whitespace-nowrap rounded-full bg-white/85 px-1.5 py-0.5 font-mono text-[10px] text-zinc-600">
+          <span className="absolute bottom-2.5 right-2.5 whitespace-nowrap rounded-full bg-white/85 px-1.5 py-0.5 font-mono text-[11px] text-zinc-600">
             Photo: {credit}
           </span>
         )}

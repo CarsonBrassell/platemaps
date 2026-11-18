@@ -9,6 +9,7 @@ import {
 } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import type { MapRestaurant } from "@/components/RestaurantMap";
 import { EMPTY_PLATE_SCORE } from "@/lib/plateScore";
+import { setStatusBarOnDark } from "@/lib/nativeChrome";
 import { PhoneMapSearch } from "./PhoneMapSearch";
 import type { Dish } from "@/data/dishes";
 import type { Post } from "@/components/feed/types";
@@ -169,6 +170,13 @@ export function PhoneFeedMapPanel({
   onOpenPost: (postId: string | null) => void;
 }) {
   const router = useRouter();
+
+  /* The night map runs under the status bar, where black clock text vanishes.
+     This panel is mounted exactly while the map tab is open (HIG #3). */
+  useEffect(() => {
+    void setStatusBarOnDark(true);
+    return () => void setStatusBarOnDark(false);
+  }, []);
 
   // The map's backdrop. Restaurants and menus used to arrive in one
   // `Promise.all` here, but the menus now depend on `posts` — only a

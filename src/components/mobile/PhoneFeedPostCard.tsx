@@ -136,7 +136,7 @@ function RestaurantRef({ post, className = "" }: { post: Post; className?: strin
   return (
     <Link
       href={`/m/restaurant/${id}`}
-      className={`rounded-sm transition-colors hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${className}`}
+      className={`relative rounded-sm transition-colors after:absolute after:-inset-x-1 after:-inset-y-3.5 after:content-[''] hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${className}`}
     >
       {name}
     </Link>
@@ -177,7 +177,7 @@ function DishRef({ post, className = "" }: { post: Post; className?: string }) {
       href={post.dishId ? `/m/restaurant/${id}?dish=${post.dishId}` : `/m/restaurant/${id}`}
       /* First-run walkthrough anchor — the web card carries the same one. */
       data-coach="restaurant"
-      className={`rounded-sm transition-colors hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${className}`}
+      className={`relative rounded-sm transition-colors after:absolute after:-inset-x-1 after:-inset-y-3.5 after:content-[''] hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${className}`}
     >
       {name}
     </Link>
