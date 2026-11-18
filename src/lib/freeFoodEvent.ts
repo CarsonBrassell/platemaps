@@ -8,8 +8,8 @@
  * popup fires again for the new event).
  */
 
-/** Thu 19 Nov 2026, 5pm PST (UTC-8). */
-export const FREE_FOOD_STARTS_AT = Date.parse("2026-11-20T01:00:00Z");
+/** Thu 19 Nov 2026, 7pm PST (UTC-8). Moved from 5pm on 2026-11-17. */
+export const FREE_FOOD_STARTS_AT = Date.parse("2026-11-20T03:00:00Z");
 
 /** Thu 19 Nov 2026, 10pm PST. The icon and popup are gone after this. */
 export const FREE_FOOD_ENDS_AT = Date.parse("2026-11-20T06:00:00Z");
@@ -29,14 +29,21 @@ export const FREE_FOOD_INVITE_SHARE = "Share link instead";
 export const FREE_FOOD_INVITE_ERROR = "Add at least one phone number (10+ digits).";
 /** Canonical public link; the native app's own origin is not shareable. */
 export const FREE_FOOD_SHARE_URL = "https://platemaps.com/m/feed";
-export const FREE_FOOD_INVITE_TEXT = `Free slice at ${FREE_FOOD_PARTNER}, Thu Nov 19 5\u201310pm \u{1F355} Get PlateMaps and claim yours:`;
-export const FREE_FOOD_DATE_LINE = "Thu Nov 19 · 5–10pm";
+export const FREE_FOOD_INVITE_TEXT = `Free slice at ${FREE_FOOD_PARTNER}, Thu Nov 19 7\u201310pm \u{1F355} Get PlateMaps and claim yours:`;
+export const FREE_FOOD_DATE_LINE = "Thu Nov 19 · 7–10pm";
+/** When activation opens, for the Profile ticket and the activate route. */
+export const FREE_FOOD_DOORS_LINE = "Thu Nov 19 · 7pm";
+/** The popup's reminder that the hours moved; an empty string hides it. */
+export const FREE_FOOD_NOTICE = "New time: 7–10pm";
+export const FREE_FOOD_NOTICE_CLAIM = "Don’t forget to claim your free slice.";
 export const FREE_FOOD_PLACE = "Pizza on Pearl, Pearl St";
 export const FREE_FOOD_INSTAGRAM_HANDLE = "@pizzaonpearlsd";
 export const FREE_FOOD_INSTAGRAM_URL = "https://www.instagram.com/pizzaonpearlsd/";
 
-/** Set once the popup has been shown on a device, so it opens by itself once. */
-export const FREE_FOOD_SEEN_KEY = "pm-ticket-pearl-2026-11-19-seen";
+/** Set once the popup has been shown on a device, so it opens by itself once.
+    Renamed when the hours moved to 7pm, so every device gets the popup once
+    more with the new time. */
+export const FREE_FOOD_SEEN_KEY = "pm-ticket-pearl-2026-11-19-seen-7pm";
 
 /** From now until the event ends. */
 export function freeFoodVisible(now: number): boolean {
