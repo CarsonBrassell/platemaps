@@ -21,6 +21,7 @@ import {
 import { milesBetween, type Coords } from "@/lib/geo";
 import type { PlateScore } from "@/lib/plateScore";
 import { evidenceOf } from "@/lib/tasteEvidence";
+import { CROWD } from "@/lib/crowdBonus";
 import { N_AXES, F40, gradeItemInto, newPlaceAcc, placeVectors, buildProfile40, fit40, type PlaceAcc, type PlaceVectors, type Profile40 } from "@/lib/flavor40";
 import {
   budgetOf,
@@ -1279,6 +1280,11 @@ export type DishRankInput = {
    * `isFlavor40User`; absent or false, the ranking is exactly what it was without it.
    */
   flavor40?: boolean;
+  /**
+   * Place id -> crowd multiplier (lib/crowdBonus.ts), 1 to 1.08. Read only on the flavor40 path, and only for a
+   * place the viewer has not posted. Absent, the ranking is what it was.
+   */
+  crowd?: ReadonlyMap<string, number>;
 };
 
 /**
@@ -1346,6 +1352,8 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   const idfOf = (term: string): number => index.idf.get(termId(term)) ?? 0;
   // Signed evidence per post: positive when liked on their own scale (more so with repeat visits), negative when rated low.
   // pw: 0 seeds nothing, otherwise `ratingFloor`..1 with their strongest evidence at 1.
+  const crowd = input.flavor40 ? input.crowd : undefined;
+  const postedIds = new Set(posts.map((p) => p.restaurantId));
   const ev = evidenceOf(posts);
   const pw = ev.e.map((e) => (e > 0 && ev.top > 0 ? c.ratingFloor + (1 - c.ratingFloor) * (e / ev.top) : 0));
   // The 40-axis profile for this viewer, built from their own posts and thrown away with the request.
@@ -2296,6 +2304,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     const trust = c.reviewFloor + (1 - c.reviewFloor) * Math.min(1, (r.reviewCount ?? 0) / c.reviewFull);
     let score = g * trust * (100 * (c.wM * M * D + c.wC * Cc * D + c.wQ * Q) + bonus) * (namedInCaption(r.name) ? c.knownShade : 1) * (named?.flav?.only && (named.flav.kinds & ~KB.starter) === 0 ? c.oddShade : 1);
     if (f40profile && f40vecs && rid !== undefined) score *= 1 + F40.weight * fit40(f40profile, f40vecs, rid);
+    if (crowd && !postedIds.has(r.id)) score *= Math.min(1 + CROWD.cap, Math.max(1, crowd.get(r.id) ?? 1));
     // A line that looks like a dish they rated low (the same dish, or the same family) counts for less.
     if (named && named.item !== "" && against.length > 0) {
       let worst = 0;

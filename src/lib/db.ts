@@ -1717,6 +1717,25 @@ export async function postsForDishTaste(userId: string): Promise<ViewerPost[]> {
 }
 
 /**
+ * Every rated post on the public feed's terms (meal courses are not posts of their own there), one row per post,
+ * for the crowd bonus (lib/crowdBonus.ts). Nothing here is filtered by viewer; the bonus leaves out the viewer's
+ * own posts and blocked pairs afterwards. SELECT only.
+ */
+export async function crowdPostsRows(): Promise<{ userId: string; restaurantId: string; at: number; rating: number }[]> {
+  const rows = await sql`
+    SELECT user_id, restaurant_id, created_at, rating
+    FROM posts
+    WHERE meal_id IS NULL AND restaurant_id IS NOT NULL AND rating IS NOT NULL
+  `;
+  return rows.map((r) => ({
+    userId: String(r.user_id),
+    restaurantId: String(r.restaurant_id),
+    at: new Date(r.created_at).getTime(),
+    rating: Number(r.rating),
+  }));
+}
+
+/**
  * The menu lines of the given listed restaurants, in the shape the dish index
  * reads (descriptions cut to 160 characters: the index wants the first clause,
  * not the paragraph). The caller pages by restaurant so no one response nears
