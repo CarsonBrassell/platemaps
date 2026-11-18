@@ -63,6 +63,7 @@ export { PAGE_SIZE, parseShown } from "@/lib/discoverFilters";
 import type { FeedPlace } from "@/lib/feedFilters";
 import { formatMiles, formatWalk, milesBetween, type Coords } from "@/lib/geo";
 import { walkingFor } from "@/lib/walking";
+import { havasuLast, isHavasu } from "@/lib/havasu";
 import type { RestaurantView } from "@/data/restaurantTypes";
 import {
   dishMatchesFor,
@@ -303,10 +304,14 @@ export async function getDiscoverPage(
   // keeps the order `orderResults` gave it. "Has a photo" is exactly what the
   // tile draws -- `RestaurantPhoto` shows its fallback when `photo` is falsy.
   // Any query or filter leaves the order untouched.
-  const matched =
+  const byPhoto =
     activeFilterCount(filters) === 0
       ? [...ordered.filter((r) => r.photo), ...ordered.filter((r) => !r.photo)]
       : ordered;
+  // Lake Havasu City restaurants always come last (lib/havasu.ts), whatever
+  // the sort or filter. Done here, before the page slice, so it holds across
+  // "Show more" too. Stable: each half keeps the order above.
+  const matched = havasuLast(byPhoto, isHavasu);
   const limit = Math.min(Math.max(shown, PAGE_SIZE), MAX_SHOWN);
   // Sort order stays straight-line (orderResults, above, is untouched) — only
   // the printed distance on this page's rows gets upgraded to a routed walk.
@@ -354,10 +359,18 @@ export async function getDiscoverPage(
       prices: priceOptions(restaurants),
       aspects: aspectOptions(aspects),
     },
-    picks: restaurants
-      .filter((r) => r.trending)
+    // Havasu rows sort after the rest here too; distance (when `here` is
+    // known) is attached the same way the grid rows get it, so the promoted
+    // cards print the same "x.x mi" the grid does.
+    picks: havasuLast(
+      restaurants.filter((r) => r.trending),
+      isHavasu,
+    )
       .slice(0, 2)
-      .map((r) => ({ ...r, plateScore: plates[r.id] ?? EMPTY_PLATE_SCORE })),
+      .map((r) => {
+        const withPlate = { ...r, plateScore: plates[r.id] ?? EMPTY_PLATE_SCORE };
+        return here ? withDistance(withPlate, here) : withPlate;
+      }),
   };
 }
 

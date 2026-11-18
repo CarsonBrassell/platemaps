@@ -14,8 +14,9 @@ import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
 import { NearbyChip } from "@/components/feed/NearbyChip";
 import { NearbyFeedGate } from "@/components/feed/NearbyFeedGate";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
-import { useNearby, milesBetween } from "@/lib/nearby";
+import { useNearby, milesBetween, NEARBY_RADIUS_MI } from "@/lib/nearby";
 import { formatMiles } from "@/lib/geo";
+import { havasuLast, isHavasu } from "@/lib/havasu";
 import { useQueryParams } from "@/lib/queryString";
 /* Just the colour string — mapStyle declares no side effects and MapLibre
    itself is only a type import there, so this does not drag the map into the
@@ -99,7 +100,9 @@ export function PhoneFeedScreen() {
      comment. Read here, not inside FeedSortSwitch, because the tap that
      should raise the prompt is "switch on Nearby", a decision this screen
      owns rather than a thing the segmented control should know how to do. */
-  const nearby = useNearby();
+  /* Asks for the reader's position once per tab session, so each post card can
+     print how far the restaurant is from them. Without it the card says nothing. */
+  const nearby = useNearby({ askOnLoad: true, askEveryone: true });
   const handleSortChange = useCallback((next: FeedSort) => {
     setSort(next);
   }, []);
@@ -218,10 +221,16 @@ export function PhoneFeedScreen() {
      ask the server a different question. Matches `dishName` too — "what has
      everyone said about the carbonara" is the same kind of search. */
   const visiblePosts = useMemo(() => {
-    if (!posts || !restaurantFilter) return posts;
+    if (!posts) return posts;
+    // Server ordering already puts Havasu last; re-applied so an optimistic
+    // insert or a merged page can never leave one above a San Diego post.
+    if (!restaurantFilter) return havasuLast(posts, isHavasu);
     const q = restaurantFilter.trim().toLowerCase();
-    return posts.filter(
-      (p) => p.restaurant?.toLowerCase().includes(q) || p.dishName?.toLowerCase().includes(q),
+    return havasuLast(
+      posts.filter(
+        (p) => p.restaurant?.toLowerCase().includes(q) || p.dishName?.toLowerCase().includes(q),
+      ),
+      isHavasu,
     );
   }, [posts, restaurantFilter]);
 
@@ -529,7 +538,7 @@ export function PhoneFeedScreen() {
           NearbyChip now rides beside the sort switch in this same `leading`
           slot rather than opening a third row — see NearbyChip's header
           comment for why it's a separate filter and not a segment of the
-          switch. It is sized to its own short "5 mi" label rather than
+          switch. It is sized to its own short "Near me" label rather than
           stretched, the same restraint FeedSortSwitch itself follows, so it
           adds only what its content needs rather than a fixed column. */}
       {/* Two tiers, and which row is in which is the whole design.
@@ -680,7 +689,7 @@ export function PhoneFeedScreen() {
           ) : tab === "discover" && nearbyOn ? (
             <PhoneFeedState
               icon={<CompassIcon className="h-6 w-6" />}
-              title="No plates within 5 mi yet"
+              title={`No plates within ${NEARBY_RADIUS_MI} mi yet`}
               body="Nobody nearby has posted a plate. Switch to Trending or New to see the rest of San Diego."
             />
           ) : (
@@ -726,8 +735,6 @@ export function PhoneFeedScreen() {
                    and PhoneFeedPostCard falls back to `post.locationLabel`,
                    same as before Nearby existed. */
                 const distance =
-                  tab === "discover" &&
-                  nearbyOn &&
                   nearby.coords &&
                   typeof post.restaurantLat === "number" &&
                   typeof post.restaurantLng === "number"

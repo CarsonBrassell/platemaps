@@ -447,7 +447,9 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
    * not a reason to refill it. */
   const bylineTail = [
     relativeTime(post.createdAt),
-    distance ?? post.locationLabel ?? null,
+    /* Never `post.locationLabel`: it is the seeded downtown-origin string
+       ("6.6 mi" on every Eureka! post), not a distance from the reader. */
+    distance ?? null,
   ].filter(Boolean) as string[];
 
   const authorHref = isOwner ? "/m/account" : `/m/u/${post.userId}?from=feed`;

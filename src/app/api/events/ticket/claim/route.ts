@@ -37,9 +37,6 @@ export async function POST(req: NextRequest) {
   }
 
   return withTicketsTable(async () => {
-    const posts = await sql`SELECT 1 FROM posts WHERE user_id = ${user.id} LIMIT 1`;
-    if (posts.length === 0) return fail("Post your first plate to claim.", 403, "no_posts");
-
     const existing = await getTicket(user.id);
     if (existing) return NextResponse.json({ ticket: existing, serverNow: Date.now() });
 
