@@ -1,9 +1,9 @@
 import type { CSSProperties } from "react";
+import Link from "next/link";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { CountUp } from "./motion";
 import { Avatar, Crown, Sparks } from "./parts";
 import { ChangeMark } from "./ChangeMark";
-import { SeatDetail } from "./SeatDetail";
 import type { BoardCtx, Seat } from "./types";
 
 /** Visual column, plinth height, avatar size and entrance delay per place. */
@@ -13,12 +13,9 @@ const SPOT = {
   3: { col: "col-start-3", plinth: 46, avatar: 54, delay: 0 },
 } as const;
 
-export const PODIUM_DETAIL_ID = "lb-podium-detail";
-
 function Spot({ seat, ctx }: { seat: Seat; ctx: BoardCtx }) {
   const place = seat.rank as 1 | 2 | 3;
   const spot = SPOT[place];
-  const open = ctx.openId === seat.entry.id;
   const climbed = (ctx.movement?.change.get(seat.entry.id) ?? 0) > 0;
   const gained = ctx.movement?.gained.get(seat.entry.id) ?? 0;
   const from = gained ? seat.entry.points - gained : 0;
@@ -28,17 +25,16 @@ function Spot({ seat, ctx }: { seat: Seat; ctx: BoardCtx }) {
       ref={ctx.slotRef(seat.rank)}
       className={`${spot.col} row-start-1 flex min-w-0 flex-col items-center justify-end`}
     >
-      <button
+      {/* The whole spot is one link to the profile (Calvin, 2026-11-18). */}
+      <div
         ref={ctx.moverRef(seat.entry.id)}
-        type="button"
-        aria-expanded={open}
-        aria-controls={PODIUM_DETAIL_ID}
-        onClick={() => ctx.toggle(seat.entry.id)}
-        className={`lb-drop relative flex w-full min-w-0 flex-col items-center rounded-2xl px-1 pb-2 pt-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
-          open ? "bg-pm-orange-tint" : ""
-        } ${seat.isYou && climbed ? "lb-climber" : ""}`}
+        className={`lb-drop relative flex w-full min-w-0 flex-col items-center rounded-2xl px-1 pb-2 pt-1 ${seat.isYou && climbed ? "lb-climber" : ""}`}
         style={{ "--lb-delay": `${spot.delay + 280}ms` } as CSSProperties}
       >
+        <Link
+          href={ctx.hrefFor(seat)}
+          className="flex w-full min-w-0 flex-col items-center rounded-2xl transition-transform active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+        >
         <span className="relative">
           {place === 1 && <span className="lb-halo" aria-hidden="true" />}
           {place === 1 && (
@@ -75,7 +71,8 @@ function Spot({ seat, ctx }: { seat: Seat; ctx: BoardCtx }) {
             <span className="sr-only"> Plate Points since your last visit</span>
           </span>
         )}
-      </button>
+        </Link>
+      </div>
       <div
         aria-hidden="true"
         className={`lb-plinth lb-plinth-${place} flex w-full items-start justify-center rounded-t-xl pt-1.5`}
@@ -93,7 +90,6 @@ function Spot({ seat, ctx }: { seat: Seat; ctx: BoardCtx }) {
  * list reads in rank order to a screen reader.
  */
 export function Podium({ top, ctx }: { top: Seat[]; ctx: BoardCtx }) {
-  const open = top.find((s) => s.entry.id === ctx.openId) ?? null;
   return (
     <div className="px-3 pt-8">
       <ol className="grid grid-cols-3 items-end gap-1.5">
@@ -102,9 +98,6 @@ export function Podium({ top, ctx }: { top: Seat[]; ctx: BoardCtx }) {
         ))}
       </ol>
       <div className="lb-floor h-1.5 rounded-b-md bg-pm-charcoal" aria-hidden="true" />
-      <div id={PODIUM_DETAIL_ID} className="pt-2">
-        {open && <SeatDetail seat={open} seats={ctx.seats} youSeat={ctx.youSeat} />}
-      </div>
     </div>
   );
 }
