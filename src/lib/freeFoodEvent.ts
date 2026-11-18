@@ -1,6 +1,6 @@
 /**
  * The Pizza on Pearl x PlateMaps free slice: everyone gets a ticket for one, for a night
- * at Pizza on Pearl (Pearl St). No leaderboard, no cut — open the ticket icon
+ * at Pizza on Pearl North Park (30th St). No leaderboard, no cut — open the ticket icon
  * on the feed and show it at the counter.
  *
  * Everything the event depends on lives here so running the next one is an
@@ -36,7 +36,7 @@ export const FREE_FOOD_DOORS_LINE = "Thu Nov 19 · 7pm";
 /** The popup's reminder that the hours moved; an empty string hides it. */
 export const FREE_FOOD_NOTICE = "New time: 7–10pm";
 export const FREE_FOOD_NOTICE_CLAIM = "Don’t forget to claim your free slice.";
-export const FREE_FOOD_PLACE = "Pizza on Pearl, Pearl St";
+export const FREE_FOOD_PLACE = "Pizza on Pearl, 30th St · North Park";
 export const FREE_FOOD_INSTAGRAM_HANDLE = "@pizzaonpearlsd";
 export const FREE_FOOD_INSTAGRAM_URL = "https://www.instagram.com/pizzaonpearlsd/";
 
@@ -103,8 +103,9 @@ export function mmss(msLeft: number) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 }
 
-/** Pizza on Pearl, La Jolla (617 Pearl Street): restaurants.id. */
-export const FREE_FOOD_RESTAURANT_ID = "2499";
+/** Pizza On Pearl North Park (3914 30th St): restaurants.id. Not 2499, the
+ *  La Jolla location on Pearl St, which shares the name. */
+export const FREE_FOOD_RESTAURANT_ID = "8080";
 
 /**
  * Discover pins the event's restaurant to the top while the event is visible.
