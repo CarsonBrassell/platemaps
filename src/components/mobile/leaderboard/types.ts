@@ -22,8 +22,8 @@ export type Movement = {
 export type BoardCtx = {
   seats: Seat[];
   youSeat: Seat;
-  openId: string | null;
-  toggle: (id: string) => void;
+  /** Where a seat leads: their profile, or your own account. */
+  hrefFor: (seat: Seat) => string;
   slotRef: (rank: number) => (el: HTMLElement | null) => void;
   moverRef: (id: string) => (el: HTMLElement | null) => void;
   movement: Movement | null;
