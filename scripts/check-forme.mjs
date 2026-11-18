@@ -1406,6 +1406,18 @@ ok("the route turns the 40-axis fit on for the gated account only and never send
   assert.ok(F40.weight > 0 && F40.weight <= 0.5, "the blend stays a nudge");
 });
 
+ok("a cold dish index never serves the cuisine fallback to the 40-axis account; the client retries on warming", () => {
+  const r = src("src/app/api/account/taste/route.ts");
+  assert.ok(r.includes("flavor40User ? DISH_INDEX_WARM_WAIT_MS : DISH_INDEX_GRACE_MS"));
+  assert.ok(r.includes("if (flavor40User) warming = true;"));
+  assert.ok(r.includes("...(warming ? { warming: true } : {})"));
+  const m = r.match(/DISH_INDEX_WARM_WAIT_MS = ([0-9_]+)/);
+  const d = r.match(/maxDuration = ([0-9]+)/);
+  assert.ok(m && d && Number(m[1].replace(/_/g, "")) + 10_000 <= Number(d[1]) * 1000, "wait fits maxDuration");
+  const h = src("src/lib/useTaste.ts");
+  assert.ok(h.includes("data.warming") && h.includes("WARM_RETRIES") && h.includes('setStatus("loading")'));
+});
+
 ok("crowd bonus v2: only ratings drive it, 0.85 to 1.30, silent", () => {
   assert.equal(CROWD.cap, 0.3);
   assert.equal(CROWD.floor, 0.85);

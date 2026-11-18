@@ -48,6 +48,13 @@ function json(body: unknown, status = 200) {
  */
 const DISH_INDEX_GRACE_MS = 2500;
 
+/**
+ * The 40-axis account never gets the cuisine fallback (it ranks friend-posted places first, which is not its
+ * picks), so on a cold index it waits this long for the build (about 16s) before answering `warming`.
+ * Must stay well under `maxDuration`.
+ */
+const DISH_INDEX_WARM_WAIT_MS = 25_000;
+
 /** The most place ids a refresh may carry. The newest are kept. */
 const MAX_EXCLUDE = 240;
 
@@ -143,6 +150,9 @@ export async function POST(req: Request) {
   // The name of this row of picks in the activity log (lib/tasteLog.ts). Test accounts only: everyone else's
   // reply carries no `batch` and is what it always was.
   let batch: string | undefined;
+  // 40-axis account only: the dish index was not ready in time (or failed), so there are no picks yet and the
+  // client asks again shortly.
+  let warming = false;
   if (user && isForMeUser(user.id)) {
     let algo = "cuisine-1";
     // Only the Discover-buttons account can narrow the picks to the radius around it.
@@ -165,7 +175,7 @@ export async function POST(req: Request) {
       const graced = await Promise.race([
         indexLoad,
         new Promise<null>((resolve) => {
-          timer = setTimeout(() => resolve(null), DISH_INDEX_GRACE_MS);
+          timer = setTimeout(() => resolve(null), flavor40User ? DISH_INDEX_WARM_WAIT_MS : DISH_INDEX_GRACE_MS);
         }),
       ]);
       clearTimeout(timer);
@@ -173,6 +183,7 @@ export async function POST(req: Request) {
         // Cold: keep the instance alive until the build lands (a failure is logged by the catch below on the
         // next request, which retries), and answer with the ordinary picks.
         after(() => indexLoad.then(() => undefined, () => undefined));
+        if (flavor40User) warming = true;
       } else {
         const posts = await postsForDishTaste(user.id);
         // The crowd bonus is the 40-axis account's alone. A failed read leaves it out, never the picks.
@@ -215,6 +226,16 @@ export async function POST(req: Request) {
       }
     } catch (err) {
       console.error("dish picks failed, keeping the ordinary picks", err);
+      if (flavor40User) warming = true;
+    }
+    if (warming) {
+      // No cuisine fallback for this account. Keep the section visible: "none" would hide it.
+      picks = [];
+      if (basis === "none") {
+        basis = "history";
+        header = "Based on your posts";
+        shortHeader = header;
+      }
     }
 
     // The activity log: what this reply shows, and the Been here / Not for me (or undo) that asked for it.
@@ -257,5 +278,6 @@ export async function POST(req: Request) {
     counts: result.counts,
     picks,
     ...(batch ? { batch } : {}),
+    ...(warming ? { warming: true } : {}),
   });
 }
