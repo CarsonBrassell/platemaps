@@ -1700,3 +1700,64 @@ not posts). Sort order still straight-line. Plan: move to self-hosted OSRM
 saved address. Unrelated: /m has a hydration mismatch in PhoneNav post-flash.
 
 - 2026-10-12: Reverted the Plate Points rank card from ec158c9 back to the old orange ring card (commit 1e43135, not pushed). Leaderboard/post-to-pass parts of ec158c9 kept.
+
+## Flavor profile redesign (2026-11-11) — MOCKUP ONLY, nothing built
+- Calvin agreed: replace the top-8-cuisines radar with 8 FIXED flavor axes. Mockup shown inline in chat; waiting on his reaction before any app code.
+- Probe: `probe/for-me/flavor-axes/axes.mts` -> `axes.json` (420,723 menu lines, 6,473 places).
+- Proposed axes, in circle order: Spicy, Smoky & grilled (smoky+charred+grill words), Savory (umami), Rich (creamy+cheesy+butter), Crispy, Sweet (incl. dessert, fruity), Fresh (herbs/greens/raw, new lexicon), Tangy.
+- Dropped: sweet heat (0.5%, shown as a "signature" callout), fruity, cheesy/creamy (inside Rich), garlicky/nutty/bitter (3-4%), briny, charred alone.
+- Scale: lift vs average menu, rating-weighted, shrunk K=5; r = 0.4 + 0.3*log2(lift); dashed ring = average eater.
+- Known tagger quirks to fix before building: "Any Slice" tagged sweet; "Number 1", "Burrito", "Shrimp and grits" get no tags.
+- Not done: cuisine bars under the radar, phone-width version, any src changes.
+- UPDATE same day: Calvin asked about meat / salad / foreign-food eaters. Research workflow (8 Sonnet agents) + `axes2.mts`/`axes2.json` say pure flavor is the wrong frame. Recommended 8, circle order: Spicy, Smoky & grilled, Meaty, Comfort (cheesy/creamy/fried, not generic carbs), Sweet, Fresh & green, Seafood, Adventurous (cuisines outside the mainstream set, scored as lift). Only 5 users have 5+ dish posts, so user-level evidence is thin. Seafood is the first swap candidate. Awaiting Calvin's pick; still nothing built.
+- UPDATE 2 (2026-11-11): Calvin ruled out using PlateMaps' own data to choose the axes (too few users) - outside research only. Comfort and Smoky & grilled are dropped. He now wants the wheel to be a SPECTRUM: neighbours overlap, opposites sit across. Proposed order shown as a diagram, clockwise: Fresh & green, Seafood, Noodles & broth, Spicy, Meaty, Rich, Bread & bakery, Sweet (opposites: Fresh/Meaty, Seafood/Rich, Noodles/Bread, Spicy/Sweet). A dish may count on two spokes. Adventurous would be a meter beside the chart, not a spoke. Awaiting his reaction to the order; still nothing built.
+
+### UPDATE 3 (2026-11-17) — flavor profile, still MOCKUP ONLY
+Calvin pasted back the earlier thesis set: Spicy, Meaty, Comfort, Carbs, Sweet, Fresh & green, Seafood, Adventurous. Read as "this is the set". Shown as spectrum wheel, clockwise: Fresh & green, Seafood, Adventurous, Spicy, Meaty, Comfort, Carbs, Sweet. Opposites: Fresh/Meaty, Seafood/Comfort, Adventurous/Carbs, Spicy/Sweet. Awaiting his OK on set + order. Nothing built.
+
+### UPDATE 4 (2026-11-17) — PIVOT to food personality types (Enneagram-like), still MOCKUP ONLY
+Calvin dropped "Comfort" as subjective, then pivoted: 8 personality-linked eater types instead of food categories. Outside-research workflow wf_7d07bcf8-0e4 (6 Sonnet agents) proposed, clockwise: Adventurer, Spice Chaser, Wellness, Pragmatist, Classic American, Sweet Tooth, Indulger, Foodie. Opposites: Adventurer/Classic American, Spice Chaser/Sweet Tooth, Wellness/Indulger, Pragmatist/Foodie. Weakest: Pragmatist, Indulger. Full output: session tasks/w3esu9jtc.output. Awaiting Calvin's reaction. Nothing built.
+
+### UPDATE 5 (2026-11-17) — food personality wheel: SET AGREED ("i love it"), still nothing built
+Final 8, clockwise: Adventurer, Foodie, Wellness, Sweet Tooth, Regular, Quick Bite, Classic American, Spice Chaser.
+Opposites: Adventurer/Regular, Foodie/Quick Bite, Wellness/Classic American, Spice Chaser/Sweet Tooth.
+Sources: dish tags -> Spice Chaser, Wellness, Sweet Tooth, Classic American. Person's log -> Adventurer (new cuisines/places), Regular (repeat visits). Restaurant kind -> Foodie (outside lists: Michelin, James Beard, best-of; not our ratings), Quick Bite (fast-food/counter-service chain list; note McDonald's-tier chains are held off the app).
+Dropped along the way: Comfort (subjective), Indulger (same as Classic American), Pragmatist (unclear, same as Regular), Meat Lover (same as Classic American), Carb Lover.
+Next (needs Calvin's go): sample test of dish tagging on a few hundred dishes, show misses; then mockup with his real numbers. No build/push/deploy without his go.
+
+### UPDATE 6 (2026-11-17) — sample tagging test run + wheel shown with Calvin's real posts, still nothing built
+- Files: `probe/for-me/personality/` sample.mts (300 random dishes, DO NOT import it, it re-rolls the sample), rules.mts (word lists), compare.mjs, sample.json, ai.json, me.mts/me.json (Calvin's 22 posts, id from DISCOVER_MODES_USER_IDS).
+- Word lists vs blind AI read (both / word-list only / AI only): spice 16/12/1, wellness 27/24/26, sweet 17/8/23, classic 30/8/30. AI unsure on 51; 127 of 300 dishes have no description.
+- Verdict: word lists alone are not good enough (single-ingredient false hits, miss keyword-less dishes). Use the AI read for all dishes; thin entries are the main risk.
+- Mockup wheel shown inline (my own read of his 22 posts): Adventurer high (12 cuisines, 19 places), Spice Chaser 4/22, Classic American 9/22, Quick Bite ~10/20 visits, Foodie ~5/20, Sweet 4/22, Wellness 1/22, Regular 0 repeats. Foodie/Quick Bite were my judgement, no outside lists yet; average ring is a placeholder.
+- Open definitions asked of Calvin: pizza = Classic American? sushi/juice = Wellness? sweet drinks = Sweet Tooth?
+- Next (needs his go): AI-tag the full corpus, build Foodie + Quick Bite restaurant lists, then app code. No build/push/deploy without his go.
+
+### UPDATE 7 (2026-11-17) — FULL TAGGING RUN IN PROGRESS (Calvin said "yeah run it"), probe files only
+- Definitions agreed: pizza = Classic American; sweet drinks = Sweet Tooth; sushi/poke/juice NOT Wellness.
+- `probe/for-me/personality/export.mts` -> `tag/in/b0000..b0570.tsv` (285,244 distinct eligible dishes on non-held places, 500 per file), `tag/keys.txt` (dedupe key per global index = batch*500+line: fold(name)|fold(desc)[0..100]), `tag/counts.txt`. Do NOT re-run export while out files exist (order could change).
+- Agents write `tag/out/bNNNN.tsv`: `index<TAB>letters[?]` (s spice, w wellness, d sweet, c classic), last line `END<TAB>lastIndex`; untagged dishes have no line.
+- Validate: `node probe/for-me/personality/check.mjs` (add `missing` to print the batch numbers still to run). Pilot b0000-0005 passed. Full run = workflow script tag-dish-corpus-wf_2ba9b205-cc5.js, args {from,to}; run id wf_f108519a-1c8 for 6..570. If the session died: run check.mjs missing and relaunch only those.
+- Foodie lists: workflow wf_5e117169-8f7 (Michelin, Beard, Eater, local critics, national) - result in session task output w7mhd21c9; not yet saved to probe/. `places.tsv` + `chain-candidates.tsv` exported for matching.
+- Still to do: save Foodie lists + match to places; classify restaurants quick/table/upscale for Quick Bite; score Calvin's wheel from the real tags; then ask for go on app code. No build/push/deploy without his go.
+
+## UPDATE 8 (2026-11-17) — paused: usage limit reached mid-run
+
+- Dish tagging: about 60 of 571 batches written in `probe/for-me/personality/tag/out/` when the run was stopped (usage limit). Resume: `node probe/for-me/personality/check.mjs missing` prints the batch numbers still missing or bad (b0039 was flagged bad: END 500 of 499); relaunch only those with the saved tagging workflow script (see UPDATE 7). Do NOT re-run `export.mts`.
+- Foodie lists: DONE and saved in `probe/for-me/personality/foodie-lists.json` (191 distinct restaurants from Michelin, Beard, Eater, SD Magazine, Infatuation/OpenTable; 161 matched to our places, 30 unmatched, mostly name variants such as Addison, Oscar's with curly apostrophe). Script: `foodie.mjs`.
+- Quick Bite: `place-export.mjs` split the 8,625 live places into `place/in/p00.tsv … p17.tsv` (index, name, cuisine, city, price_band). The quick / table-service / upscale read has NOT been started; `place/out/` is empty.
+- Still to do: finish tagging, classify places, join tags back via `tag/keys.txt`, re-score Calvin's wheel from real tags + lists, show him. Nothing in src, the database or the app has been touched.
+
+## UPDATE 9 (2026-11-17) — run restarted
+
+- Tagging relaunched for the 517 missing/bad batches (run wf_b44da985-d07). The saved script now also takes `args.ids` (a list) besides `from`/`to`, and the prompt spells out that the index is the first column, not the Read line number (9 batches had come back one off: "END 500 of 499").
+- Place read started (run wf_4cd47a91-49d): `place/in/pNN.tsv` -> `place/out/pNN.tsv`, lines `index<TAB>q|t|u[?]`, last line `END<TAB>lastIndex`. q = quick/counter, t = table service, u = upscale.
+- After both: `node probe/for-me/personality/check.mjs missing`, rerun stragglers, join via `tag/keys.txt`, re-score Calvin's wheel, show him. Still files only.
+
+## UPDATE 10 (2026-11-17) — full run DONE, wheel re-scored and shown
+
+- Tagging complete: 571/571 batch files; `check.mjs` still flags 5 (b0396, b0397, b0531 near-100% tagged = cake/cookie catalogs; b0458 8% = pizza toppings; b0459) which were re-run once and look legitimate, not errors. 114,480 of 282,744+ distinct dishes carry a type. Corpus share weighted by occurrences: s .034, w .076, d .143, c .153.
+- Places: `place-kinds.tsv` (8,625 rows: 4,501 q, 3,977 t, 147 u; 1,855 marked unsure). Script `place-check.mjs`.
+- `score.mjs` joins tags via `tag/keys.txt`, reads `me.json`, `place-kinds.tsv`, `foodie-lists.json`, writes `me-scored.json`. Calvin: s 3/20, w 1/20, d 2/20, c 9/20 dishes; 9/20 quick visits; 1 listed + 1 upscale visit; 12 cuisines, 20 places, 0 repeats.
+- Known gap: drinks that `flavorEligible` filters out (e.g. his Grapefruit Refresher, Beer) were never exported, so sweet drinks are under-counted for Sweet Tooth. Decide before building.
+- Waiting on Calvin's go before any app code, DB write, push or deploy.
