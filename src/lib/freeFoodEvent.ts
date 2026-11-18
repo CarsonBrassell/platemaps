@@ -102,3 +102,19 @@ export function mmss(msLeft: number) {
   const s = Math.max(0, Math.ceil(msLeft / 1000));
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 }
+
+/** Pizza on Pearl, La Jolla (617 Pearl Street): restaurants.id. */
+export const FREE_FOOD_RESTAURANT_ID = "2499";
+
+/**
+ * Discover pins the event's restaurant to the top while the event is visible.
+ * Stable: everything else keeps its order. Only reorders what is already in
+ * `items`, so a query or filter that excludes the restaurant still excludes it.
+ * Ends by itself: after FREE_FOOD_ENDS_AT this returns `items` untouched.
+ */
+export function pinFreeFoodRestaurant<T extends { id: string }>(items: readonly T[], now: number): readonly T[] {
+  if (!freeFoodVisible(now)) return items;
+  const at = items.findIndex((r) => r.id === FREE_FOOD_RESTAURANT_ID);
+  if (at <= 0) return items;
+  return [items[at], ...items.slice(0, at), ...items.slice(at + 1)];
+}

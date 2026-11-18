@@ -116,7 +116,7 @@ export function TicketPopup({ onClose }: { onClose: () => void }) {
 
 
       {/* ---- Body: the ticket ---- */}
-      <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto rounded-t-[28px] bg-white px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-7">
+      <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto rounded-t-[28px] bg-white px-5 pb-[max(2.5rem,calc(env(safe-area-inset-bottom)+1rem))] pt-7">
         {live && <ClaimCounter left={slicesLeft} sim={simOn} />}
         <TicketCard handle={handle} number={number}>
           {over ? (

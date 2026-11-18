@@ -64,6 +64,7 @@ import type { FeedPlace } from "@/lib/feedFilters";
 import { formatMiles, formatWalk, milesBetween, type Coords } from "@/lib/geo";
 import { walkingFor } from "@/lib/walking";
 import { havasuLast, isHavasu } from "@/lib/havasu";
+import { pinFreeFoodRestaurant } from "@/lib/freeFoodEvent";
 import type { RestaurantView } from "@/data/restaurantTypes";
 import {
   dishMatchesFor,
@@ -311,7 +312,10 @@ export async function getDiscoverPage(
   // Lake Havasu City restaurants always come last (lib/havasu.ts), whatever
   // the sort or filter. Done here, before the page slice, so it holds across
   // "Show more" too. Stable: each half keeps the order above.
-  const matched = havasuLast(byPhoto, isHavasu);
+  // Pizza on Pearl floats to #1 for the length of its event (freeFoodEvent.ts);
+  // paging is a cumulative `shown` slice, so pinning here keeps it on page 1
+  // and never repeats it on page 2.
+  const matched = pinFreeFoodRestaurant(havasuLast(byPhoto, isHavasu), Date.now());
   const limit = Math.min(Math.max(shown, PAGE_SIZE), MAX_SHOWN);
   // Sort order stays straight-line (orderResults, above, is untouched) — only
   // the printed distance on this page's rows gets upgraded to a routed walk.
