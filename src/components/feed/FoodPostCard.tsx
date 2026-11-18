@@ -458,10 +458,10 @@ export function FoodPostCard(props: FoodPostCardProps) {
                 <img
                   src={post.authorAvatarUrl}
                   alt=""
-                  className="h-[34px] w-[34px] shrink-0 rounded-full border border-stone-200/70 object-cover"
+                  className="h-[34px] w-[34px] shrink-0 rounded-full border-[1.5px] border-stone-200/70 object-cover"
                 />
               ) : (
-                <span className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border border-stone-200/70 bg-zinc-800 text-[14px] font-bold text-white">
+                <span className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-stone-200/70 bg-zinc-800 text-[14px] font-bold text-white">
                   {post.authorName.trim().charAt(0).toUpperCase()}
                 </span>
               )}
