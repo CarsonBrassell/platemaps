@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { TasteRadar } from "@/components/TasteRadar";
 import { restaurantHref } from "@/lib/restaurantHref";
-import type { FlavorProfile, TasteMatch } from "@/lib/tasteMatch";
+import type { TasteMatch } from "@/lib/tasteMatch";
+import type { PersonalityProfile } from "@/lib/personality";
+import { PersonalityCardBody } from "@/components/PersonalityCardBody";
 
 /**
  * The web profile's Taste match — a friend's cuisine mix laid over yours, one
@@ -77,9 +79,9 @@ export function TasteMatchCard({
 }
 
 /**
- * "Your flavor profile" — the single-person twin of the Taste match, shown on
- * your own account screen and your own public profile. Same radar, one series;
- * the tiles say what the shape means (your top three, how wide you range).
+ * "Your food personality" — the eight-type wheel (lib/personality.ts), shown on
+ * your own account screen and your own public profile. Same radar, one series,
+ * plus a dashed ring for the average eater; the body is PersonalityCardBody.
  *
  * `flavor` is null for the empty state, kept in place for the same reason as
  * above. `className` is the outer spacing: on `/u/[id]` the card sits on the
@@ -90,38 +92,17 @@ export function FlavorProfileCard({
   flavor,
   className = "mx-4 mt-6 sm:mx-6",
 }: {
-  flavor: FlavorProfile | null;
+  flavor: PersonalityProfile | null;
   className?: string;
 }) {
   return (
-    <section aria-label="Your flavor profile" className={`${className} rounded-2xl bg-white px-6 py-6`}>
-      <p className="mono-label text-zinc-900">Your flavor profile</p>
+    <section aria-label="Your food personality" className={`${className} rounded-2xl bg-white px-6 py-6`}>
+      <p className="mono-label text-zinc-900">Your food personality</p>
 
       {!flavor ? (
-        <p className="mt-3 text-sm text-zinc-500">
-          Post a few more plates to see your flavor profile.
-        </p>
+        <p className="mt-3 text-sm text-zinc-500">Post a few more plates to see your food personality.</p>
       ) : (
-        <>
-          <div className="mt-4">
-            <TasteRadar match={flavor} />
-          </div>
-
-          <div className="mt-5 grid grid-cols-2 gap-3 text-left">
-            <div className="rounded-xl bg-pm-grey-tint/50 p-3">
-              <p className="mono-label text-zinc-500">Top cuisines</p>
-              <p className="mt-1 text-sm font-medium text-zinc-800">
-                {flavor.topCuisines.join(" · ")}
-              </p>
-            </div>
-            <div className="rounded-xl bg-pm-grey-tint/50 p-3">
-              <p className="mono-label text-zinc-500">Range</p>
-              <p className="mt-1 text-sm font-medium text-zinc-800">
-                <span className="font-mono tabular-nums">{flavor.cuisineCount}</span> cuisines tried
-              </p>
-            </div>
-          </div>
-        </>
+        <PersonalityCardBody flavor={flavor} />
       )}
     </section>
   );

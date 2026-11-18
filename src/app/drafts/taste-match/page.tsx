@@ -4,7 +4,8 @@ import {
   PhoneFlavorProfileCard,
   PhoneTasteMatchCard,
 } from "@/components/mobile/PhoneTasteMatchCard";
-import { computeFlavorProfile, computeTasteMatch, type TasteInput } from "@/lib/tasteMatch";
+import { computeTasteMatch, type TasteInput } from "@/lib/tasteMatch";
+import { computePersonality, type PersonalityStats } from "@/lib/personality";
 
 /**
  * DRAFT — the Taste match and Your flavor profile cards, web and phone, from fixed sample counts so the
@@ -48,11 +49,23 @@ const SAM: TasteInput = {
 
 const SPARSE: TasteInput = { counts: { Mexican: 1, Thai: 1 }, topPlaces: {} };
 
+/* A real-shaped log: 20 plates at 20 places, spicy and classic-leaning. */
+const EATER: PersonalityStats = {
+  posts: 20,
+  dishPosts: 20,
+  tags: { s: 3, w: 1, d: 2, c: 9 },
+  visits: 20,
+  places: 20,
+  quickVisits: 9,
+  foodieVisits: 2,
+  cuisines: 12,
+};
+
 export default function TasteMatchDraftPage() {
   const match = computeTasteMatch(YOU, SAM);
   const empty = computeTasteMatch(SPARSE, SAM);
-  const flavor = computeFlavorProfile(YOU);
-  const flavorEmpty = computeFlavorProfile(SPARSE);
+  const flavor = computePersonality(EATER);
+  const flavorEmpty = computePersonality({ ...EATER, posts: 2 });
 
   return (
     <>
@@ -82,7 +95,7 @@ export default function TasteMatchDraftPage() {
           <PhoneTasteMatchCard friendName="Sam" match={empty} />
         </div>
 
-        <p className="mono-label mb-3 mt-10 text-zinc-900">Your flavor profile</p>
+        <p className="mono-label mb-3 mt-10 text-zinc-900">Your food personality</p>
         <div className="-mx-4 sm:-mx-6">
           <FlavorProfileCard flavor={flavor} />
         </div>
@@ -90,7 +103,7 @@ export default function TasteMatchDraftPage() {
           <PhoneFlavorProfileCard flavor={flavor} />
         </div>
 
-        <p className="mono-label mb-3 mt-10 text-zinc-900">Your flavor profile, empty state</p>
+        <p className="mono-label mb-3 mt-10 text-zinc-900">Your food personality, empty state</p>
         <div className="-mx-4 sm:-mx-6">
           <FlavorProfileCard flavor={flavorEmpty} />
         </div>

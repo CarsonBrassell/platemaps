@@ -1424,6 +1424,21 @@ const statements = [
   )`,
   `CREATE INDEX IF NOT EXISTS taste_tapped_user_idx
     ON taste_tapped (user_id, tapped_at DESC)`,
+  // Food personality wheel (lib/personality.ts). Two lookup tables filled by
+  // scripts/load-personality.mjs from the AI tagging run in
+  // probe/for-me/personality/. `dish_flavor.key` is lib/personality.ts
+  // `dishKey` (folded name|description) or `dishNameKey` (name|*); only
+  // tagged keys are stored, an absent key means "no tag". restaurant_kind is
+  // keyed by TEXT id with no FK, like walk_cache: a held place is harmless.
+  `CREATE TABLE IF NOT EXISTS dish_flavor (
+    key TEXT PRIMARY KEY,
+    tag TEXT NOT NULL
+  )`,
+  `CREATE TABLE IF NOT EXISTS restaurant_kind (
+    restaurant_id TEXT PRIMARY KEY,
+    kind TEXT NOT NULL,
+    foodie BOOLEAN NOT NULL DEFAULT FALSE
+  )`,
 ];
 
 for (const statement of statements) {

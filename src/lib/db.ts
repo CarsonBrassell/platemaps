@@ -18,13 +18,20 @@ import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
 import { RANKS, rankByKey } from "@/lib/ranks";
 import { dishRatingKey } from "@/lib/dishRatingKey";
 import {
-  computeFlavorProfile,
   computeTasteMatch,
   tasteInputFor,
   type CuisineCountRow,
-  type FlavorProfile,
   type TasteMatch,
 } from "@/lib/tasteMatch";
+import {
+  computePersonality,
+  dishKey,
+  dishNameKey,
+  foldText,
+  personalityStats,
+  type PersonalityPost,
+  type PersonalityProfile,
+} from "@/lib/personality";
 import { isStoredPhotoUrl, storedPhotoOwner, storedPhotoSqlPattern } from "@/lib/photos";
 import { brandKey, foldAccents } from "@/lib/brandName";
 import { hashToken, SESSION_TTL_SECONDS } from "@/lib/tokens";
@@ -1216,16 +1223,66 @@ export async function getTasteMatchForProfile(
 }
 
 /**
- * Your own cuisine mix, for the "Your flavor profile" card. One
- * `getCuisineCounts` call for `userId`; `flavor` is null for the empty state
- * (too few cuisine-tagged plates, or fewer than three cuisines).
+ * Your food personality wheel (lib/personality.ts has the math and the
+ * reasoning); `flavor` is null for the empty state. Every post, joined to its
+ * menu dish's description so the exact dish key can be built, and to
+ * `restaurant_kind` for Quick Bite and Foodie. A second round trip looks up the
+ * dish tags; a dish missing its exact key falls back to the name-only key.
  *
  * Callers pass the session user's own id and nothing else: the card is shown
  * to yourself only, on your account screen and on your own public profile.
  */
-export async function getFlavorProfile(userId: string): Promise<{ flavor: FlavorProfile | null }> {
-  const rows = await getCuisineCounts([userId]);
-  return { flavor: computeFlavorProfile(tasteInputFor(rows, userId)) };
+export async function getFlavorProfile(userId: string): Promise<{ flavor: PersonalityProfile | null }> {
+  const rows = (await sql`
+    SELECT p.dish_name, p.restaurant_id, coalesce(r.name, p.restaurant) AS place,
+           r.cuisine, d.description, rk.kind, coalesce(rk.foodie, false) AS foodie,
+           to_char(p.created_at AT TIME ZONE 'America/Los_Angeles', 'YYYY-MM-DD') AS day
+    FROM posts p
+    LEFT JOIN restaurants r ON r.id = p.restaurant_id
+    LEFT JOIN restaurant_kind rk ON rk.restaurant_id = p.restaurant_id::text
+    LEFT JOIN LATERAL (
+      SELECT description FROM dishes d
+      WHERE d.restaurant_id = p.restaurant_id AND lower(trim(d.name)) = lower(trim(p.dish_name))
+      LIMIT 1
+    ) d ON true
+    WHERE p.user_id = ${userId}
+  `) as {
+    dish_name: string | null;
+    restaurant_id: string | null;
+    place: string | null;
+    cuisine: string | null;
+    description: string | null;
+    kind: string | null;
+    foodie: boolean;
+    day: string;
+  }[];
+  const keys = new Set<string>();
+  for (const r of rows) {
+    if (!r.dish_name?.trim()) continue;
+    keys.add(dishKey(r.dish_name, r.description));
+    keys.add(dishNameKey(r.dish_name));
+  }
+  const tags = new Map<string, string>();
+  if (keys.size) {
+    const found = (await sql`SELECT key, tag FROM dish_flavor WHERE key = ANY(${[...keys]}::text[])`) as {
+      key: string;
+      tag: string;
+    }[];
+    for (const f of found) tags.set(f.key, f.tag);
+  }
+  const posts: PersonalityPost[] = rows.map((r) => {
+    const name = r.dish_name?.trim() ? r.dish_name : null;
+    return {
+      tag: name ? (tags.get(dishKey(name, r.description)) ?? tags.get(dishNameKey(name)) ?? null) : null,
+      hasDish: !!name,
+      placeKey: r.restaurant_id ? String(r.restaurant_id) : foldText(r.place ?? ""),
+      day: r.day,
+      cuisine: r.cuisine,
+      kind: r.kind === "q" || r.kind === "t" || r.kind === "u" ? r.kind : null,
+      foodie: r.foodie,
+    };
+  });
+  return { flavor: computePersonality(personalityStats(posts)) };
 }
 
 /**

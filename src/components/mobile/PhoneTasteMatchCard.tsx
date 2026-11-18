@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { TasteRadar } from "@/components/TasteRadar";
 import { restaurantHref } from "@/lib/restaurantHref";
-import type { FlavorProfile, TasteMatch } from "@/lib/tasteMatch";
+import type { TasteMatch } from "@/lib/tasteMatch";
+import type { PersonalityProfile } from "@/lib/personality";
+import { PersonalityCardBody } from "@/components/PersonalityCardBody";
 
 /**
  * The phone profile's Taste match — twin of `TasteMatchCard`, same data, same
@@ -74,7 +76,7 @@ export function PhoneTasteMatchCard({
 }
 
 /**
- * "Your flavor profile", phone — twin of `FlavorProfileCard`, same data and
+ * "Your food personality", phone — twin of `FlavorProfileCard`, same data and
  * radar. The tiles stack, as they do in the Taste match card above.
  * `className` is the outer spacing: the card brings its own margins on
  * `/m/u/[id]` and sits margin-free inside the account screen's padded column.
@@ -83,38 +85,17 @@ export function PhoneFlavorProfileCard({
   flavor,
   className = "mx-4 mt-6",
 }: {
-  flavor: FlavorProfile | null;
+  flavor: PersonalityProfile | null;
   className?: string;
 }) {
   return (
-    <section aria-label="Your flavor profile" className={`${className} rounded-2xl bg-white px-5 py-5`}>
-      <p className="mono-label text-zinc-900">Your flavor profile</p>
+    <section aria-label="Your food personality" className={`${className} rounded-2xl bg-white px-5 py-5`}>
+      <p className="mono-label text-zinc-900">Your food personality</p>
 
       {!flavor ? (
-        <p className="mt-3 text-sm text-zinc-500">
-          Post a few more plates to see your flavor profile.
-        </p>
+        <p className="mt-3 text-sm text-zinc-500">Post a few more plates to see your food personality.</p>
       ) : (
-        <>
-          <div className="mt-3">
-            <TasteRadar match={flavor} />
-          </div>
-
-          <div className="mt-4 grid gap-2.5 text-left">
-            <div className="rounded-xl bg-pm-grey-tint/50 p-3">
-              <p className="mono-label text-zinc-500">Top cuisines</p>
-              <p className="mt-1 text-sm font-medium text-zinc-800">
-                {flavor.topCuisines.join(" · ")}
-              </p>
-            </div>
-            <div className="rounded-xl bg-pm-grey-tint/50 p-3">
-              <p className="mono-label text-zinc-500">Range</p>
-              <p className="mt-1 text-sm font-medium text-zinc-800">
-                <span className="font-mono tabular-nums">{flavor.cuisineCount}</span> cuisines tried
-              </p>
-            </div>
-          </div>
-        </>
+        <PersonalityCardBody flavor={flavor} stacked />
       )}
     </section>
   );
