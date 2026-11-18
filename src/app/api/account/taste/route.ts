@@ -6,7 +6,7 @@ import { getCurrentUser } from "@/lib/session";
 import { postsForDishTaste } from "@/lib/db";
 import { loadDishIndex } from "@/lib/dishIndex";
 import { dishPickLog, passesFloor, rankDishes } from "@/lib/dishTaste";
-import { isDiscoverModesUser, isForMeUser } from "@/lib/forMeGate";
+import { isDiscoverModesUser, isFlavor40User, isForMeUser } from "@/lib/forMeGate";
 import { NEARBY_RADIUS_MI, milesBetween, type Coords } from "@/lib/geo";
 import { TASTE_OP_KINDS, meanRating, scoreTaste, type TasteOp, type TastePick } from "@/lib/taste";
 import { resolveTasteContext } from "@/lib/tasteContext";
@@ -145,6 +145,7 @@ export async function POST(req: Request) {
     let algo = "cuisine-1";
     // Only the Discover-buttons account can narrow the picks to the radius around it.
     const modesUser = isDiscoverModesUser(user.id);
+    const flavor40User = isFlavor40User(user.id);
     const within = near && modesUser ? { here: near, miles: NEARBY_RADIUS_MI } : undefined;
     // The quality floor (over 4.0 stars, 5+ reviews) holds on the fallback too.
     // A refresh drops what was already shown, so one that has run out answers with none rather than the old picks.
@@ -183,12 +184,13 @@ export async function POST(req: Request) {
           limit: modesUser && limit !== undefined ? Math.min(48, Math.max(1, Math.trunc(limit))) : limit,
           exclude,
           within,
+          flavor40: flavor40User,
         });
         // A refresh that has run out of dish picks answers with none (the client starts over), never with the
         // cuisine-level picks, which are a different kind of card.
         if (dish && (dish.length > 0 || exclude.length > 0)) {
           picks = dish;
-          algo = "dish-1";
+          algo = flavor40User ? "dish-f40" : "dish-1";
           // scoreTaste reports "none" (and an empty header) when the cuisine picks had nothing to go on, but
           // the client hides the section on "none", so valid dish picks would never show.
           if (dish.length > 0 && basis === "none") {

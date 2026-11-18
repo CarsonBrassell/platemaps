@@ -40,3 +40,17 @@ export const DISCOVER_MODES_USER_IDS: ReadonlySet<string> = new Set([
 export function isDiscoverModesUser(id?: string | null): boolean {
   return isForMeUser(id) && DISCOVER_MODES_USER_IDS.has(id as string);
 }
+
+/**
+ * Who gets the 40-axis flavor fit (lib/flavor40.ts) blended into their For me picks. Calvin only: Carson and
+ * everyone else keep today's ranking byte for byte. An id only counts when it is on the For me list too.
+ */
+export const FLAVOR40_USER_IDS: ReadonlySet<string> = new Set([
+  /* Calvin Lensink */
+  "940561ca-05c8-4010-b8a9-f397235378b9",
+]);
+
+/** Whether the account with this id gets the 40-axis fit. Signed out is never. */
+export function isFlavor40User(id?: string | null): boolean {
+  return isForMeUser(id) && FLAVOR40_USER_IDS.has(id as string);
+}

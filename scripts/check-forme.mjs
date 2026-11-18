@@ -27,7 +27,8 @@ import {
   captionSours, nameEvidence, tagCaption, tagDish,
 } from "../src/lib/flavor.ts";
 import { EMPTY_PREFS } from "../src/lib/taste.ts";
-import { DISCOVER_MODES_USER_IDS, FOR_ME_USER_IDS, isDiscoverModesUser } from "../src/lib/forMeGate.ts";
+import { DISCOVER_MODES_USER_IDS, FLAVOR40_USER_IDS, FOR_ME_USER_IDS, isDiscoverModesUser, isFlavor40User } from "../src/lib/forMeGate.ts";
+import { F40 } from "../src/lib/flavor40.ts";
 import { milesBetween } from "../src/lib/geo.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
@@ -1368,6 +1369,40 @@ ok("both screens read the modes and both taste sections keep their gate and rese
     assert.ok(/!access/.test(s), `${f} keeps the !access gate`);
     assert.ok(/Reset my taste/.test(s), `${f} keeps the text reset`);
   }
+});
+
+/* ---------- 2b. the 40-axis fit: Calvin only, everyone else byte-identical ---------- */
+
+ok("the 40-axis gate is a subset of For me and names one account", () => {
+  assert.equal(FLAVOR40_USER_IDS.size, 1, "one account");
+  for (const id of FLAVOR40_USER_IDS) {
+    assert.ok(FOR_ME_USER_IDS.has(id), "inside For me");
+    assert.equal(isFlavor40User(id), true);
+  }
+  for (const id of FOR_ME_USER_IDS) if (!FLAVOR40_USER_IDS.has(id)) assert.equal(isFlavor40User(id), false, "the other For me account keeps the old path");
+  assert.equal(isFlavor40User(null), false);
+  assert.equal(isFlavor40User(undefined), false);
+  assert.equal(isFlavor40User("someone-else"), false);
+});
+
+ok("rankDishes without flavor40, or with it false, is the old answer to the byte", () => {
+  const plain = JSON.stringify(rank());
+  assert.equal(JSON.stringify(rank({ flavor40: false })), plain, "false is absent");
+  assert.equal(JSON.stringify(rank({ flavor40: undefined })), plain, "undefined is absent");
+  const on = rank({ flavor40: true });
+  assert.ok(on.length > 0, "the 40-axis path still answers");
+  assert.ok(on.every((p) => passesFloor(p.restaurant)), "and keeps the quality floor");
+});
+
+ok("the route turns the 40-axis fit on for the gated account only and never sends the profile", () => {
+  const s = src("src/app/api/account/taste/route.ts");
+  assert.ok(s.includes("const flavor40User = isFlavor40User(user.id)"));
+  assert.equal((s.match(/flavor40: flavor40User/g) ?? []).length, 1, "passed in one place");
+  assert.ok(s.includes('flavor40User ? "dish-f40" : "dish-1"'));
+  assert.ok(!/profile40|buildProfile40|unlocked|topAxes/.test(s), "the route never touches the profile");
+  const lib = src("src/lib/flavor40.ts");
+  assert.ok(!/localStorage|fetch[(]|INSERT |UPDATE /.test(lib),"the profile is derived per request, never stored or sent");
+  assert.ok(F40.weight > 0 && F40.weight <= 0.5, "the blend stays a nudge");
 });
 
 /* ---------- 3. render parity ---------- */

@@ -21,6 +21,7 @@ import {
 import { milesBetween, type Coords } from "@/lib/geo";
 import type { PlateScore } from "@/lib/plateScore";
 import { evidenceOf } from "@/lib/tasteEvidence";
+import { N_AXES, F40, gradeItemInto, newPlaceAcc, placeVectors, buildProfile40, fit40, type PlaceAcc, type PlaceVectors, type Profile40 } from "@/lib/flavor40";
 import {
   budgetOf,
   budgetPoints,
@@ -582,6 +583,8 @@ const kindsFit = (a: number, b: number): boolean => {
  * everyone, so it is cached by the loader and nothing in it is personal.
  */
 export type DishIndex = {
+  /** Per-place sums of each menu line's 40-axis grades (lib/flavor40.ts); read only on the flavor40 path. */
+  f40: PlaceAcc;
   rids: readonly string[];
   ridIndex: ReadonlyMap<string, number>;
   /** idf of every term that passed the df filters; any other term is absent. */
@@ -654,6 +657,7 @@ export function createDishIndexBuilder(
   const itemName: string[] = [];
   const itemFlavor: number[] = [];
   const itemClaims = new Map<number, FlavorClaim[]>();
+  const f40 = newPlaceAcc(restaurantIds.length);
   // Per item: (term << 1) | inName. Dropped once the postings are built.
   let itemTerms: Int32Array[] = [];
 
@@ -672,6 +676,13 @@ export function createDishIndexBuilder(
           if (claims.length > 0) itemClaims.set(itemRid.length, claims);
         }
         itemFlavor.push(mask);
+        const kind = kindOf(name, section);
+        {
+          const base = rid * N_AXES;
+          gradeItemInto(f40.acc, base, `${name} ${fold(d.description ?? "")}`, mask, section, kind !== FOOD);
+          f40.nAll[rid]++;
+          if (kind === FOOD) f40.nFood[rid]++;
+        }
         const t = new Map<number, number>();
         for (const x of termsOf(d.description ?? "")) t.set(termId(x), 0);
         for (const x of termsOf(d.name)) t.set(termId(x), 1);
@@ -679,7 +690,7 @@ export function createDishIndexBuilder(
         let i = 0;
         for (const [id, inName] of t) packed[i++] = (id << 1) | inName;
         itemRid.push(rid);
-        itemKind.push(kindOf(name, section));
+        itemKind.push(kind);
         itemStarter.push(STARTER_SECTION.test(section) || (kindsOfName(name) & KB.starter) !== 0 ? 1 : 0);
         const price = priceOf(d.price);
         itemPrice.push(price ?? 0);
@@ -879,6 +890,7 @@ export function createDishIndexBuilder(
       }
 
       return {
+        f40,
         rids: restaurantIds,
         ridIndex,
         idf,
@@ -1262,6 +1274,11 @@ export type DishRankInput = {
    * from every place; a place with no usable coordinates is not a candidate when this is set.
    */
   within?: { here: Coords; miles: number };
+  /**
+   * The 40-axis flavor fit (lib/flavor40.ts) re-weighs every candidate's score. Set only for accounts on
+   * `isFlavor40User`; absent or false, the ranking is exactly what it was without it.
+   */
+  flavor40?: boolean;
 };
 
 /**
@@ -1331,6 +1348,19 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
   // pw: 0 seeds nothing, otherwise `ratingFloor`..1 with their strongest evidence at 1.
   const ev = evidenceOf(posts);
   const pw = ev.e.map((e) => (e > 0 && ev.top > 0 ? c.ratingFloor + (1 - c.ratingFloor) * (e / ev.top) : 0));
+  // The 40-axis profile for this viewer, built from their own posts and thrown away with the request.
+  let f40vecs: PlaceVectors | null = null;
+  let f40profile: Profile40 | null = null;
+  if (input.flavor40) {
+    f40vecs = placeVectors(index, index.rids, index.f40, (rid) => byId.get(rid));
+    f40profile = buildProfile40(
+      posts.map((p) => ({ restaurantId: p.restaurantId, dishName: p.dishName ?? null, dishDescription: p.dishDescription ?? null, dishSection: p.dishSection ?? null, rating: p.rating ?? null })),
+      ev,
+      f40vecs,
+      index.ridIndex,
+      (name, desc, section) => tagDish(name, desc, section, false),
+    );
+  }
   /** A rating about value, service or ambiance is not a rating of the food: it counts this much of one that is. */
   const foodShare = (p: ViewerPost): number => (/^(value|service|ambian)/i.test(p.vibe ?? "") ? c.flavorVibeFactor : 1);
 
@@ -2265,6 +2295,7 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
     const Cc = cuisineAffinity(r.cuisine);
     const trust = c.reviewFloor + (1 - c.reviewFloor) * Math.min(1, (r.reviewCount ?? 0) / c.reviewFull);
     let score = g * trust * (100 * (c.wM * M * D + c.wC * Cc * D + c.wQ * Q) + bonus) * (namedInCaption(r.name) ? c.knownShade : 1) * (named?.flav?.only && (named.flav.kinds & ~KB.starter) === 0 ? c.oddShade : 1);
+    if (f40profile && f40vecs && rid !== undefined) score *= 1 + F40.weight * fit40(f40profile, f40vecs, rid);
     // A line that looks like a dish they rated low (the same dish, or the same family) counts for less.
     if (named && named.item !== "" && against.length > 0) {
       let worst = 0;
