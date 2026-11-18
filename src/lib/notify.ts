@@ -69,7 +69,7 @@ export function notifyComment(
 
   if (parentAuthorId && parentAuthorId !== commenter.id) {
     queue(parentAuthorId, commenter.id, {
-      title: `${commenter.name} replied to your comment`,
+      title: `${commenter.name.trim()} replied to your comment`,
       body,
       url,
       threadId,
@@ -78,7 +78,7 @@ export function notifyComment(
 
   if (post.userId !== commenter.id && post.userId !== parentAuthorId) {
     queue(post.userId, commenter.id, {
-      title: `${commenter.name} commented on ${plateLabel(post)}`,
+      title: `${commenter.name.trim()} commented on ${plateLabel(post)}`,
       body,
       url,
       threadId,
@@ -94,7 +94,7 @@ export function notifyComment(
 export function notifyHeart(post: PostLike, hearter: Actor): void {
   if (post.userId === hearter.id) return;
   queue(post.userId, hearter.id, {
-    title: `${hearter.name} hearted ${plateLabel(post)}`,
+    title: `${hearter.name.trim()} hearted ${plateLabel(post)}`,
     body: "Tap to see your plate.",
     url: `/m/feed?post=${post.id}`,
     threadId: `post:${post.id}`,
@@ -118,7 +118,7 @@ export function notifyFriendsPosted(
   const what = dish && place ? `the ${dish} at ${place}` : dish || place || "a plate";
   const score = typeof post.rating === "number" ? ` ${post.rating}%` : "";
   const message = {
-    title: `${author.name} just rated ${what}${score}`,
+    title: `${author.name.trim()} just rated ${what}${score}`,
     body: "See what they ordered.",
     url: `/m/feed?post=${post.id}`,
     threadId: `friend-posts:${author.id}`,
@@ -138,7 +138,7 @@ export function notifyFriendsPosted(
 export function notifyFriendRequest(recipientId: string, requester: Actor): void {
   if (recipientId === requester.id) return;
   queue(recipientId, requester.id, {
-    title: `${requester.name} sent you a friend request`,
+    title: `${requester.name.trim()} sent you a friend request`,
     body: "Accept it to see each other's plates.",
     url: "/m/friends",
     threadId: "friends",
@@ -150,7 +150,7 @@ export function notifyFriendRequest(recipientId: string, requester: Actor): void
 export function notifyFriendAccepted(requesterId: string, accepter: Actor): void {
   if (requesterId === accepter.id) return;
   queue(requesterId, accepter.id, {
-    title: `${accepter.name} accepted your friend request`,
+    title: `${accepter.name.trim()} accepted your friend request`,
     body: "You're friends now — their plates are in your feed.",
     url: `/m/u/${accepter.id}`,
     threadId: "friends",
