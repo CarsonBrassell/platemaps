@@ -22,7 +22,8 @@ import { milesBetween, type Coords } from "@/lib/geo";
 import type { PlateScore } from "@/lib/plateScore";
 import { evidenceOf } from "@/lib/tasteEvidence";
 import { CROWD } from "@/lib/crowdBonus";
-import { N_AXES, F40, gradeItemInto, newPlaceAcc, placeVectors, buildProfile40, fit40, type PlaceAcc, type PlaceVectors, type Profile40 } from "@/lib/flavor40";
+import { composeReason, crowdLabel, evidenceNote, overlapAxes, placeAxes, type AxisPick, type EvidenceNote } from "@/lib/forMeReason";
+import { N_AXES, F40, dishAxes, gradeItemInto, newPlaceAcc, placeVectors, buildProfile40, fit40, type PlaceAcc, type PlaceVectors, type Profile40 } from "@/lib/flavor40";
 import {
   budgetOf,
   budgetPoints,
@@ -1285,6 +1286,8 @@ export type DishRankInput = {
    * place the viewer has not posted. Absent, the ranking is what it was.
    */
   crowd?: ReadonlyMap<string, number>;
+  /** Place id -> other posters' high ratings (lib/crowdBonus.ts crowdHighlights). Only the flavor40 reason line reads it. */
+  crowdNotes?: ReadonlyMap<string, { n: number; min: number }>;
 };
 
 /**
@@ -1292,8 +1295,8 @@ export type DishRankInput = {
  * line it was sent for (null when the place has none) and its score. Held
  * beside the pick, not on it, so the picks themselves are unchanged.
  */
-const pickLog = new WeakMap<TastePick, { dish: string | null; score: number }>();
-export const dishPickLog = (p: TastePick): { dish: string | null; score: number } | undefined => pickLog.get(p);
+const pickLog = new WeakMap<TastePick, { dish: string | null; score: number; plain?: TastePick["reason"] }>();
+export const dishPickLog = (p: TastePick): { dish: string | null; score: number; plain?: TastePick["reason"] } | undefined => pickLog.get(p);
 
 type Cand = {
   r: RestaurantView;
@@ -2614,7 +2617,39 @@ export function rankDishes(input: DishRankInput): TastePick[] | null {
       plateScore: input.plates[x.r.id] ?? null,
       reason: reasonOf(hit, seeds, x.r.cuisine, x.r.name, x.adv === true || x.novel === true, plant, hit?.fam ? knownFor(rid, hit.fam) : null),
     };
-    pickLog.set(pick, { dish: hit?.item ?? null, score: x.score });
+    // The 40-axis account's reason is a synthesis of what the place and its dish share with their taste, not a "like X".
+    let plain: TastePick["reason"] | undefined;
+    if (f40profile && f40vecs && rid !== undefined) {
+      plain = pick.reason;
+      const kind = pick.reason.kind;
+      let dishName: string | null = null;
+      let dishVec: Float32Array | null = null;
+      if (hit && hit.item) {
+        const whole = tidy(displayDish(cleanItem(hit.item).replace(/^\d{3,}\s+/, "").replace(/^[^:]{1,24}#\d+:\s*/, "").replace(/\s+w\/\s*\w+$/i, "")));
+        const head = whole.length > 22 ? whole.split(/\s+(?:with|w\/|and|plus)\s+|,|\s[-–]\s|\s&\s|\s\+\s/i)[0] || whole : whole;
+        const named = fold(head);
+        if (head && !BARE_LABEL.test(named) && !fold(x.r.name).includes(named) && !(plant && !head)) dishName = head;
+        dishVec = dishAxes(hit.item, tagDish(hit.item, null, null, false));
+      }
+      let axes: AxisPick[] = hit ? overlapAxes(f40profile, f40vecs, rid, dishVec) : [];
+      let evidence: EvidenceNote | null = axes.length > 0 ? evidenceNote(axes, f40profile, f40vecs, index.ridIndex, ev.places) : null;
+      if (axes.length === 0) axes = placeAxes(f40vecs, rid);
+      const sd = hit ? seeds[hit.flav?.claim ? hit.flav.seed : hit.seed] : undefined;
+      const sdish = sd?.dish ? displayDish(sd.dish).replace(/^(?:the|a|an)\s+(?=\S)/i, "") : "";
+      const note = postedIds.has(x.r.id) ? undefined : input.crowdNotes?.get(x.r.id);
+      const facts = {
+        id: x.r.id,
+        dish: dishName && evidence ? dishName : null,
+        cuisine: x.r.cuisine,
+        priceBand: x.r.priceBand,
+        axes,
+        evidence,
+        crowd: note ? { n: note.n, label: crowdLabel(note.min) } : null,
+        seed: evidence && sd && sdish && !sd.placeLevel ? { dish: clipWords(sdish, 28), place: shortPlaceName(sd.place) } : null,
+      };
+      pick.reason = { kind, text: composeReason(facts, 180, clipWords), short: composeReason(facts, 110, clipWords) };
+    }
+    pickLog.set(pick, { dish: hit?.item ?? null, score: x.score, plain });
     return pick;
   });
 }

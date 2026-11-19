@@ -207,7 +207,7 @@ export function PhoneRestaurantCardGrid({
             answer a question the visitor typed, this is the app's own
             explanation, and the accent is spent on what they asked for. */}
         {reason && (
-          <p className={`mt-1 ${reasonLines === 3 ? "line-clamp-3" : "line-clamp-2"} text-[11px] leading-snug text-zinc-600`}>
+          <p className={`mt-1 ${reasonLines === 3 ? "line-clamp-4" : "line-clamp-2"} text-[11px] leading-snug text-zinc-600`}>
             <ReasonText text={reason} />
           </p>
         )}

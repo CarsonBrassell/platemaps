@@ -1479,6 +1479,24 @@ ok("crowd bonus: only the flavor40 path, only new places, others byte-identical"
   assert.equal((route.match(/loadCrowd[(]/g) ?? []).length, 1);
 });
 
+ok("flavor40 reasons are a synthesis: never a bare 'like your', no axis ids, digits or percents, within the length caps", () => {
+  const on = rank({ flavor40: true });
+  assert.ok(on.length > 0);
+  for (const p of on) {
+    for (const [field, cap] of [["short", 110], ["text", 180]]) {
+      const t = p.reason[field];
+      assert.ok(t.length <= cap, `${field} fits: ${t}`);
+      assert.ok(!/like your/i.test(t), `no bare 'like your': ${t}`);
+      assert.ok(!/axis|axes|\d+\s*%|\d/.test(t.replace(/\d+\s*(?:times|repeat)/g, "").replace(/4\.5★|5★/g, "")), `no axis words, digits or percents: ${t}`);
+    }
+    assert.ok(p.reason.short.length <= p.reason.text.length || p.reason.text === "", "short never longer than text");
+  }
+  const off = rank({ flavor40: false });
+  assert.ok(off.every((p) => p.reason.text.length <= 84 && p.reason.short.length <= 72), "other accounts keep the old caps");
+  const lib = src("src/lib/dishTaste.ts");
+  assert.ok(lib.includes("if (f40profile && f40vecs && rid !== undefined) {"), "the new line is gated on the 40-axis profile");
+});
+
 /* ---------- 3. render parity ---------- */
 
 const tsx = fileURLToPath(new URL("../node_modules/tsx/dist/cli.mjs", import.meta.url));

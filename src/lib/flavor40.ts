@@ -580,3 +580,16 @@ export function topAxes(vecs: PlaceVectors, p: number, n = 5): { id: string; z: 
     .sort((x, y) => y.z - x.z)
     .slice(0, n);
 }
+
+/** One menu line's own grade on each axis, 0..1 (two-sided axes -1..1): what the named dish itself carries. Read-only helper for reason text. */
+export function dishAxes(name: string, mask: number, section: string | null = null): Float32Array {
+  const tmp = new Float32Array(N_AXES);
+  gradeItemInto(tmp, 0, foldText(name), mask, foldText(section), false);
+  const out = new Float32Array(N_AXES);
+  for (let a = 0; a < N_AXES; a++) {
+    if (a === A.smoky || a === A.price || a === A.latenight) continue;
+    out[a] = clip(tmp[a] / SAT[a], BIPOLAR[a] ? -1 : 0, 1);
+  }
+  out[A.smoky] = Math.max(out[A.lowslow], out[A.grilled]);
+  return out;
+}

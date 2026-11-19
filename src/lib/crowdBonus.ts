@@ -65,3 +65,22 @@ export function crowdMultipliers(crowd: CrowdIndex, viewerId: string, blocked: R
   }
   return out;
 }
+
+/**
+ * Per place, how many other posters rated it high (4.5 stars and up) and the lowest of those ratings: the only part of the
+ * crowd a reason line may mention. The viewer and anyone blocked either way are left out, as in `crowdMultipliers`.
+ */
+export function crowdHighlights(crowd: CrowdIndex, viewerId: string, blocked: ReadonlySet<string> = new Set()): Map<string, { n: number; min: number }> {
+  const out = new Map<string, { n: number; min: number }>();
+  for (const [rid, rows] of crowd) {
+    let n = 0;
+    let min = 5;
+    for (const r of rows) {
+      if (r.u === viewerId || blocked.has(r.u) || !(r.r >= CROWD.strongFrom)) continue;
+      n++;
+      min = Math.min(min, r.r);
+    }
+    if (n > 0) out.set(rid, { n, min });
+  }
+  return out;
+}

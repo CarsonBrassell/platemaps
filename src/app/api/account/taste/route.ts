@@ -6,7 +6,7 @@ import { getCurrentUser } from "@/lib/session";
 import { getBlockedEitherWayIds, postsForDishTaste } from "@/lib/db";
 import { loadDishIndex } from "@/lib/dishIndex";
 import { loadCrowd } from "@/lib/crowdIndex";
-import { crowdMultipliers } from "@/lib/crowdBonus";
+import { crowdHighlights, crowdMultipliers } from "@/lib/crowdBonus";
 import { dishPickLog, passesFloor, rankDishes } from "@/lib/dishTaste";
 import { isDiscoverModesUser, isFlavor40User, isForMeUser } from "@/lib/forMeGate";
 import { NEARBY_RADIUS_MI, milesBetween, type Coords } from "@/lib/geo";
@@ -188,10 +188,12 @@ export async function POST(req: Request) {
         const posts = await postsForDishTaste(user.id);
         // The crowd bonus is the 40-axis account's alone. A failed read leaves it out, never the picks.
         let crowd: Map<string, number> | undefined;
+        let crowdNotes: Map<string, { n: number; min: number }> | undefined;
         if (flavor40User) {
           try {
             const [idx, blocked] = await Promise.all([loadCrowd(), getBlockedEitherWayIds(user.id)]);
             crowd = crowdMultipliers(idx, user.id, new Set(blocked));
+            crowdNotes = crowdHighlights(idx, user.id, new Set(blocked));
           } catch {
             crowd = undefined;
           }
@@ -209,6 +211,7 @@ export async function POST(req: Request) {
           within,
           flavor40: flavor40User,
           crowd,
+          crowdNotes,
         });
         // A refresh that has run out of dish picks answers with none (the client starts over), never with the
         // cuisine-level picks, which are a different kind of card.
