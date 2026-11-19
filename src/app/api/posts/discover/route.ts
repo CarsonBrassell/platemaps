@@ -12,7 +12,7 @@ import type { Coords } from "@/lib/geo";
 
 /**
  * The public feed — everyone, unfiltered by friendship. `?sort=trending`
- * (default) ranks by net votes over a steep time decay; `?sort=new` is
+ * ranks by net votes over a steep time decay; `?sort=new` (default) is
  * strictly newest-first. Either ordering can additionally be narrowed to
  * posts within `NEARBY_RADIUS_MI` of a position the caller supplies — the
  * Nearby filter chip, not a third sort — by POSTing `{ coords }`. See
@@ -20,10 +20,10 @@ import type { Coords } from "@/lib/geo";
  * photo-privacy stripping; `discoverFeed` below is the thin pass-through
  * shared by GET and POST so that logic exists in exactly one place.
  *
- * An unrecognised sort falls back to trending rather than 400-ing —
+ * An unrecognised sort falls back to the default (new) rather than 400-ing —
  * `parseFeedSort` is what narrows it, and it is the only thing allowed to
  * turn a query string into an ordering. (That includes a stale
- * `?sort=nearby` from before Nearby became a filter — it lands on trending
+ * `?sort=nearby` from before Nearby became a filter — it lands on the default
  * rather than erroring.)
  *
  * Paged by cursor (probe/PERF-PLAN.md S5): the answer carries `nextCursor`,

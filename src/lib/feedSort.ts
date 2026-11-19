@@ -9,12 +9,12 @@
  * - **Trending** is *recent plates with the most upvotes* — net votes inside a
  *   soft 24-hour window, newest first on ties (`trendingScore` below is the
  *   curve and the three constants after it are the shape of it;
- *   `getDiscoverFeed` runs the identical expression in SQL). It is the default
- *   because a hyper-local feed is thin by construction: on a quiet evening,
- *   strict chronology shows an empty room.
- * - **New** is `created_at DESC`, nothing else. It exists so a plate posted
- *   thirty seconds ago is reachable before the ranking has any votes to work
- *   with, which is also what makes posting feel like it did something.
+ *   `getDiscoverFeed` runs the identical expression in SQL).
+ * - **New** is `created_at DESC`, nothing else, and it is the default
+ *   (Carson, 2026-11-19): a first visit opens on the latest plates. It also
+ *   makes a plate posted thirty seconds ago reachable before the ranking has
+ *   any votes to work with, which is what makes posting feel like it did
+ *   something.
  *
  * That pair is deliberately the Yik Yak split, and it is the whole of what was
  * borrowed. Yik Yak's Hot is the last ~24 hours ranked by net votes and its New
@@ -41,7 +41,7 @@
  */
 export type FeedSort = "trending" | "new";
 
-export const FEED_SORT_DEFAULT: FeedSort = "trending";
+export const FEED_SORT_DEFAULT: FeedSort = "new";
 
 /**
  * How long a plate counts as "fresh" in Trending, in hours — the width of the
@@ -189,5 +189,5 @@ export const FEED_SORTS: ReadonlyArray<{ value: FeedSort; label: string }> = [
     became a filter rather than a sort — falls back to the default rather than
     erroring. */
 export function parseFeedSort(raw: string | null | undefined): FeedSort {
-  return raw === "new" ? raw : FEED_SORT_DEFAULT;
+  return raw === "new" || raw === "trending" ? raw : FEED_SORT_DEFAULT;
 }
