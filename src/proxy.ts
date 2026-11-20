@@ -82,17 +82,30 @@ function phoneTwinFor(request: NextRequest): string | null {
 /** Calvin, 2026-11-19: the printed Pizza on Pearl flyer's QR code points at
  *  platemaps.com, but the free-slice ticket can only be claimed in the iOS
  *  app. A signed-out iPhone opening the bare domain goes to the App Store
- *  listing instead of the web sign-up. Only "/" — the app itself boots on
- *  /m/feed and never requests the root signed out, and every deeper link
- *  (shared posts, reset and verify emails) still opens the phone site. */
+ *  listing instead of the web sign-up.
+ *
+ *  The QR itself encodes /m/feed — which is also the URL the iOS app boots
+ *  on (capacitor.config.ts). The two are told apart by user agent: a real
+ *  browser (Safari, Chrome) ends its UA with a `Safari/` token, the app's
+ *  WKWebView does not. Sending the app's own signed-out WebView to the App
+ *  Store would lock people out of sign-up, so /m/feed and /m redirect only
+ *  with that token; the bare root is never requested by the app and
+ *  redirects for any iPhone. Every deeper link (shared posts, reset and
+ *  verify emails) still opens the phone site. */
 const APP_STORE_URL = "https://apps.apple.com/us/app/platemaps/id6808829983";
 const IOS_PHONE_UA = /\b(iPhone|iPod)\b/;
+const BROWSER_UA = /\bSafari\//;
+const APP_STORE_BROWSER_PATHS = new Set(["/m", "/m/feed"]);
 
 function appStoreFor(request: NextRequest): string | null {
-  if (request.nextUrl.pathname !== "/") return null;
+  const { pathname } = request.nextUrl;
+  const browserOnly = APP_STORE_BROWSER_PATHS.has(pathname);
+  if (pathname !== "/" && !browserOnly) return null;
   if (request.method !== "GET" && request.method !== "HEAD") return null;
   if (request.cookies.has(SESSION_COOKIE_NAME)) return null;
-  if (!IOS_PHONE_UA.test(request.headers.get("user-agent") ?? "")) return null;
+  const ua = request.headers.get("user-agent") ?? "";
+  if (!IOS_PHONE_UA.test(ua)) return null;
+  if (browserOnly && !BROWSER_UA.test(ua)) return null;
   return APP_STORE_URL;
 }
 
