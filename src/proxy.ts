@@ -95,17 +95,39 @@ function phoneTwinFor(request: NextRequest): string | null {
 const APP_STORE_URL = "https://apps.apple.com/us/app/platemaps/id6808829983";
 const IOS_PHONE_UA = /\b(iPhone|iPod)\b/;
 const BROWSER_UA = /\bSafari\//;
+/** Browsers inside other apps. They drop the `Safari/` token like our own
+ *  WebView does, but name themselves — an allowlist, so an unknown WebView is
+ *  still treated as possibly ours and left alone. */
+const IN_APP_BROWSER_UA =
+  /Instagram|FBAN|FBAV|FB_IAB|TikTok|musical_ly|Bytedance|Snapchat|Twitter|LinkedInApp|Pinterest|Line\/|MicroMessenger|GSA\//;
 const APP_STORE_BROWSER_PATHS = new Set(["/m", "/m/feed"]);
+
+/** True when the page was opened from outside the site — a QR scan, a typed
+ *  address, a tapped link in another app — rather than by moving around
+ *  inside it. Safari sends `Sec-Fetch-Site: none` for those; older iOS sends
+ *  neither that header nor a Referer. */
+function isDirectEntry(request: NextRequest): boolean {
+  const site = request.headers.get("sec-fetch-site");
+  if (site) return site === "none";
+  return !request.headers.get("referer");
+}
 
 function appStoreFor(request: NextRequest): string | null {
   const { pathname } = request.nextUrl;
   const browserOnly = APP_STORE_BROWSER_PATHS.has(pathname);
   if (pathname !== "/" && !browserOnly) return null;
   if (request.method !== "GET" && request.method !== "HEAD") return null;
-  if (request.cookies.has(SESSION_COOKIE_NAME)) return null;
   const ua = request.headers.get("user-agent") ?? "";
   if (!IOS_PHONE_UA.test(ua)) return null;
-  if (browserOnly && !BROWSER_UA.test(ua)) return null;
+  const isBrowser = BROWSER_UA.test(ua) || IN_APP_BROWSER_UA.test(ua);
+  if (request.cookies.has(SESSION_COOKIE_NAME)) {
+    // Someone already signed in on the web who scans the flyer: the ticket
+    // is still app-only, so the scan goes to the App Store too. Moving
+    // around inside the site (sign-in landing on /m/feed, the tab bar) is
+    // not a direct entry and keeps working.
+    return isBrowser && isDirectEntry(request) ? APP_STORE_URL : null;
+  }
+  if (browserOnly && !isBrowser) return null;
   return APP_STORE_URL;
 }
 
@@ -128,7 +150,7 @@ export function proxy(request: NextRequest) {
   const store = appStoreFor(request);
   if (store) {
     const res = NextResponse.redirect(store, 307);
-    res.headers.set("Vary", "User-Agent, Cookie");
+    res.headers.set("Vary", "User-Agent, Cookie, Sec-Fetch-Site, Referer");
     res.headers.set("Cache-Control", "no-store");
     return res;
   }
