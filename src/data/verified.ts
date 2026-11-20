@@ -22,6 +22,10 @@ export const VERIFIED_USER_IDS: ReadonlySet<string> = new Set([
   "0c39f913-fa39-4fdf-b2d6-486c027cebdc",
   /* Calvin Lensink, the account with the posts, not the empty duplicates. */
   "940561ca-05c8-4010-b8a9-f397235378b9",
+  /* Jett Austin, handle "jettloveseatingit". */
+  "64caf5d7-d20d-47ec-a585-800d09288e32",
+  /* Taylor Fugazzi, handle "taylorfugazzi". */
+  "5dbac5f6-7de1-43ca-80ff-46caf871b6bd",
 ]);
 
 export function isVerified(userId: string | null | undefined): boolean {
