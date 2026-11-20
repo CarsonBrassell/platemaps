@@ -79,6 +79,23 @@ function phoneTwinFor(request: NextRequest): string | null {
   return pathname === "/" ? "/m" : `/m${pathname}`;
 }
 
+/** Calvin, 2026-11-19: the printed Pizza on Pearl flyer's QR code points at
+ *  platemaps.com, but the free-slice ticket can only be claimed in the iOS
+ *  app. A signed-out iPhone opening the bare domain goes to the App Store
+ *  listing instead of the web sign-up. Only "/" — the app itself boots on
+ *  /m/feed and never requests the root signed out, and every deeper link
+ *  (shared posts, reset and verify emails) still opens the phone site. */
+const APP_STORE_URL = "https://apps.apple.com/us/app/platemaps/id6808829983";
+const IOS_PHONE_UA = /\b(iPhone|iPod)\b/;
+
+function appStoreFor(request: NextRequest): string | null {
+  if (request.nextUrl.pathname !== "/") return null;
+  if (request.method !== "GET" && request.method !== "HEAD") return null;
+  if (request.cookies.has(SESSION_COOKIE_NAME)) return null;
+  if (!IOS_PHONE_UA.test(request.headers.get("user-agent") ?? "")) return null;
+  return APP_STORE_URL;
+}
+
 const WRITE_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 
 export function proxy(request: NextRequest) {
@@ -94,6 +111,14 @@ export function proxy(request: NextRequest) {
   }
 
   if (isStaticAsset(pathname)) return NextResponse.next();
+
+  const store = appStoreFor(request);
+  if (store) {
+    const res = NextResponse.redirect(store, 307);
+    res.headers.set("Vary", "User-Agent, Cookie");
+    res.headers.set("Cache-Control", "no-store");
+    return res;
+  }
 
   const twin = phoneTwinFor(request);
   if (twin) {
