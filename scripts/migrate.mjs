@@ -1439,6 +1439,23 @@ const statements = [
     kind TEXT NOT NULL,
     foodie BOOLEAN NOT NULL DEFAULT FALSE
   )`,
+  // Marketing-mail opt-out (lib/unsubscribe.ts). NULL = may receive
+  // promotional mail; a timestamp = unsubscribed at that moment. Account mail
+  // (verify, reset) ignores it. unsubscribe_token is a per-user random value
+  // minted on first use, because the app has no server-side signing secret.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS marketing_opt_out_at TIMESTAMPTZ`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS unsubscribe_token TEXT`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS users_unsubscribe_token_idx
+    ON users (unsubscribe_token) WHERE unsubscribe_token IS NOT NULL`,
+  // One-off marketing sends (scripts/send-thanks.mjs). The primary key is the
+  // re-run guard: a user is only ever mailed once per campaign.
+  `CREATE TABLE IF NOT EXISTS marketing_sends (
+    user_id TEXT NOT NULL,
+    campaign TEXT NOT NULL,
+    sent_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    provider_id TEXT,
+    PRIMARY KEY (user_id, campaign)
+  )`,
 ];
 
 for (const statement of statements) {

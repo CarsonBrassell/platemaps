@@ -12,6 +12,7 @@
     "ratings:blend": "node --env-file=.env.local scripts/blend-ratings.mjs",
     "aspects:preview": "node scripts/preview-aspect-scores.mjs",
     "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
+    "mail:thanks": "node --env-file=.env.local scripts/send-thanks.mjs",
     "db:stats": "node --env-file=.env.local scripts/db-stats.mjs",
     "notice:reset": "node --env-file=.env.local scripts/reset-photo-notice.mjs",
     "restaurants:import": "node --env-file=.env.local scripts/import-restaurants.mjs",

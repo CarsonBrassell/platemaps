@@ -4879,3 +4879,58 @@ export async function deletePushTokens(tokens: string[]): Promise<void> {
   if (tokens.length === 0) return;
   await sql`DELETE FROM push_devices WHERE token = ANY(${tokens})`;
 }
+
+/* --- Marketing-mail opt-out ------------------------------------------------
+ *
+ * `users.marketing_opt_out_at` (NULL = may receive promotional mail) and
+ * `users.unsubscribe_token`, a per-user random value minted on first use.
+ * Callers live in `lib/unsubscribe.ts`; account mail never reads either.
+ */
+
+/** The user's unsubscribe token, minting it on first use. Null if no such user. */
+export async function getOrCreateUnsubscribeToken(
+  userId: string,
+  candidate: string,
+): Promise<string | null> {
+  // Only writes when empty, so two racing callers converge on one value.
+  await sql`
+    UPDATE users SET unsubscribe_token = ${candidate}
+    WHERE id = ${userId} AND unsubscribe_token IS NULL
+  `;
+  const rows = await sql`SELECT unsubscribe_token FROM users WHERE id = ${userId}`;
+  return (rows[0]?.unsubscribe_token as string | null | undefined) ?? null;
+}
+
+/** Resolves a token to a user id and current opt-out state, or null. */
+export async function findUserByUnsubscribeToken(
+  token: string,
+): Promise<{ userId: string; token: string; optedOut: boolean } | null> {
+  const rows = await sql`
+    SELECT id, unsubscribe_token, marketing_opt_out_at
+    FROM users WHERE unsubscribe_token = ${token}
+  `;
+  const row = rows[0];
+  if (!row) return null;
+  return {
+    userId: row.id as string,
+    token: row.unsubscribe_token as string,
+    optedOut: row.marketing_opt_out_at != null,
+  };
+}
+
+/** Idempotent: keeps the original timestamp if already opted out. */
+export async function setMarketingOptOut(userId: string, optedOut: boolean): Promise<void> {
+  if (optedOut) {
+    await sql`
+      UPDATE users SET marketing_opt_out_at = now()
+      WHERE id = ${userId} AND marketing_opt_out_at IS NULL
+    `;
+  } else {
+    await sql`UPDATE users SET marketing_opt_out_at = NULL WHERE id = ${userId}`;
+  }
+}
+
+export async function isMarketingOptedOut(userId: string): Promise<boolean> {
+  const rows = await sql`SELECT marketing_opt_out_at FROM users WHERE id = ${userId}`;
+  return rows[0]?.marketing_opt_out_at != null;
+}

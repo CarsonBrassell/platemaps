@@ -30,6 +30,10 @@ const PUBLIC_EXACT_PATHS = new Set<string>([
   // The email-link verifier is token-based and deliberately has no session —
   // see the doc comment on the route itself for why.
   "/api/account/email/verify",
+  // Promotional-mail opt-out: opened from an email, token-authenticated, no
+  // session. One page for phone and desktop, so there is no /m twin.
+  "/unsubscribe",
+  "/api/unsubscribe",
 ]);
 
 /** Path prefixes that never require a session, matched by `startsWith`. */
