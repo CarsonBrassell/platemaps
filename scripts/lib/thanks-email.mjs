@@ -28,7 +28,10 @@ function esc(s) {
 
 /** @param {{ unsubscribeUrl: string, postalAddress: string, siteUrl: string }} p */
 export function buildThanksEmail({ unsubscribeUrl, postalAddress, siteUrl }) {
-  const postUrl = `${siteUrl.replace(/\/$/, "")}/post`;
+  // The App Store listing, not the site: there are no universal links yet, so a
+  // platemaps.com link opens Safari. The listing shows Open when installed.
+  void siteUrl;
+  const postUrl = "https://apps.apple.com/us/app/platemaps/id6808829983";
   const sans = `-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif`;
   const p = (text, extra = "") =>
     `<p style="margin:0 0 16px 0;font-family:${sans};font-size:16px;line-height:1.55;color:${INK};${extra}">${esc(text)}</p>`;
@@ -54,7 +57,7 @@ ${p(P1)}
 ${p(P2)}
 ${p(P3)}
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:8px 0 22px 0;">
-<tr><td align="center" bgcolor="${ORANGE}" style="background-color:${ORANGE};border-radius:999px;"><a href="${esc(postUrl)}" style="display:inline-block;padding:14px 32px;font-family:${sans};font-size:16px;font-weight:700;line-height:1;color:#ffffff;text-decoration:none;border-radius:999px;">Post a dish</a></td></tr>
+<tr><td align="center" bgcolor="${ORANGE}" style="background-color:${ORANGE};border-radius:999px;"><a href="${esc(postUrl)}" style="display:inline-block;padding:14px 32px;font-family:${sans};font-size:16px;font-weight:700;line-height:1;color:#ffffff;text-decoration:none;border-radius:999px;">Open PlateMaps</a></td></tr>
 </table>
 ${p(SIGN, "margin-bottom:0;")}
 </td></tr>
@@ -78,7 +81,7 @@ ${esc(postalAddress)}<br>
     "",
     P3,
     "",
-    `Post a dish: ${postUrl}`,
+    `Open PlateMaps: ${postUrl}`,
     "",
     SIGN,
     "",
