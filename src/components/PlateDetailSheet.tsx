@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Dialog } from "@/components/feed/Dialog";
 import { Composer } from "@/components/feed/Composer";
 import {
@@ -639,9 +639,12 @@ export function PlateDetailSheet({
   onCommentVoted,
   onVoted,
   onDelete,
+  extra,
 }: {
   post: ShelfPost;
   onClose: () => void;
+  /** Optional block rendered above the comments (drafts use it for a flavor breakdown). */
+  extra?: ReactNode;
   /**
    * A comment this sheet just wrote, handed back so the profile's own copy of
    * the post grows with it.
@@ -1097,6 +1100,8 @@ export function PlateDetailSheet({
         )}
 
         <PlateModeration post={post} onBlocked={onClose} onTone={words} />
+
+        {extra && <div className={words ? "px-5 pb-4" : "mb-4"}>{extra}</div>}
 
         <div className={words ? "px-5 pb-5" : undefined}>
           <p

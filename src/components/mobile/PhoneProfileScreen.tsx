@@ -8,7 +8,8 @@ import { safeNext, signInPromptFor } from "@/lib/signInGate";
 import { PointsBadge } from "@/components/feed/PointsBadge";
 import { CameraIcon, SettingsIcon } from "@/components/icons";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
-import { useAuth } from "@/lib/auth";
+import { useAuth, useForMeAccess } from "@/lib/auth";
+import { PhoneFlavorProfile } from "@/components/mobile/PhoneFlavorProfile";
 import { initials } from "@/lib/format";
 import { AvatarCropper } from "@/components/AvatarCropper";
 import { uploadAvatar } from "@/lib/photos";
@@ -537,6 +538,7 @@ function LegalLinks({ className = "" }: { className?: string }) {
 
 export function PhoneProfileScreen() {
   const { isSignedIn, loading } = useAuth();
+  const forMe = useForMeAccess();
   const router = useRouter();
   const params = useQueryParams();
 
@@ -560,7 +562,13 @@ export function PhoneProfileScreen() {
 
   return (
     <>
-      {isSignedIn ? (
+      {isSignedIn && forMe ? (
+        /* The two gated accounts get the flavor-wheel profile (lib/forMeGate.ts). */
+        <PhoneFlavorProfile
+          settingsHref={params.get("nav") ? `/m/account/settings?nav=${params.get("nav")}` : "/m/account/settings"}
+          footer={<LegalLinks className="mt-3" />}
+        />
+      ) : isSignedIn ? (
         <ProfileOverview />
       ) : (
         <>

@@ -919,9 +919,12 @@ export function ProfileShelves({
   onCommentVoted,
   onPostVoted,
   onDelete,
+  sheetExtra,
 }: {
   posts: ShelfPost[];
   arrival: RollCallArrival;
+  /** Optional block for the opened plate's sheet, above its comments. */
+  sheetExtra?: (post: ShelfPost) => ReactNode;
   /**
    * A comment written from the detail sheet, handed up to whoever owns
    * `posts` — this component does not own that array and cannot patch it.
@@ -1044,6 +1047,7 @@ export function ProfileShelves({
           }
           onVoted={(patch) => onPostVoted?.(openPost.id, patch)}
           onDelete={onDelete && (() => onDelete(openPost.id))}
+          extra={sheetExtra?.(openPost)}
         />
       )}
     </section>
