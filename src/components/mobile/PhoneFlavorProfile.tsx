@@ -25,7 +25,6 @@ import type { FlavorWheel } from "@/lib/flavorWheelSnapshots";
  */
 
 const O = "#c9591f";
-const OT = "#a8481a";
 const INK = "#2a2622";
 const TAN2 = "#b8a88c";
 const GREY = "#665c4e";
@@ -44,25 +43,62 @@ function flavorFor(FLAVORS: FlavorWheel["flavors"], p: ShelfPost) {
 }
 
 
+/**
+ * The wheel's families. Every flavor sits with its kin and wears the family's
+ * colour, so the wheel reads as a few neighbourhoods rather than forty spokes.
+ * A flavor nobody listed falls into Carbs and comfort.
+ */
+const FAMS: [string, string, string[]][] = [
+  ["Heat and smoke", "#E2622A", ["Sweet heat", "Smoky", "Spicy", "Charred", "Warm spice"]],
+  ["Rich and melty", "#C9952B", ["Cheese", "Creamy", "Buttery", "Rich", "Nutty", "Premium"]],
+  ["Meat", "#8E3B46", ["Meat", "Cured", "Poultry", "Offal", "Red meat", "Low and slow", "Braised"]],
+  ["Carbs and comfort", "#A9865A", ["Brunch", "Crispy", "Garlic, onion", "Pasta, noodles", "Bread, dough", "Carbs", "Fried", "Brothy", "World foods"]],
+  ["Fresh and bright", "#4F8A4B", ["Bitter", "Herbs", "Fruity", "Pickled, tangy", "Greens", "Fresh, light", "Fermented", "Citrus", "Sour"]],
+  ["Sea", "#2F7F86", ["Raw fish", "Seafood"]],
+  ["Sweets and sips", "#B8578F", ["Sweet", "Drinks", "Dessert"]],
+];
+const COMFORT = 3;
+const famOf = (name: string) => {
+  const i = FAMS.findIndex(([, , names]) => names.includes(name));
+  return i < 0 ? COMFORT : i;
+};
+
 function Wheel({ T }: { T: FlavorWheel["wheel"] }) {
   const n = T.length, c = 205, r0 = 78, k = 104;
   const rad = (d: number) => (d * Math.PI) / 180;
+  const at = (deg: number, r: number) => [+(c + Math.cos(rad(deg)) * r).toFixed(2), +(c + Math.sin(rad(deg)) * r).toFixed(2)];
+  /* The top three are the first three as scored; the spokes are then regrouped by family. */
+  const top3 = new Set(T.slice(0, 3).map(([name]) => name));
+  const groups = FAMS.map((_, fi) => T.filter(([name]) => famOf(name) === fi));
+  const spokes = groups.flat();
+  const step = 360 / n;
+  const arcs: { d: string; color: string }[] = [];
+  let start = 0;
+  groups.forEach((g, fi) => {
+    if (g.length) {
+      const a0 = -90 + (start - 0.38) * step, a1 = -90 + (start + g.length - 1 + 0.38) * step;
+      const [x0, y0] = at(a0, r0), [x1, y1] = at(a1, r0);
+      arcs.push({ d: `M${x0} ${y0}A${r0} ${r0} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1} ${y1}`, color: FAMS[fi][1] });
+    }
+    start += g.length;
+  });
   return (
     <svg viewBox="0 -14 410 424" className="my-1 block h-auto w-full" role="img" aria-label={`Flavor wheel: ${T.slice(0, 3).map(([n]) => n).join(", ")} lead`}>
-      <circle cx={c} cy={c} r={r0} fill="none" stroke={GREY} strokeWidth={1.5} strokeDasharray="3 4" />
+      {arcs.map((arc) => (
+        <path key={arc.color} d={arc.d} fill="none" stroke={arc.color} strokeWidth={4} strokeLinecap="round" />
+      ))}
       <text x={c} y={c - 8} fontSize={12} fill={GREY} textAnchor="middle" fontWeight={600}>most</text>
       <text x={c} y={c + 8} fontSize={12} fill={GREY} textAnchor="middle" fontWeight={600}>eaters</text>
-      {T.map(([name, sc, t], i) => {
-        const a = -90 + (i * 360) / n, ca = +Math.cos(rad(a)).toFixed(4), sa = +Math.sin(rad(a)).toFixed(4);
-        const early = Math.abs(t) < 1, ng = sc < 0 && !early, top = i < 3;
+      {spokes.map(([name, sc, t], i) => {
+        const a = -90 + i * step, ca = +Math.cos(rad(a)).toFixed(4), sa = +Math.sin(rad(a)).toFixed(4);
+        const early = Math.abs(t) < 1, ng = sc < 0 && !early, top = top3.has(name);
         const len = early ? 5 : Math.abs(sc) * k;
-        const r1 = ng ? r0 - 5 : r0 + 7, r2 = ng ? r0 - 5 - len : r0 + 7 + len;
-        const stroke = top ? O : ng ? GREY : early ? "#d9cdb6" : t >= 2 ? INK : TAN2;
+        const r1 = ng ? r0 - 7 : r0 + 7, r2 = ng ? r0 - 7 - len : r0 + 7 + len;
         const lr = (ng ? r0 + 7 : r2) + 8, flip = ca < 0, x = +(c + ca * lr).toFixed(2), y = +(c + sa * lr).toFixed(2);
         return (
           <g key={name}>
-            <line x1={+(c + ca * r1).toFixed(2)} y1={+(c + sa * r1).toFixed(2)} x2={+(c + ca * r2).toFixed(2)} y2={+(c + sa * r2).toFixed(2)} stroke={stroke} strokeWidth={ng ? 5 : 6.5} strokeLinecap="round" />
-            <text x={x} y={y} fontSize={top ? 14 : 11.5} fontWeight={600} fill={top ? OT : early ? "#857a69" : ng ? GREY : INK} textAnchor={flip ? "end" : "start"} dominantBaseline="central" transform={`rotate(${flip ? a + 180 : a} ${x} ${y})`}>
+            <line x1={+(c + ca * r1).toFixed(2)} y1={+(c + sa * r1).toFixed(2)} x2={+(c + ca * r2).toFixed(2)} y2={+(c + sa * r2).toFixed(2)} stroke={FAMS[famOf(name)][1]} strokeOpacity={early ? 0.3 : ng ? 0.45 : 1} strokeWidth={top ? 8 : ng ? 5 : 6.5} strokeLinecap="round" />
+            <text x={x} y={y} fontSize={top ? 14 : 11.5} fontWeight={top ? 700 : 600} fill={early ? "#857a69" : INK} textAnchor={flip ? "end" : "start"} dominantBaseline="central" transform={`rotate(${flip ? a + 180 : a} ${x} ${y})`}>
               {name}
             </text>
           </g>
@@ -162,7 +198,7 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
   const spots = new Set(myPosts.map((p) => p.restaurant)).size;
 
   return (
-    <div className="min-h-dvh divide-y divide-[#f0ebe0] bg-white px-4 pb-8 pt-2">
+    <div className="min-h-dvh divide-y divide-[#e4dccb] bg-[#F7F4EC] px-4 pb-8 pt-2">
       <section className="py-5">
         <div className="flex items-center gap-3.5">
           {account.avatarUrl ? (
@@ -178,14 +214,14 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
               <span className="truncate">{account.name}</span>
               <VerifiedBadge userId={account.id} />
             </h1>
-            <p className="mt-0.5 truncate font-mono text-[12.5px] text-zinc-500">{account.email}</p>
+            <p className="mt-0.5 truncate font-mono text-[12.5px] text-pm-grey-text">{account.email}</p>
           </div>
-          <Link href={settingsHref} aria-label="Settings" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint text-pm-grey-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pm-orange">
+          <Link href={settingsHref} aria-label="Settings" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-pm-grey-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pm-orange">
             <SettingsIcon className="h-5 w-5" />
           </Link>
         </div>
-        <div className="mt-4 border-t border-[#f0ebe0] pt-3">
-          <RankRing points={arrival.displayPoints} />
+        <div className="mt-4 border-t border-[#e4dccb] pt-3">
+          <RankRing points={arrival.displayPoints} className="!bg-transparent !px-0 [&_.bg-white]:bg-[#F7F4EC] [&_.bg-pm-grey-tint]:bg-[#e4dccb]" />
         </div>
         {postsReady && (
           <div className="mt-2 flex justify-center gap-4 text-[12.5px] text-zinc-600">
@@ -202,16 +238,20 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
             {data.wheel.slice(0, 3).map(([n]) => n + ".").join(" ")}
           </h2>
           <Wheel T={data.wheel} />
-          <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-[11.5px] text-zinc-600">
-            {[[O, "Top three"], [INK, "Clearly you"], [TAN2, "Leaning"], [GREY, "Less than most"]].map(([c, l]) => (
-              <span key={l} className="inline-flex items-center gap-1.5"><i className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: c }} />{l}</span>
+          <div className="mt-1 flex flex-wrap gap-1.5">
+            {FAMS.filter((_, fi) => data.wheel.some(([name]) => famOf(name) === fi)).map(([label, color]) => (
+              <span key={label} className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-zinc-800">
+                <i className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: color }} />
+                {label}
+              </span>
             ))}
           </div>
         </section>
       )}
 
-      <div className="pt-5 [&_#profile-archive_button.bg-white]:bg-pm-grey-tint">
+      <div className="pt-5">
         <ProfileShelves
+          tab
           posts={myPosts}
           arrival={arrival}
           onCommentAdded={(postId, comment) =>
@@ -234,7 +274,7 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
           <h2 className="font-display mt-1 text-[22px] font-semibold leading-tight text-zinc-900">New mixes of what you go back for</h2>
           <Note />
           {data.next.map((d, i) => (
-            <div key={d.dish} className={`py-4 ${i ? "border-t border-[#f0ebe0]" : "pt-3"}`}>
+            <div key={d.dish} className={`py-4 ${i ? "border-t border-[#e4dccb]" : "pt-3"}`}>
               <div className="grid grid-cols-[56px_1fr] items-center gap-3">
                 <div className="h-14 w-14 rounded-xl" style={{ background: TONES[(i + 1) % 3] }} />
                 <div>
@@ -244,7 +284,7 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
               </div>
               <p className="mt-2.5 text-[12.5px] leading-snug text-zinc-600">{d.ing}</p>
               <Bars fl={d.fl} you={you} />
-              <p className="mt-3 rounded-xl bg-[#F7F4EC] px-3 py-2.5 text-[12.5px] leading-snug text-zinc-700">
+              <p className="mt-3 rounded-xl bg-white px-3 py-2.5 text-[12.5px] leading-snug text-zinc-700">
                 {d.from.map(([f, dish], j) => (
                   <span key={f}>
                     <b className="font-semibold text-pm-orange-text">{f}</b> like your {dish}{j < d.from.length - 1 ? ", " : "."}
@@ -257,7 +297,7 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
       )}
 
       <div className="pt-5">
-        <button type="button" onClick={signOut} className="min-h-11 w-full rounded-full bg-pm-grey-tint px-4 text-sm font-medium text-pm-grey-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pm-orange">
+        <button type="button" onClick={signOut} className="min-h-11 w-full rounded-full bg-white px-4 text-sm font-medium text-pm-grey-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pm-orange">
           Log out
         </button>
         {footer}

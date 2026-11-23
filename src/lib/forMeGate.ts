@@ -18,6 +18,9 @@ export const FOR_ME_USER_IDS: ReadonlySet<string> = new Set([
   "940561ca-05c8-4010-b8a9-f397235378b9",
   /* Carson Brassell */
   "0c39f913-fa39-4fdf-b2d6-486c027cebdc",
+  /* Ellie Felber. Added 2026-11-22 for the flavor wheel on the phone profile
+     (lib/flavorWheelSnapshots.ts); being on this list gives her the dish picks too. */
+  "cc8b9144-dfdd-4a6a-bffb-22babf7ea1a0",
 ]);
 
 /** Whether the account with this id is on the list. Signed out is never. */
