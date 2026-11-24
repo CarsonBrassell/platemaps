@@ -25,6 +25,7 @@ import { MAP_GROUND } from "@/lib/mapStyle";
 import { announceAward, closePostFlash, takeLanding, usePostFlash } from "@/lib/postCelebration";
 import { PhoneFeedHeader } from "./PhoneFeedHeader";
 import { TicketButton } from "./freefood/TicketButton";
+import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { PhoneFeedSearch } from "./PhoneFeedSearch";
 import { PhoneFeedTabs } from "./PhoneFeedTabs";
 import { PhoneStickyBar } from "./PhoneStickyBar";
@@ -603,9 +604,12 @@ export function PhoneFeedScreen() {
               pinned bar: the bar is `position: fixed` over a spacer, so
               anything in the flow above it sits underneath it. The tabs need
               202px of the 358px this row has; the 44px icon fits. */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center">
             <PhoneFeedTabs active={tab} onChange={setTab} />
-            <TicketButton />
+            <span className="ml-auto flex items-center">
+              <TicketButton />
+              <NotificationCenter />
+            </span>
           </div>
         </div>
       </PhoneStickyBar>

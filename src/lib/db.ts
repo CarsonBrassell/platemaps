@@ -4934,3 +4934,19 @@ export async function isMarketingOptedOut(userId: string): Promise<boolean> {
   const rows = await sql`SELECT marketing_opt_out_at FROM users WHERE id = ${userId}`;
   return rows[0]?.marketing_opt_out_at != null;
 }
+
+/* ---------- notification center ---------- */
+
+/**
+ * When this user last opened the notification center, or null if never.
+ * Author-scoped by construction: it reads the caller's own row only.
+ */
+export async function getNotificationsSeenAt(userId: string): Promise<string | null> {
+  const rows = await sql`SELECT notifications_seen_at FROM users WHERE id = ${userId}`;
+  const v = rows[0]?.notifications_seen_at as string | null | undefined;
+  return v ? new Date(v).toISOString() : null;
+}
+
+export async function markNotificationsSeen(userId: string): Promise<void> {
+  await sql`UPDATE users SET notifications_seen_at = now() WHERE id = ${userId}`;
+}

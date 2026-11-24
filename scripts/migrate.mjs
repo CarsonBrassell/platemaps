@@ -1456,6 +1456,9 @@ const statements = [
     provider_id TEXT,
     PRIMARY KEY (user_id, campaign)
   )`,
+  // Notification center: when the user last opened the platter. Anything newer
+  // than this counts as unread; NULL means never opened (everything unread).
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS notifications_seen_at TIMESTAMPTZ`,
 ];
 
 for (const statement of statements) {

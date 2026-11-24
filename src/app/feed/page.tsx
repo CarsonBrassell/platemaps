@@ -17,6 +17,7 @@ import {
 
 import { FeedHeader } from "@/components/feed/FeedHeader";
 import { FeedTabs } from "@/components/feed/FeedTabs";
+import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { FoodPostCard, type FriendStatus } from "@/components/feed/FoodPostCard";
 import { usePostFeed } from "@/components/feed/usePostFeed";
 import { CommentsScreen } from "@/components/feed/CommentsScreen";
@@ -544,12 +545,15 @@ function FeedPageInner() {
            touch. Rendered only on Discover — see FeedSortSwitch. */
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <FeedTabs active={tab} onChange={setTab} className="mb-0" />
-          {tab === "discover" && (
-            <div className="flex items-center gap-0.5">
-              <FeedSortSwitch active={sort} onChange={handleSortChange} />
-              <NearbyChip on={nearbyOn} onToggle={handleNearbyToggle} />
-            </div>
-          )}
+          <div className="flex items-center gap-0.5">
+            {tab === "discover" && (
+              <>
+                <FeedSortSwitch active={sort} onChange={handleSortChange} />
+                <NearbyChip on={nearbyOn} onToggle={handleNearbyToggle} />
+              </>
+            )}
+            <NotificationCenter />
+          </div>
         </div>
       )}
 
