@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { useAuth } from "@/lib/auth";
-import { BellIcon, CloseIcon } from "@/components/icons";
+import { Dialog } from "@/components/feed/Dialog";
+import { BellIcon } from "@/components/icons";
 import {
   PlateDetailSheet,
   type CommentVotePatch,
@@ -273,49 +274,35 @@ export function NotificationCenter() {
     );
   };
 
+  /* The shared "screen" dialog: back arrow below the status bar, swipe right
+     to leave, same as the comments screen. */
   const overlay =
     open && mounted
       ? createPortal(
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Notifications"
-            className="animate-fade-in fixed inset-0 z-[60] flex justify-center bg-black/30 md:items-start md:pt-16"
-            onClick={() => setOpen(false)}
-          >
-            <div
-              className="flex h-full w-full max-w-[480px] flex-col bg-white md:h-auto md:max-h-[80vh] md:rounded-2xl"
-              onClick={(e) => e.stopPropagation()}
+          <div className="relative z-[60]">
+            <Dialog
+              title="Notifications"
+              variant="screen"
+              onClose={() => setOpen(false)}
+              headerBelow={
+                <div className="flex gap-1.5 pt-2.5">
+                  {FILTERS.map((f) => (
+                    <button
+                      key={f.id}
+                      type="button"
+                      onClick={() => setFilter(f.id)}
+                      aria-pressed={filter === f.id}
+                      className={`min-h-9 rounded-full px-3 text-[12px] font-medium ${filter === f.id ? "bg-pm-charcoal text-white" : "bg-pm-grey-tint text-pm-charcoal"}`}
+                    >
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+              }
             >
-              <div className="flex items-center gap-2 px-2 py-1.5">
-                <button
-                  type="button"
-                  onClick={() => setOpen(false)}
-                  aria-label="Close notifications"
-                  className="flex h-11 w-11 items-center justify-center rounded-full"
-                >
-                  <CloseIcon className="h-5 w-5" />
-                </button>
-                <h2 className="text-[17px] font-semibold text-pm-charcoal">
-                  Notifications
-                </h2>
-              </div>
-              <div className="flex gap-1.5 px-4 py-2.5">
-                {FILTERS.map((f) => (
-                  <button
-                    key={f.id}
-                    type="button"
-                    onClick={() => setFilter(f.id)}
-                    aria-pressed={filter === f.id}
-                    className={`min-h-9 rounded-full px-3 text-[12px] font-medium ${filter === f.id ? "bg-pm-charcoal text-white" : "bg-pm-grey-tint text-pm-charcoal"}`}
-                  >
-                    {f.label}
-                  </button>
-                ))}
-              </div>
-              <div className="flex-1 overflow-y-auto pb-6">
+              <div className="mx-auto w-full max-w-2xl pb-[max(1.5rem,env(safe-area-inset-bottom))]">
                 {visible.length === 0 ? (
-                  <p className="px-4 py-10 text-center text-[13px] text-zinc-500">
+                  <p className="px-4 py-10 text-center text-[13px] text-pm-grey-text">
                     {data
                       ? "Nothing here yet. Comments, upvotes and friend requests land here."
                       : "Loading…"}
@@ -324,9 +311,7 @@ export function NotificationCenter() {
                   <>
                     {fresh.length > 0 && (
                       <>
-                        <h3 className="px-4 pb-1 pt-1 text-[13px] font-semibold text-pm-charcoal">
-                          New
-                        </h3>
+                        <h3 className="px-4 pb-1 pt-3 text-[13px] font-semibold text-pm-charcoal">New</h3>
                         <ul>{fresh.map(renderRow)}</ul>
                       </>
                     )}
@@ -341,9 +326,9 @@ export function NotificationCenter() {
                   </>
                 )}
               </div>
-            </div>
+            </Dialog>
           </div>,
-          document.body,
+          document.body
         )
       : null;
 
