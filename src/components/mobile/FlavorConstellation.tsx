@@ -206,13 +206,18 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
       const fs0 = Math.min(...famI.map((i) => L[i].s)), fs1 = Math.max(...famI.map((i) => L[i].e));
       const gT = (t: number) => (t === 0 ? clamp(ft * 1.8) : t === 1 ? clamp((ft - 0.25) / 0.5) : clamp((ft - 0.5) / 0.5));
       const gs = gT(1), whole = allMode;
-      if (gs > 0.01) for (let k = 0; k < 46; k++) {
+      if (gs > 0.01) for (let k = 0; k < (allMode ? 14 : 46); k++) {
         const a = fs0 - 4 + (fs1 - fs0 + 8) * hsh(f.word, k * 3 + 1), r = R0 + 30 + 190 * Math.sqrt(hsh(f.word, k * 3 + 2)) * gs, [sx, sy] = pt(r, a);
         el(svg, "circle", { cx: sx, cy: sy, r: 0.8 + 1.4 * hsh(f.word, k * 3 + 3), fill: mix(f.col, 0.55), opacity: 0.35 * gs });
       }
       famI.forEach((i) => {
         const x = S[i], g = gT(x.t), sub = SUB[i], s0 = Math.min(...sub.map((j) => L[j].s)), s1 = Math.max(...sub.map((j) => L[j].e)), cwid = s1 - s0, nm = x.s.name;
-        const a = (s0 + s1) / 2 + (x.t ? (hsh(nm, 1) - 0.5) * Math.min(cwid * 0.5, 14) : 0), rr = RO[x.t] + (hsh(nm, 2) - 0.5) * 2 * [7, 15, 17][x.t];
+        /* The whole sky scatters far more: deep radial bands that overlap, and
+           children allowed to wander past their slice, so stars don't stack. */
+        const a = allMode
+          ? (s0 + s1) / 2 + (hsh(nm, 1) - 0.5) * (x.t ? Math.min(cwid * 1.6 + 6, 22) : Math.min(cwid * 0.5, 8))
+          : (s0 + s1) / 2 + (x.t ? (hsh(nm, 1) - 0.5) * Math.min(cwid * 0.5, 14) : 0);
+        const rr = allMode ? [102, 132, 170][x.t] + [48, 100, 108][x.t] * hsh(nm, 2) : RO[x.t] + (hsh(nm, 2) - 0.5) * 2 * [7, 15, 17][x.t];
         P[i] = { a, r: R0 + (rr - R0) * g, g, s0, s1, lk: !x.s.on };
       });
       famI.forEach((i) => {
@@ -226,8 +231,8 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
       famI.forEach((i) => {
         const x = S[i], c = P[i];
         if (c.g < 0.01) return;
-        const lk = c.lk, dr = DR[x.t] * Math.min(1, c.g * 1.4), [cx, cy] = pt(c.r, c.a);
-        if (!lk && x.t === 0) el(svg, "circle", { cx, cy, r: dr + 4, fill: f.col, opacity: 0.16 });
+        const lk = c.lk, dr = DR[x.t] * (allMode ? 0.62 : 1) * Math.min(1, c.g * 1.4), [cx, cy] = pt(c.r, c.a);
+        if (!lk && x.t === 0) el(svg, "circle", { cx, cy, r: dr + (allMode ? 2.5 : 4), fill: f.col, opacity: 0.16 });
         el(svg, "circle", { cx, cy, r: dr, fill: lk ? CARD : x.t === 0 ? f.col : mix(f.col, x.t === 1 ? 0.3 : 0.55), stroke: lk ? TAN2 : "none", "stroke-width": lk ? 1.4 : 0 });
         if (c.g < 0.7) return;
         const op = (c.g - 0.7) / 0.3, fs = x.t === 2 ? 11 : 11.5, nm = ((c.a % 360) + 360) % 360, bot = nm > 0 && nm < 180;
