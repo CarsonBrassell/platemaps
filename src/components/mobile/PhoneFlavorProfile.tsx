@@ -378,9 +378,6 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
               <div className="grid grid-cols-[56px_1fr] items-center gap-3">
                 <div className="h-14 w-14 rounded-xl" style={{ background: TONES[(i + 1) % 3] }} />
                 <div>
-                  {v2 && d.tag && (
-                    <span className="mb-1 inline-block rounded-full bg-[#F7F4EC] px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide text-pm-orange-text">{d.tag}</span>
-                  )}
                   <span className="font-display block text-base font-semibold leading-tight text-zinc-900">{d.dish}</span>
                   <span className={`mt-0.5 block text-xs ${v2 ? "text-zinc-500" : "text-pm-grey-text"}`}>{d.spot}</span>
                 </div>
@@ -388,7 +385,6 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
               <p className="mt-2.5 text-[12.5px] leading-snug text-zinc-600">{d.ing}</p>
               <Bars fl={d.fl} you={you} />
               <p className={`mt-3 rounded-xl px-3 py-2.5 ${v2 ? "bg-[#F7F4EC]" : "bg-white"} text-[12.5px] leading-snug text-zinc-700`}>
-                {v2 && d.why && <span>{d.why} </span>}
                 {d.from.map(([f, dish], j) => (
                   <span key={f}>
                     <b className="font-semibold text-pm-orange-text">{f}</b> like your {dish}{j < d.from.length - 1 ? ", " : "."}
