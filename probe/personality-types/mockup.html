@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlateMaps — 8 eater types (mockup)</title>
+<style>
+  :root { --ink:#1d1b19; --muted:#6f6a64; --bg:#F7F4EC; --card:#fff; --line:#ece6dc; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.45 -apple-system, "Segoe UI", system-ui, sans-serif; padding:32px 24px 48px; }
+  .wrap { max-width:1080px; margin:0 auto; }
+  h1 { font-family:Fraunces, Georgia, serif; font-size:28px; margin:0 0 6px; letter-spacing:-.01em; }
+  .sub { color:var(--muted); margin:0 0 22px; max-width:720px; }
+  .axes { display:grid; grid-template-columns:150px repeat(4, 1fr); gap:12px; align-items:stretch; }
+  .head { font-family:"Spline Sans Mono", ui-monospace, monospace; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); padding:0 4px 2px; }
+  .head small { display:block; text-transform:none; letter-spacing:0; font-weight:500; margin-top:2px; }
+  .rowlabel { display:flex; flex-direction:column; justify-content:center; padding-right:6px; }
+  .rowlabel b { font-size:15px; }
+  .rowlabel span { color:var(--muted); font-size:13px; }
+  .card { background:var(--card); border-radius:16px; padding:16px; position:relative; overflow:hidden; }
+  .card::before { content:""; position:absolute; inset:0 0 auto 0; height:5px; background:var(--c); }
+  .badge { width:44px; height:44px; border-radius:12px; display:grid; place-items:center; font-size:24px; background:color-mix(in srgb, var(--c) 16%, white); margin:4px 0 10px; }
+  .name { font-family:Fraunces, Georgia, serif; font-weight:650; font-size:18px; margin:0 0 4px; }
+  .num { font-family:"Spline Sans Mono", ui-monospace, monospace; font-size:11px; letter-spacing:.08em; color:var(--muted); margin:0 0 2px; }
+  .line { color:var(--muted); font-size:13.5px; margin:0 0 10px; }
+  .eats { font-size:12.5px; color:var(--ink); background:color-mix(in srgb, var(--c) 9%, white); border-radius:8px; padding:6px 8px; }
+  .indulgent { --c:#e08a3c; } .fire { --c:#c2412d; } .fresh { --c:#4f9a5a; } .strong { --c:#7b4bb8; }
+  .you { outline:3px solid var(--ink); outline-offset:2px; }
+  .you .tag { position:absolute; top:12px; right:12px; font-size:11px; font-weight:700; background:var(--ink); color:#fff; border-radius:999px; padding:3px 8px; }
+  .how { margin-top:26px; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .how div { background:var(--card); border-radius:14px; padding:14px 16px; font-size:13.5px; }
+  .how h3 { margin:0 0 6px; font-size:14px; }
+  .how p { margin:0; color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>The 8 PlateMaps types</h1>
+  <p class="sub">Your type = your strongest flavor group &times; whether you explore or stick to favorites. Both come from what you've eaten and rated — nothing to fill in.</p>
+
+  <div class="axes">
+    <div></div>
+    <div class="head">Indulgent<small>sweet · creamy · crispy</small></div>
+    <div class="head">Fire &amp; smoke<small>smoky · charred</small></div>
+    <div class="head">Fresh<small>fruity · tangy</small></div>
+    <div class="head">Bold<small>spicy · sweet heat · umami</small></div>
+
+    <div class="rowlabel"><b>Explorer</b><span>keeps trying new places &amp; cuisines</span></div>
+    <div class="card indulgent"><div class="badge">🍩</div><p class="num">TYPE 7</p><p class="name">The Enthusiast</p><p class="line">Your sweet tooth and restless map say you chase joy. Life's too short for a boring dessert, and you live like it.</p><div class="eats">Bakeries, dessert spots, new brunch</div></div>
+    <div class="card fire"><div class="badge">🔥</div><p class="num">TYPE 5</p><p class="name">The Investigator</p><p class="line">Chasing every kind of smoke means you're curious to the core. You want to know how things work, then master them.</p><div class="eats">BBQ, grills, wood-fired anything</div></div>
+    <div class="card fresh"><div class="badge">🍋</div><p class="num">TYPE 4</p><p class="name">The Individualist</p><p class="line">Bright, sharp flavors and hidden spots: you see the world a little differently, and you'd rather be original than safe.</p><div class="eats">Poke, Peruvian, Vietnamese, Mediterranean</div></div>
+    <div class="card strong you"><span class="tag">YOU</span><div class="badge">🌶️</div><p class="num">TYPE 8</p><p class="name">The Challenger</p><p class="line">Your hunger for heat and bold flavor shows a real passion for life. You go after intensity and never back down from it.</p><div class="eats">Sichuan, Thai, Indian, Ethiopian</div></div>
+
+    <div class="rowlabel"><b>Regular</b><span>knows what they love, goes back for it</span></div>
+    <div class="card indulgent"><div class="badge">🥞</div><p class="num">TYPE 2</p><p class="name">The Nurturer</p><p class="line">You eat the way you love: warm, generous, no pretense. People feel at home around you.</p><div class="eats">Diners, pizza, mac &amp; cheese, burgers</div></div>
+    <div class="card fire"><div class="badge">🍖</div><p class="num">TYPE 3</p><p class="name">The Devotee</p><p class="line">Once you find the best, you commit. You're loyal, driven, and you know quality the second you taste it.</p><div class="eats">The same BBQ joint, steakhouses</div></div>
+    <div class="card fresh"><div class="badge">🥗</div><p class="num">TYPE 1</p><p class="name">The Purist</p><p class="line">Clean flavors done right, every time. You hold yourself to high standards and actually live by them.</p><div class="eats">Bowls, salads, sushi, juice bars</div></div>
+    <div class="card strong"><div class="badge">🍜</div><p class="num">TYPE 6</p><p class="name">The Loyalist</p><p class="line">Deep, savory, familiar: you value what's real and lasting, and the people you trust can always count on you.</p><div class="eats">Ramen, pho, curry, hot pot</div></div>
+  </div>
+
+  <div class="how">
+    <div><h3>Flavor group (the column)</h3><p>Every dish you post already gets flavor tags. The group with the most weight in your history — higher ratings count more — is your column. The four groups follow food-liking research (May-Wilson 2022, Armitage &amp; Yeomans 2023).</p></div>
+    <div><h3>Explorer vs Regular (the row)</h3><p>The adventurousness score from the For me design: new-place share, cuisines per place, unusual dishes, spicy/tangy share. Above the middle = Explorer. Sensation-seeking predicting bold food is from Byrnes &amp; Hayes 2013.</p></div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Name + pfp in the Plate Points box — 4 mockups</title>
+<style>
+  :root { --ink:#1d1b19; --grey:#6f6a64; --bg:#F7F4EC; --o:#D2581F; --ot:#A8481A; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#e9e4d8; font:15px/1.45 -apple-system,"Segoe UI",system-ui,sans-serif; color:var(--ink); padding:24px; }
+  .row { display:grid; grid-template-columns:repeat(2,340px); gap:20px; justify-content:center; }
+  .cap { font:700 12px "Spline Sans Mono",ui-monospace,monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--grey); margin:0 0 8px 4px; }
+  .phone { background:var(--bg); border-radius:28px; padding:18px 14px 22px; }
+  .card { background:#fff; border-radius:16px; padding:16px; position:relative; }
+  .mono { font-family:"Spline Sans Mono",ui-monospace,monospace; }
+  .label { font:700 11px "Spline Sans Mono",ui-monospace,monospace; letter-spacing:.07em; text-transform:uppercase; color:var(--ot); margin:0; }
+  .pts { font:700 20px "Spline Sans Mono",ui-monospace,monospace; color:var(--o); }
+  .pts small { font-size:11px; color:var(--grey); font-weight:600; }
+  .name { font-family:Fraunces,Georgia,serif; font-weight:650; margin:0; line-height:1.1; }
+  .tier { font-family:Fraunces,Georgia,serif; font-weight:650; font-size:22px; text-align:center; margin:6px 0 0; }
+  .next { font:600 10.5px "Spline Sans Mono",ui-monospace,monospace; letter-spacing:.08em; text-transform:uppercase; color:#857a69; text-align:center; margin:2px 0 0; }
+  .av { border-radius:50%; object-fit:cover; display:block; }
+  .check { display:inline-grid; place-items:center; width:16px; height:16px; border-radius:50%; background:var(--o); color:#fff; font-size:10px; vertical-align:2px; margin-left:4px; }
+  .ringrow { display:flex; align-items:center; justify-content:center; gap:0; margin-top:8px; }
+  .ringrow .line { height:2px; width:52px; background:#ece6dc; } .ringrow .line.on { background:var(--o); }
+  .ghost { width:30px; text-align:center; opacity:.3; font-size:18px; }
+  .ring { position:relative; width:100px; height:100px; }
+  .ring svg { position:absolute; inset:0; }
+  .ring .in { position:absolute; inset:12px; border-radius:50%; display:grid; place-items:center; background:#f5f1e8; font-size:30px; overflow:hidden; }
+  .stats { text-align:center; font-size:12.5px; color:var(--grey); margin-top:10px; } .stats b { font-family:"Spline Sans Mono",monospace; color:var(--ink); }
+  .bar { height:8px; border-radius:99px; background:#f1ece2; overflow:hidden; } .bar i { display:block; height:100%; width:54%; background:var(--o); border-radius:99px; }
+  .divider { height:1px; background:#ece6dc; margin:14px -16px; }
+</style></head><body>
+<div class="row">
+
+  <!-- A -->
+  <div><p class="cap">A · you are the header row</p>
+  <div class="phone"><div class="card">
+    <div style="display:flex;align-items:center;gap:10px">
+      <img class="av" src="AV" width="44" height="44">
+      <div style="flex:1;min-width:0"><p class="name" style="font-size:18px">calvin lensink<span class="check">✓</span></p><p class="label" style="margin-top:3px">Plate points</p></div>
+      <div class="pts">215 <small>PP</small></div>
+    </div>
+    <div class="ringrow"><div class="ghost">🍴</div><div class="line on"></div><div class="ring" data-ring></div><div class="line"></div><div class="ghost">🍴</div></div>
+    <p class="tier">Regular</p><p class="next">185 PP to Local</p>
+  </div><p class="stats"><b>22</b> plates · <b>19</b> spots</p></div></div>
+
+  <!-- B -->
+  <div><p class="cap">B · your face in the ring</p>
+  <div class="phone"><div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:baseline"><p class="label">Plate points</p><div class="pts">215 <small>PP</small></div></div>
+    <div class="ringrow"><div class="ghost">🍴</div><div class="line on"></div><div class="ring" data-ring><div class="in" style="background:none"><img class="av" src="AV" width="76" height="76"></div></div><div class="line"></div><div class="ghost">🍴</div></div>
+    <p class="name" style="font-size:22px;text-align:center;margin-top:8px">calvin lensink<span class="check">✓</span></p>
+    <p class="next" style="color:var(--ot);font-size:11.5px;margin-top:4px">Regular · 185 PP to Local</p>
+  </div><p class="stats"><b>22</b> plates · <b>19</b> spots</p></div></div>
+
+  <!-- C -->
+  <div><p class="cap">C · compact profile card</p>
+  <div class="phone"><div class="card">
+    <div style="display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:center">
+      <div class="ring" data-ring style="width:64px;height:64px"><div class="in" style="inset:7px;background:none"><img class="av" src="AV" width="50" height="50"></div></div>
+      <div><p class="name" style="font-size:20px">calvin lensink<span class="check">✓</span></p>
+      <p style="margin:3px 0 0;font-size:13px;color:#52525b">🍴 <b style="font-family:Fraunces,Georgia,serif">Regular</b> · <span class="mono" style="color:var(--o);font-weight:700">215</span> <span class="mono" style="font-size:11px">PP</span></p></div>
+    </div>
+    <div style="margin-top:14px"><div class="bar"><i></i></div>
+    <div style="display:flex;justify-content:space-between;margin-top:6px" class="mono"><span style="font-size:10.5px;color:#857a69;font-weight:600">REGULAR</span><span style="font-size:10.5px;color:#857a69;font-weight:600">185 PP TO LOCAL</span></div></div>
+    <div class="divider"></div>
+    <div style="display:flex;justify-content:space-around;text-align:center">
+      <div><div class="mono" style="font-weight:700;font-size:18px">22</div><div class="label" style="color:#71717a">plates</div></div>
+      <div><div class="mono" style="font-weight:700;font-size:18px">19</div><div class="label" style="color:#71717a">spots</div></div>
+      <div><div class="mono" style="font-weight:700;font-size:18px">3</div><div class="label" style="color:#71717a">friends</div></div>
+    </div>
+  </div></div></div>
+
+  <!-- D -->
+  <div><p class="cap">D · avatar badge on the edge</p>
+  <div class="phone" style="padding-top:52px"><div class="card" style="padding-top:52px;text-align:center">
+    <img class="av" src="AV" width="80" height="80" style="position:absolute;left:50%;top:-40px;transform:translateX(-50%);border:4px solid #fff">
+    <p class="name" style="font-size:22px">calvin lensink<span class="check">✓</span></p>
+    <p class="label" style="margin-top:4px">Regular · <span style="color:var(--o)">215 PP</span></p>
+    <div class="ringrow" style="margin-top:12px"><div class="ghost">🍴</div><div class="line on" style="width:60px"></div><div class="ring" data-ring style="width:72px;height:72px"><div class="in" style="inset:9px;font-size:22px">🍴</div></div><div class="line" style="width:60px"></div><div class="ghost">🍴</div></div>
+    <p class="next" style="margin-top:8px">185 PP to Local</p>
+  </div><p class="stats"><b>22</b> plates · <b>19</b> spots</p></div></div>
+
+</div>
+<script>
+const AV = "https://70xwh4kizzssi7so.public.blob.vercel-storage.com/avatars/940561ca-05c8-4010-b8a9-f397235378b9/357362e4-2551-4583-b9aa-0f4ae6f6da56.jpg";
+document.querySelectorAll('img[src="AV"]').forEach(i => i.src = AV);
+document.querySelectorAll("[data-ring]").forEach(el => {
+  const s = el.offsetWidth, r = s / 2 - 4, C = 2 * Math.PI * r;
+  el.insertAdjacentHTML("afterbegin", `<svg viewBox="0 0 ${s} ${s}"><circle cx="${s/2}" cy="${s/2}" r="${r}" fill="none" stroke="#ece6dc" stroke-width="4"/><circle cx="${s/2}" cy="${s/2}" r="${r}" fill="none" stroke="#D2581F" stroke-width="4" stroke-linecap="round" stroke-dasharray="${C*0.54} ${C}" transform="rotate(-90 ${s/2} ${s/2})"/></svg>`);
+  if (!el.querySelector(".in")) el.insertAdjacentHTML("beforeend", `<div class="in">🍴</div>`);
+});
+</script>
+</body></html>
