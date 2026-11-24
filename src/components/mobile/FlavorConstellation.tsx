@@ -136,6 +136,8 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
       const sub = SUB[i], s0 = Math.min(...sub.map((j) => L[j].s)), s1 = Math.max(...sub.map((j) => L[j].e)), cw = s1 - s0, nm = x.s.name;
       P[i] = { a: (s0 + s1) / 2 + (hsh(nm, 1) - 0.5) * (x.t ? Math.min(cw * 1.4 + 6, 20) : Math.min(cw * 0.5, 8)), r: [92, 118, 150][x.t] + [22, 96, 120][x.t] * hsh(nm, 2) };
     });
+    /* basics: neighbours alternate a little nearer and a little farther, so the first row isn't a line */
+    fams.forEach((_, fi) => all.filter((i) => S[i].f === fi && S[i].t === 0).sort((u, v) => P[u].a - P[v].a).forEach((i, k) => { P[i].r = 93 + (k % 2) * 13 + 5 * hsh(S[i].s.name, 2); }));
     const MIN = 13, RMIN = R0 + 14, RMAX = 280;
     for (let it = 0; it < 40; it++) {
       const xy = P.map((q) => pt(q.r, q.a));
