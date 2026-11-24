@@ -27,6 +27,7 @@ type Account = {
   forMe?: true;
   /** Set only for the accounts that get the Discover buttons. Mirrors AccountJson. */
   discoverModes?: true;
+  profileV2?: true;
   /** Set only for admin accounts (lib/adminGate.ts). Mirrors AccountJson. */
   admin?: true;
 };
@@ -377,6 +378,15 @@ export function useForMeAccess(): boolean {
  */
 export function useDiscoverModesAccess(): boolean {
   const flagged = useAuth().account?.discoverModes === true;
+  return useHydrated() && flagged;
+}
+
+/**
+ * Whether this viewer gets the new phone profile (lib/forMeGate.ts). Hydration-
+ * gated for the same reason as `useForMeAccess`.
+ */
+export function useProfileV2Access(): boolean {
+  const flagged = useAuth().account?.profileV2 === true;
   return useHydrated() && flagged;
 }
 

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { eaterTypeOf, type EaterRow } from "@/lib/eaterType";
-import { isForMeUser } from "@/lib/forMeGate";
+import { isForMeUser, isProfileV2User } from "@/lib/forMeGate";
 import { FLAVOR_WHEELS } from "@/lib/flavorWheelSnapshots";
 import { getCurrentUser } from "@/lib/session";
 import { sql } from "@/lib/sqlClient";
@@ -13,13 +13,14 @@ import { sql } from "@/lib/sqlClient";
  * session's own. Everyone else, signed out included, gets `wheel: null` rather
  * than a status code, the same way /api/account/activity answers.
  *
- * `eaterType` (lib/eaterType.ts) is computed live from the same caller's posts.
+ * `eaterType` (lib/eaterType.ts) is computed live from the same caller's posts,
+ * for the new-profile list only (isProfileV2User); everyone else gets null.
  */
 export async function GET() {
   const user = await getCurrentUser();
   if (!user || !isForMeUser(user.id)) return NextResponse.json({ wheel: null, eaterType: null });
   let eaterType = null;
-  try {
+  if (isProfileV2User(user.id)) try {
     const rows = (await sql`SELECT p.dish_name, p.rating, p.restaurant_id, p.restaurant_lat lat, p.restaurant_lng lng,
         r.cuisine, d.place_count
       FROM posts p LEFT JOIN restaurants r ON r.id = p.restaurant_id

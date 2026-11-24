@@ -7,7 +7,8 @@ import { useQueryParams } from "@/lib/queryString";
 import { safeNext, signInPromptFor } from "@/lib/signInGate";
 import { CameraIcon, SettingsIcon } from "@/components/icons";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
-import { useAuth, useForMeAccess } from "@/lib/auth";
+import { useAuth, useForMeAccess, useProfileV2Access } from "@/lib/auth";
+import { PointsBadge } from "@/components/feed/PointsBadge";
 import { PhoneFlavorProfile } from "@/components/mobile/PhoneFlavorProfile";
 import { initials } from "@/lib/format";
 import { AvatarCropper } from "@/components/AvatarCropper";
@@ -176,6 +177,9 @@ function PostTile({
 
 function ProfileOverview() {
   const { account, signOut, updateAvatar } = useAuth();
+  /* The new layout is Calvin's alone for now (lib/forMeGate.ts); everyone
+     else keeps the name row above the rank card. */
+  const v2 = useProfileV2Access();
   const nav = useQueryParams().get("nav");
   const to = (href: string) => (nav ? `${href}?nav=${nav}` : href);
 
@@ -304,9 +308,61 @@ function ProfileOverview() {
           instead of dissolving into a white sheet. */}
       <div className="mx-4">
         <div className="px-4 pt-5 pb-6">
-          {/* Your photo and name moved into the rank card ("badge on the
-              edge", Calvin 2026-11-24) — see `identity` below. The email
-              line went with it; it lives on the settings screen. */}
+          {/* For profile-v2 viewers the photo and name sit in the rank card
+              ("badge on the edge", Calvin 2026-11-24) — see `identity` below. */}
+          {!v2 && (
+          <div className="mb-5 flex items-center gap-4">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className={`group relative h-[72px] w-[72px] shrink-0 rounded-full ring-4 ring-white transition-transform active:scale-95 disabled:opacity-60 ${FOCUS}`}
+              aria-label="Change profile photo"
+            >
+              {account.avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={account.avatarUrl}
+                  alt=""
+                  className="h-[72px] w-[72px] rounded-full object-cover"
+                />
+              ) : (
+                <div className="flex h-[72px] w-[72px] items-center justify-center rounded-full bg-pm-grey-tint font-mono text-2xl font-medium text-pm-grey-text">
+                  {initials(account.name)}
+                </div>
+              )}
+              <span className="absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-pm-orange text-[#F7F4EC]">
+                <CameraIcon className="h-3.5 w-3.5" />
+              </span>
+            </button>
+
+            <div className="min-w-0 flex-1 pb-1">
+              <h1 className="font-display flex items-center gap-1.5 text-[22px] font-semibold leading-tight tracking-tight text-zinc-900">
+                <span className="truncate">{account.name}</span>
+                <VerifiedBadge userId={account.id} />
+              </h1>
+              {/* An address is a machine value, so mono (DESIGN.md). */}
+              <p className="mt-0.5 truncate font-mono text-[11px] text-zinc-500">
+                {account.email}
+              </p>
+              <PointsBadge points={account.points} size="md" className="mt-1.5" />
+            </div>
+
+            {/* The doorway to /m/account/settings, beside the name it belongs
+                to. Icon only, unlike the web page's labelled pill, and that is
+                the width arguing rather than a different opinion about clarity:
+                the card is 326px inside its padding, the avatar and its gap
+                take 88, and a gear + "Settings" would leave the name ~118px and
+                truncate it on most accounts. A 44px disc leaves it 178. */}
+            <Link
+              href={to("/m/account/settings")}
+              aria-label="Settings"
+              className={`mb-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint text-pm-grey-text transition-transform active:scale-95 ${FOCUS}`}
+            >
+              <SettingsIcon className="h-5 w-5" />
+            </Link>
+          </div>
+          )}
           <input
             ref={fileInputRef}
             type="file"
@@ -337,9 +393,9 @@ function ProfileOverview() {
           <PlatePointsPanel
             points={arrival.displayPoints}
             showRank
-            className="mb-5 mt-12"
+            className={v2 ? "mb-5 mt-12" : "mb-5"}
             identity={
-              <>
+              v2 ? <>
                 {/* The doorway to /m/account/settings, in the card's free
                     top corner now that the name row above is gone. */}
                 <Link
@@ -378,7 +434,7 @@ function ProfileOverview() {
                     <VerifiedBadge userId={account.id} />
                   </h1>
                 </div>
-              </>
+              </> : undefined
             }
           />
 
