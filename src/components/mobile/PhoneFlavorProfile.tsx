@@ -6,7 +6,7 @@ import { RankRing } from "@/components/RankRing";
 import { ProfileShelves, useRollCallArrival, type ShelfPost } from "@/components/ProfileShelves";
 import { SettingsIcon } from "@/components/icons";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
-import { useAuth } from "@/lib/auth";
+import { useAuth, useProfileV2Access } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import type { FlavorWheel } from "@/lib/flavorWheelSnapshots";
 import type { EaterType } from "@/lib/eaterType";
@@ -191,6 +191,7 @@ function PostFlavor({ post, data, you: YOU }: { post: ShelfPost; data: FlavorWhe
 
 export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: string; footer?: React.ReactNode }) {
   const { account, signOut } = useAuth();
+  const v2 = useProfileV2Access();
   const [myPosts, setMyPosts] = useState<ShelfPost[]>([]);
   const [postsReady, setPostsReady] = useState(false);
   const [data, setData] = useState<FlavorWheel | null>(null);
@@ -229,7 +230,42 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
     <div className="min-h-dvh divide-y divide-[#e4dccb] bg-[#F7F4EC] px-4 pb-8 pt-2">
       <section className="py-5">
         {/* Photo and name sit on the rank card's top edge ("badge on the
-            edge", Calvin 2026-11-24); same layout as PhoneProfileScreen. */}
+            edge", Calvin 2026-11-24); same layout as PhoneProfileScreen.
+            New layout is Calvin-only for now (isProfileV2User). */}
+        {!v2 && (
+          <>
+            <div className="flex items-center gap-3.5">
+              {account.avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={account.avatarUrl} alt="" className="h-16 w-16 shrink-0 rounded-full object-cover" />
+              ) : (
+                <span className="font-display flex h-16 w-16 shrink-0 items-center justify-center rounded-full text-xl font-semibold text-zinc-800" style={{ background: TONES[0] }}>
+                  {initials(account.name)}
+                </span>
+              )}
+              <div className="min-w-0 flex-1">
+                <h1 className="font-display flex items-center gap-1.5 text-[22px] font-semibold leading-tight text-zinc-900">
+                  <span className="truncate">{account.name}</span>
+                  <VerifiedBadge userId={account.id} />
+                </h1>
+                <p className="mt-0.5 truncate font-mono text-[12.5px] text-pm-grey-text">{account.email}</p>
+              </div>
+              <Link href={settingsHref} aria-label="Settings" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-pm-grey-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pm-orange">
+                <SettingsIcon className="h-5 w-5" />
+              </Link>
+            </div>
+            <div className="mt-4">
+              <RankRing points={arrival.displayPoints} />
+            </div>
+            {postsReady && (
+              <div className="mt-2 flex justify-center gap-4 text-[12.5px] text-zinc-600">
+                <span><b className="mr-1 font-mono font-semibold text-zinc-900">{myPosts.length}</b>plates</span>
+                <span><b className="mr-1 font-mono font-semibold text-zinc-900">{spots}</b>spots</span>
+              </div>
+            )}
+          </>
+        )}
+        {v2 && (
         <div className="mt-12">
           <RankRing
             points={arrival.displayPoints}
@@ -292,6 +328,7 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
             )}
           </RankRing>
         </div>
+        )}
       </section>
 
       <div className="pt-5">
@@ -313,27 +350,39 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
         />
       </div>
 
+      {!v2 && data && data.wheel.length > 0 && (
+        <section className="py-5">
+          <div className="rounded-2xl bg-white px-4 py-4">
+            <Label>Your flavor wheel</Label>
+            <h2 className="font-display mt-1 text-[22px] font-semibold leading-tight text-zinc-900">
+              {data.wheel.slice(0, 3).map(([n]) => n + ".").join(" ")}
+            </h2>
+            <Wheel T={data.wheel} />
+          </div>
+        </section>
+      )}
+
       {data && data.next.length > 0 && (
         <section className="pb-3 pt-5">
           <Label>Try next</Label>
           <h2 className="font-display mt-1 text-[22px] font-semibold leading-tight text-zinc-900">New mixes of what you go back for</h2>
           <Note />
           {data.next.map((d, i) => (
-            <div key={d.dish} className={`rounded-2xl bg-white p-4 ${i ? "mt-3" : "mt-4"}`}>
+            <div key={d.dish} className={v2 ? `rounded-2xl bg-white p-4 ${i ? "mt-3" : "mt-4"}` : `py-4 ${i ? "border-t border-[#e4dccb]" : "pt-3"}`}>
               <div className="grid grid-cols-[56px_1fr] items-center gap-3">
                 <div className="h-14 w-14 rounded-xl" style={{ background: TONES[(i + 1) % 3] }} />
                 <div>
-                  {d.tag && (
+                  {v2 && d.tag && (
                     <span className="mb-1 inline-block rounded-full bg-[#F7F4EC] px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide text-pm-orange-text">{d.tag}</span>
                   )}
                   <span className="font-display block text-base font-semibold leading-tight text-zinc-900">{d.dish}</span>
-                  <span className="mt-0.5 block text-xs text-zinc-500">{d.spot}</span>
+                  <span className={`mt-0.5 block text-xs ${v2 ? "text-zinc-500" : "text-pm-grey-text"}`}>{d.spot}</span>
                 </div>
               </div>
               <p className="mt-2.5 text-[12.5px] leading-snug text-zinc-600">{d.ing}</p>
               <Bars fl={d.fl} you={you} />
-              <p className="mt-3 rounded-xl bg-[#F7F4EC] px-3 py-2.5 text-[12.5px] leading-snug text-zinc-700">
-                {d.why && <span>{d.why} </span>}
+              <p className={`mt-3 rounded-xl px-3 py-2.5 ${v2 ? "bg-[#F7F4EC]" : "bg-white"} text-[12.5px] leading-snug text-zinc-700`}>
+                {v2 && d.why && <span>{d.why} </span>}
                 {d.from.map(([f, dish], j) => (
                   <span key={f}>
                     <b className="font-semibold text-pm-orange-text">{f}</b> like your {dish}{j < d.from.length - 1 ? ", " : "."}

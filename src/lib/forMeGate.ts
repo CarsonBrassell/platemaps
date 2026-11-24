@@ -57,3 +57,19 @@ export const FLAVOR40_USER_IDS: ReadonlySet<string> = new Set([
 export function isFlavor40User(id?: string | null): boolean {
   return isForMeUser(id) && FLAVOR40_USER_IDS.has(id as string);
 }
+
+/**
+ * Who gets the new phone profile (2026-11-24): name and photo on the Plate
+ * Points card, the flavor wheel and eater type inside it, Try next as cards.
+ * Calvin only; everyone else, Carson and Ellie included, keeps the previous
+ * profile byte for byte.
+ */
+export const PROFILE_V2_USER_IDS: ReadonlySet<string> = new Set([
+  /* Calvin Lensink */
+  "940561ca-05c8-4010-b8a9-f397235378b9",
+]);
+
+/** Whether the account with this id gets the new phone profile. Signed out is never. */
+export function isProfileV2User(id?: string | null): boolean {
+  return typeof id === "string" && PROFILE_V2_USER_IDS.has(id);
+}
