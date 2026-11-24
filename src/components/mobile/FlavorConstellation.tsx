@@ -122,6 +122,13 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
      fills its open space instead of piling up in clumps. A child always stays
      a little further out than its parent. */
   let skyP: { a: number; r: number }[] | null = null;
+  /* A link leaves its parent heading outward and curls into the child, every
+     one bending the same way round, so a family reads as a spiral arm. */
+  const SWIRL = 9;
+  const link = (qr: number, qa: number, cr: number, ca: number) => {
+    const d = cr - qr;
+    return [pt(qr, qa), pt(qr + d * 0.55, qa + SWIRL), pt(cr - d * 0.45, ca - SWIRL * 0.35), pt(cr, ca)];
+  };
   function sky() {
     if (skyP) return skyP;
     const L = layout(target(ALL), 0, ALL), P: { a: number; r: number }[] = [];
@@ -151,8 +158,8 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
     const par = S.map((x) => (x.t ? IDX[x.f + "|" + PAR[x.s.name]] : -1));
     const E = all.filter((i) => par[i] >= 0);
     const poly = (i: number) => {
-      const q = P[par[i]], c = P[i], [x1, y1] = pt(q.r, q.a), [x2, y2] = pt(c.r, c.a), [kx, ky] = pt(c.r, q.a), o: [number, number][] = [];
-      for (let k = 0; k <= 6; k++) { const t = k / 6, u = 1 - t; o.push([u * u * x1 + 2 * u * t * kx + t * t * x2, u * u * y1 + 2 * u * t * ky + t * t * y2]); }
+      const q = P[par[i]], c = P[i], [A, B, C, D] = link(q.r, q.a, c.r, c.a), o: [number, number][] = [];
+      for (let k = 0; k <= 6; k++) { const t = k / 6, u = 1 - t, w = [u * u * u, 3 * u * u * t, 3 * u * t * t, t * t * t]; o.push([0, 1].map((z) => w[0] * A[z] + w[1] * B[z] + w[2] * C[z] + w[3] * D[z]) as [number, number]); }
       return o;
     };
     const segX = (a: number[], b: number[], c: number[], d: number[]) => {
@@ -161,33 +168,49 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
     };
     const cross = (A: [number, number][], B: [number, number][]) => { for (let m = 0; m < 6; m++) for (let n = 0; n < 6; n++) if (segX(A[m], A[m + 1], B[n], B[n + 1])) return true; return false; };
     const count = () => {
-      const pl = E.map(poly); let n = 0;
+      const pl = E.map(poly), bb = pl.map((q) => [Math.min(...q.map((z) => z[0])), Math.max(...q.map((z) => z[0])), Math.min(...q.map((z) => z[1])), Math.max(...q.map((z) => z[1]))]); let n = 0;
       for (let u = 0; u < E.length; u++) for (let v = u + 1; v < E.length; v++) {
         const a = E[u], b = E[v];
         if (par[a] === par[b] || par[a] === b || par[b] === a) continue;
+        if (bb[u][0] > bb[v][1] || bb[v][0] > bb[u][1] || bb[u][2] > bb[v][3] || bb[v][2] > bb[u][3]) continue;
         if (cross(pl[u], pl[v])) n++;
       }
       return n;
     };
     const okR = (i: number) => (par[i] < 0 || P[i].r >= P[par[i]].r + 6) && S.every((_, k) => par[k] !== i || P[k].r >= P[i].r + 6);
     let best = count();
-    for (let pass = 0; pass < 3 && best > 0; pass++) {
+    for (let pass = 0; pass < 4 && best > 0; pass++) {
       let moved = false;
       for (let u = 0; u < E.length && best > 0; u++) for (let v = u + 1; v < E.length && best > 0; v++) {
         const a = E[u], b = E[v];
         if (S[a].t !== S[b].t) continue;
         const da = P[a], db = P[b];
-        if (Math.hypot(...pt(da.r, da.a).map((z, k) => z - pt(db.r, db.a)[k])) > 90) continue;
+        if (Math.hypot(...pt(da.r, da.a).map((z, k) => z - pt(db.r, db.a)[k])) > 130) continue;
         P[a] = db; P[b] = da;
         if (okR(a) && okR(b)) { const n = count(); if (n < best) { best = n; moved = true; continue; } }
         P[a] = da; P[b] = db;
       }
       if (!moved) break;
     }
+    /* what swapping can't fix, a small sideways nudge often can */
+    for (let pass = 0; pass < 3 && best > 0; pass++) for (const i of E) {
+      if (best === 0) break;
+      const old = P[i], [ox, oy] = pt(old.r, old.a);
+      for (const da of [5, -5, 10, -10, 16, -16]) {
+        const [nx, ny] = pt(old.r, old.a + da);
+        if (Math.hypot(nx - ox, ny - oy) > 40 || all.some((k) => { if (k === i) return false; const [kx, ky] = pt(P[k].r, P[k].a); return Math.hypot(kx - nx, ky - ny) < 11; })) continue;
+        P[i] = { a: old.a + da, r: old.r };
+        const n = count();
+        if (n < best) { best = n; break; }
+        P[i] = old;
+      }
+    }
     /* keep each angle on the same turn as its slice, so the fly-out tween is short */
     S.forEach((_, i) => { const m = L[i].m; while (P[i].a - m > 180) P[i].a -= 360; while (P[i].a - m < -180) P[i].a += 360; });
     return (skyP = P);
   }
+  /* the untangle is the one slow step: do it while idle so the tap is instant */
+  setTimeout(sky, 900);
 
   let focus: number | null = null, cur = target(null), rot = 0, anim = 0, dead = false;
   const el = (p: Element, t: string, a: Record<string, string | number>, txt?: string) => {
@@ -295,15 +318,20 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
         if (x.t === 0) return;
         const c = P[i], q = P[IDX[fo + "|" + PAR[x.s.name]]];
         if (!q || c.g < 0.02) return;
-        const [x1, y1] = pt(q.r, q.a), [x2, y2] = pt(c.r, c.a), [kx, ky] = pt(c.r, q.a);
-        el(svg, "path", { d: `M${x1} ${y1}Q${kx} ${ky} ${x2} ${y2}`, fill: "none", stroke: c.lk ? TAN2 : mix(f.col, x.t === 1 ? 0.25 : 0.5), "stroke-width": c.lk ? 1.2 : x.t === 1 ? 2.4 : 1.8, "stroke-dasharray": c.lk ? "2 4" : "", "stroke-linecap": "round", opacity: c.g * (c.lk ? 0.8 : 1) });
+        const [A, B, C, D] = link(q.r, q.a, c.r, c.a), d = `M${A[0]} ${A[1]}C${B[0]} ${B[1]} ${C[0]} ${C[1]} ${D[0]} ${D[1]}`, w = (c.lk ? 1.2 : x.t === 1 ? 2.4 : 1.8) * (allMode ? 0.8 : 1);
+        /* found links glow, and once settled a spark runs out along them */
+        if (!c.lk) el(svg, "path", { d, fill: "none", stroke: f.col, "stroke-width": w + 5, "stroke-linecap": "round", opacity: 0.11 * c.g });
+        el(svg, "path", { d, fill: "none", stroke: c.lk ? TAN2 : mix(f.col, x.t === 1 ? 0.25 : 0.5), "stroke-width": w, "stroke-dasharray": c.lk ? "2 4" : "", "stroke-linecap": "round", opacity: c.g * (c.lk ? 0.7 : 1) });
+        if (!c.lk && c.g >= 1) el(svg, "path", { d, class: "pmc-flow", pathLength: 100, fill: "none", stroke: CARD, "stroke-width": w * 0.7, "stroke-dasharray": "7 93", "stroke-linecap": "round", style: `animation-delay:${(-6 * hsh(x.s.name, 7) - (x.t === 2 ? 0.9 : 0)).toFixed(2)}s` });
       });
       famI.forEach((i) => {
         const x = S[i], c = P[i];
         if (c.g < 0.01) return;
         const lk = c.lk, dr = DR[x.t] * (allMode ? 0.62 : 1) * Math.min(1, c.g * 1.4), [cx, cy] = pt(c.r, c.a);
-        if (!lk && x.t === 0) el(svg, "circle", { cx, cy, r: dr + (allMode ? 2.5 : 4), fill: f.col, opacity: 0.16 });
-        el(svg, "circle", { cx, cy, r: dr, fill: lk ? CARD : x.t === 0 ? f.col : mix(f.col, x.t === 1 ? 0.3 : 0.55), stroke: lk ? TAN2 : "none", "stroke-width": lk ? 1.4 : 0 });
+        /* found stars carry a halo that twinkles; a found rare is a four-point sparkle */
+        if (!lk) el(svg, "circle", { cx, cy, r: dr + (allMode ? 2.5 : 4) * (x.t === 0 ? 1 : 0.8), fill: f.col, opacity: 0.16, class: c.g >= 1 ? "pmc-tw" : "", style: `transform-origin:${cx}px ${cy}px;animation-delay:${(-5 * hsh(x.s.name, 9)).toFixed(2)}s` });
+        if (!lk && x.t === 2) { const k = dr * 2.1; el(svg, "path", { d: `M${cx} ${cy - k}Q${cx} ${cy} ${cx + k} ${cy}Q${cx} ${cy} ${cx} ${cy + k}Q${cx} ${cy} ${cx - k} ${cy}Q${cx} ${cy} ${cx} ${cy - k}Z`, fill: f.col }); }
+        if (lk || x.t !== 2) el(svg, "circle", { cx, cy, r: dr, fill: lk ? CARD : x.t === 0 ? f.col : mix(f.col, 0.3), stroke: lk ? TAN2 : "none", "stroke-width": lk ? 1.4 : 0 });
         if (c.g < 0.7) return;
         const op = (c.g - 0.7) / 0.3, fs = x.t === 2 ? 11 : 11.5, nm = ((c.a % 360) + 360) % 360, bot = nm > 0 && nm < 180;
         const rl = c.r - DR[x.t] - 4 - fs * 0.55, half = Math.min(c.s1 - c.s0, 40) / 2, a1 = c.a - half, a2 = c.a + half;
@@ -375,7 +403,9 @@ export function FlavorConstellation({ data }: { data: FlavorWheel }) {
         .pmc-hintarc{animation:pmc-th 7s ease-in-out infinite both}@keyframes pmc-th{0%,100%{stroke-width:4}6%{stroke-width:7.5}16%{stroke-width:4}}
         .pmc-ctrA{animation:pmc-ca 7s .5s infinite both}@keyframes pmc-ca{0%,3%{opacity:1}8%,42%{opacity:0}48%,100%{opacity:1}}
         .pmc-ctrB{animation:pmc-cb 7s .5s infinite both}@keyframes pmc-cb{0%,3%{opacity:0}8%,42%{opacity:1}48%,100%{opacity:0}}
-        @media (prefers-reduced-motion: reduce){.pmc-sweep,.pmc-hintarc,.pmc-ctrA,.pmc-ctrB{animation:none}.pmc-ctrB{opacity:0}}
+        .pmc-flow{animation:pmc-fl 6s linear infinite both}@keyframes pmc-fl{0%{stroke-dashoffset:7;opacity:0}6%{opacity:.9}26%{opacity:.9}34%,100%{stroke-dashoffset:-100;opacity:0}}
+        .pmc-tw{animation:pmc-tk 5s ease-in-out infinite both}@keyframes pmc-tk{0%,100%{opacity:.16;transform:scale(1)}50%{opacity:.34;transform:scale(1.35)}}
+        @media (prefers-reduced-motion: reduce){.pmc-sweep,.pmc-hintarc,.pmc-ctrA,.pmc-ctrB,.pmc-tw{animation:none}.pmc-ctrB,.pmc-flow{opacity:0}.pmc-flow{animation:none}}
       `}</style>
       <svg ref={svgRef} viewBox="-85 -85 580 580" className="my-1 block h-auto w-full" style={{ touchAction: "manipulation" }} role="img" aria-label={`Flavor constellation: ${data.wheel.slice(0, 3).map(([n]) => n).join(", ")} lead`} />
       <div ref={noteRef} className="min-h-11 border-t border-[#efe6d4] pt-2.5 text-[13px] text-[#665c4e]" aria-live="polite" />
