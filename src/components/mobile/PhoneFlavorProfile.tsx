@@ -241,8 +241,8 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
             <SettingsIcon className="h-5 w-5" />
           </Link>
         </div>
-        <div className="mt-4 border-t border-[#e4dccb] pt-3">
-          <RankRing points={arrival.displayPoints} className="!bg-transparent !px-0 [&_.bg-white]:bg-[#F7F4EC] [&_.bg-pm-grey-tint]:bg-[#e4dccb]" />
+        <div className="mt-4">
+          <RankRing points={arrival.displayPoints} />
         </div>
         {postsReady && (
           <div className="mt-2 flex justify-center gap-4 text-[12.5px] text-zinc-600">
@@ -251,16 +251,6 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
           </div>
         )}
       </section>
-
-      {data && data.wheel.length > 0 && (
-        <section className="py-5">
-          <Label>Your flavor wheel</Label>
-          <h2 className="font-display mt-1 text-[22px] font-semibold leading-tight text-zinc-900">
-            {data.wheel.slice(0, 3).map(([n]) => n + ".").join(" ")}
-          </h2>
-          <Wheel T={data.wheel} />
-        </section>
-      )}
 
       <div className="pt-5">
         <ProfileShelves
@@ -280,6 +270,18 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
           sheetExtra={data ? (p) => <PostFlavor post={p} data={data} you={you} /> : undefined}
         />
       </div>
+
+      {data && data.wheel.length > 0 && (
+        <section className="py-5">
+          <div className="rounded-2xl bg-white px-4 py-4">
+          <Label>Your flavor wheel</Label>
+          <h2 className="font-display mt-1 text-[22px] font-semibold leading-tight text-zinc-900">
+            {data.wheel.slice(0, 3).map(([n]) => n + ".").join(" ")}
+          </h2>
+          <Wheel T={data.wheel} />
+          </div>
+        </section>
+      )}
 
       {data && data.next.length > 0 && (
         <section className="pb-3 pt-5">
