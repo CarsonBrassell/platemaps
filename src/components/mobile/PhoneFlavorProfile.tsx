@@ -196,6 +196,7 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
   const [postsReady, setPostsReady] = useState(false);
   const [data, setData] = useState<FlavorWheel | null>(null);
   const [eater, setEater] = useState<EaterType | null>(null);
+  const [wheelOpen, setWheelOpen] = useState(false);
   const arrival = useRollCallArrival(account, myPosts, postsReady);
   useEffect(() => {
     if (!account) return;
@@ -228,7 +229,7 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
 
   return (
     <div className="min-h-dvh divide-y divide-[#e4dccb] bg-[#F7F4EC] px-4 pb-8 pt-2">
-      <section className="py-5">
+      <section className={v2 ? "pb-4 pt-3" : "py-5"}>
         {/* Photo and name sit on the rank card's top edge ("badge on the
             edge", Calvin 2026-11-24); same layout as PhoneProfileScreen.
             New layout is Calvin-only for now (isProfileV2User). */}
@@ -266,7 +267,7 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
           </>
         )}
         {v2 && (
-        <div className="mt-12">
+        <div className="mt-10">
           <RankRing
             points={arrival.displayPoints}
             identity={
@@ -274,16 +275,16 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
                 <Link href={settingsHref} aria-label="Settings" className="absolute right-2 top-2 flex h-11 w-11 items-center justify-center rounded-full text-pm-grey-text transition-colors hover:bg-pm-grey-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pm-orange">
                   <SettingsIcon className="h-5 w-5" />
                 </Link>
-                <div className="-mt-[64px] mb-1.5 flex flex-col items-center text-center">
+                <div className="-mt-[52px] mb-1 flex flex-col items-center text-center">
                   {account.avatarUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={account.avatarUrl} alt="" className="h-[88px] w-[88px] shrink-0 rounded-full object-cover ring-4 ring-white" />
+                    <img src={account.avatarUrl} alt="" className="h-[72px] w-[72px] shrink-0 rounded-full object-cover ring-4 ring-white" />
                   ) : (
-                    <span className="font-display flex h-[88px] w-[88px] shrink-0 items-center justify-center rounded-full text-2xl font-semibold text-zinc-800 ring-4 ring-white" style={{ background: TONES[0] }}>
+                    <span className="font-display flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-full text-xl font-semibold text-zinc-800 ring-4 ring-white" style={{ background: TONES[0] }}>
                       {initials(account.name)}
                     </span>
                   )}
-                  <h1 className="font-display mt-2.5 flex max-w-full items-center gap-1.5 text-[22px] font-semibold leading-tight tracking-tight text-zinc-900">
+                  <h1 className="font-display mt-2 flex max-w-full items-center gap-1.5 text-[20px] font-semibold leading-tight tracking-tight text-zinc-900">
                     <span className="truncate">{account.name}</span>
                     <VerifiedBadge userId={account.id} />
                   </h1>
@@ -299,31 +300,36 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
             )}
             {data && data.wheel.length > 0 && (
               <>
-                <div className="-mx-5 mb-4 mt-4 h-px bg-[#ece6dc]" />
-          <Label>Your flavor wheel</Label>
-          <h2 className="font-display mt-1 text-[22px] font-semibold leading-tight text-zinc-900">
-            {data.wheel.slice(0, 3).map(([n]) => n + ".").join(" ")}
-          </h2>
-          <Wheel T={data.wheel} />
-          {eater && (
-            <>
-              <div className="-mx-5 mb-3.5 mt-3 h-px bg-[#ece6dc]" />
-              <Label>Your type</Label>
-              <div className="mt-2 grid grid-cols-[48px_1fr] items-start gap-3">
-                <div
-                  aria-hidden
-                  className="grid h-12 w-12 place-items-center rounded-[14px] text-[26px]"
-                  style={{ background: `color-mix(in srgb, ${GROUP_TINT[eater.group]} 14%, white)` }}
+                {/* Compact by default (Calvin 2026-11-24: too much scrolling to
+                    reach posts): one row with the type and top three flavors;
+                    the wheel always shows (Calvin asked); the reading opens on tap. */}
+                <div className="-mx-5 mb-3 mt-3 h-px bg-[#ece6dc]" />
+                <button
+                  type="button"
+                  aria-expanded={wheelOpen}
+                  onClick={() => setWheelOpen((o) => !o)}
+                  className="-mx-2 grid min-h-11 w-[calc(100%+16px)] grid-cols-[40px_1fr_auto] items-center gap-3 rounded-2xl px-2 py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pm-orange"
                 >
-                  {eater.emoji}
-                </div>
-                <div>
-                  <p className="font-display text-[22px] font-semibold leading-tight text-zinc-900">{eater.name}</p>
-                  <p className="mt-1.5 text-[13.5px] leading-snug text-zinc-600">{eater.read}</p>
-                </div>
-              </div>
-            </>
-          )}
+                  <span
+                    aria-hidden
+                    className="grid h-10 w-10 place-items-center rounded-xl text-[22px]"
+                    style={{ background: eater ? `color-mix(in srgb, ${GROUP_TINT[eater.group]} 14%, white)` : "#F7F4EC" }}
+                  >
+                    {eater?.emoji ?? "🍽️"}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="font-display block truncate text-[17px] font-semibold leading-tight text-zinc-900">{eater?.name ?? "Your flavor wheel"}</span>
+                    <span className="mt-0.5 block truncate text-[12.5px] text-zinc-500">{data.wheel.slice(0, 3).map(([n]) => n).join(" · ")}</span>
+                  </span>
+                  <span className="flex items-center gap-1 text-[12px] font-semibold text-pm-orange-text">
+                    {wheelOpen ? "Less" : "Why"}
+                    <svg aria-hidden viewBox="0 0 12 12" className={`h-3 w-3 transition-transform motion-reduce:transition-none ${wheelOpen ? "rotate-180" : ""}`}>
+                      <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                </button>
+                {wheelOpen && eater && <p className="mt-2 text-[13.5px] leading-snug text-zinc-600">{eater.read}</p>}
+                <Wheel T={data.wheel} />
               </>
             )}
           </RankRing>
@@ -331,7 +337,7 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
         )}
       </section>
 
-      <div className="pt-5">
+      <div className={v2 ? "pt-4" : "pt-5"}>
         <ProfileShelves
           tab
           posts={myPosts}

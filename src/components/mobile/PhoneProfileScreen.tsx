@@ -393,7 +393,7 @@ function ProfileOverview() {
           <PlatePointsPanel
             points={arrival.displayPoints}
             showRank
-            className={v2 ? "mb-5 mt-12" : "mb-5"}
+            className={v2 ? "mb-4 mt-10" : "mb-5"}
             identity={
               v2 ? <>
                 {/* The doorway to /m/account/settings, in the card's free
@@ -405,12 +405,12 @@ function ProfileOverview() {
                 >
                   <SettingsIcon className="h-5 w-5" />
                 </Link>
-                <div className="-mt-[64px] mb-1.5 flex flex-col items-center text-center">
+                <div className="-mt-[52px] mb-1 flex flex-col items-center text-center">
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={uploading}
-                    className={`relative h-[88px] w-[88px] shrink-0 rounded-full ring-4 ring-white transition-transform active:scale-95 disabled:opacity-60 ${FOCUS}`}
+                    className={`relative h-[72px] w-[72px] shrink-0 rounded-full ring-4 ring-white transition-transform active:scale-95 disabled:opacity-60 ${FOCUS}`}
                     aria-label="Change profile photo"
                   >
                     {account.avatarUrl ? (
@@ -418,10 +418,10 @@ function ProfileOverview() {
                       <img
                         src={account.avatarUrl}
                         alt=""
-                        className="h-[88px] w-[88px] rounded-full object-cover"
+                        className="h-[72px] w-[72px] rounded-full object-cover"
                       />
                     ) : (
-                      <div className="flex h-[88px] w-[88px] items-center justify-center rounded-full bg-pm-grey-tint font-mono text-2xl font-medium text-pm-grey-text">
+                      <div className="flex h-[72px] w-[72px] items-center justify-center rounded-full bg-pm-grey-tint font-mono text-xl font-medium text-pm-grey-text">
                         {initials(account.name)}
                       </div>
                     )}
@@ -429,7 +429,7 @@ function ProfileOverview() {
                       <CameraIcon className="h-3.5 w-3.5" />
                     </span>
                   </button>
-                  <h1 className="font-display mt-2.5 flex max-w-full items-center gap-1.5 text-[22px] font-semibold leading-tight tracking-tight text-zinc-900">
+                  <h1 className="font-display mt-2 flex max-w-full items-center gap-1.5 text-[20px] font-semibold leading-tight tracking-tight text-zinc-900">
                     <span className="truncate">{account.name}</span>
                     <VerifiedBadge userId={account.id} />
                   </h1>
