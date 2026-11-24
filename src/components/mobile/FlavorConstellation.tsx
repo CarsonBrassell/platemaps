@@ -127,7 +127,7 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
     const L = layout(target(ALL), 0, ALL), P: { a: number; r: number }[] = [];
     S.forEach((x, i) => {
       const sub = SUB[i], s0 = Math.min(...sub.map((j) => L[j].s)), s1 = Math.max(...sub.map((j) => L[j].e)), cw = s1 - s0, nm = x.s.name;
-      P[i] = { a: (s0 + s1) / 2 + (hsh(nm, 1) - 0.5) * (x.t ? Math.min(cw * 1.4 + 6, 20) : Math.min(cw * 0.5, 8)), r: [94, 118, 150][x.t] + [44, 96, 120][x.t] * hsh(nm, 2) };
+      P[i] = { a: (s0 + s1) / 2 + (hsh(nm, 1) - 0.5) * (x.t ? Math.min(cw * 1.4 + 6, 20) : Math.min(cw * 0.5, 8)), r: [92, 118, 150][x.t] + [22, 96, 120][x.t] * hsh(nm, 2) };
     });
     const MIN = 13, RMIN = R0 + 14, RMAX = 280;
     for (let it = 0; it < 40; it++) {
@@ -136,8 +136,9 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
       for (let i = 0; i < xy.length; i++) for (let j = i + 1; j < xy.length; j++) {
         const dx = xy[j][0] - xy[i][0], dy = xy[j][1] - xy[i][1], dd = Math.hypot(dx, dy) || 0.01;
         if (dd >= MIN) continue;
-        const push = ((MIN - dd) / dd) * 0.5;
-        d[i][0] -= dx * push; d[i][1] -= dy * push; d[j][0] += dx * push; d[j][1] += dy * push;
+        /* basics hold their spot near the ring; the outer stars do the moving */
+        const wi = S[i].t ? 1 : 0.15, wj = S[j].t ? 1 : 0.15, push = (MIN - dd) / dd / (wi + wj);
+        d[i][0] -= dx * push * wi; d[i][1] -= dy * push * wi; d[j][0] += dx * push * wj; d[j][1] += dy * push * wj;
       }
       xy.forEach(([px, py], i) => {
         const nx = px + d[i][0] - C, ny = py + d[i][1] - C;
