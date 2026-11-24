@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQueryParams } from "@/lib/queryString";
 import { safeNext, signInPromptFor } from "@/lib/signInGate";
-import { PointsBadge } from "@/components/feed/PointsBadge";
 import { CameraIcon, SettingsIcon } from "@/components/icons";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
 import { useAuth, useForMeAccess } from "@/lib/auth";
@@ -305,64 +304,16 @@ function ProfileOverview() {
           instead of dissolving into a white sheet. */}
       <div className="mx-4">
         <div className="px-4 pt-5 pb-6">
-          <div className="mb-5 flex items-center gap-4">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={uploading}
-              className={`group relative h-[72px] w-[72px] shrink-0 rounded-full ring-4 ring-white transition-transform active:scale-95 disabled:opacity-60 ${FOCUS}`}
-              aria-label="Change profile photo"
-            >
-              {account.avatarUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={account.avatarUrl}
-                  alt=""
-                  className="h-[72px] w-[72px] rounded-full object-cover"
-                />
-              ) : (
-                <div className="flex h-[72px] w-[72px] items-center justify-center rounded-full bg-pm-grey-tint font-mono text-2xl font-medium text-pm-grey-text">
-                  {initials(account.name)}
-                </div>
-              )}
-              <span className="absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-pm-orange text-[#F7F4EC]">
-                <CameraIcon className="h-3.5 w-3.5" />
-              </span>
-            </button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleAvatarChange}
-              className="hidden"
-            />
-
-            <div className="min-w-0 flex-1 pb-1">
-              <h1 className="font-display flex items-center gap-1.5 text-[22px] font-semibold leading-tight tracking-tight text-zinc-900">
-                <span className="truncate">{account.name}</span>
-                <VerifiedBadge userId={account.id} />
-              </h1>
-              {/* An address is a machine value, so mono (DESIGN.md). */}
-              <p className="mt-0.5 truncate font-mono text-[11px] text-zinc-500">
-                {account.email}
-              </p>
-              <PointsBadge points={account.points} size="md" className="mt-1.5" />
-            </div>
-
-            {/* The doorway to /m/account/settings, beside the name it belongs
-                to. Icon only, unlike the web page's labelled pill, and that is
-                the width arguing rather than a different opinion about clarity:
-                the card is 326px inside its padding, the avatar and its gap
-                take 88, and a gear + "Settings" would leave the name ~118px and
-                truncate it on most accounts. A 44px disc leaves it 178. */}
-            <Link
-              href={to("/m/account/settings")}
-              aria-label="Settings"
-              className={`mb-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint text-pm-grey-text transition-transform active:scale-95 ${FOCUS}`}
-            >
-              <SettingsIcon className="h-5 w-5" />
-            </Link>
-          </div>
+          {/* Your photo and name moved into the rank card ("badge on the
+              edge", Calvin 2026-11-24) — see `identity` below. The email
+              line went with it; it lives on the settings screen. */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
+            className="hidden"
+          />
 
           {uploading && (
             <p role="status" className="mb-3 text-xs text-zinc-500">
@@ -383,7 +334,53 @@ function ProfileOverview() {
               down here in zinc — so the number the screen is actually about
               was the quietest thing on it. Both now live in one orange panel;
               the full rules, milestones included, are behind its info button. */}
-          <PlatePointsPanel points={arrival.displayPoints} showRank className="mb-5" />
+          <PlatePointsPanel
+            points={arrival.displayPoints}
+            showRank
+            className="mb-5 mt-12"
+            identity={
+              <>
+                {/* The doorway to /m/account/settings, in the card's free
+                    top corner now that the name row above is gone. */}
+                <Link
+                  href={to("/m/account/settings")}
+                  aria-label="Settings"
+                  className={`absolute right-2 top-2 flex h-11 w-11 items-center justify-center rounded-full text-pm-grey-text transition-colors hover:bg-pm-grey-tint ${FOCUS}`}
+                >
+                  <SettingsIcon className="h-5 w-5" />
+                </Link>
+                <div className="-mt-[64px] mb-1.5 flex flex-col items-center text-center">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className={`relative h-[88px] w-[88px] shrink-0 rounded-full ring-4 ring-white transition-transform active:scale-95 disabled:opacity-60 ${FOCUS}`}
+                    aria-label="Change profile photo"
+                  >
+                    {account.avatarUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={account.avatarUrl}
+                        alt=""
+                        className="h-[88px] w-[88px] rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-[88px] w-[88px] items-center justify-center rounded-full bg-pm-grey-tint font-mono text-2xl font-medium text-pm-grey-text">
+                        {initials(account.name)}
+                      </div>
+                    )}
+                    <span className="absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-pm-orange text-[#F7F4EC]">
+                      <CameraIcon className="h-3.5 w-3.5" />
+                    </span>
+                  </button>
+                  <h1 className="font-display mt-2.5 flex max-w-full items-center gap-1.5 text-[22px] font-semibold leading-tight tracking-tight text-zinc-900">
+                    <span className="truncate">{account.name}</span>
+                    <VerifiedBadge userId={account.id} />
+                  </h1>
+                </div>
+              </>
+            }
+          />
 
           {/* The approved order from the prototype: the total, then the
               plates that earned it — badged and ring-pulsed by the roll-call

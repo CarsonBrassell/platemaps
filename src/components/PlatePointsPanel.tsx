@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { PlateStarIcon, InfoIcon } from "@/components/icons";
 import { PointsInfoModal } from "@/components/feed/PointsInfoModal";
 import { POINT_RULES, formatPoints } from "@/lib/points";
@@ -42,8 +42,11 @@ export function PlatePointsPanel({
   points,
   showRank = false,
   className = "",
+  identity,
 }: {
   points: number;
+  /** Passed to RankRing (showRank only) — see its `identity` prop. */
+  identity?: ReactNode;
   /**
    * Renders the rank card (`RankRing`, redesigned 2026-11-05) instead of the
    * tint panel: your crest big in a progress ring with the ranks either side
@@ -89,6 +92,7 @@ export function PlatePointsPanel({
         <RankRing
           points={points}
           className={className}
+          identity={identity}
           onOpenLadder={() => setLadderOpen(true)}
           onOpenInfo={() => setInfoOpen(true)}
         />

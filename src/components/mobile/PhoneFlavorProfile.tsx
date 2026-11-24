@@ -221,28 +221,33 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
   return (
     <div className="min-h-dvh divide-y divide-[#e4dccb] bg-[#F7F4EC] px-4 pb-8 pt-2">
       <section className="py-5">
-        <div className="flex items-center gap-3.5">
-          {account.avatarUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={account.avatarUrl} alt="" className="h-16 w-16 shrink-0 rounded-full object-cover" />
-          ) : (
-            <span className="font-display flex h-16 w-16 shrink-0 items-center justify-center rounded-full text-xl font-semibold text-zinc-800" style={{ background: TONES[0] }}>
-              {initials(account.name)}
-            </span>
-          )}
-          <div className="min-w-0 flex-1">
-            <h1 className="font-display flex items-center gap-1.5 text-[22px] font-semibold leading-tight text-zinc-900">
-              <span className="truncate">{account.name}</span>
-              <VerifiedBadge userId={account.id} />
-            </h1>
-            <p className="mt-0.5 truncate font-mono text-[12.5px] text-pm-grey-text">{account.email}</p>
-          </div>
-          <Link href={settingsHref} aria-label="Settings" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-pm-grey-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pm-orange">
-            <SettingsIcon className="h-5 w-5" />
-          </Link>
-        </div>
-        <div className="mt-4">
-          <RankRing points={arrival.displayPoints} />
+        {/* Photo and name sit on the rank card's top edge ("badge on the
+            edge", Calvin 2026-11-24); same layout as PhoneProfileScreen. */}
+        <div className="mt-12">
+          <RankRing
+            points={arrival.displayPoints}
+            identity={
+              <>
+                <Link href={settingsHref} aria-label="Settings" className="absolute right-2 top-2 flex h-11 w-11 items-center justify-center rounded-full text-pm-grey-text transition-colors hover:bg-pm-grey-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pm-orange">
+                  <SettingsIcon className="h-5 w-5" />
+                </Link>
+                <div className="-mt-[64px] mb-1.5 flex flex-col items-center text-center">
+                  {account.avatarUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={account.avatarUrl} alt="" className="h-[88px] w-[88px] shrink-0 rounded-full object-cover ring-4 ring-white" />
+                  ) : (
+                    <span className="font-display flex h-[88px] w-[88px] shrink-0 items-center justify-center rounded-full text-2xl font-semibold text-zinc-800 ring-4 ring-white" style={{ background: TONES[0] }}>
+                      {initials(account.name)}
+                    </span>
+                  )}
+                  <h1 className="font-display mt-2.5 flex max-w-full items-center gap-1.5 text-[22px] font-semibold leading-tight tracking-tight text-zinc-900">
+                    <span className="truncate">{account.name}</span>
+                    <VerifiedBadge userId={account.id} />
+                  </h1>
+                </div>
+              </>
+            }
+          />
         </div>
         {postsReady && (
           <div className="mt-2 flex justify-center gap-4 text-[12.5px] text-zinc-600">
