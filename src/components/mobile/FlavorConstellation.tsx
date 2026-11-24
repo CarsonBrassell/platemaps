@@ -172,17 +172,27 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
       if (hint) { const b = el(g, "g", { class: "pmc-ctrB" }); ["tap a", "family"].forEach((s, i) => el(b, "text", { x: C, y: C + (i - 0.5) * 15 + 4, "text-anchor": "middle", "font-size": 13, "font-weight": 700, fill: ORANGE }, s)); }
     }
     /* spokes: the basics, around the ring */
+    const hitLines: Element[] = [];
     S.forEach((x, i) => {
       const v = vis[i];
       if (v.w < 1e-3 || x.t > 0 || v.len < 0.5) return;
       const d = L[i].m, lk = !x.s.on, isTop = fo == null && top.includes(x);
       const [x1, y1] = pt(R0 + GAP, d), [x2, y2] = pt(R0 + GAP + v.len, d);
       el(svg, "line", { x1, y1, x2, y2, stroke: lk ? TAN2 : fams[x.f].col, "stroke-width": lk ? Math.min(5, v.wd) : isTop ? 8 : v.wd, "stroke-linecap": "round", opacity: lk ? 0.45 : 1 });
+      /* The bar itself opens its family too: a wide invisible hit line from the
+         ring out past the label, so a thumb on the spoke or its word works. */
+      if (!moving && fo !== x.f) {
+        const [hx1, hy1] = pt(R0 + 8, d), [hx2, hy2] = pt(R0 + GAP + v.len + (v.lab > 0.04 ? 9 + x.s.name.length * 6.5 : 6), d);
+        const hit = el(svg, "line", { x1: hx1, y1: hy1, x2: hx2, y2: hy2, stroke: "transparent", "stroke-width": 16, "stroke-linecap": "round", style: "cursor:pointer", "aria-label": `Open ${fams[x.f].full}` });
+        hit.addEventListener("click", () => { store.set(); go(x.f); });
+        hitLines.push(hit);
+      }
       if (v.lab < 0.04) return;
       const [lx, ly] = pt(R0 + GAP + v.len + 9, d), nd = ((d % 360) + 360) % 360, flip = nd > 90 && nd < 270;
       el(svg, "text", { x: lx, y: ly, dy: "0.35em", "text-anchor": flip ? "end" : "start", transform: `rotate(${flip ? d + 180 : d} ${lx} ${ly})`, opacity: v.lab,
         "font-size": lk ? 13 : isTop ? 14 : 11.5, "font-weight": lk ? 700 : isTop ? 800 : 600, fill: lk ? LOCKC : INK }, lk ? "?" : x.s.name);
     });
+    hitLines.forEach((h) => svg.appendChild(h)); // above the labels, so taps on a word land
     /* open family: the constellation */
     if (fo != null && ft > 0) {
       const f = fams[fo], RO = [130, 190, 244], DR = [8, 6, 4.5], cw = (n: string, fs: number) => n.length * fs * 0.57;
