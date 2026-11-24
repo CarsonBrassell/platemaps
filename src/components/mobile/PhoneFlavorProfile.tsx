@@ -9,6 +9,7 @@ import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import type { FlavorWheel } from "@/lib/flavorWheelSnapshots";
+import type { EaterType } from "@/lib/eaterType";
 
 /**
  * The Profile tab with the flavor wheel folded in, for the two gated accounts
@@ -150,6 +151,9 @@ function Bars({ fl, you: YOU }: { fl: Flavor[]; you: Set<string> }) {
 }
 
 
+/** Eater-type tile tint, one per flavor group (probe/personality-types/mockup.html). */
+const GROUP_TINT: Record<EaterType["group"], string> = { Indulgent: "#e08a3c", "Fire & smoke": "#c2412d", Fresh: "#4f9a5a", Bold: "#7b4bb8" };
+
 const Label = ({ children }: { children: React.ReactNode }) => <p className="mono-label text-zinc-500">{children}</p>;
 const Note = () => (
   <p className="mt-1 text-xs text-zinc-500">
@@ -190,6 +194,7 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
   const [myPosts, setMyPosts] = useState<ShelfPost[]>([]);
   const [postsReady, setPostsReady] = useState(false);
   const [data, setData] = useState<FlavorWheel | null>(null);
+  const [eater, setEater] = useState<EaterType | null>(null);
   const arrival = useRollCallArrival(account, myPosts, postsReady);
   useEffect(() => {
     if (!account) return;
@@ -204,8 +209,10 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
       .catch(() => {});
     fetch("/api/account/flavor-wheel")
       .then((res) => res.json())
-      .then((d: { wheel: FlavorWheel | null }) => {
-        if (!cancelled) setData(d.wheel);
+      .then((d: { wheel: FlavorWheel | null; eaterType?: EaterType | null }) => {
+        if (cancelled) return;
+        setData(d.wheel);
+        setEater(d.eaterType ?? null);
       })
       .catch(() => {});
     return () => {
@@ -247,14 +254,44 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
                 </div>
               </>
             }
-          />
+          >
+            {postsReady && (
+              <div className="mt-2 flex justify-center gap-4 text-[12.5px] text-zinc-600">
+                <span><b className="mr-1 font-mono font-semibold text-zinc-900">{myPosts.length}</b>plates</span>
+                <span><b className="mr-1 font-mono font-semibold text-zinc-900">{spots}</b>spots</span>
+              </div>
+            )}
+            {data && data.wheel.length > 0 && (
+              <>
+                <div className="-mx-5 mb-4 mt-4 h-px bg-[#ece6dc]" />
+          <Label>Your flavor wheel</Label>
+          <h2 className="font-display mt-1 text-[22px] font-semibold leading-tight text-zinc-900">
+            {data.wheel.slice(0, 3).map(([n]) => n + ".").join(" ")}
+          </h2>
+          <Wheel T={data.wheel} />
+          {eater && (
+            <>
+              <div className="-mx-5 mb-3.5 mt-3 h-px bg-[#ece6dc]" />
+              <Label>Your type</Label>
+              <div className="mt-2 grid grid-cols-[48px_1fr] items-start gap-3">
+                <div
+                  aria-hidden
+                  className="grid h-12 w-12 place-items-center rounded-[14px] text-[26px]"
+                  style={{ background: `color-mix(in srgb, ${GROUP_TINT[eater.group]} 14%, white)` }}
+                >
+                  {eater.emoji}
+                </div>
+                <div>
+                  <p className="font-display text-[22px] font-semibold leading-tight text-zinc-900">{eater.name}</p>
+                  <p className="mt-1.5 text-[13.5px] leading-snug text-zinc-600">{eater.read}</p>
+                </div>
+              </div>
+            </>
+          )}
+              </>
+            )}
+          </RankRing>
         </div>
-        {postsReady && (
-          <div className="mt-2 flex justify-center gap-4 text-[12.5px] text-zinc-600">
-            <span><b className="mr-1 font-mono font-semibold text-zinc-900">{myPosts.length}</b>plates</span>
-            <span><b className="mr-1 font-mono font-semibold text-zinc-900">{spots}</b>spots</span>
-          </div>
-        )}
       </section>
 
       <div className="pt-5">
@@ -276,35 +313,27 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
         />
       </div>
 
-      {data && data.wheel.length > 0 && (
-        <section className="py-5">
-          <div className="rounded-2xl bg-white px-4 py-4">
-          <Label>Your flavor wheel</Label>
-          <h2 className="font-display mt-1 text-[22px] font-semibold leading-tight text-zinc-900">
-            {data.wheel.slice(0, 3).map(([n]) => n + ".").join(" ")}
-          </h2>
-          <Wheel T={data.wheel} />
-          </div>
-        </section>
-      )}
-
       {data && data.next.length > 0 && (
         <section className="pb-3 pt-5">
           <Label>Try next</Label>
           <h2 className="font-display mt-1 text-[22px] font-semibold leading-tight text-zinc-900">New mixes of what you go back for</h2>
           <Note />
           {data.next.map((d, i) => (
-            <div key={d.dish} className={`py-4 ${i ? "border-t border-[#e4dccb]" : "pt-3"}`}>
+            <div key={d.dish} className={`rounded-2xl bg-white p-4 ${i ? "mt-3" : "mt-4"}`}>
               <div className="grid grid-cols-[56px_1fr] items-center gap-3">
                 <div className="h-14 w-14 rounded-xl" style={{ background: TONES[(i + 1) % 3] }} />
                 <div>
+                  {d.tag && (
+                    <span className="mb-1 inline-block rounded-full bg-[#F7F4EC] px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide text-pm-orange-text">{d.tag}</span>
+                  )}
                   <span className="font-display block text-base font-semibold leading-tight text-zinc-900">{d.dish}</span>
-                  <span className="mt-0.5 block text-xs text-pm-grey-text">{d.spot}</span>
+                  <span className="mt-0.5 block text-xs text-zinc-500">{d.spot}</span>
                 </div>
               </div>
               <p className="mt-2.5 text-[12.5px] leading-snug text-zinc-600">{d.ing}</p>
               <Bars fl={d.fl} you={you} />
-              <p className="mt-3 rounded-xl bg-white px-3 py-2.5 text-[12.5px] leading-snug text-zinc-700">
+              <p className="mt-3 rounded-xl bg-[#F7F4EC] px-3 py-2.5 text-[12.5px] leading-snug text-zinc-700">
+                {d.why && <span>{d.why} </span>}
                 {d.from.map(([f, dish], j) => (
                   <span key={f}>
                     <b className="font-semibold text-pm-orange-text">{f}</b> like your {dish}{j < d.from.length - 1 ? ", " : "."}

@@ -45,6 +45,7 @@ export function RankRing({
   onOpenLadder,
   onOpenInfo,
   identity,
+  children,
 }: {
   points: number;
   /**
@@ -54,6 +55,8 @@ export function RankRing({
    * the header already says it.
    */
   identity?: ReactNode;
+  /** Drawn at the bottom, inside the same white card (the phone profile's flavor wheel). */
+  children?: ReactNode;
   className?: string;
   /** The ladder line opens the full ladder (`RankLadderModal`). */
   onOpenLadder?: () => void;
@@ -239,6 +242,7 @@ export function RankRing({
       <p className={`${identity ? "mt-0" : "mt-2"} text-center font-mono text-[11px] uppercase tracking-[0.12em] tabular-nums text-zinc-500`}>
         {next ? `${fmt(next.minPoints - Math.max(0, points))} PP to ${next.title}` : "Top rank"}
       </p>
+      {children}
     </section>
   );
 }
