@@ -9,6 +9,7 @@ import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { useAuth, useProfileV2Access } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import type { FlavorWheel } from "@/lib/flavorWheelSnapshots";
+import { FlavorConstellation } from "@/components/mobile/FlavorConstellation";
 import type { EaterType } from "@/lib/eaterType";
 
 /**
@@ -26,9 +27,7 @@ import type { EaterType } from "@/lib/eaterType";
  */
 
 const O = "#c9591f";
-const INK = "#2a2622";
 const TAN2 = "#b8a88c";
-const GREY = "#665c4e";
 const TONES = ["var(--pm-tone-1)", "var(--pm-tone-2)", "var(--pm-tone-3)"];
 
 type Flavor = [string, number];
@@ -43,92 +42,6 @@ function flavorFor(FLAVORS: FlavorWheel["flavors"], p: ShelfPost) {
   return k ? FLAVORS[k] : null;
 }
 
-
-/**
- * The wheel's families. Every flavor sits with its kin and wears the family's
- * colour, so the wheel reads as a few neighbourhoods rather than forty spokes.
- * A flavor nobody listed falls into Carbs and comfort.
- */
-const FAMS: [string, string, string[]][] = [
-  ["Heat and smoke", "#E2622A", ["Sweet heat", "Smoky", "Spicy", "Charred", "Warm spice"]],
-  ["Rich and melty", "#C9952B", ["Cheese", "Creamy", "Buttery", "Rich", "Nutty", "Premium"]],
-  ["Meat", "#8E3B46", ["Meat", "Cured", "Poultry", "Offal", "Red meat", "Low and slow", "Braised"]],
-  ["Carbs and comfort", "#A9865A", ["Brunch", "Crispy", "Garlic, onion", "Pasta, noodles", "Bread, dough", "Carbs", "Fried", "Brothy", "World foods"]],
-  ["Fresh and bright", "#4F8A4B", ["Bitter", "Herbs", "Fruity", "Pickled, tangy", "Greens", "Fresh, light", "Fermented", "Citrus", "Sour"]],
-  ["Sea", "#2F7F86", ["Raw fish", "Seafood"]],
-  ["Sweets and sips", "#B8578F", ["Sweet", "Drinks", "Dessert"]],
-];
-/* The word written around the ring, just outside each family's arc, same order
-   as FAMS. One short word each: the narrowest family (Sea) spans two spokes. */
-const FAM_WORDS = ["Heat", "Rich", "Meat", "Carbs", "Fresh", "Sea", "Sweet"];
-const COMFORT = 3;
-const famOf = (name: string) => {
-  const i = FAMS.findIndex(([, , names]) => names.includes(name));
-  return i < 0 ? COMFORT : i;
-};
-
-function Wheel({ T }: { T: FlavorWheel["wheel"] }) {
-  /* gap is the band between the ring and the spokes where the family words sit */
-  const n = T.length, c = 205, r0 = 78, k = 88, gap = 26;
-  const rad = (d: number) => (d * Math.PI) / 180;
-  const at = (deg: number, r: number) => [+(c + Math.cos(rad(deg)) * r).toFixed(2), +(c + Math.sin(rad(deg)) * r).toFixed(2)];
-  /* The top three are the first three as scored; the spokes are then regrouped by family. */
-  const top3 = new Set(T.slice(0, 3).map(([name]) => name));
-  const groups = FAMS.map((_, fi) => T.filter(([name]) => famOf(name) === fi));
-  const spokes = groups.flat();
-  const step = 360 / n;
-  const arcs: { d: string; color: string; word: string; path: string }[] = [];
-  let start = 0;
-  groups.forEach((g, fi) => {
-    if (g.length) {
-      const a0 = -90 + (start - 0.38) * step, a1 = -90 + (start + g.length - 1 + 0.38) * step;
-      const [x0, y0] = at(a0, r0), [x1, y1] = at(a1, r0);
-      /* The word's own path: an arc centred on the family's, just outside the ring.
-         On the lower half it runs the other way, so the word is never upside down. */
-      const m = (a0 + a1) / 2, low = Math.sin(rad(m)) > 0, rw = low ? r0 + 18 : r0 + 9;
-      const [p0, q0] = at(m - 40, rw), [p1, q1] = at(m + 40, rw);
-      arcs.push({
-        d: `M${x0} ${y0}A${r0} ${r0} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1} ${y1}`,
-        color: FAMS[fi][1],
-        word: FAM_WORDS[fi],
-        path: low ? `M${p1} ${q1}A${rw} ${rw} 0 0 0 ${p0} ${q0}` : `M${p0} ${q0}A${rw} ${rw} 0 0 1 ${p1} ${q1}`,
-      });
-    }
-    start += g.length;
-  });
-  return (
-    <svg viewBox="0 -14 410 424" className="my-1 block h-auto w-full" role="img" aria-label={`Flavor wheel: ${T.slice(0, 3).map(([n]) => n).join(", ")} lead`}>
-      {arcs.map((arc) => (
-        <path key={arc.color} d={arc.d} fill="none" stroke={arc.color} strokeWidth={4} strokeLinecap="round" />
-      ))}
-      {arcs.map((arc, i) => (
-        <g key={arc.word}>
-          <path id={`fam-word-${i}`} d={arc.path} fill="none" />
-          <text fontSize={12.5} fontWeight={700} fill={arc.color} textAnchor="middle">
-            <textPath href={`#fam-word-${i}`} startOffset="50%">{arc.word}</textPath>
-          </text>
-        </g>
-      ))}
-      <text x={c} y={c - 8} fontSize={12} fill={GREY} textAnchor="middle" fontWeight={600}>most</text>
-      <text x={c} y={c + 8} fontSize={12} fill={GREY} textAnchor="middle" fontWeight={600}>eaters</text>
-      {spokes.map(([name, sc, t], i) => {
-        const a = -90 + i * step, ca = +Math.cos(rad(a)).toFixed(4), sa = +Math.sin(rad(a)).toFixed(4);
-        const early = Math.abs(t) < 1, ng = sc < 0 && !early, top = top3.has(name);
-        const len = early ? 5 : Math.abs(sc) * k;
-        const r1 = ng ? r0 - 7 : r0 + gap, r2 = ng ? r0 - 7 - len : r0 + gap + len;
-        const lr = (ng ? r0 + gap : r2) + 8, flip = ca < 0, x = +(c + ca * lr).toFixed(2), y = +(c + sa * lr).toFixed(2);
-        return (
-          <g key={name}>
-            <line x1={+(c + ca * r1).toFixed(2)} y1={+(c + sa * r1).toFixed(2)} x2={+(c + ca * r2).toFixed(2)} y2={+(c + sa * r2).toFixed(2)} stroke={FAMS[famOf(name)][1]} strokeOpacity={early ? 0.3 : ng ? 0.45 : 1} strokeWidth={top ? 8 : ng ? 5 : 6.5} strokeLinecap="round" />
-            <text x={x} y={y} fontSize={top ? 14 : 11.5} fontWeight={top ? 700 : 600} fill={early ? "#857a69" : INK} textAnchor={flip ? "end" : "start"} dominantBaseline="central" transform={`rotate(${flip ? a + 180 : a} ${x} ${y})`}>
-              {name}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
 
 
 function Bars({ fl, you: YOU }: { fl: Flavor[]; you: Set<string> }) {
@@ -329,7 +242,7 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
                   </span>
                 </button>
                 {wheelOpen && eater && <p className="mt-2 text-[13.5px] leading-snug text-zinc-600">{eater.read}</p>}
-                <Wheel T={data.wheel} />
+                <FlavorConstellation data={data} />
               </>
             )}
           </RankRing>
@@ -363,7 +276,7 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
             <h2 className="font-display mt-1 text-[22px] font-semibold leading-tight text-zinc-900">
               {data.wheel.slice(0, 3).map(([n]) => n + ".").join(" ")}
             </h2>
-            <Wheel T={data.wheel} />
+            <FlavorConstellation data={data} />
           </div>
         </section>
       )}
