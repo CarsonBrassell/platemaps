@@ -146,6 +146,44 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
       });
       S.forEach((x, i) => { if (x.t) { const q = P[IDX[x.f + "|" + PAR[x.s.name]]]; if (q && P[i].r < q.r + 10) P[i].r = Math.min(RMAX, q.r + 10); } });
     }
+    /* Untangle: where two links cross, swap the two stars if that lowers the
+       total crossings (same tier only, and a child must stay outside its parent). */
+    const par = S.map((x) => (x.t ? IDX[x.f + "|" + PAR[x.s.name]] : -1));
+    const E = all.filter((i) => par[i] >= 0);
+    const poly = (i: number) => {
+      const q = P[par[i]], c = P[i], [x1, y1] = pt(q.r, q.a), [x2, y2] = pt(c.r, c.a), [kx, ky] = pt(c.r, q.a), o: [number, number][] = [];
+      for (let k = 0; k <= 6; k++) { const t = k / 6, u = 1 - t; o.push([u * u * x1 + 2 * u * t * kx + t * t * x2, u * u * y1 + 2 * u * t * ky + t * t * y2]); }
+      return o;
+    };
+    const segX = (a: number[], b: number[], c: number[], d: number[]) => {
+      const o = (p: number[], q: number[], r: number[]) => (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]);
+      return o(a, b, c) * o(a, b, d) < 0 && o(c, d, a) * o(c, d, b) < 0;
+    };
+    const cross = (A: [number, number][], B: [number, number][]) => { for (let m = 0; m < 6; m++) for (let n = 0; n < 6; n++) if (segX(A[m], A[m + 1], B[n], B[n + 1])) return true; return false; };
+    const count = () => {
+      const pl = E.map(poly); let n = 0;
+      for (let u = 0; u < E.length; u++) for (let v = u + 1; v < E.length; v++) {
+        const a = E[u], b = E[v];
+        if (par[a] === par[b] || par[a] === b || par[b] === a) continue;
+        if (cross(pl[u], pl[v])) n++;
+      }
+      return n;
+    };
+    const okR = (i: number) => (par[i] < 0 || P[i].r >= P[par[i]].r + 6) && S.every((_, k) => par[k] !== i || P[k].r >= P[i].r + 6);
+    let best = count();
+    for (let pass = 0; pass < 3 && best > 0; pass++) {
+      let moved = false;
+      for (let u = 0; u < E.length && best > 0; u++) for (let v = u + 1; v < E.length && best > 0; v++) {
+        const a = E[u], b = E[v];
+        if (S[a].t !== S[b].t) continue;
+        const da = P[a], db = P[b];
+        if (Math.hypot(...pt(da.r, da.a).map((z, k) => z - pt(db.r, db.a)[k])) > 90) continue;
+        P[a] = db; P[b] = da;
+        if (okR(a) && okR(b)) { const n = count(); if (n < best) { best = n; moved = true; continue; } }
+        P[a] = da; P[b] = db;
+      }
+      if (!moved) break;
+    }
     /* keep each angle on the same turn as its slice, so the fly-out tween is short */
     S.forEach((_, i) => { const m = L[i].m; while (P[i].a - m > 180) P[i].a -= 360; while (P[i].a - m < -180) P[i].a += 360; });
     return (skyP = P);
