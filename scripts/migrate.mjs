@@ -1385,6 +1385,77 @@ const statements = [
     UNIQUE (event_key, user_id),
     UNIQUE (event_key, device_id)
   )`,
+  // The For me row's activity log (lib/tasteLog.ts). taste_shown: one row per
+  // place in each row of picks the server sent (batch_id names that row of
+  // picks). position is its place in the row, slot the kind of reason, algo
+  // the scorer that made it, seen_at when the card was really on screen. dish
+  // and score are the menu line a dish pick was sent for and what it scored.
+  // taste_tapped: what was tapped in it (open, been, hide, and their undos).
+  // Written for the accounts on lib/forMeGate.ts only; nothing reads it yet.
+  // Restaurant ids are soft references, like posts.
+  `CREATE TABLE IF NOT EXISTS taste_shown (
+    id BIGSERIAL PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    batch_id TEXT NOT NULL,
+    restaurant_id TEXT NOT NULL,
+    position INTEGER NOT NULL,
+    slot TEXT NOT NULL,
+    reason TEXT,
+    dish TEXT,
+    score REAL,
+    algo TEXT NOT NULL,
+    refresh BOOLEAN NOT NULL DEFAULT FALSE,
+    surface TEXT,
+    shown_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    seen_at TIMESTAMPTZ,
+    UNIQUE (batch_id, restaurant_id)
+  )`,
+  `CREATE INDEX IF NOT EXISTS taste_shown_user_place_idx
+    ON taste_shown (user_id, restaurant_id, shown_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS taste_tapped (
+    id BIGSERIAL PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    batch_id TEXT NOT NULL,
+    restaurant_id TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    position INTEGER NOT NULL,
+    surface TEXT,
+    tapped_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`,
+  `CREATE INDEX IF NOT EXISTS taste_tapped_user_idx
+    ON taste_tapped (user_id, tapped_at DESC)`,
+  // Food personality wheel (lib/personality.ts). Two lookup tables filled by
+  // scripts/load-personality.mjs from the AI tagging run in
+  // probe/for-me/personality/. `dish_flavor.key` is lib/personality.ts
+  // `dishKey` (folded name|description) or `dishNameKey` (name|*); only
+  // tagged keys are stored, an absent key means "no tag". restaurant_kind is
+  // keyed by TEXT id with no FK, like walk_cache: a held place is harmless.
+  `CREATE TABLE IF NOT EXISTS dish_flavor (
+    key TEXT PRIMARY KEY,
+    tag TEXT NOT NULL
+  )`,
+  `CREATE TABLE IF NOT EXISTS restaurant_kind (
+    restaurant_id TEXT PRIMARY KEY,
+    kind TEXT NOT NULL,
+    foodie BOOLEAN NOT NULL DEFAULT FALSE
+  )`,
+  // Marketing-mail opt-out (lib/unsubscribe.ts). NULL = may receive
+  // promotional mail; a timestamp = unsubscribed at that moment. Account mail
+  // (verify, reset) ignores it. unsubscribe_token is a per-user random value
+  // minted on first use, because the app has no server-side signing secret.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS marketing_opt_out_at TIMESTAMPTZ`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS unsubscribe_token TEXT`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS users_unsubscribe_token_idx
+    ON users (unsubscribe_token) WHERE unsubscribe_token IS NOT NULL`,
+  // One-off marketing sends (scripts/send-thanks.mjs). The primary key is the
+  // re-run guard: a user is only ever mailed once per campaign.
+  `CREATE TABLE IF NOT EXISTS marketing_sends (
+    user_id TEXT NOT NULL,
+    campaign TEXT NOT NULL,
+    sent_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    provider_id TEXT,
+    PRIMARY KEY (user_id, campaign)
+  )`,
 ];
 
 for (const statement of statements) {

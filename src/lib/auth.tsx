@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { useHydrated } from "@/lib/useHydrated";
 
 type Account = {
   id: string;
@@ -22,6 +23,12 @@ type Account = {
   photoNoticeSeen: boolean;
   /** Whether the first-run coach tour has run. Mirrors AccountJson. */
   tourSeen: boolean;
+  /** Set only for the accounts that get the dish picks. Mirrors AccountJson. */
+  forMe?: true;
+  /** Set only for the accounts that get the Discover buttons. Mirrors AccountJson. */
+  discoverModes?: true;
+  /** Set only for admin accounts (lib/adminGate.ts). Mirrors AccountJson. */
+  admin?: true;
 };
 
 type AuthContextValue = {
@@ -344,4 +351,41 @@ export function useAuth() {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error("useAuth must be used within AuthProvider");
   return ctx;
+}
+
+/**
+ * Whether this viewer gets the dish picks (lib/forMeGate.ts). False while the
+ * account is still loading, so the server render and the first client frame are
+ * what every other visitor gets, and for everyone whose account does not carry
+ * the flag. Every dish-pick surface asks this and, on false, renders what the page
+ * did before the feature.
+ *
+ * Also false while a subtree is hydrating. The server always renders with no
+ * account, and a subtree can hydrate after the account fetch has landed; reading
+ * the flag there made the client disagree with the server HTML and React threw a
+ * hydration error.
+ */
+export function useForMeAccess(): boolean {
+  const flagged = useAuth().account?.forMe === true;
+  return useHydrated() && flagged;
+}
+
+/**
+ * Whether this viewer gets the For me and Nearby buttons on Discover
+ * (lib/forMeGate.ts, lib/discoverModes.ts). Hydration-gated for the same reason
+ * as `useForMeAccess`. Display only: the server checks the session's id itself.
+ */
+export function useDiscoverModesAccess(): boolean {
+  const flagged = useAuth().account?.discoverModes === true;
+  return useHydrated() && flagged;
+}
+
+/**
+ * Whether this viewer may delete anyone's post or comment (lib/adminGate.ts).
+ * Hydration-gated for the same reason as `useForMeAccess`. Display only: the
+ * DELETE routes check the session's id themselves.
+ */
+export function useAdminAccess(): boolean {
+  const flagged = useAuth().account?.admin === true;
+  return useHydrated() && flagged;
 }

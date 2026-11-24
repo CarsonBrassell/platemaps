@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { isCrossSiteRequest } from "@/lib/originCheck";
 import { isPublicPath, signInHrefFor } from "@/lib/signInGate";
 
 /**
@@ -78,10 +79,81 @@ function phoneTwinFor(request: NextRequest): string | null {
   return pathname === "/" ? "/m" : `/m${pathname}`;
 }
 
+/** Calvin, 2026-11-19: the printed Pizza on Pearl flyer's QR code points at
+ *  platemaps.com, but the free-slice ticket can only be claimed in the iOS
+ *  app. A signed-out iPhone opening the bare domain goes to the App Store
+ *  listing instead of the web sign-up.
+ *
+ *  The QR itself encodes /m/feed — which is also the URL the iOS app boots
+ *  on (capacitor.config.ts). The two are told apart by user agent: a real
+ *  browser (Safari, Chrome) ends its UA with a `Safari/` token, the app's
+ *  WKWebView does not. Sending the app's own signed-out WebView to the App
+ *  Store would lock people out of sign-up, so /m/feed and /m redirect only
+ *  with that token; the bare root is never requested by the app and
+ *  redirects for any iPhone. Every deeper link (shared posts, reset and
+ *  verify emails) still opens the phone site. */
+const APP_STORE_URL = "https://apps.apple.com/us/app/platemaps/id6808829983";
+const IOS_PHONE_UA = /\b(iPhone|iPod)\b/;
+const BROWSER_UA = /\bSafari\//;
+/** Browsers inside other apps. They drop the `Safari/` token like our own
+ *  WebView does, but name themselves — an allowlist, so an unknown WebView is
+ *  still treated as possibly ours and left alone. */
+const IN_APP_BROWSER_UA =
+  /Instagram|FBAN|FBAV|FB_IAB|TikTok|musical_ly|Bytedance|Snapchat|Twitter|LinkedInApp|Pinterest|Line\/|MicroMessenger|GSA\//;
+const APP_STORE_BROWSER_PATHS = new Set(["/m", "/m/feed"]);
+
+/** True when the page was opened from outside the site — a QR scan, a typed
+ *  address, a tapped link in another app — rather than by moving around
+ *  inside it. Safari sends `Sec-Fetch-Site: none` for those; older iOS sends
+ *  neither that header nor a Referer. */
+function isDirectEntry(request: NextRequest): boolean {
+  const site = request.headers.get("sec-fetch-site");
+  if (site) return site === "none";
+  return !request.headers.get("referer");
+}
+
+function appStoreFor(request: NextRequest): string | null {
+  const { pathname } = request.nextUrl;
+  const browserOnly = APP_STORE_BROWSER_PATHS.has(pathname);
+  if (pathname !== "/" && !browserOnly) return null;
+  if (request.method !== "GET" && request.method !== "HEAD") return null;
+  const ua = request.headers.get("user-agent") ?? "";
+  if (!IOS_PHONE_UA.test(ua)) return null;
+  const isBrowser = BROWSER_UA.test(ua) || IN_APP_BROWSER_UA.test(ua);
+  if (request.cookies.has(SESSION_COOKIE_NAME)) {
+    // Someone already signed in on the web who scans the flyer: the ticket
+    // is still app-only, so the scan goes to the App Store too. Moving
+    // around inside the site (sign-in landing on /m/feed, the tab bar) is
+    // not a direct entry and keeps working.
+    return isBrowser && isDirectEntry(request) ? APP_STORE_URL : null;
+  }
+  if (browserOnly && !isBrowser) return null;
+  return APP_STORE_URL;
+}
+
+const WRITE_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
+
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
+  // Ahead of the static-asset rule, which waves through any path with a dot.
+  if (
+    pathname.startsWith("/api/") &&
+    WRITE_METHODS.has(request.method) &&
+    isCrossSiteRequest(request)
+  ) {
+    return NextResponse.json({ error: "Bad request." }, { status: 403 });
+  }
+
   if (isStaticAsset(pathname)) return NextResponse.next();
+
+  const store = appStoreFor(request);
+  if (store) {
+    const res = NextResponse.redirect(store, 307);
+    res.headers.set("Vary", "User-Agent, Cookie, Sec-Fetch-Site, Referer");
+    res.headers.set("Cache-Control", "no-store");
+    return res;
+  }
 
   const twin = phoneTwinFor(request);
   if (twin) {

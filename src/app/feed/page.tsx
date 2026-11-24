@@ -33,7 +33,9 @@ import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
 import { NearbyChip } from "@/components/feed/NearbyChip";
 import { NearbyFeedGate } from "@/components/feed/NearbyFeedGate";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
-import { useNearby } from "@/lib/nearby";
+import { useNearby, NEARBY_RADIUS_MI, milesBetween } from "@/lib/nearby";
+import { formatMiles } from "@/lib/geo";
+import { havasuLast, isHavasu } from "@/lib/havasu";
 import { FeedSearchField } from "@/components/feed/FeedSearchField";
 import { searchFeed } from "@/lib/feedFilters";
 import { QUERY_PARAM } from "@/lib/discoverFilters";
@@ -88,7 +90,9 @@ function FeedPageInner() {
      that should raise the prompt is "switch on Nearby", a decision this
      screen owns, not a thing the segmented control itself should know how
      to do. */
-  const nearby = useNearby();
+  /* Asks for the reader's position once per tab session, so each post card can
+     print how far the restaurant is from them. Without it the card says nothing. */
+  const nearby = useNearby({ askOnLoad: true, askEveryone: true });
   const handleSortChange = useCallback((next: FeedSort) => {
     setSort(next);
   }, []);
@@ -143,7 +147,7 @@ function FeedPageInner() {
      doesn't show would change what's on screen for no visible reason. */
   const endpoint =
     navKey === "saved"
-      ? "/api/posts"
+      ? "/api/posts?mine=1"
       : tab === "friends" || (tab === "map" && mapSource === "friends")
         ? "/api/posts/friends"
         : tab === "discover"
@@ -473,7 +477,7 @@ function FeedPageInner() {
   );
 
   const visiblePosts = useMemo(
-    () => searchFeed(scopedPosts, places, query),
+    () => havasuLast(searchFeed(scopedPosts, places, query), isHavasu),
     [scopedPosts, places, query],
   );
   /** A term is on and it is hiding plates — what the "2 of 30" line reports. */
@@ -759,7 +763,7 @@ function FeedPageInner() {
             ) : tab === "discover" && nearbyOn ? (
               <div className="rounded-2xl bg-white px-6 py-12 text-center">
                 <p className="font-display text-base font-semibold text-zinc-900">
-                  No plates within 5 mi yet
+                  No plates within {NEARBY_RADIUS_MI} mi yet
                 </p>
                 <p className="mx-auto mt-1 max-w-xs text-sm text-zinc-500">
                   Nobody nearby has posted a plate. Switch to Trending or New to see the
@@ -782,7 +786,19 @@ function FeedPageInner() {
                      vote handler and the heart handler cannot both reach one
                      card — which is exactly the guarantee the two feeds
                      depend on. */
+                  const distance =
+                    nearby.coords &&
+                    typeof post.restaurantLat === "number" &&
+                    typeof post.restaurantLng === "number"
+                      ? formatMiles(
+                          milesBetween(nearby.coords, {
+                            lat: post.restaurantLat,
+                            lng: post.restaurantLng,
+                          }),
+                        )
+                      : undefined;
                   const shared = {
+                    distance,
                     post,
                     currentUserId: account?.id ?? null,
                     friendStatus: friendStatusFor(post.userId),

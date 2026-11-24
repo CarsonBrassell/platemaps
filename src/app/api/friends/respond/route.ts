@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { acceptFriendRequest, declineFriendRequest } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { limitOrReject } from "@/lib/rateLimit";
 import { notifyFriendAccepted } from "@/lib/notify";
 
 /**
@@ -14,6 +15,14 @@ export async function POST(req: Request) {
   if (!user) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
   }
+
+  const limited = await limitOrReject({
+    scope: "friends-respond:user",
+    key: user.id,
+    max: 120,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
 
   let body: unknown;
   try {

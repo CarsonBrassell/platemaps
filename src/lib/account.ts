@@ -1,4 +1,6 @@
 import type { User } from "@/lib/db";
+import { isDiscoverModesUser, isForMeUser } from "@/lib/forMeGate";
+import { isAdminUser } from "@/lib/adminGate";
 
 /**
  * The account object the client is allowed to see.
@@ -43,6 +45,24 @@ export type AccountJson = {
   photoNoticeSeen: boolean;
   /** Whether the first-run coach tour has run. The feeds are the only readers. */
   tourSeen: boolean;
+  /**
+   * Present, and `true`, only for the accounts on lib/forMeGate.ts' list: the
+   * client turns the dish picks on from it. Left out entirely for everyone else, so
+   * their account JSON is what it was before the feature.
+   */
+  forMe?: true;
+  /**
+   * Present, and `true`, only for the ids on lib/forMeGate.ts' narrower list:
+   * Discover shows the For me and Nearby buttons in place of the Your taste row.
+   * Left out for everyone else, so their account JSON is unchanged.
+   */
+  discoverModes?: true;
+  /**
+   * Present, and `true`, only for lib/adminGate.ts' ids: shows the delete
+   * control on everyone's posts and comments. Display only; the routes check
+   * the id themselves.
+   */
+  admin?: true;
 };
 
 export function accountJson(user: User): AccountJson {
@@ -62,5 +82,8 @@ export function accountJson(user: User): AccountJson {
     pendingEmail: user.pendingEmail,
     photoNoticeSeen: user.photoNoticeSeen,
     tourSeen: user.tourSeen,
+    ...(isForMeUser(user.id) ? { forMe: true as const } : {}),
+    ...(isDiscoverModesUser(user.id) ? { discoverModes: true as const } : {}),
+    ...(isAdminUser(user.id) ? { admin: true as const } : {}),
   };
 }

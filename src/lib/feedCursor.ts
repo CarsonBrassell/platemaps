@@ -23,6 +23,8 @@ export type FeedCursor = {
   id: string;
   /** Last row's trending score, null on chronological feeds. */
   score: number | null;
+  /** Last row is a Lake Havasu post: those sort after everything else (lib/havasu.ts). Absent = false. */
+  hav?: boolean;
 };
 
 export function encodeCursor(cursor: FeedCursor): string {
@@ -41,12 +43,13 @@ export function decodeCursor(raw: string | null | undefined): FeedCursor | null 
     return null;
   }
   if (typeof parsed !== "object" || parsed === null) return null;
-  const { at, createdAt, id, score } = parsed as Record<string, unknown>;
+  const { at, createdAt, id, score, hav } = parsed as Record<string, unknown>;
   if (typeof at !== "string" || !ISO_LIKE.test(at) || Number.isNaN(Date.parse(at))) return null;
   if (typeof createdAt !== "string" || !ISO_LIKE.test(createdAt)) return null;
   if (typeof id !== "string" || id.length === 0 || id.length > 64) return null;
   if (score !== null && (typeof score !== "number" || !Number.isFinite(score))) return null;
-  return { at, createdAt, id, score };
+  if (hav !== undefined && typeof hav !== "boolean") return null;
+  return { at, createdAt, id, score, hav: hav === true };
 }
 
 /** Page size ceiling and default; the routes clamp `?limit=` to it. */

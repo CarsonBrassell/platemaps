@@ -9,11 +9,42 @@
  * or marked "Been here", and where mutual friends have posted. What never
  * counts: ratings, likes, hearts, upvotes, saves. The reason on each pick
  * names only those inputs (picked, been to, posted).
- */
+ *
+ * `scoreTaste` is the cuisine scorer every viewer gets. The accounts on
+ * lib/forMeGate.ts are ranked dish by dish instead (lib/dishTaste.ts), which
+ * borrows the building blocks below: the shrunk rating and its soft floor, the
+ * budget term and the travel radius with its distance factor.
+ *  - A shrunk rating. R' = (n*R + m*C) / (n+m) pulls a thin rating toward C, the
+ *    mean of the rated places in the corpus (`meanRating`), with m =
+ *    FORME_QUALITY.priorReviews. Fewer than minReviews reviews is unrated.
+ *  - A soft floor, g, on the score: 1 from R' 4.2 up, 0.8 at 3.8, 0.65 at 3.5
+ *    and below, linear between, 0.92 for an unrated place. A place with 15 or
+ *    more reviews is judged on the lower of R' and its raw rating, so shrinking
+ *    can only help a thin sample, never a well-reviewed place that is simply not
+ *    good.
+ *  - A budget term. B is the viewer's usual plate: the median price on their own
+ *    posts (under $3 dropped, then anything over 2.5x the median of those kept),
+ *    with the quartiles as its range, trusted from 3 plates and in full at 6.
+ *    With fewer than 3, B is the median menu price of the places they have been
+ *    (from 3 known, trusted at half at most); with both it is 0.6 plates + 0.4
+ *    places. Inside the range the fit is 1, above it it falls off fast and below
+ *    it slowly, and the score gains 100 * 0.06 * trust * (2 fit - 1). A place
+ *    with no price, or a viewer with no B, gets exactly 0.
+ *  - A travel radius. The viewer's history points are the places they have been
+ *    or posted at (listed, with coordinates). R is how far they usually go: the
+ *    75th percentile of the distances from the medoid (the point nearest all the
+ *    others) pulled toward 7 mi by three places' worth of prior, R = (n*p75 +
+ *    3*7) / (n+3), kept within 3 to 20 mi. Under 3 points R is 7 outright. A
+ *    place within R of the anchor has D = 1; farther out D falls as
+ *    1 / (1 + ((d-R)/R)^2), never under 0.55 (0.75 under 3 points).
+ * The viewer's own ratings, likes, hearts, upvotes and saves feed none of it.
+*/
 import type { RestaurantView } from "@/data/restaurantTypes";
 import type { PlateScore } from "@/lib/plateScore";
+import { milesBetween, type Coords } from "@/lib/geo";
 import { MIN_POSTS } from "@/lib/tasteMatch";
 
+/** Your taste. */
 export const WEIGHTS = {
   /** SCORE = 100 * (a*A + f*F + q*Q + n*N). */
   affinity: 0.5,
@@ -38,7 +69,7 @@ export const WEIGHTS = {
   plateSpanPct: 40,
   ratingFloor: 3.8,
   ratingSpan: 1.2,
-  /** Review volume that earns the full sourceTerm: log10(1+n)/this. */
+  /** Review volume that earns the full sourceTerm, log10(1+n)/this. */
   reviewLogDivisor: 2.5,
   /** Share of the list one cuisine may take (when 2+ cuisines score). */
   cuisineCapShare: 0.4,
@@ -50,9 +81,73 @@ export const WEIGHTS = {
   maxMarks: 300,
 } as const;
 
+/** The budget term's reach: it moves a dish pick's score by at most 100 * this, either way. */
+export const FORME_WEIGHTS = { budget: 0.06 } as const;
+
+/** The quality model dish picks read: the shrunk rating and the soft floor. */
+export const FORME_QUALITY = {
+  /** Fewer reviews than this and a place reads as unrated. */
+  minReviews: 10,
+  /** m in R' = (n*R + m*C) / (n+m): reviews' worth of pull toward the corpus mean. */
+  priorReviews: 50,
+  /** g is 1 from this R' up... */
+  floorFullFrom: 4.2,
+  /** ...falls linearly to floorMidFactor here... */
+  floorMidAt: 3.8,
+  floorMidFactor: 0.8,
+  /** ...and on to floorLowFactor here, where it stays for anything lower. */
+  floorLowAt: 3.5,
+  floorLowFactor: 0.65,
+  /** g for a place with no usable rating. */
+  floorUnrated: 0.92,
+  /** From this many reviews g reads min(R', R): a big sample's raw rating is not softened. */
+  rawGuardReviews: 15,
+} as const;
+
+/** The budget term: the viewer's usual plate, and how a place's price fits it. */
+export const FORME_BUDGET = {
+  /** A plate price under this is a side or a typo and says nothing about what they spend. */
+  minPlate: 3,
+  /** A price over this many times the median of the kept prices is a splurge, not their usual. */
+  outlierRatio: 2.5,
+  /** B from plates needs this many kept prices (fewer: no B from plates)... */
+  minPlates: 3,
+  /** ...and is fully trusted at this many. Trust is min(1, kept / platesForFull). */
+  platesForFull: 6,
+  /** Without plates, B is the median price of the places they have been, from this many known... */
+  minPlaces: 3,
+  /** ...and trusted at no more than this. */
+  placeConfCap: 0.5,
+  /** With both, B = plateInB * plates + (1 - plateInB) * places, in dollars. */
+  plateInB: 0.6,
+  /** The range is at least ln 1.3 above B, or half the quartile spread if that is wider... */
+  upperFloor: Math.log(1.3),
+  /** ...and ln 1.6 below it. Inside the range the fit is 1. */
+  lower: Math.log(1.6),
+  /** Above the range the fit is exp(-((x - upper) / upperWidth)^2), a fast fall... */
+  upperWidth: 0.35,
+  /** ...below it exp(-((-lower - x) / lowerWidth)), a slow one. */
+  lowerWidth: 0.7,
+} as const;
+
+/** The travel radius: how far the viewer usually goes, and how a farther place is softened. */
+export const FORME_RADIUS = {
+  /** R is read off the history from this many points; under it R is priorMiles. */
+  minPoints: 3,
+  /** R = (n * p75 + priorPlaces * priorMiles) / (n + priorPlaces): a prior of this many places at priorMiles. */
+  priorPlaces: 3,
+  priorMiles: 7,
+  /** R stays inside this range, in miles. */
+  minMiles: 3,
+  maxMiles: 20,
+  /** Past R, D = 1 / (1 + ((d - R) / R)^2), and never under this (under minPoints points: floorFew). */
+  floor: 0.55,
+  floorFew: 0.75,
+} as const;
+
 export type TasteBasis = "history" | "starting" | "friends" | "none";
 export type TasteReason = {
-  kind: "friend" | "picked" | "favorite" | "history" | "neighborhood";
+  kind: "friend" | "picked" | "favorite" | "history" | "neighborhood" | "dish" | "style" | "cuisine";
   text: string;
   short: string;
 };
@@ -202,9 +297,9 @@ export function applyOpToPrefs(
 /* ---------- identity helpers ---------- */
 
 /**
- * Enrichment seam. v1: a restaurant is its one cuisine. When menu enrichment
- * lands this returns the main cuisine at 1.0 plus secondaries at 0.4 and
- * affinity becomes the max of weight * A(cuisine).
+ * The cuisines a restaurant counts as, with weights; affinity is the max of
+ * weight * A(cuisine). By default a restaurant is its one main cuisine (Your
+ * taste).
  */
 export function restaurantTraits(r: RestaurantView): { cuisine: string; weight: number }[] {
   return r.cuisine ? [{ cuisine: r.cuisine, weight: 1 }] : [];
@@ -231,6 +326,75 @@ export function chainKey(r: Pick<RestaurantView, "name" | "cuisine">): string {
 }
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
+
+/**
+ * The mean rating of the rated places in `places`: the C a thin rating is pulled
+ * toward. Rated means FORME_QUALITY.minReviews reviews or more, the same line
+ * `shrunkRating` draws. Null when nothing is rated, which `shrunkRating` reads
+ * as "nothing to shrink toward" and leaves a rating as it is.
+ *
+ * Read once per corpus load (`Corpus.ratingMean`), never per request.
+ */
+export function meanRating(places: readonly RestaurantView[]): number | null {
+  let sum = 0;
+  let count = 0;
+  for (const r of places) {
+    if (r.rating == null || !Number.isFinite(r.rating)) continue;
+    if (!((r.reviewCount ?? 0) >= FORME_QUALITY.minReviews)) continue;
+    sum += r.rating;
+    count++;
+  }
+  return count > 0 ? sum / count : null;
+}
+
+/**
+ * R' = (n*R + m*C) / (n+m): a rating, pulled toward the corpus mean in
+ * proportion to how few reviews it stands on. Null for an unrated place (no
+ * rating, or fewer than minReviews reviews). With no corpus mean there is
+ * nothing to pull toward and the rating is returned as it is.
+ */
+export function shrunkRating(
+  rating: number | null | undefined,
+  reviews: number | null | undefined,
+  mean: number | null,
+): number | null {
+  if (rating == null || !Number.isFinite(rating)) return null;
+  const n = reviews ?? 0;
+  if (!(n >= FORME_QUALITY.minReviews)) return null;
+  if (mean == null || !Number.isFinite(mean)) return rating;
+  const m = FORME_QUALITY.priorReviews;
+  return (n * rating + m * mean) / (n + m);
+}
+
+/**
+ * g, the soft floor on a dish pick's score: 1 from R' 4.2, linear to 0.8 at 3.8 and
+ * on to 0.65 at 3.5, flat 0.65 below, 0.92 for an unrated place. From
+ * rawGuardReviews reviews it reads min(R', R), so a big sample's raw rating
+ * can only lower it. Continuous everywhere and never above 1, so a missing
+ * rating costs a little and a bad one costs more, and no input makes it NaN.
+ */
+export function qualityFloor(
+  shrunk: number | null,
+  rating: number | null | undefined,
+  reviews: number | null | undefined,
+): number {
+  const f = FORME_QUALITY;
+  if (shrunk == null) return f.floorUnrated;
+  const judged =
+    rating != null && Number.isFinite(rating) && (reviews ?? 0) >= f.rawGuardReviews
+      ? Math.min(shrunk, rating)
+      : shrunk;
+  if (judged >= f.floorFullFrom) return 1;
+  if (judged >= f.floorMidAt) {
+    const t = (judged - f.floorMidAt) / (f.floorFullFrom - f.floorMidAt);
+    return f.floorMidFactor + (1 - f.floorMidFactor) * t;
+  }
+  if (judged > f.floorLowAt) {
+    const t = (judged - f.floorLowAt) / (f.floorMidAt - f.floorLowAt);
+    return f.floorLowFactor + (f.floorMidFactor - f.floorLowFactor) * t;
+  }
+  return f.floorLowFactor;
+}
 
 function sourceTerm(r: RestaurantView): number {
   if (r.rating == null) return WEIGHTS.unratedQ;
@@ -263,28 +427,70 @@ function plural(n: number, one: string, many: string) {
   return `${n} ${n === 1 ? one : many}`;
 }
 
-/* ---------- the scorer ---------- */
+/* ---------- the scan ---------- */
 
-type Scored = {
+/** One candidate with every part of its score. */
+export type Scored = {
   r: RestaurantView;
+  /** Position in the candidates handed in. */
   index: number;
+  /** 100 * (0.5 A + 0.2 F + 0.2 Q + 0.1 N). */
   score: number;
   A: number;
   F: number;
+  Q: number;
   N: number;
+  /** Plate percent when ready, else -1: a tiebreak that never invents a number. */
+  plate: number;
   friends: string[];
 };
 
-export function scoreTaste(input: TasteInput): TasteResult {
-  const { restaurants, plates, prefs } = input;
-  const limit = Math.max(
-    1,
-    Math.min(WEIGHTS.maxLimit, Math.floor(input.limit ?? WEIGHTS.defaultLimit)),
-  );
+export type ScanInput = TasteInput & {
+  /**
+   * The whole listed corpus, when `restaurants` is only the candidates (a
+   * filtered Discover result). Real cuisines and exclusions are read from
+   * here. Defaults to `restaurants`.
+   */
+  corpus?: readonly RestaurantView[];
+};
 
+export type TasteScan = {
+  /** Every candidate that was not excluded, in input order. Nothing is gated or capped. */
+  scored: Scored[];
+  /** Ids in the corpus that never show: visited, hidden, skipped cuisine. */
+  exclude: Set<string>;
+  historyActive: boolean;
+  picksActive: boolean;
+  explicitLoves: ReadonlySet<string>;
+  favorite: string | null;
+  effectiveLoves: ReadonlySet<string>;
+  cuisineVisits: ReadonlyMap<string, number>;
+  /** Distinct places the viewer has posted at or marked been. */
+  visited: number;
+};
+
+type Signals = {
+  universe: readonly RestaurantView[];
+  byId: Map<string, RestaurantView>;
+  skips: Set<string>;
+  explicitLoves: Set<string>;
+  favorite: string | null;
+  effectiveLoves: Set<string>;
+  visitedIds: Set<string>;
+  hidden: Set<string>;
+};
+
+type SignalInput = Pick<
+  ScanInput,
+  "restaurants" | "corpus" | "prefs" | "postedIds" | "favoriteCuisine"
+>;
+
+function signalsOf(input: SignalInput): Signals {
+  const { prefs } = input;
+  const universe = input.corpus ?? input.restaurants;
   const byId = new Map<string, RestaurantView>();
   const cuisineSet = new Set<string>();
-  for (const r of restaurants) {
+  for (const r of universe) {
     byId.set(r.id, r);
     if (r.cuisine) cuisineSet.add(r.cuisine);
   }
@@ -303,14 +509,201 @@ export function scoreTaste(input: TasteInput): TasteResult {
   const visitedIds = new Set<string>();
   for (const id of input.postedIds) if (byId.has(id)) visitedIds.add(id);
   for (const id of prefs.been) if (byId.has(id)) visitedIds.add(id);
-  const hidden = new Set(prefs.hidden);
+  return {
+    universe,
+    byId,
+    skips,
+    explicitLoves,
+    favorite,
+    effectiveLoves,
+    visitedIds,
+    hidden: new Set(prefs.hidden),
+  };
+}
+
+function excludedIds(sig: Signals): Set<string> {
+  const out = new Set<string>();
+  for (const r of sig.universe) {
+    if (sig.visitedIds.has(r.id) || sig.hidden.has(r.id) || (r.cuisine && sig.skips.has(r.cuisine))) {
+      out.add(r.id);
+    }
+  }
+  return out;
+}
+
+/**
+ * Ids that never show for this viewer: places they have been or posted at,
+ * hidden places, and places of a skipped cuisine. Cheap (no scoring), so the
+ * Discover pipeline can drop them right after the filters, before totals and
+ * facets are counted.
+ */
+export function tasteExclusions(input: SignalInput): Set<string> {
+  return excludedIds(signalsOf(input));
+}
+
+/** The viewer's usual plate: B and its quartile range in dollars, and how far to trust it (0 to 1). */
+export type Budget = { median: number; lo: number; hi: number; conf: number };
+
+const ascending = (a: number, b: number) => a - b;
+
+/** A quantile of a sorted, non-empty list, linear between neighbours. */
+function quantile(sorted: readonly number[], q: number): number {
+  const at = (sorted.length - 1) * q;
+  const lo = Math.floor(at);
+  const hi = Math.ceil(at);
+  return sorted[lo] + (sorted[hi] - sorted[lo]) * (at - lo);
+}
+
+function quartiles(sorted: readonly number[]): Pick<Budget, "median" | "lo" | "hi"> {
+  return { median: quantile(sorted, 0.5), lo: quantile(sorted, 0.25), hi: quantile(sorted, 0.75) };
+}
+
+/**
+ * B, the viewer's usual plate price, from the prices on their own posts
+ * (`plates`) and the median menu prices of the places they have been (`places`).
+ * Null when neither is enough: a missing B is neutral, never a guess. Plates
+ * under minPlate are dropped, then any over outlierRatio times the median of
+ * those kept; 3 or more left give B with trust min(1, kept / 6). Failing that,
+ * 3 or more known places give B at a trust of half at most. With both, B is
+ * plateInB plates and the rest places, at the plates' trust.
+ */
+export function budgetOf(plates: readonly number[], places: readonly number[]): Budget | null {
+  const c = FORME_BUDGET;
+  const kept = plates.filter((v) => Number.isFinite(v) && v >= c.minPlate).sort(ascending);
+  const cut = kept.length > 0 ? c.outlierRatio * quantile(kept, 0.5) : 0;
+  const rest = kept.filter((v) => v <= cut);
+  const fromPlates: Budget | null =
+    rest.length >= c.minPlates
+      ? { ...quartiles(rest), conf: Math.min(1, rest.length / c.platesForFull) }
+      : null;
+  const known = places.filter((v) => Number.isFinite(v) && v > 0).sort(ascending);
+  const fromPlaces: Budget | null =
+    known.length >= c.minPlaces
+      ? { ...quartiles(known), conf: Math.min(c.placeConfCap, known.length / c.platesForFull) }
+      : null;
+  if (fromPlates && fromPlaces) {
+    const w = c.plateInB;
+    const mix = (a: number, b: number) => w * a + (1 - w) * b;
+    return {
+      median: mix(fromPlates.median, fromPlaces.median),
+      lo: mix(fromPlates.lo, fromPlaces.lo),
+      hi: mix(fromPlates.hi, fromPlaces.hi),
+      conf: Math.max(fromPlates.conf, fromPlaces.conf),
+    };
+  }
+  return fromPlates ?? fromPlaces;
+}
+
+/**
+ * How well a place's price `price` fits B, 0 to 1. With x = ln(price / B): 1 inside
+ * the viewer's range (upperFloor, or half the quartile spread if wider, above;
+ * `lower` below), a fast fall above it, a slow one below it. Continuous, and
+ * defined for any positive price and B.
+ */
+export function priceFit(price: number, b: Budget): number {
+  const c = FORME_BUDGET;
+  const x = Math.log(price / b.median);
+  const upper = Math.max(c.upperFloor, 0.5 * Math.log(b.hi / b.lo));
+  if (x > upper) return Math.exp(-(((x - upper) / c.upperWidth) ** 2));
+  if (x < -c.lower) return Math.exp(-((-c.lower - x) / c.lowerWidth));
+  return 1;
+}
+
+/** The budget term in score points: 100 * 0.06 * trust * (2 fit - 1), so it runs from a penalty to a bonus. */
+export function budgetPoints(fit: number, conf: number): number {
+  return 100 * FORME_WEIGHTS.budget * conf * (2 * fit - 1);
+}
+
+/** A place in the viewer's history, as a point: an id to break ties on, and where it is. */
+export type HistoryPoint = Coords & { id: string };
+
+/** How far the viewer goes, and from where we measure it. */
+export type Radius = {
+  /** R, in miles, before any rounding. */
+  miles: number;
+  /** The least D falls to. */
+  floor: number;
+  /** History points R was read from. Under FORME_RADIUS.minPoints, R is the prior. */
+  points: number;
+  /** Where distance is measured from; null when there is neither `here` nor a history. */
+  anchor: Coords | null;
+  /** `here`: the viewer's position; `medoid`: the middle of their history. */
+  source: "here" | "medoid" | null;
+};
+
+/**
+ * The point with the smallest summed distance to the others, ties to the lower id
+ * so the same history gives the same medoid however it was ordered. One far-off
+ * trip cannot drag it, which a mean would let it. Null for none; one point is
+ * its own.
+ */
+export function medoidOf<P extends HistoryPoint>(points: readonly P[]): P | null {
+  const ordered = points.slice().sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  let best: P | null = null;
+  let bestSum = Infinity;
+  for (const a of ordered) {
+    let sum = 0;
+    for (const b of ordered) if (b !== a) sum += milesBetween(a, b);
+    if (sum < bestSum - 1e-9) {
+      best = a;
+      bestSum = sum;
+    }
+  }
+  return best;
+}
+
+/**
+ * R and the anchor. From minPoints points, R = (n * p75 + 3 * 7) / (n + 3), p75
+ * being the 75th percentile of the distances from the medoid to the other
+ * points, kept within 3 to 20 mi; fewer points leave R at 7 with the softer
+ * floor. The anchor is `here` when it is a real position, else the medoid.
+ */
+export function radiusOf(points: readonly HistoryPoint[], here?: Coords | null): Radius {
+  const c = FORME_RADIUS;
+  const medoid = medoidOf(points);
+  let miles: number = c.priorMiles;
+  let floor: number = c.floorFew;
+  if (medoid && points.length >= c.minPoints) {
+    const away = points.filter((p) => p !== medoid).map((p) => milesBetween(medoid, p)).sort(ascending);
+    const n = points.length;
+    const mix = (n * quantile(away, 0.75) + c.priorPlaces * c.priorMiles) / (n + c.priorPlaces);
+    miles = Math.min(c.maxMiles, Math.max(c.minMiles, mix));
+    floor = c.floor;
+  }
+  const standing = here && Number.isFinite(here.lat) && Number.isFinite(here.lng) ? here : null;
+  const anchor = standing ?? medoid;
+  return {
+    miles,
+    floor,
+    points: points.length,
+    anchor: anchor ? { lat: anchor.lat, lng: anchor.lng } : null,
+    source: standing ? "here" : medoid ? "medoid" : null,
+  };
+}
+
+/** D: 1 up to R, then 1 / (1 + ((d - R) / R)^2), never under the floor. Not a number: 1. */
+export function distanceFactor(miles: number, radius: number, floor: number): number {
+  if (!(miles > radius)) return 1;
+  const x = (miles - radius) / radius;
+  return Math.max(floor, 1 / (1 + x * x));
+}
+
+/**
+ * Scores every candidate, uncapped. Callers decide what to do with the result:
+ * `scoreTaste` gates, caps and interleaves it for the Your taste strip;
+ * 
+ */
+export function scoreAll(input: ScanInput): TasteScan {
+  const { restaurants, plates } = input;
+  const sig = signalsOf(input);
+  const { visitedIds, hidden, skips, effectiveLoves } = sig;
 
   // History: distinct places per cuisine / neighborhood, never per post.
   const cuisineVisits = new Map<string, number>();
   const hoodVisits = new Map<string, number>();
   let visitedWithCuisine = 0;
   for (const id of visitedIds) {
-    const r = byId.get(id)!;
+    const r = sig.byId.get(id)!;
     if (r.cuisine) {
       visitedWithCuisine++;
       cuisineVisits.set(r.cuisine, (cuisineVisits.get(r.cuisine) ?? 0) + 1);
@@ -319,8 +712,8 @@ export function scoreTaste(input: TasteInput): TasteResult {
   }
   const maxCuisine = Math.max(0, ...cuisineVisits.values());
   const maxHood = Math.max(0, ...hoodVisits.values());
-  const historyActive = visitedWithCuisine >= MIN_POSTS;
   const picksActive = effectiveLoves.size > 0;
+  const historyActive = visitedWithCuisine >= MIN_POSTS;
 
   // Friends: distinct friends per restaurant.
   const friendsAt = new Map<string, Map<string, string>>();
@@ -331,8 +724,8 @@ export function scoreTaste(input: TasteInput): TasteResult {
   }
 
   const scored: Scored[] = [];
-  for (let index = 0; index < restaurants.length; index++) {
-    const r = restaurants[index];
+  for (let i = 0; i < restaurants.length; i++) {
+    const r = restaurants[i];
     if (visitedIds.has(r.id) || hidden.has(r.id)) continue;
     if (r.cuisine && skips.has(r.cuisine)) continue;
 
@@ -351,16 +744,56 @@ export function scoreTaste(input: TasteInput): TasteResult {
     const fm = friendsAt.get(r.id);
     const names = fm ? [...fm.values()].sort((a, b) => a.localeCompare(b)) : [];
     const F = Math.min(1, names.length / WEIGHTS.friendsForFull);
-    if (!(A > 0) && !(F > 0)) continue;
-
     const N = maxHood > 0 && r.neighborhood ? (hoodVisits.get(r.neighborhood) ?? 0) / maxHood : 0;
     const Q = qualityOf(r, plates[r.id]);
-    const score =
-      100 *
-      (WEIGHTS.affinity * A + WEIGHTS.friends * F + WEIGHTS.quality * Q + WEIGHTS.neighborhood * N);
-    scored.push({ r, index, score, A, F, N, friends: names });
+    const plate = plates[r.id];
+    scored.push({
+      r,
+      index: i,
+      score: 100 * (WEIGHTS.affinity * A + WEIGHTS.friends * F + WEIGHTS.quality * Q + WEIGHTS.neighborhood * N),
+      A,
+      F,
+      Q,
+      N,
+      plate: plate?.ready && plate.percent != null ? plate.percent : -1,
+      friends: names,
+    });
   }
 
+  return {
+    scored,
+    exclude: excludedIds(sig),
+    historyActive,
+    picksActive,
+    explicitLoves: sig.explicitLoves,
+    favorite: sig.favorite,
+    effectiveLoves,
+    cuisineVisits,
+    visited: visitedIds.size,
+  };
+}
+
+/* ---------- Your taste ---------- */
+
+export function scoreTaste(input: TasteInput): TasteResult {
+  const { restaurants, plates, prefs } = input;
+  const limit = Math.max(
+    1,
+    Math.min(WEIGHTS.maxLimit, Math.floor(input.limit ?? WEIGHTS.defaultLimit)),
+  );
+
+  // The cuisine share, gated at MIN_POSTS places.
+  const scan = scoreAll({
+    restaurants,
+    plates,
+    prefs,
+    postedIds: input.postedIds,
+    favoriteCuisine: input.favoriteCuisine,
+    friendVisits: input.friendVisits,
+  });
+  const { explicitLoves, favorite, historyActive, cuisineVisits, effectiveLoves } = scan;
+
+  const scored = scan.scored.filter((s) => s.A > 0 || s.F > 0);
   scored.sort(
     (a, b) =>
       b.score - a.score || Number(!!b.r.photo) - Number(!!a.r.photo) || a.index - b.index,
@@ -410,8 +843,9 @@ export function scoreTaste(input: TasteInput): TasteResult {
   }));
 
   // Basis: what actually drove the list, never more.
-  const visited = visitedIds.size;
+  const visited = scan.visited;
   const pickCount = effectiveLoves.size;
+  const picksActive = scan.picksActive;
   let basis: TasteBasis = "none";
   if (picks.length > 0) {
     if (historyActive) basis = "history";
@@ -481,4 +915,25 @@ function buildReason(
     text: `In ${s.r.neighborhood}, where you eat`,
     short: `In ${s.r.neighborhood}`,
   };
+}
+
+/** Where a listing name stops being the name: "sweetgreen - Healthy Salads, Wraps, and Bowls". */
+const NAME_SEPARATORS = [" - ", " – ", " — ", " | ", ": "] as const;
+
+/**
+ * The part of a place's name a person would say out loud. Business listings
+ * carry a tagline or a location after the name ("Em Coffee House - Mission
+ * Valley"); cut at the first separator and keep what is before it, unless that
+ * leaves under 3 characters, when the full name is the safer thing to print.
+ */
+export function shortPlaceName(name: string): string {
+  const full = name.normalize("NFC").trim();
+  let cut = -1;
+  for (const sep of NAME_SEPARATORS) {
+    const at = full.indexOf(sep);
+    if (at >= 0 && (cut < 0 || at < cut)) cut = at;
+  }
+  if (cut < 0) return full;
+  const head = full.slice(0, cut).trim();
+  return head.length >= 3 ? head : full;
 }

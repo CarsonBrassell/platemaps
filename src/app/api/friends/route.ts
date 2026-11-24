@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getFriendIds, getPendingFriendRequests, unfriend } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { limitOrReject } from "@/lib/rateLimit";
 
 /**
  * Everything the client needs to render friend-button state across a whole
@@ -32,6 +33,14 @@ export async function DELETE(req: Request) {
   if (!user) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
   }
+
+  const limited = await limitOrReject({
+    scope: "friends-remove:user",
+    key: user.id,
+    max: 60,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
 
   let body: unknown;
   try {

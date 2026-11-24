@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Spline_Sans_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SiteAnalytics } from "@/components/SiteAnalytics";
 import { AuthProvider } from "@/lib/auth";
 import { CoachTourMount } from "@/components/tour/CoachTourMount";
 import { RequireSignIn } from "@/components/RequireSignIn";
@@ -93,6 +92,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   viewportFit: "cover",
   themeColor: "#F7F4EC",
+  /* Light only, by decision (DESIGN.md, Color). `only` also opts the pages
+     out of a browser's forced-dark rendering. */
+  colorScheme: "only light",
 };
 
 export default function RootLayout({
@@ -154,8 +156,7 @@ export default function RootLayout({
             and inside the Capacitor shell, and neither sets a cookie. Outside
             AuthProvider because they do not depend on it and should not be
             remounted by it. */}
-        <SpeedInsights />
-        <Analytics />
+        <SiteAnalytics />
       </body>
     </html>
   );

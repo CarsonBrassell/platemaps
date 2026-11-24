@@ -66,6 +66,15 @@ export const SHOT_W = Math.round((SHOT_H * 3) / 4);
 export const MAX_UPLOAD_BYTES = 2_000_000;
 
 /**
+ * Whether these bytes open like a JPEG. The upload's declared type is whatever
+ * the caller typed, so without this the public store would host any file named
+ * `.jpg`. Every JPEG starts FF D8 FF.
+ */
+export function looksLikeJpeg(head: Uint8Array): boolean {
+  return head.length >= 3 && head[0] === 0xff && head[1] === 0xd8 && head[2] === 0xff;
+}
+
+/**
  * A photo taken but not yet posted. It exists only in this browser.
  *
  * `blob` is the encoded JPEG and `previewUrl` an object URL over it, so the

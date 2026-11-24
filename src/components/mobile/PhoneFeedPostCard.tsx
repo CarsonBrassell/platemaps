@@ -14,6 +14,7 @@ import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon, CloseIcon } from "@/componen
 import { relativeTime } from "@/lib/format";
 import { vibeChip } from "@/data/reviewScales";
 import type { Post } from "@/components/feed/types";
+import { useAdminAccess } from "@/lib/auth";
 import { ReportSheet } from "@/components/feed/ReportSheet";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 
@@ -135,7 +136,7 @@ function RestaurantRef({ post, className = "" }: { post: Post; className?: strin
   return (
     <Link
       href={`/m/restaurant/${id}`}
-      className={`rounded-sm transition-colors hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${className}`}
+      className={`relative rounded-sm transition-colors after:absolute after:-inset-x-1 after:-inset-y-3.5 after:content-[''] hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${className}`}
     >
       {name}
     </Link>
@@ -176,7 +177,7 @@ function DishRef({ post, className = "" }: { post: Post; className?: string }) {
       href={post.dishId ? `/m/restaurant/${id}?dish=${post.dishId}` : `/m/restaurant/${id}`}
       /* First-run walkthrough anchor — the web card carries the same one. */
       data-coach="restaurant"
-      className={`rounded-sm transition-colors hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${className}`}
+      className={`relative rounded-sm transition-colors after:absolute after:-inset-x-1 after:-inset-y-3.5 after:content-[''] hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${className}`}
     >
       {name}
     </Link>
@@ -266,6 +267,9 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
   const trending = props.surface === "discover" && props.trending;
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const admin = useAdminAccess();
+  /** Second step of the admin's delete. Reset whenever the menu toggles. */
+  const [adminConfirm, setAdminConfirm] = useState(false);
   /*
    * Which way the options menu opens, decided per tap.
    *
@@ -441,10 +445,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
    * how the price and the points badge lost their place here. The row was
    * ~254px back when a thumbnail took the left of it, so it has more room now,
    * not a reason to refill it. */
-  const bylineTail = [
-    relativeTime(post.createdAt),
-    distance ?? post.locationLabel ?? null,
-  ].filter(Boolean) as string[];
+  const bylineTail = [relativeTime(post.createdAt)];
 
   const authorHref = isOwner ? "/m/account" : `/m/u/${post.userId}?from=feed`;
   const authorLabel = isOwner ? "View your profile" : `View ${post.authorName}'s profile`;
@@ -520,6 +521,43 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
             />
           )}
           <DoubleTapPop kind={popKind} popKey={doubleTap.popKey} />
+          {/* Poster overlay, top-left. Containers are pointer-events-none so the
+              photo keeps its taps; only the link takes them. The carousel's
+              slide counter is top-right, so the two never meet. */}
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[90px]"
+            style={{ background: "linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,0))" }}
+          />
+          <div className="pointer-events-none absolute left-3 right-16 top-3 z-10 flex">
+            <Link
+              href={authorHref}
+              aria-label={authorLabel}
+              onClick={(e) => e.stopPropagation()}
+              className="pointer-events-auto flex min-w-0 max-w-full items-center gap-[9px] rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            >
+              {post.authorAvatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={post.authorAvatarUrl}
+                  alt=""
+                  className="h-[34px] w-[34px] shrink-0 rounded-full border-[1.5px] border-white object-cover"
+                />
+              ) : (
+                <span className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-white bg-zinc-800 text-[14px] font-bold text-white">
+                  {post.authorName.trim().charAt(0).toUpperCase()}
+                </span>
+              )}
+              <span className="flex min-w-0 flex-col leading-[1.15]">
+                <span className="flex min-w-0 items-center gap-1 text-[14px] font-bold text-white [text-shadow:0_1px_3px_rgba(0,0,0,.4)]">
+                  <span className="truncate">{post.authorName}</span>
+                  <VerifiedBadge userId={post.userId} />
+                </span>
+                <span className="text-[11.5px] text-white/[.88] [text-shadow:0_1px_2px_rgba(0,0,0,.4)]">
+                  {relativeTime(post.createdAt)}
+                </span>
+              </span>
+            </Link>
+          </div>
         </div>
       )}
 
@@ -632,7 +670,16 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                       className="font-mono text-[12px] font-medium text-zinc-500"
                     />
                   )}
+                  {lineRestaurant && distance && (
+                    <span className="font-mono text-[12px] tabular-nums text-zinc-400">
+                      {" "}
+                      · {distance}
+                    </span>
+                  )}
                 </p>
+              )}
+              {!lineDish && !lineRestaurant && headline === post.restaurant && distance && (
+                <p className="font-mono text-[12px] tabular-nums text-zinc-400">{distance}</p>
               )}
             </div>
 
@@ -723,20 +770,22 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
               it. Sharing the subject line's column left it ~138px and truncated
               the distance off every card, which is the exact failure that
               comment was written about. */}
-          <p className="mt-1 truncate font-mono text-[11px] tabular-nums text-zinc-500">
-            <Link
-              href={authorHref}
-              aria-label={authorLabel}
-              /* Semibold and darker than the rest of the byline: the handle
-                 is who is talking, and it was reading as quietly as the
-                 timestamp beside it. */
-              className="rounded-sm font-semibold text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-            >
-              @{handleFor(post.authorName)}
-            </Link>
-            <VerifiedBadge userId={post.userId} className="ml-0.5" />
-            {bylineTail.length > 0 && ` · ${bylineTail.join(" · ")}`}
-          </p>
+          {!showsHero && (
+            <p className="mt-1 truncate font-mono text-[11px] tabular-nums text-zinc-500">
+              <Link
+                href={authorHref}
+                aria-label={authorLabel}
+                /* Semibold and darker than the rest of the byline: the handle
+                   is who is talking, and it was reading as quietly as the
+                   timestamp beside it. */
+                className="rounded-sm font-semibold text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+              >
+                @{handleFor(post.authorName)}
+              </Link>
+              <VerifiedBadge userId={post.userId} className="ml-0.5" />
+              {bylineTail.length > 0 && ` · ${bylineTail.join(" · ")}`}
+            </p>
+          )}
         </div>
       </div>
 
@@ -790,8 +839,9 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                  safe here, it just flips a little earlier than it must. */
               if (!menuOpen) {
                 const below = window.innerHeight - e.currentTarget.getBoundingClientRect().bottom;
-                setDropUp(below < 176);
+                setDropUp(below < (admin ? 224 : 176));
               }
+              setAdminConfirm(false);
               setMenuOpen((o) => !o);
             }}
             aria-label="Post options"
@@ -876,6 +926,25 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                     <CloseIcon className="h-4 w-4 shrink-0" />
                     Block {handleFor(post.authorName)}
                   </button>
+                  {admin && (
+                    /* Admin only (lib/adminGate.ts). Two taps, because
+                       this is someone else's post and it is not undoable. */
+                    <button
+                      role="menuitem"
+                      onClick={() => {
+                        if (!adminConfirm) {
+                          setAdminConfirm(true);
+                          return;
+                        }
+                        setMenuOpen(false);
+                        setStatus("deleted");
+                        onDelete(post.id);
+                      }}
+                      className="flex min-h-11 w-full items-center gap-2 rounded-lg px-3 text-left text-sm font-medium text-red-700"
+                    >
+                      {adminConfirm ? "Delete for good" : "Delete post (admin)"}
+                    </button>
+                  )}
                 </>
               )}
             </div>

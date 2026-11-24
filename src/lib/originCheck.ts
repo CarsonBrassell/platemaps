@@ -26,6 +26,33 @@ import type { NextRequest } from "next/server";
  */
 const CAPACITOR_ORIGINS = new Set(["capacitor://localhost", "https://localhost"]);
 
+/**
+ * True only when the browser says outright that this came from another site.
+ *
+ * Softer than `isSameOriginRequest` on purpose, because the proxy runs it on
+ * every write: a request with no `Origin` at all is left alone (only non-browser
+ * clients do that, and they carry no victim's cookie), so the rule can sit in
+ * front of the whole API without an allowlist. `SameSite=Lax` is the first
+ * line against cross-site writes; this is the second, for anything that ever
+ * loosens the first. Takes plain `Request` so the proxy can use it.
+ */
+export function isCrossSiteRequest(req: Request): boolean {
+  if (req.headers.get("sec-fetch-site") === "cross-site") return true;
+
+  const origin = req.headers.get("origin");
+  if (!origin) return false;
+  if (CAPACITOR_ORIGINS.has(origin)) return false;
+
+  // Both, because a proxy in front may rewrite Host. A browser cannot set
+  // either on a cross-site request, so accepting both opens nothing.
+  const hosts = [req.headers.get("host"), req.headers.get("x-forwarded-host")];
+  try {
+    return !hosts.includes(new URL(origin).host);
+  } catch {
+    return true; // "null", from a sandboxed frame or a data: page.
+  }
+}
+
 /** True when `req` looks like it originated from this app, not another site. */
 export function isSameOriginRequest(req: NextRequest): boolean {
   const host = req.headers.get("host");

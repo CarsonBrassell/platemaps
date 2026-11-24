@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { UPVOTE_MILESTONES } from "@/lib/points";
 import { PLATES_KEPT, ShowAllToggle, useFoldedList } from "@/components/ShowAllToggle";
-import { ChatIcon } from "@/components/icons";
+import { ChatIcon, VoteArrowUpIcon } from "@/components/icons";
+import { useAdminAccess } from "@/lib/auth";
 import { postedDate } from "@/lib/format";
 import { packBy } from "@/lib/photoShape";
 import { orderForCollage, type CollagePlate } from "@/components/feed/MealCollage";
@@ -20,31 +21,16 @@ import {
  * roll-call: the choreography that plays when you open the page and
  * reactions have landed since you last looked.
  *
- * ## The shelves
+ * ## The list
  *
- * Two sections, by status rather than by geometry:
+ * One section, **All posts**: every plate, newest first, with its count and,
+ * for dish ratings, its percent. It folds to the latest four behind a
+ * "See more" arrow so the flavor profile below is a short scroll away.
  *
- * - **New reactions** — plates that earned an upvote, comment or heart since
- *   your last visit, each wearing a badge. The badge sits ON the plate because
- *   "which plate are people reacting to?" is the actual question, and a
- *   chronological activity list never answers it at a glance. **What the badge
- *   counts is the plate's whole reaction total** — upvotes + comments + hearts,
- *   lifetime — not the delta that put the plate on this shelf; see `Badge`.
- * - **All posts** — a mini-grid of every plate, with its count and, for dish
- *   ratings, its percent. Genuinely all of them, overlapping the shelf above
- *   on purpose: the shelf is what is happening now, this is the archive, and
- *   a label reading "All posts" has to be true.
- *
- * There used to be a third, "Recent reactions": the plates you had *already*
- * seen reactions on, wearing a quieter tinted count. It is gone. Once the
- * badge started printing a lifetime total, that shelf and this one were
- * showing the same plates with the same numbers on them, separated only by a
- * fill colour and a heading — and the archive below already lists every plate
- * there is. Two shelves that differ only in shade are not two answers.
- * (It in turn replaced a milestone shelf, which could only hold plates past
- * 25/100/500 upvotes and was empty for most accounts. The milestone mark
- * still rides on the card that earned it via `UPVOTE_MILESTONES`; it has not
- * filed a shelf for two rounds now.)
+ * A "New reactions" shelf used to sit above it (and a "Recent reactions"
+ * and a milestone shelf before that). All gone as of 2026-11-17, by Calvin's
+ * call: no reactions shelf on the profile. The roll-call below still drives
+ * the points count-up; its badge fields no longer have a shelf to draw on.
  *
  * ## The roll-call (see the animation rules in globals.css)
  *
@@ -792,13 +778,23 @@ function PlateTile({
   tone,
   onOpen,
   news,
+  tab,
 }: {
   post: ShelfPost;
   tone: number;
   onOpen: () => void;
   news?: { revealed: boolean; pulsing: boolean };
+  /** The frameless card: photo to the edge, counts on a tab under it. */
+  tab?: boolean;
 }) {
   const words = isWords(post);
+  /* The tab card (the phone flavor profile). Nothing wraps the photo: it runs
+     to the tile's edge on three sides and one white tab hangs off the bottom
+     with the upvotes, the comments and the percent. Words plates keep their
+     tone block, which already has no frame. */
+  const tabbed = !!tab && !words;
+  const comments = post.comments?.length ?? 0;
+  const percent = cardPercent(post);
   /* No zero disc. A plate reaches the shelf by having unacknowledged
      activity, so the total is normally at least 1 — but if the sum ever comes
      back 0 (a heart un-hearted between the two requests, a payload without
@@ -839,7 +835,11 @@ function PlateTile({
       onClick={onOpen}
       aria-label={label}
       className={`relative w-full rounded-xl text-left transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
-        words ? "px-2.5 pb-2 pt-4" : "bg-white p-1.5 pb-1.5"
+        words
+          ? "px-2.5 pb-2 pt-4"
+          : tabbed
+            ? "overflow-hidden bg-white [&_.rounded-lg]:rounded-none"
+            : "bg-white p-1.5 pb-1.5"
       }`}
       style={words ? { background: `var(--pm-tone-${tone})` } : undefined}
     >
@@ -881,12 +881,28 @@ function PlateTile({
 
           Dropped entirely rather than rendered empty when there is nothing to
           say: an empty line still costs its leading. */}
-      {meta && (
-        <span className="mt-1 block font-mono text-[9.5px] tabular-nums text-pm-orange-text">
-          {meta}
+      {tabbed ? (
+        <span className="flex h-[34px] items-center gap-3 px-2.5 font-mono text-xs tabular-nums text-zinc-500">
+          <span className="inline-flex items-center gap-1">
+            <VoteArrowUpIcon className="h-3.5 w-3.5 shrink-0" />
+            {post.upvoteCount}
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <ChatIcon className="h-3.5 w-3.5 shrink-0" />
+            {comments}
+          </span>
+          {percent && <span className="ml-auto font-semibold text-pm-orange-text">{percent}</span>}
         </span>
+      ) : (
+        <>
+          {meta && (
+            <span className="mt-1 block font-mono text-[9.5px] tabular-nums text-pm-orange-text">
+              {meta}
+            </span>
+          )}
+          <CardActivity post={post} />
+        </>
       )}
-      <CardActivity post={post} />
     </button>
   );
 }
@@ -933,9 +949,15 @@ export function ProfileShelves({
   onCommentVoted,
   onPostVoted,
   onDelete,
+  sheetExtra,
+  tab,
 }: {
   posts: ShelfPost[];
   arrival: RollCallArrival;
+  /** Optional block for the opened plate's sheet, above its comments. */
+  sheetExtra?: (post: ShelfPost) => ReactNode;
+  /** Frameless photo tiles with a counts tab (see `PlateTile`). */
+  tab?: boolean;
   /**
    * A comment written from the detail sheet, handed up to whoever owns
    * `posts` — this component does not own that array and cannot patch it.
@@ -967,31 +989,18 @@ export function ProfileShelves({
    */
   onDelete?: (postId: string) => void;
 }) {
-  const { badgeTotals, shownBadges, pulsing, chip, delta, clearBadge } = arrival;
+  const { badgeTotals, clearBadge } = arrival;
 
-  /* Membership is frozen against the arrival's totals, not the live badge
-     state — clearing a badge must not teleport the card to another shelf
-     while you're looking at it. */
   /**
-   * One shelf and an archive.
+   * One list: every plate, newest first, folded to the latest four.
    *
-   * The shelf files on the delta and nothing else: a plate is here because
-   * something landed on it since you last looked, which is the one question a
-   * profile is opened to ask and the one thing the archive below cannot say.
-   * Everything else it might have shown — how much a plate has drawn, how
-   * recently — the cards themselves now carry, on their badge and in their
-   * meta line, so a second shelf would only be the same plates in a different
-   * order under a heading that promised more than it delivered.
-   *
-   * "All posts" is genuinely all of them, deliberately overlapping the shelf
-   * above. The shelf is a highlight reel of what is happening now; the grid is
-   * the complete archive, and a label reading "All posts" has to be true or it
-   * is worse than no label.
+   * There was a "New reactions" shelf above this, filing plates that had
+   * drawn an upvote, comment or heart since the last visit. Calvin took it
+   * out (2026-11-17): it pushed the flavor profile a long scroll down the
+   * page, and the profile should open on the posts themselves. Do not add a
+   * second shelf back above this one.
    */
-  const { fresh, all } = useMemo(
-    () => ({ fresh: posts.filter((post) => badgeTotals[post.id]), all: posts }),
-    [posts, badgeTotals]
-  );
+  const all = posts;
 
   /* Which plate is open, by id rather than by object, so the card the sheet
      is showing stays the one in `posts` as that array refreshes. */
@@ -1023,64 +1032,6 @@ export function ProfileShelves({
      * card are on white and stay `zinc-500`.
      */
     <section aria-label="Your plates" className="mb-6">
-      {fresh.length > 0 && (
-        <>
-          {/* Wraps as a unit at phone width — `justify-between` alone broke
-              "+12 SINCE LAST VISIT" across two lines mid-phrase at 390px. */}
-          <div className="mb-2.5 flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
-            {/* Ink, matching the archive label below — see the note there for
-                why the separation is carried by colour and space rather than
-                by a rule or a heavier weight. */}
-            <p className="mono-label text-zinc-900">
-              New reactions
-              {/* This chip stays the count of what is NEW — it is not the sum
-                  of the discs below, and it should not become one. It is the
-                  number attached to the words "New reactions", the number the
-                  ack keys track, and the number that goes down as you clear
-                  plates; the discs answer a different question about a
-                  different scope. The two live at different sizes precisely so
-                  they don't read as a subtotal and its parts: a small pill on
-                  a label line, versus a disc on a photo. */}
-              {chip !== null && (
-                <span className="badge-arrive ml-2 inline-flex items-center rounded-full bg-pm-orange px-2 py-px font-mono text-[10px] font-semibold tabular-nums text-[#F7F4EC]">
-                  {chip}
-                </span>
-              )}
-            </p>
-            {delta !== null && (
-              <p className="mono-label whitespace-nowrap text-pm-orange-text">
-                +{delta} since last visit
-              </p>
-            )}
-          </div>
-          {/* `shownBadges` is now a reveal schedule rather than a set of
-              numbers to print, and the stagger survives the change on purpose.
-              A count-up would not have: watching a lifetime 47 tick over is
-              a celebration of history, and the roll-call is deliberately not
-              that (see the Duolingo note in the header — ordinary events get
-              a small pop, nothing more). What the sequence performs is which
-              plates got attention, one at a time, and that is still news even
-              when the numeral on each is a standing total. Its membership is
-              still the delta; only the digits inside changed. */}
-          <Collage
-            posts={fresh}
-            className="mb-7"
-            tile={(post, tone) => (
-              <PlateTile
-                key={post.id}
-                post={post}
-                tone={tone}
-                news={{
-                  revealed: shownBadges[post.id] !== undefined,
-                  pulsing: !!pulsing[post.id],
-                }}
-                onOpen={() => open(post)}
-              />
-            )}
-          />
-        </>
-      )}
-
       {all.length > 0 && (
         <>
           {/* Section labels carry the separation, since the shape rules give
@@ -1105,7 +1056,7 @@ export function ProfileShelves({
             id="profile-archive"
             posts={archive.visible}
             tile={(post, tone) => (
-              <PlateTile key={post.id} post={post} tone={tone} onOpen={() => open(post)} />
+              <PlateTile key={post.id} post={post} tone={tone} onOpen={() => open(post)} tab={tab} />
             )}
           />
           {archive.foldable && (
@@ -1113,6 +1064,7 @@ export function ProfileShelves({
               expanded={archive.expanded}
               onChange={archive.setExpanded}
               controls="profile-archive"
+              moreLabel="See more"
             />
           )}
         </>
@@ -1128,6 +1080,7 @@ export function ProfileShelves({
           }
           onVoted={(patch) => onPostVoted?.(openPost.id, patch)}
           onDelete={onDelete && (() => onDelete(openPost.id))}
+          extra={sheetExtra?.(openPost)}
         />
       )}
     </section>
@@ -1157,6 +1110,19 @@ export function PublicProfilePlates({ posts: initialPosts }: { posts: ShelfPost[
   const [openId, setOpenId] = useState<string | null>(null);
   const openPost = openId ? (posts.find((p) => p.id === openId) ?? null) : null;
   const plates = useFoldedList(posts, PLATES_KEPT);
+  /* Someone else's profile, so the sheet only offers delete to an admin
+     (lib/adminGate.ts); the route checks the session id regardless. */
+  const admin = useAdminAccess();
+  async function adminDelete(postId: string) {
+    const snapshot = posts;
+    setPosts((prev) => prev.filter((p) => p.id !== postId));
+    try {
+      const res = await fetch(`/api/posts/${postId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("failed");
+    } catch {
+      setPosts(snapshot);
+    }
+  }
 
   if (posts.length === 0) {
     return (
@@ -1190,6 +1156,7 @@ export function PublicProfilePlates({ posts: initialPosts }: { posts: ShelfPost[
         <PlateDetailSheet
           post={openPost}
           onClose={() => setOpenId(null)}
+          onDelete={admin ? () => void adminDelete(openPost.id) : undefined}
           onCommentAdded={(comment) =>
             setPosts((prev) =>
               prev.map((p) =>

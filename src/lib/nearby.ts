@@ -11,9 +11,15 @@
  * permission prompt that appears before anyone asked for it gets denied out of
  * reflex, and a denial is sticky per origin — so the one chance at the prompt
  * is spent on the tap that explains why it's being asked.
+ *
+ * The one exception is the accounts on lib/forMeGate.ts, whose Discover cards
+ * all say how far away they are: a caller that passes `askOnLoad`
+ * (useDiscoverQuery) lets them be asked once on load, see `claimAutoAsk`.
+ * Everyone else keeps the tap, and so does every other caller.
  */
 
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useForMeAccess } from "@/lib/auth";
 
 /**
  * The geometry moved to lib/geo.ts so the server can filter on distance without
@@ -180,9 +186,51 @@ const geolocationSupported = () =>
   typeof navigator !== "undefined" && "geolocation" in navigator;
 const geolocationSupportedOnServer = () => true;
 
-export function useNearby(): Nearby {
+/*
+ * The ask on load (`askOnLoad` below) is made once per tab session, so a
+ * client navigation back to Discover, or a prompt the visitor dismissed, never
+ * puts it up again in a loop. The module flag covers this page's life; the
+ * sessionStorage mark covers a reload of the same tab. Storage can throw
+ * (private windows, blocked site data), and then the module flag alone holds.
+ */
+const AUTO_ASK_KEY = "platemaps:asked-position";
+let autoAsked = false;
+
+function claimAutoAsk(): boolean {
+  if (autoAsked) return false;
+  autoAsked = true;
+  try {
+    if (sessionStorage.getItem(AUTO_ASK_KEY)) return false;
+    sessionStorage.setItem(AUTO_ASK_KEY, "1");
+  } catch {
+    // Unreadable or unwritable: this page load still asks once.
+  }
+  return true;
+}
+
+export function useNearby({
+  askOnLoad = false,
+  askEveryone = false,
+}: {
+  askOnLoad?: boolean;
+  /** With `askOnLoad`: ask every reader, not only the lib/forMeGate.ts
+   *  accounts. The feeds pass it — a post card has no honest distance to print
+   *  until the reader's own position is known, and no tap of its own to ask on. */
+  askEveryone?: boolean;
+} = {}): Nearby {
+  const access = useForMeAccess();
   const [state, setState] = useState<Exclude<NearbyState, "unsupported">>("idle");
   const [coords, setCoords] = useState<Coords | null>(null);
+  /*
+   * Where this hook's own GPS fix stands. Written by every request (a ref
+   * change is unobservable), but read only for the accounts on
+   * lib/forMeGate.ts — nothing else consults it.
+   * The account arrives after the first render, so `access` flips and the
+   * permission effect below runs a second time; with a permission already
+   * granted, both runs would take a fix, and the second one hands back a fresh
+   * `coords` object that cancels the discover request already in flight.
+   */
+  const fix = useRef<"none" | "pending" | "done">("none");
 
   const supported = useSyncExternalStore(
     subscribeToNothing,
@@ -198,7 +246,22 @@ export function useNearby(): Nearby {
 
   const request = useCallback(() => {
     if (typeof navigator === "undefined" || !navigator.geolocation) return;
+    // A saved address already answers "where", so there is nothing to ask the
+    // browser. Read from the store rather than from `saved` below: a caller
+    // that asks on mount (useDiscoverQuery, for the dish-pick accounts) runs in the
+    // hydration pass, where the hook still reads the server's "none" and the
+    // saved address has not been picked up yet — without this it would raise
+    // a permission prompt under an address that was set to avoid one. Only for
+    // the accounts on lib/forMeGate.ts, like the callers that need it; for
+    // everyone else a request is asked of the browser as it always was.
+    if (access && getSavedLocationSnapshot()) return;
 
+    // Recorded for every caller, not just the gated accounts: the first run of
+    // the permission effect below still holds the pre-account `access` (false)
+    // in its closure, so a gate here would leave the ref at "none" for exactly
+    // the run it has to remember. Writing a ref is invisible to everyone else;
+    // only the skip in the effect is gated.
+    fix.current = "pending";
     setState("locating");
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -206,13 +269,17 @@ export function useNearby(): Nearby {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
+        fix.current = "done";
         setState("ready");
       },
       (error) => {
+        // A failed or refused fix goes back to unasked, so a later run (or the
+        // tap) can try again exactly as it always could.
+        fix.current = "none";
         setState(error.code === error.PERMISSION_DENIED ? "denied" : "failed");
       },
       {
-        // Street-level accuracy is pointless against a 5-mile radius, and the
+        // Street-level accuracy is pointless against a 3-mile radius, and the
         // high-accuracy path costs a GPS fix and seconds of waiting. A fix from
         // the last five minutes is just as good for this question.
         enableHighAccuracy: false,
@@ -220,7 +287,7 @@ export function useNearby(): Nearby {
         maximumAge: 300_000,
       },
     );
-  }, []);
+  }, [access]);
 
   /*
    * A permission already granted raises no prompt, so taking a fix on mount
@@ -228,6 +295,13 @@ export function useNearby(): Nearby {
    * first render. The doctrine above is about the *prompt*: while the browser
    * would still ask, nothing here asks — that stays on the tap (or the search)
    * that explains why.
+   *
+   * The exception is a caller that passes `askOnLoad`, for the accounts on
+   * lib/forMeGate.ts only: their Discover cards all carry a distance, so there
+   * is no tap to wait for. Once the account is known, and the Permissions API
+   * says "prompt" (or says nothing), the prompt goes up once for the tab
+   * session (`claimAutoAsk`). A blocked permission is never asked about, and a
+   * saved address never reaches this far.
    */
   useEffect(() => {
     // A saved location already answers "where" — taking a GPS fix nobody
@@ -236,21 +310,47 @@ export function useNearby(): Nearby {
     // that was never blocked.
     if (!supported || saved) return;
     const permissions = typeof navigator !== "undefined" ? navigator.permissions : undefined;
-    if (!permissions || typeof permissions.query !== "function") return;
+    // Without the permissions API there is nothing to ask; only the accounts on
+    // lib/forMeGate.ts, asked on load, have a use for the answer "prompt" it
+    // would give.
+    const everyone = askOnLoad && askEveryone;
+    if (!access && !everyone && (!permissions || typeof permissions.query !== "function")) return;
     let cancelled = false;
-    permissions
-      .query({ name: "geolocation" })
-      .then((status) => {
-        if (!cancelled && status.state === "granted") request();
-      })
-      .catch(() => {
+    void (async () => {
+      let answer: "granted" | "prompt" | "denied" = "prompt";
+      try {
+        if (permissions && typeof permissions.query === "function") {
+          answer = (await permissions.query({ name: "geolocation" })).state;
+        }
+      } catch {
         // No permissions API, or a browser that will not say — the tap still
-        // works exactly as before.
-      });
+        // works exactly as before, so it reads as "would ask".
+      }
+      if (cancelled) return;
+      // Read from the store, as `request` does: the hydration pass still sees
+      // `saved` as none, and an address set to avoid a prompt must not spend
+      // the one automatic ask.
+      const asks =
+        answer === "granted" ||
+        (answer === "prompt" &&
+          askOnLoad &&
+          (access || askEveryone) &&
+          !getSavedLocationSnapshot() &&
+          claimAutoAsk());
+      // Once the account is known and a fix is already in flight or taken
+      // (from the run before `access` flipped), a second one adds nothing.
+      if (asks && !(access && fix.current !== "none")) {
+        try {
+          request();
+        } catch {
+          // As it always was: a fix that throws on mount is swallowed.
+        }
+      }
+    })();
     return () => {
       cancelled = true;
     };
-  }, [supported, saved, request]);
+  }, [supported, saved, request, access, askOnLoad, askEveryone]);
 
   // A saved location takes precedence over GPS: it answers `coords` directly,
   // in the `"ready"` state, without ever touching the geolocation API or its

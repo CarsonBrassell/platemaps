@@ -16,6 +16,7 @@ import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import { vibeChip } from "@/data/reviewScales";
 import { ReportSheet } from "@/components/feed/ReportSheet";
 import type { Post } from "./types";
+import { useAdminAccess } from "@/lib/auth";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 /** Handle shown next to the avatar — "Maya Ellis" reads as "mayaellis". */
@@ -81,6 +82,8 @@ type SharedCardProps = {
    */
   onAddFriend?: (userId: string) => void;
   onRequireSignIn: () => void;
+  /** Miles from the viewer to the restaurant, already formatted. Absent until a position is known. */
+  distance?: string;
 };
 
 /**
@@ -127,6 +130,7 @@ export function FoodPostCard(props: FoodPostCardProps) {
     onDelete,
     onAddFriend,
     onRequireSignIn,
+    distance,
   } = props;
 
   /* Flattened out of the union once, here, rather than reached through `props`
@@ -159,6 +163,9 @@ export function FoodPostCard(props: FoodPostCardProps) {
   const trending = props.surface === "discover" && props.trending;
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const admin = useAdminAccess();
+  /** Second step of the admin's delete. Reset whenever the menu toggles. */
+  const [adminConfirm, setAdminConfirm] = useState(false);
   /* The reason sheet. Separate from `status` because opening it is not the
      same as having reported — only a 200 from /api/reports sets that. */
   const [reporting, setReporting] = useState(false);
@@ -435,27 +442,40 @@ export function FoodPostCard(props: FoodPostCardProps) {
            * second white bubble sitting on the plate. Cream rather than pure
            * white to stay in the palette, and the avatar gets the shadow as a
            * filter since text-shadow cannot reach it. */}
-          <Link
-            href={isOwner ? "/account" : `/u/${post.userId}`}
-            aria-label={`View ${post.authorName}'s profile`}
-            className="absolute left-2.5 top-2.5 flex max-w-[calc(100%-5rem)] items-center gap-2 rounded-full text-[#F7F4EC] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-          >
-            <span className="shrink-0 [filter:drop-shadow(0_1px_5px_rgba(0,0,0,0.85))]">
-              <Avatar name={post.authorName} url={post.authorAvatarUrl} bg={palette.avatarBg} />
-            </span>
-            <span className="truncate font-mono text-[13px] font-semibold [text-shadow:0_1px_7px_rgba(0,0,0,0.95),0_0_3px_rgba(0,0,0,0.7)]">
-              {handleFor(post.authorName)}
-            </span>
-            {/* Outside the truncating span, so a long handle clips its own text
-                and never the badge. */}
-            <VerifiedBadge
-              userId={post.userId}
-              className="[filter:drop-shadow(0_1px_5px_rgba(0,0,0,0.85))]"
-            />
-            {/* Plate points ride with the name, here and in the meta row — they
-                say who this is as much as the handle does. */}
-            <PointsBadge points={post.authorPoints} tone="photo" className="shrink-0" />
-          </Link>
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[90px]"
+            style={{ background: "linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,0))" }}
+          />
+          <div className="pointer-events-none absolute left-3 right-16 top-3 z-10 flex">
+            <Link
+              href={isOwner ? "/account" : `/u/${post.userId}`}
+              aria-label={`View ${post.authorName}'s profile`}
+              onClick={(e) => e.stopPropagation()}
+              className="pointer-events-auto flex min-w-0 max-w-full items-center gap-[9px] rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            >
+              {post.authorAvatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={post.authorAvatarUrl}
+                  alt=""
+                  className="h-[34px] w-[34px] shrink-0 rounded-full border-[1.5px] border-white object-cover"
+                />
+              ) : (
+                <span className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-white bg-zinc-800 text-[14px] font-bold text-white">
+                  {post.authorName.trim().charAt(0).toUpperCase()}
+                </span>
+              )}
+              <span className="flex min-w-0 flex-col leading-[1.15]">
+                <span className="flex min-w-0 items-center gap-1 text-[14px] font-bold text-white [text-shadow:0_1px_3px_rgba(0,0,0,.4)]">
+                  <span className="truncate">{post.authorName}</span>
+                  <VerifiedBadge userId={post.userId} />
+                </span>
+                <span className="text-[11.5px] text-white/[.88] [text-shadow:0_1px_2px_rgba(0,0,0,.4)]">
+                  {relativeTime(post.createdAt)}
+                </span>
+              </span>
+            </Link>
+          </div>
 
           {/* Price no longer overlays the photo — it rides in the byline at
              the foot of the card, the one position every post has whether or
@@ -591,7 +611,15 @@ export function FoodPostCard(props: FoodPostCardProps) {
                   {lineRestaurant}
                 </span>
               ))}
+            {lineRestaurant && distance && (
+              <span className="shrink-0 font-mono text-[12px] tabular-nums text-zinc-500">
+                · {distance}
+              </span>
+            )}
           </p>
+        )}
+        {!lineDish && !lineRestaurant && headline === post.restaurant && distance && (
+          <p className="mt-1.5 font-mono text-[12px] tabular-nums text-zinc-500">{distance}</p>
         )}
 
         {/* Sits with the text it expands, which is now up here. 140 characters
@@ -694,7 +722,10 @@ export function FoodPostCard(props: FoodPostCardProps) {
         <div ref={menuRef} className="relative shrink-0">
           <button
             type="button"
-            onClick={() => setMenuOpen((o) => !o)}
+            onClick={() => {
+              setAdminConfirm(false);
+              setMenuOpen((o) => !o);
+            }}
             aria-label="Post options"
             aria-expanded={menuOpen}
             aria-haspopup="menu"
@@ -758,6 +789,25 @@ export function FoodPostCard(props: FoodPostCardProps) {
                     <CloseIcon className="h-4 w-4 shrink-0" />
                     Block {handleFor(post.authorName)}
                   </button>
+                  {admin && (
+                    /* Admin only (lib/adminGate.ts). Two taps, because
+                       this is someone else's post and it is not undoable. */
+                    <button
+                      role="menuitem"
+                      onClick={() => {
+                        if (!adminConfirm) {
+                          setAdminConfirm(true);
+                          return;
+                        }
+                        setMenuOpen(false);
+                        setStatus("deleted");
+                        onDelete(post.id);
+                      }}
+                      className="flex min-h-11 w-full items-center gap-2 rounded-lg px-3 text-left text-sm font-medium text-red-700 transition-colors hover:bg-red-50"
+                    >
+                      {adminConfirm ? "Delete for good" : "Delete post (admin)"}
+                    </button>
+                  )}
                 </>
               )}
             </div>
@@ -786,9 +836,10 @@ export function FoodPostCard(props: FoodPostCardProps) {
             the byline. Mono because it is a proper name and a machine value,
             zinc-500 because this is a white card and --pm-grey-text is the
             cream-ground token. */}
-        {bylineParts.length > 0 && (
+        {/* With a photo the time is in the overlay, so only the price (if any) stays. */}
+        {(hasPhoto ? bylineParts.slice(1) : bylineParts).length > 0 && (
           <p className="mt-2.5 truncate font-mono text-xs text-zinc-500">
-            {bylineParts.join(" · ")}
+            {(hasPhoto ? bylineParts.slice(1) : bylineParts).join(" · ")}
           </p>
         )}
       </div>

@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReportButton } from "@/components/feed/ReportButton";
+import { AdminDeleteButton } from "@/components/feed/AdminDeleteButton";
 import { signInPathFor } from "@/lib/signInGate";
 import { Composer } from "@/components/feed/Composer";
 import { VotePair, type VoteDirection } from "@/components/feed/PostActions";
 import { VoteArrowUpIcon, VoteArrowDownIcon } from "@/components/icons";
 import { ShimmerImage } from "@/components/ShimmerImage";
 import { StarRating } from "@/components/StarRating";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
 import type { Comment } from "@/components/feed/types";
 import { askForPushInContext } from "@/lib/pushClient";
@@ -317,6 +319,8 @@ export function ShortPostRow({
   const [open, setOpen] = useState(false);
   /* Which comment's inline Composer is showing, if any. One at a time. */
   const [replyTo, setReplyTo] = useState<string | null>(null);
+  /* Gone after an admin delete (lib/adminGate.ts). */
+  const [removed, setRemoved] = useState(false);
 
   const myVote: VoteDirection | null = post.upvotedByMe
     ? "up"
@@ -344,6 +348,8 @@ export function ShortPostRow({
       fn(...args);
     };
   }
+
+  if (removed) return null;
 
   return (
     /* The ring is the feed card's — `ring-2 ring-pm-orange` — so arriving from
@@ -377,6 +383,7 @@ export function ShortPostRow({
           {/* A username is a machine handle, so it sets in the mono. */}
           <span className="truncate font-mono text-[13px] font-medium text-zinc-900">
             {post.authorName}
+            <VerifiedBadge userId={post.userId} className="ml-0.5" />
           </span>
           {/* Each scale renders as itself. A 0-100 plate rating and an old 1-5
               restaurant review answer different questions, and neither is ever
@@ -442,6 +449,11 @@ export function ShortPostRow({
           >
             {count === 0 ? "Reply" : `${count} ${count === 1 ? "reply" : "replies"}`}
           </button>
+          <AdminDeleteButton
+            kind="post"
+            targetId={post.id}
+            onDeleted={() => setRemoved(true)}
+          />
           <span className="ml-auto shrink-0 font-mono text-xs text-zinc-500">
             {relativeTime(post.createdAt)}
           </span>
@@ -519,6 +531,9 @@ function CommentRow({
   const { comment, replies } = node;
   const open = replyTo === comment.id;
   const { avatarBg } = avatarPalette(comment.authorName);
+  /* Gone after an admin delete, replies with it, as on the server. */
+  const [removed, setRemoved] = useState(false);
+  if (removed) return null;
 
   return (
     <li>
@@ -573,6 +588,11 @@ function CommentRow({
               authorId={comment.userId}
               currentUserId={currentUserId}
               className="min-h-11 rounded-full px-2 font-mono text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            />
+            <AdminDeleteButton
+              kind="comment"
+              targetId={comment.id}
+              onDeleted={() => setRemoved(true)}
             />
           </div>
         </div>

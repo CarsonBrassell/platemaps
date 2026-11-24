@@ -4,7 +4,9 @@ import { RestaurantPhoto, PostFirstPlate } from "@/components/RestaurantPhoto";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import { photoRatio } from "@/lib/photoShape";
 import { StarIcon } from "@/components/icons";
-import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
+import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel, type QualityNote } from "@/lib/ratingDisplay";
+import { QualityLine } from "@/components/QualityLine";
+import { ReasonText } from "@/components/ReasonText";
 import type { AspectHighlight } from "@/components/RestaurantCard";
 import { restaurantHref } from "@/lib/restaurantHref";
 
@@ -12,11 +14,15 @@ import { restaurantHref } from "@/lib/restaurantHref";
  * The card in Discover's two-across wall.
  *
  * Not the web grid's `RestaurantCard` reused at a smaller size — that one is
- * tuned for a desktop grid column and prints distance, hours and a wrapping row
- * of chips under a single-line name. This card drops all of that: a two-line
- * clamp on the name rather than a truncated one, and no distance or hours,
- * because on a screen this size they crowd the name and both are one tap away
- * on the restaurant page.
+ * tuned for a desktop grid column and prints hours and a wrapping row of chips
+ * under a single-line name. This card drops all of that: a two-line clamp on
+ * the name rather than a truncated one, and no hours, because on a screen this
+ * size they crowd the name and are one tap away on the restaurant page.
+ *
+ * Distance stays, as the one number worth the room, and only when the caller
+ * has a real one: `distance` is a label measured from the reader
+ * (lib/geo.ts's `distanceLabel`), never the seeded downtown-origin string on
+ * the restaurant, and a card without one prints nothing in its place.
  *
  * It was three across with a square photo until the wall went uneven. Three fit
  * more places on screen at the cost of making every photo small and identically
@@ -32,15 +38,35 @@ export function PhoneRestaurantCardGrid({
   matchedCuisine = false,
   aspect = null,
   distance = null,
+  reason = null,
+  reasonLines = 2,
+  quality = null,
 }: {
   restaurant: RestaurantView;
   score?: PlateScore;
   priority?: boolean;
   /**
+   * Why this card is one of Your taste picks, already worded ("Like your
+   * Pad Thai at Siam"), or null everywhere else.
+   *
+   * Three lines at most and then an ellipsis: the card is ~167px wide and the
+   * longest reason is a sentence, so an unclamped one would make the
+   * cards run to wildly different heights for a reason that is not
+   * the photo.
+   */
+  reason?: string | null;
+  /** Lines the reason may take; the dish picks (72 chars on phone) pass 3. */
+  reasonLines?: 2 | 3;
+  /**
+   * Your taste picks only: why the place is good, in words and a review count
+   * ("Highly rated · 1,017 reviews"). Never the blend number or a star.
+   */
+  quality?: QualityNote | null;
+  /**
    * How far from the visitor, already formatted ("0.8 mi"), or null when the
-   * position is not known. The card omits the seeded downtown-origin
-   * `distance` on purpose (see above); this is the one number worth the
-   * room, because it is measured from the reader.
+   * position is not known (the card then prints nothing). Pass
+   * `distanceLabel(restaurant, coords)`; the card never reads the seeded
+   * downtown-origin `restaurant.distance` itself.
    */
   distance?: string | null;
   /**
@@ -98,7 +124,7 @@ export function PhoneRestaurantCardGrid({
             carries a cold-start card and it was missing from the phone
             entirely, so the words moved to the body — where the web card has
             always kept them — and the stars took the slot. */}
-        <span className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-full bg-white/95 px-1.5 py-0.5 font-mono text-[10px] leading-none tabular-nums">
+        <span className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-full bg-white/95 px-1.5 py-0.5 font-mono text-[11px] leading-none tabular-nums">
           {score.percent !== null && (
             <span className="font-bold text-pm-orange-text">{score.percent}%</span>
           )}
@@ -106,7 +132,7 @@ export function PhoneRestaurantCardGrid({
             <>
               {score.percent !== null && <span className="text-zinc-300">·</span>}
               <span className="flex items-center gap-0.5 font-medium text-zinc-600">
-                <StarIcon className="h-2.5 w-2.5 text-zinc-400" />
+                <StarIcon className="h-2.5 w-2.5 text-zinc-500" />
                 {blendLabel(restaurant.rating)}
               </span>
             </>
@@ -129,7 +155,7 @@ export function PhoneRestaurantCardGrid({
             compare two of these ($6.90 against $21.00 for the same burrito),
             and truncating it away would leave the comparison unmade. */}
         {restaurant.matchedDish ? (
-          <p className="mt-0.5 flex items-center gap-1 text-[10px]">
+          <p className="mt-0.5 flex items-center gap-1 text-[11px]">
             <span className="truncate rounded-full bg-pm-orange-tint px-1.5 py-0.5 font-medium text-pm-orange-text">
               {restaurant.matchedDish.name}
             </span>
@@ -156,7 +182,7 @@ export function PhoneRestaurantCardGrid({
           // and the distance, which is why the card is where it is on a
           // search, survives it.
           (restaurant.cuisine || distance) && (
-            <p className="mt-0.5 flex items-center gap-1 text-[10px] text-zinc-500">
+            <p className="mt-0.5 flex items-center gap-1 text-[11px] text-zinc-500">
               {restaurant.cuisine && (
                 <span
                   className={
@@ -176,12 +202,28 @@ export function PhoneRestaurantCardGrid({
             </p>
           )
         )}
+        {/* The reason, under the name and the cuisine it qualifies. Plain grey
+            rather than the orange tint the dish and the category take: those
+            answer a question the visitor typed, this is the app's own
+            explanation, and the accent is spent on what they asked for. */}
+        {reason && (
+          <p className={`mt-1 ${reasonLines === 3 ? "line-clamp-4" : "line-clamp-2"} text-[11px] leading-snug text-zinc-600`}>
+            <ReasonText text={reason} />
+          </p>
+        )}
+        {/* Why the place is good, a step lighter than the reason above it. */}
+        {quality && (
+          <QualityLine
+            quality={quality}
+            className="mt-1 line-clamp-2 text-[11px] leading-snug text-zinc-500"
+          />
+        )}
         {/* The gap, in words, in the body — the pill on the photo is where a
             PlateMaps number goes, and the honest signal is leaving it without
             one rather than filling it with somebody else's. Spelled out so
             "we have no ratings" never reads as "rated badly". */}
         {score.percent === null && (
-          <p className="mt-1 truncate font-mono text-[9px] leading-none text-zinc-400">
+          <p className="mt-1 truncate font-mono text-[11px] leading-none text-zinc-500">
             {plateScoreLabel(score)}
           </p>
         )}
@@ -196,7 +238,7 @@ export function PhoneRestaurantCardGrid({
             works on the restaurant page is a coloured smudge. */}
         {aspect && (
           <p
-            className="mt-1 inline-flex max-w-full items-center gap-1 truncate rounded-full bg-pm-orange-tint px-1.5 py-0.5 text-[9px] font-medium leading-none text-pm-orange-text"
+            className="mt-1 inline-flex max-w-full items-center gap-1 truncate rounded-full bg-pm-orange-tint px-1.5 py-0.5 text-[11px] font-medium leading-none text-pm-orange-text"
             aria-label={`${aspect.aspect} rated ${aspect.score.toFixed(1)} out of ${ASPECT_SCALE_MAX}`}
           >
             <span className="truncate">{aspect.aspect}</span>

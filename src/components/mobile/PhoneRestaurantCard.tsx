@@ -29,11 +29,17 @@ export function PhoneRestaurantCard({
   restaurant,
   score = EMPTY_PLATE_SCORE,
   priority = false,
+  reason = null,
 }: {
   restaurant: RestaurantView;
   score?: PlateScore;
   /** Set on the first couple of cards so the fold isn't lazy-loaded. */
   priority?: boolean;
+  /**
+   * Why this card is one of Your taste picks, already worded, or null
+   * everywhere else. Two lines and an ellipsis, same as the grid card's.
+   */
+  reason?: string | null;
 }) {
   /* Who to credit, if anyone — derived from the photo's host so the label
      can never disagree with the file it sits on. Null for a diner's own
@@ -62,18 +68,18 @@ export function PhoneRestaurantCard({
         {score.percent !== null ? (
           <span className="absolute bottom-2.5 left-2.5 flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 font-mono text-sm font-bold tabular-nums text-pm-orange-text">
             {score.percent}%
-            <span className="text-[10px] font-medium text-zinc-500">
+            <span className="text-[11px] font-medium text-zinc-500">
               ({score.ratingCount.toLocaleString()})
             </span>
           </span>
         ) : (
-          <span className="absolute bottom-2.5 left-2.5 rounded-full bg-white/95 px-2.5 py-1 font-mono text-[10px] font-medium text-zinc-500">
+          <span className="absolute bottom-2.5 left-2.5 rounded-full bg-white/95 px-2.5 py-1 font-mono text-[11px] font-medium text-zinc-500">
             {plateScoreLabel(score)}
           </span>
         )}
 
         {restaurant.trending && (
-          <span className="absolute right-2.5 top-2.5 rounded-full bg-white/95 px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-700">
+          <span className="absolute right-2.5 top-2.5 rounded-full bg-white/95 px-2 py-0.5 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-700">
             Promoted
           </span>
         )}
@@ -88,7 +94,7 @@ export function PhoneRestaurantCard({
             business page without nesting anchors — same trade the grid card
             makes. */}
         {credit && (
-          <span className="absolute bottom-2.5 right-2.5 whitespace-nowrap rounded-full bg-white/85 px-1.5 py-0.5 font-mono text-[10px] text-zinc-600">
+          <span className="absolute bottom-2.5 right-2.5 whitespace-nowrap rounded-full bg-white/85 px-1.5 py-0.5 font-mono text-[11px] text-zinc-600">
             Photo: {credit}
           </span>
         )}
@@ -103,14 +109,20 @@ export function PhoneRestaurantCard({
             {restaurant.distance}
           </span>
         </div>
-        <p className="mb-3 mt-1 truncate text-[13px] text-zinc-500">
+        <p className={`${reason ? "" : "mb-3 "}mt-1 truncate text-[13px] text-zinc-500`}>
           {placeLine(restaurant.cuisine, restaurant.neighborhood)}
         </p>
+        {/* The reason sits between the place line and the pills. With one, the
+            gap above the pills moves to their row; without, the place line keeps
+            it, exactly as the card has always been. */}
+        {reason && (
+          <p className="mt-1 line-clamp-2 text-[13px] leading-snug text-zinc-600">{reason}</p>
+        )}
         {/* The pill gains a neighbour only while a dish search put this card
             here — see the note on the web card. It matters more on a phone,
             not less: the screen shows two or three results at a time, so a
             wall of identical subtitles costs more scrolling to see through. */}
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className={`${reason ? "mt-3 " : ""}flex flex-wrap items-center gap-1.5`}>
           <OpenStatePill hours={restaurant.hours} />
           {restaurant.matchedDish && (
             <span className="inline-flex min-w-0 max-w-full items-center gap-1.5 rounded-full bg-pm-orange-tint px-3 py-1.5 text-[12px] font-medium text-pm-orange-text">

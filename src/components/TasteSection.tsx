@@ -1,35 +1,85 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RestaurantCard } from "@/components/RestaurantCard";
-import { signInHrefFor } from "@/lib/signInGate";
+import { RefreshIcon } from "@/components/icons";
+import { TastePickCard } from "@/components/TastePickCard";
+import { pickDistanceLabel } from "@/lib/pickDistance";
+import { TasteChips, TasteInvite, TasteSignUp } from "@/components/TasteChips";
+import { useForMeAccess } from "@/lib/auth";
+import type { Coords } from "@/lib/geo";
+import { qualityNote } from "@/lib/ratingDisplay";
+import { usePickLog } from "@/lib/usePickLog";
 import { useTaste, type TastePick } from "@/lib/useTaste";
 
 /**
  * "Your taste": the private picks section at the top of Discover. Everything
  * it shows comes from useTaste (one scorer, one payload, so web and phone
  * cannot drift); this file only lays it out. See probe/your-taste/DESIGN.md.
+ *
+ * For the accounts on lib/forMeGate.ts the picks come from their own posted
+ * dishes (lib/dishTaste.ts), so there are no cuisine chips to tune: each card
+ * says which dish it is like, why the place is good and how far away it is, and
+ * the card with its Been here / Not for me buttons is TastePickCard. Everyone
+ * else gets the section as it was: the chips, the reason under the card, and
+ * the seeded distance.
  */
-const CHIP =
-  "inline-flex min-h-9 shrink-0 items-center rounded-full px-3.5 text-[13px] font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange disabled:opacity-40";
-const CHIP_ON = `${CHIP} bg-pm-orange text-[#F7F4EC]`;
-const CHIP_SUGGEST = `${CHIP} border border-zinc-300 bg-transparent text-pm-grey-text`;
-const CHIP_PLAIN = `${CHIP} bg-pm-grey-tint text-pm-grey-text`;
+// The buttons as they were, for everyone without the dish picks (TASTE_BTN is the
+// roomier version, in TastePickCard).
 const BTN =
   "text-[13px] font-medium text-zinc-500 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 
-const MAX_PREFS = 5;
-const INVITE_COUNT = 10;
-const SUGGEST_COUNT = 5;
+const PICKS_SHOWN = 12;
+const PICKS_UNFOLDED = 24;
 
-export function TasteSection({ cuisines }: { cuisines: string[] }) {
+/**
+ * Dish-picks accounts only: swaps the row for places not shown yet. The same
+ * mono-label text button as "See all" beside it, in --pm-grey-text because the
+ * section sits on the cream ground (zinc-500 fails there).
+ */
+export function RefreshButton({ refreshing, onRefresh }: { refreshing: boolean; onRefresh: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={refreshing ? undefined : onRefresh}
+      aria-disabled={refreshing}
+      aria-busy={refreshing}
+      title="Show new places you might like"
+      className="mono-label inline-flex min-h-9 items-center gap-1.5 text-pm-grey-text underline underline-offset-2 pointer-coarse:min-h-11 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange aria-disabled:cursor-wait"
+    >
+      <RefreshIcon className={refreshing ? "h-3.5 w-3.5 motion-safe:animate-spin" : "h-3.5 w-3.5"} />
+      Refresh
+    </button>
+  );
+}
+
+export function TasteSection({
+  cuisines,
+  coords = null,
+  served,
+}: {
+  cuisines: string[];
+  /** Where the reader is, for the distance on each pick; null when unknown. */
+  coords?: Coords | null;
+  /** Restaurant id to the distance the grid card printed, so a place reads the same in both. */
+  served?: ReadonlyMap<string, string>;
+}) {
   const taste = useTaste();
-  const pathname = usePathname() ?? "/";
+  const access = useForMeAccess();
   const [editing, setEditing] = useState(false);
   const [all, setAll] = useState(false);
   const [more, setMore] = useState(false);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const wasRefreshing = useRef(false);
+
+  // A refresh lands at the start of the row, not wherever the old one was scrolled to.
+  useEffect(() => {
+    if (wasRefreshing.current && !taste.refreshing) rowRef.current?.scrollTo({ left: 0 });
+    wasRefreshing.current = taste.refreshing;
+  }, [taste.refreshing]);
+
+  // Dish-level test only: which of these cards were really seen, and which was opened.
+  const { attach, handlers: pickHandlers } = usePickLog({ on: access, batch: taste.batch, ids: taste.picks.map((p) => p.restaurant.id), surface: "web" });
 
   if (taste.status === "loading") {
     return (
@@ -59,68 +109,37 @@ export function TasteSection({ cuisines }: { cuisines: string[] }) {
   }
 
   const { loves, skips } = taste.prefs;
-  const loveFull = loves.length >= MAX_PREFS;
-  const skipFull = skips.length >= MAX_PREFS;
-  const toggleLove = (c: string) =>
-    taste.apply({ kind: loves.includes(c) ? "unlove" : "love", value: c });
-  const toggleSkip = (c: string) =>
-    taste.apply({ kind: skips.includes(c) ? "unskip" : "skip", value: c });
-
-  const signUp = !taste.signedIn && (
-    <p className="mt-3 px-1 text-[13px] text-zinc-500">
-      <Link href={signInHrefFor(pathname, "")} className="underline underline-offset-2">
-        Sign up to keep your picks across devices
-      </Link>
-    </p>
-  );
 
   // No signal (or the fetch failed): the compact invite, never fake picks.
   if (taste.status === "error" || taste.basis === "none" || taste.picks.length === 0) {
-    const chosen = cuisines.filter((c) => loves.includes(c));
-    const rest = cuisines.filter((c) => !loves.includes(c) && !skips.includes(c));
-    const shown = more ? rest : rest.slice(0, INVITE_COUNT);
     return (
       <section aria-labelledby="your-taste" className="mb-7">
-        <div className="mb-2 flex items-baseline justify-between gap-3 px-1">
+        <div className={access && taste.signedIn ? "mb-2 flex items-center justify-between gap-3 px-1" : "mb-2 flex items-baseline justify-between gap-3 px-1"}>
           <h2 id="your-taste" className="mono-label text-zinc-500">
             Your taste
           </h2>
-        </div>
-        <p className="mb-3 px-1 text-[14px] text-pm-grey-text">
-          What do you like? Pick up to 3 and we&apos;ll start finding places.
-        </p>
-        <div className="mb-3 flex flex-wrap gap-2 px-1">
-          {[...chosen, ...shown].map((c) => (
-            <button
-              key={c}
-              type="button"
-              aria-pressed={loves.includes(c)}
-              disabled={!loves.includes(c) && loveFull}
-              onClick={() => toggleLove(c)}
-              className={loves.includes(c) ? CHIP_ON : CHIP_PLAIN}
-            >
-              {c}
-            </button>
-          ))}
-          {!more && rest.length > INVITE_COUNT && (
-            <button type="button" onClick={() => setMore(true)} className={CHIP_PLAIN}>
-              More
-            </button>
+          {access && taste.signedIn && (
+            <RefreshButton refreshing={taste.refreshing} onRefresh={taste.refresh} />
           )}
         </div>
-        <Link href="/post" className="px-1 text-[13px] text-zinc-500 underline underline-offset-2">
-          Post a plate and we&apos;ll learn where you eat
-        </Link>
-        {signUp}
+        <TasteInvite
+          cuisines={cuisines}
+          loves={loves}
+          skips={skips}
+          apply={taste.apply}
+          signedIn={taste.signedIn}
+          more={more}
+          onMore={() => setMore(true)}
+        />
       </section>
     );
   }
 
-  const suggested = cuisines
-    .filter((c) => !loves.includes(c) && !skips.includes(c))
-    .slice(0, more ? cuisines.length : SUGGEST_COUNT);
-  const picks = taste.picks.slice(0, all ? 24 : 12);
+  const picks = taste.picks.slice(0, all ? PICKS_UNFOLDED : PICKS_SHOWN);
+  // The dish picks dim while a refresh is out; the row keeps its cards rather than blanking.
+  const dim = access ? ` motion-safe:transition-opacity${taste.refreshing ? " opacity-60" : ""}` : "";
 
+  // The card as it was: the reason under it rather than in it, buttons below.
   const card = (p: TastePick, width: string) => (
     <div
       key={p.restaurant.id}
@@ -151,22 +170,45 @@ export function TasteSection({ cuisines }: { cuisines: string[] }) {
     </div>
   );
 
+  // The dish picks' card: reason, quality and distance inside it.
+  const pickCard = (p: TastePick, className: string) => (
+    <TastePickCard
+      key={p.restaurant.id}
+      restaurant={p.restaurant}
+      score={p.plateScore}
+      reason={p.reason.text}
+      reasonLines={3}
+      quality={qualityNote(p.restaurant.rating, p.restaurant.reviewCount)}
+      distance={pickDistanceLabel(p.restaurant, coords, served)}
+      shape="crop"
+      className={className}
+      onBeen={() => taste.apply({ kind: "been", value: p.restaurant.id })}
+      onHide={() => taste.apply({ kind: "hide", value: p.restaurant.id })}
+    />
+  );
+
   return (
-    <section aria-labelledby="your-taste" className="mb-7">
-      <div className="mb-3 flex items-baseline justify-between gap-3 px-1">
+    <section ref={attach} {...pickHandlers} aria-labelledby="your-taste" className="mb-7">
+      <div className={access ? "mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-1" : "mb-3 flex items-baseline justify-between gap-3 px-1"}>
         <h2 id="your-taste" className="mono-label text-zinc-500">
           Your taste
         </h2>
-        <span className="mono-label text-zinc-400">
-          {taste.header} ·{" "}
-          <button
-            type="button"
-            aria-expanded={editing}
-            onClick={() => setEditing((e) => !e)}
-            className="uppercase underline underline-offset-2"
-          >
-            Edit
-          </button>
+        <span className={access ? "mono-label text-zinc-500" : "mono-label text-zinc-400"}>
+          {taste.header}
+          {!access && (
+            <>
+              {" "}
+              ·{" "}
+              <button
+                type="button"
+                aria-expanded={editing}
+                onClick={() => setEditing((e) => !e)}
+                className="uppercase underline underline-offset-2"
+              >
+                Edit
+              </button>
+            </>
+          )}
         </span>
       </div>
 
@@ -186,79 +228,44 @@ export function TasteSection({ cuisines }: { cuisines: string[] }) {
         </div>
       )}
 
-      {editing && (
+      {editing && !access && (
         <div className="mb-4 rounded-2xl bg-white p-5">
-          <p className="mono-label mb-2 text-zinc-500">I love (up to {MAX_PREFS})</p>
-          <div className="mb-5 flex flex-wrap gap-2">
-            {cuisines.map((c) => (
-              <button
-                key={c}
-                type="button"
-                aria-pressed={loves.includes(c)}
-                disabled={skips.includes(c) || (!loves.includes(c) && loveFull)}
-                onClick={() => toggleLove(c)}
-                className={loves.includes(c) ? CHIP_ON : CHIP_PLAIN}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
-          <p className="mono-label mb-2 text-zinc-500">Not into (up to {MAX_PREFS})</p>
-          <div className="mb-5 flex flex-wrap gap-2">
-            {cuisines.map((c) => (
-              <button
-                key={c}
-                type="button"
-                aria-pressed={skips.includes(c)}
-                disabled={loves.includes(c) || (!skips.includes(c) && skipFull)}
-                onClick={() => toggleSkip(c)}
-                className={skips.includes(c) ? CHIP_ON : CHIP_PLAIN}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
+          <TasteChips
+            mode="edit"
+            cuisines={cuisines}
+            loves={loves}
+            skips={skips}
+            apply={taste.apply}
+          />
           <p className="mb-3 text-[13px] text-zinc-500">
             These only change Your taste, not the rest of Discover.
           </p>
-          <button type="button" onClick={() => taste.apply({ kind: "reset" })} className={BTN}>
+          <button
+            type="button"
+            onClick={() => taste.apply({ kind: "reset" })}
+            className={BTN}
+          >
             Reset my taste
           </button>
         </div>
       )}
 
-      <div className="mb-4 flex flex-wrap gap-2 px-1">
-        {loves.map((c) => (
-          <button
-            key={c}
-            type="button"
-            aria-pressed
-            onClick={() => toggleLove(c)}
-            className={CHIP_ON}
-          >
-            {c}
-          </button>
-        ))}
-        {suggested.map((c) => (
-          <button
-            key={c}
-            type="button"
-            aria-pressed={false}
-            disabled={loveFull}
-            onClick={() => toggleLove(c)}
-            className={CHIP_SUGGEST}
-          >
-            {c}
-          </button>
-        ))}
-        {!more && cuisines.length > SUGGEST_COUNT && (
-          <button type="button" onClick={() => setMore(true)} className={CHIP_PLAIN}>
-            More
-          </button>
-        )}
-      </div>
+      {!access && (
+        <TasteChips
+          mode="row"
+          cuisines={cuisines}
+          loves={loves}
+          skips={skips}
+          apply={taste.apply}
+          more={more}
+          onMore={() => setMore(true)}
+        />
+      )}
 
-      <div className="mb-2 flex justify-end px-1">
+      <div className={access && taste.signedIn ? "mb-2 flex items-center justify-end gap-4 px-1" : "mb-2 flex justify-end px-1"}>
+        {access && taste.signedIn && (
+          <RefreshButton refreshing={taste.refreshing} onRefresh={taste.refresh} />
+        )}
         <button
           type="button"
           aria-expanded={all}
@@ -270,15 +277,23 @@ export function TasteSection({ cuisines }: { cuisines: string[] }) {
       </div>
 
       {all ? (
-        <div className="grid grid-cols-2 items-stretch gap-4 lg:grid-cols-3 xl:grid-cols-4">
-          {picks.map((p) => card(p, "min-w-0"))}
+        <div className={`grid grid-cols-2 items-stretch gap-4 lg:grid-cols-3 xl:grid-cols-4${dim}`}>
+          {picks.map((p) => (access ? pickCard(p, "min-w-0") : card(p, "min-w-0")))}
         </div>
       ) : (
-        <div className="-mx-1 overflow-x-auto overflow-y-hidden px-1 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <div className="flex w-max items-stretch gap-4">{picks.map((p) => card(p, "w-[240px] shrink-0"))}</div>
+        <div
+          ref={rowRef}
+          className={`-mx-1 overflow-x-auto overflow-y-hidden px-1 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden${dim}`}
+        >
+          <div className="flex w-max items-stretch gap-4">
+            {picks.map((p) =>
+              access ? pickCard(p, "w-[240px] shrink-0") : card(p, "w-[240px] shrink-0"),
+            )}
+          </div>
         </div>
       )}
-      {signUp}
+
+      <TasteSignUp signedIn={taste.signedIn} />
     </section>
   );
 }

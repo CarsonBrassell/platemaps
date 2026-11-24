@@ -360,7 +360,7 @@ function cuisineBeforeRestaurant(found: Scan): boolean {
 /* --- The endpoint's answer ------------------------------------------------ */
 
 export async function suggest(raw: string): Promise<SuggestAnswer> {
-  const text = raw.trim().slice(0, MAX_QUERY);
+  const text = raw.replaceAll("\0", "").trim().slice(0, MAX_QUERY);
   const query = prepare(text);
   if (query.text.length < MIN_SUGGEST_QUERY) return { query: text, scopes: NOTHING };
 

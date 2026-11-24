@@ -33,14 +33,19 @@ const MAX_IDS = 500;
  * `/feed` and `/m/feed` ask for the few dozen they draw rather than the 10.5MB
  * of every dish in the corpus they used to pull on mount.
  *
- * The no-`ids` mode still returns the whole dish table, unchanged.
+ * `ids` is required. The no-`ids` mode returned the whole dish table, and no
+ * surface asked for it any more; all it did was let one anonymous request hold
+ * a database connection until the function timed out.
  *
  * Public: menus are public data, same as the restaurants themselves.
  */
 export async function GET(req: Request) {
   const ids = new URL(req.url).searchParams.get("ids");
-  const requested = ids ? ids.split(",").filter(Boolean) : undefined;
-  if (requested && requested.length > MAX_IDS) {
+  const requested = ids ? ids.split(",").filter(Boolean) : [];
+  if (requested.length === 0) {
+    return NextResponse.json({ error: "Name the restaurants." }, { status: 400 });
+  }
+  if (requested.length > MAX_IDS) {
     return NextResponse.json(
       { error: `Too many ids — ${MAX_IDS} at a time.` },
       { status: 400 },

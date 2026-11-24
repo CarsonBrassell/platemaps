@@ -56,11 +56,11 @@ export function InviteFriends() {
   }
 
   return (
-    <section aria-labelledby="ff-invite-title" className="ff-root mt-6 w-full max-w-sm">
+    <section aria-labelledby="ff-invite-title" className="ff-root mt-6 flex w-full max-w-sm flex-col gap-3">
       <h3 id="ff-invite-title" className="font-display text-lg font-bold leading-snug text-pm-charcoal">
         {FREE_FOOD_INVITE_HEADING}
       </h3>
-      <div className="mt-3 flex flex-col gap-2">
+      <div className="flex flex-col gap-3">
         {nums.map((v, i) => (
           <input
             key={i}
@@ -70,6 +70,7 @@ export function InviteFriends() {
             placeholder={FREE_FOOD_INVITE_PLACEHOLDER}
             aria-label={`${FREE_FOOD_INVITE_PLACEHOLDER} ${i + 1}`}
             value={v}
+            onFocus={(e) => e.currentTarget.scrollIntoView({ block: "center", behavior: "smooth" })}
             onChange={(e) => {
               setNums((n) => n.map((x, j) => (j === i ? e.target.value : x)));
               setError(false);
@@ -79,14 +80,14 @@ export function InviteFriends() {
         ))}
       </div>
       {error && (
-        <p role="alert" className="mt-2 text-sm font-semibold text-pm-orange-text">
+        <p role="alert" className="text-sm font-semibold text-pm-orange-text">
           {FREE_FOOD_INVITE_ERROR}
         </p>
       )}
       <button
         type="button"
         onClick={send}
-        className="mt-3 flex min-h-11 w-full items-center justify-center rounded-full bg-pm-orange px-5 font-mono text-sm font-semibold uppercase tracking-[0.1em] text-white transition-transform active:scale-[0.98] motion-reduce:transition-none motion-reduce:active:scale-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+        className="flex min-h-11 w-full items-center justify-center rounded-full bg-pm-orange px-5 font-mono text-sm font-semibold uppercase tracking-[0.1em] text-white transition-transform active:scale-[0.98] motion-reduce:transition-none motion-reduce:active:scale-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
       >
         {FREE_FOOD_INVITE_SEND}
       </button>
@@ -94,7 +95,7 @@ export function InviteFriends() {
         <button
           type="button"
           onClick={share}
-          className="mt-1 flex min-h-11 w-full items-center justify-center text-sm text-pm-orange-text underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+          className="flex min-h-11 w-full items-center justify-center text-sm text-pm-orange-text underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
         >
           {FREE_FOOD_INVITE_SHARE}
         </button>

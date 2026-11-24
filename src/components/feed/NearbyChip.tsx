@@ -1,6 +1,7 @@
 "use client";
 
 import { PinIcon } from "@/components/icons";
+import { NEARBY_RADIUS_MI } from "@/lib/geo";
 
 /**
  * The Nearby filter, for the Discover feed — a toggle beside
@@ -49,7 +50,7 @@ export function NearbyChip({
     <button
       type="button"
       aria-pressed={on}
-      aria-label={on ? undefined : "Only show plates within 5 mi"}
+      aria-label={on ? undefined : `Only show plates within ${NEARBY_RADIUS_MI} mi`}
       onClick={onToggle}
       className={`inline-flex h-10 min-h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full pl-0 pr-2 font-mono text-[11px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
         on ? "text-pm-orange-text" : "text-pm-grey-text hover:text-zinc-900"

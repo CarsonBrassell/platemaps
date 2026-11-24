@@ -12,6 +12,8 @@ import {
   updatePasswordHash,
 } from "@/lib/db";
 import { checkPassword } from "@/lib/password";
+import { clientIp } from "@/lib/loginThrottle";
+import { limitOrReject } from "@/lib/rateLimit";
 import { hashToken } from "@/lib/tokens";
 
 /**
@@ -33,6 +35,14 @@ import { hashToken } from "@/lib/tokens";
  * demonstrated it can receive mail should not still be told to go and prove it.
  */
 export async function POST(req: Request) {
+  const limited = await limitOrReject({
+    scope: "reset:ip",
+    key: clientIp(req),
+    max: 20,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
+
   let token: unknown;
   let password: unknown;
   try {

@@ -1,23 +1,34 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { FilterControls, FilterRail, QuickFilterChips } from "@/components/DiscoverFilters";
-import { RestaurantCard } from "@/components/RestaurantCard";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  DiscoverModeButtons,
+  FilterControls,
+  FilterRail,
+  QuickFilterChips,
+} from "@/components/DiscoverFilters";
+import { RestaurantCard, type MatchMarks } from "@/components/RestaurantCard";
 import { OurPicks } from "@/components/OurPicks";
+import { servedDistances } from "@/lib/pickDistance";
 import { TasteSection } from "@/components/TasteSection";
+import { TastePicksGrid } from "@/components/TastePicksGrid";
 import { Dialog } from "@/components/feed/Dialog";
 import {
   NO_FILTERS,
   PAGE_SIZE,
   activeFilterCount,
+  hasFilterParams,
   matchMarksFor,
   searchFromFilters,
   type DiscoverFilters,
   type QueryScope,
   type QuickFilter,
 } from "@/lib/discoverFilters";
+import { useForMeAccess } from "@/lib/auth";
+import { setDiscoverModes, useDiscoverModes } from "@/lib/discoverModes";
+import { distanceLabel } from "@/lib/geo";
 import { useDiscoverQuery } from "@/lib/useDiscoverQuery";
-import type { DiscoverPage } from "@/lib/discover";
+import type { DiscoverPage, DiscoverResult } from "@/lib/discover";
 import { packColumns } from "@/lib/photoShape";
 import type { PriceBand } from "@/data/priceBands";
 
@@ -75,6 +86,49 @@ function useColumnCount() {
 }
 
 /**
+ * What a card should light up for the filters in effect: the cuisine,
+ * neighbourhood and price the grid was narrowed to, plus the score in the
+ * "rated well for" category. Shared by the plain grid and the Your taste row so a
+ * filter reads the same on either.
+ */
+function marksFor(restaurant: DiscoverResult, filters: DiscoverFilters): MatchMarks {
+  return {
+    ...matchMarksFor(restaurant, filters),
+    aspect:
+      filters.aspect && restaurant.aspectScore !== undefined
+        ? {
+            aspect: filters.aspect,
+            score: restaurant.aspectScore.score,
+            praised: restaurant.aspectScore.praised,
+          }
+        : null,
+  };
+}
+
+function ShowMoreButton({
+  left,
+  pending,
+  onClick,
+}: {
+  left: number;
+  pending: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <div className="mt-6 flex justify-center">
+      <button
+        type="button"
+        onClick={onClick}
+        disabled={pending}
+        className="min-h-11 rounded-full bg-white px-6 text-[13px] font-medium text-zinc-700 transition-colors hover:text-zinc-900 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+      >
+        {pending ? "Loading…" : `Show more (${left} left)`}
+      </button>
+    </div>
+  );
+}
+
+/**
  * Discover's controls and grid.
  *
  * This component used to own the filter state, hold every restaurant, and do
@@ -100,10 +154,26 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
    * stays on screen, which is what the old `useTransition` bought and what
    * stops a filter click reading as jank.
    */
-  const { view, pending, viewKey, nearby, navigate } = useDiscoverQuery(initial, "/");
+  const {
+    view,
+    pending,
+    viewKey,
+    nearby,
+    navigate,
+  } = useDiscoverQuery(initial, "/");
   const { filters, results, counts, options, picks, total, shown } = view;
   const active = activeFilterCount(filters);
-
+  /* A distance from the reader on every card, Our picks included, is for the
+     accounts on lib/forMeGate.ts. For everyone else this is the page it was. */
+  const access = useForMeAccess();
+  /* The grid's own distance labels, so a place in both the grid and a strip
+     above it reads the same figure in both (lib/pickDistance.ts). */
+  const served = useMemo(() => (access ? servedDistances(results) : undefined), [access, results]);
+  const modes = useDiscoverModes();
+  /* Nearby is on but there is no position yet: say so, once. */
+  const findingPosition = modes.near && !nearby.coords;
+  const positionLost =
+    nearby.state === "denied" || nearby.state === "failed" || nearby.state === "unsupported";
   /**
    * Navigate to a new set of filters.
    *
@@ -112,7 +182,9 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
    * it would silently make the next query heavier than a first page.
    */
   const apply = useCallback(
-    (next: DiscoverFilters) => navigate(searchFromFilters(window.location.search, next), null),
+    (next: DiscoverFilters) => {
+      navigate(searchFromFilters(window.location.search, next), null);
+    },
     [navigate],
   );
 
@@ -126,11 +198,15 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
    * results are about to carry how far away each one is. Not on a bare
    * landing — a prompt before the visitor has done anything is the wrong first
    * impression. The prompt itself goes up in lib/nearby.ts.
+   *
+   * For the accounts on lib/forMeGate.ts the ask is made in useDiscoverQuery
+   * instead (once on load, and again for a filter), so every card has a
+   * distance without anything to tap.
    */
   const requestLocation = nearby.request;
   useEffect(() => {
-    if (active > 0 && !nearby.coords && nearby.state === "idle") requestLocation();
-  }, [active, nearby.coords, nearby.state, requestLocation]);
+    if (!access && active > 0 && !nearby.coords && nearby.state === "idle") requestLocation();
+  }, [access, active, nearby.coords, nearby.state, requestLocation]);
 
   /*
    * Move focus to the results heading once a navigation actually lands.
@@ -203,6 +279,18 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
     apply(NO_FILTERS);
   }
 
+  /* The For me / Nearby buttons (the one account that has them). Turning one on
+     while any filter is on clears the filters first, in the same tick, so the
+     two are never both on; turning one off just flips it. */
+  function toggleMode(key: "picks" | "near") {
+    const on = !modes[key];
+    if (on) {
+      if (key === "near" && !nearby.coords) nearby.request();
+      if (active > 0 || hasFilterParams(window.location.search)) apply(NO_FILTERS);
+    }
+    setDiscoverModes({ [key]: on });
+  }
+
   // Drops the text term and keeps every filter — the two are separate choices
   // and a search made inside a cuisine shouldn't take the cuisine with it when
   // it goes.
@@ -220,6 +308,23 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
   function clearDish() {
     apply({ ...filters, dish: null });
   }
+
+  const modeButtons = modes.access ? (
+    <DiscoverModeButtons
+      picks={modes.picks}
+      near={modes.near}
+      onPicks={() => toggleMode("picks")}
+      onNear={() => toggleMode("near")}
+    />
+  ) : null;
+  const modeStatus =
+    modes.access && findingPosition ? (
+      <p role="status" className="w-full basis-full px-1 text-[12px] text-pm-grey-text">
+        {positionLost
+          ? "Can’t get your location. Add an address in Filters."
+          : "Finding where you are…"}
+      </p>
+    ) : null;
 
   const nearbyProps = {
     state: nearby.state,
@@ -261,15 +366,26 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
           )}
         </button>
 
+        {modeButtons}
+
         <QuickFilterChips
           quick={filters.quick}
           counts={counts.quick}
           onQuick={toggleQuick}
         />
       </div>
+      {modeStatus && <div className="pb-1 lg:hidden">{modeStatus}</div>}
 
       <div className="flex flex-col gap-6 py-4 lg:flex-row lg:gap-8">
         <FilterRail
+          modes={
+            modes.access ? (
+              <>
+                {modeButtons}
+                {modeStatus}
+              </>
+            ) : undefined
+          }
           filters={filters}
           counts={counts}
           neighborhoods={options.neighborhoods}
@@ -304,9 +420,25 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
         <main className="min-w-0 flex-1 lg:-mt-[25.2px]">
           {/* Picks are a curated strip, not a search result — they stay put
               while a filter is on rather than disappearing. */}
-          {active === 0 && <TasteSection cuisines={initial.options.cuisines.map((o) => o.value)} />}
-          {active === 0 && <OurPicks picks={picks} />}
+          {active === 0 && !modes.access && (
+            <TasteSection
+              cuisines={initial.options.cuisines.map((o) => o.value)}
+              coords={nearby.coords}
+              served={served}
+            />
+          )}
+          {/* The reader's distance on the two promoted places, for the accounts
+              on lib/forMeGate.ts; null prints nothing for everyone else. */}
+          {active === 0 && !modes.picks && !modes.near && <OurPicks picks={picks} coords={access ? nearby.coords : null} served={served} />}
 
+          {modes.picks ? (
+            <TastePicksGrid
+              nearOn={modes.near}
+              coords={nearby.coords}
+              waiting={findingPosition && !positionLost}
+              served={served}
+            />
+          ) : (
           <section aria-labelledby="all-restaurants">
             <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-1">
               {/* A searched term becomes the heading, because it is what the
@@ -374,15 +506,19 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
             {results.length === 0 ? (
               <div className="rounded-2xl bg-white px-6 py-12 text-center">
                 <p className="text-sm font-medium text-zinc-900">
-                  {filters.dish
+                  {modes.near && active === 0
+                    ? "Nothing within 5 miles of you."
+                    : filters.dish
                     ? `No menus list “${filters.dish}”`
                     : filters.q
                       ? `Nothing matches “${filters.q}”`
                       : "Nothing matches those filters"}
                 </p>
+                {!(modes.near && active === 0) && (
                 <p className="mx-auto mt-1 max-w-xs text-[13px] text-zinc-500">
                   {emptyHint}
                 </p>
+                )}
                 {/* Clears the narrower thing. With a filter also on it is
                     genuinely ambiguous which of the two emptied the grid, and
                     dropping the search first leaves the visitor inside the
@@ -390,6 +526,7 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
                     of the city. The dish goes before the search for the same
                     reason it goes before it in `matchesFilters`: an exact menu
                     match is the narrowest thing on the page. */}
+                {!(modes.near && active === 0) && (
                 <button
                   type="button"
                   onClick={
@@ -403,6 +540,7 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
                       ? "Clear search"
                       : "Clear filters"}
                 </button>
+                )}
               </div>
             ) : (
               <>
@@ -427,17 +565,8 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
                       restaurant={restaurant}
                       shape="natural"
                       score={restaurant.plateScore}
-                      match={{
-                        ...matchMarksFor(restaurant, filters),
-                        aspect:
-                          filters.aspect && restaurant.aspectScore !== undefined
-                            ? {
-                                aspect: filters.aspect,
-                                score: restaurant.aspectScore.score,
-                                praised: restaurant.aspectScore.praised,
-                              }
-                            : null,
-                      }}
+                      match={marksFor(restaurant, filters)}
+                      distance={access ? distanceLabel(restaurant, nearby.coords) : undefined}
                     />
                       ))}
                     </div>
@@ -447,20 +576,12 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
                 {/* Only when there is genuinely more. The count beside it is
                     what makes this a decision rather than a guess. */}
                 {total > shown && (
-                  <div className="mt-6 flex justify-center">
-                    <button
-                      type="button"
-                      onClick={showMore}
-                      disabled={pending}
-                      className="min-h-11 rounded-full bg-white px-6 text-[13px] font-medium text-zinc-700 transition-colors hover:text-zinc-900 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-                    >
-                      {pending ? "Loading…" : `Show more (${total - shown} left)`}
-                    </button>
-                  </div>
+                  <ShowMoreButton left={total - shown} pending={pending} onClick={showMore} />
                 )}
               </>
             )}
           </section>
+          )}
         </main>
       </div>
 
@@ -492,6 +613,7 @@ export function DiscoverBrowser({ initial }: { initial: DiscoverPage }) {
         >
           <div className="px-5 py-4">
             <FilterControls
+              hideNearbyToggle={modes.access}
               filters={filters}
               counts={counts}
               neighborhoods={options.neighborhoods}

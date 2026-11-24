@@ -5,6 +5,7 @@
      The accent has two voices: --pm-orange for fills, selected states and
      large display numerals (4.26:1 on white — large text only), and
      --pm-orange-text for orange type at body sizes (5.8:1, passes 4.5:1). */
+  color-scheme: only light; /* light only by decision, no dark theme: DESIGN.md, Color */
   --background: #f7f4ec;
   --foreground: #232019;
   --pm-charcoal: #232019;
@@ -476,8 +477,11 @@ h3 {
   overflow: hidden;
 }
 
+/* 44px is Apple's minimum tap target; MapLibre's default is 29px (HIG #5). */
 .map-fun-tiles .maplibregl-ctrl-group button {
   background: #1d2126 !important;
+  width: 44px;
+  height: 44px;
 }
 
 .map-fun-tiles .maplibregl-ctrl-group button + button {

@@ -273,6 +273,21 @@ export function moderateUsername(input: string): ModerationVerdict {
   return verdict;
 }
 
+/** Names that would read as the app itself talking. Punctuation doesn't help. */
+const RESERVED_USERNAMES = new Set([
+  "admin", "administrator", "mod", "moderator", "support", "help", "staff", "team",
+  "official", "security", "system", "root", "owner", "founder", "verified",
+]);
+
+export const RESERVED_USERNAME_MESSAGE = "That username is reserved. Pick another.";
+
+/** True for a handle that could pass as PlateMaps staff. New names only: no
+    existing account is renamed by this. */
+export function isReservedUsername(input: string): boolean {
+  const name = input.toLowerCase().replace(/_/g, "");
+  return RESERVED_USERNAMES.has(name) || name.includes("platemap");
+}
+
 /**
  * The regression list, exported so `npm run moderation:check` can assert it.
  *

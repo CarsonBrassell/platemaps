@@ -1,15 +1,15 @@
-import { getPosts } from "@/lib/db";
+import { getDiscoverFeed } from "@/lib/db";
 import { MapPhotoOptions, type SamplePost } from "./MapPhotoOptions";
 
 /**
  * DRAFT — three ways a map bubble could show its photo, side by side, using
- * real public posts (getPosts with no viewer, so the photo gate still applies).
+ * real public posts (getDiscoverFeed with no viewer, so the photo gate still applies).
  * Deleting this folder removes it; nothing else imports it.
  */
 export const dynamic = "force-dynamic";
 
 export default async function MapPhotosDraft() {
-  const posts = await getPosts(null);
+  const { posts } = await getDiscoverFeed(null, 30);
   const toSample = (p: (typeof posts)[number]): SamplePost => ({
     id: p.id,
     dish: p.dishName ?? p.restaurant ?? "",

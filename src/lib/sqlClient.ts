@@ -98,6 +98,11 @@ function localClient(connectionString: string) {
     then<T>(onOk?: ((rows: Record<string, unknown>[]) => T) | null, onErr?: ((e: unknown) => T) | null) {
       return run(this.text, this.params).then(onOk, onErr);
     }
+    /* Fire-and-forget housekeeping calls `.catch` without awaiting. Neon's
+       result has it, so the shim needs it too. */
+    catch<T>(onErr: (e: unknown) => T) {
+      return run(this.text, this.params).catch(onErr);
+    }
   }
 
   const build = (strings: TemplateStringsArray, values: unknown[]) => {

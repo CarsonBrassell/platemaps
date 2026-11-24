@@ -2,6 +2,8 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { getDiscoverFeed } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { clientIp } from "@/lib/loginThrottle";
+import { limitOrReject } from "@/lib/rateLimit";
 import { parseFeedSort } from "@/lib/feedSort";
 import { resolvePostRefs } from "@/lib/discover";
 import { decodeCursor, encodeCursor, parseFeedLimit } from "@/lib/feedCursor";
@@ -10,7 +12,7 @@ import type { Coords } from "@/lib/geo";
 
 /**
  * The public feed — everyone, unfiltered by friendship. `?sort=trending`
- * (default) ranks by net votes over a steep time decay; `?sort=new` is
+ * ranks by net votes over a steep time decay; `?sort=new` (default) is
  * strictly newest-first. Either ordering can additionally be narrowed to
  * posts within `NEARBY_RADIUS_MI` of a position the caller supplies — the
  * Nearby filter chip, not a third sort — by POSTing `{ coords }`. See
@@ -18,10 +20,10 @@ import type { Coords } from "@/lib/geo";
  * photo-privacy stripping; `discoverFeed` below is the thin pass-through
  * shared by GET and POST so that logic exists in exactly one place.
  *
- * An unrecognised sort falls back to trending rather than 400-ing —
+ * An unrecognised sort falls back to the default (new) rather than 400-ing —
  * `parseFeedSort` is what narrows it, and it is the only thing allowed to
  * turn a query string into an ordering. (That includes a stale
- * `?sort=nearby` from before Nearby became a filter — it lands on trending
+ * `?sort=nearby` from before Nearby became a filter — it lands on the default
  * rather than erroring.)
  *
  * Paged by cursor (probe/PERF-PLAN.md S5): the answer carries `nextCursor`,
@@ -73,6 +75,14 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const limited = await limitOrReject({
+    scope: "feed-nearby:ip",
+    key: clientIp(req),
+    max: 240,
+    windowMinutes: 10,
+  });
+  if (limited) return limited;
+
   let body: unknown;
   try {
     body = await req.json();

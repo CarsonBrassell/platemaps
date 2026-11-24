@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { BrandMark, WordMark } from "@/components/BrandMark";
 import { PhoneDiscoverSearch } from "@/components/mobile/PhoneDiscoverSearch";
 import { PhoneFilterBar } from "@/components/mobile/PhoneFilterBar";
@@ -11,13 +12,20 @@ import type {
 import { PhoneStickyBar } from "@/components/mobile/PhoneStickyBar";
 import { PhoneDiscoverResults } from "@/components/mobile/PhoneDiscoverResults";
 import { PhoneTasteSection } from "@/components/mobile/PhoneTasteSection";
+import { PhoneTastePicks } from "@/components/mobile/PhoneTastePicks";
+import { useForMeAccess } from "@/lib/auth";
+import { setDiscoverModes, useDiscoverModes } from "@/lib/discoverModes";
 import type { DiscoverPage } from "@/lib/discover";
 import {
   PAGE_SIZE,
   QUICK_FILTERS,
   activeFilterCount,
+  NO_FILTERS,
+  hasFilterParams,
+  searchFromFilters,
   type FacetOption,
 } from "@/lib/discoverFilters";
+import { servedDistances } from "@/lib/pickDistance";
 import { useDiscoverQuery } from "@/lib/useDiscoverQuery";
 
 /**
@@ -29,8 +37,37 @@ import { useDiscoverQuery } from "@/lib/useDiscoverQuery";
  * navigation up through DiscoverQuerySync rather than re-rendering the route.
  */
 export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
-  const { view, pending, viewKey, search, raw, nearby } = useDiscoverQuery(initial, "/m");
+  const { view, pending, viewKey, search, raw, nearby, navigate } = useDiscoverQuery(initial, "/m");
   const { filters, counts, options } = view;
+  /* The grid's own distance labels for the taste row, for the accounts on
+     lib/forMeGate.ts, so one place never shows two figures. */
+  const access = useForMeAccess();
+  const served = useMemo(
+    () => (access ? servedDistances(view.results) : undefined),
+    [access, view.results],
+  );
+
+  /* The For me / Nearby buttons: one account only (lib/forMeGate.ts). Their state
+     lives in lib/discoverModes.ts, never in the URL. Turning one on while filters
+     are applied clears the filters in the same tick, so the two are never both on. */
+  const modes = useDiscoverModes();
+  const modesOn = modes.access;
+  const showPicks = modesOn && modes.picks;
+  const locating = nearby.state === "idle" || nearby.state === "locating";
+  const noPosition = modesOn && modes.near && !nearby.coords;
+  const toggle = (next: { picks?: boolean; near?: boolean }) => {
+    if (hasFilterParams(search)) navigate(searchFromFilters(raw, NO_FILTERS), null);
+    if (next.near && !nearby.coords) nearby.request();
+    setDiscoverModes(next);
+  };
+  const modeToggles = modesOn
+    ? {
+        picks: modes.picks,
+        near: modes.near,
+        onPicks: () => (modes.picks ? setDiscoverModes({ picks: false }) : toggle({ picks: true })),
+        onNear: () => (modes.near ? setDiscoverModes({ near: false }) : toggle({ near: true })),
+      }
+    : undefined;
 
   /* `?nav=` selects a nav variant on the phone; it rides along on every link
      the page builds but must never reach the filter parser, so the hook
@@ -236,9 +273,11 @@ export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
           {heading}
         </h1>
         {/* Machine value, so mono — the count is generated, not written. */}
-        <p className="mt-1 font-mono text-xs tabular-nums text-pm-grey-text">
-          {view.total.toLocaleString()} {view.total === 1 ? "place" : "places"}
-        </p>
+        {!showPicks && (
+          <p className="mt-1 font-mono text-xs tabular-nums text-pm-grey-text">
+            {view.total.toLocaleString()} {view.total === 1 ? "place" : "places"}
+          </p>
+        )}
       </header>
 
       {/* Search above the filters, because a name is the question most people
@@ -250,22 +289,46 @@ export function PhoneDiscoverScreen({ initial }: { initial: DiscoverPage }) {
       <PhoneStickyBar className="pt-1">
         <div className="flex flex-col gap-2.5 px-4 pb-4">
           <PhoneDiscoverSearch value={filters.q ?? ""} />
-          <PhoneFilterBar model={model} />
+          <PhoneFilterBar model={model} modes={modeToggles} />
+          {noPosition && (
+            <p role="status" className="text-xs text-pm-grey-text">
+              {locating
+                ? "Finding where you are…"
+                : "Can't get your location. Add an address in Filters."}
+            </p>
+          )}
         </div>
       </PhoneStickyBar>
 
-      {chips.length === 0 && !filters.q && (
-        <PhoneTasteSection cuisines={initial.options.cuisines.map((o) => o.value)} />
+      {!modesOn && chips.length === 0 && !filters.q && (
+        <PhoneTasteSection
+          cuisines={initial.options.cuisines.map((o) => o.value)}
+          coords={nearby.coords}
+          served={served}
+        />
       )}
 
-      <PhoneDiscoverResults
-        view={view}
-        pending={pending}
-        viewKey={viewKey}
-        clearHref={clearHref}
-        moreHref={hrefWith({ shown: String(view.shown + PAGE_SIZE) })}
-        nearby={nearby}
-      />
+      {showPicks ? (
+        <PhoneTastePicks
+          coords={nearby.coords}
+          served={served}
+          near={modes.near}
+          wait={noPosition && locating}
+          lost={noPosition && !locating}
+        />
+      ) : (
+        <PhoneDiscoverResults
+          view={view}
+          pending={pending}
+          viewKey={viewKey}
+          clearHref={clearHref}
+          moreHref={hrefWith({ shown: String(view.shown + PAGE_SIZE) })}
+          nearby={nearby}
+          emptyTitle={
+            modesOn && modes.near && nearby.coords ? "Nothing within 5 miles of you." : undefined
+          }
+        />
+      )}
     </div>
   );
 }

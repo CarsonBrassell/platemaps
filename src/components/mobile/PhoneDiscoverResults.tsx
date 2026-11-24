@@ -3,7 +3,9 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
+import { useForMeAccess } from "@/lib/auth";
 import { matchMarksFor } from "@/lib/discoverFilters";
+import { distanceLabel } from "@/lib/geo";
 import type { DiscoverPage } from "@/lib/discover";
 import { packColumns } from "@/lib/photoShape";
 import type { Nearby } from "@/lib/nearby";
@@ -23,7 +25,10 @@ export function PhoneDiscoverResults({
   clearHref,
   moreHref,
   nearby,
+  emptyTitle,
 }: {
+  /** Replaces the empty state's copy (and drops its "Clear filters" link): the Nearby button's own empty answer. */
+  emptyTitle?: string;
   view: DiscoverPage;
   pending: boolean;
   viewKey: string;
@@ -41,17 +46,22 @@ export function PhoneDiscoverResults({
   nearby: Nearby;
 }) {
   const { filters } = view;
+  /* The distance on a card is for the accounts on lib/forMeGate.ts; everyone
+     else gets the grid it was. */
+  const access = useForMeAccess();
 
   /* Ask for a position once the reader has narrowed the grid at all: a
      "Nearby" filter needs it outright, and any other filter is a sign they
      are choosing, which is when a distance on each card earns its place. Not
      on a bare landing — a permission prompt before the visitor has done
-     anything is the wrong first impression. */
+     anything is the wrong first impression. (For the accounts on
+     lib/forMeGate.ts the ask is made in useDiscoverQuery, on load and again
+     for a filter, so every card can say how far away it is.) */
   const active = Object.values(filters).filter((v) => (Array.isArray(v) ? v.length : v)).length;
   const requestLocation = nearby.request;
   useEffect(() => {
-    if (active > 0 && !nearby.coords && nearby.state === "idle") requestLocation();
-  }, [active, nearby.coords, nearby.state, requestLocation]);
+    if (!access && active > 0 && !nearby.coords && nearby.state === "idle") requestLocation();
+  }, [access, active, nearby.coords, nearby.state, requestLocation]);
 
   /* Move focus to the results once a navigation lands (not on mount), so a
      screen reader announces the new grid rather than staying on the chip. */
@@ -79,8 +89,9 @@ export function PhoneDiscoverResults({
             filter emptied the grid — `?dish=` is an equality on menu wording
             (dishesNamedExactly in lib/db.ts), so nothing else got a vote. */}
         <p className="font-display text-lg text-zinc-900">
-          {filters.dish ? `No menus list “${filters.dish}”` : "Nothing matches that"}
+          {emptyTitle ?? (filters.dish ? `No menus list “${filters.dish}”` : "Nothing matches that")}
         </p>
+        {emptyTitle === undefined && (<>
         {/* Otherwise points at the sheet rather than guessing: every row in
             there prints what it would return, and the ones reading 0 are the
             ones ruling everything out. */}
@@ -95,6 +106,7 @@ export function PhoneDiscoverResults({
         >
           Clear filters
         </Link>
+        </>)}
       </div>
     );
   }
@@ -126,8 +138,17 @@ export function PhoneDiscoverResults({
                 matchedCuisine={matchMarksFor(restaurant, filters).cuisine}
                 /* `distance` is the downtown-origin string on an unlocated
                    page, and this card has never printed that — `milesAway` is
-                   only ever set beside a distance measured from the reader. */
-                distance={restaurant.milesAway !== undefined ? restaurant.distance : null}
+                   only ever set beside a distance measured from the reader.
+                   The accounts on lib/forMeGate.ts get the server's figure
+                   when the page was built for a position, else measured here
+                   from the reader's coordinates, else nothing. */
+                distance={
+                  access
+                    ? distanceLabel(restaurant, nearby.coords)
+                    : restaurant.milesAway !== undefined
+                      ? restaurant.distance
+                      : null
+                }
                 /* Only a restaurant that actually scored in the filtered
                    category — `getDiscoverPage` attaches `aspectScore` under
                    exactly those conditions. */

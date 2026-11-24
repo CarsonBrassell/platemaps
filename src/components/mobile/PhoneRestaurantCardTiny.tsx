@@ -37,12 +37,12 @@ export function PhoneRestaurantCardTiny({
           fallback={null}
         />
         {score.percent !== null && (
-          <span className="absolute bottom-1 left-1 rounded bg-white/95 px-1 py-px font-mono text-[9px] font-bold leading-tight tabular-nums text-pm-orange-text">
+          <span className="absolute bottom-1 left-1 rounded bg-white/95 px-1 py-px font-mono text-[11px] font-bold leading-tight tabular-nums text-pm-orange-text">
             {score.percent}%
           </span>
         )}
       </div>
-      <p className="truncate px-0.5 pb-1 pt-1 text-center text-[10px] font-medium leading-tight text-zinc-800">
+      <p className="truncate px-0.5 pb-1 pt-1 text-center text-[11px] font-medium leading-tight text-zinc-800">
         {restaurant.name}
       </p>
     </Link>

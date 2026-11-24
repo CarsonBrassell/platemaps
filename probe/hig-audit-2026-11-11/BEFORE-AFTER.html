@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HIG Visual Fixes</title>
+<style>
+:root{--bg:#F7F4EC;--card:#fff;--ink:#18181b;--mut:#52525b;--acc:#A8481A;--tag:#efe9dc}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 64px}
+h1{font:700 28px/1.2 Georgia,serif;margin:0 0 6px}
+.lede{color:var(--mut);margin:0 0 28px}
+section{background:var(--card);border-radius:16px;padding:20px;margin-bottom:20px}
+h2{font:700 19px/1.3 Georgia,serif;margin:0 0 4px}
+h2 span{font:600 13px ui-monospace,monospace;color:var(--acc);margin-right:8px}
+p{margin:4px 0 10px}
+.files{font:12px ui-monospace,monospace;color:var(--mut)}
+.tag{display:inline-block;font:600 11px ui-monospace,monospace;text-transform:uppercase;letter-spacing:.06em;background:var(--tag);color:var(--acc);border-radius:999px;padding:2px 10px;margin-left:6px;vertical-align:2px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+figure{margin:0}
+figcaption{font:600 11px ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin-bottom:6px}
+img{width:100%;border-radius:12px;display:block;background:#eee}
+.wide img{max-height:none}
+@media(max-width:640px){.pair{grid-template-columns:1fr}}
+</style></head><body><main>
+<h1>PlateMaps — visual fixes, before and after</h1>
+<p class="lede">8 changes from the HIG audit. Every "after" was made by injecting CSS into the running app, so no source code has changed yet. Pick the numbers you want applied.<br>Red boxes are tap areas under 28px, amber boxes are 28–43px, green boxes are 44px or more (Apple's minimum).</p>
+
+<section><h2><span>#3</span>Status bar readable on the map</h2>
+<p>On the dark map the clock and battery stay black, so they almost disappear. Switch them to white while the map is open.</p>
+<p class="files">@capacitor/status-bar (new plugin) · map open/close hook</p>
+<span class="tag">simulated — native bar</span>
+<div class="pair"><figure><figcaption>Before</figcaption><img src="before-after/img/board-03-before.jpg"></figure><figure><figcaption>After</figcaption><img src="before-after/img/board-03-after.jpg"></figure></div></section>
+
+<section><h2><span>#5</span>Map buttons big enough to tap</h2>
+<p>Zoom and locate are 29px. Make them 44px. They look about the same, just easier to hit.</p>
+<p class="files">globals.css:479, :517</p>
+<div class="pair"><figure><figcaption>Before</figcaption><img src="before-after/img/board-05-before.jpg"></figure><figure><figcaption>After</figcaption><img src="before-after/img/board-05-after.jpg"></figure></div></section>
+
+<section><h2><span>#6</span>No text smaller than 11px</h2>
+<p>52 pieces of text on Discover are 9–10px (cuisine, "to a score", tab labels; outlined in red). Raise them to 11px and darken the lightest grey so it passes contrast.</p>
+<p class="files">PhoneRestaurantCardGrid · PhoneRestaurantCardTiny:40,45 · zinc-400 → zinc-500</p>
+<div class="pair"><figure><figcaption>Before</figcaption><img src="before-after/img/board-06-before.jpg"></figure><figure><figcaption>After</figcaption><img src="before-after/img/board-06-after.jpg"></figure></div></section>
+
+<section><h2><span>#7</span>Dish and restaurant links easier to tap</h2>
+<p>The dish name and restaurant name on a feed card are only 15–16px tall. Add invisible padding so the tap area reaches 44px. The text doesn't move.</p>
+<p class="files">PhoneFeedPostCard.tsx:136–140, 177–181</p>
+<div class="pair"><figure><figcaption>Before</figcaption><img src="before-after/img/board-07-before.jpg"></figure><figure><figcaption>After</figcaption><img src="before-after/img/board-07-after.jpg"></figure></div></section>
+
+<section><h2><span>#8</span>Comment vote arrows and collapse toggle</h2>
+<p>Comment arrows are 24px wide and the collapse toggle is 20×24. Widen the arrows to 32px and grow the toggle.</p>
+<p class="files">CommentsScreen.tsx (vote buttons w-6 → w-8; toggle line 355 → h-11 w-8)</p>
+<div class="pair"><figure><figcaption>Before</figcaption><img src="before-after/img/board-08-before.jpg"></figure><figure><figcaption>After</figcaption><img src="before-after/img/board-08-after.jpg"></figure></div></section>
+
+<section><h2><span>#9</span>Ask before throwing away a post</h2>
+<p>Backing out of the composer drops your photo and notes with no warning. Show a confirm sheet first. (The composer needs sign-in, so the background here is the sign-in screen. The sheet is the part to look at.)</p>
+<p class="files">m/post/page.tsx:429, 450, 789 · CameraCapture.tsx:953</p>
+<span class="tag">mock</span>
+<div class="pair"><figure><figcaption>Before — no prompt</figcaption><img src="before-after/img/board-09-before.jpg"></figure><figure><figcaption>After</figcaption><img src="before-after/img/board-09-after.jpg"></figure></div></section>
+
+<section><h2><span>#10</span>Respect the iPhone's Larger Text setting</h2>
+<p>If someone turns up text size in iOS Settings, PlateMaps ignores it. This shows the feed at 135%.</p>
+<p class="files">globals.css (<code>@supports (font: -apple-system-body)</code>) · px → rem on body text</p>
+<span class="tag">simulated — text scale</span>
+<div class="pair"><figure><figcaption>Before</figcaption><img src="before-after/img/board-10-before.jpg"></figure><figure><figcaption>After (Larger Text on)</figcaption><img src="before-after/img/board-10-after.jpg"></figure></div></section>
+
+<section><h2><span>#11</span>Report and Block on the map's plate sheet</h2>
+<p>The feed card's ⋯ menu already has Report and Block. The plate sheet you get from the map has neither, and Apple requires both for user posts. Reuse the feed's menu.</p>
+<p class="files">PlateDetailSheet.tsx:707, 955 · reuse PhoneFeedPostCard.tsx:866–883</p>
+<span class="tag">mock</span>
+<div class="pair"><figure><figcaption>Before</figcaption><img src="before-after/img/board-11-before.jpg"></figure><figure><figcaption>After</figcaption><img src="before-after/img/board-11-after.jpg"></figure></div></section>
+</main></body></html>

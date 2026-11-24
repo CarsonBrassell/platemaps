@@ -5,6 +5,7 @@ import { useAuth } from "@/lib/auth";
 import {
   FREE_FOOD_ACTIVE_MS,
   FREE_FOOD_ENDS_AT,
+  FREE_FOOD_DOORS_LINE,
   FREE_FOOD_STARTS_AT,
   FREE_FOOD_TICKET_LABEL,
   mmss,
@@ -86,7 +87,7 @@ export function ProfileTicket() {
     body = (
       <div>
         <TicketAction disabled>Activate</TicketAction>
-        <p className="mt-3 text-sm font-semibold">Activation opens Thu Nov 19 · 5pm</p>
+        <p className="mt-3 text-sm font-semibold">Activation opens {FREE_FOOD_DOORS_LINE}</p>
         <div className="mt-4">
           <DoorsCountdown msLeft={FREE_FOOD_STARTS_AT - now} />
         </div>

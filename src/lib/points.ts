@@ -40,6 +40,13 @@ export const POINT_RULES = {
 } as const;
 
 /**
+ * Posts that pay `createPost` in any 24 hours. It is the one award a person can
+ * collect alone, so it needs a ceiling of its own; the rate limit only slows the
+ * loop down. Past this a post still publishes and pays nothing.
+ */
+export const MAX_PAID_POSTS_PER_DAY = 10;
+
+/**
  * One-off bonuses for a post crossing an upvote count. Each fires at most
  * once per post (enforced by a unique index on the point_events reason
  * string). Keep sorted ascending by `upvotes`.

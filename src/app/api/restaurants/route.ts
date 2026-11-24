@@ -1,4 +1,7 @@
 import { cachedJson } from "@/lib/httpCache";
+import { MAX_QUERY } from "@/lib/discoverFilters";
+import { clientIp } from "@/lib/loginThrottle";
+import { limitOrReject } from "@/lib/rateLimit";
 import {
   getAllRestaurantPlateScores,
   getRestaurantIndex,
@@ -58,7 +61,19 @@ const MAP_SEARCH_LIMIT = 2500;
 
 export async function GET(req: Request) {
   const params = new URL(req.url).searchParams;
-  const q = params.get("q")?.trim();
+  // Postgres text cannot hold a NUL, and this goes straight into a query.
+  const q = params.get("q")?.replaceAll("\0", "").trim().slice(0, MAX_QUERY);
+
+  // A term is the one thing here that can miss the edge cache at will.
+  if (q) {
+    const limited = await limitOrReject({
+      scope: "search:ip",
+      key: clientIp(req),
+      max: 1200,
+      windowMinutes: 10,
+    });
+    if (limited) return limited;
+  }
 
   /*
    * `?fields=index` returns the five fields a picker reads and skips the plate

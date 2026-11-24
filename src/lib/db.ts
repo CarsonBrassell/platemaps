@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import type { MatchedDish, Restaurant, RestaurantView } from "@/data/restaurantTypes";
 import type { Dish } from "@/data/dishes";
 import type { PriceBand } from "@/data/priceBands";
-import type { Hours } from "@/lib/openState";
+import { localDay, type Hours } from "@/lib/openState";
 import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
 import type { RatedPlate } from "@/lib/ratedPlates";
 import {
@@ -18,21 +18,32 @@ import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
 import { RANKS, rankByKey } from "@/lib/ranks";
 import { dishRatingKey } from "@/lib/dishRatingKey";
 import {
-  computeFlavorProfile,
   computeTasteMatch,
   tasteInputFor,
   type CuisineCountRow,
-  type FlavorProfile,
   type TasteMatch,
 } from "@/lib/tasteMatch";
+import {
+  computePersonality,
+  dishKey,
+  dishNameKey,
+  foldText,
+  personalityStats,
+  BASELINE,
+  type CorpusBaselines,
+  type PersonalityPost,
+  type PersonalityProfile,
+} from "@/lib/personality";
 import { isStoredPhotoUrl, storedPhotoOwner, storedPhotoSqlPattern } from "@/lib/photos";
 import { brandKey, foldAccents } from "@/lib/brandName";
 import { hashToken, SESSION_TTL_SECONDS } from "@/lib/tokens";
 // From lib/geo.ts for the same reason discoverFilters.ts takes it from there:
 // lib/nearby.ts is a React hook and this module is server-only.
 import { milesBetween, NEARBY_RADIUS_MI, type Coords } from "@/lib/geo";
+import { HAVASU_POST_SQL } from "@/lib/havasu";
 
 /* Which driver this is depends on DATABASE_URL — see lib/sqlClient. */
+import type { DishRow, ProfileRow, ViewerPost } from "@/lib/dishTaste";
 import { sql } from "@/lib/sqlClient";
 import {
   applyOpToPrefs,
@@ -429,24 +440,16 @@ export async function getUserRank(
 // dropped.
 
 /**
- * Legacy rows from before the hashing migration store the raw `randomUUID()`
- * token (36 chars); every row written since stores `hashToken(token)` (64
- * hex chars). The length test is how a lookup tells which kind it might be
- * looking at without a second column — see `getSessionUser` below for the
- * upgrade-in-place that retires a legacy row the first time it's used.
+ * Every session row stores `hashToken(token)`. The upgrade path for raw-token
+ * rows from before the hashing migration is gone: production held none by
+ * 2026-11-06, and it was the one lookup that skipped `expires_at`.
  */
 export async function getSessionUserId(token: string): Promise<string | null> {
   const hash = hashToken(token);
   const rows = await sql`
     SELECT user_id FROM sessions WHERE token = ${hash} AND expires_at > now()
   `;
-  if (rows[0]) return rows[0].user_id as string;
-
-  if (token.length !== 36) return null;
-  const legacy = await sql`SELECT user_id FROM sessions WHERE token = ${token}`;
-  if (!legacy[0]) return null;
-  await sql`UPDATE sessions SET token = ${hash} WHERE token = ${token}`;
-  return legacy[0].user_id as string;
+  return rows[0] ? (rows[0].user_id as string) : null;
 }
 
 /**
@@ -456,12 +459,6 @@ export async function getSessionUserId(token: string): Promise<string | null> {
  * HTTP calls to Neon, in series, before any authenticated route did its own
  * work. Every API route pays this on every request, so it was the floor under
  * the whole app's latency (probe/PERF-PLAN.md #4). Same rows, one join.
- *
- * Looks up by hash first. A miss on a 36-char token (a legacy raw
- * `randomUUID()` written before this table stored hashes) falls back to a
- * plaintext match and upgrades the row to its hash in place, so a session
- * that predates the migration keeps working instead of silently signing
- * that device out.
  */
 export async function getSessionUser(token: string): Promise<User | null> {
   const hash = hashToken(token);
@@ -470,17 +467,7 @@ export async function getSessionUser(token: string): Promise<User | null> {
     JOIN users u ON u.id = s.user_id
     WHERE s.token = ${hash} AND s.expires_at > now()
   `;
-  if (rows[0]) return rowToUser(rows[0]);
-
-  if (token.length !== 36) return null;
-  const legacyRows = await sql`
-    SELECT u.* FROM sessions s
-    JOIN users u ON u.id = s.user_id
-    WHERE s.token = ${token}
-  `;
-  if (!legacyRows[0]) return null;
-  await sql`UPDATE sessions SET token = ${hash} WHERE token = ${token}`;
-  return rowToUser(legacyRows[0]);
+  return rows[0] ? rowToUser(rows[0]) : null;
 }
 
 /**
@@ -504,8 +491,7 @@ export async function createSession(token: string, userId: string): Promise<void
 /**
  * Slides `expires_at` forward on cookie renewal (`/api/auth/me`) so the
  * server-side clock tracks the cookie clock instead of counting down from
- * sign-in. Hashed token only: by the time a route can call this,
- * `getSessionUser` has already upgraded any legacy plaintext row.
+ * sign-in.
  */
 export async function touchSession(token: string): Promise<void> {
   await sql`
@@ -517,24 +503,12 @@ export async function touchSession(token: string): Promise<void> {
 
 /**
  * Deletes the session for this raw token, hashing it the same way
- * `getSessionUser` does before matching.
- *
- * The legacy plaintext branch is gated by `token.length === 36`, exactly
- * like `getSessionUser`'s upgrade path — never a bare `IN (hash, token)`.
- * Without that gate, `token` here is caller-controlled (it comes straight
- * off the logout request's cookie), so a 64-hex value equal to *another
- * user's* stored hash would match the table's hashed column directly and
- * delete their session — turning a leaked hash into a working logout
- * credential. Only an actual 36-char legacy raw token can hit the second
- * form, and a 64-hex string can never be one.
+ * `getSessionUser` does before matching. Never matches the raw value: it comes
+ * straight off the request's cookie, so a raw match would turn a leaked stored
+ * hash into a working logout of someone else.
  */
 export async function deleteSession(token: string): Promise<void> {
-  const hash = hashToken(token);
-  if (token.length === 36) {
-    await sql`DELETE FROM sessions WHERE token IN (${hash}, ${token})`;
-  } else {
-    await sql`DELETE FROM sessions WHERE token = ${hash}`;
-  }
+  await sql`DELETE FROM sessions WHERE token = ${hashToken(token)}`;
 }
 
 /**
@@ -821,6 +795,7 @@ async function hydratePosts(
     myHeartRows,
     friendRows,
     courseRows,
+    blockedIds,
   ] = await Promise.all([
     // Scoped to the viewer's own row only — like myHeartRows below, never the
     // full list of who saved a post (probe/CLAUDE-SECURITY... F34: that list
@@ -915,7 +890,12 @@ async function hydratePosts(
       WHERE meal_id = ANY(${ids})
       ORDER BY course_index ASC
     `,
+    // A block hides people's comments as well as their posts: a blocked pair
+    // meeting under a third person's plate is still contact.
+    viewerId ? getBlockedEitherWayIds(viewerId) : Promise.resolve([] as string[]),
   ]);
+
+  const blockedCommenters = new Set(blockedIds);
 
   const coursesByMeal = new Map<string, typeof courseRows>();
   for (const c of courseRows) {
@@ -1000,7 +980,7 @@ async function hydratePosts(
       heartCount: row.heart_count ?? null,
       savedByMe: mySaves.has(postId),
       comments: commentRows
-        .filter((c) => c.post_id === postId)
+        .filter((c) => c.post_id === postId && !blockedCommenters.has(c.user_id as string))
         .map((c) => ({
           id: c.id as string,
           parentId: (c.parent_id as string | null) ?? null,
@@ -1028,14 +1008,30 @@ const POST_SELECT = `
   JOIN users u ON u.id = p.user_id
 `;
 
-export async function getPosts(viewerId: string | null = null): Promise<Post[]> {
-  // Same block filter every sibling reader applies (getPostById, the
-  // discover/friends feeds, getDishPosts) — this was the one unfiltered path
-  // that handed a blocked pair each other's posts in bulk.
+/** Most plates one restaurant thread will carry, newest kept. */
+const RESTAURANT_THREAD_LIMIT = 200;
+
+/**
+ * The plates at one restaurant, oldest first, for its comment thread. Replaced
+ * `getPosts`, which handed every post in the table to any signed-out caller
+ * and left the page to filter them. Matches the id or the name, because older
+ * rows carry only the free-text name.
+ */
+export async function getRestaurantPosts(
+  restaurantId: string,
+  restaurantName: string,
+  viewerId: string | null = null,
+): Promise<Post[]> {
   const blockedIds = viewerId ? await getBlockedEitherWayIds(viewerId) : [];
   const rows = await sql.query(
-    `${POST_SELECT} WHERE p.user_id != ALL($1) AND p.meal_id IS NULL ORDER BY p.created_at ASC`,
-    [blockedIds],
+    `SELECT * FROM (
+       ${POST_SELECT}
+       WHERE p.user_id != ALL($1) AND p.meal_id IS NULL
+         AND (p.restaurant_id = $2 OR p.restaurant = $3)
+       ORDER BY p.created_at DESC
+       LIMIT ${RESTAURANT_THREAD_LIMIT}
+     ) recent ORDER BY created_at ASC`,
+    [blockedIds, restaurantId, restaurantName],
   );
   return hydratePosts(rows, viewerId);
 }
@@ -1229,16 +1225,128 @@ export async function getTasteMatchForProfile(
 }
 
 /**
- * Your own cuisine mix, for the "Your flavor profile" card. One
- * `getCuisineCounts` call for `userId`; `flavor` is null for the empty state
- * (too few cuisine-tagged plates, or fewer than three cuisines).
+ * Your food personality wheel (lib/personality.ts has the math and the
+ * reasoning); `flavor` is null for the empty state. Every post, joined to its
+ * menu dish's description so the exact dish key can be built, and to
+ * `restaurant_kind` for Quick Bite and Foodie. A second round trip looks up the
+ * dish tags; a dish missing its exact key falls back to the name-only key.
  *
- * Callers pass the session user's own id and nothing else: the card is shown
- * to yourself only, on your account screen and on your own public profile.
+ * Callers pass the session user's own id, or go through
+ * `getPersonalityMatchForProfile`, which adds a friend's only after the same
+ * friends-only gate as the cuisine Taste match. Never call it for anyone else.
  */
-export async function getFlavorProfile(userId: string): Promise<{ flavor: FlavorProfile | null }> {
-  const rows = await getCuisineCounts([userId]);
-  return { flavor: computeFlavorProfile(tasteInputFor(rows, userId)) };
+const CORPUS_TTL_MS = 60 * 60 * 1000;
+let corpusCache: { at: number; value: Promise<CorpusBaselines> } | null = null;
+
+/**
+ * The food personality's measured baselines (lib/personality.ts
+ * `CorpusBaselines`): each cuisine's share of all posts, and the share of all
+ * users' visits (distinct user + place + day) that were foodie or upscale,
+ * floored at the share of places on best-of lists. Aggregates only; cached an
+ * hour since one new post barely moves either.
+ */
+function getCorpusBaselines(): Promise<CorpusBaselines> {
+  if (corpusCache && Date.now() - corpusCache.at < CORPUS_TTL_MS) return corpusCache.value;
+  const value = (async () => {
+    const [cuisines, foodie] = (await Promise.all([
+      sql`
+        SELECT count(*)::int AS n FROM posts p JOIN restaurants r ON r.id = p.restaurant_id
+        WHERE r.cuisine IS NOT NULL AND r.cuisine <> '' GROUP BY r.cuisine
+      `,
+      sql`
+        SELECT count(*)::int AS visits,
+               count(*) FILTER (WHERE v.foodie)::int AS foodie
+        FROM (
+          SELECT DISTINCT p.user_id, p.restaurant_id,
+                 to_char(p.created_at AT TIME ZONE 'America/Los_Angeles', 'YYYY-MM-DD') AS day,
+                 coalesce(rk.foodie, false) OR rk.kind = 'u' AS foodie
+          FROM posts p
+          LEFT JOIN restaurant_kind rk ON rk.restaurant_id = p.restaurant_id::text
+          WHERE p.restaurant_id IS NOT NULL
+        ) v
+      `,
+    ])) as [{ n: number }[], { visits: number; foodie: number }[]];
+    const total = cuisines.reduce((sum, c) => sum + c.n, 0);
+    const { visits, foodie: hits } = foodie[0] ?? { visits: 0, foodie: 0 };
+    return {
+      cuisineShares: total ? cuisines.map((c) => c.n / total) : undefined,
+      foodieBase: visits ? Math.max(BASELINE.Foodie, hits / visits) : undefined,
+    };
+  })();
+  value.catch(() => {
+    corpusCache = null;
+  });
+  corpusCache = { at: Date.now(), value };
+  return value;
+}
+
+export async function getFlavorProfile(userId: string): Promise<{ flavor: PersonalityProfile | null }> {
+  const rows = (await sql`
+    SELECT p.dish_name, p.restaurant_id, coalesce(r.name, p.restaurant) AS place,
+           r.cuisine, d.description, rk.kind, coalesce(rk.foodie, false) AS foodie,
+           to_char(p.created_at AT TIME ZONE 'America/Los_Angeles', 'YYYY-MM-DD') AS day
+    FROM posts p
+    LEFT JOIN restaurants r ON r.id = p.restaurant_id
+    LEFT JOIN restaurant_kind rk ON rk.restaurant_id = p.restaurant_id::text
+    LEFT JOIN LATERAL (
+      SELECT description FROM dishes d
+      WHERE d.restaurant_id = p.restaurant_id AND lower(trim(d.name)) = lower(trim(p.dish_name))
+      LIMIT 1
+    ) d ON true
+    WHERE p.user_id = ${userId}
+  `) as {
+    dish_name: string | null;
+    restaurant_id: string | null;
+    place: string | null;
+    cuisine: string | null;
+    description: string | null;
+    kind: string | null;
+    foodie: boolean;
+    day: string;
+  }[];
+  const keys = new Set<string>();
+  for (const r of rows) {
+    if (!r.dish_name?.trim()) continue;
+    keys.add(dishKey(r.dish_name, r.description));
+    keys.add(dishNameKey(r.dish_name));
+  }
+  const tags = new Map<string, string>();
+  if (keys.size) {
+    const found = (await sql`SELECT key, tag FROM dish_flavor WHERE key = ANY(${[...keys]}::text[])`) as {
+      key: string;
+      tag: string;
+    }[];
+    for (const f of found) tags.set(f.key, f.tag);
+  }
+  const posts: PersonalityPost[] = rows.map((r) => {
+    const name = r.dish_name?.trim() ? r.dish_name : null;
+    return {
+      tag: name ? (tags.get(dishKey(name, r.description)) ?? tags.get(dishNameKey(name)) ?? null) : null,
+      hasDish: !!name,
+      placeKey: r.restaurant_id ? String(r.restaurant_id) : foldText(r.place ?? ""),
+      day: r.day,
+      cuisine: r.cuisine,
+      kind: r.kind === "q" || r.kind === "t" || r.kind === "u" ? r.kind : null,
+      foodie: r.foodie,
+    };
+  });
+  return { flavor: computePersonality(personalityStats(posts), await getCorpusBaselines()) };
+}
+
+/**
+ * Both wheels for the Taste match card on a friend's profile: yours and
+ * theirs, laid over each other (lib/personality.ts `comparePersonality`).
+ * Same gate as `getTasteMatchForProfile`: `null` for yourself or anyone who
+ * isn't a friend; a side is null when that person has too few posts.
+ */
+export async function getPersonalityMatchForProfile(
+  viewerId: string,
+  otherId: string
+): Promise<{ you: PersonalityProfile | null; them: PersonalityProfile | null } | null> {
+  if (viewerId === otherId) return null;
+  if ((await getFriendStatus(viewerId, otherId)) !== "friends") return null;
+  const [you, them] = await Promise.all([getFlavorProfile(viewerId), getFlavorProfile(otherId)]);
+  return { you: you.flavor, them: them.flavor };
 }
 
 /**
@@ -1332,6 +1440,7 @@ async function feedPage(
         createdAt: last.created_at_text,
         id: last.id,
         score: trending ? Number(last.rank_score) : null,
+        hav: last.is_hav === true,
       }
     : null;
   return { posts, nextCursor };
@@ -1395,10 +1504,14 @@ export async function getDiscoverFeed(
   const params: unknown[] = [at, blockedIds, limit + 1];
   let after = "";
   if (cursor) {
-    params.push(trending ? (cursor.score ?? 0) : cursor.createdAt, cursor.id);
+    params.push(trending ? (cursor.score ?? 0) : cursor.createdAt, cursor.id, cursor.hav === true);
+    // Havasu posts are ordered after every other post, so the keyset key is
+    // (is_hav, score|created_at, id): false rows come first, and a cursor
+    // inside the non-Havasu run must still be allowed to move into the
+    // Havasu run.
     after = trending
-      ? "WHERE (s.rank_score, s.id) < ($4::float8, $5)"
-      : "WHERE (s.created_at, s.id) < ($4::timestamptz, $5)";
+      ? "WHERE (s.is_hav::int > $6::boolean::int) OR (s.is_hav = $6::boolean AND (s.rank_score, s.id) < ($4::float8, $5))"
+      : "WHERE (s.is_hav::int > $6::boolean::int) OR (s.is_hav = $6::boolean AND (s.created_at, s.id) < ($4::timestamptz, $5))";
   }
   // Bound after the cursor params rather than at a fixed slot, so the
   // placeholder number is right whether or not a cursor pushed $4/$5 first —
@@ -1435,7 +1548,8 @@ export async function getDiscoverFeed(
               p.vibe, p.photos_public,
               u.name AS author_name, u.avatar_url AS author_avatar_url,
               u.points AS author_points,
-              ${TRENDING_SCORE} AS rank_score
+              ${TRENDING_SCORE} AS rank_score,
+              ${HAVASU_POST_SQL} AS is_hav
        FROM posts p
        JOIN users u ON u.id = p.user_id
        LEFT JOIN (
@@ -1453,7 +1567,7 @@ export async function getDiscoverFeed(
          ${nearbyFilter}
      ) s
      ${after}
-     ORDER BY ${trending ? "s.rank_score DESC, s.id DESC" : "s.created_at DESC, s.id DESC"}
+     ORDER BY s.is_hav ASC, ${trending ? "s.rank_score DESC, s.id DESC" : "s.created_at DESC, s.id DESC"}
      LIMIT $3`,
     params,
   );
@@ -1472,12 +1586,14 @@ export async function getFriendsFeed(
   const params: unknown[] = [viewerId, blockedIds, limit + 1, at];
   let after = "";
   if (cursor) {
-    params.push(cursor.createdAt, cursor.id);
-    after = "AND (p.created_at, p.id) < ($5::timestamptz, $6)";
+    params.push(cursor.createdAt, cursor.id, cursor.hav === true);
+    // Havasu posts last (lib/havasu.ts): keyset on (is_hav, created_at, id).
+    after = `AND ((${HAVASU_POST_SQL})::int > $7::boolean::int
+      OR ((${HAVASU_POST_SQL}) = $7::boolean AND (p.created_at, p.id) < ($5::timestamptz, $6)))`;
   }
   const rows = await sql.query(
     `SELECT s.*, s.created_at::text AS created_at_text FROM (
-       ${POST_SELECT}
+       ${POST_SELECT.replace("u.points AS author_points", `u.points AS author_points, ${HAVASU_POST_SQL} AS is_hav`)}
        WHERE p.user_id IN (
          SELECT CASE WHEN f.user_a = $1 THEN f.user_b ELSE f.user_a END
          FROM friendships f
@@ -1488,7 +1604,7 @@ export async function getFriendsFeed(
        AND p.created_at > $4::timestamptz - make_interval(days => ${FEED_WINDOW_DAYS})
        ${after}
      ) s
-     ORDER BY s.created_at DESC, s.id DESC
+     ORDER BY s.is_hav ASC, s.created_at DESC, s.id DESC
      LIMIT $3`,
     params,
   );
@@ -1564,6 +1680,108 @@ export async function restaurantIdsPostedBy(userId: string): Promise<string[]> {
     WHERE user_id = ${userId} AND restaurant_id IS NOT NULL
   `;
   return rows.map((r) => String(r.restaurant_id));
+}
+
+/**
+ * The viewer's own posts, newest first, with the menu's description and section
+ * of the dish they named (matched on the folded name; null when the menu has no
+ * such line). The seeds for Your taste's dish-level picks; nothing about votes,
+ * hearts or saves. SELECT only.
+ */
+export async function postsForDishTaste(userId: string): Promise<ViewerPost[]> {
+  const rows = await sql`
+    SELECT p.restaurant_id, p.restaurant, p.dish_name, p.created_at, p.price, p.rating,
+           p.text AS caption, p.vibe,
+           d.description AS dish_description, d.section AS dish_section
+    FROM posts p
+    LEFT JOIN LATERAL (
+      SELECT description, section FROM dishes d
+      WHERE d.restaurant_id = p.restaurant_id AND lower(trim(d.name)) = lower(trim(p.dish_name))
+      LIMIT 1
+    ) d ON true
+    WHERE p.user_id = ${userId} AND p.restaurant_id IS NOT NULL
+    ORDER BY p.created_at DESC
+  `;
+  return rows.map((r) => ({
+    restaurantId: String(r.restaurant_id),
+    dishName: r.dish_name ? String(r.dish_name) : null,
+    restaurantName: r.restaurant ? String(r.restaurant) : null,
+    at: new Date(r.created_at).getTime(),
+    price: r.price == null ? null : String(r.price),
+    dishDescription: r.dish_description ? String(r.dish_description) : null,
+    dishSection: r.dish_section ? String(r.dish_section) : null,
+    rating: r.rating == null ? null : Number(r.rating),
+    caption: typeof r.caption === "string" ? r.caption : null,
+    vibe: typeof r.vibe === "string" ? r.vibe : null,
+  }));
+}
+
+/**
+ * Every rated post on the public feed's terms (meal courses are not posts of their own there), one row per post,
+ * for the crowd bonus (lib/crowdBonus.ts). Nothing here is filtered by viewer; the bonus leaves out the viewer's
+ * own posts and blocked pairs afterwards. SELECT only.
+ */
+export async function crowdPostsRows(): Promise<{ userId: string; restaurantId: string; at: number; rating: number }[]> {
+  const rows = await sql`
+    SELECT user_id, restaurant_id, created_at, rating
+    FROM posts
+    WHERE meal_id IS NULL AND restaurant_id IS NOT NULL AND rating IS NOT NULL
+  `;
+  return rows.map((r) => ({
+    userId: String(r.user_id),
+    restaurantId: String(r.restaurant_id),
+    at: new Date(r.created_at).getTime(),
+    rating: Number(r.rating),
+  }));
+}
+
+/**
+ * The menu lines of the given listed restaurants, in the shape the dish index
+ * reads (descriptions cut to 160 characters: the index wants the first clause,
+ * not the paragraph). The caller pages by restaurant so no one response nears
+ * the driver's size cap. SELECT only.
+ */
+export async function dishRowsFor(restaurantIds: readonly string[]): Promise<DishRow[]> {
+  const rows = await sql`
+    SELECT restaurant_id, name, left(description, 160) AS description, price, section
+    FROM dishes
+    WHERE restaurant_id = ANY(${restaurantIds as string[]})
+  `;
+  return rows.map((r) => ({
+    rid: String(r.restaurant_id),
+    name: String(r.name),
+    description: r.description == null ? null : String(r.description),
+    price: r.price == null ? null : String(r.price),
+    section: r.section == null ? null : String(r.section),
+  }));
+}
+
+/** The menu profile of every place with a usable one: styles, dish types and median price. SELECT only. */
+export async function profileRowsForDishTaste(): Promise<ProfileRow[]> {
+  const rows = await sql`
+    SELECT restaurant_id, styles, dish_types, main_cuisine,
+           profile->'menu_stats'->>'median' AS median,
+           profile->'signature_dishes' AS sig,
+           profile->>'service' AS service,
+           profile->>'summary' AS summary,
+           profile->>'spice' AS spice
+    FROM restaurant_profiles
+    WHERE status = 'ok'
+  `;
+  return rows.map((r) => {
+    const median = r.median == null ? NaN : Number(r.median);
+    return {
+      rid: String(r.restaurant_id),
+      styles: Array.isArray(r.styles) ? r.styles.map(String) : [],
+      dishTypes: Array.isArray(r.dish_types) ? r.dish_types.map(String) : [],
+      signatures: Array.isArray(r.sig) ? r.sig.filter((x: unknown) => typeof x === "string") : [],
+      service: typeof r.service === "string" ? r.service : null,
+      mainCuisine: typeof r.main_cuisine === "string" ? r.main_cuisine : null,
+      summary: typeof r.summary === "string" ? r.summary : null,
+      spice: typeof r.spice === "string" ? r.spice : null,
+      median: Number.isFinite(median) ? median : null,
+    };
+  });
 }
 
 export async function createPost(data: {
@@ -1759,6 +1977,68 @@ export async function createPost(data: {
 }
 
 /**
+ * Takes back what a post paid its author: the publish award, its upvotes, its
+ * milestones and its comments. Without this, posting and deleting in a loop
+ * paid 5 points a turn for nothing left on the site. Read before the post goes,
+ * because the comment ids die with it. The ledger row goes too, so the
+ * leaderboards, which sum the ledger, drop with the total.
+ */
+async function reversePostPoints(postId: string): Promise<void> {
+  const owner = await sql`SELECT user_id FROM posts WHERE id = ${postId}`;
+  const userId = owner[0]?.user_id as string | undefined;
+  if (!userId) return;
+
+  const reversed = (await sql`
+    DELETE FROM point_events
+    WHERE user_id = ${userId}
+      AND (
+        reason = ${`post:${postId}`}
+        OR reason LIKE ${`upvote:${postId}:%`}
+        OR reason LIKE ${`milestone:${postId}:%`}
+        OR reason IN (SELECT 'comment:' || c.id FROM comments c WHERE c.post_id = ${postId})
+      )
+    RETURNING amount, to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM') AS month
+  `) as { amount: number; month: string }[];
+  if (reversed.length === 0) return;
+
+  const total = reversed.reduce((sum, r) => sum + Number(r.amount), 0);
+  const monthKey = currentMonthKey();
+  const thisMonth = reversed
+    .filter((r) => r.month === monthKey)
+    .reduce((sum, r) => sum + Number(r.amount), 0);
+
+  await sql`
+    UPDATE users
+    SET points = GREATEST(points - ${total}, 0),
+        monthly_points = CASE WHEN monthly_points_month = ${monthKey}
+          THEN GREATEST(monthly_points - ${thisMonth}, 0) ELSE monthly_points END
+    WHERE id = ${userId}
+  `;
+}
+
+/**
+ * How many posts have paid this author in the last 24 hours. The composer's
+ * award stops at `MAX_PAID_POSTS_PER_DAY` (lib/points.ts); the post still goes
+ * up, so nobody loses a real plate to the cap.
+ */
+export async function countPaidPostsToday(userId: string): Promise<number> {
+  const rows = await sql`
+    SELECT count(*)::int AS n FROM point_events
+    WHERE user_id = ${userId} AND reason LIKE 'post:%'
+      AND created_at > now() - interval '24 hours'
+  `;
+  return Number(rows[0]?.n ?? 0);
+}
+
+/** True when this person has already commented on this post. */
+export async function hasCommentedOn(postId: string, userId: string): Promise<boolean> {
+  const rows = await sql`
+    SELECT 1 FROM comments WHERE post_id = ${postId} AND user_id = ${userId} LIMIT 1
+  `;
+  return rows.length > 0;
+}
+
+/**
  * Deletes a post and the photos on it.
  *
  * The photos are files in the blob store now and the row only holds their
@@ -1772,6 +2052,8 @@ export async function createPost(data: {
  * not a reason to tell someone their post is still there.
  */
 export async function deletePost(id: string): Promise<void> {
+  await reversePostPoints(id);
+
   // A meal's courses go with their hero (the FK cascades), so their photos
   // are read here too — otherwise the cascade would strand them exactly the
   // way dropping the row alone would strand the hero's.
@@ -1855,6 +2137,58 @@ export async function getCommentContext(
   const rows = await sql`SELECT post_id, user_id FROM comments WHERE id = ${commentId}`;
   if (!rows[0]) return null;
   return { postId: rows[0].post_id as string, userId: rows[0].user_id as string };
+}
+
+/**
+ * Deletes a comment and every reply under it (the `parent_id` FK cascades),
+ * and takes back what they paid: the `comment:<id>` award to the post's author
+ * and the `comment-upvote:<id>:<voter>` awards to each comment's author. Same
+ * reasoning as `reversePostPoints`: points must die with what earned them.
+ * Read before the DELETE, because the reply ids go with the cascade.
+ * Returns the post id it was on, or null when the comment was already gone.
+ */
+export async function deleteComment(commentId: string): Promise<string | null> {
+  const ids = (await sql`
+    WITH RECURSIVE thread AS (
+      SELECT id, post_id FROM comments WHERE id = ${commentId}
+      UNION ALL
+      SELECT c.id, c.post_id FROM comments c JOIN thread t ON c.parent_id = t.id
+    )
+    SELECT id, post_id FROM thread
+  `) as { id: string; post_id: string }[];
+  if (ids.length === 0) return null;
+  const commentIds = ids.map((r) => r.id);
+
+  const reversed = (await sql`
+    DELETE FROM point_events
+    WHERE reason IN (SELECT 'comment:' || x FROM unnest(${commentIds}::text[]) AS x)
+       OR EXISTS (
+         SELECT 1 FROM unnest(${commentIds}::text[]) AS x
+         WHERE point_events.reason LIKE 'comment-upvote:' || x || ':%'
+       )
+    RETURNING user_id, amount, to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM') AS month
+  `) as { user_id: string; amount: number; month: string }[];
+
+  const monthKey = currentMonthKey();
+  const byUser = new Map<string, { total: number; thisMonth: number }>();
+  for (const r of reversed) {
+    const t = byUser.get(r.user_id) ?? { total: 0, thisMonth: 0 };
+    t.total += Number(r.amount);
+    if (r.month === monthKey) t.thisMonth += Number(r.amount);
+    byUser.set(r.user_id, t);
+  }
+  for (const [userId, t] of byUser) {
+    await sql`
+      UPDATE users
+      SET points = GREATEST(points - ${t.total}, 0),
+          monthly_points = CASE WHEN monthly_points_month = ${monthKey}
+            THEN GREATEST(monthly_points - ${t.thisMonth}, 0) ELSE monthly_points END
+      WHERE id = ${userId}
+    `;
+  }
+
+  await sql`DELETE FROM comments WHERE id = ${commentId}`;
+  return ids[0].post_id;
 }
 
 /**
@@ -3192,10 +3526,9 @@ export async function confirmEmail(userId: string, email: string): Promise<boole
  * session by matching neither form.
  */
 export async function deleteOtherSessions(userId: string, keepToken: string): Promise<number> {
-  const keepHash = hashToken(keepToken);
   const rows = await sql`
     DELETE FROM sessions
-    WHERE user_id = ${userId} AND token NOT IN (${keepHash}, ${keepToken})
+    WHERE user_id = ${userId} AND token <> ${hashToken(keepToken)}
     RETURNING token
   `;
   return rows.length;
@@ -3944,25 +4277,46 @@ export async function getRestaurantMapRows(): Promise<RestaurantMapRow[]> {
    * `openStateFor` needs no change. It already selects by `day`, and slots it
    * would have skipped are simply not there.
    *
-   * "Today" is Los Angeles' today, computed here, which is the same clock
-   * `openState.ts` uses; there is no timezone for the two to disagree about.
-   * The route caches for 60s, so within a minute of midnight a cached response
-   * can carry the previous pair. One dot's dimming, for under a minute, once a
-   * day.
+   * "Today" is `localDay(new Date())` from lib/openState.ts: Los Angeles' day,
+   * numbered the way the stored slots are. The two clocks agree on the zone;
+   * what they once disagreed on was the numbering. Slots carry Yelp's day, where
+   * 0 = Monday (see `DaySlot`), and this query used to work the weekday out for
+   * itself from a Sunday-first array, so it kept {tomorrow, today} instead of
+   * {today, yesterday}. Today's own slot survived, which is why daytime looked
+   * right; yesterday's did not, so between midnight and the close of a late
+   * night the dot of every place still running yesterday's overnight window
+   * dimmed as closed ("Opens 11:30am") while its card, which has the full week,
+   * said open. Taking the day from the same function `openStateFor` reads means
+   * the two cannot be numbered differently again. Yesterday is
+   * `(today + 6) % 7`, the expression `windowsAround` uses.
+   *
+   * A place with a published schedule and no slot on either day - closed both
+   * days - would aggregate to NULL, and `openStateFor` reads a null as "no hours
+   * on file": `unknown`, which draws the dot undimmed, where the full week says
+   * "Closed today" and dims it. So such a place keeps its first slot as the
+   * fallback. Any slot would do: by construction it is neither today's nor
+   * yesterday's, so `windowsAround` ignores it and the verdict is the same
+   * "Closed today", but it keeps `hours` non-empty. A place with no hours at all
+   * has no first slot and stays null, as before.
+   *
+   * The route sends `s-maxage=60, stale-while-revalidate=300` (the httpCache
+   * default) and is the same response for every viewer, so it needs nothing
+   * here: the day is read on each request, not once at module load, and after
+   * midnight a cached copy can carry the previous pair for a few minutes at
+   * most. One dot's dimming, once a day.
    */
-  const laDay = new Date().toLocaleDateString("en-US", {
-    timeZone: "America/Los_Angeles",
-    weekday: "short",
-  });
-  const today = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(laDay);
+  const today = localDay(new Date());
   const yesterday = (today + 6) % 7;
 
   const rows = await sql`
     SELECT id, name, lat, lng, rating,
-           (
-             SELECT jsonb_agg(slot)
-             FROM jsonb_array_elements(hours) AS slot
-             WHERE (slot->>'day')::int IN (${today}, ${yesterday})
+           COALESCE(
+             (
+               SELECT jsonb_agg(slot)
+               FROM jsonb_array_elements(hours) AS slot
+               WHERE (slot->>'day')::int IN (${today}, ${yesterday})
+             ),
+             CASE WHEN hours->0 IS NOT NULL THEN jsonb_build_array(hours->0) END
            ) AS hours
     FROM restaurants WHERE listed ORDER BY sort_order, id
   `;
@@ -4035,12 +4389,12 @@ export async function getRestaurantMapRows(): Promise<RestaurantMapRow[]> {
  * is that index. Change one, change both.
  */
 export async function searchRestaurants(term: string, limit = 60): Promise<RestaurantView[]> {
-  const needle = `%${term}%`;
+  const needle = `%${escapeLike(term)}%`;
   /* Apostrophe- and accent-blind twin of `needle` - see foldSearchText in
      lib/discoverFilters.ts. The query is folded here and the haystack is
      folded in SQL below; both sides have to lose the same characters or the
      comparison means nothing. */
-  const folded = `%${foldAccents(term).replace(/['’`´]/g, "")}%`;
+  const folded = `%${escapeLike(foldAccents(term).replace(/['’`´]/g, ""))}%`;
   const rows = await sql`
     WITH dish_match AS (
       SELECT DISTINCT ON (d.restaurant_id)
@@ -4100,7 +4454,7 @@ export async function dishMatchesFor(term: string): Promise<Map<string, MatchedD
     SELECT DISTINCT ON (d.restaurant_id)
            d.restaurant_id, d.id, d.name, d.price
     FROM dishes d
-    WHERE d.name ILIKE ${`%${trimmed}%`}
+    WHERE d.name ILIKE ${`%${escapeLike(trimmed)}%`}
     ORDER BY d.restaurant_id, length(d.name), d.sort_order
   `;
 
@@ -4524,4 +4878,59 @@ export async function getPushTokensForUser(userId: string): Promise<{ token: str
 export async function deletePushTokens(tokens: string[]): Promise<void> {
   if (tokens.length === 0) return;
   await sql`DELETE FROM push_devices WHERE token = ANY(${tokens})`;
+}
+
+/* --- Marketing-mail opt-out ------------------------------------------------
+ *
+ * `users.marketing_opt_out_at` (NULL = may receive promotional mail) and
+ * `users.unsubscribe_token`, a per-user random value minted on first use.
+ * Callers live in `lib/unsubscribe.ts`; account mail never reads either.
+ */
+
+/** The user's unsubscribe token, minting it on first use. Null if no such user. */
+export async function getOrCreateUnsubscribeToken(
+  userId: string,
+  candidate: string,
+): Promise<string | null> {
+  // Only writes when empty, so two racing callers converge on one value.
+  await sql`
+    UPDATE users SET unsubscribe_token = ${candidate}
+    WHERE id = ${userId} AND unsubscribe_token IS NULL
+  `;
+  const rows = await sql`SELECT unsubscribe_token FROM users WHERE id = ${userId}`;
+  return (rows[0]?.unsubscribe_token as string | null | undefined) ?? null;
+}
+
+/** Resolves a token to a user id and current opt-out state, or null. */
+export async function findUserByUnsubscribeToken(
+  token: string,
+): Promise<{ userId: string; token: string; optedOut: boolean } | null> {
+  const rows = await sql`
+    SELECT id, unsubscribe_token, marketing_opt_out_at
+    FROM users WHERE unsubscribe_token = ${token}
+  `;
+  const row = rows[0];
+  if (!row) return null;
+  return {
+    userId: row.id as string,
+    token: row.unsubscribe_token as string,
+    optedOut: row.marketing_opt_out_at != null,
+  };
+}
+
+/** Idempotent: keeps the original timestamp if already opted out. */
+export async function setMarketingOptOut(userId: string, optedOut: boolean): Promise<void> {
+  if (optedOut) {
+    await sql`
+      UPDATE users SET marketing_opt_out_at = now()
+      WHERE id = ${userId} AND marketing_opt_out_at IS NULL
+    `;
+  } else {
+    await sql`UPDATE users SET marketing_opt_out_at = NULL WHERE id = ${userId}`;
+  }
+}
+
+export async function isMarketingOptedOut(userId: string): Promise<boolean> {
+  const rows = await sql`SELECT marketing_opt_out_at FROM users WHERE id = ${userId}`;
+  return rows[0]?.marketing_opt_out_at != null;
 }

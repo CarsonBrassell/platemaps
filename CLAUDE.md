@@ -112,7 +112,7 @@ The remaining scripts regenerate `src/data/` from external APIs and are **not** 
 
 ## Security invariants (Stage 3, 2026-09-15)
 
-- **Sign-in is mandatory everywhere (2026-09-17).** `src/proxy.ts` redirects any request without a `platemap_session` cookie to `/account?next=` (or `/m/account?next=` under `/m`) and answers 401 on `/api/*`; the public-path list lives only in `src/lib/signInGate.ts`; `RequireSignIn.tsx` is the client backstop for a stale cookie. The proxy checks cookie presence only — every route still calls `getCurrentUser()`.
+- **Sign-in was mandatory everywhere (2026-09-17), and `OPEN_BROWSING` in `src/lib/signInGate.ts` currently relaxes it (2026-10-24):** browsing is public, and `/api/*` is not gated by the proxy at all, so every route must call `getCurrentUser()` itself. With the flag off, `src/proxy.ts` redirects any request without a `platemap_session` cookie to `/account?next=` (or `/m/account?next=` under `/m`) and answers 401 on `/api/*`; the public-path list lives only in `src/lib/signInGate.ts`; `RequireSignIn.tsx` is the client backstop for a stale cookie. The proxy checks cookie presence only — every route still calls `getCurrentUser()`.
 - `npm run security:check` (`scripts/check-security.mjs`) runs automatically as `prebuild`, so a regression fails the Vercel deploy — it is not optional CI decoration.
 - A new mutating API route (`POST`/`PUT`/`PATCH`/`DELETE` in `src/app/api/**/route.ts`) must call `limitOrReject` — copy an existing route, e.g. `src/app/api/reports/route.ts`.
 - Every `req.json()` must be wrapped in `try`/`catch` or chained with `.catch(` — an unguarded parse 500s on bad input.
@@ -120,6 +120,12 @@ The remaining scripts regenerate `src/data/` from external APIs and are **not** 
 - Security response headers (HSTS, CSP, `X-Frame-Options`, etc.) live in `next.config.ts`'s `headers()`; don't duplicate them elsewhere.
 - `npm run security:verify` (`probe/verify-stage3.sh`) runs curl checks against a local `next start -p 3000` — set `PRIVATE_POST_ID` first.
 - Findings and history: `probe/SECURITY-FINDINGS.md` and `probe/RESUME.md`.
+- **`src/proxy.ts` refuses cross-site writes to `/api/*`** (`isCrossSiteRequest`) ahead of everything else. `SameSite=Lax` is the first line; this is the second.
+- **`limitOrReject` is two statements on purpose:** insert, then count. Counting first, or both in one CTE, lets a burst of simultaneous requests all read the same total and pass. Login also counts every attempt before bcrypt, because its failure throttle only learns about a guess afterwards.
+- **`GET /api/posts` has two bounded reads, `?mine=1` and `?restaurant=<id>`, and never a bare "every post".** `/api/restaurants/dishes` requires `ids`.
+- **A post or avatar may only carry the caller's own upload** (`storedPhotoOwner`), and uploads are checked by their bytes (`looksLikeJpeg`), not their declared type.
+- **Points a post earned die with it** (`reversePostPoints`), the publish award stops at `MAX_PAID_POSTS_PER_DAY`, and a post pays once per commenter. Sock-puppet accounts are still possible, because signup does not require a verified email.
+- **The CSP is enforced** in `next.config.ts`, with `'unsafe-inline'` for scripts because Next's static pages need it. Nonces would cost the CDN-cached shells. It stops loading outside scripts and sending data off-origin, not an injected inline script, so escaping user text stays the real defence.
 
 ## Architecture
 

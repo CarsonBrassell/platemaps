@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { confirmEmail, deleteEmailVerification, getEmailVerification } from "@/lib/db";
+import { clientIp } from "@/lib/loginThrottle";
+import { limitOrReject } from "@/lib/rateLimit";
 import { hashToken } from "@/lib/tokens";
 
 /**
@@ -21,6 +23,14 @@ import { hashToken } from "@/lib/tokens";
  * used. The page at /verify-email posts on the visitor's behalf.
  */
 export async function POST(req: Request) {
+  const limited = await limitOrReject({
+    scope: "email-verify:ip",
+    key: clientIp(req),
+    max: 30,
+    windowMinutes: 60,
+  });
+  if (limited) return limited;
+
   let token: unknown;
   try {
     ({ token } = await req.json());

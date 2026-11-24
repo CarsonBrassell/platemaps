@@ -63,6 +63,23 @@ function remember() {
   }
 }
 
+/* True while some other modal is on screen. The feed opens the free-food
+   ticket by itself on a first visit - the same moment this sheet wants to
+   appear - and two dialogs stacked on first launch read as a broken app, so
+   this one waits its turn. The sheet's own panel is skipped: a press inside
+   the open sheet restarts the timer too, and it must not find itself. */
+function anotherDialogOpen(): boolean {
+  const dialogs = document.querySelectorAll<HTMLElement>(
+    '[role="dialog"],[role="alertdialog"],[aria-modal="true"],dialog[open]',
+  );
+  return Array.from(dialogs).some(
+    (el) =>
+      !el.closest("[data-signup-sheet]") &&
+      !el.closest('[aria-hidden="true"],[inert]') &&
+      el.getClientRects().length > 0,
+  );
+}
+
 export function PhoneSignUpSheet() {
   const { isSignedIn, loading } = useAuth();
   const pathname = usePathname();
@@ -78,16 +95,24 @@ export function PhoneSignUpSheet() {
     if (!eligible || wasDismissed()) return;
     /* Restarted on every press, so the sheet never slides in under a finger
        that is already reaching for something - it used to land its "Not now"
-       exactly where the nav's Friends tab is, eating that first tap. */
-    let t = window.setTimeout(() => setOpen(true), SHOW_DELAY_MS);
-    function restart() {
+       exactly where the nav's Friends tab is, eating that first tap.
+
+       It also waits out any other dialog (anotherDialogOpen): while one is up
+       the timer only re-arms, so the sheet arrives after that dialog is
+       closed instead of sliding in on top of it. */
+    let t = 0;
+    function arm() {
       window.clearTimeout(t);
-      t = window.setTimeout(() => setOpen(true), SHOW_DELAY_MS);
+      t = window.setTimeout(() => {
+        if (anotherDialogOpen()) arm();
+        else setOpen(true);
+      }, SHOW_DELAY_MS);
     }
-    document.addEventListener("pointerdown", restart, true);
+    arm();
+    document.addEventListener("pointerdown", arm, true);
     return () => {
       window.clearTimeout(t);
-      document.removeEventListener("pointerdown", restart, true);
+      document.removeEventListener("pointerdown", arm, true);
       setOpen(false);
     };
   }, [eligible]);
@@ -153,6 +178,7 @@ function Sheet({ onDismiss }: { onDismiss: () => void }) {
 
   return (
     <div
+      data-signup-sheet
       className="animate-fade-in fixed inset-0 z-[60] flex items-end justify-center overflow-hidden bg-pm-charcoal/45 backdrop-blur-[2px]"
       onMouseDownCapture={tooSoon}
       onClickCapture={tooSoon}
