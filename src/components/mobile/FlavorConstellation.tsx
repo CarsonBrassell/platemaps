@@ -117,6 +117,39 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
     return (((-90 - mid) + 540) % 360) - 180;
   }
 
+  /* Whole-sky star spots, worked out once: a loose scatter that starts close to
+     the ring, then a few passes pushing apart any stars that crowd, so the sky
+     fills its open space instead of piling up in clumps. A child always stays
+     a little further out than its parent. */
+  let skyP: { a: number; r: number }[] | null = null;
+  function sky() {
+    if (skyP) return skyP;
+    const L = layout(target(ALL), 0, ALL), P: { a: number; r: number }[] = [];
+    S.forEach((x, i) => {
+      const sub = SUB[i], s0 = Math.min(...sub.map((j) => L[j].s)), s1 = Math.max(...sub.map((j) => L[j].e)), cw = s1 - s0, nm = x.s.name;
+      P[i] = { a: (s0 + s1) / 2 + (hsh(nm, 1) - 0.5) * (x.t ? Math.min(cw * 1.4 + 6, 20) : Math.min(cw * 0.5, 8)), r: [94, 118, 150][x.t] + [44, 96, 120][x.t] * hsh(nm, 2) };
+    });
+    const MIN = 13, RMIN = R0 + 14, RMAX = 280;
+    for (let it = 0; it < 40; it++) {
+      const xy = P.map((q) => pt(q.r, q.a));
+      const d = xy.map(() => [0, 0]);
+      for (let i = 0; i < xy.length; i++) for (let j = i + 1; j < xy.length; j++) {
+        const dx = xy[j][0] - xy[i][0], dy = xy[j][1] - xy[i][1], dd = Math.hypot(dx, dy) || 0.01;
+        if (dd >= MIN) continue;
+        const push = ((MIN - dd) / dd) * 0.5;
+        d[i][0] -= dx * push; d[i][1] -= dy * push; d[j][0] += dx * push; d[j][1] += dy * push;
+      }
+      xy.forEach(([px, py], i) => {
+        const nx = px + d[i][0] - C, ny = py + d[i][1] - C;
+        P[i] = { a: (Math.atan2(ny, nx) * 180) / Math.PI, r: Math.max(RMIN, Math.min(RMAX, Math.hypot(nx, ny))) };
+      });
+      S.forEach((x, i) => { if (x.t) { const q = P[IDX[x.f + "|" + PAR[x.s.name]]]; if (q && P[i].r < q.r + 10) P[i].r = Math.min(RMAX, q.r + 10); } });
+    }
+    /* keep each angle on the same turn as its slice, so the fly-out tween is short */
+    S.forEach((_, i) => { const m = L[i].m; while (P[i].a - m > 180) P[i].a -= 360; while (P[i].a - m < -180) P[i].a += 360; });
+    return (skyP = P);
+  }
+
   let focus: number | null = null, cur = target(null), rot = 0, anim = 0, dead = false;
   const el = (p: Element, t: string, a: Record<string, string | number>, txt?: string) => {
     const e = document.createElementNS(NS, t);
@@ -214,10 +247,8 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
         const x = S[i], g = gT(x.t), sub = SUB[i], s0 = Math.min(...sub.map((j) => L[j].s)), s1 = Math.max(...sub.map((j) => L[j].e)), cwid = s1 - s0, nm = x.s.name;
         /* The whole sky scatters far more: deep radial bands that overlap, and
            children allowed to wander past their slice, so stars don't stack. */
-        const a = allMode
-          ? (s0 + s1) / 2 + (hsh(nm, 1) - 0.5) * (x.t ? Math.min(cwid * 1.6 + 6, 22) : Math.min(cwid * 0.5, 8))
-          : (s0 + s1) / 2 + (x.t ? (hsh(nm, 1) - 0.5) * Math.min(cwid * 0.5, 14) : 0);
-        const rr = allMode ? [102, 132, 170][x.t] + [48, 100, 108][x.t] * hsh(nm, 2) : RO[x.t] + (hsh(nm, 2) - 0.5) * 2 * [7, 15, 17][x.t];
+        const a = allMode ? sky()[i].a : (s0 + s1) / 2 + (x.t ? (hsh(nm, 1) - 0.5) * Math.min(cwid * 0.5, 14) : 0);
+        const rr = allMode ? sky()[i].r : RO[x.t] + (hsh(nm, 2) - 0.5) * 2 * [7, 15, 17][x.t];
         P[i] = { a, r: R0 + (rr - R0) * g, g, s0, s1, lk: !x.s.on };
       });
       famI.forEach((i) => {
