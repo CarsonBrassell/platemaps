@@ -90,9 +90,12 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
     return all.filter((i) => S[i].f === fi && S[i].t === 0).flatMap(sub);
   };
   const ORD0 = all;
+  /* ALL: every family open at once, each in its own slice of the ring. */
+  const ALL = -1, ORDA = fams.flatMap((_, fi) => famOrder(fi));
   const ORD = fams.map((_, fi) => { const o: number[] = []; let put = false; S.forEach((x, i) => { if (x.f !== fi) o.push(i); else if (!put) { o.push(...famOrder(fi)); put = true; } }); return o; });
 
   function target(fo: number | null): Vis[] {
+    if (fo === ALL) return S.map((_, i) => ({ w: LW[i], len: 0, lab: 0, wd: 6.5 }));
     const nL = fo == null ? 0 : S.reduce((a, x, i) => a + (x.f === fo ? LW[i] : 0), 0);
     const nO = S.filter((x) => x.t === 0 && x.f !== fo).length, A = fo == null ? 1 : (0.8 * nO) / (0.2 * nL);
     return S.map((x, i) => {
@@ -105,7 +108,7 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
   function layout(vis: Vis[], rot: number, fo: number | null) {
     const W = vis.reduce((a, v) => a + v.w, 0), u = 360 / W, L: { s: number; e: number; m: number }[] = [];
     let c = 0;
-    (fo == null ? ORD0 : ORD[fo]).forEach((i) => { const v = vis[i], s = -90 + rot + c * u, e = -90 + rot + (c + v.w) * u; c += v.w; L[i] = { s, e, m: (s + e) / 2 }; });
+    (fo == null ? ORD0 : fo === ALL ? ORDA : ORD[fo]).forEach((i) => { const v = vis[i], s = -90 + rot + c * u, e = -90 + rot + (c + v.w) * u; c += v.w; L[i] = { s, e, m: (s + e) / 2 }; });
     return L;
   }
   function rotFor(vis: Vis[], fo: number) {
@@ -130,7 +133,7 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
     const hint = staticCollapsed && !store.get();
     fams.forEach((f, fi) => {
       let famA1: number | null = null, famA2 = 0;
-      const idx = all.filter((i) => S[i].f === fi && (fo === fi || S[i].t === 0) && vis[i].w > 1e-3);
+      const idx = all.filter((i) => S[i].f === fi && (fo === fi || fo === ALL || S[i].t === 0) && vis[i].w > 1e-3);
       if (!idx.length) return;
       const s0 = Math.min(...idx.map((i) => L[i].s)), s1 = Math.max(...idx.map((i) => L[i].e)), span = s1 - s0;
       if (span < 0.6) return;
@@ -142,7 +145,7 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
         arc.setAttribute("class", "pmc-hintarc"); (arc as SVGElement).style.animationDelay = dl;
         el(svg, "path", { d: arcD(R0, a1, a2), fill: "none", stroke: "#fff", "stroke-width": 3, "stroke-linecap": "round", pathLength: 100, "stroke-dasharray": "16 300", "stroke-dashoffset": 16, opacity: 0.9, class: "pmc-sweep", style: `animation-delay:${dl}` });
       }
-      const op = fo == null ? 1 : fo === fi ? 1 - ft : Math.max(0, 1 - ft * 1.6);
+      const op = fo == null || fo === ALL ? 1 : fo === fi ? 1 - ft : Math.max(0, 1 - ft * 1.6);
       if (op > 0.02) {
         const rr = bot ? R0 + 18 : R0 + 9, need = f.word.length * 7.2;
         if ((rr * (a2 - a1) * Math.PI) / 180 > need) {
@@ -157,10 +160,10 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
         hit.addEventListener("click", () => { store.set(); go(fi); });
       }
     });
-    const ff = fo != null ? fams[fo] : null;
+    const ff = fo == null ? null : fo === ALL ? { word: "All flavors", col: INK, tiers: [S.map((x) => x.s)] } : fams[fo];
     if (ff && ft > 0) {
       const stars = ff.tiers.flat(), got = stars.filter((s) => s.on).length, g = el(svg, "g", { opacity: ft });
-      el(g, "text", { x: C, y: C - 10, "text-anchor": "middle", "font-size": 16, "font-weight": 800, fill: ff.col }, ff.word);
+      el(g, "text", { x: C, y: C - 10, "text-anchor": "middle", "font-size": fo === ALL ? 14 : 16, "font-weight": 800, fill: ff.col }, ff.word);
       el(g, "text", { x: C, y: C + 7, "text-anchor": "middle", "font-size": 12, "font-weight": 600, fill: GREY }, `${got} of ${stars.length} found`);
       el(g, "text", { x: C, y: C + 24, "text-anchor": "middle", "font-size": 11, "font-weight": 600, fill: ORANGE }, "tap to fold");
       if (!moving) { const c = el(svg, "circle", { cx: C, cy: C, r: R0 - 12, fill: "transparent", style: "cursor:pointer", role: "button", "aria-label": "Fold back" }); c.addEventListener("click", () => go(null)); }
@@ -168,9 +171,10 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
     if (ft < 1) {
       const g = el(svg, "g", { opacity: 1 - ft });
       const a = el(g, "g", { class: hint ? "pmc-ctrA" : "" });
-      ["most", "eaters"].forEach((s, i) => el(a, "text", { x: C, y: C + (i - 0.5) * 15 + 4, "text-anchor": "middle", "font-size": 12, "font-weight": 600, fill: GREY }, s));
+      ["tap to see", "entire", "constellation"].forEach((s, i) => el(a, "text", { x: C, y: C + (i - 1) * 14 + 4, "text-anchor": "middle", "font-size": 11, "font-weight": 600, fill: ORANGE }, s));
       if (hint) { const b = el(g, "g", { class: "pmc-ctrB" }); ["tap a", "family"].forEach((s, i) => el(b, "text", { x: C, y: C + (i - 0.5) * 15 + 4, "text-anchor": "middle", "font-size": 13, "font-weight": 700, fill: ORANGE }, s)); }
     }
+    if (fo == null && !moving) { const c = el(svg, "circle", { cx: C, cy: C, r: R0 - 12, fill: "transparent", style: "cursor:pointer", role: "button", "aria-label": "See entire constellation" }); c.addEventListener("click", () => { store.set(); go(ALL); }); }
     /* spokes: the basics, around the ring */
     const hitLines: Element[] = [];
     S.forEach((x, i) => {
@@ -194,13 +198,14 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
     });
     hitLines.forEach((h) => svg.appendChild(h)); // above the labels, so taps on a word land
     /* open family: the constellation */
-    if (fo != null && ft > 0) {
+    const allMode = fo === ALL;
+    if (fo != null && ft > 0) (allMode ? fams.map((_, k) => k) : [fo]).forEach((fo) => {
       const f = fams[fo], RO = [130, 190, 244], DR = [8, 6, 4.5], cw = (n: string, fs: number) => n.length * fs * 0.57;
       const P: Record<number, { a: number; r: number; g: number; s0: number; s1: number; lk: boolean }> = {};
       const famI = all.filter((i) => S[i].f === fo);
       const fs0 = Math.min(...famI.map((i) => L[i].s)), fs1 = Math.max(...famI.map((i) => L[i].e));
       const gT = (t: number) => (t === 0 ? clamp(ft * 1.8) : t === 1 ? clamp((ft - 0.25) / 0.5) : clamp((ft - 0.5) / 0.5));
-      const gs = gT(1);
+      const gs = gT(1), whole = allMode;
       if (gs > 0.01) for (let k = 0; k < 46; k++) {
         const a = fs0 - 4 + (fs1 - fs0 + 8) * hsh(f.word, k * 3 + 1), r = R0 + 30 + 190 * Math.sqrt(hsh(f.word, k * 3 + 2)) * gs, [sx, sy] = pt(r, a);
         el(svg, "circle", { cx: sx, cy: sy, r: 0.8 + 1.4 * hsh(f.word, k * 3 + 3), fill: mix(f.col, 0.55), opacity: 0.35 * gs });
@@ -232,6 +237,7 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
         if (cw(txt, fs) > room && txt.includes(" ")) { const w = txt.split(" "), h = Math.ceil(w.length / 2); two = [w.slice(0, h).join(" "), w.slice(h).join(" ")]; }
         if (two) two = two.map((l) => (cw(l, fs) > room + 6 ? cut(l) : l));
         if (!two && cw(txt, fs) > room + 6) txt = cut(txt);
+        if (whole && (two || txt.endsWith("…"))) return; // the whole sky only names stars that fit
         const at = { "font-size": fs, "font-weight": x.t === 0 ? 700 : x.t === 1 ? 600 : 500, "font-style": x.t === 2 && !lk ? "italic" : "normal", fill: lk ? LOCKC : x.t === 0 ? f.col : x.t === 1 ? INK : GREY, "text-anchor": "middle", dy: "0.35em", opacity: op * (lk ? 0.85 : 1) };
         const lines = two || [txt];
         lines.forEach((ln, q) => {
@@ -240,12 +246,12 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
           el(el(svg, "text", at), "textPath", { href: "#" + id, startOffset: "50%" }, ln);
         });
       });
-    }
+    });
   }
 
   function info() {
     if (focus == null) { note.innerHTML = "Tap a family to see its stars."; return; }
-    const f = fams[focus], stars = f.tiers.flat(), got = stars.filter((s) => s.on).length, pct = Math.round((got / stars.length) * 100);
+    const f = focus === ALL ? { word: "all flavors", col: INK, tiers: [0, 1, 2].map((t) => S.filter((x) => x.t === t).map((x) => x.s)) } : fams[focus], stars = f.tiers.flat(), got = stars.filter((s) => s.on).length, pct = Math.round((got / stars.length) * 100);
     const nextReg = f.tiers[1].find((s) => !s.on && f.tiers[0].some((b) => b.on && b.name === PAR[s.name])) ?? f.tiers[1].find((s) => !s.on);
     const names = ["Basics", "Regional", "Rare"];
     note.innerHTML = `<div><b style="color:${INK}">${pct}%</b> of ${esc(f.word)} found</div>` +
@@ -256,7 +262,7 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
 
   const ease = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
   function tween(to: number | null, done?: () => void) {
-    const from = cur, tgt = target(to), r0 = rot, r1 = to == null ? 0 : rotFor(tgt, to), fo = to == null ? focus : to;
+    const from = cur, tgt = target(to), r0 = rot, r1 = to == null || to === ALL ? 0 : rotFor(tgt, to), fo = to == null ? focus : to;
     const t0 = focus == null ? 0 : 1, t1 = to == null ? 0 : 1, st = performance.now();
     const D = matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : 560;
     focus = to;
