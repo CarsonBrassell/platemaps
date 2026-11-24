@@ -385,8 +385,11 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
     if (focus != null && to != null && to !== focus) tween(null, () => tween(to));
     else if (to !== focus) tween(to);
   }
+  /* while something is open, a tap anywhere that isn't one of the wheel's own targets folds it */
+  const away = (e: MouseEvent) => { const h = (e.target as Element | null)?.closest?.("[aria-label]"); if (focus != null && !(h && h !== svg && (!h.isConnected || svg.contains(h)))) go(null); };
+  document.addEventListener("click", away);
   settle();
-  return () => { dead = true; if (anim) cancelAnimationFrame(anim); };
+  return () => { dead = true; if (anim) cancelAnimationFrame(anim); document.removeEventListener("click", away); };
 }
 
 export function FlavorConstellation({ data }: { data: FlavorWheel }) {
