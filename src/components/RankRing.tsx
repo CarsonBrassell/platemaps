@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { InfoIcon } from "@/components/icons";
 import { RankInsignia } from "@/components/RankInsignia";
 import { formatPoints } from "@/lib/points";
@@ -44,8 +44,16 @@ export function RankRing({
   className = "",
   onOpenLadder,
   onOpenInfo,
+  identity,
 }: {
   points: number;
+  /**
+   * Phone profile "badge on the edge" (Calvin, 2026-11-24): the caller's
+   * avatar + name, drawn first. With it the header becomes one centred
+   * "Title · total PP" line and the title under the crest is dropped, since
+   * the header already says it.
+   */
+  identity?: ReactNode;
   className?: string;
   /** The ladder line opens the full ladder (`RankLadderModal`). */
   onOpenLadder?: () => void;
@@ -139,17 +147,18 @@ export function RankRing({
   return (
     <section
       aria-label={`Plate Points: ${fmt(points)}. ${rank.title}, level ${cur + 1} of ${RANKS.length}.`}
-      className={`rounded-[28px] bg-white px-5 pb-4 pt-4 ${className}`}
+      className={`relative rounded-[28px] bg-white px-5 pb-4 pt-4 ${className}`}
     >
-      <div className="flex items-center gap-2">
-        <span className="mono-label text-pm-orange-text">Plate Points</span>
-        <span className="ml-auto flex items-baseline font-mono tabular-nums">
+      {identity}
+      <div className={identity ? "relative flex items-center justify-center gap-1.5" : "flex items-center gap-2"}>
+        <span className="mono-label text-pm-orange-text">{identity ? `${rank.title} ·` : "Plate Points"}</span>
+        <span className={`${identity ? "" : "ml-auto "}flex items-baseline font-mono tabular-nums`}>
           {gain && (
             <span key={gain.key} aria-hidden="true" className="rk-gain mr-1.5 inline-block text-[12px] font-semibold text-pm-orange-text">
               +{fmt(gain.n)}
             </span>
           )}
-          <span ref={totalRef} className="text-[20px] font-semibold leading-none text-pm-orange">
+          <span ref={totalRef} className={`${identity ? "text-[15px]" : "text-[20px]"} font-semibold leading-none text-pm-orange`}>
             {fmt(points)}
           </span>
           <span className="ml-1 text-[11px] text-zinc-500">PP</span>
@@ -159,7 +168,7 @@ export function RankRing({
             type="button"
             onClick={onOpenInfo}
             aria-label="How Plate Points work"
-            className="-my-3 -mr-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-pm-grey-text transition-colors hover:bg-pm-grey-tint focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            className={`${identity ? "absolute right-0 top-1/2 -translate-y-1/2 " : ""}-my-3 -mr-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-pm-grey-text transition-colors hover:bg-pm-grey-tint focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange`}
           >
             <InfoIcon className="h-3.5 w-3.5" />
           </button>
@@ -217,7 +226,9 @@ export function RankRing({
       </button>
 
       <div className="flex flex-col items-center">
-        <span className="font-display text-[24px] font-semibold leading-none text-zinc-900">{rank.title}</span>
+        {!identity && (
+          <span className="font-display text-[24px] font-semibold leading-none text-zinc-900">{rank.title}</span>
+        )}
         {rankUp > 0 && (
           <span key={rankUp} className="rk-chip mt-1.5 rounded-full bg-pm-orange px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-[#F7F4EC]">
             Rank up
@@ -225,7 +236,7 @@ export function RankRing({
         )}
       </div>
 
-      <p className="mt-2 text-center font-mono text-[11px] uppercase tracking-[0.12em] tabular-nums text-zinc-500">
+      <p className={`${identity ? "mt-0" : "mt-2"} text-center font-mono text-[11px] uppercase tracking-[0.12em] tabular-nums text-zinc-500`}>
         {next ? `${fmt(next.minPoints - Math.max(0, points))} PP to ${next.title}` : "Top rank"}
       </p>
     </section>
