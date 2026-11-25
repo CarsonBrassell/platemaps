@@ -21,6 +21,8 @@ export const FOR_ME_USER_IDS: ReadonlySet<string> = new Set([
   /* Ellie Felber. Added 2026-11-22 for the flavor wheel on the phone profile
      (lib/flavorWheelSnapshots.ts); being on this list gives her the dish picks too. */
   "cc8b9144-dfdd-4a6a-bffb-22babf7ea1a0",
+  /* Eberhard Julius (@eberhardjulius). Added 2026-11-24 for the flavor profile; like Ellie, the list gives him the dish picks too. */
+  "df7e2a7a-733b-4f07-996c-0a8429a4d0dd",
 ]);
 
 /** Whether the account with this id is on the list. Signed out is never. */
@@ -61,12 +63,15 @@ export function isFlavor40User(id?: string | null): boolean {
 /**
  * Who gets the new phone profile (2026-11-24): name and photo on the Plate
  * Points card, the flavor wheel and eater type inside it, Try next as cards.
- * Calvin only; everyone else, Carson and Ellie included, keeps the previous
- * profile byte for byte.
+ * Calvin, Carson, Ellie and Julius; everyone else keeps the previous profile.
  */
 export const PROFILE_V2_USER_IDS: ReadonlySet<string> = new Set([
   /* Calvin Lensink */
   "940561ca-05c8-4010-b8a9-f397235378b9",
+  /* Carson Brassell, Ellie Felber, Eberhard Julius: opened 2026-11-24 on Calvin's go. */
+  "0c39f913-fa39-4fdf-b2d6-486c027cebdc",
+  "cc8b9144-dfdd-4a6a-bffb-22babf7ea1a0",
+  "df7e2a7a-733b-4f07-996c-0a8429a4d0dd",
 ]);
 
 /** Whether the account with this id gets the new phone profile. Signed out is never. */
