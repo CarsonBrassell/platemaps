@@ -36,6 +36,7 @@ import { HAVASU_POST_SQL } from "@/lib/havasu";
 /* Which driver this is depends on DATABASE_URL — see lib/sqlClient. */
 import type { DishRow, ProfileRow, ViewerPost } from "@/lib/dishTaste";
 import { sql } from "@/lib/sqlClient";
+import { uniqueViolationConstraint } from "@/lib/uniqueViolation";
 import {
   applyOpToPrefs,
   EMPTY_PREFS,
@@ -69,7 +70,12 @@ export type User = {
   id: string;
   name: string;
   email: string;
-  passwordHash: string;
+  /**
+   * Null for an account made with Apple or Google that never set a password.
+   * Null is not "any password works" — every reader has to treat it as "no
+   * password can ever match", which the type now makes each of them spell out.
+   */
+  passwordHash: string | null;
   points: number;
   monthlyPoints: number;
   monthlyPointsMonth: string;
@@ -81,14 +87,44 @@ export type User = {
   /** When they checked the Terms/Privacy box at signup — server-stamped, see createUser. */
   agreedToTermsAt?: string;
   /**
-   * The three privacy switches. Each is enforced in the query that would
+   * The four privacy switches. Each is enforced in the query that would
    * otherwise expose the account — never in a component, and never by asking
    * the caller to remember: `getLeaderboard`/`getUserRank` for the first,
-   * `searchUsers` for the second, `sendFriendRequest` for the third.
+   * `searchUsers` for the second, `sendFriendRequest` for the third,
+   * `matchContacts` for the fourth.
    */
   hideFromLeaderboard: boolean;
   discoverableByUsername: boolean;
   friendRequestsOpen: boolean;
+  /**
+   * "Find me from contacts". Off for every account until its owner turns it
+   * on, and only ever written by that explicit choice — see
+   * `updatePrivacySettings`. Unlike the two above it defaults to false:
+   * nobody agreed to be looked up by their email address by signing up.
+   */
+  discoverableByContacts: boolean;
+  /**
+   * When the "be found from contacts" question was first answered, either
+   * way. Undefined means never asked, which is what shows the one-time
+   * question; it is kept on the account so a "no" follows it across devices.
+   */
+  contactsChoiceAnsweredAt?: string;
+  /**
+   * When the account was made. Undefined for accounts older than the column
+   * that also predate the Terms checkbox, and read as "old" — it only ever
+   * narrows what a NEW account may do (the starter allowance on contact
+   * matching), so unknown must not be treated as new.
+   */
+  createdAt?: string;
+  /** Last four digits of the verified phone, so its owner can tell which it is. */
+  phoneLast4?: string;
+  /**
+   * When the phone was last confirmed by a texted code. It stops counting for
+   * matching 12 months later (`phoneIsCurrent`), because carriers reassign
+   * numbers. The number itself is never stored — only a keyed hash, which
+   * deliberately never leaves `db.ts` on this object.
+   */
+  phoneVerifiedAt?: string;
   /**
    * When this address was proved reachable, or undefined if it never was.
    *
@@ -125,7 +161,7 @@ function rowToUser(row: any): User {
     id: row.id,
     name: row.name,
     email: row.email,
-    passwordHash: row.password_hash,
+    passwordHash: row.password_hash ?? null,
     points: row.points,
     monthlyPoints: row.monthly_points,
     monthlyPointsMonth: row.monthly_points_month,
@@ -143,7 +179,34 @@ function rowToUser(row: any): User {
     pendingEmail: row.pending_email ?? undefined,
     photoNoticeSeen: row.photo_notice_seen ?? false,
     tourSeen: row.tour_seen ?? false,
+    discoverableByContacts: row.discoverable_by_contacts ?? false,
+    contactsChoiceAnsweredAt: isoOrUndefined(row.contacts_choice_answered_at),
+    createdAt: isoOrUndefined(row.created_at),
+    phoneLast4: row.phone_last4 ?? undefined,
+    phoneVerifiedAt: isoOrUndefined(row.phone_verified_at),
   };
+}
+
+/** A timestamp column as an ISO string, whichever of Date or text the driver gave. */
+function isoOrUndefined(value: unknown): string | undefined {
+  if (value === null || value === undefined) return undefined;
+  const ms = value instanceof Date ? value.getTime() : Date.parse(String(value));
+  return Number.isNaN(ms) ? undefined : new Date(ms).toISOString();
+}
+
+/** How long a texted code keeps a phone number good for matching. */
+export const PHONE_VERIFICATION_MONTHS = 12;
+
+/**
+ * Whether the account's phone was confirmed recently enough to count. The
+ * JavaScript twin of `phone_verified_at > now() - interval '12 months'` in
+ * `matchContacts`; both read PHONE_VERIFICATION_MONTHS so they cannot drift.
+ */
+export function phoneIsCurrent(user: User): boolean {
+  if (!user.phoneVerifiedAt) return false;
+  const cutoff = new Date();
+  cutoff.setMonth(cutoff.getMonth() - PHONE_VERIFICATION_MONTHS);
+  return Date.parse(user.phoneVerifiedAt) > cutoff.getTime();
 }
 
 export async function getUserByEmail(email: string): Promise<User | null> {
@@ -574,6 +637,35 @@ export async function deleteUser(userId: string): Promise<void> {
     restaurantIds = rs.map((r) => r.restaurant_id);
   } catch {
     /* A cover refresh is never worth blocking account deletion. */
+  }
+
+  // rate_limit_hits has no foreign key to users, so the cascade below does not
+  // reach it. These rows say only "this account did X at this time", but they
+  // are still about the person, so they go with the account. Keys are either
+  // the id itself or the id followed by ':' (the per-number phone counter).
+  // Best effort: a failed tidy-up must not stop someone deleting their account,
+  // and whatever is left is swept within 30 days (pruneOccasionally in
+  // lib/rateLimit.ts deletes every row older than that, whatever its scope).
+  //
+  // The per-number phone counter is keyed by the keyed hash of the number
+  // alone, with no user id in it, so it is matched by the hash on file. Read
+  // on its own and allowed to fail: before the phone columns are migrated in
+  // there is no such column, and no such rows either.
+  let phoneHash: string | null = null;
+  try {
+    const rows = await sql`SELECT phone_hmac FROM users WHERE id = ${userId}`;
+    phoneHash = (rows[0]?.phone_hmac as string | null | undefined) ?? null;
+  } catch {
+    /* see above */
+  }
+  try {
+    await sql`
+      DELETE FROM rate_limit_hits
+      WHERE key = ${userId} OR key LIKE ${escapeLike(userId) + ":%"}
+        OR (${phoneHash}::text IS NOT NULL AND scope = 'phone-send:number' AND key = ${phoneHash}::text)
+    `;
+  } catch {
+    /* see above */
   }
 
   await sql`DELETE FROM users WHERE id = ${userId}`;
@@ -2914,6 +3006,150 @@ export async function searchUsers(
   return rankPeople(viewerId, { handle, words }, limit);
 }
 
+/** One person found from the caller's address book. */
+export type ContactMatch = {
+  id: string;
+  name: string;
+  avatarUrl?: string;
+  /** Friends are never returned, so there is no "friends" here. */
+  status: "none" | "requested" | "incoming";
+  /**
+   * Which thing the caller sent matched, as a position in the list they sent.
+   * This is how their phone puts its own contact name on the row without the
+   * server ever being told a name — and why no address or number comes back.
+   */
+  ref: { kind: "email" | "phone"; index: number };
+};
+
+/** Past this many findable accounts, comparing in memory stops being sensible. */
+const FINDABLE_SCAN_LIMIT = 20_000;
+
+/**
+ * Which of the caller's contacts are members who chose to be found.
+ *
+ * **The uploaded list never goes to the database.** The query below carries
+ * only the viewer's id and their block list. It reads the accounts that are
+ * allowed to be found by this viewer, and the comparison happens here, in
+ * this function's memory, against `input`. So the addresses of people who are
+ * not members — most of any address book, and none of whom agreed to
+ * anything — are not sent to the database, not written to its logs, and not
+ * kept anywhere once this returns. Do not "optimise" this into
+ * `WHERE lower(email) = ANY(${input.emails})`: that is the same answer with
+ * the privacy property removed. (If the findable set outgrows the scan, the
+ * console line below says so, and that trade has to be made deliberately.)
+ *
+ * This is where the fourth privacy switch is enforced. An account is
+ * returned only when ALL of these hold, and each is in the WHERE so a hidden
+ * account never reaches this process at all:
+ *
+ * - it turned on `discoverable_by_contacts` itself;
+ * - the thing that matched is proved: `email_verified_at` for an email hit
+ *   (anyone can sign up with somebody else's address), a phone confirmed
+ *   within the last 12 months for a phone hit (numbers get reassigned);
+ * - it is not the viewer, and neither side has blocked the other — a blocked
+ *   pair looks exactly like "not opted in";
+ * - they are not already friends (the friends list shows those);
+ * - it takes friend requests, or has already sent the viewer one. An Add
+ *   button that silently does nothing would still confirm the account exists.
+ *
+ * Rows are read in id order so repeated calls walk the same sequence: a
+ * caller cannot reshuffle past the cap to page through more than `limit`.
+ * Never a count, and never `email_key` or `phone_hmac` in the result.
+ *
+ * `phoneHmacs` are already keyed hashes (`lib/phoneVerify.ts`); this function
+ * never sees a phone number.
+ */
+export async function matchContacts(
+  viewerId: string,
+  input: { emails: string[]; phoneHmacs?: string[] },
+  limit = 50,
+): Promise<ContactMatch[]> {
+  const emailIndex = new Map<string, number>();
+  input.emails.forEach((email, i) => {
+    if (!emailIndex.has(email)) emailIndex.set(email, i);
+  });
+  const phoneIndex = new Map<string, number>();
+  (input.phoneHmacs ?? []).forEach((hmac, i) => {
+    if (!phoneIndex.has(hmac)) phoneIndex.set(hmac, i);
+  });
+  if (emailIndex.size === 0 && phoneIndex.size === 0) return [];
+
+  const blockedIds = await getBlockedEitherWayIds(viewerId);
+  const phoneWindow = `${PHONE_VERIFICATION_MONTHS} months`;
+
+  const rows = await sql`
+    SELECT u.id, u.name, u.avatar_url,
+           lower(u.email) AS email_key,
+           (u.email_verified_at IS NOT NULL) AS email_ok,
+           u.phone_hmac,
+           (u.phone_hmac IS NOT NULL
+             AND u.phone_verified_at > now() - ${phoneWindow}::interval) AS phone_ok,
+           EXISTS (
+             SELECT 1 FROM friend_requests r
+             WHERE r.requester_id = ${viewerId} AND r.recipient_id = u.id AND r.status = 'pending'
+           ) AS outgoing,
+           EXISTS (
+             SELECT 1 FROM friend_requests r
+             WHERE r.requester_id = u.id AND r.recipient_id = ${viewerId} AND r.status = 'pending'
+           ) AS incoming
+    FROM users u
+    WHERE u.discoverable_by_contacts
+      AND u.id != ${viewerId}
+      AND u.id != ALL(${blockedIds}::text[])
+      AND NOT EXISTS (
+        SELECT 1 FROM friendships f
+        WHERE (f.user_a = u.id AND f.user_b = ${viewerId})
+           OR (f.user_a = ${viewerId} AND f.user_b = u.id)
+      )
+      AND (
+        u.friend_requests_open
+        OR EXISTS (
+          SELECT 1 FROM friend_requests r
+          WHERE r.requester_id = u.id AND r.recipient_id = ${viewerId} AND r.status = 'pending'
+        )
+      )
+      AND (
+        u.email_verified_at IS NOT NULL
+        OR (u.phone_hmac IS NOT NULL
+          AND u.phone_verified_at > now() - ${phoneWindow}::interval)
+      )
+    ORDER BY u.id
+    LIMIT ${FINDABLE_SCAN_LIMIT + 1}
+  `;
+
+  if (rows.length > FINDABLE_SCAN_LIMIT) {
+    // Fixed text, no data. The first 20,000 are still checked.
+    console.error(
+      "[matchContacts] the findable set has outgrown in-memory matching; move to an indexed lookup",
+    );
+  }
+
+  const matches: ContactMatch[] = [];
+  for (const row of rows.slice(0, FINDABLE_SCAN_LIMIT)) {
+    if (matches.length >= limit) break;
+
+    let ref: ContactMatch["ref"] | null = null;
+    const byEmail = row.email_ok ? emailIndex.get(String(row.email_key)) : undefined;
+    if (byEmail !== undefined) {
+      ref = { kind: "email", index: byEmail };
+    } else {
+      const byPhone =
+        row.phone_ok && row.phone_hmac ? phoneIndex.get(String(row.phone_hmac)) : undefined;
+      if (byPhone !== undefined) ref = { kind: "phone", index: byPhone };
+    }
+    if (!ref) continue;
+
+    matches.push({
+      id: row.id as string,
+      name: row.name as string,
+      avatarUrl: (row.avatar_url as string | null) ?? undefined,
+      status: row.incoming ? "incoming" : row.outgoing ? "requested" : "none",
+      ref,
+    });
+  }
+  return matches;
+}
+
 /**
  * People you may know: the empty-box state of the same search, ranked by the
  * relationship part alone. Leaves out anyone you're already friends with or
@@ -3181,9 +3417,17 @@ export async function setTourSeen(userId: string, seen: boolean): Promise<void> 
 }
 
 /**
- * The three privacy switches, written one column at a time so a caller can
- * send one without having to know or resend the other two — the same shape
+ * The four privacy switches, written one column at a time so a caller can
+ * send one without having to know or resend the others — the same shape
  * `updateFavorites` uses, and the reason both take partials.
+ *
+ * `discoverableByContacts` also writes the consent record. Either answer
+ * stamps `contacts_choice_answered_at` (which retires the one-time question
+ * for good) and the time of that particular answer. None of the three
+ * timestamps is ever set back to NULL: "asked, and said no" has to stay
+ * distinguishable from "never asked". This function is the only writer of
+ * the column, and the only caller is the settings route acting on a value
+ * the person sent — nothing turns it on as a side effect.
  */
 export async function updatePrivacySettings(
   userId: string,
@@ -3191,8 +3435,26 @@ export async function updatePrivacySettings(
     hideFromLeaderboard?: boolean;
     discoverableByUsername?: boolean;
     friendRequestsOpen?: boolean;
+    discoverableByContacts?: boolean;
   }
 ): Promise<void> {
+  if (data.discoverableByContacts === true) {
+    await sql`
+      UPDATE users
+      SET discoverable_by_contacts = true,
+          contacts_choice_answered_at = now(),
+          contacts_choice_on_at = now()
+      WHERE id = ${userId}
+    `;
+  } else if (data.discoverableByContacts === false) {
+    await sql`
+      UPDATE users
+      SET discoverable_by_contacts = false,
+          contacts_choice_answered_at = now(),
+          contacts_choice_off_at = now()
+      WHERE id = ${userId}
+    `;
+  }
   if (data.hideFromLeaderboard !== undefined) {
     await sql`UPDATE users SET hide_from_leaderboard = ${data.hideFromLeaderboard} WHERE id = ${userId}`;
   }
@@ -3409,6 +3671,23 @@ export async function deleteOtherSessions(userId: string, keepToken: string): Pr
  * downloads folder and gets emailed around, and neither of those should travel.
  */
 export async function exportUserData(userId: string): Promise<Record<string, unknown>> {
+  // The contacts switch, when each answer was last given, and what is on file
+  // about a phone (last four digits and when it was confirmed — never the
+  // keyed hash, which is ours, not theirs). Read separately and allowed to be
+  // missing, so an export still works if this code runs before the migration
+  // that adds the columns. Only "no such column" is swallowed.
+  let contacts: Record<string, unknown> = {};
+  try {
+    const rows = await sql`
+      SELECT discoverable_by_contacts, contacts_choice_on_at, contacts_choice_off_at,
+             phone_last4, phone_verified_at
+      FROM users WHERE id = ${userId}
+    `;
+    contacts = rows[0] ?? {};
+  } catch (error) {
+    if ((error as { code?: unknown } | null)?.code !== "42703") throw error;
+  }
+
   const [user, posts, comments, saves, points, friends] = await Promise.all([
     sql`SELECT id, name, email, points, avatar_url, share_photos_publicly,
                favorite_cuisine, favorite_restaurant_id, agreed_to_terms_at,
@@ -3434,7 +3713,7 @@ export async function exportUserData(userId: string): Promise<Record<string, unk
 
   return {
     exportedAt: new Date().toISOString(),
-    account: user[0] ?? null,
+    account: user[0] ? { ...user[0], ...contacts } : null,
     posts,
     comments,
     savedPostIds: saves.map((r) => r.post_id),
@@ -3444,6 +3723,7 @@ export async function exportUserData(userId: string): Promise<Record<string, unk
     // and would multiply the file size by an order of magnitude for something
     // the person already has in their camera roll.
     note: "Photos are not included. Posts older than the feed window are — nothing here is ever deleted.",
+    contactsNote: "Contacts you checked are not included because they are never stored.",
   };
 }
 
@@ -4738,4 +5018,522 @@ export async function getPushTokensForUser(userId: string): Promise<{ token: str
 export async function deletePushTokens(tokens: string[]): Promise<void> {
   if (tokens.length === 0) return;
   await sql`DELETE FROM push_devices WHERE token = ANY(${tokens})`;
+}
+
+// ---------------------------------------------------------------------------
+// Sign in with Apple / Google — identities, flows in flight, and the
+// re-authentication stamp. See lib/oauth/ for the token checks and
+// scripts/migrate.mjs for the tables.
+//
+// The rule these functions exist to hold: **a provider sign-in reaches an
+// account through `(provider, subject)` and nothing else.** No function here
+// takes an email and returns a user. An address is unverified on most
+// accounts (signup never asked anyone to prove it), so letting it select an
+// account would let whoever registered under your address first be handed
+// your Google sign-in.
+// ---------------------------------------------------------------------------
+
+export type OAuthProvider = "google" | "apple";
+export type OAuthMode = "native" | "web";
+export type OAuthIntent = "signin" | "link" | "reauth";
+/** The one action a provider confirmation may be spent on. */
+export type ReauthPurpose = "delete" | "email" | "password" | "link";
+
+/** What a verified provider token told us, in the shape both tables store. */
+export type IdentityInput = {
+  provider: OAuthProvider;
+  subject: string;
+  email: string | null;
+  /** The provider vouches for `email` — see lib/oauth/idToken.ts for the rule. */
+  emailVerified: boolean;
+  /** An Apple "Hide My Email" relay address. */
+  emailIsPrivate: boolean;
+  /** The audience the token was verified against; Apple revocation needs the same one. */
+  clientId: string | null;
+  /** Apple's refresh token, sealed (lib/oauth/secretBox.ts). Never the raw value. */
+  refreshTokenEnc: string | null;
+};
+
+export type Identity = IdentityInput & { userId: string };
+
+/** Enough to revoke a stored Apple token after its row is gone. */
+export type RevocableToken = {
+  provider: OAuthProvider;
+  refreshTokenEnc: string | null;
+  clientId: string | null;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rowToIdentity(row: any): Identity {
+  return {
+    userId: row.user_id,
+    provider: row.provider,
+    subject: row.subject,
+    email: row.email ?? null,
+    emailVerified: row.email_verified ?? false,
+    emailIsPrivate: row.email_is_private ?? false,
+    clientId: row.client_id ?? null,
+    refreshTokenEnc: row.refresh_token_enc ?? null,
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rowToRevocable(row: any): RevocableToken {
+  return {
+    provider: row.provider,
+    refreshTokenEnc: row.refresh_token_enc ?? null,
+    clientId: row.client_id ?? null,
+  };
+}
+
+/**
+ * The account for an Apple/Google sign-up, and its identity, in ONE statement.
+ *
+ * The sql client runs a statement at a time with no transaction helper
+ * (lib/sqlClient.ts), so two statements could leave a users row with no way
+ * to sign in to it — no password, no identity. A data-modifying CTE is the
+ * transaction: both rows land or neither does, including when the identity
+ * loses a race on `idx_user_identities_subject` (two finish screens open for
+ * one person), which the caller answers by signing in the winner.
+ *
+ * `password_hash` is NULL, which the login route treats as "no password can
+ * match". `agreed_to_terms_at` is the database's clock, for the same reason
+ * `createUser` gives. `email_verified_at` is stamped only when the caller says
+ * the provider vouched for this exact address — a typed address never is.
+ *
+ * The casts are load-bearing: a bare parameter in a SELECT list resolves to
+ * text, and Postgres will not assign text to a boolean column.
+ */
+export async function createOAuthUser(data: {
+  id: string;
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  identity: IdentityInput;
+}): Promise<User> {
+  const i = data.identity;
+  const rows = await sql`
+    WITH u AS (
+      INSERT INTO users (id, name, email, password_hash, agreed_to_terms_at, email_verified_at)
+      VALUES (
+        ${data.id}, ${data.name}, ${data.email}, NULL, NOW(),
+        CASE WHEN ${data.emailVerified}::boolean THEN NOW() ELSE NULL END
+      )
+      RETURNING *
+    ), i AS (
+      INSERT INTO user_identities
+        (user_id, provider, subject, email, email_verified, email_is_private, client_id, refresh_token_enc)
+      SELECT u.id, ${i.provider}::text, ${i.subject}::text, ${i.email}::text,
+             ${i.emailVerified}::boolean, ${i.emailIsPrivate}::boolean,
+             ${i.clientId}::text, ${i.refreshTokenEnc}::text
+      FROM u
+      RETURNING id
+    )
+    SELECT u.* FROM u
+  `;
+  return rowToUser(rows[0]);
+}
+
+/**
+ * The identity for this provider's user number, and the account it belongs to.
+ * This is the only lookup a provider sign-in is allowed to use.
+ */
+export async function getIdentity(
+  provider: OAuthProvider,
+  subject: string
+): Promise<{ user: User; identity: Identity } | null> {
+  const rows = await sql`
+    SELECT u.*,
+           i.user_id, i.provider, i.subject,
+           i.email AS identity_email, i.email_verified, i.email_is_private,
+           i.client_id, i.refresh_token_enc
+    FROM user_identities i
+    JOIN users u ON u.id = i.user_id
+    WHERE i.provider = ${provider} AND i.subject = ${subject}
+  `;
+  const row = rows[0];
+  if (!row) return null;
+  // `u.*` and the identity both have an `email`; the identity's is aliased so
+  // neither shadows the other.
+  return { user: rowToUser(row), identity: rowToIdentity({ ...row, email: row.identity_email }) };
+}
+
+/**
+ * Postgres `undefined_table`. The three functions below that existing routes
+ * call (account deletion, the export, the password reset) treat it as "no
+ * identities", because that is precisely what it means: a table that does
+ * not exist holds no rows. It keeps those routes working if this code is
+ * ever deployed ahead of `npm run db:migrate`. Nothing else is swallowed —
+ * a reset that skipped its eviction on an ordinary query failure would be
+ * failing open.
+ */
+function isMissingTable(error: unknown): boolean {
+  return !!error && typeof error === "object" && (error as { code?: unknown }).code === "42P01";
+}
+
+export async function listIdentities(userId: string): Promise<Identity[]> {
+  try {
+    const rows = await sql`
+      SELECT user_id, provider, subject, email, email_verified, email_is_private,
+             client_id, refresh_token_enc
+      FROM user_identities WHERE user_id = ${userId} ORDER BY created_at ASC
+    `;
+    return rows.map(rowToIdentity);
+  } catch (error) {
+    if (isMissingTable(error)) return [];
+    throw error;
+  }
+}
+
+/**
+ * Attach a provider to an account that is already signed in. False when either
+ * unique index refused it: the subject is on some account already, or this
+ * account already has one of that provider. The caller has re-authenticated
+ * and checked the account's email is verified before reaching here — this
+ * function trusts that it has.
+ */
+export async function linkIdentity(userId: string, i: IdentityInput): Promise<boolean> {
+  const rows = await sql`
+    INSERT INTO user_identities
+      (user_id, provider, subject, email, email_verified, email_is_private, client_id, refresh_token_enc)
+    VALUES (${userId}, ${i.provider}, ${i.subject}, ${i.email}, ${i.emailVerified},
+            ${i.emailIsPrivate}, ${i.clientId}, ${i.refreshTokenEnc})
+    ON CONFLICT DO NOTHING
+    RETURNING id
+  `;
+  return rows.length > 0;
+}
+
+/**
+ * A returning sign-in: note the time and take whatever the token refreshed.
+ *
+ * The email and its flags move only when the token carried an address, and
+ * the client id only alongside a new refresh token — revocation has to name
+ * the client the stored token was issued to, so the two travel as a pair.
+ */
+export async function touchIdentity(i: IdentityInput): Promise<void> {
+  await sql`
+    UPDATE user_identities SET
+      last_used_at = now(),
+      email = COALESCE(${i.email}::text, email),
+      email_verified = CASE WHEN ${i.email}::text IS NULL THEN email_verified ELSE ${i.emailVerified}::boolean END,
+      email_is_private = CASE WHEN ${i.email}::text IS NULL THEN email_is_private ELSE ${i.emailIsPrivate}::boolean END,
+      refresh_token_enc = COALESCE(${i.refreshTokenEnc}::text, refresh_token_enc),
+      client_id = CASE WHEN ${i.refreshTokenEnc}::text IS NULL THEN client_id ELSE ${i.clientId}::text END
+    WHERE provider = ${i.provider} AND subject = ${i.subject}
+  `;
+}
+
+/**
+ * Disconnect a provider — only from an account that has a password.
+ *
+ * The password guard is inside the statement, not a check before it, and it
+ * leans on a fact about this schema: no route ever removes a password. So the
+ * condition cannot change underneath the delete, and two Disconnects fired at
+ * once cannot race each other down to an account with no way in. Returns the
+ * row's token for revocation, or null if nothing was removed.
+ */
+export async function unlinkIdentity(
+  userId: string,
+  provider: OAuthProvider
+): Promise<RevocableToken | null> {
+  const rows = await sql`
+    DELETE FROM user_identities i USING users u
+    WHERE i.user_id = u.id AND u.id = ${userId} AND i.provider = ${provider}
+      AND u.password_hash IS NOT NULL
+    RETURNING i.provider, i.refresh_token_enc, i.client_id
+  `;
+  return rows[0] ? rowToRevocable(rows[0]) : null;
+}
+
+/**
+ * Remove every sign-in method that is not provably this account's own inbox.
+ * Called by the password reset and nothing else.
+ *
+ * A reset is the "someone else is in my account" remedy. It already ends
+ * sessions and pending email changes; without this, an identity an attacker
+ * attached (or an account they made with Apple/Google and typed your address
+ * into) would outlive the reset and they would simply sign back in. What
+ * survives is an identity whose provider vouched for the same address the
+ * reset link was just read at — that is the same person by the same proof.
+ */
+export async function evictUntrustedIdentities(
+  userId: string,
+  accountEmail: string
+): Promise<RevocableToken[]> {
+  try {
+    const rows = await sql`
+      DELETE FROM user_identities
+      WHERE user_id = ${userId}
+        AND NOT (email_verified AND email IS NOT NULL AND lower(email) = lower(${accountEmail}))
+      RETURNING provider, refresh_token_enc, client_id
+    `;
+    return rows.map(rowToRevocable);
+  } catch (error) {
+    if (isMissingTable(error)) return [];
+    throw error;
+  }
+}
+
+export type OAuthFlow = {
+  provider: OAuthProvider;
+  mode: OAuthMode;
+  intent: OAuthIntent;
+  purpose: ReauthPurpose | null;
+  nonce: string;
+  codeVerifier: string | null;
+  /** SHA-256 of the `state` sent to the provider. Web flows only. */
+  stateHash: string | null;
+  /** Who started a link / re-auth flow. Null for a plain sign-in. */
+  userId: string | null;
+  returnTo: string;
+  nextPath: string | null;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rowToFlow(row: any): OAuthFlow {
+  return {
+    provider: row.provider,
+    mode: row.mode,
+    intent: row.intent,
+    purpose: row.purpose ?? null,
+    nonce: row.nonce,
+    codeVerifier: row.code_verifier ?? null,
+    stateHash: row.state_hash ?? null,
+    userId: row.user_id ?? null,
+    returnTo: row.return_to,
+    nextPath: row.next_path ?? null,
+  };
+}
+
+/** Ten minutes, on the database's clock so issue and expiry share one. */
+export async function createOAuthFlow(tokenHash: string, flow: OAuthFlow): Promise<void> {
+  await sql`
+    INSERT INTO oauth_flows
+      (token_hash, state_hash, provider, mode, intent, purpose, nonce, code_verifier,
+       user_id, return_to, next_path, expires_at)
+    VALUES (${tokenHash}, ${flow.stateHash}, ${flow.provider}, ${flow.mode}, ${flow.intent},
+            ${flow.purpose}, ${flow.nonce}, ${flow.codeVerifier}, ${flow.userId},
+            ${flow.returnTo}, ${flow.nextPath}, now() + interval '10 minutes')
+  `;
+}
+
+/** Read without spending — the web callback compares `state` before it takes the row. */
+export async function getOAuthFlow(tokenHash: string): Promise<OAuthFlow | null> {
+  const rows = await sql`
+    SELECT * FROM oauth_flows WHERE token_hash = ${tokenHash} AND expires_at > now()
+  `;
+  return rows[0] ? rowToFlow(rows[0]) : null;
+}
+
+/**
+ * Spend a flow. The DELETE is the single-use guarantee: two requests carrying
+ * the same cookie cannot both get the row back, so a replayed callback or a
+ * double-posted token finds nothing.
+ */
+export async function takeOAuthFlow(tokenHash: string): Promise<OAuthFlow | null> {
+  const rows = await sql`
+    DELETE FROM oauth_flows WHERE token_hash = ${tokenHash} AND expires_at > now() RETURNING *
+  `;
+  return rows[0] ? rowToFlow(rows[0]) : null;
+}
+
+export type PendingSignup = IdentityInput & { nextPath: string | null };
+
+export async function createPendingSignup(tokenHash: string, p: PendingSignup): Promise<void> {
+  await sql`
+    INSERT INTO oauth_pending_signups
+      (token_hash, provider, subject, email, email_verified, email_is_private,
+       client_id, refresh_token_enc, next_path, expires_at)
+    VALUES (${tokenHash}, ${p.provider}, ${p.subject}, ${p.email}, ${p.emailVerified},
+            ${p.emailIsPrivate}, ${p.clientId}, ${p.refreshTokenEnc}, ${p.nextPath},
+            now() + interval '10 minutes')
+  `;
+}
+
+export async function getPendingSignup(tokenHash: string): Promise<PendingSignup | null> {
+  const rows = await sql`
+    SELECT * FROM oauth_pending_signups WHERE token_hash = ${tokenHash} AND expires_at > now()
+  `;
+  const row = rows[0];
+  if (!row) return null;
+  return {
+    provider: row.provider,
+    subject: row.subject,
+    email: row.email ?? null,
+    emailVerified: row.email_verified ?? false,
+    emailIsPrivate: row.email_is_private ?? false,
+    clientId: row.client_id ?? null,
+    refreshTokenEnc: row.refresh_token_enc ?? null,
+    nextPath: row.next_path ?? null,
+  };
+}
+
+/**
+ * Deletes the row, and returns its token so a cancelled sign-up can be
+ * revoked with Apple — but only when that is safe to revoke.
+ *
+ * **Null when the row's (provider, subject) now has an identity row**, as
+ * well as when there was no row. Revoking one Apple refresh token ends the
+ * person's whole authorization for the app, including the token stored on
+ * their real account. A parked sign-up can outlive the moment its person
+ * became a member: the same Apple ID finishing on a second device, or the
+ * finish screen's own success path. Its token is then a spare copy of a live
+ * authorization, not a leftover to clean up. The NOT EXISTS runs in the same
+ * statement as the delete, so no caller can forget it.
+ */
+export async function deletePendingSignup(tokenHash: string): Promise<RevocableToken | null> {
+  const rows = await sql`
+    WITH gone AS (
+      DELETE FROM oauth_pending_signups WHERE token_hash = ${tokenHash}
+      RETURNING provider, subject, refresh_token_enc, client_id
+    )
+    SELECT g.provider, g.refresh_token_enc, g.client_id
+    FROM gone g
+    WHERE NOT EXISTS (
+      SELECT 1 FROM user_identities i WHERE i.provider = g.provider AND i.subject = g.subject
+    )
+  `;
+  return rows[0] ? rowToRevocable(rows[0]) : null;
+}
+
+/**
+ * Housekeeping for both in-flight tables. Returns the tokens of sign-ups that
+ * expired on the finish screen, so the caller can revoke them — otherwise
+ * PlateMaps would linger in someone's "Sign in with Apple" list for an
+ * account that was never made. Rows whose person has since become a member
+ * are deleted but not returned — see deletePendingSignup for why revoking
+ * those would break a live account's authorization.
+ */
+export async function pruneExpiredOAuth(): Promise<RevocableToken[]> {
+  await sql`DELETE FROM oauth_flows WHERE expires_at < now()`;
+  const rows = await sql`
+    WITH gone AS (
+      DELETE FROM oauth_pending_signups WHERE expires_at < now()
+      RETURNING provider, subject, refresh_token_enc, client_id
+    )
+    SELECT g.provider, g.refresh_token_enc, g.client_id
+    FROM gone g
+    WHERE NOT EXISTS (
+      SELECT 1 FROM user_identities i WHERE i.provider = g.provider AND i.subject = g.subject
+    )
+  `;
+  return rows.map(rowToRevocable);
+}
+
+/**
+ * Record that this session just confirmed with its provider, and for what.
+ * `token` is the raw cookie value; `sessions.token` holds its hash. Bound to
+ * the user id as well, so a stamp can only land on that user's own session.
+ */
+export async function stampSessionReauth(
+  token: string,
+  userId: string,
+  purpose: ReauthPurpose
+): Promise<void> {
+  await sql`
+    UPDATE sessions SET reauth_at = now(), reauth_for = ${purpose}
+    WHERE token = ${hashToken(token)} AND user_id = ${userId}
+  `;
+}
+
+/**
+ * Spend the stamp. True exactly once per confirmation.
+ *
+ * One statement on purpose: check-then-clear as two would let two requests
+ * both pass the check. The purpose has to match, so a confirmation given to
+ * delete the account cannot be spent adding a password, and three minutes is
+ * long enough to come back from Google's page and short enough that a phone
+ * put down afterwards is not still armed.
+ */
+export async function consumeSessionReauth(token: string, purpose: ReauthPurpose): Promise<boolean> {
+  const rows = await sql`
+    UPDATE sessions SET reauth_at = NULL, reauth_for = NULL
+    WHERE token = ${hashToken(token)}
+      AND reauth_for = ${purpose}
+      AND reauth_at > now() - interval '3 minutes'
+    RETURNING 1 AS ok
+  `;
+  return rows.length > 0;
+}
+
+/* ---------- Verified phone number (find friends from contacts, Tier B) ---------- */
+
+/**
+ * Put a just-verified phone on an account, taking it off whoever had it.
+ *
+ * `hmac` is the keyed hash from `lib/phoneVerify.ts`; the number itself never
+ * reaches this file. The caller has already had the code confirmed by the SMS
+ * provider — this function trusts that it has.
+ *
+ * **Two plain statements, in this order, because there are no transactions**
+ * (`lib/sqlClient.ts`). First the hash is cleared from every OTHER account,
+ * then set on this one. If the second fails the number belongs to nobody,
+ * which is harmless: nobody is findable by it and the person tries again. The
+ * other order would briefly need two rows with one hash, which the unique
+ * index refuses.
+ *
+ * A number is moved rather than refused as "already in use", because refusing
+ * would tell the caller that the number has an account. The ids that lost it
+ * are returned so the route can email those people.
+ *
+ * `ok: false` is the race: two accounts verifying the same number at the same
+ * moment, where the other one's write landed between our two statements.
+ */
+export async function setVerifiedPhone(
+  userId: string,
+  hmac: string,
+  last4: string,
+): Promise<{ ok: boolean; movedFromUserIds: string[] }> {
+  const moved = await sql`
+    UPDATE users
+    SET phone_hmac = NULL, phone_last4 = NULL, phone_verified_at = NULL
+    WHERE phone_hmac = ${hmac} AND id <> ${userId}
+    RETURNING id
+  `;
+  const movedFromUserIds = moved.map((r) => r.id as string);
+
+  try {
+    await sql`
+      UPDATE users
+      SET phone_hmac = ${hmac}, phone_last4 = ${last4}, phone_verified_at = now()
+      WHERE id = ${userId}
+    `;
+  } catch (error) {
+    if (uniqueViolationConstraint(error) !== "idx_users_phone_hmac") throw error;
+    return { ok: false, movedFromUserIds };
+  }
+  return { ok: true, movedFromUserIds };
+}
+
+/**
+ * Remove the caller's phone: all three columns, at once. The withdraw-consent
+ * control.
+ *
+ * The keyed hash is also the key of two limiter counters (the per-number one
+ * and this account's per-number pair), so those rows go too: "removed" should
+ * not leave the hash sitting in another table. Best effort, after the columns
+ * are cleared — a failed tidy-up must not make Remove fail, and anything left
+ * is swept within 30 days like every other limiter row.
+ */
+export async function clearPhone(userId: string): Promise<void> {
+  const before = await sql`SELECT phone_hmac FROM users WHERE id = ${userId}`;
+  const old = (before[0]?.phone_hmac as string | null | undefined) ?? null;
+
+  await sql`
+    UPDATE users
+    SET phone_hmac = NULL, phone_last4 = NULL, phone_verified_at = NULL
+    WHERE id = ${userId}
+  `;
+
+  if (!old) return;
+  try {
+    await sql`
+      DELETE FROM rate_limit_hits
+      WHERE (scope = 'phone-send:number' AND key = ${old})
+         OR (scope = 'phone-send:pair' AND key = ${userId + ":" + old})
+    `;
+  } catch {
+    /* see above */
+  }
 }

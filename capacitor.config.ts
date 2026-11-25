@@ -91,6 +91,27 @@ const config: CapacitorConfig = {
     // src/lib/pushClient.ts; the sender is src/lib/push.ts.
     PushNotifications: {
       presentationOptions: ['badge', 'sound', 'alert']
+    },
+    // Which sign-in SDKs @capgo/capacitor-social-login compiles into the
+    // binary. Its `capacitor:sync:before` hook reads this block and rewrites
+    // its own podspec, so `npx cap sync ios` is what makes it take effect.
+    //
+    // **facebook must stay false.** Left out, every provider defaults to true
+    // and the Facebook SDK (FBSDKCoreKit / FBSDKLoginKit) is linked into the
+    // app: an advertising SDK PlateMaps does not use, which would make the
+    // "no tracking" answers in PrivacyInfo.xcprivacy and App Store Connect
+    // untrue. After any sync, ios/App/Podfile.lock must contain no FBSDK pod.
+    //
+    // Apple uses the system framework only; Google brings GoogleSignIn. The
+    // web side is src/lib/oauthClient.ts, and nothing is drawn until the
+    // server says sign-in is configured.
+    SocialLogin: {
+      providers: {
+        google: true,
+        apple: true,
+        facebook: false,
+        twitter: false
+      }
     }
   }
 };

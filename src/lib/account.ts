@@ -1,4 +1,5 @@
-import type { User } from "@/lib/db";
+import { phoneIsCurrent, type User } from "@/lib/db";
+import { contactsMatchEnabled, phoneVerifyAvailable } from "@/lib/contactsConfig";
 import { isDiscoverModesUser, isForMeUser } from "@/lib/forMeGate";
 import { isAdminUser } from "@/lib/adminGate";
 
@@ -19,7 +20,9 @@ import { isAdminUser } from "@/lib/adminGate";
  * Note what is *not* here: `passwordHash`, obviously, but also
  * `emailVerifiedAt` itself — a timestamp nothing in the UI renders — and
  * `monthlyPoints`, which the leaderboard computes for itself. The client gets
- * a boolean because a boolean is the question it asks.
+ * a boolean because a boolean is the question it asks. The same goes for the
+ * contacts fields: never the consent timestamps, `createdAt` or the phone's
+ * keyed hash (which is not on `User` at all).
  */
 export type AccountJson = {
   id: string;
@@ -33,10 +36,46 @@ export type AccountJson = {
   hideFromLeaderboard: boolean;
   discoverableByUsername: boolean;
   friendRequestsOpen: boolean;
+  /** "Find me from contacts". False until the person turns it on themselves. */
+  discoverableByContacts: boolean;
+  /**
+   * Whether the one-time "be found from contacts" question has been answered,
+   * either way. Kept on the account, not in the browser, so a "no" given in
+   * Safari is still a "no" in the app. A boolean, not the time it happened.
+   */
+  contactsChoiceAnswered: boolean;
+  /**
+   * Whether a phone is on file and was confirmed within the last 12 months —
+   * the only state in which it is used for matching.
+   */
+  phoneVerified: boolean;
+  /** A phone is on file but its confirmation has lapsed: offer "Confirm again". */
+  phoneNeedsReconfirm: boolean;
+  /** The last four digits of that phone. The number itself is not kept anywhere. */
+  phoneLast4?: string;
+  /**
+   * Present, and `true`, only when this deployment has "find friends from
+   * contacts" switched on (`lib/contactsConfig.ts`). Every contacts surface —
+   * the row, the sheet, the one-time question, the settings switch — draws
+   * only when it is there. Left out otherwise, so nothing new appears.
+   */
+  contactsAvailable?: true;
+  /**
+   * Present, and `true`, only when a phone number can actually be verified
+   * here (the feature is on and the SMS provider and hashing key are set).
+   * The phone rows draw only when it is there.
+   */
+  phoneVerifyAvailable?: true;
   /** Whether `email` has been proved reachable. False for every pre-verification account. */
   emailVerified: boolean;
   /** An address awaiting its link, if one is outstanding. */
   pendingEmail?: string;
+  /**
+   * False for an account made with Apple or Google that never set one. The
+   * settings screens branch on it (confirm with the provider instead of a
+   * password field). A boolean about the hash, never the hash.
+   */
+  hasPassword: boolean;
   /**
    * Whether the first-post photo notice still has to be shown. The composer is
    * the only reader — it decides on this before it publishes, so it has to come
@@ -78,12 +117,20 @@ export function accountJson(user: User): AccountJson {
     hideFromLeaderboard: user.hideFromLeaderboard,
     discoverableByUsername: user.discoverableByUsername,
     friendRequestsOpen: user.friendRequestsOpen,
+    discoverableByContacts: user.discoverableByContacts,
+    contactsChoiceAnswered: user.contactsChoiceAnsweredAt !== undefined,
+    phoneVerified: phoneIsCurrent(user),
+    phoneNeedsReconfirm: user.phoneVerifiedAt !== undefined && !phoneIsCurrent(user),
+    phoneLast4: user.phoneLast4,
     emailVerified: user.emailVerifiedAt !== undefined,
     pendingEmail: user.pendingEmail,
+    hasPassword: user.passwordHash !== null,
     photoNoticeSeen: user.photoNoticeSeen,
     tourSeen: user.tourSeen,
     ...(isForMeUser(user.id) ? { forMe: true as const } : {}),
     ...(isDiscoverModesUser(user.id) ? { discoverModes: true as const } : {}),
     ...(isAdminUser(user.id) ? { admin: true as const } : {}),
+    ...(contactsMatchEnabled() ? { contactsAvailable: true as const } : {}),
+    ...(phoneVerifyAvailable() ? { phoneVerifyAvailable: true as const } : {}),
   };
 }

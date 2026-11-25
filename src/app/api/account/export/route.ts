@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { exportUserData } from "@/lib/db";
+import { exportUserData, listIdentities } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { limitOrReject } from "@/lib/rateLimit";
 
@@ -28,10 +28,14 @@ export async function GET() {
   });
   if (limited) return limited;
 
-  const data = await exportUserData(user.id);
+  const [data, identities] = await Promise.all([exportUserData(user.id), listIdentities(user.id)]);
+  // Which providers are connected and the address each gave — the two things
+  // stored about them that are the person's own. Picked field by field so the
+  // provider's user number and the sealed Apple token can never ride along.
+  const signInMethods = identities.map((i) => ({ provider: i.provider, email: i.email }));
   const stamp = new Date().toISOString().slice(0, 10);
 
-  return new NextResponse(JSON.stringify(data, null, 2), {
+  return new NextResponse(JSON.stringify({ ...data, signInMethods }, null, 2), {
     headers: {
       "Content-Type": "application/json",
       "Content-Disposition": `attachment; filename="platemaps-${user.name}-${stamp}.json"`,

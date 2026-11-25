@@ -12,6 +12,7 @@ import {
 import { getCurrentUser } from "@/lib/session";
 import { limitOrReject } from "@/lib/rateLimit";
 import { cuisines } from "@/data/restaurantFacets";
+import { contactsMatchEnabled } from "@/lib/contactsConfig";
 
 /**
  * The one profile-settings endpoint for both fields the spec asks for: the
@@ -68,7 +69,7 @@ export async function POST(req: Request) {
     await setTourSeen(user.id, body.tourSeen);
   }
 
-  // The three privacy switches ride this endpoint rather than getting one each:
+  // The four privacy switches ride this endpoint rather than getting one each:
   // they are booleans with no validation beyond their type, and the panel that
   // owns them already round-trips through here. Anything that needs a password
   // check or a uniqueness check got its own route instead.
@@ -76,15 +77,29 @@ export async function POST(req: Request) {
     hideFromLeaderboard?: boolean;
     discoverableByUsername?: boolean;
     friendRequestsOpen?: boolean;
+    discoverableByContacts?: boolean;
   } = {};
 
-  for (const key of ["hideFromLeaderboard", "discoverableByUsername", "friendRequestsOpen"] as const) {
+  for (const key of [
+    "hideFromLeaderboard",
+    "discoverableByUsername",
+    "friendRequestsOpen",
+    "discoverableByContacts",
+  ] as const) {
     if (body[key] !== undefined) {
       if (typeof body[key] !== "boolean") {
         return NextResponse.json({ error: "Invalid value." }, { status: 400 });
       }
       privacy[key] = body[key];
     }
+  }
+
+  // "Find me from contacts" can only be turned ON where the feature is live.
+  // Turning it off is always accepted: withdrawing consent must never depend
+  // on a deployment switch. Nothing else happens here on purpose — this route
+  // does not send a confirmation email as a side effect of the answer.
+  if (privacy.discoverableByContacts === true && !contactsMatchEnabled()) {
+    return NextResponse.json({ error: "Not available.", code: "unavailable" }, { status: 404 });
   }
 
   if (Object.keys(privacy).length > 0) {

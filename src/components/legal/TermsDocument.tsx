@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Section, List, LegalTOC } from "@/components/legal/LegalSection";
+import { contactsMatchEnabled } from "@/lib/contactsConfig";
 
 /**
  * The body of the Terms of Service, shared by the desktop page (`/terms`) and the phone page
@@ -7,8 +8,16 @@ import { Section, List, LegalTOC } from "@/components/legal/LegalSection";
  * differs: the desktop page adds `Header`, the phone page adds a back bar.
  * `privacyHref` is where the cross-link to the sibling document points, which is the
  * one thing that has to change between the two bodies.
+ *
+ * The two passages about finding friends from contacts are part of the document
+ * only while that feature is switched on (`contactsMatchEnabled()`, the same
+ * server-side switch its routes read), and the date moves with them: with the
+ * feature off this is word for word the August text under the August date.
+ * See the matching note in PrivacyDocument.
  */
 const LAST_UPDATED = "August 14, 2026";
+/** Shown instead once the contacts passages are in. Set it to the day the switch is turned on. */
+const LAST_UPDATED_WITH_CONTACTS = "November 17, 2026";
 
 const SECTIONS = [
   { id: "acceptance", title: "1. Acceptance of Terms" },
@@ -35,6 +44,8 @@ const SECTIONS = [
 ];
 
 export function TermsDocument({ privacyHref }: { privacyHref: string }) {
+  const contacts = contactsMatchEnabled();
+
   return (
     <div className="px-4 pt-8 sm:px-6">
       <div className="mx-auto max-w-3xl">
@@ -44,7 +55,7 @@ export function TermsDocument({ privacyHref }: { privacyHref: string }) {
         <h1 className="font-display mb-2 text-3xl font-semibold text-zinc-900 sm:text-4xl">
           Terms of Service
         </h1>
-        <p className="font-mono mb-8 text-xs text-zinc-500">Last updated: {LAST_UPDATED}</p>
+        <p className="font-mono mb-8 text-xs text-zinc-500">Last updated: {contacts ? LAST_UPDATED_WITH_CONTACTS : LAST_UPDATED}</p>
 
         <div className="mb-10 rounded-2xl bg-pm-orange-tint p-4 text-sm leading-relaxed text-pm-orange-text sm:p-5">
           Welcome to PlateMaps. These Terms of Service (&ldquo;Terms&rdquo;) form a
@@ -112,6 +123,16 @@ export function TermsDocument({ privacyHref }: { privacyHref: string }) {
             partner under Section 7). We may also suspend or discontinue the Service, or
             any part of it, at any time, with or without notice.
           </p>
+          {contacts && (
+            <p>
+              <strong>Finding friends and sending invitations.</strong> If you choose to
+              share contacts from your device, you confirm that you are allowed to use that
+              contact information for this purpose. PlateMaps uses it only to show you
+              members who have chosen to be found and does not store it. Invitations are sent
+              by you, from your own device and messaging account; you are responsible for
+              them and should only invite people you know who would want to hear from you.
+            </p>
+          )}
         </Section>
 
         <Section id="content" title="4. Your Content">
@@ -182,6 +203,14 @@ export function TermsDocument({ privacyHref }: { privacyHref: string }) {
               Service, or use automated means to access the Service, without our prior
               written consent;
             </li>
+            {contacts && (
+              <li>
+                Use the friend-finding or contacts features to discover whether particular
+                email addresses or phone numbers belong to members, to upload contact lists
+                that are not your own address book, to create accounts for that purpose, or to
+                send unsolicited or bulk invitations;
+              </li>
+            )}
             <li>
               Reverse engineer, decompile, or attempt to derive the source code of the
               Service, or interfere with or disrupt its operation or security;

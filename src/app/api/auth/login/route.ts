@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { accountJson } from "@/lib/account";
 import bcrypt from "bcryptjs";
-import { randomUUID } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
 import { getUserByEmail, createSession } from "@/lib/db";
 import { setSessionCookie } from "@/lib/session";
 import {
@@ -23,8 +23,16 @@ import { limitOrReject } from "@/lib/rateLimit";
  * surface. Its only job is to give the "user doesn't exist" branch below the
  * same `bcrypt.compare` shape as the "user exists" branch — see the timing
  * note there.
+ *
+ * **Hashed from random bytes that are thrown away, so no password matches
+ * it.** It used to be the hash of a fixed phrase written in this file, which
+ * was harmless only while every account had a hash of its own to compare
+ * against. An account made with Apple or Google has none, and falls back to
+ * this one for timing — so that phrase would have been a working password for
+ * every such account. The guard in POST is what actually forbids it; this
+ * makes sure there is nothing to guess even if the guard were ever lost.
  */
-const DUMMY_HASH = bcrypt.hashSync("dummy-password-for-timing-parity", 10);
+const DUMMY_HASH = bcrypt.hashSync(randomBytes(32).toString("hex"), 10);
 
 /**
  * Cuts a string down to its first `maxBytes` UTF-8 bytes, matching how
@@ -64,6 +72,12 @@ function capToBytes(value: string, maxBytes: number): string {
  * free of the uniform-response care `/api/auth/forgot` takes. Comparing
  * against `DUMMY_HASH` when there's no user keeps both branches paying the
  * same ~50-100ms, with the same 401 body either way.
+ *
+ * **An account with no password can never be signed in to here.** Accounts
+ * made with Apple or Google have a NULL hash. They take the same dummy
+ * compare, for the same timing reason, and then fail on `hash !== null`
+ * whatever that compare said — success requires a real stored hash.
+ * `scripts/check-security.mjs` fails the build if that guard goes.
  */
 export async function POST(req: NextRequest) {
   // A cross-site <form enctype="text/plain"> can reach this route as a top-
@@ -127,7 +141,11 @@ export async function POST(req: NextRequest) {
 
   const user = await getUserByEmail(String(email));
   const cappedPassword = capToBytes(password, MAX_PASSWORD_BYTES);
-  const passwordOk = await bcrypt.compare(cappedPassword, user ? user.passwordHash : DUMMY_HASH);
+  const hash = user?.passwordHash ?? null;
+  const compared = await bcrypt.compare(cappedPassword, hash ?? DUMMY_HASH);
+  // `compared` alone is not enough: with no stored hash it is a verdict about
+  // DUMMY_HASH, not about this account.
+  const passwordOk = hash !== null && compared;
 
   if (!user || !passwordOk) {
     /* A throttle that cannot write must not lock anybody out of their account,

@@ -235,6 +235,135 @@ requireContains(
   "DUMMY_HASH",
   "finding #15 (constant-time login — dummy bcrypt compare when no user exists) was undone.",
 );
+// Sign in with Apple / Google. An account made that way has a NULL
+// password_hash, and the login route still runs a dummy bcrypt compare for it
+// (timing). What keeps that compare from ever counting as a login is one
+// guard, and losing it would make every such account open to a password.
+requireContains(
+  "src/app/api/auth/login/route.ts",
+  "hash !== null",
+  "a password-less (Apple/Google) account must never be signed in to by password.",
+);
+if (/DUMMY_HASH\s*=\s*bcrypt\.hashSync\(\s*["'`]/.test(readNormalized("src/app/api/auth/login/route.ts"))) {
+  violations.push(
+    "[invariant] src/app/api/auth/login/route.ts hashes a literal for DUMMY_HASH — it must be random bytes, so no known password matches it.",
+  );
+}
+requireContains(
+  "src/app/api/auth/reset/route.ts",
+  "evictUntrustedIdentities(",
+  "a password reset must remove Apple/Google sign-ins that are not provably the account's own inbox.",
+);
+// The Google iOS client id is compiled into the app as a URL scheme (its
+// reversed form) AND handed to the native SDK from the remotely served page.
+// If the two ever disagree, sign-in breaks in every installed build at once.
+// Empty means Google is not set up yet, and there is nothing to match.
+{
+  const idsPath = "src/lib/oauth/publicIds.ts";
+  if (!existsSync(join(ROOT, idsPath))) {
+    violations.push(`[oauth] ${idsPath} does not exist.`);
+  } else {
+    const match = readNormalized(idsPath).match(/export const GOOGLE_IOS_CLIENT_ID\s*=\s*["'`]([^"'`]*)["'`]/);
+    if (!match) {
+      violations.push(`[oauth] ${idsPath} no longer declares GOOGLE_IOS_CLIENT_ID as a plain string constant.`);
+    } else if (match[1]) {
+      const suffix = ".apps.googleusercontent.com";
+      const plistPath = "ios/App/App/Info.plist";
+      if (!match[1].endsWith(suffix)) {
+        violations.push(`[oauth] GOOGLE_IOS_CLIENT_ID does not end in ${suffix}.`);
+      } else if (!existsSync(join(ROOT, plistPath))) {
+        violations.push(`[oauth] GOOGLE_IOS_CLIENT_ID is set but ${plistPath} does not exist.`);
+      } else {
+        const scheme = `com.googleusercontent.apps.${match[1].slice(0, -suffix.length)}`;
+        if (!readNormalized(plistPath).includes(scheme)) {
+          violations.push(
+            `[oauth] GOOGLE_IOS_CLIENT_ID is set but ${plistPath} has no URL scheme "${scheme}" — ` +
+              `the id in src/lib/oauth/publicIds.ts and the scheme compiled into the app must match.`,
+          );
+        }
+      }
+    }
+  }
+}
+
+// The build marker. A build that carries the sign-in plugin but not the Google
+// URL scheme CRASHES when Google's sheet is asked for (the SDK raises an
+// exception Swift cannot catch). The remotely served pages only offer native
+// sign-in to a build whose user agent carries "PlateMapsSocial/<n>"
+// (nativeState in src/lib/oauthClient.ts), so that marker is a promise that
+// the scheme is compiled in. It may exist only alongside the scheme and a
+// non-empty iOS client id, and the pages must keep asking for it.
+{
+  const capPath = "capacitor.config.ts";
+  const plistPath = "ios/App/App/Info.plist";
+  const idsPath = "src/lib/oauth/publicIds.ts";
+  // Comments are stripped so that describing the marker does not count as setting it.
+  const capSource = existsSync(join(ROOT, capPath))
+    ? readNormalized(capPath).replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "")
+    : "";
+  if (capSource.includes("PlateMapsSocial/")) {
+    const plist = existsSync(join(ROOT, plistPath)) ? readNormalized(plistPath) : "";
+    if (!plist.includes("CFBundleURLTypes")) {
+      violations.push(
+        `[oauth] ${capPath} sets the PlateMapsSocial user-agent marker but ${plistPath} has no CFBundleURLTypes — ` +
+          `a build marked this way without the Google URL scheme crashes on Google sign-in.`,
+      );
+    }
+    const ids = existsSync(join(ROOT, idsPath)) ? readNormalized(idsPath) : "";
+    if (!/export const GOOGLE_IOS_CLIENT_ID\s*=\s*["'`][^"'`]+["'`]/.test(ids)) {
+      violations.push(
+        `[oauth] ${capPath} sets the PlateMapsSocial user-agent marker but GOOGLE_IOS_CLIENT_ID is empty — ` +
+          `add the marker in the same change as the id and its URL scheme, not before.`,
+      );
+    }
+  }
+}
+requireContains(
+  "src/lib/oauthClient.ts",
+  "SOCIAL_BUILD_MARKER.test(",
+  "native sign-in must only be offered to a build whose user agent carries the PlateMapsSocial marker — a build with the plugin and no Google URL scheme crashes.",
+);
+
+// Find friends from contacts. The match route answers "does this address
+// belong to a member" and the phone routes send paid texts, so on these three
+// the limiter is the protection itself: it has to stop the request when the
+// counters cannot be read, and the routes must refuse outright while the
+// feature is switched off.
+for (const rel of [
+  "src/app/api/contacts/match/route.ts",
+  "src/app/api/account/phone/send/route.ts",
+  "src/app/api/account/phone/verify/route.ts",
+]) {
+  requireContains(rel, "failClosed: true", "its limiter must fail closed (enumeration and SMS cost).");
+}
+for (const rel of ["src/app/api/contacts/match/route.ts", "src/app/api/account/phone/send/route.ts"]) {
+  requireContains(rel, "clientIpBucket(", "its per-network limit must key on the IPv6 /64, not the full address.");
+}
+requireContains(
+  "src/app/api/contacts/match/route.ts",
+  "contactsMatchEnabled()",
+  "contact matching must stay off until the deployment switches it on.",
+);
+// Uploaded contacts are compared in memory. The route must not reach for the
+// database client itself — that is how an uploaded address would become a
+// query parameter — and must not read the body in a way that skips the size
+// check.
+{
+  const rel = "src/app/api/contacts/match/route.ts";
+  if (existsSync(join(ROOT, rel))) {
+    const content = readNormalized(rel);
+    if (/@\/lib\/sqlClient/.test(content)) {
+      violations.push(`[contacts] ${rel} imports the database client — uploaded contacts must never become query parameters.`);
+    }
+    if (/\breq\.json\(\)/.test(content)) {
+      violations.push(`[contacts] ${rel} reads the body with req.json() — it must use req.text() so the real size is checked.`);
+    }
+    if (/console\.(log|info|debug|warn)\(/.test(content)) {
+      violations.push(`[contacts] ${rel} logs with console.log/info/debug/warn — nothing about an upload may be logged.`);
+    }
+  }
+}
+
 // Finding #6: restaurant photos must bypass /_next/image, which is why the
 // wildcard hostname was removed. They render through ShimmerImage, a plain
 // <img>, so what has to hold is that ShimmerImage stays off next/image.

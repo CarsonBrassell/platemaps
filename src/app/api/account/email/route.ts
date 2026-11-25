@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
+import { NextResponse, after } from "next/server";
+import { cookies } from "next/headers";
 import { accountJson } from "@/lib/account";
 import {
   deleteEmailVerificationsForUser,
@@ -8,8 +8,10 @@ import {
   setPendingEmail,
 } from "@/lib/db";
 import { describeSend, issueEmailVerification } from "@/lib/emailVerification";
-import { getCurrentUser } from "@/lib/session";
+import { getCurrentUser, SESSION_COOKIE } from "@/lib/session";
 import { limitOrReject } from "@/lib/rateLimit";
+import { confirmIdentity } from "@/lib/reauth";
+import { sendSecurityNotice } from "@/lib/mail";
 
 /**
  * Deliberately permissive. This is not the check that matters — the mail is.
@@ -32,6 +34,12 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
  * delete routes: a session cookie lives for 400 days on a device that gets
  * lent, and moving the address is how someone would take an account for good —
  * every recovery path there will ever be starts at the address on file.
+ *
+ * An account with no password (made with Apple or Google) confirms with that
+ * provider instead — a single-use stamp for the purpose `email`, see
+ * `lib/reauth.ts`. On the website that confirmation is only "Google is still
+ * signed in here", not a secret, so the CURRENT address is also sent a notice:
+ * the person who did not ask finds out.
  */
 export async function POST(req: Request) {
   const user = await getCurrentUser();
@@ -56,7 +64,7 @@ export async function POST(req: Request) {
     password = undefined;
   }
 
-  if (typeof password !== "string" || password.length === 0) {
+  if (user.passwordHash !== null && (typeof password !== "string" || password.length === 0)) {
     return NextResponse.json({ error: "Enter your current password." }, { status: 400 });
   }
 
@@ -69,8 +77,21 @@ export async function POST(req: Request) {
 
   const next = email.trim();
 
-  if (!(await bcrypt.compare(password, user.passwordHash))) {
+  const cookieStore = await cookies();
+  const confirmed = await confirmIdentity(
+    user,
+    cookieStore.get(SESSION_COOKIE)?.value,
+    "email",
+    password
+  );
+  if (confirmed === "wrong_password") {
     return NextResponse.json({ error: "That password isn't right." }, { status: 401 });
+  }
+  if (confirmed === "reauth_required") {
+    return NextResponse.json(
+      { error: "Confirm with Apple or Google to change your email.", code: "reauth_required" },
+      { status: 401 }
+    );
   }
 
   // Asking for the address you already have means one of three things, and the
@@ -129,6 +150,18 @@ export async function POST(req: Request) {
   // Confirming the address already on file parks nothing — there is nothing
   // pending about it.
   if (!sameAsCurrent) await setPendingEmail(user.id, next);
+
+  // To the address on file, not the new one. Only for a password-less account
+  // actually moving its address: there, the confirmation above was a presence
+  // check rather than a secret.
+  if (user.passwordHash === null && !sameAsCurrent) {
+    after(async () => {
+      const send = await sendSecurityNotice(user.email, user.name, "email_change_requested");
+      if (!send.ok && send.reason === "failed") {
+        console.error(`email-change notice failed for ${user.id}: ${send.detail}`);
+      }
+    });
+  }
 
   const fresh = await getUserById(user.id);
   if (!fresh) return NextResponse.json({ error: "Account not found." }, { status: 404 });

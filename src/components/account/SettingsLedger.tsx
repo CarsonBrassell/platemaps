@@ -8,6 +8,7 @@ import {
   useLedgerRows,
   type LedgerVariant,
 } from "@/components/account/ledger";
+import { ConfirmEmailPrompt } from "@/components/account/ConfirmEmailPrompt";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { cuisines } from "@/data/restaurantFacets";
@@ -148,6 +149,59 @@ export function SettingsLedger({ variant = "web" }: { variant?: LedgerVariant })
             onPick={(value) => void save({ discoverableByUsername: value })}
           />
         </LedgerRow>
+
+        {/* --- Find me from contacts -----------------------------------------
+            The fourth privacy switch. Drawn only when the server says the
+            feature is switched on for this deployment, or when this account
+            already has it on, so it can always be turned off.
+
+            Off for everyone until they choose otherwise, and this control
+            (with the one-time question's two buttons) is the only thing that
+            writes it. The description says who can find you and what they
+            learn, because usernames are pseudonyms: the thing being agreed
+            to is linking one to an email address. Do not soften it to
+            "friends". */}
+        {(account.contactsAvailable === true || account.discoverableByContacts) && (
+          <LedgerRow
+            label="Find me from contacts"
+            state={account.discoverableByContacts ? "On" : "Off"}
+            description={`Off unless you turn it on. When it’s on, anyone who has your ${
+              account.phoneVerifyAvailable === true ? "email address or phone number" : "email address"
+            } in their phone contacts can see your PlateMaps username and profile and send you a friend request. Your ${
+              account.phoneVerifyAvailable === true ? "address and number are" : "address is"
+            } never shown to them. Leave this off if you post under a name you don’t want linked to your ${
+              account.phoneVerifyAvailable === true ? "email or number" : "email"
+            }.`}
+            variant={variant}
+            open={privacy.isOpen("contacts")}
+            onToggle={() => privacy.toggle("contacts")}
+          >
+            <LedgerChoice
+              label="Find me from contacts"
+              options={[
+                { value: false, label: "Off" },
+                { value: true, label: "On" },
+              ]}
+              value={account.discoverableByContacts}
+              disabled={saving}
+              variant={variant}
+              onPick={(value) => void save({ discoverableByContacts: value })}
+            />
+            {account.discoverableByContacts && !account.emailVerified && (
+              <div className="mt-3">
+                <p
+                  className={`mb-2 leading-snug text-zinc-500 ${
+                    variant === "phone" ? "text-[13px]" : "text-xs"
+                  }`}
+                >
+                  Not active yet. It only works once your email is confirmed.
+                </p>
+                {/* Sends nothing until tapped. */}
+                <ConfirmEmailPrompt compact />
+              </div>
+            )}
+          </LedgerRow>
+        )}
 
         <LedgerRow
           label="Friend requests"

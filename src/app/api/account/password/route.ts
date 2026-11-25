@@ -1,15 +1,18 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import {
   updatePasswordHash,
   deleteOtherSessions,
   deleteEmailVerificationsForUser,
+  listIdentities,
   setPendingEmail,
 } from "@/lib/db";
 import { getCurrentUser, SESSION_COOKIE } from "@/lib/session";
 import { checkPassword } from "@/lib/password";
 import { limitOrReject } from "@/lib/rateLimit";
+import { confirmIdentity } from "@/lib/reauth";
+import { sendSecurityNotice } from "@/lib/mail";
 
 /**
  * Change the password, current password required.
@@ -24,6 +27,17 @@ import { limitOrReject } from "@/lib/rateLimit";
  * same thought. The usual reason to change a password is that someone else
  * might have it; leaving their session alive would make the change decorative.
  * This device stays signed in — see deleteOtherSessions.
+ *
+ * **Adding a first password.** An account made with Apple or Google has none,
+ * so there is no current password to ask for. It confirms with its provider
+ * instead (a single-use stamp for the purpose `password`, `lib/reauth.ts`),
+ * and the address on file is told a password was added — on the website that
+ * confirmation is a presence check, and a password is exactly what someone at
+ * a borrowed browser would add to keep the account. An account that HAS a
+ * password takes the unchanged path below and cannot use the provider route.
+ *
+ * **Connected sign-ins survive, and the answer says which.** See the note at
+ * the bottom of the handler.
  */
 export async function POST(req: Request) {
   const user = await getCurrentUser();
@@ -42,7 +56,9 @@ export async function POST(req: Request) {
     newPassword = undefined;
   }
 
-  if (typeof currentPassword !== "string" || currentPassword.length === 0) {
+  const hasPassword = user.passwordHash !== null;
+
+  if (hasPassword && (typeof currentPassword !== "string" || currentPassword.length === 0)) {
     return NextResponse.json({ error: "Enter your current password." }, { status: 400 });
   }
 
@@ -75,11 +91,21 @@ export async function POST(req: Request) {
   });
   if (limited) return limited;
 
-  if (!(await bcrypt.compare(currentPassword, user.passwordHash))) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE)?.value ?? "";
+
+  const confirmed = await confirmIdentity(user, token, "password", currentPassword);
+  if (confirmed === "wrong_password") {
     return NextResponse.json({ error: "That password isn't right." }, { status: 401 });
   }
+  if (confirmed === "reauth_required") {
+    return NextResponse.json(
+      { error: "Confirm with Apple or Google to add a password.", code: "reauth_required" },
+      { status: 401 }
+    );
+  }
 
-  if (await bcrypt.compare(newPassword, user.passwordHash)) {
+  if (user.passwordHash !== null && (await bcrypt.compare(newPassword, user.passwordHash))) {
     return NextResponse.json(
       { error: "That's already your password." },
       { status: 400 }
@@ -96,9 +122,25 @@ export async function POST(req: Request) {
   await deleteEmailVerificationsForUser(user.id);
   await setPendingEmail(user.id, null);
 
-  const cookieStore = await cookies();
-  const token = cookieStore.get(SESSION_COOKIE)?.value ?? "";
   const endedElsewhere = await deleteOtherSessions(user.id, token);
 
-  return NextResponse.json({ ok: true, endedElsewhere });
+  if (!hasPassword) {
+    after(async () => {
+      const send = await sendSecurityNotice(user.email, user.name, "password_added");
+      if (!send.ok && send.reason === "failed") {
+        console.error(`password-added notice failed for ${user.id}: ${send.detail}`);
+      }
+    });
+  }
+
+  /* Which Apple / Google sign-ins can still get into this account. Unlike the
+     reset link, this route does not remove them: on the add-a-first-password
+     path the connected provider is the person's own and often would not pass
+     the reset's "same address" test (a Hide My Email relay). But someone
+     changing a password because another person knew it should be told that a
+     sign-in connected with the old password still works, so the screen can
+     point at Disconnect. Provider names only. */
+  const connectedSignIns = (await listIdentities(user.id)).map((i) => i.provider);
+
+  return NextResponse.json({ ok: true, endedElsewhere, connectedSignIns });
 }

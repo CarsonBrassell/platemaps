@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { accountJson } from "@/lib/account";
 import bcrypt from "bcryptjs";
 import { randomUUID } from "node:crypto";
@@ -8,7 +8,9 @@ import { checkPassword } from "@/lib/password";
 import { checkEmail, normalizeEmail } from "@/lib/emailAddress";
 import { BLOCKED_MESSAGE, RESERVED_USERNAME_MESSAGE, isReservedUsername, moderateUsername } from "@/lib/moderation";
 import { userConflictMessage } from "@/lib/uniqueViolation";
-import { clientIp } from "@/lib/loginThrottle";
+import { clientIpBucket } from "@/lib/loginThrottle";
+import { issueEmailVerification } from "@/lib/emailVerification";
+import { contactsMatchEnabled } from "@/lib/contactsConfig";
 import { limitOrReject } from "@/lib/rateLimit";
 import { isSameOriginRequest } from "@/lib/originCheck";
 
@@ -26,9 +28,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Bad request." }, { status: 403 });
   }
 
+  // Keyed on the IPv6 /64 rather than the full address (IPv4 is unchanged):
+  // one IPv6 subscriber holds a whole block and could otherwise mint five
+  // accounts an hour from each of its addresses. See clientIpBucket.
   const limited = await limitOrReject({
     scope: "signup:ip",
-    key: clientIp(req),
+    key: clientIpBucket(req),
     max: 5,
     windowMinutes: 60,
   });
@@ -136,6 +141,30 @@ export async function POST(req: NextRequest) {
   await createSession(token, user.id);
 
   await setSessionCookie(token);
+
+  /* The confirmation link, sent once, after the response. Until this existed
+     almost no account had a confirmed address, because nothing ever mailed
+     one unasked. Best effort in the strict sense: the account and the session
+     already exist, so a mailer that is down, unconfigured or slow must not
+     turn a successful signup into an error, or hold the answer back for the
+     seconds its timeout allows — a person who gives up and taps Create
+     account again would be told the name is taken, by their own new account.
+     `after`, not a dropped `await`: an un-awaited promise can be frozen when
+     the response is sent, and `after` keeps the function alive until it
+     settles. The person can ask for the link again from Settings.
+
+     Only while find-from-contacts is switched on. A confirmed address is what
+     that feature needs from every new account; with it off, signup mails
+     nothing, exactly as it did before the feature existed. */
+  if (contactsMatchEnabled()) {
+    after(async () => {
+      try {
+        await issueEmailVerification(user, address);
+      } catch {
+        /* see above */
+      }
+    });
+  }
 
   return NextResponse.json(accountJson(user));
 }

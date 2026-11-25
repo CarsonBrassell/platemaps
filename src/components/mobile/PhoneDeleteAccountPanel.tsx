@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQueryParams } from "@/lib/queryString";
 import { useDeleteAccount } from "@/components/account/useDeleteAccount";
+import { PROVIDER_NAME, ProviderButton } from "@/components/account/SocialButtons";
 
 const FOCUS =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
@@ -60,10 +61,41 @@ const FOCUS =
  */
 export function PhoneDeleteAccountPanel() {
   const nav = useQueryParams().get("nav");
-  const { armed, arm, disarm, password, setPassword, error, busy, confirm } =
-    useDeleteAccount(nav ? `/m?nav=${nav}` : "/m");
+  const {
+    armed,
+    arm,
+    disarm,
+    password,
+    setPassword,
+    error,
+    busy,
+    confirm,
+    passwordless,
+    provider,
+    providerLoading,
+    confirmed,
+    leavesPage,
+  } = useDeleteAccount(nav ? `/m?nav=${nav}` : "/m", "/m/account/settings");
 
-  const [sure, setSure] = useState(false);
+  /* Starts true only when the website trip to Google has just come back for
+     this action: the person already answered "are you sure" before leaving,
+     and landing them back on that question would read as the confirmation
+     having failed. Always false otherwise. */
+  const [sure, setSure] = useState(confirmed);
+
+  /* An account made with Apple or Google has no password to ask for — see
+     useDeleteAccount. False for every account with a password. */
+  const mustLeaveFirst = passwordless && provider !== null && leavesPage && !confirmed;
+
+  /* Back from confirming with Google, this panel is the reason for the trip
+     and it sits at the very bottom of the screen. Bring it into view once,
+     rather than landing somebody at the top of Settings to wonder whether
+     anything happened. Never runs otherwise: `confirmed` starts false. */
+  const panelRef = useRef<HTMLDivElement>(null);
+  const cameBack = useRef(confirmed);
+  useEffect(() => {
+    if (cameBack.current) panelRef.current?.scrollIntoView({ block: "center" });
+  }, []);
 
   // Backing out from either screen goes all the way to rest, not one screen
   // back. `disarm` is what clears the typed password, so this path has to run
@@ -74,7 +106,7 @@ export function PhoneDeleteAccountPanel() {
   }
 
   return (
-    <div className="mt-8 rounded-2xl bg-pm-grey-tint/40 p-4">
+    <div ref={panelRef} className="mt-8 rounded-2xl bg-pm-grey-tint/40 p-4">
       <p className="mono-label mb-3 text-pm-grey-text">Delete account</p>
 
       {!armed ? (
@@ -125,6 +157,18 @@ export function PhoneDeleteAccountPanel() {
             void confirm();
           }}
         >
+          {passwordless ? (
+            <p className="mb-3 text-sm text-zinc-600">
+              {providerLoading
+                ? "One moment…"
+                : provider === null
+                  ? "This account has no password, and confirming with Apple or Google isn't available here. Delete it from the latest PlateMaps app, or log out and use Forgot password to set a password first."
+                  : confirmed
+                    ? `Confirmed with ${PROVIDER_NAME[provider]}. Last step: this deletes your account permanently.`
+                    : `Last step. This account has no password, so confirm it's you with ${PROVIDER_NAME[provider]} to delete it permanently.`}
+            </p>
+          ) : (
+          <>
           <p className="mb-3 text-sm text-zinc-600">
             Last step. Enter your password to delete your account permanently.
           </p>
@@ -141,6 +185,8 @@ export function PhoneDeleteAccountPanel() {
             disabled={busy}
             className={`mb-3 min-h-11 w-full rounded-full bg-white px-4 text-base text-zinc-900 outline-none disabled:opacity-50 ${FOCUS}`}
           />
+          </>
+          )}
 
           {error && (
             <p role="alert" className="mb-3 text-sm text-red-700">
@@ -156,13 +202,28 @@ export function PhoneDeleteAccountPanel() {
           >
             Keep my account
           </button>
+          {mustLeaveFirst && provider ? (
+            /* On the website the confirmation is a trip to Google and back.
+               It wears Google's button, not the filled red: this press
+               deletes nothing, and red never lies about what a tap does. */
+            <ProviderButton
+              provider={provider}
+              disabled={busy}
+              onClick={() => void confirm()}
+            />
+          ) : (
           <button
             type="submit"
-            disabled={busy || password.length === 0}
+            disabled={busy || (passwordless ? provider === null && !confirmed : password.length === 0)}
             className={`min-h-11 w-full rounded-full bg-red-700 px-4 text-sm font-medium text-white transition-transform active:scale-[0.98] disabled:opacity-50 ${FOCUS}`}
           >
-            {busy ? "Deleting…" : "Delete my account"}
+            {busy
+              ? "Deleting…"
+              : passwordless && provider && !confirmed
+                ? `Confirm with ${PROVIDER_NAME[provider]} and delete`
+                : "Delete my account"}
           </button>
+          )}
         </form>
       )}
     </div>

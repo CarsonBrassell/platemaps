@@ -5,6 +5,9 @@ import Link from "next/link";
 import { BrandMark, WordMark } from "@/components/BrandMark";
 import { useAuth } from "@/lib/auth";
 import { PASSWORD_HINT, checkPassword } from "@/lib/password";
+import { useQueryParams } from "@/lib/queryString";
+import { SocialButtons, useSocialSignIn } from "@/components/account/SocialButtons";
+import { FinishSignUp } from "@/components/account/FinishSignUp";
 
 /**
  * Signed-out profile: create an account or log in.
@@ -79,6 +82,16 @@ export function PhoneProfileAuth({
   const [badFields, setBadFields] = useState<string[]>([]);
   const [agreed, setAgreed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  /* Apple / Google sign-in. Inert unless the server says a provider is
+     configured: SocialButtons then renders nothing, `finish` stays null and
+     `oldBuild` stays false, so both variants are exactly what they were. */
+  const social = useSocialSignIn();
+  const rawNext = useQueryParams().get("next");
+  /* Only in an app build that predates the sign-in plugin, and only once the
+     server says in-app sign-in is live. Shown to everyone on such a build —
+     it cannot know who joined how, so it says nothing about any account. */
+  const oldBuild = social.availability?.mode === "none" && social.availability.oldBuild;
 
   /* Same hint the web form shows, same reason — see lib/password.ts. */
   const weakPassword = mode === "signup" && password ? checkPassword(password, { name, email }) : null;
@@ -198,6 +211,10 @@ export function PhoneProfileAuth({
     </button>
   );
 
+  /* Back from Google with `?oauth=finish`, before the server has said whether
+     sign-in is live: a beat of cream rather than a form that is then swapped. */
+  if (social.settling) return <div className={inSheet ? "" : "min-h-dvh"} />;
+
   return (
     <div className={inSheet ? "" : "min-h-dvh px-4 pt-6"}>
       {!inSheet && (
@@ -206,6 +223,18 @@ export function PhoneProfileAuth({
           <WordMark tone="dark" />
         </div>
       )}
+
+      {/* A new Apple / Google person: no account exists yet, and this screen
+          stands in for the form until they finish or cancel. */}
+      {social.finish ? (
+        <FinishSignUp
+          pending={social.finish}
+          variant="phone"
+          onClose={social.closeFinish}
+          className={inSheet ? "" : "rounded-2xl bg-white p-5"}
+        />
+      ) : (
+      <>
 
       {/* Why am I here: a gated tap (Post, Friends) lands on this form, and
           without a line saying so it reads as a button that did nothing. */}
@@ -246,6 +275,19 @@ export function PhoneProfileAuth({
             ? "Save your favorite San Diego spots and earn Plate Points."
             : "Sign in to see your saved spots and Plate Points."}
         </p>
+
+        {/* Above the fields, as alternatives to them. Renders nothing at all
+            unless a provider is configured. From the sheet, the website trip
+            comes back to the profile screen and then on to wherever the
+            sheet was opened. */}
+        <SocialButtons
+          availability={social.availability}
+          variant={variant}
+          returnTo="/m/account"
+          next={inSheet ? currentPath() : rawNext}
+          onNeedsSignup={social.openFinish}
+          initialError={social.notice}
+        />
 
         {mode === "signup" && (
           <>
@@ -327,6 +369,16 @@ export function PhoneProfileAuth({
           </p>
         )}
 
+        {/* An App Store build from before Apple / Google sign-in has no
+            button to offer, and "email and password don't match" would be the
+            only thing it could say to someone who joined that way. */}
+        {mode === "login" && oldBuild && (
+          <p className="mb-4 text-xs leading-relaxed text-zinc-500">
+            Signed up with Google or Apple? Update PlateMaps, or use Forgot password to set a
+            password.
+          </p>
+        )}
+
         {error && (
           <p role="alert" className="mb-4 text-sm text-red-700">
             {error}
@@ -387,6 +439,14 @@ export function PhoneProfileAuth({
           </label>
         )}
       </form>
+      </>
+      )}
     </div>
   );
+}
+
+/** This screen's own address, for "come back here" — the sheet opens over any /m page. */
+function currentPath(): string | null {
+  if (typeof window === "undefined") return null;
+  return `${window.location.pathname}${window.location.search}`;
 }
