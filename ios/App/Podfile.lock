@@ -4,11 +4,17 @@ PODS:
   - CapacitorCordova (8.5.1)
   - CapacitorPushNotifications (8.1.2):
     - Capacitor
+  - CapacitorStatusBar (8.0.4):
+    - Capacitor
+  - CapacitorTextZoom (8.0.1):
+    - Capacitor
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
+  - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
+  - "CapacitorTextZoom (from `../../node_modules/@capacitor/text-zoom`)"
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -17,12 +23,18 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorPushNotifications:
     :path: "../../node_modules/@capacitor/push-notifications"
+  CapacitorStatusBar:
+    :path: "../../node_modules/@capacitor/status-bar"
+  CapacitorTextZoom:
+    :path: "../../node_modules/@capacitor/text-zoom"
 
 SPEC CHECKSUMS:
   Capacitor: 8ca6676b3b1147b00f7f3a547ccf68defd658d55
   CapacitorCordova: eb79411a3a0ed517eeb4c6dcf5933ce4bcbb5c9e
   CapacitorPushNotifications: 32a7f840815f319fd9ba1c1c9b0b914be9d95237
+  CapacitorStatusBar: ff844df1f126da6c4fbc4028272425fa3a91e7e3
+  CapacitorTextZoom: b3c80b09abef831245bc3434b1c03aa898ad4762
 
-PODFILE CHECKSUM: 4e76ff0ea64f9863b9c3422fa76f389614f2c553
+PODFILE CHECKSUM: a103b6dde03e74c62c70a9cf93cb28d55fefdfc4
 
 COCOAPODS: 1.17.0
