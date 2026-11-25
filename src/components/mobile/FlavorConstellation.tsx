@@ -69,6 +69,8 @@ function mount(svg: SVGSVGElement, note: HTMLDivElement, data: FlavorWheel) {
         (m[2] || "").split("/").filter(Boolean).forEach((xs) => { const X = { name: xs, on: named(xs) }; x.push(X); PAR[X.name] = R.name; });
       });
     });
+    /* Local preview only: localhost/?sim fakes a mostly-found sky. */
+    if (location.hostname === "localhost" && location.search.includes("sim")) [...b, ...r, ...x].forEach((q) => { q.on = hsh(q.name, 3) < 0.7; });
     /* A star you reached lights the path back to its basic. */
     x.forEach((X) => { if (X.on) { const R = r.find((q) => q.name === PAR[X.name]); if (R) R.on = true; } });
     r.forEach((R) => { if (R.on) { const B = b.find((q) => q.name === PAR[R.name]); if (B) B.on = true; } });
