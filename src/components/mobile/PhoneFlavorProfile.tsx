@@ -245,7 +245,7 @@ export function PhoneFlavorProfile({ settingsHref, footer }: { settingsHref: str
                   </span>
                   <span className="min-w-0">
                     <span className="font-display block truncate text-[17px] font-semibold leading-tight text-zinc-900">{eater?.name ?? "Your flavor wheel"}</span>
-                    <span className="mono-label mt-1 block truncate text-zinc-500" style={{ fontSize: 10, letterSpacing: "0.08em" }}>{data.wheel.slice(0, 3).map(([n]) => n).join(" · ")}</span>
+                    <span className="mono-label mt-1 block truncate text-zinc-500" style={{ fontSize: 10, letterSpacing: "0.08em" }}>{data.wheel.slice(0, 3).map(([n], i) => <span key={n}>{i > 0 && <span aria-hidden className="mx-[5px] font-sans tracking-normal">·</span>}{n}</span>)}</span>
                   </span>
                   <span className="flex items-center gap-1 text-[12px] font-semibold text-pm-orange-text">
                     {wheelOpen ? "Less" : "Why"}
