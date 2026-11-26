@@ -39,6 +39,10 @@ const SITE_HOST = new URL(SITE_URL).hostname;
 
 const config: CapacitorConfig = {
   appId: 'com.platemapsapp.ios',
+  // Tells the remotely served pages this build has the Google URL scheme, so
+  // they may offer native sign-in. Never set it without CFBundleURLTypes in
+  // Info.plist; see src/lib/oauth/publicIds.ts.
+  appendUserAgent: 'PlateMapsSocial/1',
   appName: 'PlateMaps',
   // The WebView loads the live site via server.url, so webDir is not what
   // boots the app — PlateMaps is server-rendered, not a static export. It is

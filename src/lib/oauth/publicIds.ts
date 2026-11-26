@@ -72,10 +72,10 @@
  */
 
 /** OAuth client of type "Web application". Also the audience of the token the iOS SDK returns. */
-export const GOOGLE_WEB_CLIENT_ID = "";
+export const GOOGLE_WEB_CLIENT_ID = "189356894362-lg4mmk338abcsfj3usj5f5jpnkonkhqd.apps.googleusercontent.com";
 
 /** OAuth client of type "iOS", bundle id com.platemapsapp.ios. */
-export const GOOGLE_IOS_CLIENT_ID = "";
+export const GOOGLE_IOS_CLIENT_ID = "189356894362-jf826v9nlda0bk5akak1roek9gjqbhie.apps.googleusercontent.com";
 
 /** The audience of an identity token Apple mints for the native app. Matches capacitor.config.ts. */
 export const APPLE_BUNDLE_ID = "com.platemapsapp.ios";
