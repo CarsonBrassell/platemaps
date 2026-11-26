@@ -258,7 +258,7 @@ export function RestaurantCard({
         {why && (
           <div className="mb-2.5 space-y-0.5">
             {reason && (
-              <p className={`${reasonLines === 3 ? "line-clamp-3" : "line-clamp-2"} text-xs font-medium text-zinc-600`}>
+              <p className={`${reasonLines === 3 ? "line-clamp-4" : "line-clamp-2"} text-xs font-medium text-zinc-600`}>
                 <ReasonText text={reason} />
               </p>
             )}

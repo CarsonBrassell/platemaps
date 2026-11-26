@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/lib/session";
 import { sql } from "@/lib/sqlClient";
 import { isSameOriginRequest } from "@/lib/originCheck";
 import { limitOrReject } from "@/lib/rateLimit";
-import { FREE_FOOD_ENDS_AT, FREE_FOOD_EVENT_KEY, FREE_FOOD_STARTS_AT } from "@/lib/freeFoodEvent";
+import { FREE_FOOD_DOORS_LINE, FREE_FOOD_ENDS_AT, FREE_FOOD_EVENT_KEY, FREE_FOOD_STARTS_AT } from "@/lib/freeFoodEvent";
 import { getTicket, toRow, withTicketsTable } from "@/lib/eventTickets";
 
 /** Start the ticket's 5 minutes. Only during the event; idempotent. */
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     const now = Date.now();
     if (now < FREE_FOOD_STARTS_AT || now >= FREE_FOOD_ENDS_AT) {
-      return NextResponse.json({ error: "Activation opens Thu Nov 19 at 5pm" }, { status: 409 });
+      return NextResponse.json({ error: `Activation opens ${FREE_FOOD_DOORS_LINE}` }, { status: 409 });
     }
     // activated_at IS NULL in the WHERE keeps a double tap from restarting the clock.
     const rows = await sql`

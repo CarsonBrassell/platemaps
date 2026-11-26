@@ -1,5 +1,6 @@
 "use client";
 
+import { useModalOpen } from "@/lib/modalGate";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth";
@@ -870,6 +871,9 @@ function StepMark({
  */
 export function useCoachTour() {
   const { account, loading } = useAuth();
+  /* Waits behind a full-screen modal (the free-slice ticket popup auto-opens
+     on a new device's first feed load) instead of stacking over it. */
+  const modalOpen = useModalOpen();
   const pathname = usePathname();
   const [closed, setClosed] = useState(false);
   /* `?tour=1` replays it on demand — the only way back once either latch is
@@ -917,7 +921,7 @@ export function useCoachTour() {
   const onComposer = pathname === "/post" || pathname === "/m/post";
 
   return {
-    open: !closed && (forced || (!seen && !onComposer)),
+    open: !closed && !modalOpen && (forced || (!seen && !onComposer)),
     fresh: forced,
     close: () => setClosed(true),
   };

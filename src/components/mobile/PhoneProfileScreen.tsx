@@ -5,10 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQueryParams } from "@/lib/queryString";
 import { safeNext, signInPromptFor } from "@/lib/signInGate";
-import { PointsBadge } from "@/components/feed/PointsBadge";
 import { CameraIcon, SettingsIcon } from "@/components/icons";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
-import { useAuth } from "@/lib/auth";
+import { useAuth, useForMeAccess, useProfileV2Access } from "@/lib/auth";
+import { PointsBadge } from "@/components/feed/PointsBadge";
+import { PhoneFlavorProfile } from "@/components/mobile/PhoneFlavorProfile";
 import { initials } from "@/lib/format";
 import { AvatarCropper } from "@/components/AvatarCropper";
 import { uploadAvatar } from "@/lib/photos";
@@ -176,6 +177,9 @@ function PostTile({
 
 function ProfileOverview() {
   const { account, signOut, updateAvatar } = useAuth();
+  /* The new layout is Calvin's alone for now (lib/forMeGate.ts); everyone
+     else keeps the name row above the rank card. */
+  const v2 = useProfileV2Access();
   const nav = useQueryParams().get("nav");
   const to = (href: string) => (nav ? `${href}?nav=${nav}` : href);
 
@@ -304,6 +308,9 @@ function ProfileOverview() {
           instead of dissolving into a white sheet. */}
       <div className="mx-4">
         <div className="px-4 pt-5 pb-6">
+          {/* For profile-v2 viewers the photo and name sit in the rank card
+              ("badge on the edge", Calvin 2026-11-24) — see `identity` below. */}
+          {!v2 && (
           <div className="mb-5 flex items-center gap-4">
             <button
               type="button"
@@ -328,13 +335,6 @@ function ProfileOverview() {
                 <CameraIcon className="h-3.5 w-3.5" />
               </span>
             </button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleAvatarChange}
-              className="hidden"
-            />
 
             <div className="min-w-0 flex-1 pb-1">
               <h1 className="font-display flex items-center gap-1.5 text-[22px] font-semibold leading-tight tracking-tight text-zinc-900">
@@ -362,6 +362,14 @@ function ProfileOverview() {
               <SettingsIcon className="h-5 w-5" />
             </Link>
           </div>
+          )}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
+            className="hidden"
+          />
 
           {uploading && (
             <p role="status" className="mb-3 text-xs text-zinc-500">
@@ -382,7 +390,53 @@ function ProfileOverview() {
               down here in zinc — so the number the screen is actually about
               was the quietest thing on it. Both now live in one orange panel;
               the full rules, milestones included, are behind its info button. */}
-          <PlatePointsPanel points={arrival.displayPoints} showRank className="mb-5" />
+          <PlatePointsPanel
+            points={arrival.displayPoints}
+            showRank
+            className={v2 ? "mb-4 mt-10" : "mb-5"}
+            identity={
+              v2 ? <>
+                {/* The doorway to /m/account/settings, in the card's free
+                    top corner now that the name row above is gone. */}
+                <Link
+                  href={to("/m/account/settings")}
+                  aria-label="Settings"
+                  className={`absolute right-2 top-2 flex h-11 w-11 items-center justify-center rounded-full text-pm-grey-text transition-colors hover:bg-pm-grey-tint ${FOCUS}`}
+                >
+                  <SettingsIcon className="h-5 w-5" />
+                </Link>
+                <div className="-mt-[52px] mb-1 flex flex-col items-center text-center">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className={`relative h-[72px] w-[72px] shrink-0 rounded-full ring-4 ring-white transition-transform active:scale-95 disabled:opacity-60 ${FOCUS}`}
+                    aria-label="Change profile photo"
+                  >
+                    {account.avatarUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={account.avatarUrl}
+                        alt=""
+                        className="h-[72px] w-[72px] rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-[72px] w-[72px] items-center justify-center rounded-full bg-pm-grey-tint font-mono text-xl font-medium text-pm-grey-text">
+                        {initials(account.name)}
+                      </div>
+                    )}
+                    <span className="absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-pm-orange text-[#F7F4EC]">
+                      <CameraIcon className="h-3.5 w-3.5" />
+                    </span>
+                  </button>
+                  <h1 className="font-display mt-2 flex max-w-full items-center gap-1.5 text-[20px] font-semibold leading-tight tracking-tight text-zinc-900">
+                    <span className="truncate">{account.name}</span>
+                    <VerifiedBadge userId={account.id} />
+                  </h1>
+                </div>
+              </> : undefined
+            }
+          />
 
           {/* The approved order from the prototype: the total, then the
               plates that earned it — badged and ring-pulsed by the roll-call
@@ -537,6 +591,7 @@ function LegalLinks({ className = "" }: { className?: string }) {
 
 export function PhoneProfileScreen() {
   const { isSignedIn, loading } = useAuth();
+  const forMe = useForMeAccess();
   const router = useRouter();
   const params = useQueryParams();
 
@@ -560,7 +615,13 @@ export function PhoneProfileScreen() {
 
   return (
     <>
-      {isSignedIn ? (
+      {isSignedIn && forMe ? (
+        /* The two gated accounts get the flavor-wheel profile (lib/forMeGate.ts). */
+        <PhoneFlavorProfile
+          settingsHref={params.get("nav") ? `/m/account/settings?nav=${params.get("nav")}` : "/m/account/settings"}
+          footer={<LegalLinks className="mt-3" />}
+        />
+      ) : isSignedIn ? (
         <ProfileOverview />
       ) : (
         <>

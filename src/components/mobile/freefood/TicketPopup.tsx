@@ -1,5 +1,6 @@
 "use client";
 
+import { useRegisterModal } from "@/lib/modalGate";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth";
@@ -7,6 +8,8 @@ import {
   FREE_FOOD_CLAIM_CTA,
   FREE_FOOD_DATE_LINE,
   FREE_FOOD_ENDS_AT,
+  FREE_FOOD_NOTICE,
+  FREE_FOOD_NOTICE_CLAIM,
   FREE_FOOD_PARTNER,
   FREE_FOOD_SIGNUP_CTA,
   FREE_FOOD_STARTS_AT,
@@ -33,6 +36,7 @@ import "./freefood.css";
 
 export function TicketPopup({ onClose }: { onClose: () => void }) {
   const { account } = useAuth();
+  useRegisterModal();
   const [native, setNative] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const { ticket, loaded, busy, error, slicesLeft, simOn, offset, claim } = useEventTicket(!!account);
@@ -100,12 +104,21 @@ export function TicketPopup({ onClose }: { onClose: () => void }) {
             {FREE_FOOD_TITLE}
           </h2>
           <p className="mt-1 text-sm text-[#fbe3d3]">{FREE_FOOD_DATE_LINE}</p>
+          {/* The hours moved after people had already seen this popup. */}
+          {FREE_FOOD_NOTICE && !over && (
+            <p className="mt-3 text-sm font-semibold">
+              <span className="inline-block rounded-full bg-white px-3 py-1 text-pm-orange-text">
+                {FREE_FOOD_NOTICE}
+              </span>
+              {!ticket && <span className="mt-2 block">{FREE_FOOD_NOTICE_CLAIM}</span>}
+            </p>
+          )}
         </div>
       </div>
 
 
       {/* ---- Body: the ticket ---- */}
-      <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto rounded-t-[28px] bg-white px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-7">
+      <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto rounded-t-[28px] bg-white px-5 pb-[max(2.5rem,calc(env(safe-area-inset-bottom)+1rem))] pt-7">
         {live && <ClaimCounter left={slicesLeft} sim={simOn} />}
         <TicketCard handle={handle} number={number}>
           {over ? (

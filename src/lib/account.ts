@@ -1,6 +1,6 @@
 import { phoneIsCurrent, type User } from "@/lib/db";
 import { contactsMatchEnabled, phoneVerifyAvailable } from "@/lib/contactsConfig";
-import { isDiscoverModesUser, isForMeUser } from "@/lib/forMeGate";
+import { isDiscoverModesUser, isForMeUser, isProfileV2User } from "@/lib/forMeGate";
 import { isAdminUser } from "@/lib/adminGate";
 
 /**
@@ -96,6 +96,8 @@ export type AccountJson = {
    * Left out for everyone else, so their account JSON is unchanged.
    */
   discoverModes?: true;
+  /** Present, and `true`, only for lib/forMeGate.ts' profile-v2 list: the new phone profile. */
+  profileV2?: true;
   /**
    * Present, and `true`, only for lib/adminGate.ts' ids: shows the delete
    * control on everyone's posts and comments. Display only; the routes check
@@ -129,6 +131,7 @@ export function accountJson(user: User): AccountJson {
     tourSeen: user.tourSeen,
     ...(isForMeUser(user.id) ? { forMe: true as const } : {}),
     ...(isDiscoverModesUser(user.id) ? { discoverModes: true as const } : {}),
+    ...(isProfileV2User(user.id) ? { profileV2: true as const } : {}),
     ...(isAdminUser(user.id) ? { admin: true as const } : {}),
     ...(contactsMatchEnabled() ? { contactsAvailable: true as const } : {}),
     ...(phoneVerifyAvailable() ? { phoneVerifyAvailable: true as const } : {}),

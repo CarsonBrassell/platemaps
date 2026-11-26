@@ -31,6 +31,7 @@ import { claimOpeningCamera, openingCameraClaimed, MY_LOCATION_OPEN_ZOOM } from 
 import { readLastFix } from "@/lib/myLocation";
 import { NEO_NOIR_STYLE } from "@/lib/mapStyle";
 import { openStateFor } from "@/lib/openState";
+import { FREE_FOOD_RESTAURANT_ID, freeFoodVisible } from "@/lib/freeFoodEvent";
 import { relativeTime } from "@/lib/format";
 import type { RestaurantView } from "@/data/restaurantTypes";
 import type { PlateScore } from "@/lib/plateScore";
@@ -1713,6 +1714,10 @@ export function RestaurantMap({
                because districtDensity is built from that same array. */
             density: districtDensity[i],
             closed: openStateFor(restaurant.hours, now).kind === "closed",
+            /* The free-slice partner, for as long as the event is on: read by
+               the three `promo-*` layers and nothing else, so it goes back to
+               being an ordinary ember by itself once the event ends. */
+            promo: restaurant.id === FREE_FOOD_RESTAURANT_ID && freeFoodVisible(Date.now()),
           },
         })),
       };
@@ -2185,6 +2190,83 @@ export function RestaurantMap({
           ),
         },
       }, PIN_BEFORE_ID);
+
+      /* The free-slice partner's beacon: the same ember, turned up. Still
+         WebGL circles on the shared source (never a DOM marker) and still the
+         one accent — a wider halo, a white-hot core, and a ring that breathes
+         outward. No zoom floor and a bigger light than its neighbours, so it
+         reads from county height where everything else is haze. A search
+         that didn't match it puts it out like any other ember. */
+      const PROMO_FILTER = ["all", ["get", "promo"], ["!", ["get", "dim"]]];
+      map.addLayer({
+        id: "promo-halo",
+        type: "circle",
+        source: PIN_SOURCE,
+        filter: PROMO_FILTER as never,
+        paint: {
+          "circle-color": "#e8875a",
+          "circle-blur": 1,
+          "circle-opacity": 0.75,
+          "circle-radius": byZoom(13, 19, 26, 36),
+        },
+      }, PIN_BEFORE_ID);
+      map.addLayer({
+        id: "promo-core",
+        type: "circle",
+        source: PIN_SOURCE,
+        filter: PROMO_FILTER as never,
+        paint: {
+          "circle-color": "#fff1e0",
+          "circle-blur": 0.15,
+          "circle-stroke-color": "#ffb07a",
+          "circle-stroke-width": 2,
+          "circle-radius": byZoom(3.8, 5.4, 7.5, 10),
+        },
+      }, PIN_BEFORE_ID);
+      const promoRing = (scale: number) =>
+        byZoom(6 * scale, 9 * scale, 12 * scale, 16 * scale);
+      map.addLayer({
+        id: "promo-pulse",
+        type: "circle",
+        source: PIN_SOURCE,
+        filter: PROMO_FILTER as never,
+        paint: {
+          "circle-color": "rgba(0,0,0,0)",
+          "circle-stroke-color": "#ffb07a",
+          "circle-stroke-width": 2.5,
+          /* The resting ring, and all that reduced motion ever sees. */
+          "circle-stroke-opacity": 0.7,
+          "circle-radius": promoRing(1.4),
+        },
+      }, PIN_BEFORE_ID);
+      /* The pulse is two paint properties re-set on a timer — MapLibre has no
+         animated paint. ~30fps is plenty for a slow ring and halves the
+         repaints. It stops by itself when the map is torn down or the event
+         ends, idles while the tab is hidden, and never starts under reduced
+         motion. */
+      if (
+        freeFoodVisible(Date.now()) &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        const PULSE_MS = 2400;
+        let lastPaint = 0;
+        const pulse = (t: number) => {
+          if (mapRef.current !== map || !map.getLayer("promo-pulse")) return;
+          if (!freeFoodVisible(Date.now())) {
+            map.setPaintProperty("promo-pulse", "circle-stroke-opacity", 0);
+            return;
+          }
+          if (!document.hidden && t - lastPaint > 32) {
+            lastPaint = t;
+            const phase = (t % PULSE_MS) / PULSE_MS;
+            const eased = 1 - (1 - phase) * (1 - phase);
+            map.setPaintProperty("promo-pulse", "circle-radius", promoRing(1 + 1.8 * eased));
+            map.setPaintProperty("promo-pulse", "circle-stroke-opacity", 0.95 * (1 - phase));
+          }
+          requestAnimationFrame(pulse);
+        };
+        requestAnimationFrame(pulse);
+      }
 
       /* The hover/click target, and NOTHING else — fully transparent, and the
          only layer the pointer events below are bound to.

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Eater type under the flavor wheel — 4 mockups</title>
+<style>
+  :root { --ink:#1d1b19; --grey:#6f6a64; --bg:#F7F4EC; --orange:#A8481A; --bold:#7b4bb8; }
+  * { box-sizing:border-box; }
+  body { zoom:.66; margin:0; background:#e9e4d8; font:15px/1.45 -apple-system,"Segoe UI",system-ui,sans-serif; color:var(--ink); padding:24px; }
+  .row { display:grid; grid-template-columns:repeat(4, 340px); gap:20px; justify-content:center; }
+  .cap { font:700 12px "Spline Sans Mono",ui-monospace,monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--grey); margin:0 0 8px 4px; }
+  .phone { background:var(--bg); border-radius:28px; padding:16px 14px 20px; }
+  .card { background:#fff; border-radius:16px; padding:16px; }
+  .label { font:700 11px "Spline Sans Mono",ui-monospace,monospace; letter-spacing:.07em; text-transform:uppercase; color:#71717a; margin:0; }
+  h2 { font-family:Fraunces,Georgia,serif; font-weight:600; font-size:21px; line-height:1.15; margin:4px 0 0; }
+  .wheel { display:block; width:100%; height:auto; margin:4px 0 0; }
+  .name { font-family:Fraunces,Georgia,serif; font-weight:650; font-size:22px; margin:0; line-height:1.1; }
+  .read { color:#52525b; font-size:13.5px; margin:6px 0 0; }
+  .mono { font-family:"Spline Sans Mono",ui-monospace,monospace; }
+  .gap { height:12px; }
+  /* A */
+  .divider { height:1px; background:#ece6dc; margin:12px -16px 14px; }
+  .typeA { display:grid; grid-template-columns:48px 1fr; gap:12px; align-items:start; }
+  .emo { width:48px; height:48px; border-radius:14px; display:grid; place-items:center; font-size:26px; background:color-mix(in srgb,var(--bold) 14%,white); }
+  /* B */
+  .cardB { position:relative; overflow:hidden; padding-top:20px; }
+  .cardB::before { content:""; position:absolute; inset:0 0 auto 0; height:6px; background:var(--bold); }
+  .meter { margin-top:12px; }
+  .meter .top { display:flex; justify-content:space-between; font-size:12px; color:#52525b; }
+  .meter .top b { font-family:"Spline Sans Mono",ui-monospace,monospace; font-weight:700; color:var(--ink); }
+  .bar { height:8px; border-radius:99px; background:#f1ece2; margin-top:4px; overflow:hidden; }
+  .bar i { display:block; height:100%; border-radius:99px; background:var(--bold); }
+  /* C */
+  .chip { display:inline-flex; align-items:center; gap:6px; margin-top:10px; padding:6px 12px 6px 8px; border-radius:999px; background:color-mix(in srgb,var(--bold) 12%,white); font-size:13.5px; }
+  .chip b { font-family:Fraunces,Georgia,serif; font-size:15px; }
+  .chip span { color:#52525b; font-size:12px; }
+  .link { display:inline-block; margin-top:8px; font-size:12.5px; color:var(--orange); font-weight:600; }
+  /* D */
+  .grid8 { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:12px; }
+  .grid8 div { aspect-ratio:1; border-radius:12px; display:grid; place-items:center; font-size:20px; background:#f5f1e8; opacity:.45; }
+  .grid8 div.me { opacity:1; background:color-mix(in srgb,var(--bold) 18%,white); outline:2px solid var(--bold); }
+  .axis { display:flex; justify-content:space-between; font:600 10px "Spline Sans Mono",ui-monospace,monospace; color:#857a69; margin-top:6px; text-transform:uppercase; letter-spacing:.05em; }
+  .hero { text-align:center; padding:6px 0 2px; }
+  .hero .big { font-size:40px; }
+  .hero .num { font:700 11px "Spline Sans Mono",ui-monospace,monospace; letter-spacing:.08em; color:var(--bold); margin:4px 0 2px; }
+</style>
+</head>
+<body>
+<div class="row">
+
+  <div><p class="cap">A · inside the wheel card</p>
+  <div class="phone"><div class="card">
+    <p class="label">Your flavor wheel</p><h2>Cheese. Sweet heat. Bitter.</h2>
+    <svg class="wheel" viewBox="-14 -14 328 328"></svg>
+    <div class="divider"></div>
+    <p class="label">Your type</p>
+    <div class="typeA" style="margin-top:8px">
+      <div class="emo">🌶️</div>
+      <div><p class="name">The Challenger</p>
+      <p class="read">Your hunger for heat and bold flavor shows a real passion for life. You go after intensity and never back down from it.</p></div>
+    </div>
+  </div></div></div>
+
+  <div><p class="cap">B · own card with the why</p>
+  <div class="phone"><div class="card">
+    <p class="label">Your flavor wheel</p><h2>Cheese. Sweet heat. Bitter.</h2>
+    <svg class="wheel" viewBox="-14 -14 328 328"></svg>
+  </div>
+  <div class="gap"></div>
+  <div class="card cardB">
+    <p class="label" style="color:var(--bold)">Your type · <span class="mono">8</span> of <span class="mono">8</span></p>
+    <p class="name" style="margin-top:6px">The Daredevil</p>
+    <p class="read">You order the thing nobody else at the table will. Bold flavor, new places, no hesitation.</p>
+    <div class="meter"><div class="top"><span>Bold flavors</span><b>35%</b></div><div class="bar"><i style="width:35%"></i></div></div>
+    <div class="meter"><div class="top"><span>Explorer</span><b>76%</b></div><div class="bar"><i style="width:76%"></i></div></div>
+  </div></div></div>
+
+  <div><p class="cap">C · one chip under the headline</p>
+  <div class="phone"><div class="card">
+    <p class="label">Your flavor wheel</p><h2>Cheese. Sweet heat. Bitter.</h2>
+    <div class="chip">🔥 <b>The Firestarter</b> <span>bold · explorer</span></div>
+    <p class="read" style="margin-top:8px">Heat, sweet-heat and new spots: you'd rather try something that might be great than something you know is fine.</p>
+    <svg class="wheel" viewBox="-14 -14 328 328"></svg>
+    <span class="link">See all 8 types ›</span>
+  </div></div></div>
+
+  <div><p class="cap">D · reveal + where you sit</p>
+  <div class="phone"><div class="card">
+    <p class="label">Your flavor wheel</p><h2>Cheese. Sweet heat. Bitter.</h2>
+    <svg class="wheel" viewBox="-14 -14 328 328"></svg>
+  </div>
+  <div class="gap"></div>
+  <div class="card">
+    <div class="hero"><div class="big">🐉</div><p class="num">YOUR TYPE</p><p class="name">The Dragon</p>
+    <p class="read">Fire-breathing palate, wide-ranging map. You chase heat and you never eat at the same place twice.</p></div>
+    <div class="grid8"><div>🦦</div><div>🐺</div><div>🐦</div><div class="me">🐉</div><div>🐻</div><div>🦁</div><div>🦩</div><div>🐢</div></div>
+    <div class="axis"><span>sweet</span><span>smoke</span><span>fresh</span><span>bold</span></div>
+  </div></div></div>
+
+</div>
+<script>
+// Simplified stand-in for the real wheel: Calvin's top spokes as radial bars.
+const W = [["Cheese",.43,"#e08a3c"],["Sweet heat",.32,"#c2412d"],["Bitter",.29,"#5b6b3a"],["Smoky",.27,"#8a4b2a"],["Spicy",.26,"#c2412d"],["Cured",.26,"#9b3b4a"],["Creamy",.24,"#e08a3c"],["Premium",.22,"#7b4bb8"],["Meat",.22,"#9b3b4a"],["Charred",.21,"#8a4b2a"],["Brunch",.21,"#e0b03c"],["Poultry",.18,"#9b3b4a"],["Offal",.11,"#9b3b4a"],["Noodles",.1,"#e0b03c"],["Crispy",.09,"#e08a3c"],["Fruity",.08,"#4f9a5a"]];
+const c = 150, r0 = 46, k = 150, n = W.length;
+let s = `<circle cx="${c}" cy="${c}" r="${r0-6}" fill="none" stroke="#ece6dc" stroke-width="2"/><text x="${c}" y="${c-3}" font-size="10" fill="#857a69" text-anchor="middle" font-weight="600">most</text><text x="${c}" y="${c+10}" font-size="10" fill="#857a69" text-anchor="middle" font-weight="600">eaters</text>`;
+W.forEach(([nm, v, col], i) => {
+  const a = (-90 + i * 360 / n) * Math.PI / 180, ca = Math.cos(a), sa = Math.sin(a), r2 = r0 + v * k, top = i < 3;
+  s += `<line x1="${c+ca*r0}" y1="${c+sa*r0}" x2="${c+ca*r2}" y2="${c+sa*r2}" stroke="${col}" stroke-width="${top?7:5}" stroke-linecap="round"/>`;
+  const lr = r2 + 7, x = c + ca * lr, y = c + sa * lr, deg = (-90 + i * 360 / n), flip = ca < 0;
+  s += `<text x="${x}" y="${y}" font-size="${top?11.5:9.5}" font-weight="${top?700:600}" fill="#1d1b19" text-anchor="${flip?'end':'start'}" dominant-baseline="central" transform="rotate(${flip?deg+180:deg} ${x} ${y})">${nm}</text>`;
+});
+document.querySelectorAll("svg.wheel").forEach(el => el.innerHTML = s);
+</script>
+</body>
+</html>

@@ -41,7 +41,13 @@ type Reply = {
   picks: TastePick[];
   /** Dish-level test only: the name of this row of picks in the activity log (lib/tasteLog.ts). */
   batch?: string;
+  /** 40-axis account only: the dish index was still building, so `picks` is empty on purpose. Ask again. */
+  warming?: boolean;
 };
+
+/** How many times, and how long after, a `warming` reply is asked again. */
+const WARM_RETRIES = 2;
+const WARM_RETRY_MS = 5_000;
 
 function readLocal(): FullTastePrefs {
   try {
@@ -169,7 +175,7 @@ export function useTaste(opts?: { limit?: number; near?: Coords | null; wait?: b
   }, [reply]);
 
   const post = useCallback(
-    async (op: TasteOp | null, myGen: number, soft = false, batch?: string): Promise<Landed> => {
+    async (op: TasteOp | null, myGen: number, soft = false, batch?: string, warmLeft = WARM_RETRIES): Promise<Landed> => {
       const local = readLocal();
       const ctl = controller.current ?? new AbortController();
       controller.current = ctl;
@@ -192,6 +198,19 @@ export function useTaste(opts?: { limit?: number; near?: Coords | null; wait?: b
         if (!res.ok) throw new Error(String(res.status));
         const data = (await res.json()) as Reply;
         if (myGen !== gen.current) return "failed";
+        if (data.warming) {
+          // Keep the prefs the reply carries, but show no picks: ask again shortly, on the loading skeleton.
+          writeLocal(data.storage === "server" ? null : data.prefs);
+          prefsRef.current = data.prefs;
+          if (soft) return "failed";
+          if (warmLeft > 0) {
+            setStatus("loading");
+            await new Promise((r) => setTimeout(r, WARM_RETRY_MS));
+            if (myGen !== gen.current || ctl.signal.aborted) return "failed";
+            // The op (if any) was already applied by the reply above, so the retry carries none.
+            return post(null, myGen, false, undefined, warmLeft - 1);
+          }
+        }
         // A refresh that has shown everything is not put on screen: the caller starts over instead of blanking the row.
         if (soft && data.picks.length === 0 && excludeRef.current.length > 0) return "exhausted";
         // Server-held prefs replace the device copy (uploaded once, then cleared);

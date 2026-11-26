@@ -11,6 +11,7 @@ import { VotePair, type VoteDirection } from "@/components/feed/PostActions";
 import { VoteArrowUpIcon, VoteArrowDownIcon } from "@/components/icons";
 import { ShimmerImage } from "@/components/ShimmerImage";
 import { StarRating } from "@/components/StarRating";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
 import type { Comment } from "@/components/feed/types";
 import { askForPushInContext } from "@/lib/pushClient";
@@ -382,6 +383,7 @@ export function ShortPostRow({
           {/* A username is a machine handle, so it sets in the mono. */}
           <span className="truncate font-mono text-[13px] font-medium text-zinc-900">
             {post.authorName}
+            <VerifiedBadge userId={post.userId} className="ml-0.5" />
           </span>
           {/* Each scale renders as itself. A 0-100 plate rating and an old 1-5
               restaurant review answer different questions, and neither is ever

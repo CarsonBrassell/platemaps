@@ -77,38 +77,6 @@ export function SettingsLedger({ variant = "web" }: { variant?: LedgerVariant })
     <>
       <LedgerSection label="Privacy">
         <LedgerRow
-          label="Photos on public plates"
-          state={account.sharePhotosPublicly ? "Shown" : "Hidden"}
-          /* Careful about what this setting actually gates. The plate itself is
-             always public — every post reaches the discover feed either way.
-             What's private is the photo: `getDiscoverFeed` strips media
-             server-side, so the URL never leaves the server. Copy that says
-             the post is friends-only is wrong, and reads as a promise the app
-             doesn't keep.
-
-             No mention of the snapshot either. `photos_public` is frozen onto
-             each post at write time, so a plate posted with this off keeps its
-             photos with friends for good — the safe direction, and spelling it
-             out read as an apology rather than the guarantee it is. */
-          description="When this is on, everyone can see your photos. Off, only friends can."
-          variant={variant}
-          open={privacy.isOpen("photos")}
-          onToggle={() => privacy.toggle("photos")}
-        >
-          <LedgerChoice
-            label="Photos on public plates"
-            options={[
-              { value: false, label: "Hidden" },
-              { value: true, label: "Shown" },
-            ]}
-            value={account.sharePhotosPublicly}
-            disabled={saving}
-            variant={variant}
-            onPick={(value) => void save({ sharePhotosPublicly: value })}
-          />
-        </LedgerRow>
-
-        <LedgerRow
           label="Leaderboard"
           state={account.hideFromLeaderboard ? "Hidden" : "Visible"}
           description="You keep earning points and can still see your own. Hidden just means friends won't see you ranked."

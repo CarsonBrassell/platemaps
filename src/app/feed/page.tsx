@@ -17,6 +17,7 @@ import {
 
 import { FeedHeader } from "@/components/feed/FeedHeader";
 import { FeedTabs } from "@/components/feed/FeedTabs";
+import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { FoodPostCard, type FriendStatus } from "@/components/feed/FoodPostCard";
 import { usePostFeed } from "@/components/feed/usePostFeed";
 import { CommentsScreen } from "@/components/feed/CommentsScreen";
@@ -90,7 +91,9 @@ function FeedPageInner() {
      that should raise the prompt is "switch on Nearby", a decision this
      screen owns, not a thing the segmented control itself should know how
      to do. */
-  const nearby = useNearby();
+  /* Asks for the reader's position once per tab session, so each post card can
+     print how far the restaurant is from them. Without it the card says nothing. */
+  const nearby = useNearby({ askOnLoad: true, askEveryone: true });
   const handleSortChange = useCallback((next: FeedSort) => {
     setSort(next);
   }, []);
@@ -542,12 +545,15 @@ function FeedPageInner() {
            touch. Rendered only on Discover — see FeedSortSwitch. */
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <FeedTabs active={tab} onChange={setTab} className="mb-0" />
-          {tab === "discover" && (
-            <div className="flex items-center gap-0.5">
-              <FeedSortSwitch active={sort} onChange={handleSortChange} />
-              <NearbyChip on={nearbyOn} onToggle={handleNearbyToggle} />
-            </div>
-          )}
+          <div className="flex items-center gap-0.5">
+            {tab === "discover" && (
+              <>
+                <FeedSortSwitch active={sort} onChange={handleSortChange} />
+                <NearbyChip on={nearbyOn} onToggle={handleNearbyToggle} />
+              </>
+            )}
+            <NotificationCenter />
+          </div>
         </div>
       )}
 

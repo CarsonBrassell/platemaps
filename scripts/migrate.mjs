@@ -1424,6 +1424,41 @@ const statements = [
   )`,
   `CREATE INDEX IF NOT EXISTS taste_tapped_user_idx
     ON taste_tapped (user_id, tapped_at DESC)`,
+  // Food personality wheel (lib/personality.ts). Two lookup tables filled by
+  // scripts/load-personality.mjs from the AI tagging run in
+  // probe/for-me/personality/. `dish_flavor.key` is lib/personality.ts
+  // `dishKey` (folded name|description) or `dishNameKey` (name|*); only
+  // tagged keys are stored, an absent key means "no tag". restaurant_kind is
+  // keyed by TEXT id with no FK, like walk_cache: a held place is harmless.
+  `CREATE TABLE IF NOT EXISTS dish_flavor (
+    key TEXT PRIMARY KEY,
+    tag TEXT NOT NULL
+  )`,
+  `CREATE TABLE IF NOT EXISTS restaurant_kind (
+    restaurant_id TEXT PRIMARY KEY,
+    kind TEXT NOT NULL,
+    foodie BOOLEAN NOT NULL DEFAULT FALSE
+  )`,
+  // Marketing-mail opt-out (lib/unsubscribe.ts). NULL = may receive
+  // promotional mail; a timestamp = unsubscribed at that moment. Account mail
+  // (verify, reset) ignores it. unsubscribe_token is a per-user random value
+  // minted on first use, because the app has no server-side signing secret.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS marketing_opt_out_at TIMESTAMPTZ`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS unsubscribe_token TEXT`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS users_unsubscribe_token_idx
+    ON users (unsubscribe_token) WHERE unsubscribe_token IS NOT NULL`,
+  // One-off marketing sends (scripts/send-thanks.mjs). The primary key is the
+  // re-run guard: a user is only ever mailed once per campaign.
+  `CREATE TABLE IF NOT EXISTS marketing_sends (
+    user_id TEXT NOT NULL,
+    campaign TEXT NOT NULL,
+    sent_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    provider_id TEXT,
+    PRIMARY KEY (user_id, campaign)
+  )`,
+  // Notification center: when the user last opened the platter. Anything newer
+  // than this counts as unread; NULL means never opened (everything unread).
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS notifications_seen_at TIMESTAMPTZ`,
   // Sign in with Apple / Google (src/lib/oauth). An account made that way has
   // no password, so the column stops being NOT NULL; NULL means "no password"
   // and the login route refuses a password for it outright. No NULL row

@@ -30,6 +30,10 @@ const PUBLIC_EXACT_PATHS = new Set<string>([
   // The email-link verifier is token-based and deliberately has no session —
   // see the doc comment on the route itself for why.
   "/api/account/email/verify",
+  // Promotional-mail opt-out: opened from an email, token-authenticated, no
+  // session. One page for phone and desktop, so there is no /m twin.
+  "/unsubscribe",
+  "/api/unsubscribe",
 ]);
 
 /** Path prefixes that never require a session, matched by `startsWith`. */
@@ -47,8 +51,11 @@ const PUBLIC_PREFIXES: readonly string[] = ["/api/auth/"];
  * and the handful that don't (restaurants, discover, auth) are public reads.
  *
  * Set to false to go back to the 2026-09-17 rule: sign-in required everywhere.
+ *
+ * Calvin, 2026-11-18: "make signing up mandatory for getting onto the app" -
+ * demo mode is over, back to the everywhere-gate.
  */
-export const OPEN_BROWSING = true;
+export const OPEN_BROWSING = false;
 
 /** Still need a session in open-browsing mode: making posts, your own
  *  settings, and user profiles (the profile pages need a viewer for the block
@@ -153,6 +160,10 @@ export function signInPromptFor(rawNext: string | null | undefined): string | nu
   const is = (prefix: string) => path === prefix || path.startsWith(`${prefix}/`);
   if (is("/post") || is("/m/post")) return "Sign up to post a plate";
   if (is("/friends") || is("/m/friends")) return "Sign up to see your friends";
-  if (path === "/" || path === "/m") return "Sign up to keep your picks across devices";
+  if (path === "/" || path === "/m") {
+    return OPEN_BROWSING
+      ? "Sign up to keep your picks across devices"
+      : "Sign up to start using PlateMaps";
+  }
   return "Sign up to continue";
 }

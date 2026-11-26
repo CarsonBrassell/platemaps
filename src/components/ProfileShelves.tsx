@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { UPVOTE_MILESTONES } from "@/lib/points";
 import { PLATES_KEPT, ShowAllToggle, useFoldedList } from "@/components/ShowAllToggle";
-import { ChatIcon } from "@/components/icons";
+import { ChatIcon, VoteArrowUpIcon } from "@/components/icons";
 import { useAdminAccess } from "@/lib/auth";
 import { postedDate } from "@/lib/format";
 import { packBy } from "@/lib/photoShape";
@@ -778,13 +778,23 @@ function PlateTile({
   tone,
   onOpen,
   news,
+  tab,
 }: {
   post: ShelfPost;
   tone: number;
   onOpen: () => void;
   news?: { revealed: boolean; pulsing: boolean };
+  /** The frameless card: photo to the edge, counts on a tab under it. */
+  tab?: boolean;
 }) {
   const words = isWords(post);
+  /* The tab card (the phone flavor profile). Nothing wraps the photo: it runs
+     to the tile's edge on three sides and one white tab hangs off the bottom
+     with the upvotes, the comments and the percent. Words plates keep their
+     tone block, which already has no frame. */
+  const tabbed = !!tab && !words;
+  const comments = post.comments?.length ?? 0;
+  const percent = cardPercent(post);
   /* No zero disc. A plate reaches the shelf by having unacknowledged
      activity, so the total is normally at least 1 — but if the sum ever comes
      back 0 (a heart un-hearted between the two requests, a payload without
@@ -825,7 +835,11 @@ function PlateTile({
       onClick={onOpen}
       aria-label={label}
       className={`relative w-full rounded-xl text-left transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
-        words ? "px-2.5 pb-2 pt-4" : "bg-white p-1.5 pb-1.5"
+        words
+          ? "px-2.5 pb-2 pt-4"
+          : tabbed
+            ? "overflow-hidden bg-white [&_.rounded-lg]:rounded-none"
+            : "bg-white p-1.5 pb-1.5"
       }`}
       style={words ? { background: `var(--pm-tone-${tone})` } : undefined}
     >
@@ -867,12 +881,28 @@ function PlateTile({
 
           Dropped entirely rather than rendered empty when there is nothing to
           say: an empty line still costs its leading. */}
-      {meta && (
-        <span className="mt-1 block font-mono text-[9.5px] tabular-nums text-pm-orange-text">
-          {meta}
+      {tabbed ? (
+        <span className="flex h-[34px] items-center gap-3 px-2.5 font-mono text-xs tabular-nums text-zinc-500">
+          <span className="inline-flex items-center gap-1">
+            <VoteArrowUpIcon className="h-3.5 w-3.5 shrink-0" />
+            {post.upvoteCount}
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <ChatIcon className="h-3.5 w-3.5 shrink-0" />
+            {comments}
+          </span>
+          {percent && <span className="ml-auto font-semibold text-pm-orange-text">{percent}</span>}
         </span>
+      ) : (
+        <>
+          {meta && (
+            <span className="mt-1 block font-mono text-[9.5px] tabular-nums text-pm-orange-text">
+              {meta}
+            </span>
+          )}
+          <CardActivity post={post} />
+        </>
       )}
-      <CardActivity post={post} />
     </button>
   );
 }
@@ -919,9 +949,15 @@ export function ProfileShelves({
   onCommentVoted,
   onPostVoted,
   onDelete,
+  sheetExtra,
+  tab,
 }: {
   posts: ShelfPost[];
   arrival: RollCallArrival;
+  /** Optional block for the opened plate's sheet, above its comments. */
+  sheetExtra?: (post: ShelfPost) => ReactNode;
+  /** Frameless photo tiles with a counts tab (see `PlateTile`). */
+  tab?: boolean;
   /**
    * A comment written from the detail sheet, handed up to whoever owns
    * `posts` — this component does not own that array and cannot patch it.
@@ -1020,7 +1056,7 @@ export function ProfileShelves({
             id="profile-archive"
             posts={archive.visible}
             tile={(post, tone) => (
-              <PlateTile key={post.id} post={post} tone={tone} onOpen={() => open(post)} />
+              <PlateTile key={post.id} post={post} tone={tone} onOpen={() => open(post)} tab={tab} />
             )}
           />
           {archive.foldable && (
@@ -1044,6 +1080,7 @@ export function ProfileShelves({
           }
           onVoted={(patch) => onPostVoted?.(openPost.id, patch)}
           onDelete={onDelete && (() => onDelete(openPost.id))}
+          extra={sheetExtra?.(openPost)}
         />
       )}
     </section>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { FREE_FOOD_PARTNER, FREE_FOOD_SEEN_KEY, FREE_FOOD_TITLE, freeFoodVisible } from "@/lib/freeFoodEvent";
 import { TicketPopup } from "./TicketPopup";
 import "./freefood.css";
@@ -8,7 +9,7 @@ import "./freefood.css";
 /**
  * The free-slice icon: top right of the feed's pinned bar, on the tabs' row,
  * while the event is on. The first time a device opens the feed it also opens
- * the popup by itself; after that it just sits here with its pulsing dot.
+ * the popup by itself; after that it just sits here with its FREE badge.
  *
  * It renders nothing until mounted: whether the event is still on depends on
  * the clock, and the server's clock and the phone's need not agree on the
@@ -54,7 +55,7 @@ export function TicketButton() {
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
         aria-label={`${FREE_FOOD_TITLE} \u2014 ${FREE_FOOD_PARTNER}`}
-        className="ff-root relative -mr-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pm-orange text-white transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+        className="ff-root ff-hop relative -mr-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pm-orange text-white transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
       >
         <TicketGlyph />
         <span
@@ -62,7 +63,14 @@ export function TicketButton() {
           aria-hidden="true"
         />
       </button>
-      {open && <TicketPopup onClose={close} />}
+      {/* Portalled to the phone shell (as PhoneStickyBar does): rendered in
+          place it sits inside the pinned bar's stacking context, under the
+          bottom nav, which covered the invite block. */}
+      {open &&
+        createPortal(
+          <TicketPopup onClose={close} />,
+          document.querySelector<HTMLElement>(".pm-phone-shell") ?? document.body,
+        )}
     </>
   );
 }

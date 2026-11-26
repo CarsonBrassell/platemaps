@@ -63,7 +63,7 @@ const TABLE_ROWS = [
   },
   {
     category: "Photos",
-    examples: "Profile photo; post photos (private/friends-only unless you turn on public sharing)",
+    examples: "Profile photo; post photos (shown publicly on the feed)",
     purpose: "Display your profile and posts as you've configured them",
   },
   {
@@ -283,8 +283,7 @@ export function PrivacyDocument({ termsHref }: { termsHref: string }) {
             <li>
               <span className="font-medium text-zinc-900">With other users, as intended by the
               Service&rsquo;s design:</span> your posts, ratings, and comments are visible to
-              other users according to your settings (for example, posts are friends-only
-              unless you turn on public photo sharing). Upvotes on a post are shown publicly;
+              other users according to your settings (posts and their photos appear on the public feed). Upvotes on a post are shown publicly;
               hearts are private and are never shown to anyone, including the post&rsquo;s
               author.
             </li>

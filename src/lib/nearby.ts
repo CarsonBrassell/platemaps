@@ -208,7 +208,16 @@ function claimAutoAsk(): boolean {
   return true;
 }
 
-export function useNearby({ askOnLoad = false }: { askOnLoad?: boolean } = {}): Nearby {
+export function useNearby({
+  askOnLoad = false,
+  askEveryone = false,
+}: {
+  askOnLoad?: boolean;
+  /** With `askOnLoad`: ask every reader, not only the lib/forMeGate.ts
+   *  accounts. The feeds pass it — a post card has no honest distance to print
+   *  until the reader's own position is known, and no tap of its own to ask on. */
+  askEveryone?: boolean;
+} = {}): Nearby {
   const access = useForMeAccess();
   const [state, setState] = useState<Exclude<NearbyState, "unsupported">>("idle");
   const [coords, setCoords] = useState<Coords | null>(null);
@@ -304,7 +313,8 @@ export function useNearby({ askOnLoad = false }: { askOnLoad?: boolean } = {}): 
     // Without the permissions API there is nothing to ask; only the accounts on
     // lib/forMeGate.ts, asked on load, have a use for the answer "prompt" it
     // would give.
-    if (!access && (!permissions || typeof permissions.query !== "function")) return;
+    const everyone = askOnLoad && askEveryone;
+    if (!access && !everyone && (!permissions || typeof permissions.query !== "function")) return;
     let cancelled = false;
     void (async () => {
       let answer: "granted" | "prompt" | "denied" = "prompt";
@@ -324,7 +334,7 @@ export function useNearby({ askOnLoad = false }: { askOnLoad?: boolean } = {}): 
         answer === "granted" ||
         (answer === "prompt" &&
           askOnLoad &&
-          access &&
+          (access || askEveryone) &&
           !getSavedLocationSnapshot() &&
           claimAutoAsk());
       // Once the account is known and a fix is already in flight or taken
@@ -340,7 +350,7 @@ export function useNearby({ askOnLoad = false }: { askOnLoad?: boolean } = {}): 
     return () => {
       cancelled = true;
     };
-  }, [supported, saved, request, access, askOnLoad]);
+  }, [supported, saved, request, access, askOnLoad, askEveryone]);
 
   // A saved location takes precedence over GPS: it answers `coords` directly,
   // in the `"ready"` state, without ever touching the geolocation API or its

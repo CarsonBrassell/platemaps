@@ -494,7 +494,12 @@ export function PhoneFriendsScreen() {
           </div>
 
           {account && friends && (
-            <PhoneFriendsLeaderboard friends={friends} you={account} />
+            <PhoneFriendsLeaderboard
+              friends={friends}
+              you={account}
+              profileHref={profileHref}
+              accountHref={to("/m/account")}
+            />
           )}
 
           {hasRequests && (

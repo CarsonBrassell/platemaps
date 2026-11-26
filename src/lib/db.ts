@@ -18,13 +18,22 @@ import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
 import { RANKS, rankByKey } from "@/lib/ranks";
 import { dishRatingKey } from "@/lib/dishRatingKey";
 import {
-  computeFlavorProfile,
   computeTasteMatch,
   tasteInputFor,
   type CuisineCountRow,
-  type FlavorProfile,
   type TasteMatch,
 } from "@/lib/tasteMatch";
+import {
+  computePersonality,
+  dishKey,
+  dishNameKey,
+  foldText,
+  personalityStats,
+  BASELINE,
+  type CorpusBaselines,
+  type PersonalityPost,
+  type PersonalityProfile,
+} from "@/lib/personality";
 import { isStoredPhotoUrl, storedPhotoOwner, storedPhotoSqlPattern } from "@/lib/photos";
 import { brandKey, foldAccents } from "@/lib/brandName";
 import { hashToken, SESSION_TTL_SECONDS } from "@/lib/tokens";
@@ -1308,16 +1317,128 @@ export async function getTasteMatchForProfile(
 }
 
 /**
- * Your own cuisine mix, for the "Your flavor profile" card. One
- * `getCuisineCounts` call for `userId`; `flavor` is null for the empty state
- * (too few cuisine-tagged plates, or fewer than three cuisines).
+ * Your food personality wheel (lib/personality.ts has the math and the
+ * reasoning); `flavor` is null for the empty state. Every post, joined to its
+ * menu dish's description so the exact dish key can be built, and to
+ * `restaurant_kind` for Quick Bite and Foodie. A second round trip looks up the
+ * dish tags; a dish missing its exact key falls back to the name-only key.
  *
- * Callers pass the session user's own id and nothing else: the card is shown
- * to yourself only, on your account screen and on your own public profile.
+ * Callers pass the session user's own id, or go through
+ * `getPersonalityMatchForProfile`, which adds a friend's only after the same
+ * friends-only gate as the cuisine Taste match. Never call it for anyone else.
  */
-export async function getFlavorProfile(userId: string): Promise<{ flavor: FlavorProfile | null }> {
-  const rows = await getCuisineCounts([userId]);
-  return { flavor: computeFlavorProfile(tasteInputFor(rows, userId)) };
+const CORPUS_TTL_MS = 60 * 60 * 1000;
+let corpusCache: { at: number; value: Promise<CorpusBaselines> } | null = null;
+
+/**
+ * The food personality's measured baselines (lib/personality.ts
+ * `CorpusBaselines`): each cuisine's share of all posts, and the share of all
+ * users' visits (distinct user + place + day) that were foodie or upscale,
+ * floored at the share of places on best-of lists. Aggregates only; cached an
+ * hour since one new post barely moves either.
+ */
+function getCorpusBaselines(): Promise<CorpusBaselines> {
+  if (corpusCache && Date.now() - corpusCache.at < CORPUS_TTL_MS) return corpusCache.value;
+  const value = (async () => {
+    const [cuisines, foodie] = (await Promise.all([
+      sql`
+        SELECT count(*)::int AS n FROM posts p JOIN restaurants r ON r.id = p.restaurant_id
+        WHERE r.cuisine IS NOT NULL AND r.cuisine <> '' GROUP BY r.cuisine
+      `,
+      sql`
+        SELECT count(*)::int AS visits,
+               count(*) FILTER (WHERE v.foodie)::int AS foodie
+        FROM (
+          SELECT DISTINCT p.user_id, p.restaurant_id,
+                 to_char(p.created_at AT TIME ZONE 'America/Los_Angeles', 'YYYY-MM-DD') AS day,
+                 coalesce(rk.foodie, false) OR rk.kind = 'u' AS foodie
+          FROM posts p
+          LEFT JOIN restaurant_kind rk ON rk.restaurant_id = p.restaurant_id::text
+          WHERE p.restaurant_id IS NOT NULL
+        ) v
+      `,
+    ])) as [{ n: number }[], { visits: number; foodie: number }[]];
+    const total = cuisines.reduce((sum, c) => sum + c.n, 0);
+    const { visits, foodie: hits } = foodie[0] ?? { visits: 0, foodie: 0 };
+    return {
+      cuisineShares: total ? cuisines.map((c) => c.n / total) : undefined,
+      foodieBase: visits ? Math.max(BASELINE.Foodie, hits / visits) : undefined,
+    };
+  })();
+  value.catch(() => {
+    corpusCache = null;
+  });
+  corpusCache = { at: Date.now(), value };
+  return value;
+}
+
+export async function getFlavorProfile(userId: string): Promise<{ flavor: PersonalityProfile | null }> {
+  const rows = (await sql`
+    SELECT p.dish_name, p.restaurant_id, coalesce(r.name, p.restaurant) AS place,
+           r.cuisine, d.description, rk.kind, coalesce(rk.foodie, false) AS foodie,
+           to_char(p.created_at AT TIME ZONE 'America/Los_Angeles', 'YYYY-MM-DD') AS day
+    FROM posts p
+    LEFT JOIN restaurants r ON r.id = p.restaurant_id
+    LEFT JOIN restaurant_kind rk ON rk.restaurant_id = p.restaurant_id::text
+    LEFT JOIN LATERAL (
+      SELECT description FROM dishes d
+      WHERE d.restaurant_id = p.restaurant_id AND lower(trim(d.name)) = lower(trim(p.dish_name))
+      LIMIT 1
+    ) d ON true
+    WHERE p.user_id = ${userId}
+  `) as {
+    dish_name: string | null;
+    restaurant_id: string | null;
+    place: string | null;
+    cuisine: string | null;
+    description: string | null;
+    kind: string | null;
+    foodie: boolean;
+    day: string;
+  }[];
+  const keys = new Set<string>();
+  for (const r of rows) {
+    if (!r.dish_name?.trim()) continue;
+    keys.add(dishKey(r.dish_name, r.description));
+    keys.add(dishNameKey(r.dish_name));
+  }
+  const tags = new Map<string, string>();
+  if (keys.size) {
+    const found = (await sql`SELECT key, tag FROM dish_flavor WHERE key = ANY(${[...keys]}::text[])`) as {
+      key: string;
+      tag: string;
+    }[];
+    for (const f of found) tags.set(f.key, f.tag);
+  }
+  const posts: PersonalityPost[] = rows.map((r) => {
+    const name = r.dish_name?.trim() ? r.dish_name : null;
+    return {
+      tag: name ? (tags.get(dishKey(name, r.description)) ?? tags.get(dishNameKey(name)) ?? null) : null,
+      hasDish: !!name,
+      placeKey: r.restaurant_id ? String(r.restaurant_id) : foldText(r.place ?? ""),
+      day: r.day,
+      cuisine: r.cuisine,
+      kind: r.kind === "q" || r.kind === "t" || r.kind === "u" ? r.kind : null,
+      foodie: r.foodie,
+    };
+  });
+  return { flavor: computePersonality(personalityStats(posts), await getCorpusBaselines()) };
+}
+
+/**
+ * Both wheels for the Taste match card on a friend's profile: yours and
+ * theirs, laid over each other (lib/personality.ts `comparePersonality`).
+ * Same gate as `getTasteMatchForProfile`: `null` for yourself or anyone who
+ * isn't a friend; a side is null when that person has too few posts.
+ */
+export async function getPersonalityMatchForProfile(
+  viewerId: string,
+  otherId: string
+): Promise<{ you: PersonalityProfile | null; them: PersonalityProfile | null } | null> {
+  if (viewerId === otherId) return null;
+  if ((await getFriendStatus(viewerId, otherId)) !== "friends") return null;
+  const [you, them] = await Promise.all([getFlavorProfile(viewerId), getFlavorProfile(otherId)]);
+  return { you: you.flavor, them: them.flavor };
 }
 
 /**
@@ -1684,6 +1805,25 @@ export async function postsForDishTaste(userId: string): Promise<ViewerPost[]> {
     rating: r.rating == null ? null : Number(r.rating),
     caption: typeof r.caption === "string" ? r.caption : null,
     vibe: typeof r.vibe === "string" ? r.vibe : null,
+  }));
+}
+
+/**
+ * Every rated post on the public feed's terms (meal courses are not posts of their own there), one row per post,
+ * for the crowd bonus (lib/crowdBonus.ts). Nothing here is filtered by viewer; the bonus leaves out the viewer's
+ * own posts and blocked pairs afterwards. SELECT only.
+ */
+export async function crowdPostsRows(): Promise<{ userId: string; restaurantId: string; at: number; rating: number }[]> {
+  const rows = await sql`
+    SELECT user_id, restaurant_id, created_at, rating
+    FROM posts
+    WHERE meal_id IS NULL AND restaurant_id IS NOT NULL AND rating IS NOT NULL
+  `;
+  return rows.map((r) => ({
+    userId: String(r.user_id),
+    restaurantId: String(r.restaurant_id),
+    at: new Date(r.created_at).getTime(),
+    rating: Number(r.rating),
   }));
 }
 
@@ -5536,4 +5676,74 @@ export async function clearPhone(userId: string): Promise<void> {
   } catch {
     /* see above */
   }
+}
+/* --- Marketing-mail opt-out ------------------------------------------------
+ *
+ * `users.marketing_opt_out_at` (NULL = may receive promotional mail) and
+ * `users.unsubscribe_token`, a per-user random value minted on first use.
+ * Callers live in `lib/unsubscribe.ts`; account mail never reads either.
+ */
+
+/** The user's unsubscribe token, minting it on first use. Null if no such user. */
+export async function getOrCreateUnsubscribeToken(
+  userId: string,
+  candidate: string,
+): Promise<string | null> {
+  // Only writes when empty, so two racing callers converge on one value.
+  await sql`
+    UPDATE users SET unsubscribe_token = ${candidate}
+    WHERE id = ${userId} AND unsubscribe_token IS NULL
+  `;
+  const rows = await sql`SELECT unsubscribe_token FROM users WHERE id = ${userId}`;
+  return (rows[0]?.unsubscribe_token as string | null | undefined) ?? null;
+}
+
+/** Resolves a token to a user id and current opt-out state, or null. */
+export async function findUserByUnsubscribeToken(
+  token: string,
+): Promise<{ userId: string; token: string; optedOut: boolean } | null> {
+  const rows = await sql`
+    SELECT id, unsubscribe_token, marketing_opt_out_at
+    FROM users WHERE unsubscribe_token = ${token}
+  `;
+  const row = rows[0];
+  if (!row) return null;
+  return {
+    userId: row.id as string,
+    token: row.unsubscribe_token as string,
+    optedOut: row.marketing_opt_out_at != null,
+  };
+}
+
+/** Idempotent: keeps the original timestamp if already opted out. */
+export async function setMarketingOptOut(userId: string, optedOut: boolean): Promise<void> {
+  if (optedOut) {
+    await sql`
+      UPDATE users SET marketing_opt_out_at = now()
+      WHERE id = ${userId} AND marketing_opt_out_at IS NULL
+    `;
+  } else {
+    await sql`UPDATE users SET marketing_opt_out_at = NULL WHERE id = ${userId}`;
+  }
+}
+
+export async function isMarketingOptedOut(userId: string): Promise<boolean> {
+  const rows = await sql`SELECT marketing_opt_out_at FROM users WHERE id = ${userId}`;
+  return rows[0]?.marketing_opt_out_at != null;
+}
+
+/* ---------- notification center ---------- */
+
+/**
+ * When this user last opened the notification center, or null if never.
+ * Author-scoped by construction: it reads the caller's own row only.
+ */
+export async function getNotificationsSeenAt(userId: string): Promise<string | null> {
+  const rows = await sql`SELECT notifications_seen_at FROM users WHERE id = ${userId}`;
+  const v = rows[0]?.notifications_seen_at as string | null | undefined;
+  return v ? new Date(v).toISOString() : null;
+}
+
+export async function markNotificationsSeen(userId: string): Promise<void> {
+  await sql`UPDATE users SET notifications_seen_at = now() WHERE id = ${userId}`;
 }

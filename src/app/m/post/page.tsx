@@ -11,11 +11,11 @@ import { discardPhoto, type PhotoDraft } from "@/lib/photos";
 import { BEST_AT } from "@/data/reviewScales";
 import { CloseIcon, ChevronIcon } from "@/components/icons";
 import { CameraCapture } from "@/components/post/CameraCapture";
+import { Dialog } from "@/components/feed/Dialog";
 import { RestaurantPicker, type PickableRestaurant } from "@/components/post/RestaurantPicker";
 import { DishPicker, type PickedDish } from "@/components/post/DishPicker";
 import { useStepHistory } from "@/components/post/useStepHistory";
 import { PercentMeter, bandForPercent } from "@/components/post/PercentMeter";
-import { PhotoPrivacyNotice } from "@/components/post/PhotoPrivacyNotice";
 import {
   MealPlates,
   assembleMeal,
@@ -70,7 +70,7 @@ const chip =
 export default function PhonePost() {
   const router = useRouter();
   const params = useQueryParams();
-  const { account, isSignedIn, loading, refresh } = useAuth();
+  const { isSignedIn, loading, refresh } = useAuth();
 
   /* The nav variant travels in the URL and has to survive the composer, or
      posting throws you back to the default nav and the comparison is over.
@@ -107,17 +107,10 @@ export default function PhonePost() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const errorRef = useRef<HTMLParagraphElement>(null);
-  /** The first-post photo notice. Same trigger and same reasons as the web composer. */
-  const [photoNotice, setPhotoNotice] = useState(false);
-  const noticeOffered = useRef(false);
-  useEffect(() => {
-    // `?photo-notice=1`, development only — see the web composer's note.
-    const forced =
-      process.env.NODE_ENV !== "production" && params.get("photo-notice") === "1";
-    if (noticeOffered.current || !account || (account.photoNoticeSeen && !forced)) return;
-    noticeOffered.current = true;
-    setPhotoNotice(true);
-  }, [account, params]);
+  /* HIG #9: leaving used to drop a taken photo and a written note without a
+     word. Every exit now goes through leave(), which asks first when there is
+     something to lose — a photo, a note, or a plate already added. */
+  const [confirmLeave, setConfirmLeave] = useState(false);
 
   // On mount rather than when the "where" step opens: the composer is reached
   // by someone who has already decided to post, so the list is wanted within a
@@ -412,6 +405,13 @@ export default function PhonePost() {
     go(step === "photo" ? afterPhoto : index + 1);
   }
 
+  const hasWork =
+    photos.length > 0 || note.trim().length > 0 || plates.length > 0 || dish !== null;
+  function leave() {
+    if (hasWork) setConfirmLeave(true);
+    else router.push(to("/m/feed"));
+  }
+
   /*
    * The camera step is its own screen, not a step inside the form.
    *
@@ -426,7 +426,7 @@ export default function PhonePost() {
       fullscreen
       photos={photos}
       onChange={setPhotos}
-      onClose={() => router.push(to("/m/feed"))}
+      onClose={leave}
       onDone={() => go(afterPhoto)}
       onSkip={() => {
         setError(null);
@@ -451,6 +451,12 @@ export default function PhonePost() {
         </div>
         <Link
           href={to("/m/feed")}
+          onClick={(e) => {
+            if (hasWork) {
+              e.preventDefault();
+              setConfirmLeave(true);
+            }
+          }}
           aria-label="Leave without posting"
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-white hover:text-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
         >
@@ -786,7 +792,7 @@ export default function PhonePost() {
           <div className="flex items-center gap-3 px-4 pb-2 pt-2">
             <button
               type="button"
-              onClick={() => (index === 0 ? router.push(to("/m/feed")) : go(index - 1))}
+              onClick={() => (index === 0 ? leave() : go(index - 1))}
               className="flex min-h-11 items-center gap-1 rounded-full px-3 text-sm font-medium text-pm-grey-text transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
             >
               <ChevronIcon className="h-4 w-4 rotate-180" />
@@ -809,12 +815,30 @@ export default function PhonePost() {
         </div>
       )}
 
-      {photoNotice && (
-        <PhotoPrivacyNotice
-          variant="phone"
-          onDismiss={() => setPhotoNotice(false)}
-          onAnswer={() => setPhotoNotice(false)}
-        />
+      {confirmLeave && (
+        <Dialog title="Discard this post?" onClose={() => setConfirmLeave(false)} variant="sheet">
+          <div className="px-5 pb-5 pt-2">
+            <p className="text-sm leading-relaxed text-zinc-600">
+              Your photo and notes will be lost.
+            </p>
+            <div className="mt-5 flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() => router.push(to("/m/feed"))}
+                className="flex min-h-11 items-center justify-center rounded-full bg-red-700 px-6 text-sm font-semibold text-white transition-transform active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+              >
+                Discard post
+              </button>
+              <button
+                type="button"
+                onClick={() => setConfirmLeave(false)}
+                className="flex min-h-11 items-center justify-center rounded-full px-6 text-sm font-medium text-zinc-700 transition-colors hover:bg-pm-grey-tint focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+              >
+                Keep editing
+              </button>
+            </div>
+          </div>
+        </Dialog>
       )}
     </div>
   );

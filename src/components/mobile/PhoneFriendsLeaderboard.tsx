@@ -9,6 +9,7 @@ import {
   useState,
   type CSSProperties,
 } from "react";
+import Link from "next/link";
 import { POINT_RULES, formatPoints } from "@/lib/points";
 import { LONG_LIST_FOLD_AT, ShowAllToggle } from "@/components/ShowAllToggle";
 import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
@@ -17,7 +18,6 @@ import { ChangeMark } from "@/components/mobile/leaderboard/ChangeMark";
 import { MovementBanner } from "@/components/mobile/leaderboard/MovementBanner";
 import { Podium } from "@/components/mobile/leaderboard/Podium";
 import { RivalCallout } from "@/components/mobile/leaderboard/RivalCallout";
-import { SeatDetail } from "@/components/mobile/leaderboard/SeatDetail";
 import { deriveMovement, readSnapshot, writeSnapshot } from "@/components/mobile/leaderboard/memory";
 import { CountUp, layoutCenter, usePrefersReducedMotion } from "@/components/mobile/leaderboard/motion";
 import { Avatar, Sparks } from "@/components/mobile/leaderboard/parts";
@@ -44,8 +44,9 @@ export type { Seat } from "@/components/mobile/leaderboard/types";
  *   how much.
  * - **Podium** — the top three on stepped plinths, №1 crowned and glowing,
  *   springing in one after another.
- * - **The line** — everyone else, each row a button that opens the gap to the
- *   seat above, the plates it takes, and their rank title with progress.
+ * - **The line** — everyone else. Every row and podium spot is one link to
+ *   that person's profile, nothing else (Calvin, 2026-11-18: the old tap-to-
+ *   open standing panel was retired — tapping a person should open them).
  *   Rows that moved since last visit slide in from their old seat; yours
  *   climbs past the people you overtook, then bursts. A table of
  *   `LONG_LIST_FOLD_AT` or more folds the line to №4, №5 and your own row, so
@@ -96,8 +97,6 @@ const revealDelay = (index: number) => Math.min(index, 6) * 40;
 
 function SeatRow({ seat, ctx, delay }: { seat: Seat; ctx: BoardCtx; delay: number }) {
   const { entry, rank, isYou } = seat;
-  const open = ctx.openId === entry.id;
-  const panelId = `lb-detail-${entry.id}`;
   const gained = ctx.movement?.gained.get(entry.id) ?? 0;
   const climbed = (ctx.movement?.change.get(entry.id) ?? 0) > 0;
 
@@ -115,11 +114,9 @@ function SeatRow({ seat, ctx, delay }: { seat: Seat; ctx: BoardCtx; delay: numbe
         }`}
       >
         {isYou && ctx.landed && <Sparks count={18} spread={90} />}
-        <button
-          type="button"
-          aria-expanded={open}
-          aria-controls={panelId}
-          onClick={() => ctx.toggle(entry.id)}
+        {/* The whole row is one link to the profile. */}
+        <Link
+          href={ctx.hrefFor(seat)}
           className="relative flex min-h-14 w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
         >
           <span className="flex w-8 shrink-0 flex-col items-start gap-0.5">
@@ -127,19 +124,21 @@ function SeatRow({ seat, ctx, delay }: { seat: Seat; ctx: BoardCtx; delay: numbe
             <ChangeMark id={entry.id} ctx={ctx} />
           </span>
 
-          <Avatar entry={entry} size={40} className={isYou ? "ring-2 ring-pm-orange" : ""} />
+          <span className="flex min-h-11 min-w-0 items-center gap-3">
+            <Avatar entry={entry} size={40} className={isYou ? "ring-2 ring-pm-orange" : ""} />
 
-          <span className="min-w-0 flex-1">
-            <span className="font-display flex min-w-0 items-center gap-1 text-[15px] font-semibold leading-tight text-zinc-900">
-              <span className="truncate">{isYou ? "You" : entry.name}</span>
-              <VerifiedBadge userId={entry.id} />
-            </span>
-            <span className="mt-0.5 block truncate font-mono text-[11px] leading-tight tabular-nums text-zinc-500">
-              {seat.gap > 0 ? `${formatPoints(seat.gap)} PP to №${rank - 1}` : `Level with №${rank - 1}`}
+            <span className="min-w-0">
+              <span className="font-display flex min-w-0 items-center gap-1 text-[15px] font-semibold leading-tight text-zinc-900">
+                <span className="truncate">{isYou ? "You" : entry.name}</span>
+                <VerifiedBadge userId={entry.id} />
+              </span>
+              <span className="mt-0.5 block truncate font-mono text-[11px] leading-tight tabular-nums text-zinc-500">
+                {seat.gap > 0 ? `${formatPoints(seat.gap)} PP to №${rank - 1}` : `Level with №${rank - 1}`}
+              </span>
             </span>
           </span>
 
-          <span className="flex shrink-0 flex-col items-end">
+          <span className="ml-auto flex shrink-0 flex-col items-end">
             <span className="whitespace-nowrap font-mono text-[15px] font-semibold leading-none text-zinc-900">
               <CountUp
                 to={entry.points}
@@ -163,24 +162,25 @@ function SeatRow({ seat, ctx, delay }: { seat: Seat; ctx: BoardCtx; delay: numbe
             )}
           </span>
 
-          <span
-            aria-hidden="true"
-            className={`shrink-0 text-pm-grey-text transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-          >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
-        </button>
-        <div id={panelId} hidden={!open}>
-          {open && <SeatDetail seat={seat} seats={ctx.seats} youSeat={ctx.youSeat} />}
-        </div>
+        </Link>
       </div>
     </li>
   );
 }
 
-export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; you: Entry }) {
+export function PhoneFriendsLeaderboard({
+  friends,
+  you,
+  profileHref,
+  accountHref,
+}: {
+  friends: Entry[];
+  you: Entry;
+  /** Builds the link to a friend's public profile (the screen owns `?from=`). */
+  profileHref: (id: string) => string;
+  /** Where your own seat leads. */
+  accountHref: string;
+}) {
   const seats = useMemo(() => rankSeats(friends, you), [friends, you]);
   const youSeat = seats.find((s) => s.isYou) ?? seats[0];
   const reduced = usePrefersReducedMotion();
@@ -189,7 +189,6 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
   const [memory] = useState(() => readSnapshot(you.id));
   const movement = useMemo(() => deriveMovement(memory, seats, you.id), [memory, seats, you.id]);
 
-  const [openId, setOpenId] = useState<string | null>(null);
   const [bannerOpen, setBannerOpen] = useState(true);
   const [landed, setLanded] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -212,7 +211,6 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
     },
     [],
   );
-  const toggle = useCallback((id: string) => setOpenId((cur) => (cur === id ? null : id)), []);
 
   useEffect(() => {
     if (friends.length > 0) writeSnapshot(you.id, seats);
@@ -264,8 +262,7 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
   const ctx: BoardCtx = {
     seats,
     youSeat,
-    openId,
-    toggle,
+    hrefFor: (seat) => (seat.isYou ? accountHref : profileHref(seat.entry.id)),
     slotRef,
     moverRef,
     movement,
@@ -281,11 +278,7 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
   const foldable = seats.length >= LONG_LIST_FOLD_AT;
   const kept = rest.filter((s) => !foldable || s.rank <= SEATS_KEPT || s.isYou);
   const folded = rest.filter((s) => !kept.includes(s));
-  const onFoldChange = (next: boolean) => {
-    setExpanded(next);
-    /* The row goes away; its panel should not reappear with it on the next open. */
-    if (!next && folded.some((s) => s.entry.id === openId)) setOpenId(null);
-  };
+  const onFoldChange = (next: boolean) => setExpanded(next);
 
   return (
     <section aria-labelledby="phone-leaderboard-heading" className="lb-root mb-7 px-4">

@@ -4,26 +4,22 @@ import { useSyncExternalStore } from "react";
 import { useDiscoverModesAccess } from "@/lib/auth";
 
 /**
- * The For me and Nearby buttons on Discover (lib/forMeGate.ts says who gets them).
- *
- * Two independent toggles, so a small store rather than a URL: the discover GET is
- * CDN-cached and forwards every query key to the API, and a position never goes
- * in a URL. `picks` is the For me button, `near` is the Nearby button. Both live
- * here so the web and the phone read one state, and so the query hook can clear
- * them the moment a filter is applied (filters and toggles are never both on).
- *
- * Kept in sessionStorage so a reload in the same tab keeps the choice; only the two
- * booleans are stored, never a position. Every storage access is guarded, since a
- * private window throws.
+ * Kept in localStorage so the choice survives an app launch; only the two booleans are
+ * stored, never a position. With nothing saved, For me is on and Nearby is off; once
+ * the viewer switches For me off, that is saved too and sticks. A filter turning the
+ * buttons off (clearDiscoverModes) is not a choice, so it is not saved. Every storage
+ * access is guarded, since a private window throws.
  */
 export type DiscoverModes = { picks: boolean; near: boolean };
 
 const KEY = "pm.discover.modes.v1";
 const OFF: DiscoverModes = { picks: false, near: false };
+const DEFAULT: DiscoverModes = { picks: true, near: false };
 
-// Loaded on the first client read, not at import, so the server render never
-// touches storage. The snapshot object only changes when a value does.
-let current: DiscoverModes = OFF;
+// The server render and the hydration pass see OFF (getServerSnapshot); the saved or
+// default state arrives on the first client snapshot after that, so no mismatch. The
+// snapshot object only changes when a value does.
+let current: DiscoverModes = DEFAULT;
 let loaded = false;
 const listeners = new Set<() => void>();
 
@@ -31,27 +27,23 @@ function load() {
   if (loaded) return;
   loaded = true;
   try {
-    const raw = window.sessionStorage.getItem(KEY);
+    const raw = window.localStorage.getItem(KEY);
     if (!raw) return;
     const p = JSON.parse(raw) as unknown;
     if (p && typeof p === "object") {
       const o = p as Record<string, unknown>;
       if (typeof o.picks === "boolean" && typeof o.near === "boolean") {
-        if (o.picks || o.near) current = { picks: o.picks, near: o.near };
+        current = o.picks || o.near ? { picks: o.picks, near: o.near } : OFF;
       }
     }
   } catch {
-    /* blocked storage or a bad value: both stay off */
+    /* blocked storage or a bad value: the default holds */
   }
 }
 
 function save() {
   try {
-    if (current.picks || current.near) {
-      window.sessionStorage.setItem(KEY, JSON.stringify({ picks: current.picks, near: current.near }));
-    } else {
-      window.sessionStorage.removeItem(KEY);
-    }
+    window.localStorage.setItem(KEY, JSON.stringify({ picks: current.picks, near: current.near }));
   } catch {
     /* the choice still holds for the page's life */
   }
@@ -77,7 +69,6 @@ export function clearDiscoverModes(): void {
   load();
   if (!current.picks && !current.near) return;
   current = OFF;
-  save();
   emit();
 }
 

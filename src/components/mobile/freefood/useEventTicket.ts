@@ -60,7 +60,7 @@ export function isTicketSim(): boolean {
 }
 
 /** 7:42pm on the night, as a server-clock offset from now. */
-const SIM_NOW = FREE_FOOD_STARTS_AT + (2 * 60 + 42) * 60 * 1000;
+const SIM_NOW = FREE_FOOD_STARTS_AT + 42 * 60 * 1000;
 
 /** One shared fake crowd, so the popup and the Profile show the same number. */
 const sim = {

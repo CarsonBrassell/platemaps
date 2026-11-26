@@ -27,7 +27,9 @@ import {
   captionSours, nameEvidence, tagCaption, tagDish,
 } from "../src/lib/flavor.ts";
 import { EMPTY_PREFS } from "../src/lib/taste.ts";
-import { DISCOVER_MODES_USER_IDS, FOR_ME_USER_IDS, isDiscoverModesUser } from "../src/lib/forMeGate.ts";
+import { DISCOVER_MODES_USER_IDS, FLAVOR40_USER_IDS, FOR_ME_USER_IDS, isDiscoverModesUser, isFlavor40User } from "../src/lib/forMeGate.ts";
+import { F40 } from "../src/lib/flavor40.ts";
+import { CROWD, buildCrowd, crowdMultiplier, crowdMultipliers } from "../src/lib/crowdBonus.ts";
 import { milesBetween } from "../src/lib/geo.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
@@ -1368,6 +1370,131 @@ ok("both screens read the modes and both taste sections keep their gate and rese
     assert.ok(/!access/.test(s), `${f} keeps the !access gate`);
     assert.ok(/Reset my taste/.test(s), `${f} keeps the text reset`);
   }
+});
+
+/* ---------- 2b. the 40-axis fit: Calvin only, everyone else byte-identical ---------- */
+
+ok("the 40-axis gate is a subset of For me and names one account", () => {
+  assert.equal(FLAVOR40_USER_IDS.size, 1, "one account");
+  for (const id of FLAVOR40_USER_IDS) {
+    assert.ok(FOR_ME_USER_IDS.has(id), "inside For me");
+    assert.equal(isFlavor40User(id), true);
+  }
+  for (const id of FOR_ME_USER_IDS) if (!FLAVOR40_USER_IDS.has(id)) assert.equal(isFlavor40User(id), false, "the other For me account keeps the old path");
+  assert.equal(isFlavor40User(null), false);
+  assert.equal(isFlavor40User(undefined), false);
+  assert.equal(isFlavor40User("someone-else"), false);
+});
+
+ok("rankDishes without flavor40, or with it false, is the old answer to the byte", () => {
+  const plain = JSON.stringify(rank());
+  assert.equal(JSON.stringify(rank({ flavor40: false })), plain, "false is absent");
+  assert.equal(JSON.stringify(rank({ flavor40: undefined })), plain, "undefined is absent");
+  const on = rank({ flavor40: true });
+  assert.ok(on.length > 0, "the 40-axis path still answers");
+  assert.ok(on.every((p) => passesFloor(p.restaurant)), "and keeps the quality floor");
+});
+
+ok("the route turns the 40-axis fit on for the gated account only and never sends the profile", () => {
+  const s = src("src/app/api/account/taste/route.ts");
+  assert.ok(s.includes("const flavor40User = isFlavor40User(user.id)"));
+  assert.equal((s.match(/flavor40: flavor40User/g) ?? []).length, 1, "passed in one place");
+  assert.ok(s.includes('flavor40User ? "dish-f40" : "dish-1"'));
+  assert.ok(!/profile40|buildProfile40|unlocked|topAxes/.test(s), "the route never touches the profile");
+  const lib = src("src/lib/flavor40.ts");
+  assert.ok(!/localStorage|fetch[(]|INSERT |UPDATE /.test(lib),"the profile is derived per request, never stored or sent");
+  assert.ok(F40.weight > 0 && F40.weight <= 0.5, "the blend stays a nudge");
+});
+
+ok("a cold dish index never serves the cuisine fallback to the 40-axis account; the client retries on warming", () => {
+  const r = src("src/app/api/account/taste/route.ts");
+  assert.ok(r.includes("flavor40User ? DISH_INDEX_WARM_WAIT_MS : DISH_INDEX_GRACE_MS"));
+  assert.ok(r.includes("if (flavor40User) warming = true;"));
+  assert.ok(r.includes("...(warming ? { warming: true } : {})"));
+  const m = r.match(/DISH_INDEX_WARM_WAIT_MS = ([0-9_]+)/);
+  const d = r.match(/maxDuration = ([0-9]+)/);
+  assert.ok(m && d && Number(m[1].replace(/_/g, "")) + 10_000 <= Number(d[1]) * 1000, "wait fits maxDuration");
+  const h = src("src/lib/useTaste.ts");
+  assert.ok(h.includes("data.warming") && h.includes("WARM_RETRIES") && h.includes('setStatus("loading")'));
+});
+
+ok("crowd bonus v2: only ratings drive it, 0.85 to 1.30, silent", () => {
+  assert.equal(CROWD.cap, 0.3);
+  assert.equal(CROWD.floor, 0.85);
+  assert.equal(crowdMultiplier([]), 1);
+  assert.equal(crowdMultiplier([4.0, 4.2, 4.4]), 1, "4.0-4.4 adds nothing");
+  assert.ok(crowdMultiplier([4.5]) > 1.1, "4.5 adds clearly");
+  assert.ok(crowdMultiplier([5]) > crowdMultiplier([4.5]), "5.0 adds more than 4.5");
+  assert.ok(crowdMultiplier([3.9]) < 1 && crowdMultiplier([3.9]) > crowdMultiplier([2]), "under 4.0 subtracts, lower subtracts more");
+  assert.ok(crowdMultiplier(Array(500).fill(1)) >= CROWD.floor - 1e-12, "floored");
+  assert.ok(crowdMultiplier(Array(500).fill(5)) <= 1 + CROWD.cap + 1e-12, "capped");
+  assert.ok(crowdMultiplier([4.5, 4.5, 4.5]) > 1.2, "2-3 strong ratings get most of the cap");
+  assert.ok(crowdMultiplier([5, 5]) - 1 > 0.9 * CROWD.cap, "two 5s are near the cap");
+  assert.ok(crowdMultiplier([5, 5]) - crowdMultiplier([5]) < crowdMultiplier([5]) - 1, "diminishing returns");
+  assert.ok(crowdMultiplier([5, 2]) < crowdMultiplier([5]), "a low rating pulls a strong one down");
+  const T = Date.parse("2026-06-01T12:00:00Z");
+  const photoOnly = buildCrowd([{ userId: "a", restaurantId: "p", at: T, rating: NaN }, { userId: "b", restaurantId: "p", at: T, rating: NaN }]);
+  assert.equal(photoOnly.size, 0, "posts without a rating count for nothing");
+  const lib = src("src/lib/crowdBonus.ts") + src("src/lib/crowdIndex.ts");
+  assert.ok(!/localStorage|fetch[(]|INSERT |UPDATE |DELETE /.test(lib), "no I/O beyond one read");
+  assert.ok(/WHERE meal_id IS NULL AND restaurant_id IS NOT NULL AND rating IS NOT NULL/.test(src("src/lib/db.ts")), "the public feed's terms, rated posts only");
+});
+
+ok("crowd bonus: the viewer's own posts, blocked users, and unrated posts do not count", () => {
+  const T = Date.parse("2026-06-01T12:00:00Z");
+  const rows = [];
+  for (const u of ["a", "b", "me", "blk"]) {
+    rows.push({ userId: u, restaurantId: "pl", at: T, rating: 95 }, { userId: u, restaurantId: "other", at: T, rating: 60 }, { userId: u, restaurantId: "x", at: T, rating: 70 });
+  }
+  rows.push({ userId: "a", restaurantId: "unr", at: T, rating: NaN });
+  const crowd = buildCrowd(rows);
+  assert.ok(!crowd.has("unr"), "a post without a rating adds nothing");
+  const all = crowdMultipliers(crowd, "nobody");
+  const mine = crowdMultipliers(crowd, "me");
+  const blk = crowdMultipliers(crowd, "me", new Set(["blk"]));
+  assert.ok(all.get("pl") > mine.get("pl"), "the viewer's own posts are left out");
+  assert.ok(mine.get("pl") > blk.get("pl"), "a blocked poster is left out");
+  const lone = crowdMultipliers(buildCrowd([{ userId: "me", restaurantId: "pl", at: T, rating: 99 }]), "me");
+  assert.equal(lone.size, 0, "only the viewer posted: no bonus");
+  for (const m of all.values()) assert.ok(m >= CROWD.floor && m <= 1 + CROWD.cap);
+  assert.ok(!JSON.stringify([...all]).match(/"(a|b|me|blk)"/), "no poster id in the multipliers");
+});
+
+ok("crowd bonus: only the flavor40 path, only new places, others byte-identical", () => {
+  const plain = JSON.stringify(rank());
+  const crowd = new Map([["m1", 1.3], ["m4", 1.3], ["m6", 1.3]]);
+  assert.equal(JSON.stringify(rank({ crowd })), plain, "crowd without flavor40 is the old answer");
+  assert.equal(JSON.stringify(rank({ flavor40: false, crowd })), plain, "flavor40 false ignores it");
+  const f40 = JSON.stringify(rank({ flavor40: true }));
+  assert.equal(JSON.stringify(rank({ flavor40: true, crowd: new Map() })), f40, "an empty crowd changes nothing");
+  assert.equal(JSON.stringify(rank({ flavor40: true, crowd: new Map([["m4", 1]]) })), f40, "1.0 changes nothing");
+  assert.equal(JSON.stringify(rank({ flavor40: true, crowd: new Map([["m1", 0.1]]) })), JSON.stringify(rank({ flavor40: true, crowd: new Map([["m1", 0.85]]) })), "a multiplier under the floor is held at 0.85");
+  const huge = rank({ flavor40: true, crowd: new Map([["m1", 50]]) });
+  const capped = rank({ flavor40: true, crowd: new Map([["m1", 1.3]]) });
+  assert.equal(JSON.stringify(huge), JSON.stringify(capped), "a multiplier past the cap is held at 1.30");
+  const posted = POSTS[0].restaurantId;
+  assert.equal(JSON.stringify(rank({ flavor40: true, crowd: new Map([[posted, 1.3]]) })), f40, "a place the viewer posted gets nothing");
+  const route = src("src/app/api/account/taste/route.ts");
+  assert.ok(route.includes("if (flavor40User) {") && route.includes("await Promise.all([loadCrowd(), getBlockedEitherWayIds(user.id)])"), "loaded for the 40-axis account only");
+  assert.equal((route.match(/loadCrowd[(]/g) ?? []).length, 1);
+});
+
+ok("flavor40 reasons are a synthesis: never a bare 'like your', no axis ids, digits or percents, within the length caps", () => {
+  const on = rank({ flavor40: true });
+  assert.ok(on.length > 0);
+  for (const p of on) {
+    for (const [field, cap] of [["short", 110], ["text", 180]]) {
+      const t = p.reason[field];
+      assert.ok(t.length <= cap, `${field} fits: ${t}`);
+      assert.ok(!/like your/i.test(t), `no bare 'like your': ${t}`);
+      assert.ok(!/axis|axes|\d+\s*%|\d/.test(t.replace(/\d+\s*(?:times|repeat)/g, "").replace(/4\.5★|5★/g, "")), `no axis words, digits or percents: ${t}`);
+    }
+    assert.ok(p.reason.short.length <= p.reason.text.length || p.reason.text === "", "short never longer than text");
+  }
+  const off = rank({ flavor40: false });
+  assert.ok(off.every((p) => p.reason.text.length <= 84 && p.reason.short.length <= 72), "other accounts keep the old caps");
+  const lib = src("src/lib/dishTaste.ts");
+  assert.ok(lib.includes("if (f40profile && f40vecs && rid !== undefined) {"), "the new line is gated on the 40-axis profile");
 });
 
 /* ---------- 3. render parity ---------- */

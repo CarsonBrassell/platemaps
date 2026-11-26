@@ -88,6 +88,15 @@ const config: CapacitorConfig = {
     // moment the default is what ships.
     errorPath: 'offline.html'
   },
+  ios: {
+    // What the WebView's own surface is painted with wherever the page is not
+    // covering it: before the first paint, behind rubber-band overscroll, in
+    // the beat before offline.html draws. Unset, Capacitor uses the system
+    // background - white, or black on a phone in Dark Mode. PlateMaps is
+    // light only (DESIGN.md, Color; Info.plist sets UIUserInterfaceStyle to
+    // Light), so this pins it to the same cream as --background.
+    backgroundColor: '#F7F4EC'
+  },
   plugins: {
     // How a push is shown while the app is in the foreground. Without this
     // iOS swallows it silently; with it a comment on your plate still shows a

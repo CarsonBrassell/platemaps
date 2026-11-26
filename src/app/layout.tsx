@@ -92,6 +92,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   viewportFit: "cover",
   themeColor: "#F7F4EC",
+  /* Light only, by decision (DESIGN.md, Color). `only` also opts the pages
+     out of a browser's forced-dark rendering. */
+  colorScheme: "only light",
 };
 
 export default function RootLayout({

@@ -17,6 +17,12 @@ import type { TasteMatch } from "@/lib/tasteMatch";
  * the shapes fill the grid instead of huddling in the middle; the legend says
  * what the outer ring is (a label on the chart collides with the top spoke's).
  *
+ * `average` switches to the food personality wheel (lib/personality.ts): `you`
+ * is already a radius, a dashed grey ring marks the average eater, and the
+ * legend explains that ring instead of naming a percent. `valueLabels` replaces
+ * the percents in the text summary (lift, "3.7x"), and `themValueLabels` the
+ * friend's when `them` is also set (a friend's wheel against yours).
+ *
  * Stateless, so it renders on the server with the rest of the card.
  */
 
@@ -43,10 +49,16 @@ export function TasteRadar({
   match,
   youLabel = "You",
   themLabel,
+  average,
+  valueLabels,
+  themValueLabels,
 }: {
   match: Pick<TasteMatch, "spokes" | "you" | "axisMax"> & Partial<Pick<TasteMatch, "them">>;
   youLabel?: string;
   themLabel?: string;
+  average?: number;
+  valueLabels?: string[];
+  themValueLabels?: string[];
 }) {
   const { spokes, you, them, axisMax } = match;
   const n = spokes.length;
@@ -72,8 +84,8 @@ export function TasteRadar({
   const summary = spokes
     .map((s, i) =>
       them
-        ? `${s}: ${youLabel} ${Math.round(you[i])}%, ${themLabel} ${Math.round(them[i])}%`
-        : `${s}: ${Math.round(you[i])}%`,
+        ? `${s}: ${youLabel} ${valueLabels?.[i] ?? `${Math.round(you[i])}%`}, ${themLabel} ${themValueLabels?.[i] ?? `${Math.round(them[i])}%`}`
+        : `${s}: ${valueLabels?.[i] ?? `${Math.round(you[i])}%`}`,
     )
     .join("; ");
 
@@ -82,10 +94,20 @@ export function TasteRadar({
       <svg
         viewBox={`0 0 ${W} ${H}`}
         role="img"
-        aria-label={them ? `Cuisine mix, ${youLabel} against ${themLabel}` : "Your cuisine mix"}
+        aria-label={
+          them
+            ? `${average ? "Food personality" : "Cuisine mix"}, ${youLabel} against ${themLabel}`
+            : average
+              ? "Your food personality"
+              : "Your cuisine mix"
+        }
         className="mx-auto block h-auto w-full max-w-[440px]"
       >
-        <desc>{`Share of ${them ? "each person's" : "your"} posts by cuisine. ${summary}.`}</desc>
+        <desc>
+          {average
+            ? `How ${them ? "each of you eats" : "you eat"} against the average eater, 1x is average. ${summary}.`
+            : `Share of ${them ? "each person's" : "your"} posts by cuisine. ${summary}.`}
+        </desc>
 
         {RINGS.map((f) => (
           <polygon
@@ -103,6 +125,15 @@ export function TasteRadar({
           );
         })}
 
+        {average !== undefined && (
+          <polygon
+            points={poly(spokes.map(() => average))}
+            fill="none"
+            className="stroke-zinc-400"
+            strokeWidth={1.25}
+            strokeDasharray="3 3"
+          />
+        )}
         {themFrac && (
           <polygon
             points={poly(themFrac)}
@@ -194,7 +225,16 @@ export function TasteRadar({
             {themLabel}
           </li>
         )}
-        <li className="font-mono text-zinc-600">Outer ring {axisMax}%</li>
+        {average !== undefined ? (
+          <li className="flex items-center gap-2">
+            <svg width="26" height="10" aria-hidden="true">
+              <line x1="0" y1="5" x2="26" y2="5" className="stroke-zinc-400" strokeWidth={1.25} strokeDasharray="3 3" />
+            </svg>
+            Average eater
+          </li>
+        ) : (
+          <li className="font-mono text-zinc-600">Outer ring {axisMax}%</li>
+        )}
       </ul>
     </div>
   );
