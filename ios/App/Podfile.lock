@@ -18,6 +18,10 @@ PODS:
   - CapacitorCordova (8.5.1)
   - CapacitorPushNotifications (8.1.2):
     - Capacitor
+  - CapacitorStatusBar (8.0.4):
+    - Capacitor
+  - CapacitorTextZoom (8.0.1):
+    - Capacitor
   - CapgoCapacitorSocialLogin (8.7.11):
     - Capacitor
     - GoogleSignIn (~> 9.0.0)
@@ -49,6 +53,8 @@ DEPENDENCIES:
   - "CapacitorCommunityContacts (from `../../node_modules/@capacitor-community/contacts`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
+  - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
+  - "CapacitorTextZoom (from `../../node_modules/@capacitor/text-zoom`)"
   - "CapgoCapacitorSocialLogin (from `../../node_modules/@capgo/capacitor-social-login`)"
 
 SPEC REPOS:
@@ -72,6 +78,10 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorPushNotifications:
     :path: "../../node_modules/@capacitor/push-notifications"
+  CapacitorStatusBar:
+    :path: "../../node_modules/@capacitor/status-bar"
+  CapacitorTextZoom:
+    :path: "../../node_modules/@capacitor/text-zoom"
   CapgoCapacitorSocialLogin:
     :path: "../../node_modules/@capgo/capacitor-social-login"
 
@@ -82,6 +92,8 @@ SPEC CHECKSUMS:
   CapacitorCommunityContacts: 87559fd3d6d829cc38bea834ea4d2242a0995ac2
   CapacitorCordova: eb79411a3a0ed517eeb4c6dcf5933ce4bcbb5c9e
   CapacitorPushNotifications: 32a7f840815f319fd9ba1c1c9b0b914be9d95237
+  CapacitorStatusBar: ff844df1f126da6c4fbc4028272425fa3a91e7e3
+  CapacitorTextZoom: b3c80b09abef831245bc3434b1c03aa898ad4762
   CapgoCapacitorSocialLogin: c97f047a2a5f213446fb63772bffb96a15c75bae
   GoogleSignIn: 6833f07f101074e6d9f58b1ae0daad4b25ed0339
   GoogleUtilities: 7dc09b3fa9ecb5c2298b952313d14628b61b9da3
@@ -91,6 +103,6 @@ SPEC CHECKSUMS:
   PromisesSwift: 217dea0fd5d2ad65222a109c48698add13cc1c5b
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
 
-PODFILE CHECKSUM: e8278725b1059f5895fbfe6bbf9b44dbc271fc17
+PODFILE CHECKSUM: 51fefa7c063ac43765c810608e4f636e20be5553
 
 COCOAPODS: 1.17.0
