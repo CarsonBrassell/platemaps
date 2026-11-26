@@ -24,6 +24,7 @@ import { askForPushInContext } from "@/lib/pushClient";
 import type { ShelfPost } from "@/components/ProfileShelves";
 import { MealCollage, collagePlatesFor } from "@/components/feed/MealCollage";
 import { ShimmerImage } from "@/components/ShimmerImage";
+import { UpvotersSheet } from "@/components/feed/UpvotersSheet";
 
 /**
  * One of your own plates, opened up: the photo, what it scored, who hearted
@@ -680,6 +681,7 @@ export function PlateDetailSheet({
 }) {
   const [hearts, setHearts] = useState<HeartedBy[]>([]);
   const [heartsOpen, setHeartsOpen] = useState(false);
+  const [showVoters, setShowVoters] = useState(false);
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [voteError, setVoteError] = useState<string | null>(null);
 
@@ -870,6 +872,7 @@ export function PlateDetailSheet({
         downvoteCount={post.downvoteCount}
         myVote={myVote}
         onVote={votePost}
+        onShowVoters={() => setShowVoters(true)}
       />
       {pct !== null && (
         <>
@@ -1145,6 +1148,13 @@ export function PlateDetailSheet({
           )}
         </div>
       </div>
+      {showVoters && (
+        <UpvotersSheet
+          postId={post.id}
+          subject={post.dishName ?? name}
+          onClose={() => setShowVoters(false)}
+        />
+      )}
     </Dialog>
   );
 }

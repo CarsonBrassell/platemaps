@@ -54,8 +54,8 @@ import {
  * component order. The points delta is `current − stored total`: an exact
  * number or absent, never reconstructed from event arithmetic. Fresh badges
  * come from `/api/account/activity`, which is author-scoped by construction
- * and takes no userId (see its route comment) — upvotes arrive anonymous and
- * stay that way; a badge is a count, never a name. Keys are written only when
+ * and takes no userId (see its route comment); a badge is a count, never a
+ * name. Keys are written only when
  * the roll-call *finishes*, so an interrupted arrival replays next visit
  * instead of marking itself seen.
  */
