@@ -13,6 +13,7 @@ import {
 } from "@/components/PlateDetailSheet";
 import type { ShelfPost } from "@/components/ProfileShelves";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
+import { UpvotersSheet } from "@/components/feed/UpvotersSheet";
 
 /**
  * The platter: top-right of the feed's tabs row. A badge counts what has
@@ -20,7 +21,8 @@ import { avatarPalette, initials, relativeTime } from "@/lib/format";
  * other people did to your plates plus incoming friend requests.
  *
  * Data comes from /api/notifications, which is author-scoped (see its header):
- * upvotes arrive nameless and are grouped per plate here, hearts name the
+ * upvotes are grouped per plate here ("Carson and 3 others upvoted…") and
+ * tapping one opens the "Upvoted by" sheet over the list; hearts name the
  * sender only to you. Nothing is invented — if the data layer has no row for
  * it, it does not appear.
  */
@@ -55,6 +57,8 @@ type Row = {
   who?: string;
   text: string;
   postId?: string;
+  /** Upvote rows only: the plate's name for the "Upvoted by" sheet. */
+  subject?: string;
   unread: boolean;
   requestId?: string;
 };
@@ -88,7 +92,7 @@ function buildRows(data: Payload): Row[] {
     });
   }
 
-  // Upvotes are nameless, so one row per plate: "3 people upvoted your Birria".
+  // One row per plate: "Carson and 3 others upvoted your Birria".
   const ups = new Map<string, Activity[]>();
   for (const a of data.activity) {
     if (a.kind === "upvote") {
@@ -111,14 +115,19 @@ function buildRows(data: Payload): Row[] {
     });
   }
   for (const list of ups.values()) {
+    // Newest first from the server, so list[0] is the latest upvoter.
     const first = list[0];
     const n = list.length;
+    const others =
+      n === 1 ? "" : n === 2 ? `and ${list[1].actorName ?? "1 other"} ` : `and ${n - 1} others `;
     rows.push({
       key: `up:${first.postId}`,
       kind: "upvote",
       at: first.createdAt,
-      text: `${n === 1 ? "Someone" : `${n} people`} upvoted your ${plateName(first)}`,
+      who: first.actorName ?? "Someone",
+      text: `${others}upvoted your ${plateName(first)}`,
       postId: first.postId,
+      subject: plateName(first),
       unread: list.some((a) => isNew(a.createdAt)),
     });
   }
@@ -152,6 +161,7 @@ export function NotificationCenter() {
   const [handled, setHandled] = useState<Set<string>>(new Set());
   const [mounted, setMounted] = useState(false);
   const [plate, setPlate] = useState<ShelfPost | null>(null);
+  const [voters, setVoters] = useState<{ postId: string; subject?: string } | null>(null);
 
   // Portal target only exists after mount.
   // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -244,7 +254,11 @@ export function NotificationCenter() {
         {r.postId ? (
           <button
             type="button"
-            onClick={() => void openPlate(r.postId!)}
+            onClick={() =>
+              r.kind === "upvote"
+                ? setVoters({ postId: r.postId!, subject: r.subject })
+                : void openPlate(r.postId!)
+            }
             className="flex min-h-11 min-w-0 flex-1 items-center gap-3 text-left"
           >
             {body}
@@ -349,6 +363,13 @@ export function NotificationCenter() {
         )}
       </button>
       {overlay}
+      {voters && (
+        <UpvotersSheet
+          postId={voters.postId}
+          subject={voters.subject}
+          onClose={() => setVoters(null)}
+        />
+      )}
       {plate &&
         mounted &&
         createPortal(

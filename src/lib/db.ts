@@ -2358,16 +2358,12 @@ export type ActivityKind = "comment" | "heart" | "upvote";
 export type ActivityEvent = {
   /**
    * Unique across all three kinds. Built from the comment id, or from
-   * post + actor for a heart — and from post + timestamp for an upvote, whose
-   * actor id must not appear even in a React key.
+   * post + actor for a heart or an upvote.
    */
   id: string;
   kind: ActivityKind;
   createdAt: string;
-  /**
-   * Who did it — absent on every `upvote` row, and absent there in the SQL
-   * itself, not blanked afterwards. An upvote is anonymous to the author.
-   */
+  /** Who did it. Set on every kind, upvotes included — see getPostUpvoters. */
   actorId?: string;
   actorName?: string;
   actorAvatarUrl?: string;
@@ -2397,14 +2393,10 @@ export type ActivityEvent = {
  * too. It is NOT a heart count for anyone else, and nothing here feeds
  * Discover's ranking — getDiscoverFeed still never names post_hearts.
  *
- * Upvotes are anonymous even here — the whole point of the up/down pair is
- * that it is a verdict on a plate, and a verdict people have to sign is a
- * different, more social thing than the one Discover ranks on. So the upvote
- * branch below has no `users` join at all: there is no name to leak because
- * the query never reads one, and its event id is post + timestamp rather than
- * post + user so the actor's id can't ride along in a key either. Hearts, the
- * friends-only reaction, do name the person — that asymmetry is the feature,
- * not an oversight. Do not add a join to the upvote branch.
+ * Upvotes name the person. They used to be anonymous, even to the author;
+ * that was reversed on purpose (Nov 2026) so anyone can see who upvoted a
+ * plate — the same names getPostUpvoters returns publicly. Downvotes stay
+ * anonymous everywhere.
  *
  * Your own reactions to your own posts are excluded from every branch: this
  * list answers "what did other people do", and self-activity is noise in it.
@@ -2446,13 +2438,14 @@ export async function getActivityForAuthor(
     UNION ALL
 
     SELECT 'upvote',
-           'upvote:' || v.post_id || ':' || EXTRACT(EPOCH FROM v.created_at)::text,
+           'upvote:' || v.post_id || ':' || v.user_id,
            v.created_at,
            NULL::text,
-           NULL::text, NULL::text, NULL::text,
+           u.id, u.name, u.avatar_url,
            m.id, m.restaurant, m.restaurant_id, m.dish_name, m.text
     FROM post_upvotes v
     JOIN mine m ON m.id = v.post_id
+    JOIN users u ON u.id = v.user_id
     WHERE v.user_id <> ${userId}
 
     ORDER BY created_at DESC
@@ -2472,6 +2465,54 @@ export async function getActivityForAuthor(
     postDishName: (r.dish_name as string | null) ?? undefined,
     postText: r.post_text as string,
     text: (r.body as string | null) ?? undefined,
+  }));
+}
+
+export type PostUpvoter = {
+  id: string;
+  name: string;
+  avatarUrl?: string;
+  createdAt: string;
+  /** Whether this person is the viewer's friend. Always false signed out. */
+  isFriend: boolean;
+};
+
+/**
+ * Everyone who upvoted a plate, newest first — public, like the count.
+ *
+ * Downvoters are never listed anywhere. People on either side of a block
+ * with the viewer are left out, the same way a block hides a post. Capped
+ * at 500; past that the sheet just shows the first 500.
+ */
+export async function getPostUpvoters(
+  postId: string,
+  viewerId: string | null,
+): Promise<PostUpvoter[]> {
+  const viewer = viewerId ?? "";
+  const rows = await sql`
+    SELECT u.id, u.name, u.avatar_url, v.created_at,
+           EXISTS (
+             SELECT 1 FROM friendships f
+             WHERE (f.user_a = ${viewer} AND f.user_b = u.id)
+                OR (f.user_b = ${viewer} AND f.user_a = u.id)
+           ) AS is_friend
+    FROM post_upvotes v
+    JOIN users u ON u.id = v.user_id
+    WHERE v.post_id = ${postId}
+      AND NOT EXISTS (
+        SELECT 1 FROM blocked_users b
+        WHERE (b.blocker_id = ${viewer} AND b.blocked_id = u.id)
+           OR (b.blocker_id = u.id AND b.blocked_id = ${viewer})
+      )
+    ORDER BY v.created_at DESC
+    LIMIT 500
+  `;
+  return rows.map((r) => ({
+    id: r.id as string,
+    name: r.name as string,
+    avatarUrl: (r.avatar_url as string | null) ?? undefined,
+    createdAt: new Date(r.created_at as string).toISOString(),
+    isFriend: r.is_friend as boolean,
   }));
 }
 
@@ -2977,9 +3018,9 @@ export async function getBlockedEitherWayIds(userId: string): Promise<string[]> 
 /**
  * Why someone is in a people list, as the row's second line says it. Kept to
  * what the viewer could already see for themselves: their own friends' names,
- * a request they're party to, and public plates. Nothing here names who
- * upvoted what — upvoters are never named, and "upvoted your plate" as a
- * suggestion reason would name them (see `getActivityForAuthor`).
+ * a request they're party to, and public plates. "Upvoted your plate" is not
+ * a reason here, even though upvoters are public now (see `getPostUpvoters`)
+ * — nobody has asked for it as a friend suggestion.
  */
 export type PersonReason =
   | { kind: "friend" }

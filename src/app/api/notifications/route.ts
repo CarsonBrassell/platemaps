@@ -8,12 +8,12 @@ import { getCurrentUser } from "@/lib/session";
 
 /**
  * The notification center's feed: other people's comments, hearts and
- * (anonymous) upvotes on the caller's plates, plus incoming friend requests,
+ * upvotes on the caller's plates, plus incoming friend requests,
  * and when the caller last looked.
  *
  * Like /api/account/activity there is no `userId` parameter — only the
- * session's own id goes down, which keeps hearts author-only and upvotes
- * nameless. Signed out returns an empty center, not a 401.
+ * session's own id goes down, which keeps hearts author-only. Upvoters are
+ * named — they are public anyway (see getPostUpvoters). Signed out returns an empty center, not a 401.
  */
 export async function GET() {
   const user = await getCurrentUser();
