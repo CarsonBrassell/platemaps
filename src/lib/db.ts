@@ -2373,6 +2373,8 @@ export type ActivityEvent = {
   postRestaurantId?: string;
   postDishName?: string;
   postText: string;
+  /** The plate's first photo, if it has one. The author's own, so always shown. */
+  postThumbUrl?: string;
   /** The comment body. Only ever set on kind "comment". */
   text?: string;
 };
@@ -2407,7 +2409,12 @@ export async function getActivityForAuthor(
 ): Promise<ActivityEvent[]> {
   const rows = await sql`
     WITH mine AS (
-      SELECT id, restaurant, restaurant_id, dish_name, text
+      SELECT id, restaurant, restaurant_id, dish_name, text,
+             -- The plate's first photo, for the notification's thumbnail.
+             -- These are the author's own plates, so photos_public does not
+             -- apply: the author always sees their own photos.
+             (SELECT e->>'url' FROM jsonb_array_elements(media) e
+              WHERE e->>'type' = 'image' LIMIT 1) AS thumb
       FROM posts WHERE user_id = ${userId}
     )
     SELECT 'comment' AS kind,
@@ -2416,7 +2423,7 @@ export async function getActivityForAuthor(
            c.text AS body,
            u.id AS actor_id, u.name AS actor_name, u.avatar_url AS actor_avatar_url,
            m.id AS post_id, m.restaurant, m.restaurant_id, m.dish_name,
-           m.text AS post_text
+           m.text AS post_text, m.thumb
     FROM comments c
     JOIN mine m ON m.id = c.post_id
     JOIN users u ON u.id = c.user_id
@@ -2429,7 +2436,7 @@ export async function getActivityForAuthor(
            h.created_at,
            NULL::text,
            u.id, u.name, u.avatar_url,
-           m.id, m.restaurant, m.restaurant_id, m.dish_name, m.text
+           m.id, m.restaurant, m.restaurant_id, m.dish_name, m.text, m.thumb
     FROM post_hearts h
     JOIN mine m ON m.id = h.post_id
     JOIN users u ON u.id = h.user_id
@@ -2442,7 +2449,7 @@ export async function getActivityForAuthor(
            v.created_at,
            NULL::text,
            u.id, u.name, u.avatar_url,
-           m.id, m.restaurant, m.restaurant_id, m.dish_name, m.text
+           m.id, m.restaurant, m.restaurant_id, m.dish_name, m.text, m.thumb
     FROM post_upvotes v
     JOIN mine m ON m.id = v.post_id
     JOIN users u ON u.id = v.user_id
@@ -2464,6 +2471,7 @@ export async function getActivityForAuthor(
     postRestaurantId: (r.restaurant_id as string | null) ?? undefined,
     postDishName: (r.dish_name as string | null) ?? undefined,
     postText: r.post_text as string,
+    postThumbUrl: (r.thumb as string | null) ?? undefined,
     text: (r.body as string | null) ?? undefined,
   }));
 }
