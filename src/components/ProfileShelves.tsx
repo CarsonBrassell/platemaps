@@ -779,6 +779,7 @@ function PlateTile({
   onOpen,
   news,
   tab,
+  fill,
 }: {
   post: ShelfPost;
   tone: number;
@@ -786,6 +787,9 @@ function PlateTile({
   news?: { revealed: boolean; pulsing: boolean };
   /** The frameless card: photo to the edge, counts on a tab under it. */
   tab?: boolean;
+  /** Tab card only: the photo takes whatever height the cell has instead of a
+   *  square. The mosaic's big tile, whose cell spans two rows. */
+  fill?: boolean;
 }) {
   const words = isWords(post);
   /* The tab card (the phone flavor profile). Nothing wraps the photo: it runs
@@ -838,7 +842,7 @@ function PlateTile({
         words
           ? "px-2.5 pb-2 pt-4"
           : tabbed
-            ? "overflow-hidden bg-white [&_.rounded-lg]:rounded-none"
+            ? `overflow-hidden bg-white [&_.rounded-lg]:rounded-none ${fill ? "flex h-full flex-col" : ""}`
             : "bg-white p-1.5 pb-1.5"
       }`}
       style={words ? { background: `var(--pm-tone-${tone})` } : undefined}
@@ -853,9 +857,15 @@ function PlateTile({
       {words ? (
         <WordsClipping post={post} />
       ) : (
-        <span className="relative block">
+        <span className={tabbed && fill ? "relative block min-h-0 w-full flex-1" : "relative block"}>
           {post.courses?.length ? (
             <MealThumb post={post} tone={tone} />
+          ) : tabbed && fill ? (
+            /* The cell decides the height, so the photo is laid over the
+               whole of it rather than asked to be a square. */
+            <span className="absolute inset-0 flex">
+              <CardPhoto post={post} tone={tone} className="block h-full w-full rounded-lg" />
+            </span>
           ) : (
             <CardPhoto post={post} tone={tone} className="block aspect-square w-full rounded-lg" />
           )}
@@ -882,7 +892,7 @@ function PlateTile({
           Dropped entirely rather than rendered empty when there is nothing to
           say: an empty line still costs its leading. */}
       {tabbed ? (
-        <span className="flex h-[34px] items-center gap-3 px-2.5 font-mono text-xs tabular-nums text-zinc-500">
+        <span className="flex h-[34px] w-full shrink-0 items-center gap-2.5 px-2.5 font-mono text-xs tabular-nums text-zinc-500">
           <span className="inline-flex items-center gap-1">
             <VoteArrowUpIcon className="h-3.5 w-3.5 shrink-0" />
             {post.upvoteCount}
@@ -1105,11 +1115,97 @@ export function ProfileShelves({
  * full grid and one with nothing posted must not render pixel-identical, or a
  * visitor can't tell "no plates yet" from "this is still loading."
  */
-export function PublicProfilePlates({ posts: initialPosts }: { posts: ShelfPost[] }) {
+/**
+ * The plates as a repeating mosaic, for the phone public profile (Calvin,
+ * 2026-11-27: "1 big one and then some smaller ones"). Every block of three
+ * has one big plate and two small ones stacked beside it, and the big one
+ * swaps sides each block so the page keeps a rhythm instead of a column of
+ * big plates down one edge. One or two left over sit in a last row of their
+ * own: two side by side, or one wide.
+ *
+ * Every cell is the tab card (`PlateTile` with `tab`): no white frame, the
+ * photo to the edge, one white tab under it. A meal's split square cannot
+ * stretch, so a meal never takes the big cell as a filled photo; it keeps its
+ * square and the two small plates set the block's height either way.
+ */
+function Mosaic({
+  id,
+  posts,
+  onOpen,
+}: {
+  id?: string;
+  posts: ShelfPost[];
+  onOpen: (postId: string) => void;
+}) {
+  const blocks: ShelfPost[][] = [];
+  let i = 0;
+  for (; i + 2 < posts.length; i += 3) blocks.push(posts.slice(i, i + 3));
+  const rest = posts.slice(i);
+  const tone = (n: number) => ((n + 2) % 3) + 1;
+  const small = (post: ShelfPost, n: number) => (
+    <PlateTile key={post.id} post={post} tone={tone(n)} tab onOpen={() => onOpen(post.id)} />
+  );
+  return (
+    <div id={id} className="space-y-1.5">
+      {blocks.map(([big, s1, s2], b) => {
+        const bigTile = (
+          <div key={big.id} className="col-span-2 row-span-2 flex">
+            <PlateTile
+              post={big}
+              tone={tone(b * 3)}
+              tab
+              fill={!big.courses?.length}
+              onOpen={() => onOpen(big.id)}
+            />
+          </div>
+        );
+        return (
+          <div key={big.id} className="grid grid-cols-3 gap-1.5">
+            {b % 2 === 0 ? (
+              <>
+                {bigTile}
+                {small(s1, b * 3 + 1)}
+                {small(s2, b * 3 + 2)}
+              </>
+            ) : (
+              <>
+                {small(s1, b * 3 + 1)}
+                {bigTile}
+                {small(s2, b * 3 + 2)}
+              </>
+            )}
+          </div>
+        );
+      })}
+      {rest.length === 2 && (
+        <div className="grid grid-cols-2 gap-1.5">{rest.map((post, r) => small(post, i + r))}</div>
+      )}
+      {rest.length === 1 &&
+        (rest[0].courses?.length ? (
+          <div className="grid grid-cols-2 gap-1.5">{small(rest[0], i)}</div>
+        ) : (
+          <div className="flex h-52">
+            <PlateTile post={rest[0]} tone={tone(i)} tab fill onOpen={() => onOpen(rest[0].id)} />
+          </div>
+        ))}
+    </div>
+  );
+}
+
+export function PublicProfilePlates({
+  posts: initialPosts,
+  mosaic,
+}: {
+  posts: ShelfPost[];
+  /** The phone profile's layout; `/u/[id]` keeps the two-column collage. */
+  mosaic?: boolean;
+}) {
   const [posts, setPosts] = useState(initialPosts);
   const [openId, setOpenId] = useState<string | null>(null);
   const openPost = openId ? (posts.find((p) => p.id === openId) ?? null) : null;
-  const plates = useFoldedList(posts, PLATES_KEPT);
+  /* The mosaic is built in threes, so it folds at two whole blocks rather
+     than at the collage's count, which would strand one plate under the first. */
+  const plates = useFoldedList(posts, mosaic ? 6 : PLATES_KEPT);
   /* Someone else's profile, so the sheet only offers delete to an admin
      (lib/adminGate.ts); the route checks the session id regardless. */
   const admin = useAdminAccess();
@@ -1138,13 +1234,17 @@ export function PublicProfilePlates({ posts: initialPosts }: { posts: ShelfPost[
   return (
     <section aria-label="Plates" className="mb-6">
       <p className="mono-label mb-2.5 text-zinc-900">{`Plates · ${posts.length}`}</p>
-      <Collage
-        id="profile-plates"
-        posts={plates.visible}
-        tile={(post, tone) => (
-          <PlateTile key={post.id} post={post} tone={tone} onOpen={() => setOpenId(post.id)} />
-        )}
-      />
+      {mosaic ? (
+        <Mosaic id="profile-plates" posts={plates.visible} onOpen={setOpenId} />
+      ) : (
+        <Collage
+          id="profile-plates"
+          posts={plates.visible}
+          tile={(post, tone) => (
+            <PlateTile key={post.id} post={post} tone={tone} onOpen={() => setOpenId(post.id)} />
+          )}
+        />
+      )}
       {plates.foldable && (
         <ShowAllToggle
           expanded={plates.expanded}
