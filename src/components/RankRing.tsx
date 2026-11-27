@@ -46,8 +46,16 @@ export function RankRing({
   onOpenInfo,
   identity,
   children,
+  neighbors = true,
 }: {
   points: number;
+  /**
+   * False on someone else's profile (Calvin, 2026-11-27): only their own crest
+   * in its ring, without the rank either side or the line running to them.
+   * The ladder is the owner's road ahead; a visitor is just being told the
+   * rank.
+   */
+  neighbors?: boolean;
   /**
    * Phone profile "badge on the edge" (Calvin, 2026-11-24): the caller's
    * avatar + name, drawn first. With it the header becomes one centred
@@ -186,15 +194,23 @@ export function RankRing({
         onClick={onOpenLadder}
         aria-label={`${rank.title}, level ${cur + 1} of ${RANKS.length}. See the ladder.`}
         className="relative -mx-5 mt-1 block h-[136px] w-[calc(100%+40px)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-        style={{ maskImage: "linear-gradient(to right, transparent, #000 22%, #000 78%, transparent)" }}
+        style={
+          neighbors
+            ? { maskImage: "linear-gradient(to right, transparent, #000 22%, #000 78%, transparent)" }
+            : undefined
+        }
       >
-        <span aria-hidden="true" className="absolute inset-x-0 top-[66px] h-px -translate-y-1/2 bg-pm-grey-tint" />
-        <span
-          aria-hidden="true"
-          className="rk-fill absolute top-[66px] h-0.5 -translate-y-1/2 rounded-full bg-pm-orange"
-          style={{ left: prev ? 0 : "50%", width: filled ? reach : "0px" }}
-        />
-        {prev && (
+        {neighbors && (
+          <>
+            <span aria-hidden="true" className="absolute inset-x-0 top-[66px] h-px -translate-y-1/2 bg-pm-grey-tint" />
+            <span
+              aria-hidden="true"
+              className="rk-fill absolute top-[66px] h-0.5 -translate-y-1/2 rounded-full bg-pm-orange"
+              style={{ left: prev ? 0 : "50%", width: filled ? reach : "0px" }}
+            />
+          </>
+        )}
+        {neighbors && prev && (
           <span aria-hidden="true" className="absolute left-[12%] top-[66px] flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white">
             <span className="block opacity-40">
               <RankInsignia rank={prev.key} size={64} />
@@ -219,7 +235,7 @@ export function RankRing({
           <RankInsignia key={pop} rank={rank.key} size={108} pop={pop > 0} />
           {rankUp > 0 && <Burst key={rankUp} />}
         </span>
-        {next && (
+        {neighbors && next && (
           <span aria-hidden="true" className="absolute left-[88%] top-[66px] flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white">
             <span className="block opacity-40">
               <RankInsignia rank={next.key} size={64} />

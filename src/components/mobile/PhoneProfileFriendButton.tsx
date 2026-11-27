@@ -21,10 +21,16 @@ import { askForPushInContext } from "@/lib/pushClient";
  * one-sided version of a two-sided decision.
  */
 
-const BUTTON =
+const FULL =
   "inline-flex min-h-11 w-full items-center justify-center rounded-full px-5 text-sm font-medium transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 
-export function PhoneProfileFriendButton({ userId }: { userId: string }) {
+/* The small pill under the name on `/m/u/[id]` (Calvin, 2026-11-27). The pill
+   is 32px tall; the `before` box carries the tap target out to 44. */
+const COMPACT =
+  "relative inline-flex h-8 items-center justify-center rounded-full px-4 text-[13px] font-medium transition-transform before:absolute before:inset-x-0 before:-inset-y-1.5 before:content-[''] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
+
+export function PhoneProfileFriendButton({ userId, compact }: { userId: string; compact?: boolean }) {
+  const BUTTON = compact ? COMPACT : FULL;
   const { account, isSignedIn } = useAuth();
   const nav = useQueryParams().get("nav");
   const to = (href: string) => (nav ? `${href}?nav=${nav}` : href);
