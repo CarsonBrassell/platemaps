@@ -5,11 +5,7 @@ import { PhoneProfileFriendButton } from "@/components/mobile/PhoneProfileFriend
 import { PhoneProfileMenu } from "@/components/mobile/PhoneProfileMenu";
 import {
   getBlockStatus,
-  getFlavorProfile,
-  getPersonalityMatchForProfile,
   getPublicProfile,
-  getRestaurantById,
-  getTasteMatchForProfile,
   getUserPublicPosts,
 } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
@@ -17,7 +13,6 @@ import { signInHrefFor } from "@/lib/signInGate";
 import { initials } from "@/lib/format";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { PublicProfilePlates } from "@/components/ProfileShelves";
-import { PhoneFlavorProfileCard, PhoneTasteMatchCard } from "@/components/mobile/PhoneTasteMatchCard";
 
 /**
  * The public profile, phone version — what anyone, friend or stranger, sees
@@ -28,16 +23,13 @@ import { PhoneFlavorProfileCard, PhoneTasteMatchCard } from "@/components/mobile
  * there is no hover, no status bar and no second column to put context in.
  * Every one of those links lands here.
  *
- * Same shape as `/u/[id]`: name, avatar, rank, points, two favorites, and the
- * plates this person posted — see `PublicProfilePlates` and
- * `getUserPublicPosts` in lib/db.ts, which is the one query built to answer
- * "what did they post" for an arbitrary visitor (private media stripped in
- * SQL, no saved posts, no hearts). Hearts stay author-only and live behind
- * the session on /m/account; they must never appear on this screen.
- *
- * The favourite restaurant is resolved with `getRestaurantById` rather than by
- * scanning the `restaurants` seed array the web page imports — Postgres is the
- * source of truth and `src/data/` is seed input (CLAUDE.md).
+ * Name, avatar, rank, points, and the plates this person posted — see
+ * `PublicProfilePlates` and `getUserPublicPosts` in lib/db.ts, which is the one
+ * query built to answer "what did they post" for an arbitrary visitor (private
+ * media stripped in SQL, no saved posts, no hearts). Hearts stay author-only
+ * and live behind the session on /m/account; they must never appear on this
+ * screen. Unlike `/u/[id]` it shows no favorites, taste match or food
+ * personality.
  */
 export default async function PhonePublicProfilePage({
   params,
@@ -93,19 +85,11 @@ export default async function PhonePublicProfilePage({
   };
   const back = (from && BACK_TARGETS[from]) || { href: "/m", label: "Discover" };
 
-  /* Taste match (both food personality wheels, plus the cuisine match for its
-     "Try their pick") is null for yourself and for non-friends — no card at
-     all; see getPersonalityMatchForProfile. On your own profile the flavor profile takes its
-     place, so exactly one of the two is ever non-null. The block check above
-     has already run. */
-  const isSelf = viewer.id === profile.id;
-  const [favoriteRestaurant, posts, taste, personality, flavor] = await Promise.all([
-    profile.favoriteRestaurantId ? getRestaurantById(profile.favoriteRestaurantId) : null,
-    getUserPublicPosts(profile.id, viewer?.id ?? null),
-    getTasteMatchForProfile(viewer.id, profile.id),
-    getPersonalityMatchForProfile(viewer.id, profile.id),
-    isSelf ? getFlavorProfile(profile.id) : null,
-  ]);
+  /* The card is the person and their plates, nothing else (Calvin,
+     2026-11-27). The taste match, the food personality wheel and the two
+     favorites used to be read and drawn here; they are gone from this screen,
+     so their queries are too. `/u/[id]` still shows them. */
+  const posts = await getUserPublicPosts(profile.id, viewer.id);
 
 
   return (
@@ -163,49 +147,8 @@ export default async function PhonePublicProfilePage({
               </div>
             </>
           }
-        >
-          {/* An unset favorite is left out rather than printed as "Not set":
-              a visitor cannot set it, and two of them were the emptiest part
-              of the old card. */}
-          {(profile.favoriteCuisine || favoriteRestaurant) && (
-            <div
-              className={`mb-1 mt-4 grid gap-2.5 text-left ${
-                profile.favoriteCuisine && favoriteRestaurant ? "grid-cols-2" : ""
-              }`}
-            >
-              {profile.favoriteCuisine && (
-                <div className="rounded-xl bg-pm-grey-tint/50 p-3">
-                  <p className="mono-label text-zinc-500">Favorite cuisine</p>
-                  <p className="mt-1 truncate text-sm font-medium text-zinc-800">
-                    {profile.favoriteCuisine}
-                  </p>
-                </div>
-              )}
-              {favoriteRestaurant && (
-                <div className="rounded-xl bg-pm-grey-tint/50 p-3">
-                  <p className="mono-label text-zinc-500">Favorite restaurant</p>
-                  <Link
-                    href={to(`/m/restaurant/${favoriteRestaurant.id}`)}
-                    className="mt-1 block truncate text-sm font-medium text-zinc-900 underline decoration-zinc-300 underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-                  >
-                    {favoriteRestaurant.name}
-                  </Link>
-                </div>
-              )}
-            </div>
-          )}
-        </RankRing>
-      </div>
-
-      {personality && (
-        <PhoneTasteMatchCard
-          friendName={profile.name}
-          personality={personality}
-          tryPick={taste?.match?.tryPick}
-          to={to}
         />
-      )}
-      {flavor && <PhoneFlavorProfileCard flavor={flavor.flavor} />}
+      </div>
 
       <div className="mx-4 mt-6">
         <PublicProfilePlates posts={posts} mosaic />
