@@ -385,7 +385,7 @@ function AuthForm() {
 }
 
 function AccountOverview() {
-  const { account, signOut, updateAvatar } = useAuth();
+  const { account, updateAvatar } = useAuth();
   const [myPosts, setMyPosts] = useState<Post[]>([]);
   const [savedPosts, setSavedPosts] = useState<Post[]>([]);
   const [postsReady, setPostsReady] = useState(false);
@@ -656,13 +656,6 @@ function AccountOverview() {
           </Link>{" "}
           — what other people see when they look you up.
         </p>
-
-        <button
-          onClick={signOut}
-          className="min-h-11 rounded-full bg-pm-grey-tint px-4 py-2 text-sm text-pm-grey-text transition-all hover:text-zinc-900 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-        >
-          Log out
-        </button>
       </div>
     </div>
   );
