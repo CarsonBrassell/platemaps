@@ -130,11 +130,13 @@ function PlateTile({
   tile,
   restaurant,
   href,
+  lazy,
 }: {
   plate: CollagePlate;
   tile: Tile;
   restaurant?: string;
   href?: string;
+  lazy: boolean;
 }) {
   const photo = plate.media.find((m) => m.type === "image");
   const alt =
@@ -154,8 +156,10 @@ function PlateTile({
             src={photo.url}
             alt={alt}
             // Every frame loads at once: the collage is one picture, and a
-            // half-painted one reads as broken, not as loading.
-            loading="eager"
+            // half-painted one reads as broken, not as loading. `lazy` keeps
+            // that — the frames share one box, so they come due together —
+            // and only moves the moment to when the card nears the screen.
+            loading={lazy ? "lazy" : "eager"}
             draggable={false}
             className="object-cover"
           />
@@ -233,11 +237,14 @@ export function MealCollage({
   plates,
   restaurant,
   hrefFor,
+  lazy = false,
 }: {
   plates: CollagePlate[];
   restaurant?: string;
   /** Where tapping a plate goes; no link when absent or undefined. */
   hrefFor?: (plate: CollagePlate) => string | undefined;
+  /** Hold the photos until the card nears the screen — see PostMediaCarousel. */
+  lazy?: boolean;
 }) {
   const ordered = orderForCollage(plates).slice(0, MAX_COLLAGE_PLATES);
   const { tiles, height } = SOLVED[ordered.length] ?? SOLVED[1];
@@ -257,6 +264,7 @@ export function MealCollage({
             tile={t}
             restaurant={restaurant}
             href={hrefFor?.(ordered[t.plate])}
+            lazy={lazy}
           />
         ))}
       </div>

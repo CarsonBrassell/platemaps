@@ -204,6 +204,9 @@ type SharedCardProps = {
   onOpenComments: (postId: string) => void;
   onDelete: (postId: string) => void;
   onRequireSignIn: () => void;
+  /** Hold this card's photos until it nears the screen. The feed sets it on
+      every card past `EAGER_CARDS`; see PostMediaCarousel's `lazy`. */
+  lazyMedia?: boolean;
 };
 
 /**
@@ -237,6 +240,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
     onOpenComments,
     onDelete,
     onRequireSignIn,
+    lazyMedia = false,
   } = props;
 
   /* Flattened out of the union once, here: narrowing a parameter doesn't
@@ -512,12 +516,14 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                 if (!id) return undefined;
                 return p.dishId ? `/m/restaurant/${id}?dish=${p.dishId}` : `/m/restaurant/${id}`;
               }}
+              lazy={lazyMedia}
             />
           ) : (
             <PostMediaCarousel
               media={post.media}
               dishName={post.dishName}
               restaurant={post.restaurant}
+              lazy={lazyMedia}
             />
           )}
           <DoubleTapPop kind={popKind} popKey={doubleTap.popKey} />
