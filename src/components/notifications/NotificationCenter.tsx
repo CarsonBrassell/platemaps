@@ -14,6 +14,7 @@ import {
 import type { ShelfPost } from "@/components/ProfileShelves";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
 import { UpvotersSheet } from "@/components/feed/UpvotersSheet";
+import { ShimmerImage } from "@/components/ShimmerImage";
 
 /**
  * The platter: top-right of the feed's tabs row. A badge counts what has
@@ -36,6 +37,7 @@ type Activity = {
   postRestaurant?: string;
   postRestaurantId?: string;
   postDishName?: string;
+  postThumbUrl?: string;
   text?: string;
 };
 type FriendReq = {
@@ -57,6 +59,8 @@ type Row = {
   who?: string;
   text: string;
   postId?: string;
+  /** The plate's first photo, shown at the right of the row. */
+  thumbUrl?: string;
   /** Upvote rows only: the plate's name for the "Upvoted by" sheet. */
   subject?: string;
   unread: boolean;
@@ -111,6 +115,7 @@ function buildRows(data: Payload): Row[] {
           ? `commented on your ${plateName(a)}${a.text ? `: “${a.text.slice(0, 80)}”` : ""}`
           : `hearted your ${plateName(a)}`,
       postId: a.postId,
+      thumbUrl: a.postThumbUrl,
       unread: isNew(a.createdAt),
     });
   }
@@ -127,12 +132,37 @@ function buildRows(data: Payload): Row[] {
       who: first.actorName ?? "Someone",
       text: `${others}upvoted your ${plateName(first)}`,
       postId: first.postId,
+      thumbUrl: first.postThumbUrl,
       subject: plateName(first),
       unread: list.some((a) => isNew(a.createdAt)),
     });
   }
 
   return rows.sort((a, b) => b.at.localeCompare(a.at));
+}
+
+/**
+ * The plate a row is about, small at the right edge. A plate with no photo
+ * gets a warm tone block instead (DESIGN.md: never a gray box or an icon),
+ * picked from the post id so the same plate keeps the same tone.
+ */
+function PlateThumb({ postId, url }: { postId: string; url?: string }) {
+  if (url) {
+    return (
+      <span className="relative block h-11 w-11 shrink-0 overflow-hidden rounded-[10px]">
+        <ShimmerImage src={url} alt="" sizes="44px" className="object-cover" />
+      </span>
+    );
+  }
+  let hash = 0;
+  for (let i = 0; i < postId.length; i++) hash = (hash * 31 + postId.charCodeAt(i)) >>> 0;
+  return (
+    <span
+      aria-hidden="true"
+      className="block h-11 w-11 shrink-0 rounded-[10px]"
+      style={{ background: `var(--pm-tone-${(hash % 3) + 1})` }}
+    />
+  );
 }
 
 function Face({ name }: { name?: string }) {
@@ -244,6 +274,7 @@ export function NotificationCenter() {
             {relativeTime(r.at)}
           </span>
         </p>
+        {r.postId && <PlateThumb postId={r.postId} url={r.thumbUrl} />}
       </>
     );
     return (
