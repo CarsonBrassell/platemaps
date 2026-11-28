@@ -68,6 +68,14 @@ import { PhonePullToRefresh } from "./PhonePullToRefresh";
  * list rather than an error, every action prompts to sign in instead of being
  * disabled, and the sign-in doorway is /m/account.
  */
+/**
+ * Cards whose photos load the moment the feed arrives: the one on screen and
+ * the one a first flick reaches. Every card after that waits until it nears
+ * the screen. A page is 30 cards, and loading all 30 lead photos at once is
+ * what made a cold open slow — the visible photo queued behind 29 others.
+ */
+const EAGER_CARDS = 2;
+
 export function PhoneFeedScreen() {
   const { account, isSignedIn } = useAuth();
 
@@ -728,7 +736,7 @@ export function PhoneFeedScreen() {
               {/* Every card runs its photo full width — the card used to take a
                   `featured` flag and this list set it on index 0 only. See
                   PhoneFeedPostCard's header for why the dense treatment went. */}
-              {(visiblePosts ?? []).map((post) => {
+              {(visiblePosts ?? []).map((post, cardIndex) => {
                 /* Split at the call site rather than passed as a string: the
                    card's props are a union on `surface`, so the vote handler
                    and the heart handler cannot both reach one card — the
@@ -758,6 +766,7 @@ export function PhoneFeedScreen() {
                   onOpenComments: setCommentsPostId,
                   onDelete: handleDelete,
                   onRequireSignIn: () => setBanner("Sign in to join in — it takes a second."),
+                  lazyMedia: cardIndex >= EAGER_CARDS,
                 };
                 return (
                   /* The wrapper exists so a card arrived at from a map bubble

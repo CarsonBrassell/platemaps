@@ -13,6 +13,8 @@ import {
 } from "@/components/PlateDetailSheet";
 import type { ShelfPost } from "@/components/ProfileShelves";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
+import { UpvotersSheet } from "@/components/feed/UpvotersSheet";
+import { ShimmerImage } from "@/components/ShimmerImage";
 
 /**
  * The platter: top-right of the feed's tabs row. A badge counts what has
@@ -20,7 +22,8 @@ import { avatarPalette, initials, relativeTime } from "@/lib/format";
  * other people did to your plates plus incoming friend requests.
  *
  * Data comes from /api/notifications, which is author-scoped (see its header):
- * upvotes arrive nameless and are grouped per plate here, hearts name the
+ * upvotes are grouped per plate here ("Carson and 3 others upvoted…") and
+ * tapping one opens the "Upvoted by" sheet over the list; hearts name the
  * sender only to you. Nothing is invented — if the data layer has no row for
  * it, it does not appear.
  */
@@ -34,6 +37,7 @@ type Activity = {
   postRestaurant?: string;
   postRestaurantId?: string;
   postDishName?: string;
+  postThumbUrl?: string;
   text?: string;
 };
 type FriendReq = {
@@ -55,6 +59,10 @@ type Row = {
   who?: string;
   text: string;
   postId?: string;
+  /** The plate's first photo, shown at the right of the row. */
+  thumbUrl?: string;
+  /** Upvote rows only: the plate's name for the "Upvoted by" sheet. */
+  subject?: string;
   unread: boolean;
   requestId?: string;
 };
@@ -88,7 +96,7 @@ function buildRows(data: Payload): Row[] {
     });
   }
 
-  // Upvotes are nameless, so one row per plate: "3 people upvoted your Birria".
+  // One row per plate: "Carson and 3 others upvoted your Birria".
   const ups = new Map<string, Activity[]>();
   for (const a of data.activity) {
     if (a.kind === "upvote") {
@@ -107,23 +115,54 @@ function buildRows(data: Payload): Row[] {
           ? `commented on your ${plateName(a)}${a.text ? `: “${a.text.slice(0, 80)}”` : ""}`
           : `hearted your ${plateName(a)}`,
       postId: a.postId,
+      thumbUrl: a.postThumbUrl,
       unread: isNew(a.createdAt),
     });
   }
   for (const list of ups.values()) {
+    // Newest first from the server, so list[0] is the latest upvoter.
     const first = list[0];
     const n = list.length;
+    const others =
+      n === 1 ? "" : n === 2 ? `and ${list[1].actorName ?? "1 other"} ` : `and ${n - 1} others `;
     rows.push({
       key: `up:${first.postId}`,
       kind: "upvote",
       at: first.createdAt,
-      text: `${n === 1 ? "Someone" : `${n} people`} upvoted your ${plateName(first)}`,
+      who: first.actorName ?? "Someone",
+      text: `${others}upvoted your ${plateName(first)}`,
       postId: first.postId,
+      thumbUrl: first.postThumbUrl,
+      subject: plateName(first),
       unread: list.some((a) => isNew(a.createdAt)),
     });
   }
 
   return rows.sort((a, b) => b.at.localeCompare(a.at));
+}
+
+/**
+ * The plate a row is about, small at the right edge. A plate with no photo
+ * gets a warm tone block instead (DESIGN.md: never a gray box or an icon),
+ * picked from the post id so the same plate keeps the same tone.
+ */
+function PlateThumb({ postId, url }: { postId: string; url?: string }) {
+  if (url) {
+    return (
+      <span className="relative block h-11 w-11 shrink-0 overflow-hidden rounded-[10px]">
+        <ShimmerImage src={url} alt="" sizes="44px" className="object-cover" />
+      </span>
+    );
+  }
+  let hash = 0;
+  for (let i = 0; i < postId.length; i++) hash = (hash * 31 + postId.charCodeAt(i)) >>> 0;
+  return (
+    <span
+      aria-hidden="true"
+      className="block h-11 w-11 shrink-0 rounded-[10px]"
+      style={{ background: `var(--pm-tone-${(hash % 3) + 1})` }}
+    />
+  );
 }
 
 function Face({ name }: { name?: string }) {
@@ -152,6 +191,7 @@ export function NotificationCenter() {
   const [handled, setHandled] = useState<Set<string>>(new Set());
   const [mounted, setMounted] = useState(false);
   const [plate, setPlate] = useState<ShelfPost | null>(null);
+  const [voters, setVoters] = useState<{ postId: string; subject?: string } | null>(null);
 
   // Portal target only exists after mount.
   // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -234,6 +274,7 @@ export function NotificationCenter() {
             {relativeTime(r.at)}
           </span>
         </p>
+        {r.postId && <PlateThumb postId={r.postId} url={r.thumbUrl} />}
       </>
     );
     return (
@@ -244,7 +285,11 @@ export function NotificationCenter() {
         {r.postId ? (
           <button
             type="button"
-            onClick={() => void openPlate(r.postId!)}
+            onClick={() =>
+              r.kind === "upvote"
+                ? setVoters({ postId: r.postId!, subject: r.subject })
+                : void openPlate(r.postId!)
+            }
             className="flex min-h-11 min-w-0 flex-1 items-center gap-3 text-left"
           >
             {body}
@@ -349,6 +394,13 @@ export function NotificationCenter() {
         )}
       </button>
       {overlay}
+      {voters && (
+        <UpvotersSheet
+          postId={voters.postId}
+          subject={voters.subject}
+          onClose={() => setVoters(null)}
+        />
+      )}
       {plate &&
         mounted &&
         createPortal(

@@ -270,13 +270,21 @@ export function VotePair({
   downvoteCount,
   myVote,
   onVote,
+  onShowVoters,
 }: {
   upvoteCount: number;
   downvoteCount: number;
   myVote: VoteDirection | null;
   onVote: (direction: VoteDirection) => void;
+  /**
+   * When set, the number between the arrows becomes a button that opens the
+   * "Upvoted by" sheet. Only the plate sheet passes it today.
+   */
+  onShowVoters?: () => void;
 }) {
   const score = upvoteCount - downvoteCount;
+  const scoreClass =
+    "min-w-[3ch] text-center font-mono text-sm font-semibold tabular-nums text-pm-orange-text";
 
   const arrow = (direction: VoteDirection) => {
     const active = myVote === direction;
@@ -331,12 +339,21 @@ export function VotePair({
       {arrow("up")}
       {/* Reads as one value to a screen reader; the arrows already announce
           their own state, so this only needs to say what the number means. */}
-      <span
-        aria-label={`Net score ${score}`}
-        className="min-w-[3ch] text-center font-mono text-sm font-semibold tabular-nums text-pm-orange-text"
-      >
-        {score}
-      </span>
+      {onShowVoters ? (
+        <button
+          type="button"
+          onClick={onShowVoters}
+          aria-label={`Net score ${score}. See who upvoted`}
+          aria-haspopup="dialog"
+          className={`${scoreClass} flex h-11 items-center justify-center rounded-full px-1 underline decoration-pm-orange/30 decoration-dotted underline-offset-4 hover:decoration-pm-orange-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange`}
+        >
+          {score}
+        </button>
+      ) : (
+        <span aria-label={`Net score ${score}`} className={scoreClass}>
+          {score}
+        </span>
+      )}
       {arrow("down")}
     </div>
   );

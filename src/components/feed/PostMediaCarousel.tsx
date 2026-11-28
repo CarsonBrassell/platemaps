@@ -80,10 +80,16 @@ export function PostMediaCarousel({
   media,
   dishName,
   restaurant,
+  lazy = false,
 }: {
   media: PostMedia[];
   dishName?: string;
   restaurant?: string;
+  /** Hold the lead photo until the card nears the screen. A feed sets this on
+      every card below the first couple: left eager, a page of 30 cards asks
+      for 30 photos the moment the app opens, and the two on screen queue
+      behind the 28 that are not. */
+  lazy?: boolean;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
@@ -158,7 +164,7 @@ export function PostMediaCarousel({
               <ShimmerImage
                 src={item.url}
                 alt={describe(item, i) || "Food photo"}
-                loading={i === 0 ? "eager" : "lazy"}
+                loading={i === 0 && !lazy ? "eager" : "lazy"}
                 /* Belt to the stylesheet's braces: the `img` rule in
                    globals.css stops the iOS lift, and this stops the desktop
                    drag ghost for browsers that honour the attribute but not
