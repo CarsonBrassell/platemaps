@@ -136,6 +136,103 @@ export function sendPasswordResetEmail(
 }
 
 /**
+ * A notice that something about how the account is signed in to has changed.
+ *
+ * These exist for the person who did NOT do it. Connecting a sign-in method,
+ * adding a password to an account that had none, asking to move the address
+ * and removing a sign-in method are each how somebody holding a borrowed
+ * session would dig in — and on an account with no password, the confirmation
+ * in front of the first three is only "Google is still signed in on this
+ * browser". The letter is what lets the real owner find out.
+ *
+ * Always to the address on file at the time, never to a new or pending one.
+ * Plain text, and the only link is to Settings on `appUrl()`: a notice that
+ * carried an action link would be a template for phishing its own readers.
+ * `provider` is one of two fixed words, never text from a token.
+ */
+export function sendSecurityNotice(
+  to: string,
+  username: string,
+  kind: "linked" | "password_added" | "email_change_requested" | "signin_removed",
+  provider?: "google" | "apple"
+): Promise<SendResult> {
+  const service = provider === "apple" ? "Apple" : provider === "google" ? "Google" : "A sign-in method";
+  const settings = `${appUrl()}/account/settings`;
+
+  const [subject, what] = {
+    linked: [
+      "A new sign-in method was connected to your PlateMaps account",
+      `${service} sign-in was connected to the PlateMaps account @${username}.`,
+    ],
+    password_added: [
+      "A password was added to your PlateMaps account",
+      `A password was added to the PlateMaps account @${username}.`,
+    ],
+    email_change_requested: [
+      "A change of email was requested on your PlateMaps account",
+      `Someone asked to move the PlateMaps account @${username} to a different email address. Nothing changes unless the link sent to the new address is opened.`,
+    ],
+    signin_removed: [
+      "A sign-in method was disconnected from your PlateMaps account",
+      `${service} sign-in was disconnected from the PlateMaps account @${username}.`,
+    ],
+  }[kind];
+
+  return deliver(
+    to,
+    subject,
+    [
+      what,
+      "",
+      "If this was you, there is nothing to do.",
+      "If it wasn't, reset your password from the log-in screen (Forgot password),",
+      "which signs out every device, then review your sign-in methods here:",
+      "",
+      settings,
+    ].join("\n")
+  );
+}
+
+/**
+ * A note to whoever runs the site that something needs a human look.
+ *
+ * Same recipient rule as `sendReportNotice` below: `MODERATION_EMAIL`, falling
+ * back to `MAIL_FROM`. Used when contact matching hands out unusually many
+ * matches in a day — the limits slow someone testing a list of addresses, and
+ * this is how a person finds out it is happening.
+ *
+ * The caller passes fixed sentences and counts. Nothing a user typed or
+ * uploaded belongs in either argument.
+ */
+export function sendOwnerAlert(subject: string, text: string): Promise<SendResult> {
+  const to = process.env.MODERATION_EMAIL || process.env.MAIL_FROM;
+  if (!to) return Promise.resolve({ ok: false, reason: "unconfigured" });
+  return deliver(to, subject, text);
+}
+
+/**
+ * Tells someone their phone number left their account because another
+ * account confirmed it.
+ *
+ * Usually that is the same person with a second account, or a number the
+ * carrier has given to somebody new. Either way the previous holder should
+ * hear about it rather than quietly stop being findable. The letter does not
+ * contain the number — it goes to an inbox, and the number is the one thing
+ * this app has taken care never to write down.
+ */
+export function sendPhoneMovedEmail(to: string): Promise<SendResult> {
+  return deliver(
+    to,
+    "Your phone number was removed from your PlateMaps account",
+    [
+      "The phone number on your PlateMaps account was confirmed by another account,",
+      "so it has been removed from yours. If you still use that number, add it again",
+      "in Settings. Nothing else about your account changed.",
+    ].join("\n")
+  );
+}
+
+/**
  * Tells the moderator a plate was reported.
  *
  * Goes to `MODERATION_EMAIL`, falling back to `MAIL_FROM` so a deployment that

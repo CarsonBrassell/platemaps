@@ -41,9 +41,14 @@ export async function POST() {
 
   const issued = await issueEmailVerification(user, target);
   if (!issued.ok) {
+    // The seconds ride along as a number and a header so a screen can count
+    // them down instead of showing an error for what is just "already sent".
     return NextResponse.json(
-      { error: `Wait ${issued.retryAfterSeconds}s before asking for another link.` },
-      { status: 429 }
+      {
+        error: `Wait ${issued.retryAfterSeconds}s before asking for another link.`,
+        retryAfterSeconds: issued.retryAfterSeconds,
+      },
+      { status: 429, headers: { "Retry-After": String(issued.retryAfterSeconds) } }
     );
   }
 

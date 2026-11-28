@@ -1,10 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { cookies } from "next/headers";
-import bcrypt from "bcryptjs";
-import { deleteUser, restaurantIdsPostedBy } from "@/lib/db";
+import { deleteUser, listIdentities, restaurantIdsPostedBy } from "@/lib/db";
 import { invalidateRestaurantPage } from "@/lib/restaurantPage";
 import { getCurrentUser, SESSION_COOKIE } from "@/lib/session";
 import { limitOrReject } from "@/lib/rateLimit";
+import { confirmIdentity } from "@/lib/reauth";
+import { revokeStoredTokens } from "@/lib/oauth/apple";
 
 /**
  * Delete the signed-in account and everything it produced.
@@ -25,6 +26,13 @@ import { limitOrReject } from "@/lib/rateLimit";
  * the difference between "someone got your phone" and "someone got your
  * phone and your account is gone."
  *
+ * **An account with no password** (made with Apple or Google) confirms with
+ * that provider instead: a re-auth flow stamps this session for the purpose
+ * `delete`, and `confirmIdentity` spends the stamp — one confirmation, one
+ * deletion, three minutes. Without a fresh stamp the answer is 401 with
+ * `code: "reauth_required"`, which the client reads as "show Confirm with
+ * Apple/Google". An account WITH a password is never offered that route.
+ *
  * DELETE rather than POST because that is what it is, and the method itself
  * keeps this from ever being reachable by a form submission or a stray link.
  */
@@ -44,7 +52,7 @@ export async function DELETE(req: Request) {
     password = undefined;
   }
 
-  if (typeof password !== "string" || password.length === 0) {
+  if (user.passwordHash !== null && (typeof password !== "string" || password.length === 0)) {
     return NextResponse.json(
       { error: "Enter your password to confirm." },
       { status: 400 }
@@ -63,12 +71,31 @@ export async function DELETE(req: Request) {
   });
   if (limited) return limited;
 
-  if (!(await bcrypt.compare(password, user.passwordHash))) {
+  const cookieStore = await cookies();
+  const confirmed = await confirmIdentity(
+    user,
+    cookieStore.get(SESSION_COOKIE)?.value,
+    "delete",
+    password
+  );
+  if (confirmed === "wrong_password") {
     // Deliberately not "wrong password for this account" — the caller is
     // already authenticated, so there is nothing to enumerate, but the plainer
     // sentence is also the more useful one.
     return NextResponse.json({ error: "That password isn't right." }, { status: 401 });
   }
+  if (confirmed === "reauth_required") {
+    return NextResponse.json(
+      { error: "Confirm with Apple or Google to delete your account.", code: "reauth_required" },
+      { status: 401 }
+    );
+  }
+
+  // Read before the delete for the same reason as the restaurant ids below:
+  // the identities cascade away with the user, and Apple's guidance is that
+  // deleting the account revokes the authorization. Revoked after the
+  // response — a slow Apple must not hold up, or fail, the deletion.
+  const identities = await listIdentities(user.id);
 
   // Which restaurant pages this account's plates were on, read before the
   // rows go — after the delete there is nothing left to ask — and invalidated
@@ -77,13 +104,13 @@ export async function DELETE(req: Request) {
   const postedAt = await restaurantIdsPostedBy(user.id);
   await deleteUser(user.id);
   for (const id of postedAt) invalidateRestaurantPage(id);
+  after(() => revokeStoredTokens(identities));
 
   // The sessions row is already gone with the user (ON DELETE CASCADE), so the
   // cookie is dead server-side the moment the delete lands. Clearing it here
   // stops the browser from sending a token that can no longer resolve, which
   // would otherwise leave the client in a state where it looks signed in until
   // the next /api/auth/me.
-  const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE);
 
   return NextResponse.json({ ok: true });

@@ -73,6 +73,47 @@ export function clientIp(req: Request): string {
   return req.headers.get("x-real-ip")?.trim() || "unknown";
 }
 
+/**
+ * The caller's address reduced to what one subscriber actually controls.
+ *
+ * An IPv4 address is one line, so it is returned as it is. An IPv6 customer
+ * is routinely handed a whole /64 — 18 quintillion addresses — and can use a
+ * fresh one per request, so a limit keyed on the full address never binds
+ * them. This returns the first four groups (the /64) instead, which is the
+ * unit a home, a phone or a rented server gets. An IPv4 address written the
+ * IPv6 way (`::ffff:1.2.3.4`) is unwrapped so both spellings share a bucket.
+ *
+ * Used where one caller minting many identities is the threat: signup, the
+ * contact-matching route and the phone-code routes. `clientIp` is unchanged,
+ * so the sign-in throttle keys exactly as it always has.
+ */
+export function clientIpBucket(req: Request): string {
+  const ip = clientIp(req).toLowerCase();
+  if (!ip.includes(":")) return ip;
+
+  const mapped = /^(?:::ffff:|0{1,4}(?::0{1,4}){4}:ffff:)(\d{1,3}(?:\.\d{1,3}){3})$/.exec(ip);
+  if (mapped) return mapped[1];
+
+  // Drop a zone id (`fe80::1%en0`) and brackets, then expand `::`.
+  const bare = ip.replace(/^\[|\]$/g, "").split("%")[0];
+  const [head, tail, ...extra] = bare.split("::");
+  if (extra.length > 0) return ip;
+  const headGroups = head ? head.split(":") : [];
+  const tailGroups = tail ? tail.split(":") : [];
+  const missing = 8 - headGroups.length - tailGroups.length;
+  const groups =
+    tail === undefined
+      ? headGroups
+      : [...headGroups, ...Array<string>(Math.max(0, missing)).fill("0"), ...tailGroups];
+
+  // Not something that parses as eight hex groups: leave it alone, so an odd
+  // value still gets a bucket of its own rather than sharing one by accident.
+  if (groups.length !== 8 || groups.some((g) => !/^[0-9a-f]{1,4}$/.test(g))) return ip;
+
+  const prefix = groups.slice(0, 4).map((g) => g.replace(/^0+(?=.)/, ""));
+  return `${prefix.join(":")}::/64`;
+}
+
 /** Normalised so `Carson@x.com ` and `carson@x.com` share one bucket. */
 const key = (email: string) => email.trim().toLowerCase();
 

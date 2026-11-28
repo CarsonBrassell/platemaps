@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   LedgerActionRow,
   LedgerRow,
@@ -9,7 +9,26 @@ import {
   type LedgerVariant,
 } from "@/components/account/ledger";
 import { useAccountSecurity, devicesEndedLabel } from "@/components/account/useAccountSecurity";
+import { PhoneNumberRow } from "@/components/account/PhoneNumberRow";
 import { useAuth } from "@/lib/auth";
+import { oauthReturn, type ReauthPurpose, type SocialProvider } from "@/lib/oauthClient";
+import { PROVIDER_NAME, ProviderButton } from "@/components/account/SocialButtons";
+
+/**
+ * Which row to open on arrival: the one a website confirmation was for.
+ * Somebody who confirmed with Google from inside the Password row and came
+ * back to a closed ledger would have to find their place again.
+ */
+function rowForReturn(): string | null {
+  const returned = oauthReturn();
+  if (returned?.kind !== "reauthed") return null;
+  if (returned.purpose === "email" || returned.purpose === "password") return returned.purpose;
+  return null;
+}
+
+/** Said wherever a password-less account has nothing to confirm with from here. */
+const NO_CONFIRM_HERE =
+  "This account has no password, and confirming with Apple or Google isn't available here. Use the latest PlateMaps app, or log out and use Forgot password to set a password.";
 
 /**
  * The things you do *to* the account rather than settings that change what it
@@ -25,11 +44,37 @@ import { useAuth } from "@/lib/auth";
  * The password row is its own disclosure now, which is what `armed` used to do
  * by hand. Closing the row clears both fields — a form holding two passwords is
  * the kind of thing that ends up in a screenshot.
+ *
+ * **Sign-in methods** is a second section under this one, and it is drawn
+ * only when the server offers Apple / Google here or the account already
+ * signs in with one (`signIn.visible`). On an unconfigured site it does not
+ * exist, and the Email and Password rows are exactly as they were: every
+ * `passwordless` branch below needs `account.hasPassword === false`, which
+ * only an Apple / Google sign-up can produce.
  */
 export function AccountLedger({ variant = "web" }: { variant?: LedgerVariant }) {
   const { account } = useAuth();
-  const { email, username, password, devices } = useAccountSecurity();
+  const { email, username, password, devices, passwordless, signIn } = useAccountSecurity(
+    variant === "phone" ? "/m/account/settings" : "/account/settings"
+  );
   const rows = useLedgerRows();
+  /* The row a website confirmation was for, opened once the account is known
+     and only for an account with no password — the only kind that can have
+     made that trip. Decided here rather than as the rows' initial state for
+     two reasons: on a fresh page load the account is not in hand yet, and a
+     hand-typed or stale `?oauth=reauthed&for=password` must not open anything
+     on an ordinary account (or on a site where none of this is configured).
+     Adjusted during render, React's documented way to react to a prop
+     arriving without an effect. */
+  const [returnRow, setReturnRow] = useState(rowForReturn);
+  if (returnRow && account) {
+    setReturnRow(null);
+    if (account.hasPassword === false) rows.open(returnRow);
+  }
+  /* The website's confirm-with-Google button, per row. Its own busy and
+     error because it is not a form submit and the page usually leaves. */
+  const [confirming, setConfirming] = useState<ReauthPurpose | null>(null);
+  const [confirmError, setConfirmError] = useState("");
 
   const emailOpen = rows.isOpen("email");
   const usernameOpen = rows.isOpen("username");
@@ -86,6 +131,13 @@ export function AccountLedger({ variant = "web" }: { variant?: LedgerVariant }) 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [passwordOpen]);
 
+  const methodOpen = signIn.providers.some((provider) => rows.isOpen(`method-${provider}`));
+  useEffect(() => {
+    // Same again: a typed password does not outlive its row.
+    if (!methodOpen) signIn.clearPassword();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [methodOpen]);
+
   // After the hooks, never before. Signed out there is no ledger to draw, and
   // guessing at a verification state while the account loads would flash
   // "Verified" at somebody whose address isn't.
@@ -102,7 +154,66 @@ export function AccountLedger({ variant = "web" }: { variant?: LedgerVariant }) 
     variant === "phone" ? "w-full" : ""
   }`;
 
+  /**
+   * What stands where the "Current password" field would, for an account
+   * that has none. Returns null when the form itself should show: either the
+   * app (the confirmation is a sheet the submit button opens) or the website
+   * after the trip to Google has come back for this purpose.
+   */
+  function confirmFirst(purpose: "email" | "password"): ReactNode {
+    if (!passwordless.active) return null;
+    if (passwordless.loading) {
+      return <p className="text-xs text-zinc-500">One moment…</p>;
+    }
+    const provider = passwordless.provider;
+    if (!provider) {
+      return <p className="text-xs leading-snug text-zinc-500">{NO_CONFIRM_HERE}</p>;
+    }
+    if (!passwordless.leavesPage || passwordless.confirmedFor === purpose) return null;
+    return (
+      <>
+        <p className="mb-3 text-xs leading-snug text-zinc-500">
+          This account has no password, so confirm it&rsquo;s you with {PROVIDER_NAME[provider]}{" "}
+          first. You&rsquo;ll come straight back here.
+        </p>
+        {confirmError && confirming === null && (
+          <p role="alert" className="mb-2 text-xs text-red-700">
+            {confirmError}
+          </p>
+        )}
+        <ProviderButton
+          provider={provider}
+          size={variant === "phone" ? "phone" : "desktop"}
+          fit={variant !== "phone"}
+          disabled={confirming !== null}
+          onClick={() => {
+            setConfirming(purpose);
+            setConfirmError("");
+            void passwordless.confirm(purpose).then((message) => {
+              // Only reached when the page did not leave.
+              setConfirmError(message);
+              setConfirming(null);
+            });
+          }}
+        />
+      </>
+    );
+  }
+
+  /** The submit label for a password-less form: says a sheet is coming, when one is. */
+  const confirmVerb = (purpose: ReauthPurpose, plain: string) =>
+    passwordless.active && passwordless.provider && passwordless.confirmedFor !== purpose
+      ? `Confirm with ${PROVIDER_NAME[passwordless.provider]} and ${plain.charAt(0).toLowerCase()}${plain.slice(1)}`
+      : plain;
+
+  const emailGate = confirmFirst("email");
+  const passwordGate = confirmFirst("password");
+
+  const connected = (provider: SocialProvider) =>
+    signIn.identities?.find((identity) => identity.provider === provider) ?? null;
+
   return (
+    <>
     <LedgerSection label="Account">
       {/* --- Email ---------------------------------------------------------
           First, because it outranks everything under it: a username can be
@@ -145,6 +256,7 @@ export function AccountLedger({ variant = "web" }: { variant?: LedgerVariant }) 
           </div>
         )}
 
+        {emailGate ?? (
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -163,6 +275,9 @@ export function AccountLedger({ variant = "web" }: { variant?: LedgerVariant }) 
             disabled={email.busy}
             className={`${input} mb-2`}
           />
+          {/* No password field for an account that has none; the provider
+              confirmation stands in for it — see `confirmFirst`. */}
+          {!passwordless.active && (
           <input
             type="password"
             aria-label="Current password"
@@ -173,6 +288,7 @@ export function AccountLedger({ variant = "web" }: { variant?: LedgerVariant }) 
             disabled={email.busy}
             className={`${input} mb-2`}
           />
+          )}
           {email.error && (
             <p role="alert" className="mb-2 text-xs text-red-700">
               {email.error}
@@ -190,12 +306,13 @@ export function AccountLedger({ variant = "web" }: { variant?: LedgerVariant }) 
           )}
           <button
             type="submit"
-            disabled={email.busy || !email.dirty || !email.password}
+            disabled={email.busy || !email.dirty || (!passwordless.active && !email.password)}
             className={button}
           >
-            {email.busy ? "Sending…" : "Send link to the new address"}
+            {email.busy ? "Sending…" : confirmVerb("email", "Send link to the new address")}
           </button>
         </form>
+        )}
       </LedgerRow>
 
       {/* --- Username ------------------------------------------------------ */}
@@ -240,18 +357,24 @@ export function AccountLedger({ variant = "web" }: { variant?: LedgerVariant }) 
       {/* --- Password ------------------------------------------------------ */}
       <LedgerRow
         label="Password"
-        state="••••••••"
-        description="Saving a new one signs you out everywhere else. This device stays signed in."
+        state={passwordless.active ? "None" : "••••••••"}
+        description={
+          passwordless.active
+            ? "This account signs in with Apple or Google and has no password. Adding one lets you log in with your email as well, and is needed before a sign-in method can be disconnected."
+            : "Saving a new one signs you out everywhere else. This device stays signed in."
+        }
         variant={variant}
         open={passwordOpen}
         onToggle={() => rows.toggle("password")}
       >
+        {passwordGate ?? (
         <form
           onSubmit={(e) => {
             e.preventDefault();
             void password.save();
           }}
         >
+          {!passwordless.active && (
           <input
             type="password"
             aria-label="Current password"
@@ -262,6 +385,7 @@ export function AccountLedger({ variant = "web" }: { variant?: LedgerVariant }) 
             disabled={password.busy}
             className={`${input} mb-2`}
           />
+          )}
           <input
             type="password"
             aria-label="New password"
@@ -282,15 +406,40 @@ export function AccountLedger({ variant = "web" }: { variant?: LedgerVariant }) 
               Password changed. {devicesEndedLabel(password.done)}
             </p>
           )}
+          {/* A password change ends sessions but leaves connected sign-ins
+              alone. Someone changing it because another person knew it needs
+              to hear that, with the place to act on it. */}
+          {password.stillConnected && (
+            <p role="status" className="mb-2 text-xs leading-snug text-zinc-500">
+              {password.stillConnected}
+            </p>
+          )}
           <button
             type="submit"
-            disabled={password.busy || !password.current || !password.next}
+            disabled={password.busy || (!passwordless.active && !password.current) || !password.next}
             className={button}
           >
-            {password.busy ? "Saving…" : "Save password"}
+            {password.busy
+              ? "Saving…"
+              : passwordless.active
+                ? confirmVerb("password", "Add password")
+                : "Save password"}
           </button>
         </form>
+        )}
       </LedgerRow>
+
+      {/* --- Phone number --------------------------------------------------
+          Not drawn unless the server says a phone can be verified here
+          (the texting service and the hashing key are both configured), or
+          a number is already on file and must stay removable. */}
+      {(account.phoneVerifyAvailable === true || account.phoneLast4 !== undefined) && (
+        <PhoneNumberRow
+          variant={variant}
+          open={rows.isOpen("phone")}
+          onToggle={() => rows.toggle("phone")}
+        />
+      )}
 
       {/* --- Other devices -------------------------------------------------
           No state to report: the sessions table isn't surfaced anywhere, so
@@ -336,5 +485,185 @@ export function AccountLedger({ variant = "web" }: { variant?: LedgerVariant }) 
         }
       />
     </LedgerSection>
+
+    {/* --- Sign-in methods ---------------------------------------------------
+        Not drawn at all unless Apple / Google sign-in is switched on for
+        where this page is running, or this account already depends on it.
+
+        Connect needs a confirmed email and the password; Disconnect needs a
+        password to exist, so nobody can remove their last way in. Both are
+        enforced by the server — these rows only decline to offer what it
+        would refuse. */}
+    {signIn.visible && (
+      <>
+        {signIn.error && (
+          <p role="alert" className="mb-2 text-xs leading-snug text-red-700">
+            {signIn.error}
+          </p>
+        )}
+        {signIn.note && (
+          <p role="status" className="mb-2 text-xs leading-snug text-zinc-500">
+            {signIn.note}
+          </p>
+        )}
+        <LedgerSection label="Sign-in methods">
+          {signIn.providers.map((provider) => {
+            const name = PROVIDER_NAME[provider];
+            const identity = connected(provider);
+            const busy = signIn.busy !== null;
+            const key = `method-${provider}`;
+            const size = variant === "phone" ? "phone" : "desktop";
+            const fit = variant !== "phone";
+
+            let body: ReactNode;
+            if (signIn.identities === null) {
+              body = <p className="text-xs text-zinc-500">One moment…</p>;
+            } else if (identity) {
+              body = (
+                <>
+                  {identity.email && (
+                    <p className="mb-3 font-mono text-[13px] tracking-[0.02em] text-zinc-800">
+                      {identity.email}
+                    </p>
+                  )}
+                  {passwordless.active ? (
+                    /* The last-way-in rule, stated instead of a dead button. */
+                    <p className="text-xs leading-snug text-zinc-500">
+                      Add a password to disconnect. Without one, this is how you get into the
+                      account.
+                    </p>
+                  ) : (
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        void signIn.disconnect(provider);
+                      }}
+                    >
+                      <input
+                        type="password"
+                        aria-label="Current password"
+                        placeholder="Current password"
+                        autoComplete="current-password"
+                        value={signIn.password}
+                        onChange={(e) => signIn.setPassword(e.target.value)}
+                        disabled={busy}
+                        className={`${input} mb-2`}
+                      />
+                      <button type="submit" disabled={busy || !signIn.password} className={button}>
+                        {signIn.busy === provider ? "Disconnecting…" : `Disconnect ${name}`}
+                      </button>
+                    </form>
+                  )}
+                </>
+              );
+            } else if (!signIn.canConnectHere(provider)) {
+              body = (
+                <p className="text-xs leading-snug text-zinc-500">
+                  {name} sign-in can only be connected in the PlateMaps app for now.
+                </p>
+              );
+            } else if (unverified) {
+              /* The rule that stops somebody who registered under your address
+                 from attaching their own Google to it: they cannot open your
+                 inbox. Offered as the next step rather than as a refusal. */
+              body = (
+                <>
+                  <p className="mb-3 text-xs leading-snug text-zinc-500">
+                    Confirm your email first. Connecting a sign-in method needs an address
+                    we know you can read.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => void email.resend()}
+                    disabled={email.busy}
+                    className={button}
+                  >
+                    {email.busy ? "Sending…" : "Send me a confirmation link"}
+                  </button>
+                  {email.sent && (
+                    <p className="mt-2 text-xs leading-snug text-zinc-500">
+                      Link sent to{" "}
+                      <span className="font-mono text-[12px] tracking-[0.02em] text-zinc-800">
+                        {email.sent}
+                      </span>
+                      .
+                    </p>
+                  )}
+                  {email.error && (
+                    <p role="alert" className="mt-2 text-xs text-red-700">
+                      {email.error}
+                    </p>
+                  )}
+                </>
+              );
+            } else if (passwordless.active) {
+              body = passwordless.provider ? (
+                <>
+                  <p className="mb-3 text-xs leading-snug text-zinc-500">
+                    You&rsquo;ll confirm with {PROVIDER_NAME[passwordless.provider]} first, then
+                    choose the {name} account to connect.
+                  </p>
+                  <ProviderButton
+                    provider={provider}
+                    size={size}
+                    fit={fit}
+                    disabled={busy}
+                    onClick={() => void signIn.connect(provider)}
+                  />
+                </>
+              ) : (
+                <p className="text-xs leading-snug text-zinc-500">{NO_CONFIRM_HERE}</p>
+              );
+            } else {
+              body = (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    void signIn.connect(provider);
+                  }}
+                >
+                  <input
+                    type="password"
+                    aria-label="Current password"
+                    placeholder="Current password"
+                    autoComplete="current-password"
+                    value={signIn.password}
+                    onChange={(e) => signIn.setPassword(e.target.value)}
+                    disabled={busy}
+                    className={`${input} mb-2`}
+                  />
+                  <ProviderButton
+                    provider={provider}
+                    size={size}
+                    fit={fit}
+                    disabled={busy || !signIn.password}
+                    onClick={() => void signIn.connect(provider)}
+                  />
+                </form>
+              );
+            }
+
+            return (
+              <LedgerRow
+                key={provider}
+                label={name}
+                state={signIn.identities === null ? undefined : identity ? "Connected" : "Not connected"}
+                description={
+                  identity
+                    ? `You can sign in with ${name}. We keep the email address and an ID from ${name}, nothing else.`
+                    : `Add ${name} as another way to sign in. Nothing is ever posted to ${name}.`
+                }
+                variant={variant}
+                open={rows.isOpen(key)}
+                onToggle={() => rows.toggle(key)}
+              >
+                {body}
+              </LedgerRow>
+            );
+          })}
+        </LedgerSection>
+      </>
+    )}
+    </>
   );
 }

@@ -28,7 +28,7 @@ import { DeleteAccountPanel } from "@/components/account/DeleteAccountPanel";
  * components in their phone variant — see PhoneSettingsScreen.
  */
 export default function SettingsPage() {
-  const { isSignedIn, loading } = useAuth();
+  const { isSignedIn, loading, signOut } = useAuth();
 
   return (
     <>
@@ -79,6 +79,18 @@ export default function SettingsPage() {
                 <div className="mt-8">
                   <DeleteAccountPanel />
                 </div>
+
+                {/* Log out lives here, not on the profile: it was the last
+                    thing on /account, below every saved post, and people
+                    looking for it went to Settings first. Signed out, this
+                    page falls through to its own "Sign in" card below. */}
+                <button
+                  type="button"
+                  onClick={signOut}
+                  className="mt-8 min-h-11 rounded-full bg-pm-grey-tint px-4 py-2 text-sm text-pm-grey-text transition-all hover:text-zinc-900 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                >
+                  Log out
+                </button>
               </div>
             </div>
           ) : (

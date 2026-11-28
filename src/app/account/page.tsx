@@ -16,6 +16,8 @@ import { PlatePointsPanel } from "@/components/PlatePointsPanel";
 import { ProfileShelves, useRollCallArrival } from "@/components/ProfileShelves";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { AccountFlavorProfile } from "@/components/AccountFlavorProfile";
+import { SocialButtons, useSocialSignIn } from "@/components/account/SocialButtons";
+import { FinishSignUp } from "@/components/account/FinishSignUp";
 
 const inputClass =
   "mb-4 w-full rounded-xl bg-pm-grey-tint/60 px-3.5 py-2.5 text-sm transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange";
@@ -151,7 +153,13 @@ function AuthForm() {
   const [submitting, setSubmitting] = useState(false);
   const [agreed, setAgreed] = useState(false);
   /* Why the visitor is here, when a gated tap (Post, Friends) sent them. */
-  const prompt = signInPromptFor(useQueryParams().get("next"));
+  const rawNext = useQueryParams().get("next");
+  const prompt = signInPromptFor(rawNext);
+  /* Apple / Google sign-in. Inert unless the server says a provider is
+     configured: `availability` is then "none", SocialButtons renders nothing,
+     and `finish` / `settling` / `notice` never leave their empty values —
+     this card is byte-for-byte the one it was. */
+  const social = useSocialSignIn();
 
   /* Shown as a hint rather than an error: it appears while the field is still
      half-typed, when "Use at least 8 characters" is information, not a
@@ -187,6 +195,26 @@ function AuthForm() {
         : await signIn(email, password);
     setSubmitting(false);
     if (result) setError(result);
+  }
+
+  /* Back from Google with `?oauth=finish`, before the server has said whether
+     sign-in is live: hold the frame rather than flash the sign-up form and
+     then swap it for the finish screen. */
+  if (social.settling) return <div className="py-12" />;
+
+  /* A new Apple / Google person. No account exists yet; this screen replaces
+     the card until they finish or cancel. */
+  if (social.finish) {
+    return (
+      <div className="flex justify-center px-4 py-12">
+        <FinishSignUp
+          pending={social.finish}
+          variant="desktop"
+          onClose={social.closeFinish}
+          className="w-full max-w-sm rounded-2xl bg-white p-6"
+        />
+      </div>
+    );
   }
 
   return (
@@ -242,6 +270,17 @@ function AuthForm() {
             ? "Save your favorite San Diego spots and earn Plate Points."
             : "Sign in to see your saved spots and Plate Points."}
         </p>
+
+        {/* Above the fields, as alternatives to them. Renders nothing at all
+            unless a provider is configured. */}
+        <SocialButtons
+          availability={social.availability}
+          variant="desktop"
+          returnTo="/account"
+          next={rawNext}
+          onNeedsSignup={social.openFinish}
+          initialError={social.notice}
+        />
 
         {mode === "signup" && (
           <>
@@ -346,7 +385,7 @@ function AuthForm() {
 }
 
 function AccountOverview() {
-  const { account, signOut, updateAvatar } = useAuth();
+  const { account, updateAvatar } = useAuth();
   const [myPosts, setMyPosts] = useState<Post[]>([]);
   const [savedPosts, setSavedPosts] = useState<Post[]>([]);
   const [postsReady, setPostsReady] = useState(false);
@@ -617,13 +656,6 @@ function AccountOverview() {
           </Link>{" "}
           — what other people see when they look you up.
         </p>
-
-        <button
-          onClick={signOut}
-          className="min-h-11 rounded-full bg-pm-grey-tint px-4 py-2 text-sm text-pm-grey-text transition-all hover:text-zinc-900 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-        >
-          Log out
-        </button>
       </div>
     </div>
   );

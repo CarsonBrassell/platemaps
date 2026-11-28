@@ -1459,6 +1459,121 @@ const statements = [
   // Notification center: when the user last opened the platter. Anything newer
   // than this counts as unread; NULL means never opened (everything unread).
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS notifications_seen_at TIMESTAMPTZ`,
+  // Sign in with Apple / Google (src/lib/oauth). An account made that way has
+  // no password, so the column stops being NOT NULL; NULL means "no password"
+  // and the login route refuses a password for it outright. No NULL row
+  // exists until the new code creates one, so this is safe for code already
+  // live.
+  `ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL`,
+  // One row per connected provider. (provider, subject) is the ONLY thing a
+  // provider sign-in is matched on: email never selects an account. email /
+  // email_verified are what the provider's token said, kept so a password
+  // reset can tell an identity that is provably the account's own inbox from
+  // one that is not (evictUntrustedIdentities). refresh_token_enc is Apple's
+  // refresh token, AES-256-GCM sealed, held only so it can be revoked.
+  // Cascades from users, which deleteUser relies on.
+  `CREATE TABLE IF NOT EXISTS user_identities (
+    id BIGSERIAL PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    provider TEXT NOT NULL CHECK (provider IN ('google', 'apple')),
+    subject TEXT NOT NULL,
+    email TEXT,
+    email_verified BOOLEAN NOT NULL DEFAULT FALSE,
+    email_is_private BOOLEAN NOT NULL DEFAULT FALSE,
+    client_id TEXT,
+    refresh_token_enc TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    last_used_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_user_identities_subject ON user_identities (provider, subject)`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_user_identities_user_provider ON user_identities (user_id, provider)`,
+  // A sign-in attempt in flight: ten minutes, deleted on first use. Keyed by
+  // the SHA-256 of a random token held in an httpOnly cookie; state_hash is
+  // the hash of the separate value sent to Google, so the cookie secret never
+  // rides in a URL. user_id pins a link / re-auth flow to whoever started it.
+  `CREATE TABLE IF NOT EXISTS oauth_flows (
+    token_hash TEXT PRIMARY KEY,
+    state_hash TEXT,
+    provider TEXT NOT NULL CHECK (provider IN ('google', 'apple')),
+    mode TEXT NOT NULL CHECK (mode IN ('native', 'web')),
+    intent TEXT NOT NULL CHECK (intent IN ('signin', 'link', 'reauth')),
+    purpose TEXT CHECK (purpose IN ('delete', 'email', 'password', 'link')),
+    nonce TEXT NOT NULL,
+    code_verifier TEXT,
+    user_id TEXT REFERENCES users(id) ON DELETE CASCADE,
+    return_to TEXT NOT NULL,
+    next_path TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    expires_at TIMESTAMPTZ NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_oauth_flows_expires ON oauth_flows (expires_at)`,
+  // A verified provider identity waiting on a username and the 13+/Terms
+  // tick. No users row exists until that tick, so this is where the identity
+  // lives for its ten minutes.
+  `CREATE TABLE IF NOT EXISTS oauth_pending_signups (
+    token_hash TEXT PRIMARY KEY,
+    provider TEXT NOT NULL CHECK (provider IN ('google', 'apple')),
+    subject TEXT NOT NULL,
+    email TEXT,
+    email_verified BOOLEAN NOT NULL DEFAULT FALSE,
+    email_is_private BOOLEAN NOT NULL DEFAULT FALSE,
+    client_id TEXT,
+    refresh_token_enc TEXT,
+    next_path TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    expires_at TIMESTAMPTZ NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_oauth_pending_expires ON oauth_pending_signups (expires_at)`,
+  // Re-authentication for accounts with no password: a provider confirmation
+  // stamps the session with when and for which one action, and the action
+  // spends it (consumeSessionReauth). Both NULL the rest of the time.
+  `ALTER TABLE sessions ADD COLUMN IF NOT EXISTS reauth_at TIMESTAMPTZ`,
+  `ALTER TABLE sessions ADD COLUMN IF NOT EXISTS reauth_for TEXT`,
+
+  // --- Find friends from contacts, Tier A: the switch, its consent record,
+  // and how old an account is.
+  //
+  // discoverable_by_contacts defaults to FALSE on purpose, unlike
+  // discoverable_by_username above: nobody who already has an account agreed
+  // to be looked up by their email address, so nobody is findable until they
+  // say so themselves.
+  //
+  // contacts_choice_answered_at NULL means "never asked". It is set on either
+  // answer and never cleared, which is what lets the one-time question tell
+  // "said no" from "has not been asked" on every device. _on_at and _off_at
+  // keep the last time each answer was chosen and are the consent record;
+  // neither is ever nulled.
+  //
+  // created_at takes three statements and their order matters. It is added
+  // WITHOUT a default so existing rows stay NULL, then backfilled from
+  // agreed_to_terms_at (stamped at signup by createUser), then given
+  // DEFAULT now() for new rows. NULL therefore means "older than both
+  // columns" and is read as an old account. All three are safe to re-run.
+  //
+  // No new table and no new index, so deleteUser's cascade rule is untouched.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS discoverable_by_contacts BOOLEAN NOT NULL DEFAULT false`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS contacts_choice_answered_at TIMESTAMPTZ`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS contacts_choice_on_at TIMESTAMPTZ`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS contacts_choice_off_at TIMESTAMPTZ`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ`,
+  `UPDATE users SET created_at = agreed_to_terms_at WHERE created_at IS NULL AND agreed_to_terms_at IS NOT NULL`,
+  `ALTER TABLE users ALTER COLUMN created_at SET DEFAULT now()`,
+
+  // --- Find friends from contacts, Tier B: an optional verified phone number.
+  //
+  // phone_hmac holds 'v1:' + hex HMAC-SHA256(E.164 number, CONTACT_HMAC_PEPPER).
+  // The number itself is never stored; phone_last4 is only there so a person
+  // can tell which number is on file. No phone_country column: verification
+  // is US-only, so the default region is the constant 'US'. All three are
+  // columns on users, so deleting the account removes them with the row.
+  //
+  // The index is partial because most accounts will have no phone, and unique
+  // because one number may point at one account at a time (setVerifiedPhone
+  // clears it from the previous holder first).
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_hmac TEXT`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_last4 TEXT`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_verified_at TIMESTAMPTZ`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_users_phone_hmac ON users (phone_hmac) WHERE phone_hmac IS NOT NULL`,
 ];
 
 for (const statement of statements) {

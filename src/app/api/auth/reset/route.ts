@@ -1,10 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import bcrypt from "bcryptjs";
 import {
   deleteAllSessions,
   deleteEmailVerificationsForUser,
   deletePasswordReset,
   deletePasswordResetsForUser,
+  evictUntrustedIdentities,
   getPasswordReset,
   getUserById,
   markEmailVerified,
@@ -15,6 +16,7 @@ import { checkPassword } from "@/lib/password";
 import { clientIp } from "@/lib/loginThrottle";
 import { limitOrReject } from "@/lib/rateLimit";
 import { hashToken } from "@/lib/tokens";
+import { revokeStoredTokens } from "@/lib/oauth/apple";
 
 /**
  * Spend a reset link and set a new password.
@@ -33,6 +35,17 @@ import { hashToken } from "@/lib/tokens";
  * Succeeding also marks the address verified. Reading a link sent to it is
  * exactly the proof `/verify-email` asks for, and an account that has just
  * demonstrated it can receive mail should not still be told to go and prove it.
+ *
+ * **Connected Apple/Google sign-ins that are not provably this inbox die too**
+ * (`evictUntrustedIdentities`), for the same reason the sessions do. Without
+ * it the reset would be decorative against anyone who had attached their own
+ * Google to the account, or had made the account with their Apple ID and
+ * typed this address into it: locked out by the new password, they would tap
+ * Continue with Google and walk back in. An identity whose provider vouched
+ * for this same address survives — same inbox, same person. The response
+ * lists what was removed so the screen can say so.
+ *
+ * For an account that never had a password this sets its first one.
  */
 export async function POST(req: Request) {
   const limited = await limitOrReject({
@@ -91,7 +104,8 @@ export async function POST(req: Request) {
   const problem = checkPassword(password, { name: user.name, email: user.email });
   if (problem) return NextResponse.json({ error: problem }, { status: 400 });
 
-  if (await bcrypt.compare(password, user.passwordHash)) {
+  // An account with no password has nothing for the new one to repeat.
+  if (user.passwordHash !== null && (await bcrypt.compare(password, user.passwordHash))) {
     return NextResponse.json({ error: "That's already your password." }, { status: 400 });
   }
 
@@ -110,7 +124,14 @@ export async function POST(req: Request) {
   await deleteEmailVerificationsForUser(user.id);
   await setPendingEmail(user.id, null);
 
+  // After the sessions, and compared against the address the link was mailed
+  // to. One rule whether or not that address was verified before this request.
+  const removed = await evictUntrustedIdentities(user.id, user.email);
+  // Apple is told after the response; a slow or failed revoke must not turn a
+  // completed reset into an error.
+  if (removed.length > 0) after(() => revokeStoredTokens(removed));
+
   if (!user.emailVerifiedAt) await markEmailVerified(user.id);
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, removedSignIns: removed.map((r) => r.provider) });
 }

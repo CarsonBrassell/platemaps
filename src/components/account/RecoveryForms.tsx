@@ -136,12 +136,32 @@ export function ResetPasswordForm({ links }: { links: RecoveryLinks }) {
   );
 }
 
+/**
+ * " Google sign-in was disconnected; …" — or "" when nothing was. Built from
+ * the two words this app knows, never from the response's own text.
+ */
+function removedSignInsLine(value: unknown): string {
+  if (!Array.isArray(value)) return "";
+  const names = [
+    value.includes("apple") ? "Apple" : null,
+    value.includes("google") ? "Google" : null,
+  ].filter((name): name is string => name !== null);
+  if (names.length === 0) return "";
+  return ` ${names.join(" and ")} sign-in was disconnected to keep the account yours; you can reconnect it in Settings.`;
+}
+
 function ResetPassword({ links }: { links: RecoveryLinks }) {
   const token = useSearchParams().get("token") ?? "";
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
+  /* Apple / Google sign-ins the reset disconnected, as a ready sentence. A
+     reset is proof of who owns the inbox, so the server removes any connected
+     sign-in that isn't provably the same inbox — and that has to be said, or
+     "Continue with Google stopped working" reads as a bug. Empty for every
+     account that never connected one. */
+  const [removed, setRemoved] = useState("");
 
   /* The same function the server runs, for a message that appears as you type
      rather than after a round trip. It is a courtesy — the server checks
@@ -160,7 +180,10 @@ function ResetPassword({ links }: { links: RecoveryLinks }) {
       });
       const data = await res.json();
       if (!res.ok) setError(data.error ?? "Something went wrong.");
-      else setDone(true);
+      else {
+        setRemoved(removedSignInsLine(data.removedSignIns));
+        setDone(true);
+      }
     } catch {
       setError("Couldn't reach the server. Check your connection and try again.");
     }
@@ -176,7 +199,7 @@ function ResetPassword({ links }: { links: RecoveryLinks }) {
         /* Says the sign-outs happened rather than leaving somebody to discover
            it on another device. Being signed out everywhere is the point of a
            reset, but unexplained it reads as a bug. */
-        body="You're signed out on every device, including this one. Sign in with your new password."
+        body={`You're signed out on every device, including this one. Sign in with your new password.${removed}`}
         action={{ href: links.signIn, label: "Sign in" }}
       />
     );

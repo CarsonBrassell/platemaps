@@ -7,6 +7,11 @@ import { avatarPalette, initials } from "@/lib/format";
 import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { askForPushInContext } from "@/lib/pushClient";
+import { ChevronIcon } from "@/components/icons";
+import { FindableQuestion } from "@/components/account/FindableQuestion";
+import { PhoneContactsSheet, type ContactsResult } from "@/components/mobile/PhoneContactsSheet";
+import { useAuth } from "@/lib/auth";
+import { getContactsSupport, type ContactsSupport } from "@/lib/contactsClient";
 
 /** Mirrors lib/db.ts's PersonReason — that module is server-only. */
 type PersonReason =
@@ -88,6 +93,16 @@ function writeList<T>(key: string, list: T[]) {
  * **No counts.** A suggestion names up to two of your own friends it's
  * friends with and never says how many — friend counts never display in this
  * product (see PhoneFriendsScreen), and "12 mutual friends" is one.
+ *
+ * **Contacts.** With the box empty, two more things can sit above the
+ * suggestions, and both are drawn only when the server says the feature is
+ * switched on (`account.contactsAvailable`): a row that opens the contacts
+ * sheet, which also needs an app build carrying the plugin, so a browser and
+ * an older build never see it; and the one-time "may people find you" question,
+ * which is shown on every platform. This component asks the plugin only what
+ * iOS currently says (`getContactsSupport`, which never prompts). Reading
+ * contacts and raising the iOS prompt belong to the sheet's Continue button
+ * and nothing else.
  */
 export function PhoneFindFriends({
   viewerId,
@@ -105,7 +120,18 @@ export function PhoneFindFriends({
   onSent: () => void;
 }) {
   const router = useRouter();
+  const { account } = useAuth();
+  const contactsOn = account?.contactsAvailable === true;
   const [query, setQuery] = useState("");
+  const searchRef = useRef<HTMLInputElement>(null);
+  // Null until the plugin has answered; the row waits rather than flashing in.
+  const [contactsSupport, setContactsSupport] = useState<ContactsSupport | null>(null);
+  const [contactsOpen, setContactsOpen] = useState(false);
+  /* The last check, kept for as long as this screen is mounted so reopening
+     the sheet shows it instead of spending another of the day's checks. It
+     holds the person's own contact names, so it is never written to storage
+     and goes when the Friends screen does. */
+  const [contactsResult, setContactsResult] = useState<ContactsResult | null>(null);
   const [results, setResults] = useState<{ q: string; people: Person[] } | null>(null);
   const [suggestions, setSuggestions] = useState<Person[] | null>(null);
   const recentKey = `platemap:recent-people:${viewerId}`;
@@ -138,6 +164,19 @@ export function PhoneFindFriends({
       live = false;
     };
   }, []);
+
+  useEffect(() => {
+    // Not asked at all while the feature is off: with nothing configured this
+    // screen must not so much as load the plugin.
+    if (!contactsOn) return;
+    let live = true;
+    void getContactsSupport().then((value) => {
+      if (live) setContactsSupport(value);
+    });
+    return () => {
+      live = false;
+    };
+  }, [contactsOn]);
 
   const trimmed = query.trim();
 
@@ -272,6 +311,7 @@ export function PhoneFindFriends({
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
         <input
+          ref={searchRef}
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -363,6 +403,48 @@ export function PhoneFindFriends({
             </div>
           )}
 
+          {contactsOn && contactsSupport !== null && contactsSupport !== "unsupported" && (
+            /* One button, and deliberately not orange-filled: the primary
+               action on this screen stays the Add pills. */
+            <button
+              type="button"
+              onClick={() => setContactsOpen(true)}
+              aria-haspopup="dialog"
+              className={`mb-3 flex min-h-11 w-full items-center gap-3 rounded-2xl bg-white px-3.5 py-3 text-left ${FOCUS}`}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="shrink-0 text-pm-orange-text"
+                aria-hidden="true"
+              >
+                <rect x="5" y="3" width="15" height="18" rx="2.5" />
+                <path d="M2.5 8h2.5M2.5 12h2.5M2.5 16h2.5" />
+                <circle cx="12.5" cy="10" r="2.25" />
+                <path d="M8.75 16.5a3.75 3.75 0 0 1 7.5 0" />
+              </svg>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[15px] leading-tight text-zinc-900">
+                  Find friends from your contacts
+                </span>
+                <span className="mt-0.5 block text-xs text-zinc-500">
+                  {account?.phoneVerified && account.phoneVerifyAvailable
+                    ? "We only send email addresses and phone numbers"
+                    : "We only send email addresses"}
+                </span>
+              </span>
+              <ChevronIcon className="h-4 w-4 shrink-0 text-zinc-400" />
+            </button>
+          )}
+
+          <FindableQuestion title="Let people find you from their contacts?" className="mb-3" />
+
           {visibleSuggestions.length > 0 && (
             <div className="mb-2">
               <p className="mono-label mb-1.5 mt-1 pl-1 text-pm-grey-text">People you may know</p>
@@ -382,6 +464,24 @@ export function PhoneFindFriends({
             </div>
           )}
         </>
+      )}
+
+      {contactsOpen && contactsOn && contactsSupport !== null && contactsSupport !== "unsupported" && (
+        <PhoneContactsSheet
+          support={contactsSupport}
+          cached={contactsResult}
+          onResult={setContactsResult}
+          onSupport={setContactsSupport}
+          onClose={() => setContactsOpen(false)}
+          onSearchByUsername={() => {
+            setContactsOpen(false);
+            // After the sheet has given focus back to the row that opened it.
+            setTimeout(() => searchRef.current?.focus(), 0);
+          }}
+          sendRequest={sendRequest}
+          statusFor={statusFor}
+          pendingId={pendingId}
+        />
       )}
     </div>
   );
@@ -485,7 +585,7 @@ function SuggestionCard({
   );
 }
 
-function StatusOrAdd({
+export function StatusOrAdd({
   status,
   pending,
   onAdd,
@@ -513,7 +613,7 @@ function StatusOrAdd({
   );
 }
 
-function Avatar({ person, size }: { person: FriendLite; size: "sm" | "md" | "lg" }) {
+export function Avatar({ person, size }: { person: FriendLite; size: "sm" | "md" | "lg" }) {
   const box = size === "lg" ? "h-14 w-14 text-base" : size === "md" ? "h-11 w-11 text-sm" : "h-8 w-8 text-xs";
   return person.avatarUrl ? (
     // eslint-disable-next-line @next/next/no-img-element

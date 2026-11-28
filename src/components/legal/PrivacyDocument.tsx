@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Section, List, LegalTOC } from "@/components/legal/LegalSection";
+import { contactsMatchEnabled, phoneMatchingAvailable, phoneVerifyAvailable } from "@/lib/contactsConfig";
 
 /**
  * The body of the Privacy Policy, shared by the desktop page (`/privacy`) and the phone page
@@ -7,8 +8,24 @@ import { Section, List, LegalTOC } from "@/components/legal/LegalSection";
  * differs: the desktop page adds `Header`, the phone page adds a back bar.
  * `termsHref` is where the cross-link to the sibling document points, which is the
  * one thing that has to change between the two bodies.
+ *
+ * **The contacts and phone-number passages are conditional, and must stay so.**
+ * "Find friends from your contacts" ships switched off, and a policy should
+ * not describe collection that is not happening. So the contacts text is part
+ * of the document only when `contactsMatchEnabled()` is true, read from the
+ * same server-side switches the routes use. Phone numbers have two gates,
+ * because the app has two states: `phoneMatchingAvailable()` (the switch and
+ * the hashing key) is when scrambled numbers are HELD and matched, so it
+ * gates everything about what is kept and who can find you by it;
+ * `phoneVerifyAvailable()` (that plus Twilio) is when a number can be ADDED,
+ * so it gates only the sentences about texting a code and about Twilio. If
+ * the Twilio values are ever taken out after numbers were collected, the
+ * policy must go on describing the numbers still on file. This is a
+ * server component on a prerendered page, so the answer is the one at build
+ * time, which is also when a changed environment variable takes effect for
+ * the routes. Set LAST_UPDATED to the day each switch is turned on.
  */
-const LAST_UPDATED = "August 14, 2026";
+const LAST_UPDATED = "November 17, 2026";
 
 const SECTIONS = [
   { id: "overview", title: "1. Overview" },
@@ -71,7 +88,40 @@ const TABLE_ROWS = [
   },
 ];
 
+/** Extra Notice-at-Collection rows, present only while the features they describe are on. */
+function contactsTableRows(contacts: boolean, phone: boolean) {
+  if (!contacts) return [];
+  return [
+    {
+      category: "Contacts (iOS app, optional)",
+      examples: phone
+        ? "Email addresses and, if you have added a phone number, phone numbers from your phone’s address book, only if you choose “Find friends from your contacts”"
+        : "Email addresses from your phone’s address book, only if you choose “Find friends from your contacts”",
+      purpose:
+        "Check once whether they belong to PlateMaps members who chose to be found; not stored",
+    },
+    ...(phone
+      ? [
+          {
+            category: "Phone number (optional)",
+            examples:
+              "A scrambled (keyed-hash) version of your mobile number and its last four digits, if you have added and verified one",
+            purpose: "Let people who already have your number find you, if you turn that on",
+          },
+        ]
+      : []),
+  ];
+}
+
 export function PrivacyDocument({ termsHref }: { termsHref: string }) {
+  const contacts = contactsMatchEnabled();
+  // Neither is ever true without `contacts`: the phone half is built on the
+  // same switch. `phoneHeld`: scrambled numbers are stored and matched.
+  // `phoneVerify`: a number can be added now, by a texted code. See the header.
+  const phoneHeld = contacts && phoneMatchingAvailable();
+  const phoneVerify = contacts && phoneVerifyAvailable();
+  const tableRows = [...TABLE_ROWS, ...contactsTableRows(contacts, phoneHeld)];
+
   return (
     <div className="px-4 pt-8 sm:px-6">
       <div className="mx-auto max-w-3xl">
@@ -120,6 +170,49 @@ export function PrivacyDocument({ termsHref }: { termsHref: string }) {
               anything you type into the Service, including support requests.
             </li>
             <li>
+              <span className="font-medium text-zinc-900">Signing in with Apple or Google:</span>{" "}
+              where we offer it, you can choose to sign in with your Apple or Google account
+              instead of a password. If you do, we store the email address that service
+              shares with us and an identifier it assigns to you, so we can recognize you
+              the next time you sign in. We do not store your name or profile picture from
+              that service, we never receive your Apple or Google password, and we never
+              post anything to those services. For Apple, we also keep an encrypted token
+              whose only use is to tell Apple to end the connection. You can disconnect
+              either service in Settings, and disconnecting it or deleting your account
+              removes this information and revokes that token.
+            </li>
+            {contacts && (
+              <li>
+                <span className="font-medium text-zinc-900">Contacts, if you choose to share them:</span>{" "}
+                In the iOS app you can tap &ldquo;Find friends from your contacts&rdquo;. If
+                you allow it, the app reads your address book on your phone and sends us only
+                the email addresses in it
+                {phoneHeld && ", and, if you have added a phone number to your account, the phone numbers in it"}
+                . Photos, notes and everything else in your contacts stay on your phone. We
+                compare what you sent with the accounts of members who have chosen to be found
+                this way, send back the matches, and then discard what you sent. We do not
+                store your contacts, we do not build profiles of people who are not members,
+                and we never contact anyone in your address book. If you tap
+                &ldquo;Invite&rdquo; next to a contact, your phone opens its own Messages or
+                Mail app with a message you can read and edit; you send it, from your own
+                number or address. You can turn contacts access off at any time in your
+                iPhone&rsquo;s Settings.
+              </li>
+            )}
+            {phoneHeld && (
+              <li>
+                <span className="font-medium text-zinc-900">Phone number, if you add one:</span>{" "}
+                {phoneVerify
+                  ? "You may add a mobile number to your account. We text a one-time code to confirm it is yours (message and data rates may apply). After that we keep "
+                  : "If you added a mobile number to your account and confirmed it, we keep "}
+                a scrambled version of the number that lets us recognize it again, plus its last
+                four digits so you can tell which number is on file. We do not keep the number
+                itself in readable form.
+                {phoneVerify && " We ask you to confirm it again after 12 months."} You
+                can remove it at any time in Settings.
+              </li>
+            )}
+            <li>
               <span className="font-medium text-zinc-900">Content you create:</span> posts,
               photos attached to posts, restaurant and dish ratings, comments, upvotes,
               hearts, and aspect votes. See Section 6 of our{" "}
@@ -155,6 +248,13 @@ export function PrivacyDocument({ termsHref }: { termsHref: string }) {
             <li>Provide, operate, and maintain the Service, including your Feed, Discover results, and Plate Points;</li>
             <li>Create and secure your account, and authenticate you when you sign in;</li>
             <li>Personalize what you see, such as favorite cuisines or nearby results;</li>
+            {contacts && (
+              <li>
+                Help you find people you know who are already on PlateMaps, and, if you turn on
+                &ldquo;Find me from contacts&rdquo;, let people who already have your email
+                address{phoneHeld && " or phone number"} find your account;
+              </li>
+            )}
             <li>Communicate with you about your account or the Service;</li>
             <li>Monitor for, investigate, and prevent fraud, abuse, and security incidents;</li>
             <li>Comply with legal obligations and enforce our Terms of Service; and</li>
@@ -187,11 +287,28 @@ export function PrivacyDocument({ termsHref }: { termsHref: string }) {
               hearts are private and are never shown to anyone, including the post&rsquo;s
               author.
             </li>
+            {contacts && (
+              <li>
+                <span className="font-medium text-zinc-900">With members who already have your
+                contact details, if you allow it:</span> if you turn on &ldquo;Find me from
+                contacts&rdquo; (it is off unless you turn it on), any member who has your
+                confirmed email address{phoneHeld && " or verified phone number"} saved in their
+                phone contacts can learn which PlateMaps account is yours, see your username
+                and profile, and send you a friend request. That may be someone you would not
+                think of as a friend. We never show them your address{phoneHeld && " or number"};
+                they learn that something they already had belongs to your account. If you
+                post under a name you do not want connected to your email address
+                {phoneHeld && " or phone number"}, leave this off. Blocking an account prevents
+                that account from finding you this way.
+              </li>
+            )}
             <li>
               <span className="font-medium text-zinc-900">Service providers:</span> companies
               that host our infrastructure and database, send email on our behalf, or provide
               similar services under contract, and only to the extent needed to provide the
               Service.
+              {phoneVerify &&
+                " We use Twilio to send verification text messages. Twilio receives the phone number you enter in order to deliver the code and keeps its own delivery records for a limited time."}
             </li>
             <li>
               <span className="font-medium text-zinc-900">Legal and safety reasons:</span> if
@@ -216,6 +333,16 @@ export function PrivacyDocument({ termsHref }: { termsHref: string }) {
             where we are permitted or required to retain it — for example, to resolve disputes,
             enforce our Terms, or comply with a legal obligation.
           </p>
+          {contacts && (
+            <p>
+              Address-book information you share to find friends is not retained: it is used
+              to answer that one request and discarded. We keep security counters (that a
+              check happened, when, and from which account or network, never what was in it)
+              for up to 30 days.
+              {phoneHeld &&
+                " Your scrambled phone number is removed from your account when you remove it or delete your account; security counters that reference it expire within 30 days."}
+            </p>
+          )}
         </Section>
 
         <Section id="rights" title="8. Your Privacy Choices and Rights">
@@ -266,7 +393,7 @@ export function PrivacyDocument({ termsHref }: { termsHref: string }) {
                 </tr>
               </thead>
               <tbody>
-                {TABLE_ROWS.map((row) => (
+                {tableRows.map((row) => (
                   <tr key={row.category} className="border-b border-zinc-200 align-top">
                     <td className="py-2 pr-3 font-medium text-zinc-900">{row.category}</td>
                     <td className="py-2 pr-3 text-zinc-600">{row.examples}</td>
@@ -322,6 +449,13 @@ export function PrivacyDocument({ termsHref }: { termsHref: string }) {
             practices, which we do not control and this Policy does not cover — review their
             policies directly.
           </p>
+          {phoneVerify && (
+            <p>
+              We use Twilio to send verification text messages. Twilio receives the phone
+              number you enter in order to deliver the code and keeps its own delivery records
+              for a limited time.
+            </p>
+          )}
         </Section>
 
         <Section id="changes" title="14. Changes to This Policy">

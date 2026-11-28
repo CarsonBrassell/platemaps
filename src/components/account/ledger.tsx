@@ -62,11 +62,15 @@ export function LedgerSection({
  * Tracks which row of a section is open. One at a time: two open rows put two
  * paragraphs on screen at once, which is the thing this layout exists to stop.
  */
-export function useLedgerRows() {
-  const [openKey, setOpenKey] = useState<string | null>(null);
+export function useLedgerRows(initialKey: string | null = null) {
+  /* `initialKey`: a row to start open — the one somebody was sent back to
+     after confirming with Google on the website. Null everywhere else. */
+  const [openKey, setOpenKey] = useState<string | null>(initialKey);
   return {
     isOpen: (key: string) => openKey === key,
     toggle: (key: string) => setOpenKey((current) => (current === key ? null : key)),
+    /** Open a row outright, for an arrival that is only understood once the account has loaded. */
+    open: (key: string) => setOpenKey(key),
   };
 }
 

@@ -92,6 +92,24 @@ are one flow and a colour they disagree about is a bug. Avatars use the muted
 warm `AVATAR_PALETTE` in
 `src/lib/format.ts`.
 
+**Named exception: the Apple and Google sign-in buttons.** "Continue with
+Apple" is `bg-black` with a white logo and white label; "Continue with Google"
+is Google's neutral `#F2F2F2` with the unaltered four-colour G and `#1F1F1F`
+label. Those four values are the providers' brand rules, not PlateMaps tokens,
+and they appear only on `ProviderButton` (`src/components/account/SocialButtons.tsx`):
+the sign-in card, and the confirm and connect buttons in Settings and the
+delete panels. **A pill carrying either mark only ever reads "Continue with
+Apple" / "Continue with Google"** — both companies list "Sign in with", "Sign
+up with" and "Continue with" as the only titles for a button showing their
+logo, so `ProviderButton` has no verb to change; the sentence above it says
+what the press is for, and a control that needs other words ("Disconnect
+Google") is an ordinary tan pill with no logo. Everything else about the buttons follows this document:
+full-width `rounded-full` pills, `min-h-11`, no border, no shadow, system sans,
+the orange `focus-visible` ring, Apple first and both the same size. **They
+never take the orange** and never count as the primary action; the card's one
+orange button stays "Create account" / "Log in". Do not retint them to the
+tan chip treatment, and do not reuse their colours anywhere else.
+
 ## Shape
 
 - Cards: `rounded-2xl` (16px), white, **no borders, no shadows, no gradients**.
